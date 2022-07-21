@@ -4,9 +4,7 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [
-        laravel([
-            'resources/js/app.js',
-        ]),
+        laravel(['resources/src/app.ts']),
         vue({
             template: {
                 transformAssetUrls: {
@@ -16,4 +14,12 @@ export default defineConfig({
             },
         }),
     ],
+    resolve: {
+        alias: {
+            '@src': './resources/src',
+        },
+    },
+    server: {
+        host: 'osp.test',
+    },
 });
