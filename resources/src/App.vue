@@ -1,21 +1,32 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from "./components/HelloWorld.vue";
+import { onMounted } from 'vue';
+import HelloWorldVue from './components/HelloWorld.vue';
+import { csrf } from './api/sanctum';
+
+onMounted(async () => {
+    const test = await csrf();
+    console.log(test);
+});
+
+const log = (msg: string) => {
+    console.log(msg);
+};
+
+const lala = 'Super';
 </script>
 
 <template>
-    <img alt="Vue logo" src="/assets/logo.png" />
-    <HelloWorld msg="Hello Vue 3 + Vite" />
+    <v-app>
+        <v-main>
+            <v-container>
+                <v-row>
+                    <v-col cols="12" class="d-flex justify-center"
+                        ><div class="text-h1">Open Science Portal</div></v-col
+                    ></v-row
+                >
+            </v-container>
+        </v-main>
+    </v-app>
 </template>
 
-<style>
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-}
-</style>
+<style></style>
