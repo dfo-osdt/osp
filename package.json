@@ -6,27 +6,30 @@
         "lint": "eslint --ext .ts,.vue src"
     },
     "devDependencies": {
-        "@types/node": "^18.0.4",
-        "@typescript-eslint/eslint-plugin": "^5.30.6",
-        "@vitejs/plugin-vue2": "^1.1.2",
-        "axios": "^0.27",
-        "eslint": "^8.19.0",
+        "@intlify/vite-plugin-vue-i18n": "^5.0.1",
+        "@quasar/vite-plugin": "^1.0.10",
+        "@types/node": "^18.6.1",
+        "@typescript-eslint/eslint-plugin": "^5.30.7",
+        "@typescript-eslint/parser": "^5.30.7",
+        "axios": "^0.27.2",
+        "eslint": "^8.20.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
-        "eslint-plugin-vue": "^9.2.0",
+        "eslint-plugin-vue": "^9.3.0",
         "laravel-vite-plugin": "^0.5.2",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "prettier": "^2.7.1",
-        "sass": "~1.32",
+        "sass": "1.32.12",
         "typescript": "^4.7.4",
         "unplugin-vue-components": "^0.21.1",
-        "vite": "^3.0.2",
-        "vite-plugin-vue2": "^2.0.2",
-        "vue-tsc": "^0.38.5"
+        "vite": "^3.0.3",
+        "vue-tsc": "^0.38.9"
     },
     "dependencies": {
-        "material-design-icons": "^3.0.1",
-        "vue": "^2.7.8",
-        "vuetify": "^2.6.7"
+        "@quasar/extras": "^1.15.0",
+        "@vitejs/plugin-vue": "^3.0.1",
+        "quasar": "^2.7.5",
+        "vue": "^3.2.37",
+        "vue-i18n": "^9.1.10"
     }
 }

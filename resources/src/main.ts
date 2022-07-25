@@ -1,10 +1,10 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
+import { installQuasar } from './modules/quasar';
 import App from './App.vue';
-import vuetify from './plugins/vuetify';
 
-Vue.config.productionTip = false;
+const myApp = createApp(App);
 
-new Vue({
-    vuetify,
-    render: (h) => h(App),
-}).$mount('#app');
+installQuasar(myApp);
+
+// Assumes you have a <div id="app"></div> in your index.html
+myApp.mount('#app');

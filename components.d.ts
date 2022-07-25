@@ -7,10 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    VApp: typeof import('vuetify/lib')['VApp']
-    VCol: typeof import('vuetify/lib')['VCol']
-    VContainer: typeof import('vuetify/lib')['VContainer']
-    VMain: typeof import('vuetify/lib')['VMain']
-    VRow: typeof import('vuetify/lib')['VRow']
+    QBtn: typeof import('quasar')['QBtn']
   }
 }

@@ -1,14 +1,16 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue2';
+import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import Components from 'unplugin-vue-components/vite';
-import { VuetifyResolver } from 'unplugin-vue-components/resolvers';
+import { QuasarResolver } from 'unplugin-vue-components/resolvers';
+import { quasar } from '@quasar/vite-plugin';
 
 export default defineConfig({
     plugins: [
         laravel(['resources/src/main.ts']),
         vue({
+            reactivityTransform: true,
             template: {
                 transformAssetUrls: {
                     base: null,
@@ -16,17 +18,11 @@ export default defineConfig({
                 },
             },
         }),
-        Components({
-            resolvers: [VuetifyResolver()],
-        }),
+        quasar({ sassVariables: 'resources/src/styles/variables.scss' }),
+        // Components({
+        //     resolvers: [QuasarResolver()],
+        // }),
     ],
-    css: {
-        additionalData: [
-            '@import "./resources/src/styles/variables',
-            '@import "vuetify/src/styles/settings/_variables"',
-            '',
-        ].join('\n'),
-    },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './resources/src'),

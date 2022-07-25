@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import HelloWorldVue from './components/HelloWorld.vue';
 import { csrf } from './api/sanctum';
 
@@ -8,25 +8,24 @@ onMounted(async () => {
     console.log(test);
 });
 
-const log = (msg: string) => {
-    console.log(msg);
-};
+let loading = ref(false);
 
-const lala = 'Super';
+const log = (evt: string) => {
+    console.log(evt);
+    loading.value = !loading.value;
+};
 </script>
 
 <template>
-    <v-app>
-        <v-main>
-            <v-container>
-                <v-row>
-                    <v-col cols="12" class="d-flex justify-center"
-                        ><div class="text-h1">Open Science Portal</div></v-col
-                    ></v-row
-                >
-            </v-container>
-        </v-main>
-    </v-app>
+    <p>
+        <q-btn
+            color="primary"
+            icon="mdi-check"
+            label="OK"
+            :loading="loading"
+            @click="log('supa')"
+        />
+    </p>
 </template>
 
 <style></style>
