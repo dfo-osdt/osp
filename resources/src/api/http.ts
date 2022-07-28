@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 enum StatusCode {
     Unauthorized = 401,
@@ -8,10 +8,10 @@ enum StatusCode {
 }
 
 const headers: Readonly<Record<string, string | boolean>> = {
-    Accept: "application/json",
-    "Content-Type": "application/json; charset=utf-8",
-    "Access-Control-Allow-Credentials": true,
-    "X-Requested-With": "XMLHttpRequest",
+    Accept: 'application/json',
+    'Content-Type': 'application/json; charset=utf-8',
+    'Access-Control-Allow-Credentials': true,
+    'X-Requested-With': 'XMLHttpRequest',
 };
 
 // We can use the following function to inject the JWT token through an interceptor
@@ -38,7 +38,7 @@ class Http {
 
     initHttp() {
         const http = axios.create({
-            baseURL: "/",
+            baseURL: '/',
             headers,
             withCredentials: true,
         });
@@ -115,7 +115,7 @@ class Http {
             }
         }
 
-        console.log("HTTP.TS Handling error: " + error.statusText);
+        console.log('HTTP.TS Handling error: ' + error.statusText);
 
         return Promise.reject(error);
     }
