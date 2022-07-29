@@ -15,7 +15,6 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "vitest",
       "vite/client",
       "vue/ref-macros",
     ],
@@ -23,5 +22,5 @@
       "@/*": ["resources/src/*"]
     }
   },
-  "exclude": ["dist", "node_modules", "cypress"]
+  "exclude": ["dist", "node_modules", "cypress", "vendor", "vite.config.js"]
 }

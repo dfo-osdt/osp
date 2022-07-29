@@ -1,16 +1,22 @@
 import { http } from './http';
 
+export interface SanctumUser {
+    email: string;
+    password: string;
+    remember?: boolean;
+}
+
 export const useSanctum = () => {
     const csrf = () => http.get('/sanctum/csrf-cookie');
 
-    const user = async () => {
+    const getUser = async () => {
         await csrf();
         return http.get('/api/user');
     };
 
-    const login = async (email: string, password: string) => {
+    const login = async (user: SanctumUser) => {
         await csrf();
-        return http.post('/login', { email, password });
+        return http.post('/login', user);
     };
 
     const logout = async () => {
@@ -18,7 +24,7 @@ export const useSanctum = () => {
     };
 
     return {
-        user,
+        getUser,
         login,
         logout,
     };

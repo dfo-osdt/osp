@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
-import { installQuasar } from './modules/quasar';
-import { installI18n } from './modules/i18n';
-import { installPinia } from './modules/pinia';
-import { installRouter } from './modules/router';
+import { installQuasar } from './plugins/quasar';
+import { installI18n } from './plugins/i18n';
+import { installPinia } from './plugins/pinia';
+import { installRouter } from './plugins/router';
 
 import App from './App.vue';
 

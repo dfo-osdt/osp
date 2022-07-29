@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { quasar } from '@quasar/vite-plugin';
 import VueI18n from '@intlify/vite-plugin-vue-i18n';
+import AutoImport from 'unplugin-auto-import/vite';
 
 export default defineConfig({
     plugins: [
@@ -26,9 +27,21 @@ export default defineConfig({
             include: [path.resolve(__dirname, 'resources/src/locales/**')],
         }),
 
-        // Components({
-        //     resolvers: [QuasarResolver()],
-        // }),
+        // https://github.com/antfu/unplugin-auto-import
+        AutoImport({
+            imports: [
+                'vue',
+                'vue-router',
+                'vue-i18n',
+                'pinia',
+                'vue/macros',
+                '@vueuse/head',
+                '@vueuse/core',
+            ],
+            dts: 'resources/src/auto-imports.d.ts',
+            dirs: ['resources/src/composables/**', 'resources/src/store'],
+            vueTemplate: true,
+        }),
     ],
     resolve: {
         alias: {
