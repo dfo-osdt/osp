@@ -41,6 +41,14 @@ export const useAuthStore = defineStore('AuthStore', () => {
             });
     }
 
+    /**
+     * Login user with email and password
+     *
+     * @param email
+     * @param password
+     * @returns void
+     * @throws Error if login fails
+     */
     async function login(email: string, password: string, remember = false) {
         //is user already authenticated?
         if (isAuthenticated.value) return false;
@@ -62,6 +70,9 @@ export const useAuthStore = defineStore('AuthStore', () => {
             });
     }
 
+    /**
+     * Logout user
+     */
     async function logout() {
         await sanctumLogout()
             .then(() => {

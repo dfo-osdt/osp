@@ -5,6 +5,9 @@ import path from 'path';
 import { quasar } from '@quasar/vite-plugin';
 import VueI18n from '@intlify/vite-plugin-vue-i18n';
 import AutoImport from 'unplugin-auto-import/vite';
+import { homedir } from 'os';
+import { resolve } from 'path';
+import fs from 'fs';
 
 export default defineConfig({
     plugins: [
@@ -47,7 +50,32 @@ export default defineConfig({
             '@': path.resolve(__dirname, './resources/src'),
         },
     },
-    server: {
-        host: 'osp.test',
-    },
+    server: detectServerConfig('osp.test'),
 });
+
+// see: Making Vite and Valet play nice together
+// https://freek.dev/2276-making-vite-and-valet-play-nice-together
+function detectServerConfig(host) {
+    let keyPath = resolve(homedir(), `.config/valet/Certificates/${host}.key`);
+    let certificatePath = resolve(
+        homedir(),
+        `.config/valet/Certificates/${host}.crt`
+    );
+
+    if (!fs.existsSync(keyPath)) {
+        return {};
+    }
+
+    if (!fs.existsSync(certificatePath)) {
+        return {};
+    }
+
+    return {
+        hmr: { host },
+        host,
+        https: {
+            key: fs.readFileSync(keyPath),
+            cert: fs.readFileSync(certificatePath),
+        },
+    };
+}

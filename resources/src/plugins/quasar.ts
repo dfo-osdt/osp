@@ -1,4 +1,4 @@
-import { Quasar } from 'quasar';
+import { Quasar, Notify } from 'quasar';
 import { App } from 'vue';
 
 // Import icon libraries
@@ -10,5 +10,14 @@ import '@quasar/extras/material-icons/material-icons.css';
 import 'quasar/src/css/index.sass';
 
 export const installQuasar = (app: App<Element>) => {
-    app.use(Quasar, { plugins: {} });
+    app.use(Quasar, {
+        plugins: {
+            Notify,
+        },
+        config: {
+            notify: {
+                position: 'top',
+            },
+        },
+    });
 };

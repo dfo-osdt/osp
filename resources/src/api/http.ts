@@ -1,9 +1,12 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Notify } from 'quasar';
+import { ErrorResponse, extractErrorMessages } from './errors';
 
 enum StatusCode {
     Unauthorized = 401,
     Forbidden = 403,
     TooManyRequests = 429,
+    ValidationError = 422,
     InternalServerError = 500,
 }
 
@@ -95,22 +98,31 @@ class Http {
     // We can handle generic app errors depending on the status code
     private handleError(error: AxiosResponse) {
         const { status } = error;
+        const errorMessage = extractErrorMessages(error);
 
         switch (status) {
             case StatusCode.InternalServerError: {
-                // Handle InternalServerError
+                this.notifyError(errorMessage, 'Internal Server Error');
                 break;
             }
             case StatusCode.Forbidden: {
                 // Handle Forbidden
+                this.notifyError(errorMessage, 'Forbidden');
                 break;
             }
             case StatusCode.Unauthorized: {
                 // Handle Unauthorized
+                // this.notifyError(errorMessage, 'Unauthorized');
                 break;
             }
             case StatusCode.TooManyRequests: {
                 // Handle TooManyRequests
+                this.notifyError(errorMessage, 'Too many requests');
+                break;
+            }
+            case StatusCode.ValidationError: {
+                // Handle ValidationError
+                this.notifyError(errorMessage, 'Validation Error');
                 break;
             }
         }
@@ -118,6 +130,16 @@ class Http {
         console.log('HTTP.TS Handling error: ' + error.statusText);
 
         return Promise.reject(error);
+    }
+
+    private notifyError(error: ErrorResponse, message?: string) {
+        Notify.create({
+            type: 'negative',
+            message: error?.message || message || 'An error occurred',
+            textColor: 'white',
+            timeout: 5000,
+            icon: 'mdi-alert-circle-outline',
+        });
     }
 }
 

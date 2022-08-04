@@ -1,8 +1,12 @@
 import { Axios, AxiosResponse } from 'axios';
 
+/**
+ * Laravel JSON API error response.
+ */
+
 interface ErrorMessage {
     field: string;
-    messages: any;
+    messages: string[];
 }
 
 export interface ErrorResponse {
@@ -14,7 +18,6 @@ export interface ErrorResponse {
 export const extractErrorMessages = (
     errorResponse: AxiosResponse
 ): ErrorResponse => {
-    console.log('hello?');
     const errors: ErrorResponse = {
         code: errorResponse.status,
         message: errorResponse.data?.message,
@@ -23,7 +26,7 @@ export const extractErrorMessages = (
 
     if (errorResponse.data.errors) {
         for (const [key, value] of Object.entries(errorResponse.data.errors)) {
-            errors.errors.push({ field: key, messages: value });
+            errors.errors.push({ field: key, messages: value as string[] });
         }
     }
     return errors;

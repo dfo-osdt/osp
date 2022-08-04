@@ -1,5 +1,5 @@
 {
-    "common": {
-        "test": "Ceci est un test"
-    }
+  "common": {
+    "login": "Connexion"
+  }
 }
