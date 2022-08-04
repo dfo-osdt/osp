@@ -1,41 +1,48 @@
 <template>
     <q-page class="flex flex-center">
-        <q-card>
-            <q-card-section>
-                <q-form class="q-gutter-md" autofocus @submit="login">
-                    <q-input
-                        v-model="email"
-                        type="email"
-                        filled
-                        label="Your email"
-                    />
-                    <q-input
-                        v-model="password"
-                        type="password"
-                        filled
-                        label="Your password"
-                    />
+        <div class="row fit justify-center">
+            <div class="col-4">
+                <q-card>
+                    <q-card-section class="bg-primary text-white">
+                        <div class="text-h5">Login</div>
+                    </q-card-section>
+                    <q-card-section>
+                        <q-form class="q-gutter-md" autofocus @submit="login">
+                            <q-input
+                                v-model="email"
+                                type="email"
+                                filled
+                                label="Your email"
+                            />
+                            <q-input
+                                v-model="password"
+                                type="password"
+                                filled
+                                label="Your password"
+                            />
 
-                    <q-toggle v-model="remember" label="Remember me" />
+                            <q-toggle v-model="remember" label="Remember me" />
 
-                    <div>
-                        <q-btn
-                            label="Login"
-                            type="submit"
-                            color="primary"
-                            :loading="loading"
-                        />
-                        <q-btn
-                            label="Reset"
-                            type="reset"
-                            color="primary"
-                            flat
-                            class="q-ml-sm"
-                        />
-                    </div>
-                </q-form>
-            </q-card-section>
-        </q-card>
+                            <div>
+                                <q-btn
+                                    label="Login"
+                                    type="submit"
+                                    color="primary"
+                                    :loading="loading"
+                                />
+                                <q-btn
+                                    label="Reset"
+                                    type="reset"
+                                    color="primary"
+                                    flat
+                                    class="q-ml-sm"
+                                />
+                            </div>
+                        </q-form>
+                    </q-card-section>
+                </q-card>
+            </div>
+        </div>
     </q-page>
 </template>
 

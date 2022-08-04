@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         };
 
         await sanctumLogin(sanctumUser)
-            .then((resp) => {
+            .then(() => {
                 isLoggedIn();
             })
             .catch((err) => {

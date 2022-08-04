@@ -10,7 +10,6 @@ export default defineConfig({
     plugins: [
         laravel(['resources/src/main.ts']),
         vue({
-            reactivityTransform: true,
             template: {
                 transformAssetUrls: {
                     base: null,
