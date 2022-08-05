@@ -1,5 +1,6 @@
 {
   "common": {
-    "login": "Login"
+    "login": "Login",
+    "app-name": "Open Science Portal"
   }
 }

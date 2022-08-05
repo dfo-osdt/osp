@@ -1,8 +1,9 @@
 <template>
-    <q-header elevated class="q-py-sm">
+    <q-header bordered class="q-py-sm bg-white text-primary">
         <q-toolbar>
             <q-btn
                 v-if="authStore.isAuthenticated"
+                class="q-mr-lg q-mt-xs"
                 flat
                 dense
                 round
@@ -10,8 +11,12 @@
                 aria-label="Menu"
                 @click="toggleLeftDrawer"
             />
-
-            <q-toolbar-title>Open Science Portal</q-toolbar-title>
+            <router-link to="/">
+                <q-img src="/assets/logo.svg" width="40px"></q-img>
+            </router-link>
+            <q-toolbar-title class="q-mt-sm">{{
+                t('common.app-name')
+            }}</q-toolbar-title>
             <!-- login button -->
             <q-btn
                 v-if="!authStore.isAuthenticated"
@@ -59,6 +64,7 @@
                     </q-list>
                 </q-menu>
             </q-btn>
+            <q-btn label="FR" flat round class="q-mx-xs"></q-btn>
         </q-toolbar>
     </q-header>
 </template>
@@ -66,6 +72,7 @@
 <script setup lang="ts">
 const emit = defineEmits(['toggleLeftDrawer']);
 const authStore = useAuthStore();
+const { t } = useI18n();
 
 function toggleLeftDrawer() {
     emit('toggleLeftDrawer');

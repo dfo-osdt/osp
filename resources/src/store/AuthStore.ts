@@ -2,6 +2,7 @@ import { useSanctum } from '@/api/sanctum';
 import { Router } from '@/plugins/router';
 import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
+import { Notify } from 'quasar';
 
 interface User {
     id: number;
@@ -77,7 +78,14 @@ export const useAuthStore = defineStore('AuthStore', () => {
         await sanctumLogout()
             .then(() => {
                 user.value = null;
-                Router.push('/');
+                Notify.create({
+                    message: 'Logged out successfully',
+                    color: 'green',
+                });
+                // wait 1 seconds before redirecting to login page
+                setTimeout(() => {
+                    Router.push('/login');
+                }, 1000);
             })
             .catch((err) => console.log(err));
     }

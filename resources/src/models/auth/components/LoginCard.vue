@@ -3,13 +3,13 @@
         <q-card-section class="bg-primary text-white">
             <div class="text-h5">{{ t('common.login') }}</div>
         </q-card-section>
-        <q-banner v-if="errorMessage" dark class="bg-negative q-mb-md">
+        <q-banner v-if="errorMessage" dark class="bg-negative">
             <template #avatar
                 ><q-icon name="mdi-alert-circle-outline"
             /></template>
             <div>{{ errorMessage.message }}</div>
         </q-banner>
-        <q-card-section>
+        <q-card-section class="q-mt-md">
             <q-form class="q-gutter-md" autofocus @submit="login">
                 <q-input
                     v-model="email"
@@ -36,7 +36,7 @@
 
                 <q-toggle v-model="remember" label="Remember me" />
 
-                <div>
+                <div class="flex justify-end">
                     <q-btn
                         label="Login"
                         type="submit"
@@ -51,6 +51,14 @@
                         class="q-ml-sm"
                     />
                 </div>
+                <div
+                    v-if="props.showFooter"
+                    class="flex row justify-center q-pt-md"
+                >
+                    <div>Forgot your password?</div>
+                    <div class="q-px-sm">|</div>
+                    <div>Don't have an account?</div>
+                </div>
             </q-form>
         </q-card-section>
     </q-card>
@@ -59,6 +67,10 @@
 <script setup lang="ts">
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
+
+const props = defineProps<{
+    showFooter?: boolean;
+}>();
 
 const { login: authLogin } = useAuthStore();
 const router = useRouter();

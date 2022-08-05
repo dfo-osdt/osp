@@ -1,17 +1,12 @@
 <template>
-    <q-layout view="hHh Lpr lFf">
+    <q-layout view="lHh Lpr lFf">
         <MainHeader @toggle-left-drawer="toggleLeftDrawer"></MainHeader>
-
-        <q-drawer
+        <MainDrawer
             v-if="authStore.isAuthenticated"
             v-model="leftDrawerOpen"
             show-if-above
             bordered
-        >
-            <q-list>
-                <q-item-label header> Essential Links </q-item-label>
-            </q-list>
-        </q-drawer>
+        />
         <q-page-container>
             <router-view />
         </q-page-container>
@@ -20,6 +15,7 @@
 
 <script setup lang="ts">
 import MainHeader from '@/components/MainHeader.vue';
+import MainDrawer from '@/components/MainDrawer.vue';
 
 const authStore = useAuthStore();
 const leftDrawerOpen = ref(true);
