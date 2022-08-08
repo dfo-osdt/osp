@@ -63,7 +63,7 @@ jobs:
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
           mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
-          tar -xzf /var/www/${{secrets.STAGING_SERVER}}/html/artifacts/osp_${{github.sha}}.tar.gz -C /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
+          tar -xzf /var/www/${{secrets.STAGING_SERVER}}/html/artifacts/osp_${{github.sha}}.tar.gz/osp_${{github.sha}}.tar.gz -C /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
           
           rm -rf /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}/storage
           mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/{app,public,framework,logs}
