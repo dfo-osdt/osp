@@ -55,10 +55,10 @@ jobs:
     - name: Upload to staging server
       uses: appleboy/scp-action@master
       with:
-        src: osp_${{github.sha}}.tar.gz
-        dest: /var/www/${{secrets.STAGING_SERVER}}/html/artifacts/osp_${{github.sha}}.tar.gz
+        source: osp_${{github.sha}}.tar.gz
+        target: /var/www/${{secrets.STAGING_SERVER}}/html/artifacts/
         host: ${{secrets.STAGING_SERVER}}
         port: 22
-        user: ${{ secrets.STAGING_USER }}
-        privateKey: ${{ secrets.DEPLOY_SSH_KEY }}
+        username: ${{ secrets.STAGING_USER }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
     
