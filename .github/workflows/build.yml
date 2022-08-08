@@ -86,8 +86,9 @@ jobs:
           port: 22
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
             cd /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
-            ln -s -n -f ${{RELEASE_PATH}} ${{ACTIVE_RELEASE_PATH}}
+            ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
 
     
