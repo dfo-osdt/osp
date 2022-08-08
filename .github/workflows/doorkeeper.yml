@@ -13,5 +13,5 @@ jobs:
         firewallName: web-firewall
         actionToDo: "add"
         protocol: "tcp"
-        port: 22
+        port: 2200
         dryRun: false
