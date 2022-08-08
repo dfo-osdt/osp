@@ -28,11 +28,11 @@ jobs:
       run: pnpm run build
 
     - name: Create deployment artifact
-      run: tar -czf osp_"${{github.sha}}".tar.gz --exclude=".git" --exclude="node_modules" *
+      run: tar -czf osp_${{github.sha}}.tar.gz --exclude=".git" --exclude="node_modules" *
 
     - name: Store artifact for distribution
       uses: actions/upload-artifact@v3
       with:
         name: app-build
-        path: osp_"${{github.sha}}".tar.gz
+        path: osp_${{github.sha}}.tar.gz
 
