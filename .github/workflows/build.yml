@@ -45,13 +45,6 @@ jobs:
       with:
         name: app-build
         path: osp_${{github.sha}}.tar.gz
-    - name: Doorkeeper open
-      uses: patoroco/doorkeeper@master
-      with:
-        digitaloceanToken: ${{ secrets.DO_TOKEN }}
-        firewallName: web-firewall
-        actionToDo: "add"
-        dryRun: false
     - name: Upload to staging server
       uses: appleboy/scp-action@master
       with:
