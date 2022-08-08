@@ -49,7 +49,7 @@ jobs:
       uses: appleboy/scp-action@master
       with:
         source: osp_${{github.sha}}.tar.gz
-        target: /var/www/${{secrets.STAGING_SERVER}}/html/artifacts/
+        target: /var/www/${{secrets.STAGING_SERVER}}/html/artifacts
         host: ${{secrets.STAGING_SERVER}}
         port: 22
         username: ${{ secrets.STAGING_USER }}
@@ -68,6 +68,7 @@ jobs:
           rm -rf /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}/storage
           mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/{app,public,framework,logs}
           mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/framework/{cache,sessions,testing,views}
+          chmod -R 0775 /var/www/${{secrets.STAGING_SERVER}}/html/storage
 
 
     
