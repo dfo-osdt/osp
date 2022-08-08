@@ -70,5 +70,24 @@ jobs:
           mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/framework/{cache,sessions,testing,views}
           chmod -R 0775 /var/www/${{secrets.STAGING_SERVER}}/html/storage
 
+  run-before-hooks:
+    runs-on: ubuntu-20.04
+    needs: prepare-release-on-server
+    steps:
+      - name: Run before hooks
+        uses: appleboy/ssh-action@master
+        env:
+          RELEASE_PATH: /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
+          ACTIVE_RELEASE_PATH: /var/www/${{secrets.STAGING_SERVER}}/html/current
+          STORAGE_PATH: /var/www/${{secrets.STAGING_SERVER}}/html/storage
+          BASE_PATH: /var/www/${{secrets.STAGING_SERVER}}/html
+        with:
+          host: ${{secrets.STAGING_SERVER}}
+          port: 22
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
+            ln -s -n -f ${{RELEASE_PATH}} ${{ACTIVE_RELEASE_PATH}}
 
     
