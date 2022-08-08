@@ -12,5 +12,6 @@ jobs:
         digitaloceanToken: ${{ secrets.DO_TOKEN }}
         firewallName: web-firewall
         actionToDo: "add"
-        port: 2600
+        protocol: "tcp"
+        port: 22
         dryRun: false
