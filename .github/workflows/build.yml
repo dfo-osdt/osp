@@ -1,0 +1,41 @@
+# reusable workflow for build app
+name: build
+
+on: 
+  workflow_call:
+  
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: pnpm
+      uses: pnpm/action-setup@v2.2.2
+      with:
+        version: 7
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: "18.x"
+        cache: 'pnpm'
+    
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Build
+      run: pnpm run build
+
+    - name: Create deployment artifact
+      env:
+        GITHUB_SHA: ${{github.sha}}
+      run: tar -czf osp_"${GITHUB_SHA}".tar.gz --exclude=".git" --exclude="node_modules" .
+
+    - name: Store artifact for distribution
+      uses: actions/artifact@v2
+      with:
+        name: app-build
+        path: osp_"${GITHUB_SHA}".tar.gz
+
