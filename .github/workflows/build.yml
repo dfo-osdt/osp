@@ -70,11 +70,11 @@ jobs:
           mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/framework/{cache,sessions,testing,views}
           chmod -R 0775 /var/www/${{secrets.STAGING_SERVER}}/html/storage
 
-  run-before-hooks:
+  run-deploy-hooks:
     runs-on: ubuntu-20.04
     needs: prepare-release-on-server
     steps:
-      - name: Run before hooks
+      - name: Run deploy hooks
         uses: appleboy/ssh-action@master
         env:
           RELEASE_PATH: /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
