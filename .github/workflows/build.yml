@@ -91,6 +91,9 @@ jobs:
             cd /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
+            composer install --no-dev --optimize-autoloader --no-scripts --no-suggest --no-interaction
+            php artisan config:cache
+            php artisan migrate --force
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
      
 
