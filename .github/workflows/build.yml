@@ -46,7 +46,7 @@ jobs:
         name: app-build
         path: osp_${{github.sha}}.tar.gz
     - name: Doorkeeper open
-      uses: patoroco/doorkeeper-open@master
+      uses: patoroco/doorkeeper@master
       with:
         digitaloceanToken: ${{ secrets.DO_TOKEN }}
         firewallName: web-firewall
