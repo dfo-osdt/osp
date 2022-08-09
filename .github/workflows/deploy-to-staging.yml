@@ -2,7 +2,11 @@
 # Inspiration: https://philo.dev/how-to-use-github-actions-build-matrix-to-deploy-artifacts-to-multiple-servers/
 name: deploy
 
-on: workflow_dispatch
+on: 
+  workflow_run:
+    workflows: ["run-tests"]
+    types:
+      - completed
   
 jobs:
   build-release:
