@@ -63,12 +63,12 @@ jobs:
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
           mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
-          tar -xzf /var/www/${{secrets.STAGING_SERVER}}/html/artifacts/osp_${{github.sha}}.tar.gz/osp_${{github.sha}}.tar.gz -C /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
-          
+          tar -xzf /var/www/${{secrets.STAGING_SERVER}}/html/artifacts/osp_${{github.sha}}.tar.gz/osp_${{github.sha}}.tar.gz -C /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}        
           rm -rf /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}/storage
-          mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/{app,public,framework,logs}
-          mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/framework/{cache,sessions,testing,views}
-          chmod -R 0775 /var/www/${{secrets.STAGING_SERVER}}/html/storage
+
+# mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/{app,public,framework,logs}
+# mkdir -p /var/www/${{secrets.STAGING_SERVER}}/html/storage/framework/{cache,sessions,testing,views}
+# chmod -R 0775 /var/www/${{secrets.STAGING_SERVER}}/html/storage
 
   run-deploy-hooks:
     runs-on: ubuntu-20.04
@@ -95,6 +95,7 @@ jobs:
             php artisan config:cache
             php artisan migrate --force
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
+            sudo systemctl reload php8.1-fpm.service
      
 
     
