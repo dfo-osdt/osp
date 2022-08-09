@@ -16,6 +16,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         login: sanctumLogin,
         logout: sanctumLogout,
     } = useSanctum();
+    const localeStore = useLocaleStore();
 
     const user: Ref<User | null> = ref(null);
     isLoggedIn(); // check with backend - is our session still valid?
@@ -58,6 +59,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
             email,
             password,
             remember,
+            locale: localeStore.locale,
         };
 
         await sanctumLogin(sanctumUser)

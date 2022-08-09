@@ -1,5 +1,6 @@
 {
   "common": {
-    "login": "Connexion"
+    "login": "Connexion",
+    "app-name": "Portail scientifique ouvert"
   }
 }

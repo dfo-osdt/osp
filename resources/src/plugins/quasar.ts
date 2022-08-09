@@ -9,6 +9,10 @@ import '@quasar/extras/material-icons/material-icons.css';
 // Import Quasar css
 import 'quasar/src/css/index.sass';
 
+export const langs = import.meta.glob(
+    '../../../node_modules/quasar/lang/(fr|en-US).mjs'
+);
+
 export const installQuasar = (app: App<Element>) => {
     app.use(Quasar, {
         plugins: {

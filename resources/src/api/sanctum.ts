@@ -4,6 +4,7 @@ export interface SanctumUser {
     email: string;
     password: string;
     remember?: boolean;
+    locale?: string;
 }
 
 export const useSanctum = () => {

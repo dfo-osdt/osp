@@ -64,15 +64,25 @@
                     </q-list>
                 </q-menu>
             </q-btn>
-            <q-btn label="FR" flat round class="q-mx-xs"></q-btn>
+            <q-btn
+                :label="localeStore.otherLocale"
+                flat
+                round
+                class="q-mx-xs"
+                @click="localeStore.toggleLocale()"
+            ></q-btn>
         </q-toolbar>
     </q-header>
 </template>
 
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
+
 const emit = defineEmits(['toggleLeftDrawer']);
 const authStore = useAuthStore();
 const { t } = useI18n();
+const $q = useQuasar();
+const localeStore = useLocaleStore();
 
 function toggleLeftDrawer() {
     emit('toggleLeftDrawer');
