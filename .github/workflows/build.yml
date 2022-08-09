@@ -98,8 +98,8 @@ jobs:
             php artisan migrate --force
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo systemctl reload php8.1-fpm.service
-            cd $RELEASE_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
-            cd $ARTIFACTS_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
+# cd $RELEASE_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
+# cd $ARTIFACTS_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
 
      
 
