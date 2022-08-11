@@ -43,7 +43,7 @@ jobs:
 
   prepare-release-on-server:
     runs-on: ubuntu-20.04
-    needs: build
+    needs: build-release
     steps:
     - name: Get artifact from previous step
       uses: actions/download-artifact@v3
