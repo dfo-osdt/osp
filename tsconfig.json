@@ -17,6 +17,7 @@
     "types": [
       "vite/client",
       "vue/ref-macros",
+      "@intlify/vite-plugin-vue-i18n/client"
     ],
     "paths": {
       "@/*": ["resources/src/*"]

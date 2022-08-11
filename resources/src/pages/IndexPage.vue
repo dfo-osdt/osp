@@ -10,7 +10,7 @@
                         class="col-12 col-md-6 q-mt-xl"
                         :class="$q.screen.lt.lg ? 'text-center' : ''"
                     >
-                        <div class="text-h2">Science is amazing,</div>
+                        <div class="text-h2">Science is awesome,</div>
                         <div class="text-h1 text-weight-medium align-end">
                             Help it <span class="text-teal-5">grow</span>.
                         </div>
@@ -21,15 +21,15 @@
                             <q-btn
                                 size="lg"
                                 color="teal-5"
-                                label="Get Started"
-                                to="/register"
+                                :label="$t('common.login')"
+                                :to="{ name: 'login' }"
                             />
                             <q-btn
                                 size="lg"
-                                class="q-ml-lg"
+                                class="q-ml-md"
                                 outline
-                                label="Login"
-                                to="/login"
+                                :label="$t('common.register')"
+                                to="/register"
                             />
                         </div>
                     </div>

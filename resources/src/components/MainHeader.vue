@@ -1,5 +1,5 @@
 <template>
-    <q-header bordered class="q-py-sm bg-white text-primary">
+    <q-header bordered class="q-py-sm bg-white text-accent">
         <q-toolbar>
             <q-btn
                 v-if="authStore.isAuthenticated"
@@ -15,7 +15,7 @@
                 <q-img src="/assets/logo.svg" width="40px"></q-img>
             </router-link>
             <q-toolbar-title class="q-mt-sm">{{
-                t('common.app-name')
+                $t('common.app-name')
             }}</q-toolbar-title>
             <!-- login button -->
             <q-btn
@@ -76,14 +76,12 @@
 </template>
 
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
-
-const emit = defineEmits(['toggleLeftDrawer']);
+// stores
 const authStore = useAuthStore();
-const { t } = useI18n();
-const $q = useQuasar();
 const localeStore = useLocaleStore();
 
+// toggle the left drawer
+const emit = defineEmits(['toggleLeftDrawer']);
 function toggleLeftDrawer() {
     emit('toggleLeftDrawer');
 }

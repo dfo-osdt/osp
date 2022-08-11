@@ -1,6 +1,7 @@
 {
   "common": {
     "login": "Connexion",
-    "app-name": "Portail scientifique ouvert"
+    "app-name": "Portail de la science ouverte",
+    "register": "S'inscrire"
   }
 }

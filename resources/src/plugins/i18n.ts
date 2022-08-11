@@ -2,15 +2,11 @@ import { createI18n } from 'vue-i18n';
 import { App } from 'vue';
 import { useStorage } from '@vueuse/core';
 
-const messages = Object.fromEntries(
-    Object.entries(
-        import.meta.glob<{ default: any }>('../locales/*.json', {
-            eager: true,
-        })
-    ).map(([key, value]) => {
-        return [key.slice(11, -5), value.default];
-    })
-);
+/*
+ * All i18n resources specified in the plugin `include` option can be loaded
+ * at once using the import syntax
+ */
+import messages from '@intlify/vite-plugin-vue-i18n/messages';
 
 // if it's the users' first visit, set the locale to the one they have set in their browser
 const browserLocale = navigator.language.split('-')[0];
@@ -25,6 +21,8 @@ const locale = useStorage('locale', defaultLocale, localStorage, {
 
 export const i18n = createI18n({
     legacy: false,
+    // inject the locale functions into every component
+    globalInjection: true,
     locale: locale.value,
     messages,
 });

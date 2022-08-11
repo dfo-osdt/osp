@@ -1,6 +1,7 @@
 {
   "common": {
     "login": "Login",
-    "app-name": "Open Science Portal"
+    "app-name": "Open Science Portal",
+    "register": "Register"
   }
 }
