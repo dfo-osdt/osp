@@ -26,7 +26,7 @@
                 label="Login"
                 aria-label="Login"
                 padding="xs md"
-                @click="$router.push('/login')"
+                @click="$router.push({ name: 'login' })"
             ></q-btn>
             <!-- drop down menu with logout, profile, and dashboard -->
             <q-btn
