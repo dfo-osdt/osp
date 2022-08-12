@@ -2,16 +2,17 @@
 # Inspiration: https://philo.dev/how-to-use-github-actions-build-matrix-to-deploy-artifacts-to-multiple-servers/
 name: deploy
 
+
+# only run this workflow if a PR or merge on master and run-test completed successfully
 on: 
   workflow_run:
-    workflows: ["run-tests"]
-    types:
-      - completed
+    workflows: [run-tests]
+    types: [completed]
   
 jobs:
   build-release:
     runs-on: ubuntu-20.04
-  
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
