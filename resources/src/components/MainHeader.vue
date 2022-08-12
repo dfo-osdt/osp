@@ -14,7 +14,7 @@
             <router-link to="/">
                 <q-img src="/assets/logo.svg" width="40px"></q-img>
             </router-link>
-            <q-toolbar-title class="q-mt-sm">{{
+            <q-toolbar-title class="q-mt-sm text-black">{{
                 $t('common.app-name')
             }}</q-toolbar-title>
             <!-- login button -->
@@ -33,10 +33,12 @@
                 v-if="authStore.isAuthenticated"
                 round
                 color="accent"
-                label="VA"
+                :label="authStore.user?.initials"
             >
-                <q-menu>
+                <q-menu :offset="[0,10]">
                     <q-list>
+                        <q-item-label header>{{authStore.user?.fullName}}</q-item-label>
+                        <q-separator></q-separator>
                         <q-item v-ripple to="/profile" clickable>
                             <q-item-section>
                                 <q-item-label>Profile</q-item-label>
@@ -76,6 +78,7 @@
 </template>
 
 <script setup lang="ts">
+
 // stores
 const authStore = useAuthStore();
 const localeStore = useLocaleStore();

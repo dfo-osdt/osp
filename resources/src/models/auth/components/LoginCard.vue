@@ -89,7 +89,7 @@ async function login() {
     loading.value = true;
     await authLogin(email.value, password.value, remember.value)
         .then(() => {
-            router.push('/dashboard');
+            router.push({ name: 'dashboard' });
         })
         .catch((err) => {
             errorMessage.value = extractErrorMessages(err);

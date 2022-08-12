@@ -2,7 +2,8 @@ import { createApp } from 'vue';
 import { installQuasar } from './plugins/quasar';
 import { installI18n } from './plugins/i18n';
 import { installPinia } from './plugins/pinia';
-import { installRouter } from './plugins/router';
+import { installRouter, Router } from './plugins/router';
+import { useAuthStore } from './store/AuthStore';
 
 import App from './App.vue';
 
@@ -13,5 +14,27 @@ installI18n(myApp);
 installPinia(myApp);
 installRouter(myApp);
 
-// Assumes you have a <div id="app"></div> in your index.html
+
+// Global navigation guard
+const authStore = useAuthStore();
+Router.beforeEach((to, from, next) => {
+    
+    // check if pages requires auth
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+
+        if(authStore.isAuthenticated){
+            next();
+            return;
+        }else{
+            // redirect to login page
+            next({
+                name: 'login',
+                query: { redirect: to.fullPath },
+            });
+            return;
+        }
+    }
+    next();
+});
+
 myApp.mount('#app');

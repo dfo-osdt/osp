@@ -4,10 +4,26 @@ import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
 import { Notify } from 'quasar';
 
-interface User {
+class User {
     id: number;
     email: string;
-    name: string;
+    first_name: string;
+    last_name: string;
+
+    constructor(id: number, email: string, first_name: string, last_name: string) {
+        this.id = id;
+        this.email = email;
+        this.first_name = first_name;
+        this.last_name = last_name;
+    }
+
+    get fullName(): string {
+        return `${this.first_name} ${this.last_name}`;
+    }
+
+    get initials(): string {
+        return `${this.first_name.charAt(0)}${this.last_name.charAt(0)}`;
+    }
 }
 
 export const useAuthStore = defineStore('AuthStore', () => {
@@ -18,8 +34,12 @@ export const useAuthStore = defineStore('AuthStore', () => {
     } = useSanctum();
     const localeStore = useLocaleStore();
 
-    const user: Ref<User | null> = ref(null);
+    // initial state
+    const user: Ref<User | null> = useStorage('user', null);
+    let loading = ref(true);
     isLoggedIn(); // check with backend - is our session still valid?
+
+    // computed
     const isAuthenticated = computed(() => user.value !== null);
 
     /**
@@ -30,10 +50,10 @@ export const useAuthStore = defineStore('AuthStore', () => {
      * @returns void
      */
     async function isLoggedIn() {
-        console.log('running is logged in');
+        loading.value = true;
         return await getUser()
             .then((resp) => {
-                user.value = resp.data;
+                user.value = new User(resp.data.id, resp.data.email, resp.data.first_name, resp.data.last_name);
                 return true;
             })
             .catch((err) => {
@@ -41,6 +61,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
                 user.value = null;
                 return false;
             });
+        loading.value = false;
     }
 
     /**
@@ -53,6 +74,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
      */
     async function login(email: string, password: string, remember = false) {
         //is user already authenticated?
+        loading.value = true;
         if (isAuthenticated.value) return false;
 
         const sanctumUser: SanctumUser = {
@@ -62,21 +84,27 @@ export const useAuthStore = defineStore('AuthStore', () => {
             locale: localeStore.locale,
         };
 
+        // login user and get user data
         await sanctumLogin(sanctumUser)
-            .then(() => {
-                isLoggedIn();
+            .then(async () => {
+                await isLoggedIn();
             })
             .catch((err) => {
                 user.value = null;
                 console.log(err);
                 return Promise.reject(err);
             });
+
+        loading.value = false;
     }
 
     /**
      * Logout user
      */
     async function logout() {
+
+        loading.value = true;
+
         await sanctumLogout()
             .then(() => {
                 user.value = null;
@@ -86,13 +114,21 @@ export const useAuthStore = defineStore('AuthStore', () => {
                 });
                 // wait 1 seconds before redirecting to login page
                 setTimeout(() => {
-                    Router.push('/login');
+                    Router.push({ name: 'login' });
                 }, 1000);
             })
             .catch((err) => console.log(err));
+
+        loading.value = false;
     }
 
-    return { user, isAuthenticated, login, logout };
+    return { 
+        user, 
+        isAuthenticated, 
+        login,
+        logout,
+        loading,
+    };
 });
 
 if (import.meta.hot)
