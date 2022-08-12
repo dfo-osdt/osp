@@ -12,7 +12,7 @@ This repo has both the front end and backend code. The front end is a SPA that c
 - [Vue-i18n](https://vue-i18n.intlify.dev/) (app supports en-CA and fr-CA, with vite-plugin-vue-i18n, `globalInjection: true`)
 - [Vue-Router](https://router.vuejs.org/) (SPA routing)
 - [Pinia](https://pinia.vuejs.org/) (State management)
-- [Quasar](https://quasar.dev/) (Vite Plugin falvour - Vue.js framework component library)
+- [Quasar](https://quasar.dev/) (Vite Plugin flavour - Vue.js framework component library)
 
 Some helper libraries of note here:
 - [VueUse](https://vueuse.org/) (Collection of Vue Composition Utilities)
