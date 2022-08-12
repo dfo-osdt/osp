@@ -22,7 +22,10 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-                
+        
+        // request email to lowercase - ensure no duplicate emails
+        $request->merge(['email' => strtolower($request->email)]);
+
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],

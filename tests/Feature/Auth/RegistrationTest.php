@@ -3,7 +3,6 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
 
 test('new users can register', function(){
     $response = $this->post('/register', [
@@ -30,7 +29,8 @@ test('an email is always stored in lowercase',function(){
         'password_confirmation' => 'password',
     ]);
 
-    $user = User::where('email',$email)->first();
+    $user = User::where('email','john.doe@jel.com')->first();
+    // this is there as some DB, e.g.: MySQL, are not case sensitive
     expect($user->email)->toBe('john.doe@jel.com');
 
 });
