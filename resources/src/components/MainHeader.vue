@@ -78,7 +78,6 @@
 </template>
 
 <script setup lang="ts">
-import { au } from 'public/build/assets/main.a2169b10';
 
 // stores
 const authStore = useAuthStore();
