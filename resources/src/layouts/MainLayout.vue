@@ -18,7 +18,7 @@ import MainHeader from '@/components/MainHeader.vue';
 import MainDrawer from '@/components/MainDrawer.vue';
 
 const authStore = useAuthStore();
-const leftDrawerOpen = ref(true);
+const leftDrawerOpen = useStorage('leftDrawerOpen', true);
 
 function toggleLeftDrawer() {
     leftDrawerOpen.value = !leftDrawerOpen.value;

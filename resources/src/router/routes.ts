@@ -1,5 +1,11 @@
 import { RouteRecordRaw } from 'vue-router';
 
+declare module 'vue-router' {
+    interface RouteMeta {
+        requiresAuth?: boolean;
+    }
+}
+
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
@@ -7,13 +13,22 @@ const routes: RouteRecordRaw[] = [
         children: [
             { path: '', component: () => import('@/pages/IndexPage.vue') },
             {
-                path: 'auth/login',
-                name: 'login',
-                component: () => import('@/pages/auth/LoginPage.vue'),
+                path: 'auth',
+                component: () => import('@/layouts/AuthPageLayout.vue'),
+                children: [
+                    { path:  '', redirect: { name: 'login' } },
+                    { 
+                        path: 'login',
+                        component: () => import('@/models/auth/components/LoginCard.vue'),
+                        name: 'login',
+                    },
+                ]
             },
             {
                 path: '/dashboard',
                 component: () => import('@/pages/DashboardPage.vue'),
+                name: 'dashboard',
+                meta: { requiresAuth: true },
             },
         ],
     },
