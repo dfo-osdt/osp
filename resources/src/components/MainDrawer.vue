@@ -18,7 +18,7 @@
                 <q-item-section> Dashboard </q-item-section>
             </q-item>
 
-            <q-item v-ripple clickable>
+            <q-item v-ripple clickable to="/my-manuscripts">
                 <q-item-section avatar>
                     <q-icon name="mdi-file-document-multiple" />
                 </q-item-section>
@@ -26,7 +26,7 @@
                 <q-item-section> My Manuscripts </q-item-section>
             </q-item>
 
-            <q-item v-ripple clickable>
+            <q-item v-ripple clickable to="/my-publications">
                 <q-item-section avatar>
                     <q-icon name="mdi-newspaper-variant-multiple-outline" />
                 </q-item-section>
@@ -34,7 +34,7 @@
                 <q-item-section> My Publications </q-item-section>
             </q-item>
 
-            <q-item v-ripple clickable>
+            <q-item v-ripple clickable to="/my-reviews">
                 <q-item-section avatar>
                     <q-icon name="mdi-file-sign" />
                 </q-item-section>
@@ -45,7 +45,7 @@
             <q-separator></q-separator>
             <q-item-label header>Explore</q-item-label>
 
-            <q-item v-ripple clickable>
+            <q-item v-ripple clickable to="/publications">
                 <q-item-section avatar>
                     <q-icon name="mdi-newspaper-variant-multiple-outline" />
                 </q-item-section>
@@ -53,7 +53,7 @@
                 <q-item-section> Publications </q-item-section>
             </q-item>
 
-            <q-item v-ripple clickable>
+            <q-item v-ripple clickable to="/authors">
                 <q-item-section avatar>
                     <q-icon name="mdi-account-group-outline" />
                 </q-item-section>
@@ -61,7 +61,7 @@
                 <q-item-section> Authors </q-item-section>
             </q-item>
 
-            <q-item v-ripple clickable>
+            <q-item v-ripple clickable to="/sensitive-issues">
                 <q-item-section avatar>
                     <q-icon name="mdi-archive-star-outline" />
                 </q-item-section>
