@@ -180,7 +180,7 @@
 import MetricCard from '@/components/MetricCard.vue';
 import ContentCard from '../components/ContentCard.vue';
 
-const tab = ref('manuscripts');
+const tab = useStorage('dashboard-recent-tab', 'manuscripts');
 
 const data = [
     {
