@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
+import UnderConstruction from '@/pages/UnderConstructionPage.vue';
 
 declare module 'vue-router' {
     interface RouteMeta {
@@ -29,6 +30,41 @@ const routes: RouteRecordRaw[] = [
                 path: '/dashboard',
                 component: () => import('@/pages/DashboardPage.vue'),
                 name: 'dashboard',
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/profile',
+                component: UnderConstruction,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/my-manuscripts',
+                component: UnderConstruction,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/my-publications',
+                component: UnderConstruction,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/my-reviews',
+                component: UnderConstruction,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/publications',
+                component: UnderConstruction,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/authors',
+                component: UnderConstruction,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: '/sensitive-issues',
+                component: UnderConstruction,
                 meta: { requiresAuth: true },
             },
         ],

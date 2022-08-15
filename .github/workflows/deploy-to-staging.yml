@@ -95,7 +95,7 @@ jobs:
             ln -s -f $STORAGE_PATH $RELEASE_PATH
             composer install --no-dev --optimize-autoloader --no-interaction
             php artisan config:cache
-            php artisan migrate --force
+            php artisan migrate:fresh --seed --force
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo systemctl reload php8.1-fpm.service
   

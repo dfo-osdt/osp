@@ -1,31 +1,28 @@
 <template>
-    <div
-        class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center"
-    >
-        <div>
-            <div style="font-size: 30vh">404</div>
-
-            <div class="text-h2" style="opacity: 0.4">
-                Oops. Nothing here...
-            </div>
-
-            <q-btn
-                class="q-mt-xl"
-                color="white"
-                text-color="blue"
-                unelevated
-                to="/"
-                label="Go Home"
-                no-caps
+    <div class="fullscreen flex flex-center full-height column">
+        <div class="q-mb-md">
+            <q-img
+                src="/assets/splash_images/undraw_startled_-8-p0r.svg"
+                width="450px"
             />
+        </div>
+        <div class="text-h1 text-primary text-weight-light">404</div>
+        <div class="text-subtitle1 text-primary">Page Not Found</div>
+        <div class="q-mt-lg">
+            <q-btn
+                round
+                outline
+                color="primary"
+                :to="authStore.isAuthenticated ? '/dashboard' : '/'"
+            >
+                <q-icon name="mdi-home" />
+            </q-btn>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-    name: 'ErrorNotFound',
-});
+<script setup lang="ts">
+const authStore = useAuthStore();
 </script>
+
+<style scoped></style>

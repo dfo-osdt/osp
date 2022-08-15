@@ -15,6 +15,7 @@
                             Help it <span class="text-teal-5">grow</span>.
                         </div>
                         <div
+                            v-if="!authStore.isAuthenticated"
                             class="row q-mt-xl"
                             :class="$q.screen.lt.lg ? 'justify-center' : ''"
                         >
@@ -42,4 +43,5 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 const $q = useQuasar();
+const authStore = useAuthStore();
 </script>
