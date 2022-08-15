@@ -10,16 +10,12 @@
                     <div class="col-12">
                         <router-view />
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </q-page>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

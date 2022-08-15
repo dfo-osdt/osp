@@ -10,7 +10,12 @@ class User {
     first_name: string;
     last_name: string;
 
-    constructor(id: number, email: string, first_name: string, last_name: string) {
+    constructor(
+        id: number,
+        email: string,
+        first_name: string,
+        last_name: string
+    ) {
         this.id = id;
         this.email = email;
         this.first_name = first_name;
@@ -36,7 +41,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
 
     // initial state
     const user: Ref<User | null> = useStorage('user', null);
-    let loading = ref(true);
+    const loading = ref(true);
     isLoggedIn(); // check with backend - is our session still valid?
 
     // computed
@@ -53,7 +58,12 @@ export const useAuthStore = defineStore('AuthStore', () => {
         loading.value = true;
         return await getUser()
             .then((resp) => {
-                user.value = new User(resp.data.id, resp.data.email, resp.data.first_name, resp.data.last_name);
+                user.value = new User(
+                    resp.data.id,
+                    resp.data.email,
+                    resp.data.first_name,
+                    resp.data.last_name
+                );
                 return true;
             })
             .catch((err) => {
@@ -102,7 +112,6 @@ export const useAuthStore = defineStore('AuthStore', () => {
      * Logout user
      */
     async function logout() {
-
         loading.value = true;
 
         await sanctumLogout()
@@ -122,9 +131,9 @@ export const useAuthStore = defineStore('AuthStore', () => {
         loading.value = false;
     }
 
-    return { 
-        user, 
-        isAuthenticated, 
+    return {
+        user,
+        isAuthenticated,
         login,
         logout,
         loading,
