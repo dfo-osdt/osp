@@ -3,7 +3,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "lint": "eslint --ext .ts,.vue src"
+        "lint": "eslint --ext .ts,.vue resources/src"
     },
     "devDependencies": {
         "@intlify/vite-plugin-vue-i18n": "^6.0.1",

@@ -1,4 +1,4 @@
-import { Axios, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
 /**
  * Laravel JSON API error response.

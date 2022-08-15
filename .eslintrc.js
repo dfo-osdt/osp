@@ -16,4 +16,5 @@ module.exports = {
     rules: {
         'prettier/prettier': ['warn', { singleQuote: true }],
     },
+    ignorePatterns: ['auto-imports.d.ts'],
 };

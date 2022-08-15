@@ -35,9 +35,11 @@
                 color="accent"
                 :label="authStore.user?.initials"
             >
-                <q-menu :offset="[0,10]">
+                <q-menu :offset="[0, 10]">
                     <q-list>
-                        <q-item-label header>{{authStore.user?.fullName}}</q-item-label>
+                        <q-item-label header>{{
+                            authStore.user?.fullName
+                        }}</q-item-label>
                         <q-separator></q-separator>
                         <q-item v-ripple to="/profile" clickable>
                             <q-item-section>
@@ -78,7 +80,6 @@
 </template>
 
 <script setup lang="ts">
-
 // stores
 const authStore = useAuthStore();
 const localeStore = useLocaleStore();

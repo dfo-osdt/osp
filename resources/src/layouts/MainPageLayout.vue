@@ -1,9 +1,7 @@
 <template>
     <q-page>
         <q-toolbar>
-            <q-toolbar-title>
-                Test
-            </q-toolbar-title>
+            <q-toolbar-title> Test </q-toolbar-title>
         </q-toolbar>
         <div>
             <router-view></router-view>
@@ -11,10 +9,6 @@
     </q-page>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -14,18 +14,15 @@ installI18n(myApp);
 installPinia(myApp);
 installRouter(myApp);
 
-
 // Global navigation guard
 const authStore = useAuthStore();
 Router.beforeEach((to, from, next) => {
-    
     // check if pages requires auth
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-
-        if(authStore.isAuthenticated){
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        if (authStore.isAuthenticated) {
             next();
             return;
-        }else{
+        } else {
             // redirect to login page
             next({
                 name: 'login',
