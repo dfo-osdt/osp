@@ -10,6 +10,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "spatie/laravel-data": "^2.0",
         "spatie/laravel-ray": "^1.30"
     },
     "require-dev": {
