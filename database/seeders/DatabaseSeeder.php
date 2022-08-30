@@ -13,12 +13,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
+    
         \App\Models\User::factory()->create([
             'first_name' => 'John',
             'last_name' => 'Doe',
             'email' => 'test@test.com',
+        ]);
+
+        $this->call([
+            RegionSeeder::class,
         ]);
     }
 }
