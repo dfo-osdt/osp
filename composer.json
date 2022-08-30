@@ -10,10 +10,11 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "spatie/laravel-data": "^2.0",
-        "spatie/laravel-ray": "^1.30"
+        "spatie/laravel-ray": "^1.30",
+        "spatie/simple-excel": "^2.1"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.12",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.11",
         "laravel/pint": "^1.0",
