@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Http\Resources\ManuscriptRecordResource;
 use App\Models\ManuscriptRecord;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
@@ -41,7 +42,7 @@ class ManuscriptRecordController extends Controller
         $manuscript->user_id = auth()->id();
         $manuscript->save();
 
-        return $manuscript;
+        return new ManuscriptRecordResource($manuscript);
     }
 
     /**

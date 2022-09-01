@@ -26,7 +26,8 @@ test('an authenticated user can create a new manuscript', function () {
 
     $response = $this->actingAs($user)->postJson('/api/manuscripts', $submit_data)->assertCreated();
 
-    expect($response->json())->toMatchArray($manuscript_data->toArray());
-    expect(ManuscriptRecord::find($response->json('id')))->toMatchArray($manuscript_data->toArray());
+    ray($response->json());
+    expect($response->json('data'))->toMatchArray($manuscript_data->toArray());
+    expect(ManuscriptRecord::find($response->json('data.id')))->toMatchArray($manuscript_data->toArray());
 
 });
