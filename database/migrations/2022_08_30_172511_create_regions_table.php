@@ -20,5 +20,4 @@ return new class extends Migration
             $table->string('name_fr');
         });
     }
-
 };

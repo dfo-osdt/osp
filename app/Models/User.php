@@ -49,14 +49,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Make sure that the email is always stored as lowercase to prevent duplicates.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function email(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $value,
-            set: fn($value) => strtolower($value),
+            get: fn ($value) => $value,
+            set: fn ($value) => strtolower($value),
         );
     }
 }

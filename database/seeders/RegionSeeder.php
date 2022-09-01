@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Region;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\SimpleExcel\SimpleExcelReader;
 

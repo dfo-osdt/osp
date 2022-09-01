@@ -1,10 +1,8 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-
-test('new users can register', function(){
+test('new users can register', function () {
     $response = $this->post('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
@@ -13,12 +11,9 @@ test('new users can register', function(){
         'password_confirmation' => 'password',
     ]);
     $response->assertNoContent();
-
 });
 
-
-test('an email is always stored in lowercase',function(){
-
+test('an email is always stored in lowercase', function () {
     $email = 'John.Doe@jel.com';
 
     $response = $this->post('/register', [
@@ -31,11 +26,9 @@ test('an email is always stored in lowercase',function(){
 
     $user = User::latest()->first();
     expect($user->email)->toBe('john.doe@jel.com');
-
 });
 
-test('a user cannot register twice with same email',function(){
-    
+test('a user cannot register twice with same email', function () {
     $email = 'John.Doe@jel.com';
 
     $response = $this->postJson('/register', [
@@ -58,5 +51,4 @@ test('a user cannot register twice with same email',function(){
 
     expect($response->status())->toBe(422);
     expect($response->json('errors.email.0'))->toBe('The email has already been taken.');
-
 });

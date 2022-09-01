@@ -4,7 +4,6 @@ use App\Models\Region;
 use App\Models\User;
 
 test('authenticated user can get regions', function () {
-
     $this->seed();
 
     $regions = Region::all();
@@ -18,7 +17,5 @@ test('authenticated user can get regions', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->getJson('/api/regions')->assertStatus(200);
-    ray($response->content());
-    $response->assertJsonCount(8,'data');
-
+    $response->assertJsonCount(8, 'data');
 });
