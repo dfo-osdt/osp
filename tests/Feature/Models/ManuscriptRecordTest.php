@@ -2,6 +2,7 @@
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Models\ManuscriptRecord;
 use App\Models\User;
 
 test('an authenticated user can create a new manuscript', function () {
@@ -9,7 +10,7 @@ test('an authenticated user can create a new manuscript', function () {
 
     $user = User::factory()->create();
 
-    // expected data
+    // expected data once created
     $manuscript_data = collect([
         'type' => ManuscriptRecordType::PRIMARY->value,
         'status' => ManuscriptRecordStatus::DRAFT->value,
@@ -18,6 +19,7 @@ test('an authenticated user can create a new manuscript', function () {
         'user_id' => $user->id,
     ]);
 
+    // data to be sent to the api
     $submit_data = $manuscript_data->only(['title', 'region_id', 'type'])->toArray();
 
     $this->postJson('/api/manuscripts', $submit_data)->assertUnauthorized();
@@ -25,5 +27,6 @@ test('an authenticated user can create a new manuscript', function () {
     $response = $this->actingAs($user)->postJson('/api/manuscripts', $submit_data)->assertCreated();
 
     expect($response->json())->toMatchArray($manuscript_data->toArray());
+    expect(ManuscriptRecord::find($response->json('id')))->toMatchArray($manuscript_data->toArray());
 
 });
