@@ -76,24 +76,44 @@
                     </q-step>
                     <q-step
                         :name="2"
-                        title="Manuscript Title"
+                        title="Manuscript Details"
                         icon="mdi-file-document-edit-outline"
                         :done="step > 2"
+                        :error="!manuscriptDetailFormValid"
                     >
-                        <div class="q-mb-md">
-                            What is the working title of your manuscript?
-                        </div>
-                        <q-input
-                            v-model="title"
-                            outlined
-                            label="Title"
-                            placeholder="Enter the title of your manuscript"
-                        />
+                        <q-form ref="manuscriptDetailForm">
+                            <div class="q-mb-md">
+                                What is the working title of your manuscript?
+                            </div>
+                            <q-input
+                                v-model="title"
+                                outlined
+                                label="Title"
+                                placeholder="Enter the title of your manuscript"
+                                :rules="[
+                                    (val) =>
+                                        val.length > 0 || 'Title is required',
+                                ]"
+                            />
+                            <div class="q-my-md">
+                                Please select the lead DFO region responsible
+                                for the review of this manuscript.
+                            </div>
+                            <region-select
+                                v-model="regionId"
+                                outlined
+                                placeholder="Please select the lead region"
+                                :rules="[
+                                (val: number) =>
+                                    val !== null || 'Lead region is required',
+                            ]"
+                            />
+                        </q-form>
                     </q-step>
                     <q-step
                         :name="3"
-                        title="Create a new manuscript record"
-                        icon="mdi-account-outline"
+                        title="Create"
+                        icon="mdi-file-document-check"
                         :done="step > 3"
                     >
                         <div class="q-pa-md">
@@ -110,14 +130,14 @@
                                 color="primary"
                                 :label="step === 3 ? 'Create' : 'Continue'"
                                 class="q-mr-sm"
-                                @click="$refs.stepper.next()"
+                                @click="next()"
                             />
                             <q-btn
                                 v-if="step > 1"
                                 flat
                                 color="primary"
                                 label="Back"
-                                @click="$refs.stepper.previous()"
+                                @click="stepper?.previous()"
                             />
                             <q-btn
                                 v-close-popup
@@ -132,12 +152,45 @@
 </template>
 
 <script setup lang="ts">
-// stepper
-const step = ref(1);
+import RegionSelect from '@/models/Region/components/RegionSelect.vue';
 
-// chosen type
+import { QStepper, QForm } from 'quasar';
+import { Ref } from 'vue';
+
+// stepper
+const stepper: Ref<QStepper | null> = ref(null);
+const step = ref(1);
+const manuscriptDetailForm: Ref<QForm | null> = ref(null);
+const manuscriptDetailFormValid = ref(true);
+
+async function next() {
+    if (step.value === 3) {
+        // create manuscript
+        create();
+        return;
+    }
+    if (step.value === 2) {
+        const valid = await manuscriptDetailForm.value?.validate();
+        manuscriptDetailFormValid.value = valid === undefined ? true : valid;
+        if (!manuscriptDetailFormValid.value) return;
+    }
+    stepper.value?.next();
+}
+
+// information required to create a manuscript record
 const type = ref('primary');
 const title = ref('');
+const regionId: Ref<number | null> = ref(null);
+
+async function create() {
+    console.log('creating the record');
+    const test = {
+        type: type.value,
+        title: title.value,
+        region_id: regionId.value,
+    };
+    console.log(test);
+}
 </script>
 
 <style scoped></style>

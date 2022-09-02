@@ -2,6 +2,7 @@
   "common": {
     "login": "Login",
     "app-name": "Open Science Portal",
-    "register": "Register"
+    "register": "Register",
+    "dfo-region": "DFO Region"
   }
 }

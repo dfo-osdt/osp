@@ -95,12 +95,12 @@
                                 <q-btn
                                     rounded
                                     color="primary"
-                                    @click="showCreateDialog()"
+                                    @click="show = true"
                                 >
                                     Create Manuscript
                                 </q-btn>
                                 <create-manuscript-dialog
-                                    :key="createKey"
+                                    v-if="show"
                                     v-model="show"
                                 />
                             </div>
@@ -183,18 +183,12 @@
 <script setup lang="ts">
 import MetricCard from '@/components/MetricCard.vue';
 import ContentCard from '../components/ContentCard.vue';
-import CreateManuscriptDialog from '@/models/auth/Manuscript/components/CreateManuscriptDialog.vue';
+import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateManuscriptDialog.vue';
 
 const tab = useStorage('dashboard-recent-tab', 'manuscripts');
 
 // create dialog
 const show = ref(false);
-const createKey = ref(0);
-
-function showCreateDialog() {
-    createKey.value++;
-    show.value = true;
-}
 
 const data = [
     {
