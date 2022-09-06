@@ -5,6 +5,7 @@ import { ErrorResponse, extractErrorMessages } from './errors';
 enum StatusCode {
     Unauthorized = 401,
     Forbidden = 403,
+    NotFound = 404,
     TooManyRequests = 429,
     ValidationError = 422,
     InternalServerError = 500,
@@ -123,6 +124,11 @@ class Http {
             case StatusCode.ValidationError: {
                 // Handle ValidationError
                 this.notifyError(errorMessage, 'Validation Error');
+                break;
+            }
+            case StatusCode.NotFound: {
+                // Handle NotFound
+                this.notifyError(errorMessage, 'Resource Not Found');
                 break;
             }
         }

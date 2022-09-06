@@ -14,8 +14,8 @@ test('an authenticated user can create a new manuscript', function () {
     $manuscript_data = collect([
         'type' => ManuscriptRecordType::PRIMARY->value,
         'status' => ManuscriptRecordStatus::DRAFT->value,
-        'title' => "My manuscript working title",
-        'region_id' => rand(1,8),
+        'title' => 'My manuscript working title',
+        'region_id' => rand(1, 8),
         'user_id' => $user->id,
     ]);
 
@@ -29,5 +29,4 @@ test('an authenticated user can create a new manuscript', function () {
     ray($response->json());
     expect($response->json('data'))->toMatchArray($manuscript_data->toArray());
     expect(ManuscriptRecord::find($response->json('data.id')))->toMatchArray($manuscript_data->toArray());
-
 });

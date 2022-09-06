@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
-
     // need to change this...
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -25,8 +24,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/regions', [RegionController::class, 'index']);
 
-    Route::controller(ManuscriptRecordController::class)->group(function(){
-        Route::get('/manuscripts/{id}', 'show');
+    Route::controller(ManuscriptRecordController::class)->group(function () {
+        Route::get('/manuscripts/{manuscriptRecord}', 'show');
         Route::post('/manuscripts', 'store');
     });
 });

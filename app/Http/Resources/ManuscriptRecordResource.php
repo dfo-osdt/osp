@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\ManuscriptRecord;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ManuscriptRecordResource extends JsonResource
@@ -15,7 +14,6 @@ class ManuscriptRecordResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             'data' => parent::toArray($request),
             'can' => [

@@ -8,7 +8,6 @@ namespace App\Enums;
  */
 enum ManuscriptRecordType: string
 {
-    case PRIMARY = "primary";
+    case PRIMARY = 'primary';
     case SECONDARY = 'secondary';
-
 }

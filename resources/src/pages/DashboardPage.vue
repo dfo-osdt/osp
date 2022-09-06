@@ -1,9 +1,5 @@
 <template>
-    <q-page>
-        <q-toolbar class="bg-teal-1">
-            <q-icon name="mdi-view-dashboard" color="primary" size="sm" />
-            <q-toolbar-title> Dashboard </q-toolbar-title>
-        </q-toolbar>
+    <main-page-layout icon="mdi-view-dashboard" title="Dashboard">
         <div class="q-pa-md">
             <div class="row">
                 <div
@@ -177,13 +173,14 @@
                 </content-card>
             </div>
         </div>
-    </q-page>
+    </main-page-layout>
 </template>
 
 <script setup lang="ts">
 import MetricCard from '@/components/MetricCard.vue';
 import ContentCard from '../components/ContentCard.vue';
 import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateManuscriptDialog.vue';
+import MainPageLayout from '@/layouts/MainPageLayout.vue';
 
 const tab = useStorage('dashboard-recent-tab', 'manuscripts');
 

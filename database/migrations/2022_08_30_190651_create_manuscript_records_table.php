@@ -39,7 +39,6 @@ return new class extends Migration
             $table->date('submitted_to_journal_on')->nullable();
             $table->date('accepted_on')->nullable();
             $table->date('withdrawn_on')->nullable();
-
         });
     }
 };

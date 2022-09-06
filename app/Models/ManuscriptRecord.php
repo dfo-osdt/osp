@@ -24,14 +24,13 @@ class ManuscriptRecord extends Model
         'status' => ManuscriptRecordStatus::class,
     ];
 
-
     // Relationships
 
     /**
      * A manuscript has a lead region.
      */
-    public function region(){
+    public function region()
+    {
         return $this->belongsTo('App\Models\Region');
     }
-
 }

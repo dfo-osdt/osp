@@ -21,7 +21,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-
         // request email to lowercase - ensure no duplicate emails
         $request->merge(['email' => strtolower($request->email)]);
 

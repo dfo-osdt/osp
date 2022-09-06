@@ -29,7 +29,6 @@ class ManuscriptRecordController extends Controller
      */
     public function store(Request $request)
     {
-
         // validate that we have a type, title, and region_id
         $validated = $request->validate([
             'title' => 'required|max:255',
@@ -41,6 +40,7 @@ class ManuscriptRecordController extends Controller
         $manuscript->status = ManuscriptRecordStatus::DRAFT;
         $manuscript->user_id = auth()->id();
         $manuscript->save();
+        $manuscript->refresh();
 
         return new ManuscriptRecordResource($manuscript);
     }
@@ -53,7 +53,11 @@ class ManuscriptRecordController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord)
     {
-        //
+        ray($manuscriptRecord);
+
+        auth()->user()->can('view', $manuscriptRecord);
+
+        return new ManuscriptRecordResource($manuscriptRecord);
     }
 
     /**
