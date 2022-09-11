@@ -44,53 +44,67 @@
                     </template>
 
                     <q-tab-panels v-model="tab" animated>
-                        <q-tab-panel name="manuscripts" class="bg-grey-1">
-                            <div class="flex row justify-center">
-                                <div
-                                    class="col-12 col-lg-10 flex column text-center"
-                                >
-                                    <div>
-                                        <q-img
-                                            src="/assets/splash_images/undraw_road_sign_re_3kc3.svg"
-                                            width="250px"
-                                        />
-                                    </div>
+                        <q-tab-panel
+                            name="manuscripts"
+                            class="bg-grey-1 q-pa-none"
+                        >
+                            <template v-if="manuscriptStore.empty">
+                                <div class="flex row justify-center">
                                     <div
-                                        class="text-h5 text-weight-light text-accent q-mb-sm"
+                                        class="col-12 col-lg-10 flex column text-center"
                                     >
-                                        Create your first manuscript record
-                                    </div>
-                                    <div
-                                        class="text-body1 text-grey-8 text-left"
-                                    >
-                                        <p>
-                                            Need to publish a primary or
-                                            secondary publication? You've come
-                                            to the right place. Create a
-                                            manuscript record and start the
-                                            process of publishing your
-                                            manuscript following the national
-                                            policy for science publications.
-                                        </p>
+                                        <div>
+                                            <q-img
+                                                src="/assets/splash_images/undraw_road_sign_re_3kc3.svg"
+                                                width="250px"
+                                            />
+                                        </div>
+                                        <div
+                                            class="text-h5 text-weight-light text-accent q-mb-sm"
+                                        >
+                                            Create your first manuscript record
+                                        </div>
+                                        <div
+                                            class="text-body1 text-grey-8 text-left"
+                                        >
+                                            <p>
+                                                Need to publish a primary or
+                                                secondary publication? You've
+                                                come to the right place. Create
+                                                a manuscript record and start
+                                                the process of publishing your
+                                                manuscript following the
+                                                national policy for science
+                                                publications.
+                                            </p>
 
-                                        <p>
-                                            The national policy ensures a
-                                            consistent treatment of scientific
-                                            publications across DFO regions,
-                                            recognition of the scientific impact
-                                            of the Department through the use of
-                                            a standard affiliation, and
-                                            effective tracking of our
-                                            publications to better integrate
-                                            science into departmental processes.
-                                        </p>
+                                            <p>
+                                                The national policy ensures a
+                                                consistent treatment of
+                                                scientific publications across
+                                                DFO regions, recognition of the
+                                                scientific impact of the
+                                                Department through the use of a
+                                                standard affiliation, and
+                                                effective tracking of our
+                                                publications to better integrate
+                                                science into departmental
+                                                processes.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </template>
+                            <ManuscriptList
+                                v-if="!manuscriptStore.empty"
+                                class="q-mb-lg"
+                                :manuscripts="manuscriptStore.recentManuscripts"
+                            />
                             <div class="text-center">
                                 <q-btn
                                     rounded
                                     color="primary"
+                                    class="q-mb-md"
                                     @click="show = true"
                                 >
                                     Create Manuscript
@@ -181,8 +195,15 @@ import MetricCard from '@/components/MetricCard.vue';
 import ContentCard from '../components/ContentCard.vue';
 import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateManuscriptDialog.vue';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
+import ManuscriptList from '@/models/ManuscriptRecord/components/ManuscriptList.vue';
 
+const manuscriptStore = useManuscriptStore();
 const tab = useStorage('dashboard-recent-tab', 'manuscripts');
+
+// load the latest manuscripts
+onMounted(() => {
+    manuscriptStore.getMyManuscripts();
+});
 
 // create dialog
 const show = ref(false);

@@ -69,10 +69,14 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/manuscript/:id',
-                component: () => import('@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue'),
+                component: () =>
+                    import(
+                        '@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue'
+                    ),
                 meta: { requiresAuth: true },
-                props: route => ({ id: Number(route.params.id) }),
-            }
+                props: (route) => ({ id: Number(route.params.id) }),
+                name: 'manuscript',
+            },
         ],
     },
     {

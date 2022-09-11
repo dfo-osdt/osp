@@ -156,7 +156,14 @@ import RegionSelect from '@/models/Region/components/RegionSelect.vue';
 
 import { QStepper, QForm } from 'quasar';
 import { Ref } from 'vue';
-import { BaseManuscriptRecord, ManuscriptRecordService, ManuscriptRecordType } from '../ManuscriptRecord';
+import {
+    BaseManuscriptRecord,
+    ManuscriptRecordService,
+    ManuscriptRecordType,
+} from '../ManuscriptRecord';
+
+// router
+const router = useRouter();
 
 // stepper
 const stepper: Ref<QStepper | null> = ref(null);
@@ -195,12 +202,17 @@ async function create() {
     console.log(record);
 
     // create the manuscript record
-    await ManuscriptRecordService.create(record).then((response) => {
-        console.log(response);
-    }).catch((error) => {
-        console.log(error);
-    });
-
+    await ManuscriptRecordService.create(record)
+        .then((response) => {
+            console.log(response);
+            router.push({
+                name: 'manuscript',
+                params: { id: response.data.id },
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 </script>
 

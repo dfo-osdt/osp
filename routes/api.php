@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\UserManuscriptRecordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +23,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
-    Route::get('/regions', [RegionController::class, 'index']);
-
     Route::controller(ManuscriptRecordController::class)->group(function () {
         Route::get('/manuscripts/{manuscriptRecord}', 'show');
         Route::post('/manuscripts', 'store');
     });
+
+    // routes for user specific resources
+    Route::prefix('my')->group(function () {
+        Route::get('/manuscripts', [UserManuscriptRecordController::class, 'index']);
+    });
+
+    Route::get('/regions', [RegionController::class, 'index']);
 });

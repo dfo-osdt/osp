@@ -30,3 +30,15 @@ test('an authenticated user can create a new manuscript', function () {
     expect($response->json('data'))->toMatchArray($manuscript_data->toArray());
     expect(ManuscriptRecord::find($response->json('data.id')))->toMatchArray($manuscript_data->toArray());
 });
+
+test('an authenticated users can get a list of their manuscripts', function () {
+    $this->seed();
+
+    $manuscripts = ManuscriptRecord::factory()->count(5)->create();
+    $user = User::factory()->create();
+    $manuscripts = ManuscriptRecord::factory()->count(5)->create(['user_id' => $user->id]);
+
+    $response = $this->actingAs($user)->getJson('/api/my/manuscripts')->assertOk();
+
+    expect($response->json('data'))->toHaveCount(5);
+});
