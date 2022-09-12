@@ -202,7 +202,7 @@ const tab = useStorage('dashboard-recent-tab', 'manuscripts');
 
 // load the latest manuscripts
 onMounted(() => {
-    manuscriptStore.getMyManuscripts();
+    manuscriptStore.getMyManuscripts(true);
 });
 
 // create dialog

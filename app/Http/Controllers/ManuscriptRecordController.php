@@ -53,8 +53,6 @@ class ManuscriptRecordController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord)
     {
-        ray($manuscriptRecord);
-
         auth()->user()->can('view', $manuscriptRecord);
 
         return new ManuscriptRecordResource($manuscriptRecord);
@@ -69,7 +67,24 @@ class ManuscriptRecordController extends Controller
      */
     public function update(Request $request, ManuscriptRecord $manuscriptRecord)
     {
-        //
+        auth()->user()->can('update', $manuscriptRecord);
+
+        $validated = $request->validate([
+            'title' => 'string|max:255',
+            'region_id' => 'numeric|exists:regions,id',
+            'type' => [new Enum(ManuscriptRecordType::class)],
+            'abstract' => 'string',
+            'pls_en' => 'string',
+            'pls_fr' => 'string',
+            'scientific_implications' => 'string',
+            'regions_and_species' => 'string',
+            'relevant_to' => 'string',
+            'additional_information' => 'string',
+        ]);
+
+        $manuscriptRecord->update($validated);
+
+        return new ManuscriptRecordResource($manuscriptRecord);
     }
 
     /**

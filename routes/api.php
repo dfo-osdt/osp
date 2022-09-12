@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(ManuscriptRecordController::class)->group(function () {
         Route::get('/manuscripts/{manuscriptRecord}', 'show');
+        Route::put('manuscripts/{manuscriptRecord}', 'update');
         Route::post('/manuscripts', 'store');
     });
 

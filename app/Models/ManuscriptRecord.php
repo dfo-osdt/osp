@@ -24,6 +24,17 @@ class ManuscriptRecord extends Model
         'status' => ManuscriptRecordStatus::class,
     ];
 
+    // default values for optional fields
+    protected $attributes = [
+        'abstract' => '',
+        'pls_en' => '',
+        'pls_fr' => '',
+        'scientific_implications' => '',
+        'regions_and_species' => '',
+        'relevant_to' => '',
+        'additional_information' => '',
+    ];
+
     // Relationships
 
     /**

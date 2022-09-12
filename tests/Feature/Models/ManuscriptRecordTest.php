@@ -42,3 +42,39 @@ test('an authenticated users can get a list of their manuscripts', function () {
 
     expect($response->json('data'))->toHaveCount(5);
 });
+
+test('an user can save a draft manuscript', function () {
+    $this->seed();
+
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+
+    $response = $this->actingAs($user)->putJson("/api/manuscripts/{$manuscript->id}", [
+        'title' => 'My new title',
+    ])->assertOk();
+
+    expect($response->json('data.title'))->toBe('My new title');
+
+    // check that the database has been updated
+    expect(ManuscriptRecord::find($manuscript->id)->title)->toBe('My new title');
+
+    $data = [
+        'title' => 'My new title',
+        'region_id' => 1,
+        'type' => ManuscriptRecordType::SECONDARY->value,
+        'abstract' => 'My new abstract',
+        'pls_en' => 'My new pls_en',
+        'pls_fr' => 'My new pls_fr',
+        'scientific_implications' => 'My new scientific_implications',
+        'regions_and_species' => 'My new regions_and_species',
+        'relevant_to' => 'My new relevant_to',
+        'additional_information' => 'My new additional_information',
+    ];
+
+    // update all the fields
+    $response = $this->actingAs($user)->putJson("/api/manuscripts/{$manuscript->id}", $data)->assertOk();
+
+    // assert new data in response and database
+    expect($response->json('data'))->toMatchArray($data);
+    expect(ManuscriptRecord::find($manuscript->id))->toMatchArray($data);
+});

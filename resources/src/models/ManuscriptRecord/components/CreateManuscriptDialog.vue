@@ -20,6 +20,7 @@
                         title="Type of publication"
                         icon="mdi-call-split"
                         :done="step > 1"
+                        style="min-height: 275px"
                     >
                         <div>
                             Please select the type of manuscript record you want
@@ -80,6 +81,7 @@
                         icon="mdi-file-document-edit-outline"
                         :done="step > 2"
                         :error="!manuscriptDetailFormValid"
+                        style="min-height: 275px"
                     >
                         <q-form ref="manuscriptDetailForm">
                             <div class="q-mb-md">
@@ -115,6 +117,7 @@
                         title="Create"
                         icon="mdi-file-document-check"
                         :done="step > 3"
+                        style="min-height: 275px"
                     >
                         <div class="q-pa-md">
                             Once created, you will be taken to the manuscript
