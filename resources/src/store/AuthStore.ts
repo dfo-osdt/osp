@@ -1,5 +1,6 @@
 import { useSanctum } from '@/api/sanctum';
 import { Router } from '@/plugins/router';
+import { i18n } from '@/plugins/i18n';
 import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
 import { Notify } from 'quasar';
@@ -38,6 +39,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         logout: sanctumLogout,
     } = useSanctum();
     const localeStore = useLocaleStore();
+    const { t } = i18n.global;
 
     // initial state
     const user: Ref<User | null> = useStorage('user', null);
@@ -117,14 +119,15 @@ export const useAuthStore = defineStore('AuthStore', () => {
         await sanctumLogout()
             .then(() => {
                 user.value = null;
-                Notify.create({
-                    message: 'Logged out successfully',
-                    color: 'green',
-                });
-                // wait 1 seconds before redirecting to login page
+                Router.push({ name: 'login' });
+                const msg = t('auth.logged-out-successfully');
+
                 setTimeout(() => {
-                    Router.push({ name: 'login' });
-                }, 1000);
+                    Notify.create({
+                        message: msg,
+                        color: 'green',
+                    });
+                }, 500);
             })
             .catch((err) => console.log(err));
 

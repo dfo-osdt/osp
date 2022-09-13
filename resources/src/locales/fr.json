@@ -4,5 +4,8 @@
     "app-name": "Portail de la science ouverte",
     "register": "S'inscrire",
     "dfo-region": "Région MPO"
+  },
+  "auth": {
+    "logged-out-successfully": "Déconnecté avec succès"
   }
 }
