@@ -6,6 +6,8 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ManuscriptRecord extends Model
 {
@@ -40,8 +42,16 @@ class ManuscriptRecord extends Model
     /**
      * A manuscript has a lead region.
      */
-    public function region()
+    public function region(): BelongsTo
     {
         return $this->belongsTo('App\Models\Region');
+    }
+
+    /**
+     * A manuscripts has several ManuscriptAuthors
+     */
+    public function manuscriptAuthors(): HasMany
+    {
+        return $this->hasMany('App\Models\ManuscriptAuthor');
     }
 }

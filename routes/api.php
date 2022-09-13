@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserManuscriptRecordController;
@@ -27,6 +28,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/manuscripts/{manuscriptRecord}', 'show');
         Route::put('manuscripts/{manuscriptRecord}', 'update');
         Route::post('/manuscripts', 'store');
+    });
+
+    Route::controller(AuthorController::class)->group(function () {
+        Route::get('/authors', 'index');
+        // Route::get('/authors/{author}', 'show');
+        // Route::put('authors/{author}', 'update');
+        // Route::post('/authors', 'store');
     });
 
     // routes for user specific resources
