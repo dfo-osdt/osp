@@ -1,6 +1,7 @@
 import { http } from '@/api/http';
 import { AxiosResponse } from 'axios';
 import { BaseResource } from '../BaseResource';
+import { Region } from '../Region/Region';
 
 export type ManuscriptRecordType = 'primary' | 'secondary';
 
@@ -46,6 +47,8 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     submitted_to_journal_on: string | null;
     accepted_on: string | null;
     withdrawn_on: string | null;
+    // relationships
+    region?: Region;
 }
 
 export interface ManuscriptRecordResource extends BaseResource {

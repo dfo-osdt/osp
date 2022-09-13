@@ -14,8 +14,11 @@ class ManuscriptRecordResource extends JsonResource
      */
     public function toArray($request)
     {
+        $data = parent::toArray($request);
+        $data['region'] = RegionResource::make($this->whenLoaded('region'));
+
         return [
-            'data' => parent::toArray($request),
+            'data' => $data,
             'can' => [
                 'update' => auth()->user()->can('update', $this->resource),
                 'delete' => auth()->user()->can('delete', $this->resource),
