@@ -26,13 +26,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->comment('owner of this record');
 
             // optional (default to empty string) fields
-            $table->text('abstract');
-            $table->text('pls_en')->comment('Plain Language Summary (English)');
-            $table->text('pls_fr')->comment('Plain Language Summary (French)');
-            $table->text('scientific_implications');
-            $table->text('regions_and_species');
-            $table->text('relevant_to');
-            $table->text('additional_information');
+            $table->text('abstract')->nullable();
+            $table->text('pls_en')->nullable()->comment('Plain Language Summary (English)');
+            $table->text('pls_fr')->nullable()->comment('Plain Language Summary (French)');
+            $table->text('scientific_implications')->nullable();
+            $table->text('regions_and_species')->nullable();
+            $table->text('relevant_to')->nullable();
+            $table->text('additional_information')->nullable();
 
             $table->datetime('sent_for_review_at')->nullable();
             $table->datetime('reviewed_at')->nullable();

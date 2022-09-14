@@ -4,19 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AuthorResource;
 use App\Models\Author;
+use App\Queries\AuthorListQuery;
 use App\Rules\Ocrid;
+use App\Traits\PaginationLimitTrait;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
+    use PaginationLimitTrait;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return AuthorResource::collection(Author::all());
+        $limit = $this->getLimitFromRequest($request);
+        $authorListQuery = new AuthorListQuery($request);
+
+        return AuthorResource::collection($authorListQuery->paginate($limit));
     }
 
     /**
@@ -30,9 +37,9 @@ class AuthorController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:authors,email',
             'organization_id' => 'required|exists:organizations,id',
-            'orcid' => ['nullable', 'string', new Ocrid],
+            'orcid' => ['nullable', 'string', new Ocrid, 'unique:authors,orcid'],
         ]);
 
         $author = Author::create($validated);

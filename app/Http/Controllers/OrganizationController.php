@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
+use App\Queries\OrganizationListQuery;
+use App\Traits\PaginationLimitTrait;
 use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
+    use PaginationLimitTrait;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $limit = $this->getLimitFromRequest($request);
+        $organizationListQuery = new OrganizationListQuery($request);
+
+        return OrganizationResource::collection($organizationListQuery->paginate($limit));
     }
 
     /**

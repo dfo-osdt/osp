@@ -22,7 +22,6 @@ class AuthorResource extends JsonResource
             'email' => $this->email,
             'organization_id' => $this->organization_id,
             'organization' => OrganizationResource::make($this->whenLoaded('organization')),
-            'user_id' => $this->user_id,
         ];
     }
 }

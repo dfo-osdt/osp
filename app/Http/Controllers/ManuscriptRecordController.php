@@ -73,13 +73,13 @@ class ManuscriptRecordController extends Controller
             'title' => 'string|max:255',
             'region_id' => 'numeric|exists:regions,id',
             'type' => [new Enum(ManuscriptRecordType::class)],
-            'abstract' => 'string',
-            'pls_en' => 'string',
-            'pls_fr' => 'string',
-            'scientific_implications' => 'string',
-            'regions_and_species' => 'string',
-            'relevant_to' => 'string',
-            'additional_information' => 'string',
+            'abstract' => 'nullable|string',
+            'pls_en' => 'nullable|string',
+            'pls_fr' => 'nullable|string',
+            'scientific_implications' => 'nullable|string',
+            'regions_and_species' => 'nullable|string',
+            'relevant_to' => 'nullable|string',
+            'additional_information' => 'nullable|string',
         ]);
 
         $manuscriptRecord->update($validated);

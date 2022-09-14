@@ -36,11 +36,14 @@ test('a user can add a new manuscript author to their manuscript record', functi
 
     $response = $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
         'author_id' => $author->id,
+        'is_corresponding_author' => true,
     ]);
 
     $response->assertCreated()->assertJson([
         'manuscript_record_id' => $manuscript->id,
         'author_id' => $author->id,
+        'is_corresponding_author' => true,
+        'organization_id' => $author->organization_id,
     ]);
 
     expect($manuscript->manuscriptAuthors()->count())->toBe(1);

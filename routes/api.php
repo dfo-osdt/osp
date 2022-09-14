@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserManuscriptRecordController;
 use Illuminate\Http\Request;
@@ -49,6 +50,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // routes for user specific resources
     Route::prefix('my')->group(function () {
         Route::get('/manuscript-records', [UserManuscriptRecordController::class, 'index']);
+    });
+
+    Route::controller(OrganizationController::class)->group(function () {
+        Route::get('/organizations', 'index');
+        Route::get('/organizations/{organization}', 'show');
+        Route::put('organizations/{organization}', 'update');
+        Route::post('/organizations', 'store');
     });
 
     Route::get('/regions', [RegionController::class, 'index']);
