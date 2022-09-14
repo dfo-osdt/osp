@@ -59,7 +59,7 @@ export interface ManuscriptRecordResourceList {
 }
 
 export class ManuscriptRecordService {
-    private static baseURL = 'api/manuscripts';
+    private static baseURL = 'api/manuscript-records';
     /**
      * Get a manuscript record.
      *
@@ -99,7 +99,7 @@ export class ManuscriptRecordService {
 
     //** Get the logged in users' manuscripts */
     public static async getMyManuscripts() {
-        const response = await http.get<RList>(`api/my/manuscripts`);
+        const response = await http.get<RList>(`api/my/manuscript-records`);
         return response.data.data;
     }
 }

@@ -3,7 +3,8 @@
     "login": "Connexion",
     "app-name": "Portail de la science ouverte",
     "register": "S'inscrire",
-    "dfo-region": "Région MPO"
+    "dfo-region": "Région MPO",
+    "loading": "Chargement..."
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès"

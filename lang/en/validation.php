@@ -90,6 +90,10 @@ return [
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
+    'orcid' => [
+        'checksum' => 'The :attribute does not have a valid ORCID ID checksum.',
+        'format' => 'The :attribute must be a valid ORCID ID format.',
+    ],
     'password' => [
         'letters' => 'The :attribute must contain at least one letter.',
         'mixed' => 'The :attribute must contain at least one uppercase and one lowercase letter.',

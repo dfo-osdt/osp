@@ -1,12 +1,13 @@
 <?php
 
 use App\Models\Author;
+use App\Models\Organization;
 use App\Models\User;
 
 test('a user can get list of authors', function () {
     $this->seed();
 
-    Author::factory()->count(10)->create();
+    Author::factory()->count(5)->create();
 
     $user = User::factory()->create();
 
@@ -15,5 +16,60 @@ test('a user can get list of authors', function () {
 
     $response = $this->actingAs($user)->getJson('api/authors');
 
-    $response->assertOk()->assertJsonCount(10, 'data');
+    $response->assertOk()->assertJsonCount(5, 'data');
+});
+
+test('a user can create an author', function () {
+    $this->seed();
+
+    $user = User::factory()->create();
+
+    $minimumData = [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'John.Doe@dfo-mpo.gc.ca',
+    ];
+
+    $response = $this->actingAs($user)->postJson('api/authors', $minimumData);
+
+    // email to lowercase in data
+    $minimumData['email'] = strtolower($minimumData['email']);
+
+    $response->assertCreated()->assertJson([
+        'data' => $minimumData,
+    ]);
+});
+
+test('a user can create an author with an ORCID', function () {
+    $this->seed();
+
+    $user = User::factory()->create();
+
+    $invalidOrcid = '0000-0002-X868-2722';
+    $badChecksumOrcid = '0000-0002-0868-2725';
+    $validOrcid = '0000-0002-0868-2726';
+
+    $minimumData = [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'john.doe@dfo-mpo.gc.ca',
+        'orcid' => $invalidOrcid,
+    ];
+
+    $response = $this->actingAs($user)->postJson('api/authors', $minimumData);
+    $response->assertStatus(422)->assertJsonValidationErrors('orcid');
+    expect($response->json('errors.orcid.0'))->toContain('format');
+
+    $minimumData['orcid'] = $badChecksumOrcid;
+    $response = $this->actingAs($user)->postJson('api/authors', $minimumData);
+    $response->assertStatus(422)->assertJsonValidationErrors('orcid');
+    expect($response->json('errors.orcid.0'))->toContain('checksum');
+
+    $minimumData['orcid'] = $validOrcid;
+    $response = $this->actingAs($user)->postJson('api/authors', $minimumData);
+    $response->assertCreated()->assertJson([
+        'data' => $minimumData,
+    ]);
 });

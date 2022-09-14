@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('orcid')->unique()->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->unique()->index();
             $table->foreignId('organization_id')->constrained();
-            $table->foreignId('user_id')->unique()->nullable()->constrained();
         });
     }
 };

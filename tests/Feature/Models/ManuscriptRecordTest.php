@@ -22,9 +22,9 @@ test('an authenticated user can create a new manuscript', function () {
     // data to be sent to the api
     $submit_data = $manuscript_data->only(['title', 'region_id', 'type'])->toArray();
 
-    $this->postJson('/api/manuscripts', $submit_data)->assertUnauthorized();
+    $this->postJson('/api/manuscript-records', $submit_data)->assertUnauthorized();
 
-    $response = $this->actingAs($user)->postJson('/api/manuscripts', $submit_data)->assertCreated();
+    $response = $this->actingAs($user)->postJson('/api/manuscript-records', $submit_data)->assertCreated();
 
     ray($response->json());
     expect($response->json('data'))->toMatchArray($manuscript_data->toArray());
@@ -38,7 +38,7 @@ test('an authenticated users can get a list of their manuscripts', function () {
     $user = User::factory()->create();
     $manuscripts = ManuscriptRecord::factory()->count(5)->create(['user_id' => $user->id]);
 
-    $response = $this->actingAs($user)->getJson('/api/my/manuscripts')->assertOk();
+    $response = $this->actingAs($user)->getJson('/api/my/manuscript-records')->assertOk();
 
     expect($response->json('data'))->toHaveCount(5);
 });
@@ -49,7 +49,7 @@ test('an user can save a draft manuscript', function () {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
 
-    $response = $this->actingAs($user)->putJson("/api/manuscripts/{$manuscript->id}", [
+    $response = $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}", [
         'title' => 'My new title',
     ])->assertOk();
 
@@ -72,7 +72,7 @@ test('an user can save a draft manuscript', function () {
     ];
 
     // update all the fields
-    $response = $this->actingAs($user)->putJson("/api/manuscripts/{$manuscript->id}", $data)->assertOk();
+    $response = $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}", $data)->assertOk();
 
     // assert new data in response and database
     expect($response->json('data'))->toMatchArray($data);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AuthorResource;
 use App\Models\Author;
+use App\Rules\Ocrid;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
@@ -26,7 +27,17 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email',
+            'organization_id' => 'required|exists:organizations,id',
+            'orcid' => ['nullable', 'string', new Ocrid],
+        ]);
+
+        $author = Author::create($validated);
+
+        return new AuthorResource($author);
     }
 
     /**

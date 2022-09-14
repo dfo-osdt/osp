@@ -20,7 +20,7 @@ class ManuscriptAuthorFactory extends Factory
             'manuscript_record_id' => \App\Models\ManuscriptRecord::factory(),
             'author_id' => \App\Models\Author::factory(),
             'organization_id' => \App\Models\Organization::factory(),
-            'corresponding_author' => false,
+            'is_corresponding_author' => false,
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserManuscriptRecordController;
@@ -24,22 +25,30 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
-    Route::controller(ManuscriptRecordController::class)->group(function () {
-        Route::get('/manuscripts/{manuscriptRecord}', 'show');
-        Route::put('manuscripts/{manuscriptRecord}', 'update');
-        Route::post('/manuscripts', 'store');
-    });
-
     Route::controller(AuthorController::class)->group(function () {
         Route::get('/authors', 'index');
         // Route::get('/authors/{author}', 'show');
         // Route::put('authors/{author}', 'update');
-        // Route::post('/authors', 'store');
+        Route::post('/authors', 'store');
+    });
+
+    Route::controller(ManuscriptAuthorController::class)->group(function () {
+        Route::get('/manuscript-records/{manuscriptRecord}/manuscript-authors', 'index');
+        Route::get('/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}', 'show');
+        Route::put('/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}', 'update');
+        Route::delete('/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}', 'destroy');
+        Route::post('/manuscript-records/{manuscriptRecord}/manuscript-authors', 'store');
+    });
+
+    Route::controller(ManuscriptRecordController::class)->group(function () {
+        Route::get('/manuscript-records/{manuscriptRecord}', 'show');
+        Route::put('manuscript-records/{manuscriptRecord}', 'update');
+        Route::post('/manuscript-records', 'store');
     });
 
     // routes for user specific resources
     Route::prefix('my')->group(function () {
-        Route::get('/manuscripts', [UserManuscriptRecordController::class, 'index']);
+        Route::get('/manuscript-records', [UserManuscriptRecordController::class, 'index']);
     });
 
     Route::get('/regions', [RegionController::class, 'index']);

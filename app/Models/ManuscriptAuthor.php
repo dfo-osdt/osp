@@ -17,7 +17,7 @@ class ManuscriptAuthor extends Model
     ];
 
     public $casts = [
-        'corresponding_author' => 'boolean',
+        'is_corresponding_author' => 'boolean',
     ];
 
     // Relationships

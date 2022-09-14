@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,19 @@ class Author extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * Make sure that the email is always stored as lowercase to prevent duplicates.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value,
+            set: fn ($value) => strtolower($value),
+        );
+    }
 
     // Relationships
 

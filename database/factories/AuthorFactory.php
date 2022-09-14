@@ -19,10 +19,9 @@ class AuthorFactory extends Factory
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
-            'email' => $this->faker->optional()->safeEmail(),
+            'email' => $this->faker->safeEmail(),
             'orcid' => $this->faker->unique()->optional()->numerify('####-####-####-####'),
             'organization_id' => \App\Models\Organization::factory(),
-            'user_id' => null,
         ];
     }
 }
