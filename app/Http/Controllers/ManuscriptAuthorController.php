@@ -31,7 +31,7 @@ class ManuscriptAuthorController extends Controller
     public function store(Request $request, ManuscriptRecord $manuscriptRecord)
     {
         $validated = $request->validate([
-            'author_id' => 'required|integer|exists:authors,id',
+            'author_id' => 'required|integer|exists:authors,id|unique:manuscript_authors,author_id',
             'is_corresponding_author' => 'boolean',
         ]);
 

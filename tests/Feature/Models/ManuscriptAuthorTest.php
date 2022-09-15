@@ -48,3 +48,21 @@ test('a user can add a new manuscript author to their manuscript record', functi
 
     expect($manuscript->manuscriptAuthors()->count())->toBe(1);
 });
+
+test('a user cannot add the same author twice to a manuscript record', function () {
+    $this->seed();
+
+    $user = \App\Models\User::factory()->create();
+    $manuscript = \App\Models\ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+    ]);
+    $author = \App\Models\Author::factory()->create();
+
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated();
+
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+    ])->assertInvalid('author_id');
+});

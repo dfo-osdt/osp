@@ -15,7 +15,7 @@ class UserManuscriptRecordController extends Controller
     public function index()
     {
         // return a list of all manuscripts a user can see
-        $manuscripts = ManuscriptRecord::where('user_id', auth()->id())->get();
+        $manuscripts = ManuscriptRecord::where('user_id', auth()->id())->with('manuscript_authors.organization')->get();
 
         return ManuscriptRecordResource::collection($manuscripts);
     }
