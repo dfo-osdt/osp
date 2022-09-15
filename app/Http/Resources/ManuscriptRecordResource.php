@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class ManuscriptRecordResource extends JsonResource
 {
@@ -42,11 +43,12 @@ class ManuscriptRecordResource extends JsonResource
                 'withdrawn_on' => $this->withdrawn_on,
                 //relationships - if loaded
                 'region' => RegionResource::make($this->whenLoaded('region')),
-                'manuscriptAuthors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
+                'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
             ],
             'can' => [
-                'update' => auth()->user()->can('update', $this->resource),
-                'delete' => auth()->user()->can('delete', $this->resource),
+
+                'update' => Auth::user()->can('update', $this->resource),
+                'delete' => Auth::user()->can('delete', $this->resource),
             ],
         ];
     }

@@ -2,6 +2,7 @@
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 
@@ -36,11 +37,17 @@ test('an authenticated users can get a list of their manuscripts', function () {
 
     $manuscripts = ManuscriptRecord::factory()->count(5)->create();
     $user = User::factory()->create();
-    $manuscripts = ManuscriptRecord::factory()->count(5)->create(['user_id' => $user->id]);
+    $manuscripts = ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(2))->count(5)->count(5)->create(['user_id' => $user->id]);
+
+    ray()->showQueries();
 
     $response = $this->actingAs($user)->getJson('/api/my/manuscript-records')->assertOk();
 
+    ray($response->json());
+
     expect($response->json('data'))->toHaveCount(5);
+    // expect manuscript author to be included
+    expect($response->json('data.0.data.manuscript_authors'))->toHaveCount(2);
 });
 
 test('an user can save a draft manuscript', function () {

@@ -16,6 +16,10 @@ class Organization extends Model
         'updated_at',
     ];
 
+    public $casts = [
+        'is_validated' => 'boolean',
+    ];
+
     // Relationships
 
     /** Authors */

@@ -33,7 +33,16 @@ class OrganizationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name_en' => 'required|string|max:100',
+            'name_fr' => 'required|string|max:100',
+            'abbr_en' => 'required|string|max:10',
+            'abbr_fr' => 'required|string|max:10',
+        ]);
+
+        $organization = Organization::create($validated);
+
+        return new OrganizationResource($organization);
     }
 
     /**
@@ -44,7 +53,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        //
+        return new OrganizationResource($organization);
     }
 
     /**
