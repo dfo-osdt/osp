@@ -1,7 +1,8 @@
 import { http } from '@/api/http';
 import { AxiosResponse } from 'axios';
-import { BaseResource } from '../BaseResource';
+import { ManuscriptAuthor } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import { Region } from '../Region/Region';
+import { Resource, ResourceList } from '../Resource';
 
 export type ManuscriptRecordType = 'primary' | 'secondary';
 
@@ -12,10 +13,6 @@ export type ManuscriptRecordStatus =
     | 'submitted'
     | 'accepted'
     | 'withdrawn';
-
-type R = AxiosResponse<ManuscriptRecordResource>;
-
-type RList = AxiosResponse<ManuscriptRecordResourceList>;
 
 /**
  * The minimum set of data required to create a new manuscript record.
@@ -30,9 +27,9 @@ export interface BaseManuscriptRecord {
  * Manuscript record data.
  */
 export interface ManuscriptRecord extends BaseManuscriptRecord {
-    id: number;
-    created_at: string;
-    updated_at: string;
+    readonly id: number;
+    readonly created_at: string;
+    readonly updated_at: string;
     status: ManuscriptRecordStatus;
     user_id: number;
     abstract: string;
@@ -42,22 +39,21 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     regions_and_species: string;
     relevant_to: string;
     additional_information: string;
-    sent_for_review_at: string | null;
-    reviewed_at: string | null;
+    readonly sent_for_review_at: string | null;
+    readonly reviewed_at: string | null;
     submitted_to_journal_on: string | null;
     accepted_on: string | null;
     withdrawn_on: string | null;
     // relationships
     region?: Region;
+    manuscript_authors?: ManuscriptAuthor[];
 }
 
-export interface ManuscriptRecordResource extends BaseResource {
-    data: ManuscriptRecord;
-}
-export interface ManuscriptRecordResourceList {
-    data: ManuscriptRecordResource[];
-}
+export type ManuscriptRecordResource = Resource<ManuscriptRecord>;
+export type ManuscriptRecordResourceList = ResourceList<ManuscriptRecord>;
 
+type R = AxiosResponse<ManuscriptRecordResource>;
+type RList = AxiosResponse<ManuscriptRecordResourceList>;
 export class ManuscriptRecordService {
     private static baseURL = 'api/manuscript-records';
     /**

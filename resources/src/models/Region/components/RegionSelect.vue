@@ -3,6 +3,7 @@
         v-model="value"
         :options="options"
         :option-label="label"
+        autocomplete="name_en"
         option-value="id"
         :label="$t('common.dfo-region')"
         :loading="regionStore.loading"

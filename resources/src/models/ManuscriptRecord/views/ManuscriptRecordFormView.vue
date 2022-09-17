@@ -1,7 +1,11 @@
 <template>
     <MainPageLayout icon="mdi-file-document" :title="title">
         <ContentCard class="q-ma-md">
-            <template #title> General Information </template>
+            <template #title>Authors</template>
+            <pre>{{ manuscriptResource?.data?.manuscript_authors }}</pre>
+        </ContentCard>
+        <ContentCard class="q-ma-md">
+            <template #title>General Information</template>
             <template v-if="manuscriptResource?.data">
                 <q-form>
                     <q-input
@@ -87,8 +91,8 @@ import {
     ManuscriptRecordService,
     ManuscriptRecordResource,
 } from '../ManuscriptRecord';
-import ContentCard from '@/components/ContentCard.vue';
 import QuestionEditor from '@/components/QuestionEditor.vue';
+import ContentCard from '@/components/ContentCard.vue';
 const { t } = useI18n();
 const $q = useQuasar();
 

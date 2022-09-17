@@ -43,8 +43,9 @@ class ManuscriptAuthorController extends Controller
         $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $manuscriptAuthor->organization_id = $author->organization_id;
         $manuscriptAuthor->save();
+        $manuscriptAuthor->load('author', 'organization');
 
-        return $manuscriptAuthor;
+        return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
 
     /**
@@ -55,7 +56,7 @@ class ManuscriptAuthorController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
     {
-        return $manuscriptAuthor;
+        return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
 
     /**

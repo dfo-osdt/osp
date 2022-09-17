@@ -10,15 +10,65 @@
             }"
         >
             <q-item-section>
+                <q-item-label></q-item-label>
                 <q-item-label
                     class="text-body1 text-weight-medium text-accent"
                     >{{ manuscript.data.title }}</q-item-label
                 >
-                <q-item-label caption> Authors here... </q-item-label>
+                <q-item-label caption>
+                    <template v-if="manuscript.data.manuscript_authors">
+                        <template
+                            v-if="manuscript.data.manuscript_authors.length > 0"
+                        >
+                            <span
+                                v-for="(item, index) in manuscript.data
+                                    .manuscript_authors"
+                                :key="item.id"
+                            >
+                                <q-img
+                                    v-if="item.author?.orcid"
+                                    src="/assets/orcid.logo.icon.svg"
+                                    width="15px"
+                                />
+                                {{ item.author?.last_name }},
+                                {{ item.author?.first_name }}
+                                <span v-if="item?.organization">
+                                    ({{ item.organization.abbr_en }})
+                                    <q-tooltip>{{
+                                        item.organization.name_en
+                                    }}</q-tooltip>
+                                </span>
+                                <span
+                                    v-if="
+                                        index <
+                                        manuscript.data.manuscript_authors
+                                            ?.length -
+                                            1
+                                    "
+                                    >;
+                                </span>
+                            </span>
+                        </template>
+                        <template v-else>
+                            <span>No authors</span>
+                        </template>
+                    </template>
+                </q-item-label>
             </q-item-section>
             <q-item-section side top>
-                <q-badge outline color="blue" label="Draft" class="text-body2"
-            /></q-item-section>
+                <span>
+                    <q-badge
+                        outline
+                        color="primary"
+                        :label="manuscript.data.type"
+                        class="q-mr-xs"
+                    />
+                    <q-badge
+                        outline
+                        color="blue"
+                        :label="manuscript.data.status"
+                    /> </span
+            ></q-item-section>
         </q-item>
     </q-list>
 </template>
