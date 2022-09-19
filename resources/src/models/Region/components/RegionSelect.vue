@@ -21,7 +21,6 @@ regionStore.getRegions();
 
 const props = defineProps<{
     modelValue: number | null;
-    lala?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);

@@ -2,73 +2,46 @@
     <q-dialog>
         <q-card style="width: 600px; max-width: 80vw" outlined>
             <q-card-section class="bg-teal-1 text-h6 text-accent">
-                Add a new author
+                Add an author to this manuscript
             </q-card-section>
             <q-separator />
-            <q-select
-                v-model="selectedAuthor"
-                :options="authors.data"
-                :option-value="value"
-                :option-label="label"
-                label="Author"
-                use-input
-                stack-label
-                outlined
-                hint="Start typing to search for an author (first name, last name or email)"
-                class="q-ma-md"
-                @filter="filterAuthors"
-            >
-                <template #no-option>
-                    <q-item>
-                        <q-item-section class="text-grey">
-                            No results
-                        </q-item-section>
-                    </q-item>
-                </template>
-            </q-select>
-            <q-btn
-                color="primary"
-                label="Add"
-                class="q-ma-md"
-                @click="addAuthor"
-            />
+            <q-form>
+                <author-select
+                    v-model="authorId"
+                    class="q-ma-md"
+                    :disabled-author-ids="disabledAuthorIds"
+                    :rules="[(val: number|null) => val !== null || 'Author is required']"
+                />
+                <q-checkbox
+                    v-model="isCorresponding"
+                    label="Is a corresponding author"
+                    class="q-ml-sm"
+                />
+            </q-form>
+            <q-btn color="primary" label="Add" class="q-ma-md" />
         </q-card>
     </q-dialog>
 </template>
 
 <script setup lang="ts">
-import {
-    AuthorResource,
-    AuthorResourceList,
-    AuthorService,
-} from '@/models/Authors/Authors';
-import { ManuscriptAuthor } from '../ManuscriptAuthor';
+import AuthorSelect from '@/models/Authors/components/AuthorSelect.vue';
+import { ManuscriptAuthorResource } from '../ManuscriptAuthor';
 
-const authors = ref<AuthorResourceList>({ data: [] });
-const selectedAuthor = ref<AuthorResource | null>(null);
-const lastSearchTerm = ref('');
+const props = withDefaults(
+    defineProps<{
+        currentAuthors?: ManuscriptAuthorResource[];
+    }>(),
+    {
+        currentAuthors: () => [],
+    }
+);
 
-const filterAuthors = async (val: string, update, abort) => {
-    lastSearchTerm.value = val;
-    update(async () => {
-        if (val !== '') {
-            const needle = val.toLowerCase();
-            await AuthorService.list(`limit=10&filter[search]=${needle}`).then(
-                (response) => {
-                    authors.value = response;
-                }
-            );
-        }
-    });
-};
+const disabledAuthorIds = computed(() =>
+    props.currentAuthors.map((author) => author.data.author_id)
+);
 
-function value(item: AuthorResource) {
-    return item.data.id;
-}
-function label(item: AuthorResource) {
-    const { first_name, last_name, email } = item.data;
-    return `${first_name} ${last_name} (${email})`;
-}
+const authorId = ref<number | null>(null);
+const isCorresponding = ref(false);
 </script>
 
 <style scoped></style>

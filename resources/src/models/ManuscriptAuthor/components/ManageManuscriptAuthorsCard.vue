@@ -36,7 +36,10 @@
                     @click="addManuscriptAuthor"
                 />
             </template>
-            <AddManuscriptAuthorDialog v-model="showAddDialog" />
+            <AddManuscriptAuthorDialog
+                v-model="showAddDialog"
+                :current-authors="manuscriptAuthors.data"
+            />
         </q-field>
     </ContentCard>
 </template>
@@ -51,7 +54,6 @@ import {
 } from '../ManuscriptAuthor';
 import ManuscriptAuthorChip from './ManuscriptAuthorChip.vue';
 import { useQuasar } from 'quasar';
-import { AuthorService } from '@/models/Authors/Authors';
 import AddManuscriptAuthorDialog from './AddManuscriptAuthorDialog.vue';
 
 const $q = useQuasar();
