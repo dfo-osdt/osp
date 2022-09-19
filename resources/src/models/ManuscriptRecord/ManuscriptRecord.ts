@@ -1,6 +1,9 @@
 import { http } from '@/api/http';
 import { AxiosResponse } from 'axios';
-import { ManuscriptAuthor } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
+import {
+    ManuscriptAuthor,
+    ManuscriptAuthorResource,
+} from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import { Region } from '../Region/Region';
 import { Resource, ResourceList } from '../Resource';
 
@@ -46,7 +49,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     withdrawn_on: string | null;
     // relationships
     region?: Region;
-    manuscript_authors?: ManuscriptAuthor[];
+    manuscript_authors?: ManuscriptAuthorResource[];
 }
 
 export type ManuscriptRecordResource = Resource<ManuscriptRecord>;

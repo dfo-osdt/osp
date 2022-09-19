@@ -1,9 +1,9 @@
 <template>
     <MainPageLayout icon="mdi-file-document" :title="title">
-        <ContentCard class="q-ma-md">
-            <template #title>Authors</template>
-            <pre>{{ manuscriptResource?.data?.manuscript_authors }}</pre>
-        </ContentCard>
+        <ManageManuscriptAuthorsCard
+            :manuscript-record-id="id"
+            class="q-ma-md"
+        />
         <ContentCard class="q-ma-md">
             <template #title>General Information</template>
             <template v-if="manuscriptResource?.data">
@@ -93,6 +93,7 @@ import {
 } from '../ManuscriptRecord';
 import QuestionEditor from '@/components/QuestionEditor.vue';
 import ContentCard from '@/components/ContentCard.vue';
+import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue';
 const { t } = useI18n();
 const $q = useQuasar();
 
@@ -123,11 +124,9 @@ watch(
     manuscriptResource,
     (newVal, oldValue) => {
         if (oldValue === null) {
-            console.log('nothing to save here');
             return;
         }
         isDirty.value = true;
-        console.log('change..');
     },
     { deep: true }
 );

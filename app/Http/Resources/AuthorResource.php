@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthorResource extends JsonResource
@@ -15,13 +16,19 @@ class AuthorResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'orcid' => $this->orcid,
-            'email' => $this->email,
-            'organization_id' => $this->organization_id,
-            'organization' => OrganizationResource::make($this->whenLoaded('organization')),
+            'data' => [
+                'id' => $this->id,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'orcid' => $this->orcid,
+                'email' => $this->email,
+                'organization_id' => $this->organization_id,
+                'organization' => OrganizationResource::make($this->whenLoaded('organization')),
+            ],
+            'can' => [
+                'update' => Auth::user()->can('update', $this->resource),
+                'delete' => Auth::user()->can('delete', $this->resource),
+            ],
         ];
     }
 }

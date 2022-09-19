@@ -23,19 +23,19 @@
                             <span
                                 v-for="(item, index) in manuscript.data
                                     .manuscript_authors"
-                                :key="item.id"
+                                :key="item.data.id"
                             >
                                 <q-img
-                                    v-if="item.author?.orcid"
+                                    v-if="item.data.author?.data.orcid"
                                     src="/assets/orcid.logo.icon.svg"
                                     width="15px"
                                 />
-                                {{ item.author?.last_name }},
-                                {{ item.author?.first_name }}
-                                <span v-if="item?.organization">
-                                    ({{ item.organization.abbr_en }})
+                                {{ item.data.author?.data.last_name }},
+                                {{ item.data.author?.data.first_name }}
+                                <span v-if="item?.data.organization">
+                                    ({{ item.data.organization.data.abbr_en }})
                                     <q-tooltip>{{
-                                        item.organization.name_en
+                                        item.data.organization.data.name_en
                                     }}</q-tooltip>
                                 </span>
                                 <span

@@ -1,7 +1,7 @@
 import { http } from '@/api/http';
 import { AxiosResponse } from 'axios';
-import { Author } from '../Authors/Authors';
-import { Organization } from '../Organization/Organization';
+import { AuthorResource } from '../Authors/Authors';
+import { OrganizationResource } from '../Organization/Organization';
 import { Resource, ResourceList } from '../Resource';
 
 export interface ManuscriptAuthor {
@@ -10,8 +10,8 @@ export interface ManuscriptAuthor {
     author_id: number;
     organization_id: number;
     is_corresponding_author: boolean;
-    organization?: Organization;
-    author?: Author;
+    organization?: OrganizationResource;
+    author?: AuthorResource;
 }
 
 export type ManuscriptAuthorResource = Resource<ManuscriptAuthor>;
@@ -33,5 +33,18 @@ export class ManuscriptAuthorService {
             `api/manuscript-records/${manuscriptRecordId}/manuscript-authors`
         );
         return response.data;
+    }
+
+    /**
+     * Delete a manuscript author
+     * @param manuscriptAuthor
+     * @returns boolean
+     */
+    public static async delete(manuscriptAuthor: ManuscriptAuthor) {
+        const { manuscript_record_id, id } = manuscriptAuthor;
+        const response = await http.delete(
+            `api/manuscript-records/${manuscript_record_id}/manuscript-authors/${id}`
+        );
+        return response.status === 204;
     }
 }
