@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
-import { quasar } from '@quasar/vite-plugin';
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin';
 import VueI18n from '@intlify/vite-plugin-vue-i18n';
 import AutoImport from 'unplugin-auto-import/vite';
 import { homedir } from 'os';

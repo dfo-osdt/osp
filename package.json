@@ -7,15 +7,15 @@
     },
     "devDependencies": {
         "@intlify/vite-plugin-vue-i18n": "^6.0.1",
-        "@quasar/vite-plugin": "^1.2.0",
+        "@quasar/vite-plugin": "1.1.1",
         "@types/node": "^18.7.18",
-        "@typescript-eslint/eslint-plugin": "^5.37.0",
-        "@typescript-eslint/parser": "^5.37.0",
+        "@typescript-eslint/eslint-plugin": "^5.38.0",
+        "@typescript-eslint/parser": "^5.38.0",
         "axios": "^0.27.2",
         "eslint": "^8.23.1",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
-        "eslint-plugin-vue": "^9.4.0",
+        "eslint-plugin-vue": "^9.5.1",
         "laravel-vite-plugin": "^0.6.0",
         "lodash": "^4.17.21",
         "prettier": "^2.7.1",
@@ -23,7 +23,7 @@
         "typescript": "^4.8.3",
         "unplugin-auto-import": "^0.11.2",
         "unplugin-vue-components": "^0.22.7",
-        "vite": "^3.1.1",
+        "vite": "^3.1.3",
         "vue-tsc": "^0.40.13"
     },
     "dependencies": {
@@ -34,7 +34,7 @@
         "@vueuse/core": "^9.2.0",
         "eslint-plugin-quasar": "^1.1.0",
         "pinia": "^2.0.22",
-        "quasar": "^2.8.2",
+        "quasar": "^2.8.3",
         "vue": "^3.2.39",
         "vue-i18n": "^9.2.2",
         "vue-router": "^4.1.5"

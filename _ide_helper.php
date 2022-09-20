@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.30.1.
+ * Generated for Laravel 9.31.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1708,6 +1708,32 @@ namespace Illuminate\Support\Facades {
         {            //Method inherited from \Illuminate\Foundation\Console\Kernel
             /** @var \App\Console\Kernel $instance */
             $instance->terminate($input, $status);
+        }
+
+        /**
+         * Register a callback to be invoked when the command lifecyle duration exceeds a given amount of time.
+         *
+         * @param  \DateTimeInterface|\Carbon\CarbonInterval|float|int  $threshold
+         * @param  callable  $handler
+         * @return void
+         * @static
+         */
+        public static function whenCommandLifecycleIsLongerThan($threshold, $handler)
+        {            //Method inherited from \Illuminate\Foundation\Console\Kernel
+            /** @var \App\Console\Kernel $instance */
+            $instance->whenCommandLifecycleIsLongerThan($threshold, $handler);
+        }
+
+        /**
+         * When the command being handled started.
+         *
+         * @return \Illuminate\Support\Carbon|null
+         * @static
+         */
+        public static function commandStartedAt()
+        {            //Method inherited from \Illuminate\Foundation\Console\Kernel
+            /** @var \App\Console\Kernel $instance */
+            return $instance->commandStartedAt();
         }
 
         /**
@@ -18344,6 +18370,18 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Get a unique hash representing the current manifest, or null if there is no manifest.
+         *
+         * @return string|null
+         * @static
+         */
+        public static function manifestHash($buildDirectory = null)
+        {
+            /** @var \Illuminate\Foundation\Vite $instance */
+            return $instance->manifestHash($buildDirectory);
+        }
+
+        /**
          * Get the Vite tag content as a string of HTML.
          *
          * @return string
@@ -18353,6 +18391,57 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Foundation\Vite $instance */
             return $instance->toHtml();
+        }
+
+        /**
+         * Register a custom macro.
+         *
+         * @param  string  $name
+         * @param  object|callable  $macro
+         * @return void
+         * @static
+         */
+        public static function macro($name, $macro)
+        {
+            \Illuminate\Foundation\Vite::macro($name, $macro);
+        }
+
+        /**
+         * Mix another object into the class.
+         *
+         * @param  object  $mixin
+         * @param  bool  $replace
+         * @return void
+         *
+         * @throws \ReflectionException
+         * @static
+         */
+        public static function mixin($mixin, $replace = true)
+        {
+            \Illuminate\Foundation\Vite::mixin($mixin, $replace);
+        }
+
+        /**
+         * Checks if macro is registered.
+         *
+         * @param  string  $name
+         * @return bool
+         * @static
+         */
+        public static function hasMacro($name)
+        {
+            return \Illuminate\Foundation\Vite::hasMacro($name);
+        }
+
+        /**
+         * Flush the existing macros.
+         *
+         * @return void
+         * @static
+         */
+        public static function flushMacros()
+        {
+            \Illuminate\Foundation\Vite::flushMacros();
         }
     }
 }
