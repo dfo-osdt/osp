@@ -14,7 +14,7 @@ test('a user can get the manuscript authors associated with a manuscript record'
 
     $response->assertOk()->assertJsonCount(5, 'data');
 
-    expect($response->json('data.0'))->toHaveKeys([
+    expect($response->json('data.0.data'))->toHaveKeys([
         'id',
         'manuscript_record_id',
         'author_id',

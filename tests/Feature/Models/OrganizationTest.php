@@ -42,7 +42,10 @@ test('a user can see an organization', function () {
 
     $organization = Organization::factory()->create();
 
-    $response = $this->actingAs($user)->getJson('/api/organizations/'.$organization->id)->assertOk()->assertJson([
-        'data' => OrganizationResource::make($organization)->resolve(),
-    ]);
+    $response = $this->actingAs($user)->getJson('/api/organizations/'.$organization->id)->assertOk();
+
+    $resource = OrganizationResource::make($organization)->resolve();
+
+    ray($response->json());
+    expect($response->json())->toMatchArray($resource);
 });
