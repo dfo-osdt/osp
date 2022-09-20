@@ -6,7 +6,7 @@ module.exports = {
     parserOptions: {
         parser: '@typescript-eslint/parser',
     },
-    plugins: ['@typescript-eslint', 'prettier'],
+    plugins: ['@typescript-eslint', 'prettier', 'quasar'],
     extends: [
         'plugin:@typescript-eslint/recommended',
         // https://github.com/vuejs/eslint-plugin-vue/blob/44ff0e02cd0fd08b8cd7dee0127dbb5590446323/docs/user-guide/README.md#conflict-with-prettier

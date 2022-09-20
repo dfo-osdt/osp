@@ -67,6 +67,16 @@ const routes: RouteRecordRaw[] = [
                 component: UnderConstruction,
                 meta: { requiresAuth: true },
             },
+            {
+                path: '/manuscript/:id',
+                component: () =>
+                    import(
+                        '@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue'
+                    ),
+                meta: { requiresAuth: true },
+                props: (route) => ({ id: Number(route.params.id) }),
+                name: 'manuscript',
+            },
         ],
     },
     {

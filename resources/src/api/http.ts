@@ -1,10 +1,12 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Notify } from 'quasar';
+import { Router } from '@/plugins/router';
 import { ErrorResponse, extractErrorMessages } from './errors';
 
 enum StatusCode {
     Unauthorized = 401,
     Forbidden = 403,
+    NotFound = 404,
     TooManyRequests = 429,
     ValidationError = 422,
     InternalServerError = 500,
@@ -99,6 +101,7 @@ class Http {
     private handleError(error: AxiosResponse) {
         const { status } = error;
         const errorMessage = extractErrorMessages(error);
+        const authStore = useAuthStore();
 
         switch (status) {
             case StatusCode.InternalServerError: {
@@ -111,8 +114,14 @@ class Http {
                 break;
             }
             case StatusCode.Unauthorized: {
-                // Handle Unauthorized
-                // this.notifyError(errorMessage, 'Unauthorized');
+                // Handle Unauthorized - likely an expired session
+                // should we be authenticated on this route?
+                if (Router.currentRoute.value.meta.requiresAuth) {
+                    this.notifyError(errorMessage, 'Unauthorized');
+                    authStore.user = null;
+                    Router.push({ name: 'login' });
+                }
+                console.log('Router: ', Router.currentRoute.value);
                 break;
             }
             case StatusCode.TooManyRequests: {
@@ -125,6 +134,11 @@ class Http {
                 this.notifyError(errorMessage, 'Validation Error');
                 break;
             }
+            case StatusCode.NotFound: {
+                // Handle NotFound
+                this.notifyError(errorMessage, 'Resource Not Found');
+                break;
+            }
         }
 
         console.log('HTTP.TS Handling error: ' + error.statusText);
@@ -135,7 +149,7 @@ class Http {
     private notifyError(error: ErrorResponse, message?: string) {
         Notify.create({
             type: 'negative',
-            message: error?.message || message || 'An error occurred',
+            message: error?.message ?? message ?? 'An error occurred',
             textColor: 'white',
             timeout: 5000,
             icon: 'mdi-alert-circle-outline',

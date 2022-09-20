@@ -1,9 +1,5 @@
 <template>
-    <q-page>
-        <q-toolbar class="bg-teal-1">
-            <q-icon name="mdi-view-dashboard" color="primary" size="sm" />
-            <q-toolbar-title> Dashboard </q-toolbar-title>
-        </q-toolbar>
+    <main-page-layout icon="mdi-view-dashboard" title="Dashboard">
         <div class="q-pa-md">
             <div class="row">
                 <div
@@ -48,59 +44,73 @@
                     </template>
 
                     <q-tab-panels v-model="tab" animated>
-                        <q-tab-panel name="manuscripts" class="bg-grey-1">
-                            <div class="flex row justify-center">
-                                <div
-                                    class="col-12 col-lg-10 flex column text-center"
-                                >
-                                    <div>
-                                        <q-img
-                                            src="/assets/splash_images/undraw_road_sign_re_3kc3.svg"
-                                            width="250px"
-                                        />
-                                    </div>
+                        <q-tab-panel
+                            name="manuscripts"
+                            class="bg-grey-1 q-pa-none"
+                        >
+                            <template v-if="manuscriptStore.empty">
+                                <div class="flex row justify-center">
                                     <div
-                                        class="text-h5 text-weight-light text-accent q-mb-sm"
+                                        class="col-12 col-lg-10 flex column text-center"
                                     >
-                                        Create your first manuscript record
-                                    </div>
-                                    <div
-                                        class="text-body1 text-grey-8 text-left"
-                                    >
-                                        <p>
-                                            Need to publish a primary or
-                                            secondary publication? You've come
-                                            to the right place. Create a
-                                            manuscript record and start the
-                                            process of publishing your
-                                            manuscript following the national
-                                            policy for science publications.
-                                        </p>
+                                        <div>
+                                            <q-img
+                                                src="/assets/splash_images/undraw_road_sign_re_3kc3.svg"
+                                                width="250px"
+                                            />
+                                        </div>
+                                        <div
+                                            class="text-h5 text-weight-light text-accent q-mb-sm"
+                                        >
+                                            Create your first manuscript record
+                                        </div>
+                                        <div
+                                            class="text-body1 text-grey-8 text-left"
+                                        >
+                                            <p>
+                                                Need to publish a primary or
+                                                secondary publication? You've
+                                                come to the right place. Create
+                                                a manuscript record and start
+                                                the process of publishing your
+                                                manuscript following the
+                                                national policy for science
+                                                publications.
+                                            </p>
 
-                                        <p>
-                                            The national policy ensures a
-                                            consistent treatment of scientific
-                                            publications across DFO regions,
-                                            recognition of the scientific impact
-                                            of the Department through the use of
-                                            a standard affiliation, and
-                                            effective tracking of our
-                                            publications to better integrate
-                                            science into departmental processes.
-                                        </p>
+                                            <p>
+                                                The national policy ensures a
+                                                consistent treatment of
+                                                scientific publications across
+                                                DFO regions, recognition of the
+                                                scientific impact of the
+                                                Department through the use of a
+                                                standard affiliation, and
+                                                effective tracking of our
+                                                publications to better integrate
+                                                science into departmental
+                                                processes.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </template>
+                            <ManuscriptList
+                                v-if="!manuscriptStore.empty"
+                                class="q-mb-lg"
+                                :manuscripts="manuscriptStore.recentManuscripts"
+                            />
                             <div class="text-center">
                                 <q-btn
                                     rounded
                                     color="primary"
-                                    @click="showCreateDialog()"
+                                    class="q-mb-md"
+                                    @click="show = true"
                                 >
                                     Create Manuscript
                                 </q-btn>
                                 <create-manuscript-dialog
-                                    :key="createKey"
+                                    v-if="show"
                                     v-model="show"
                                 />
                             </div>
@@ -177,24 +187,26 @@
                 </content-card>
             </div>
         </div>
-    </q-page>
+    </main-page-layout>
 </template>
 
 <script setup lang="ts">
 import MetricCard from '@/components/MetricCard.vue';
 import ContentCard from '../components/ContentCard.vue';
-import CreateManuscriptDialog from '@/models/auth/Manuscript/components/CreateManuscriptDialog.vue';
+import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateManuscriptDialog.vue';
+import MainPageLayout from '@/layouts/MainPageLayout.vue';
+import ManuscriptList from '@/models/ManuscriptRecord/components/ManuscriptList.vue';
 
+const manuscriptStore = useManuscriptStore();
 const tab = useStorage('dashboard-recent-tab', 'manuscripts');
+
+// load the latest manuscripts
+onMounted(() => {
+    manuscriptStore.getMyManuscripts(true);
+});
 
 // create dialog
 const show = ref(false);
-const createKey = ref(0);
-
-function showCreateDialog() {
-    createKey.value++;
-    show.value = true;
-}
 
 const data = [
     {

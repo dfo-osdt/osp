@@ -1,6 +1,6 @@
 // locale store is used to store the current locale
 import { i18n } from '@/plugins/i18n';
-import { Quasar } from 'quasar';
+import { Quasar, QuasarLanguage } from 'quasar';
 import { langs } from '@/plugins/quasar';
 
 export const useLocaleStore = defineStore('LocaleStore', () => {

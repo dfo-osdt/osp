@@ -90,6 +90,10 @@ return [
     'not_in' => "Le :attribute sélectionné n'est pas valide.",
     'not_regex' => "Le format :attribute n'est pas valide.",
     'numeric' => 'Le :attribute doit être un nombre.',
+    'orcid' => [
+        'checksum' => "Le :attribute n'a pas de somme de contrôle ORCID ID valide.",
+        'format' => 'Le :attribute doit être un format ORCID ID valide.',
+    ],
     'password' => [
         'letters' => 'Le :attribute doit contenir au moins une lettre.',
         'mixed' => 'Le :attribute doit contenir au moins une majuscule et une minuscule.',
