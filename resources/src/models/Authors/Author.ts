@@ -24,7 +24,7 @@ type RList = AxiosResponse<AuthorResourceList>;
 export class AuthorService {
     /**
      * Get a list of authors
-     * @returns {Promise<RList>}
+     * @returns author list
      */
     public static async list(query?: string) {
         let url = 'api/authors';
@@ -32,6 +32,14 @@ export class AuthorService {
             url += `?${query}`;
         }
         const response = await http.get<RList>(url);
+        return response.data;
+    }
+
+    /**
+     * Create an author
+     */
+    public static async create(author: Author) {
+        const response = await http.post<Author, R>('api/authors', author);
         return response.data;
     }
 }

@@ -1,9 +1,6 @@
 import { http } from '@/api/http';
 import { AxiosResponse } from 'axios';
-import {
-    ManuscriptAuthor,
-    ManuscriptAuthorResource,
-} from '@/models/ManuscriptAuthor/ManuscriptAuthor';
+import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import { Region } from '../Region/Region';
 import { Resource, ResourceList } from '../Resource';
 

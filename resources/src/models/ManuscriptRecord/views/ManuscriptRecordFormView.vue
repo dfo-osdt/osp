@@ -19,6 +19,22 @@
                             (val) => val.length > 0 || 'Title is required',
                         ]"
                     ></q-input>
+                    <RegionSelect
+                        v-model="manuscriptResource.data.region_id"
+                        label="DFO Lead Region"
+                        outlined
+                        :disable="loading"
+                        bg-color="white"
+                        class="q-mb-md"
+                    />
+                    <ManuscriptTypeSelect
+                        v-model="manuscriptResource.data.type"
+                        label="Manuscript Type"
+                        outlined
+                        :disable="loading"
+                        bg-color="white"
+                        class="q-mb-md"
+                    />
                     <QuestionEditor
                         v-model="manuscriptResource.data.abstract"
                         title="Abstract"
@@ -94,6 +110,8 @@ import {
 import QuestionEditor from '@/components/QuestionEditor.vue';
 import ContentCard from '@/components/ContentCard.vue';
 import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue';
+import RegionSelect from '@/models/Region/components/RegionSelect.vue';
+import ManuscriptTypeSelect from '../components/ManuscriptTypeSelect.vue';
 const { t } = useI18n();
 const $q = useQuasar();
 

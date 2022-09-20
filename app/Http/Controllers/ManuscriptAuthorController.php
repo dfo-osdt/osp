@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ManuscriptAuthorController extends Controller
 {
@@ -31,7 +32,10 @@ class ManuscriptAuthorController extends Controller
     public function store(Request $request, ManuscriptRecord $manuscriptRecord)
     {
         $validated = $request->validate([
-            'author_id' => 'required|integer|exists:authors,id|unique:manuscript_authors,author_id',
+            'author_id' => ['required', 'integer', 'exists:authors,id',
+                Rule::unique('manuscript_authors')->where(function ($query) use ($manuscriptRecord) {
+                    return $query->where('manuscript_record_id', $manuscriptRecord->id);
+                }), ],
             'is_corresponding_author' => 'boolean',
         ]);
 

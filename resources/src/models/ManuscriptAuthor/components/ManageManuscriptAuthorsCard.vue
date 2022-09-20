@@ -37,8 +37,11 @@
                 />
             </template>
             <AddManuscriptAuthorDialog
+                v-if="showAddDialog"
                 v-model="showAddDialog"
+                :manuscript-record-id="manuscriptRecordId"
                 :current-authors="manuscriptAuthors.data"
+                @added="addedManuscriptAuthor"
             />
         </q-field>
     </ContentCard>
@@ -88,6 +91,18 @@ const loadManuscriptAuthors = async () => {
 const showAddDialog = ref(false);
 const addManuscriptAuthor = async () => {
     showAddDialog.value = true;
+};
+
+const addedManuscriptAuthor = (manuscriptAuthor: ManuscriptAuthorResource) => {
+    $q.notify({
+        type: 'positive',
+        color: 'primary',
+        message: `${
+            manuscriptAuthor.data.author?.data.first_name ?? 'Author'
+        } added successfully.`,
+    });
+    showAddDialog.value = false;
+    loadManuscriptAuthors();
 };
 
 const editManuscriptAuthor = () => {

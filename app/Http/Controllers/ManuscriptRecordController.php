@@ -6,6 +6,7 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Models\ManuscriptRecord;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 
@@ -53,7 +54,7 @@ class ManuscriptRecordController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord)
     {
-        auth()->user()->can('view', $manuscriptRecord);
+        Auth::user()->can('view', $manuscriptRecord);
 
         return new ManuscriptRecordResource($manuscriptRecord);
     }
@@ -67,7 +68,7 @@ class ManuscriptRecordController extends Controller
      */
     public function update(Request $request, ManuscriptRecord $manuscriptRecord)
     {
-        auth()->user()->can('update', $manuscriptRecord);
+        Auth::user()->can('update', $manuscriptRecord);
 
         $validated = $request->validate([
             'title' => 'string|max:255',

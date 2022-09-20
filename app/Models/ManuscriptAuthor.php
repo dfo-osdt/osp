@@ -20,6 +20,9 @@ class ManuscriptAuthor extends Model
         'is_corresponding_author' => 'boolean',
     ];
 
+    // update the manuscript's updated_at timestamp when the author is updated
+    protected $touches = ['manuscriptRecord'];
+
     // Relationships
 
     /**

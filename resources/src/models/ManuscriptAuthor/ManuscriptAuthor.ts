@@ -1,6 +1,6 @@
 import { http } from '@/api/http';
 import { AxiosResponse } from 'axios';
-import { AuthorResource } from '../Authors/Authors';
+import { AuthorResource } from '../Authors/Author';
 import { OrganizationResource } from '../Organization/Organization';
 import { Resource, ResourceList } from '../Resource';
 
@@ -46,5 +46,25 @@ export class ManuscriptAuthorService {
             `api/manuscript-records/${manuscript_record_id}/manuscript-authors/${id}`
         );
         return response.status === 204;
+    }
+
+    /**
+     * Add a manuscript author
+     * @param manuscriptRecordId - manuscript to add this author to
+     * @param authorId - author to associate with this manuscript
+     * @param isCorrespondingAuthor - is this author the corresponding author
+     * @returns {Promise<R>} the new manuscript author resource
+     */
+    public static async create(
+        manuscriptRecordId: number,
+        authorId: number,
+        isCorrespondingAuthor: boolean
+    ) {
+        const url = `api/manuscript-records/${manuscriptRecordId}/manuscript-authors`;
+        const response = await http.post<any, R>(url, {
+            author_id: authorId,
+            is_corresponding_author: isCorrespondingAuthor,
+        });
+        return response.data;
     }
 }
