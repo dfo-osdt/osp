@@ -1,5 +1,4 @@
 import { http } from '@/api/http';
-import { AxiosResponse } from 'axios';
 import { Resource, ResourceList } from '../Resource';
 
 export interface Organization {
@@ -14,8 +13,8 @@ export interface Organization {
 export type OrganizationResource = Resource<Organization>;
 export type OrganizationResourceList = ResourceList<Organization>;
 
-type R = AxiosResponse<OrganizationResource>;
-type RList = AxiosResponse<OrganizationResourceList>;
+type R = OrganizationResource;
+type RList = OrganizationResourceList;
 
 export class OrganizationService {
     /** Get a list of organizations

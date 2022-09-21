@@ -66,34 +66,34 @@ class Http {
         return this.http.request(config);
     }
 
-    get<R = AxiosResponse>(
+    get<R, AR = AxiosResponse<R>>(
         url: string,
         config?: AxiosRequestConfig
-    ): Promise<R> {
+    ): Promise<AR> {
         return this.http.get(url, config);
     }
 
-    post<T = any, R = AxiosResponse<T>>(
+    post<T, R, AR = AxiosResponse<R>>(
         url: string,
         data?: T,
         config?: AxiosRequestConfig
-    ): Promise<R> {
-        return this.http.post<T, R>(url, data, config);
+    ): Promise<AR> {
+        return this.http.post<T, AR>(url, data, config);
     }
 
-    put<T = any, R = AxiosResponse<T>>(
+    put<T, R, AR = AxiosResponse<R>>(
         url: string,
         data?: T,
         config?: AxiosRequestConfig
-    ): Promise<R> {
-        return this.http.put<T, R>(url, data, config);
+    ): Promise<AR> {
+        return this.http.put<T, AR>(url, data, config);
     }
 
-    delete<T = any, R = AxiosResponse<T>>(
+    delete<T, R, AR = AxiosResponse<R>>(
         url: string,
         config?: AxiosRequestConfig
-    ): Promise<R> {
-        return this.http.delete<T, R>(url, config);
+    ): Promise<AR> {
+        return this.http.delete<T, AR>(url, config);
     }
 
     // Handle global app errors

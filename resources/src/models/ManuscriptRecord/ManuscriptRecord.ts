@@ -1,5 +1,4 @@
 import { http } from '@/api/http';
-import { AxiosResponse } from 'axios';
 import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import { Region } from '../Region/Region';
 import { Resource, ResourceList } from '../Resource';
@@ -52,8 +51,6 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
 export type ManuscriptRecordResource = Resource<ManuscriptRecord>;
 export type ManuscriptRecordResourceList = ResourceList<ManuscriptRecord>;
 
-type R = AxiosResponse<ManuscriptRecordResource>;
-type RList = AxiosResponse<ManuscriptRecordResourceList>;
 export class ManuscriptRecordService {
     private static baseURL = 'api/manuscript-records';
     /**
@@ -63,7 +60,9 @@ export class ManuscriptRecordService {
      * @returns The manuscript record.
      */
     public static async find(id: number) {
-        const response = await http.get<R>(`${this.baseURL}/${id}`);
+        const response = await http.get<ManuscriptAuthorResource>(
+            `${this.baseURL}/${id}`
+        );
         return response.data;
     }
 
@@ -73,10 +72,10 @@ export class ManuscriptRecordService {
      * @returns The created manuscript record.
      */
     public static async create(data: BaseManuscriptRecord) {
-        const response = await http.post<BaseManuscriptRecord, R>(
-            `${this.baseURL}`,
-            data
-        );
+        const response = await http.post<
+            BaseManuscriptRecord,
+            ManuscriptRecordResource
+        >(`${this.baseURL}`, data);
         return response.data;
     }
 
@@ -86,16 +85,18 @@ export class ManuscriptRecordService {
      * @returns The saved manuscript record.
      */
     public static async save(data: ManuscriptRecord) {
-        const response = await http.put<ManuscriptRecord, R>(
-            `${this.baseURL}/${data.id}`,
-            data
-        );
+        const response = await http.put<
+            ManuscriptRecord,
+            ManuscriptAuthorResource
+        >(`${this.baseURL}/${data.id}`, data);
         return response.data;
     }
 
     //** Get the logged in users' manuscripts */
     public static async getMyManuscripts() {
-        const response = await http.get<RList>(`api/my/manuscript-records`);
+        const response = await http.get<ManuscriptRecordResourceList>(
+            `api/my/manuscript-records`
+        );
         return response.data.data;
     }
 }
