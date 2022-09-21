@@ -47,8 +47,6 @@ const props = defineProps<{
     manuscriptAuthor: ManuscriptAuthorResource;
 }>();
 
-const value = ref(props.manuscriptAuthor.data.is_corresponding_author);
-
 const name = computed(() => {
     return `${props.manuscriptAuthor.data.author?.data.last_name}, ${props.manuscriptAuthor.data.author?.data.first_name}`;
 });

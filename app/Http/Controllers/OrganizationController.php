@@ -34,10 +34,10 @@ class OrganizationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name_en' => 'required|string|max:100',
-            'name_fr' => 'required|string|max:100',
-            'abbr_en' => 'required|string|max:10',
-            'abbr_fr' => 'required|string|max:10',
+            'name_en' => 'required|string|max:100|unique:organizations,name_en',
+            'name_fr' => 'required|string|max:100|unique:organizations,name_fr',
+            'abbr_en' => 'nullable|string|max:10',
+            'abbr_fr' => 'nullable|string|max:10',
         ]);
 
         $organization = Organization::create($validated);

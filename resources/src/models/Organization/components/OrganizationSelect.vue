@@ -45,15 +45,15 @@
                                 >Add a new author</q-tooltip
                             >
                         </q-btn>
-                        <CreateOrganizationDialog
-                            v-if="showCreateOrganizationDialog"
-                            v-model="showCreateOrganizationDialog"
-                            @created="createdOrganization"
-                        />
                     </q-item-section>
                 </q-item>
             </template>
         </template>
+        <CreateOrganizationDialog
+            v-if="showCreateOrganizationDialog"
+            v-model="showCreateOrganizationDialog"
+            @created="createdOrganization"
+        />
     </q-select>
 </template>
 
@@ -112,6 +112,7 @@ function createdOrganization(item: OrganizationResource) {
     organizationSelect.value?.updateInputValue('', true);
     organizations.value.data.push(item);
     selectedOrganization.value = item;
+    showCreateOrganizationDialog.value = false;
 }
 
 function optionValue(item: OrganizationResource) {
