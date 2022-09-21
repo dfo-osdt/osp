@@ -15,6 +15,12 @@
                 class="q-ma-md"
                 :rules="[(val: string) => val !== '' || 'Required']"
             />
+            <OrganizationSelect
+                v-model="organizationId"
+                label="Affiliation"
+                class="q-ma-md"
+                :rules="[(val: number|null) => val !== null || 'Organization is required']"
+            />
             <q-input
                 v-model="email"
                 outlined
@@ -24,12 +30,7 @@
                         (val: string) => val !== '' || 'Required',
                         (val: string) => /^\S+@\S+\.\S+$/.test(val) || 'Email is invalid']"
             />
-            <OrganizationSelect
-                v-model="organizationId"
-                label="Affiliation"
-                class="q-ma-md"
-                :rules="[(val: number|null) => val !== null || 'Organization is required']"
-            />
+            <OrcidInput v-model="orcId" class="q-ma-md" />
             <div class="flex justify-end">
                 <q-btn
                     color="primary"
@@ -46,6 +47,7 @@
 import { AuthorResource, AuthorService, Author } from '../Author';
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
+import OrcidInput from '@/components/OrcidInput.vue';
 
 const emit = defineEmits<{
     (event: 'created', payload: AuthorResource): void;
@@ -55,7 +57,7 @@ const firstName = ref('');
 const lastName = ref('');
 const email = ref('');
 const organizationId = ref<number | null>(null);
-const ocrdId = ref('');
+const orcId = ref('');
 
 const createAuthor = async () => {
     if (organizationId.value === null) {
@@ -68,7 +70,7 @@ const createAuthor = async () => {
         last_name: lastName.value,
         email: email.value,
         organization_id: organizationId.value,
-        orcid: ocrdId.value,
+        orcid: orcId.value,
     };
 
     const author = await AuthorService.create(data);

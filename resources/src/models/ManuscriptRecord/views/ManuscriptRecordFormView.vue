@@ -19,22 +19,24 @@
                             (val) => val.length > 0 || 'Title is required',
                         ]"
                     ></q-input>
-                    <RegionSelect
-                        v-model="manuscriptResource.data.region_id"
-                        label="DFO Lead Region"
-                        outlined
-                        :disable="loading"
-                        bg-color="white"
-                        class="q-mb-md"
-                    />
-                    <ManuscriptTypeSelect
-                        v-model="manuscriptResource.data.type"
-                        label="Manuscript Type"
-                        outlined
-                        :disable="loading"
-                        bg-color="white"
-                        class="q-mb-md"
-                    />
+                    <div class="row justify-between q-gutter-md q-mb-md">
+                        <RegionSelect
+                            v-model="manuscriptResource.data.region_id"
+                            label="DFO Lead Region"
+                            outlined
+                            :disable="loading"
+                            bg-color="white"
+                            class="col-12 col-lg-6"
+                        />
+                        <ManuscriptTypeSelect
+                            v-model="manuscriptResource.data.type"
+                            label="Manuscript Type"
+                            outlined
+                            :disable="loading"
+                            bg-color="white"
+                            class="col-12 col-lg-5"
+                        />
+                    </div>
                     <QuestionEditor
                         v-model="manuscriptResource.data.abstract"
                         title="Abstract"
@@ -181,6 +183,11 @@ const save = async () => {
     await ManuscriptRecordService.save(manuscriptResource.value.data)
         .then((response) => {
             manuscriptResource.value = response;
+            $q.notify({
+                type: 'positive',
+                color: 'primary',
+                message: 'Manuscript saved successfully',
+            });
         })
         .catch((error) => {
             console.log(error);

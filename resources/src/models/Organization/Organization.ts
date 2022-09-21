@@ -13,9 +13,6 @@ export interface Organization {
 export type OrganizationResource = Resource<Organization>;
 export type OrganizationResourceList = ResourceList<Organization>;
 
-type R = OrganizationResource;
-type RList = OrganizationResourceList;
-
 export class OrganizationService {
     /** Get a list of organizations
      * @returns organization list
@@ -25,13 +22,13 @@ export class OrganizationService {
         if (query) {
             url += `?${query}`;
         }
-        const response = await http.get<RList>(url);
+        const response = await http.get<OrganizationResourceList>(url);
         return response.data;
     }
 
     /** Create a new organization */
     public static async create(organization: Organization) {
-        const response = await http.post<Organization, R>(
+        const response = await http.post<Organization, OrganizationResource>(
             'api/organizations',
             organization
         );

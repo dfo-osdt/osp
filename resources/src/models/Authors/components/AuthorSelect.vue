@@ -43,11 +43,6 @@
                             >Add a new author</q-tooltip
                         >
                     </q-btn>
-                    <create-author-dialog
-                        v-if="showCreateAuthorDialog"
-                        v-model="showCreateAuthorDialog"
-                        @created="createdAuthor"
-                    />
                 </q-item-section>
             </q-item>
         </template>
@@ -69,14 +64,14 @@
                             >Add a new author</q-tooltip
                         >
                     </q-btn>
-                    <create-author-dialog
-                        v-if="showCreateAuthorDialog"
-                        v-model="showCreateAuthorDialog"
-                        @created="createdAuthor"
-                    />
                 </q-item-section>
             </q-item>
         </template>
+        <create-author-dialog
+            v-if="showCreateAuthorDialog"
+            v-model="showCreateAuthorDialog"
+            @created="createdAuthor"
+        />
     </q-select>
 </template>
 

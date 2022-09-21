@@ -60,7 +60,7 @@ export class ManuscriptRecordService {
      * @returns The manuscript record.
      */
     public static async find(id: number) {
-        const response = await http.get<ManuscriptAuthorResource>(
+        const response = await http.get<ManuscriptRecordResource>(
             `${this.baseURL}/${id}`
         );
         return response.data;
@@ -87,7 +87,7 @@ export class ManuscriptRecordService {
     public static async save(data: ManuscriptRecord) {
         const response = await http.put<
             ManuscriptRecord,
-            ManuscriptAuthorResource
+            ManuscriptRecordResource
         >(`${this.baseURL}/${data.id}`, data);
         return response.data;
     }

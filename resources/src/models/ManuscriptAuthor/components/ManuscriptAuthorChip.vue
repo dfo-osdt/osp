@@ -1,12 +1,42 @@
 <template>
     <q-chip
         :removable="removable"
-        clickable
         color="teal-2"
         @remove="emit('delete:manuscriptAuthor')"
-        @click="emit('edit:manuscriptAuthor')"
     >
+        <q-avatar
+            v-if="manuscriptAuthor.data.is_corresponding_author"
+            icon="mdi-at"
+            color="primary"
+            text-color="white"
+        />
         {{ name }}
+        <q-tooltip class="text-caption">
+            <q-list dense>
+                <q-item>
+                    <q-item-section avatar>
+                        <q-avatar icon="mdi-bank" />
+                    </q-item-section>
+                    <q-item-section>
+                        <q-item-label>
+                            {{
+                                manuscriptAuthor.data.organization?.data.name_en
+                            }}
+                        </q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-item>
+                    <q-item-section avatar>
+                        <q-avatar icon="mdi-email" />
+                    </q-item-section>
+                    <q-item-section>
+                        <q-item-label>
+                            {{ manuscriptAuthor.data.author?.data.email }}
+                        </q-item-label>
+                    </q-item-section>
+                </q-item>
+            </q-list>
+        </q-tooltip>
     </q-chip>
 </template>
 
@@ -16,6 +46,8 @@ import { ManuscriptAuthorResource } from '../ManuscriptAuthor';
 const props = defineProps<{
     manuscriptAuthor: ManuscriptAuthorResource;
 }>();
+
+const value = ref(props.manuscriptAuthor.data.is_corresponding_author);
 
 const name = computed(() => {
     return `${props.manuscriptAuthor.data.author?.data.last_name}, ${props.manuscriptAuthor.data.author?.data.first_name}`;
