@@ -22,14 +22,17 @@ class FuzzyFilter implements Filter
     {
         $attributes = $this->columns;
 
-        $query->where(function (Builder $query) use ($attributes, $value) {
+        // is database engine postgresql? if so, use ILIKE as it is case insensitive
+        $like = config('database.default') === 'pgsql' ? 'ILIKE' : 'LIKE';
+
+        $query->where(function (Builder $query) use ($attributes, $value, $like) {
             foreach (Arr::wrap($attributes) as $attribute) {
-                $query->orWhere(function ($query) use ($attribute, $value) {
+                $query->orWhere(function ($query) use ($attribute, $value, $like) {
                     if (is_string($value)) {
                         $value = explode(' ', $value);
                     }
                     foreach ($value as $searchTerm) {
-                        $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
+                        $query->orWhere($attribute, $like, "%{$searchTerm}%");
                     }
                 });
             }
