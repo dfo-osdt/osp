@@ -24,9 +24,9 @@ test('a user can create a new organization', function () {
 
     $data = [
         'name_en' => 'Test Organization',
-        'name_fr' => 'Test Organization',
+        'name_fr' => 'Test Organizations',
         'abbr_en' => 'TO',
-        'abbr_fr' => 'TO',
+        'abbr_fr' => 'TOS',
     ];
 
     $response = $this->actingAs($user)->postJson('/api/organizations', $data)->assertCreated()->assertJson([
@@ -35,6 +35,40 @@ test('a user can create a new organization', function () {
 
     // make sure it exists in DB and that it is not validated.
     expect(Organization::find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+});
+
+test('a user can create a new organization without the abbreviation', function () {
+    $user = \App\Models\User::factory()->create();
+
+    $data = [
+        'name_en' => 'Test Organization',
+        'name_fr' => 'Test Organization',
+    ];
+
+    $response = $this->actingAs($user)->postJson('/api/organizations', $data)->assertCreated()->assertJson([
+        'data' => $data,
+    ]);
+
+    // make sure it exists in DB and that it is not validated.
+    expect(Organization::find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+});
+
+test('a user cannot create the same organization twice', function () {
+    $user = \App\Models\User::factory()->create();
+
+    $data = [
+        'name_en' => 'Test Organization',
+        'name_fr' => 'Test Organization',
+    ];
+
+    $response = $this->actingAs($user)->postJson('/api/organizations', $data)->assertCreated()->assertJson([
+        'data' => $data,
+    ]);
+
+    // make sure it exists in DB and that it is not validated.
+    expect(Organization::find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+
+    $response = $this->actingAs($user)->postJson('/api/organizations', $data)->assertStatus(422)->assertJsonValidationErrors(['name_en', 'name_fr']);
 });
 
 test('a user can see an organization', function () {
