@@ -18494,353 +18494,416 @@ namespace Illuminate\Support {
     }
 }
 
-namespace Spatie\LaravelIgnition\Facades {
-        /**
-         * @see \Spatie\FlareClient\Flare
-         */
-        class Flare
+namespace Intervention\Image\Facades {
+
+        class Image
         {
             /**
+             * Overrides configuration settings
+             *
+             * @param  array  $config
+             * @return self
              * @static
              */
-            public static function make($apiKey = null, $contextDetector = null)
+            public static function configure($config = [])
             {
-                return \Spatie\FlareClient\Flare::make($apiKey, $contextDetector);
+                /** @var \Intervention\Image\ImageManager $instance */
+                return $instance->configure($config);
             }
 
             /**
+             * Initiates an Image instance from different input types
+             *
+             * @param  mixed  $data
+             * @return \Intervention\Image\Image
              * @static
              */
-            public static function setApiToken($apiToken)
+            public static function make($data)
             {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->setApiToken($apiToken);
+                /** @var \Intervention\Image\ImageManager $instance */
+                return $instance->make($data);
             }
 
             /**
+             * Creates an empty image canvas
+             *
+             * @param  int  $width
+             * @param  int  $height
+             * @param  mixed  $background
+             * @return \Intervention\Image\Image
              * @static
              */
-            public static function apiTokenSet()
+            public static function canvas($width, $height, $background = null)
             {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->apiTokenSet();
+                /** @var \Intervention\Image\ImageManager $instance */
+                return $instance->canvas($width, $height, $background);
             }
 
             /**
+             * Create new cached image and run callback
+             * (requires additional package intervention/imagecache)
+             *
+             * @param  \Closure  $callback
+             * @param  int  $lifetime
+             * @param  bool  $returnObj
+             * @return \Image
              * @static
              */
-            public static function setBaseUrl($baseUrl)
+            public static function cache($callback, $lifetime = null, $returnObj = false)
             {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->setBaseUrl($baseUrl);
-            }
-
-            /**
-             * @static
-             */
-            public static function setStage($stage)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->setStage($stage);
-            }
-
-            /**
-             * @static
-             */
-            public static function sendReportsImmediately()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->sendReportsImmediately();
-            }
-
-            /**
-             * @static
-             */
-            public static function determineVersionUsing($determineVersionCallable)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->determineVersionUsing($determineVersionCallable);
-            }
-
-            /**
-             * @static
-             */
-            public static function reportErrorLevels($reportErrorLevels)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->reportErrorLevels($reportErrorLevels);
-            }
-
-            /**
-             * @static
-             */
-            public static function filterExceptionsUsing($filterExceptionsCallable)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->filterExceptionsUsing($filterExceptionsCallable);
-            }
-
-            /**
-             * @static
-             */
-            public static function filterReportsUsing($filterReportsCallable)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->filterReportsUsing($filterReportsCallable);
-            }
-
-            /**
-             * @static
-             */
-            public static function version()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->version();
-            }
-
-            /**
-             * @return \Spatie\FlareClient\array<int, FlareMiddleware|class-string<FlareMiddleware>>
-             * @static
-             */
-            public static function getMiddleware()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->getMiddleware();
-            }
-
-            /**
-             * @static
-             */
-            public static function setContextProviderDetector($contextDetector)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->setContextProviderDetector($contextDetector);
-            }
-
-            /**
-             * @static
-             */
-            public static function setContainer($container)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->setContainer($container);
-            }
-
-            /**
-             * @static
-             */
-            public static function registerFlareHandlers()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->registerFlareHandlers();
-            }
-
-            /**
-             * @static
-             */
-            public static function registerExceptionHandler()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->registerExceptionHandler();
-            }
-
-            /**
-             * @static
-             */
-            public static function registerErrorHandler()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->registerErrorHandler();
-            }
-
-            /**
-             * @param  \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|\Spatie\FlareClient\array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware>  $middleware
-             * @return \Spatie\FlareClient\Flare
-             * @static
-             */
-            public static function registerMiddleware($middleware)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->registerMiddleware($middleware);
-            }
-
-            /**
-             * @return \Spatie\FlareClient\array<int,FlareMiddleware|\Spatie\FlareClient\class-string<FlareMiddleware>>
-             * @static
-             */
-            public static function getMiddlewares()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->getMiddlewares();
-            }
-
-            /**
-             * @param  string  $name
-             * @param  string  $messageLevel
-             * @param  \Spatie\FlareClient\array<int,  mixed>  $metaData
-             * @return \Spatie\FlareClient\Flare
-             * @static
-             */
-            public static function glow($name, $messageLevel = 'info', $metaData = [])
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->glow($name, $messageLevel, $metaData);
-            }
-
-            /**
-             * @static
-             */
-            public static function handleException($throwable)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->handleException($throwable);
-            }
-
-            /**
-             * @return mixed
-             * @static
-             */
-            public static function handleError($code, $message, $file = '', $line = 0)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->handleError($code, $message, $file, $line);
-            }
-
-            /**
-             * @static
-             */
-            public static function applicationPath($applicationPath)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->applicationPath($applicationPath);
-            }
-
-            /**
-             * @static
-             */
-            public static function report($throwable, $callback = null, $report = null)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->report($throwable, $callback, $report);
-            }
-
-            /**
-             * @static
-             */
-            public static function reportMessage($message, $logLevel, $callback = null)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->reportMessage($message, $logLevel, $callback);
-            }
-
-            /**
-             * @static
-             */
-            public static function sendTestReport($throwable)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->sendTestReport($throwable);
-            }
-
-            /**
-             * @static
-             */
-            public static function reset()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->reset();
-            }
-
-            /**
-             * @static
-             */
-            public static function anonymizeIp()
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->anonymizeIp();
-            }
-
-            /**
-             * @param  \Spatie\FlareClient\array<int,  string>  $fieldNames
-             * @return \Spatie\FlareClient\Flare
-             * @static
-             */
-            public static function censorRequestBodyFields($fieldNames)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->censorRequestBodyFields($fieldNames);
-            }
-
-            /**
-             * @static
-             */
-            public static function createReport($throwable)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->createReport($throwable);
-            }
-
-            /**
-             * @static
-             */
-            public static function createReportFromMessage($message, $logLevel)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->createReportFromMessage($message, $logLevel);
-            }
-
-            /**
-             * @static
-             */
-            public static function stage($stage)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->stage($stage);
-            }
-
-            /**
-             * @static
-             */
-            public static function messageLevel($messageLevel)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->messageLevel($messageLevel);
-            }
-
-            /**
-             * @param  string  $groupName
-             * @param  mixed  $default
-             * @return \Spatie\FlareClient\array<int, mixed>
-             * @static
-             */
-            public static function getGroup($groupName = 'context', $default = [])
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->getGroup($groupName, $default);
-            }
-
-            /**
-             * @static
-             */
-            public static function context($key, $value)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->context($key, $value);
-            }
-
-            /**
-             * @param  string  $groupName
-             * @param  \Spatie\FlareClient\array<string,  mixed>  $properties
-             * @return \Spatie\FlareClient\Flare
-             * @static
-             */
-            public static function group($groupName, $properties)
-            {
-                /** @var \Spatie\FlareClient\Flare $instance */
-                return $instance->group($groupName, $properties);
+                /** @var \Intervention\Image\ImageManager $instance */
+                return $instance->cache($callback, $lifetime, $returnObj);
             }
         }
     }
+
+namespace Spatie\LaravelIgnition\Facades {
+    /**
+     * @see \Spatie\FlareClient\Flare
+     */
+    class Flare
+    {
+        /**
+         * @static
+         */
+        public static function make($apiKey = null, $contextDetector = null)
+        {
+            return \Spatie\FlareClient\Flare::make($apiKey, $contextDetector);
+        }
+
+        /**
+         * @static
+         */
+        public static function setApiToken($apiToken)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->setApiToken($apiToken);
+        }
+
+        /**
+         * @static
+         */
+        public static function apiTokenSet()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->apiTokenSet();
+        }
+
+        /**
+         * @static
+         */
+        public static function setBaseUrl($baseUrl)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->setBaseUrl($baseUrl);
+        }
+
+        /**
+         * @static
+         */
+        public static function setStage($stage)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->setStage($stage);
+        }
+
+        /**
+         * @static
+         */
+        public static function sendReportsImmediately()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->sendReportsImmediately();
+        }
+
+        /**
+         * @static
+         */
+        public static function determineVersionUsing($determineVersionCallable)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->determineVersionUsing($determineVersionCallable);
+        }
+
+        /**
+         * @static
+         */
+        public static function reportErrorLevels($reportErrorLevels)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->reportErrorLevels($reportErrorLevels);
+        }
+
+        /**
+         * @static
+         */
+        public static function filterExceptionsUsing($filterExceptionsCallable)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->filterExceptionsUsing($filterExceptionsCallable);
+        }
+
+        /**
+         * @static
+         */
+        public static function filterReportsUsing($filterReportsCallable)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->filterReportsUsing($filterReportsCallable);
+        }
+
+        /**
+         * @static
+         */
+        public static function version()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->version();
+        }
+
+        /**
+         * @return \Spatie\FlareClient\array<int, FlareMiddleware|class-string<FlareMiddleware>>
+         * @static
+         */
+        public static function getMiddleware()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->getMiddleware();
+        }
+
+        /**
+         * @static
+         */
+        public static function setContextProviderDetector($contextDetector)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->setContextProviderDetector($contextDetector);
+        }
+
+        /**
+         * @static
+         */
+        public static function setContainer($container)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->setContainer($container);
+        }
+
+        /**
+         * @static
+         */
+        public static function registerFlareHandlers()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->registerFlareHandlers();
+        }
+
+        /**
+         * @static
+         */
+        public static function registerExceptionHandler()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->registerExceptionHandler();
+        }
+
+        /**
+         * @static
+         */
+        public static function registerErrorHandler()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->registerErrorHandler();
+        }
+
+        /**
+         * @param  \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|\Spatie\FlareClient\array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware>  $middleware
+         * @return \Spatie\FlareClient\Flare
+         * @static
+         */
+        public static function registerMiddleware($middleware)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->registerMiddleware($middleware);
+        }
+
+        /**
+         * @return \Spatie\FlareClient\array<int,FlareMiddleware|\Spatie\FlareClient\class-string<FlareMiddleware>>
+         * @static
+         */
+        public static function getMiddlewares()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->getMiddlewares();
+        }
+
+        /**
+         * @param  string  $name
+         * @param  string  $messageLevel
+         * @param  \Spatie\FlareClient\array<int,  mixed>  $metaData
+         * @return \Spatie\FlareClient\Flare
+         * @static
+         */
+        public static function glow($name, $messageLevel = 'info', $metaData = [])
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->glow($name, $messageLevel, $metaData);
+        }
+
+        /**
+         * @static
+         */
+        public static function handleException($throwable)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->handleException($throwable);
+        }
+
+        /**
+         * @return mixed
+         * @static
+         */
+        public static function handleError($code, $message, $file = '', $line = 0)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->handleError($code, $message, $file, $line);
+        }
+
+        /**
+         * @static
+         */
+        public static function applicationPath($applicationPath)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->applicationPath($applicationPath);
+        }
+
+        /**
+         * @static
+         */
+        public static function report($throwable, $callback = null, $report = null)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->report($throwable, $callback, $report);
+        }
+
+        /**
+         * @static
+         */
+        public static function reportMessage($message, $logLevel, $callback = null)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->reportMessage($message, $logLevel, $callback);
+        }
+
+        /**
+         * @static
+         */
+        public static function sendTestReport($throwable)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->sendTestReport($throwable);
+        }
+
+        /**
+         * @static
+         */
+        public static function reset()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->reset();
+        }
+
+        /**
+         * @static
+         */
+        public static function anonymizeIp()
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->anonymizeIp();
+        }
+
+        /**
+         * @param  \Spatie\FlareClient\array<int,  string>  $fieldNames
+         * @return \Spatie\FlareClient\Flare
+         * @static
+         */
+        public static function censorRequestBodyFields($fieldNames)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->censorRequestBodyFields($fieldNames);
+        }
+
+        /**
+         * @static
+         */
+        public static function createReport($throwable)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->createReport($throwable);
+        }
+
+        /**
+         * @static
+         */
+        public static function createReportFromMessage($message, $logLevel)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->createReportFromMessage($message, $logLevel);
+        }
+
+        /**
+         * @static
+         */
+        public static function stage($stage)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->stage($stage);
+        }
+
+        /**
+         * @static
+         */
+        public static function messageLevel($messageLevel)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->messageLevel($messageLevel);
+        }
+
+        /**
+         * @param  string  $groupName
+         * @param  mixed  $default
+         * @return \Spatie\FlareClient\array<int, mixed>
+         * @static
+         */
+        public static function getGroup($groupName = 'context', $default = [])
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->getGroup($groupName, $default);
+        }
+
+        /**
+         * @static
+         */
+        public static function context($key, $value)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->context($key, $value);
+        }
+
+        /**
+         * @param  string  $groupName
+         * @param  \Spatie\FlareClient\array<string,  mixed>  $properties
+         * @return \Spatie\FlareClient\Flare
+         * @static
+         */
+        public static function group($groupName, $properties)
+        {
+            /** @var \Spatie\FlareClient\Flare $instance */
+            return $instance->group($groupName, $properties);
+        }
+    }
+}
 
 namespace Illuminate\Http {
 
@@ -22798,6 +22861,9 @@ namespace  {
     {
     }
     class Vite extends \Illuminate\Support\Facades\Vite
+    {
+    }
+    class Image extends \Intervention\Image\Facades\Image
     {
     }
     class Flare extends \Spatie\LaravelIgnition\Facades\Flare

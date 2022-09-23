@@ -26,8 +26,7 @@ class ManuscriptRecordResource extends JsonResource
 
                 // text fields / send empty string if null.
                 'abstract' => $this->abstract ?? '',
-                'pls_en' => $this->pls_en ?? '',
-                'pls_fr' => $this->pls_fr ?? '',
+                'pls' => $this->pls ?? '',
                 'scientific_implications' => $this->scientific_implications ?? '',
                 'regions_and_species' => $this->regions_and_species ?? '',
                 'relevant_to' => $this->relevant_to ?? '',
@@ -42,6 +41,7 @@ class ManuscriptRecordResource extends JsonResource
                 'accepted_on' => $this->accepted_on,
                 'withdrawn_on' => $this->withdrawn_on,
                 //relationships - if loaded
+                'manuscript_pdf' => MediaResource::make($this->getManuscriptFile()),
                 'region' => RegionResource::make($this->whenLoaded('region')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
             ],

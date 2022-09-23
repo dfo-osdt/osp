@@ -5,6 +5,7 @@ use App\Enums\ManuscriptRecordType;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 
 test('an authenticated user can create a new manuscript', function () {
     $this->seed();
@@ -27,7 +28,6 @@ test('an authenticated user can create a new manuscript', function () {
 
     $response = $this->actingAs($user)->postJson('/api/manuscript-records', $submit_data)->assertCreated();
 
-    ray($response->json());
     expect($response->json('data'))->toMatchArray($manuscript_data->toArray());
     expect(ManuscriptRecord::find($response->json('data.id')))->toMatchArray($manuscript_data->toArray());
 });
@@ -39,18 +39,14 @@ test('an authenticated users can get a list of their manuscripts', function () {
     $user = User::factory()->create();
     $manuscripts = ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(2))->count(5)->count(5)->create(['user_id' => $user->id]);
 
-    ray()->showQueries();
-
     $response = $this->actingAs($user)->getJson('/api/my/manuscript-records')->assertOk();
-
-    ray($response->json());
 
     expect($response->json('data'))->toHaveCount(5);
     // expect manuscript author to be included
     expect($response->json('data.0.data.manuscript_authors'))->toHaveCount(2);
 });
 
-test('an user can save a draft manuscript', function () {
+test('a user can save a draft manuscript', function () {
     $this->seed();
 
     $user = User::factory()->create();
@@ -70,8 +66,7 @@ test('an user can save a draft manuscript', function () {
         'region_id' => 1,
         'type' => ManuscriptRecordType::SECONDARY->value,
         'abstract' => 'My new abstract',
-        'pls_en' => 'My new pls_en',
-        'pls_fr' => 'My new pls_fr',
+        'pls' => 'My new pls',
         'scientific_implications' => 'My new scientific_implications',
         'regions_and_species' => 'My new regions_and_species',
         'relevant_to' => 'My new relevant_to',
@@ -84,4 +79,54 @@ test('an user can save a draft manuscript', function () {
     // assert new data in response and database
     expect($response->json('data'))->toMatchArray($data);
     expect(ManuscriptRecord::find($manuscript->id))->toMatchArray($data);
+});
+
+test('a user can attach and download a pdf version of their manuscript to a manuscript record', function () {
+    $this->seed();
+
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+
+    // try to download a pdf without uploading one
+    $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/pdf")->assertNotFound();
+
+    // fake pdf
+    $fakePdfContent = <<<'PDF'
+%PDF-1.4
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
+3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
+xref
+0 4
+0000000000 65535 f
+0000000009 00000 n
+0000000052 00000 n
+0000000101 00000 n
+trailer<</Size 4/Root 1 0 R>>
+startxref
+178
+%%EOF
+PDF;
+
+    // upload pdf
+    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
+
+    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/pdf", [
+        'pdf' => $file,
+    ])->assertOk();
+
+    // check that the pdf has been uploaded
+    expect($manuscript->getManuscriptFile()->file_name)->toBe('test.pdf');
+
+    // download the pdf check file in response
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/pdf")->assertOk();
+    $response->assertDownload('test.pdf');
+
+    // upload a new pdf - it should replace the old one
+    $file = UploadedFile::fake()->createWithContent('test2.pdf', $fakePdfContent)->size(1000);
+    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/pdf", [
+        'pdf' => $file,
+    ])->assertOk();
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/pdf")->assertOk();
+    $response->assertDownload('test2.pdf');
 });

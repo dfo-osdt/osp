@@ -45,6 +45,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/manuscript-records/{manuscriptRecord}', 'show');
         Route::put('manuscript-records/{manuscriptRecord}', 'update');
         Route::post('/manuscript-records', 'store');
+        // upload/download attached manuscript pdf
+        Route::get('manuscript-records/{manuscriptRecord}/pdf', 'downloadPdf');
+        Route::post('manuscript-records/{manuscriptRecord}/pdf', 'attachPdf');
     });
 
     // routes for user specific resources

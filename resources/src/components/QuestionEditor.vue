@@ -12,6 +12,13 @@
             v-model="value"
             :disable="disable"
             :readonly="readonly"
+            :toolbar="[
+                ['bold', 'italic', 'underline'],
+                ['superscript', 'subscript', 'quote'],
+                ['link', 'code'],
+                ['ordered', 'unordered'],
+                ['undo', 'redo', 'removeFormat'],
+            ]"
             toolbar-bg="teal-1"
         ></q-editor>
     </div>
@@ -32,6 +39,11 @@ const props = withDefaults(
 );
 
 const value = useVModel(props, 'modelValue');
+
+const toolbar = [
+    ['bold', 'italic', 'strike', 'underline'],
+    ['upload', 'save'],
+];
 </script>
 
 <style scoped></style>

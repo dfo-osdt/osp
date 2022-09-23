@@ -35,8 +35,7 @@ class ManuscriptRecordFactory extends Factory
     {
         return $this->state([
             'abstract' => $this->faker->paragraph(),
-            'pls_en' => $this->faker->paragraph(),
-            'pls_fr' => $this->faker->paragraph(),
+            'pls' => $this->faker->paragraph(),
             'scientific_implications' => $this->faker->paragraph(),
             'regions_and_species' => $this->faker->paragraph(),
             'relevant_to' => $this->faker->paragraph(),

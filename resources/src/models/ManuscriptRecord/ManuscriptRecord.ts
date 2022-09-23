@@ -1,7 +1,7 @@
 import { http } from '@/api/http';
 import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import { Region } from '../Region/Region';
-import { Resource, ResourceList } from '../Resource';
+import { Resource, ResourceList, Media } from '../Resource';
 
 export type ManuscriptRecordType = 'primary' | 'secondary';
 
@@ -32,8 +32,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     status: ManuscriptRecordStatus;
     user_id: number;
     abstract: string;
-    pls_en: string;
-    pls_fr: string;
+    pls: string;
     scientific_implications: string;
     regions_and_species: string;
     relevant_to: string;
@@ -43,6 +42,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     submitted_to_journal_on: string | null;
     accepted_on: string | null;
     withdrawn_on: string | null;
+    manuscript_pdf: Media | null;
     // relationships
     region?: Region;
     manuscript_authors?: ManuscriptAuthorResource[];
@@ -89,6 +89,18 @@ export class ManuscriptRecordService {
             ManuscriptRecord,
             ManuscriptRecordResource
         >(`${this.baseURL}/${data.id}`, data);
+        return response.data;
+    }
+
+    /** Attach a PDF file to the manuscript record */
+    public static async attachPDF(file: File, id: number) {
+        const formData = new FormData();
+        formData.append('pdf', file);
+        const response = await http.post<FormData, ManuscriptRecordResource>(
+            `${this.baseURL}/${id}/pdf`,
+            formData
+        );
+        console.log(response);
         return response.data;
     }
 

@@ -9,6 +9,7 @@ use App\Models\ManuscriptRecord;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ManuscriptRecordController extends Controller
 {
@@ -75,8 +76,7 @@ class ManuscriptRecordController extends Controller
             'region_id' => 'numeric|exists:regions,id',
             'type' => [new Enum(ManuscriptRecordType::class)],
             'abstract' => 'nullable|string',
-            'pls_en' => 'nullable|string',
-            'pls_fr' => 'nullable|string',
+            'pls' => 'nullable|string',
             'scientific_implications' => 'nullable|string',
             'regions_and_species' => 'nullable|string',
             'relevant_to' => 'nullable|string',
@@ -97,5 +97,33 @@ class ManuscriptRecordController extends Controller
     public function destroy(ManuscriptRecord $manuscriptRecord)
     {
         //
+    }
+
+    /** Attach a PDF file to this record */
+    public function attachPDF(Request $request, ManuscriptRecord $manuscriptRecord)
+    {
+        Auth::user()->can('update', $manuscriptRecord);
+
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf',
+        ]);
+
+        $manuscriptRecord->addMedia($validated['pdf'])->toMediaCollection('manuscript');
+
+        return new ManuscriptRecordResource($manuscriptRecord);
+    }
+
+    /** Download PDF attached to this record - return NoContent if empty */
+    public function downloadPDF(ManuscriptRecord $manuscriptRecord)
+    {
+        Auth::user()->can('view', $manuscriptRecord);
+
+        $pdf = $manuscriptRecord->getManuscriptFile();
+
+        if ($pdf) {
+            return $pdf; // response()->download($pdf->getPath(), $pdf->file_name);
+        } else {
+            throw new NotFoundHttpException('No PDF attached to this record');
+        }
     }
 }

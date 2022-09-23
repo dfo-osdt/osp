@@ -69,6 +69,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptAuthor whereManuscriptRecordId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptAuthor whereOrganizationId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptAuthor whereUpdatedAt($value)
+     * @mixin \Eloquent
      */
     class ManuscriptAuthor extends \Eloquent
     {
@@ -101,7 +102,10 @@ namespace App\Models{
      * @property string|null $withdrawn_on
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ManuscriptAuthor[] $manuscriptAuthors
      * @property-read int|null $manuscript_authors_count
+     * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+     * @property-read int|null $media_count
      * @property-read \App\Models\Region $region
+     * @property-read \App\Models\User $user
      *
      * @method static \Database\Factories\ManuscriptRecordFactory factory(...$parameters)
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord newModelQuery()
@@ -128,7 +132,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord whereWithdrawnOn($value)
      */
-    class ManuscriptRecord extends \Eloquent
+    class ManuscriptRecord extends \Eloquent implements \Spatie\MediaLibrary\HasMedia
     {
     }
 }
@@ -140,7 +144,7 @@ namespace App\Models{
      * @property int $id
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property int $is_validated
+     * @property bool $is_validated
      * @property string $name_en
      * @property string $name_fr
      * @property string|null $abbr_en

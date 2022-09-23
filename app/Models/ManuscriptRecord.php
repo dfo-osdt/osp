@@ -8,10 +8,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class ManuscriptRecord extends Model
+/**
+ * App\Models\ManuscriptRecord
+ */
+class ManuscriptRecord extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     public $guarded = [
         'id',
@@ -29,8 +37,7 @@ class ManuscriptRecord extends Model
     // default values for optional fields
     protected $attributes = [
         'abstract' => '',
-        'pls_en' => '',
-        'pls_fr' => '',
+        'pls' => '',
         'scientific_implications' => '',
         'regions_and_species' => '',
         'relevant_to' => '',
@@ -53,5 +60,30 @@ class ManuscriptRecord extends Model
     public function manuscriptAuthors(): HasMany
     {
         return $this->hasMany('App\Models\ManuscriptAuthor');
+    }
+
+    /**
+     * A manuscript has a user.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    /**
+     * Register media collection that will only accept a single PDF file.
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('manuscript')
+            ->acceptsMimeTypes(['application/pdf']);
+    }
+
+    /**
+     * Get manuscript file media model.
+     */
+    public function getManuscriptFile(): ?Media
+    {
+        return $this->getMedia('manuscript')->last();
     }
 }
