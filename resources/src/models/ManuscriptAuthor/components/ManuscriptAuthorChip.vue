@@ -12,7 +12,7 @@
             text-color="white"
         />
         {{ name }}
-        <q-menu auto-close>
+        <q-menu>
             <q-list dense separator>
                 <q-item>
                     <q-item-section avatar>
