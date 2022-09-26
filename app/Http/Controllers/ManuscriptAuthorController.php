@@ -73,18 +73,21 @@ class ManuscriptAuthorController extends Controller
     public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
     {
         $validated = $request->validate([
-            'author_id' => 'required|integer|exists:authors,id',
+            //'author_id' => 'integer|exists:authors,id',
             'is_corresponding_author' => 'boolean',
+            'organization_id' => 'integer|exists:organizations,id',
         ]);
 
-        $author = Author::find($validated['author_id']);
-
-        $manuscriptAuthor->manuscript_record_id = $manuscriptRecord->id;
-        $manuscriptAuthor->author_id = $author->id;
-        $manuscriptAuthor->organization_id = $author->organization_id;
+        if (isset($validated['organization_id'])) {
+            $manuscriptAuthor->organization_id = $validated['organization_id'];
+        }
+        if (isset($validated['is_corresponding_author'])) {
+            $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'];
+        }
         $manuscriptAuthor->save();
+        $manuscriptAuthor->refresh()->load('author', 'organization');
 
-        return $manuscriptAuthor;
+        return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
 
     /**

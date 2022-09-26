@@ -1,6 +1,48 @@
 <template>
     <MainPageLayout icon="mdi-file-document" :title="title">
-        <ContentCard title="Manuscript Record Form" class="q-ma-md">
+        <ContentCard class="q-ma-md bg-grey-1">
+            <template #title>Manuscript Record Form</template>
+            <template #title-right>
+                <!-- Save button, icon only, caption, disabled if no changes -->
+                <q-btn
+                    :icon="
+                        isDirty
+                            ? 'mdi-content-save-alert-outline'
+                            : 'mdi-content-save-outline'
+                    "
+                    color="primary"
+                    flat
+                    :loading="loading"
+                    @click="save"
+                >
+                    <q-tooltip>Save</q-tooltip>
+                </q-btn>
+            </template>
+            <template #nav>
+                <div
+                    v-if="manuscriptResource?.data"
+                    class="row flex justify-between q-mx-md q-my-sm"
+                >
+                    <div class="text-subtitle1 text-weight-light">
+                        Manuscript Type:
+                        <ManuscriptTypeBadge
+                            :type="manuscriptResource.data.type"
+                            class="text-body2 text-weight-light"
+                            :outline="false"
+                        />
+                    </div>
+                    <div class="text-subtitle1 text-weight-light">
+                        Status:
+                        <ManuscriptStatusBadge
+                            :status="manuscriptResource.data.status"
+                            class="text-body2 text-weight-light"
+                            :outline="false"
+                        />
+                    </div>
+                </div>
+
+                <q-separator />
+            </template>
             <ManageManuscriptAuthorsCard
                 :manuscript-record-id="id"
                 class="q-ma-sm"
@@ -9,17 +51,34 @@
                 <template #title>General Information</template>
                 <template v-if="manuscriptResource?.data">
                     <q-form>
-                        <q-input
-                            v-model="manuscriptResource.data.title"
-                            outlined
-                            bg-color="white"
-                            class="q-mb-md"
-                            label="Manuscript's Working Title"
-                            :disable="loading"
-                            :rules="[
-                                (val) => val.length > 0 || 'Title is required',
-                            ]"
-                        ></q-input>
+                        <div class="q-mb-md">
+                            <div class="q-ml-xs">
+                                <div
+                                    class="text-body1 text-primary text-weight-medium"
+                                >
+                                    Manuscript's Working Title
+                                </div>
+                                <div class="q-my-xs">
+                                    <p>
+                                        Enter to the manuscript's working title.
+                                        You will be able to modify the title
+                                        when you update this manuscript status
+                                        to published.
+                                    </p>
+                                </div>
+                            </div>
+                            <q-input
+                                v-model="manuscriptResource.data.title"
+                                outlined
+                                bg-color="white"
+                                label="Manuscript's Working Title"
+                                :disable="loading"
+                                :rules="[
+                                    (val) =>
+                                        val.length > 0 || 'Title is required',
+                                ]"
+                            ></q-input>
+                        </div>
 
                         <div class="q-mb-lg">
                             <div class="q-ml-xs">
@@ -31,7 +90,9 @@
                                 <div class="q-my-xs">
                                     <p>
                                         Select the DFO region responsible for
-                                        the review of this manuscript.
+                                        the review of this manuscript. If more
+                                        than one region is responsible, select
+                                        the region that will lead the review.
                                     </p>
                                 </div>
                             </div>
@@ -41,7 +102,6 @@
                                 outlined
                                 :disable="loading"
                                 bg-color="white"
-                                class="col-12 col-lg-6"
                             />
                         </div>
 
@@ -76,7 +136,13 @@
                             title="Scientific Implications"
                             :disable="loading"
                             class="q-mb-md"
-                        ></QuestionEditor>
+                        >
+                            <p>
+                                Describe the scientifc implications of the
+                                paper. (i.e. field, importance, focus, purpose,
+                                benefits, etc.)
+                            </p>
+                        </QuestionEditor>
                         <QuestionEditor
                             v-model="
                                 manuscriptResource.data.regions_and_species
@@ -84,39 +150,48 @@
                             title="Geographical Scope and Species"
                             :disable="loading"
                             class="q-mb-md"
-                        ></QuestionEditor>
+                        >
+                            <p>
+                                Describe the geographical scope/region and (if
+                                applicable) species (to include common names) of
+                                the paper.
+                            </p>
+                        </QuestionEditor>
                         <QuestionEditor
                             v-model="manuscriptResource.data.relevant_to"
                             title="Relevant to programs, projects, etc."
                             :disable="loading"
                             class="q-mb-md"
-                        ></QuestionEditor>
+                        >
+                            <p>
+                                Describe how the paper is relevant to programs,
+                                projects, acts, initiatives, etc. (i.e. how it
+                                supports the department's mandate, how it
+                                supports the department's strategic plan, how it
+                                supports regional priorities, etc.)
+                            </p>
+                        </QuestionEditor>
                         <QuestionEditor
                             v-model="
                                 manuscriptResource.data.additional_information
                             "
-                            title="Additional Information"
+                            title="Additional Information of Importance"
                             :disable="loading"
                             class="q-mb-md"
-                        ></QuestionEditor>
+                        >
+                            <p>
+                                Provide any additional information of importance
+                                to the manuscript.
+                            </p>
+                        </QuestionEditor>
                     </q-form>
-                    <q-card-actions align="right">
-                        <q-btn
-                            class="q-mt-md"
-                            color="primary"
-                            :loading="loading"
-                            :disable="!isDirty"
-                            label="Save"
-                            @click="save"
-                        />
-                    </q-card-actions>
                 </template>
                 <template v-else>
                     <q-skeleton type="text" />
                 </template>
             </ContentCard>
-            <ContentCard class="q-ma-md">
-                <template #title>Manuscript</template>
+            <ContentCard class="q-mx-sm q-mt-md">
+                <template #title>Attach Manuscript</template>
                 <p>
                     Upload the most recent copy of your manuscript as a PDF.
                     This file can be updated as required.
@@ -160,9 +235,17 @@
                     v-model="manuscriptFile"
                     outlined
                     use-chips
-                    label="Manuscript"
+                    :label="
+                        manuscriptResource?.data.manuscript_pdf
+                            ? 'Upload new version of manuscript'
+                            : 'Upload manuscript'
+                    "
+                    hint="Only PDF files are accepted. Maximum file size is 10MB."
                     accept="application/pdf"
+                    max-file-size="10000000"
+                    counter
                     :loading="uploadingFile"
+                    @rejected="onFileRejected"
                 >
                     <template #prepend>
                         <q-icon name="mdi-file-pdf-box" />
@@ -178,13 +261,30 @@
                     </template>
                 </q-file>
             </ContentCard>
+            <q-card-actions align="right">
+                <q-btn
+                    class="q-mt-md"
+                    color="primary"
+                    :loading="loading"
+                    label="Save"
+                    @click="save"
+                />
+                <q-btn
+                    class="q-mt-md"
+                    color="primary"
+                    :loading="loading"
+                    :disable="true"
+                    label="Submit"
+                    @click="submit"
+                />
+            </q-card-actions>
         </ContentCard>
     </MainPageLayout>
 </template>
 
 <script setup lang="ts">
 import { Ref } from 'vue';
-import { useQuasar } from 'quasar';
+import { QRejectedEntry, useQuasar } from 'quasar';
 import { onBeforeRouteLeave } from 'vue-router';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import {
@@ -195,7 +295,8 @@ import QuestionEditor from '@/components/QuestionEditor.vue';
 import ContentCard from '@/components/ContentCard.vue';
 import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue';
 import RegionSelect from '@/models/Region/components/RegionSelect.vue';
-import ManuscriptTypeSelect from '../components/ManuscriptTypeSelect.vue';
+import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue';
+import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue';
 const { t } = useI18n();
 const $q = useQuasar();
 
@@ -283,6 +384,25 @@ const save = async () => {
         });
 };
 
+function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
+    console.log(rejectedEntries);
+    rejectedEntries.forEach((rejectedEntry) => {
+        if (rejectedEntry.failedPropValidation === 'max-file-size') {
+            $q.notify({
+                type: 'negative',
+                color: 'negative',
+                message: 'File size is too large',
+            });
+        } else if (rejectedEntry.failedPropValidation === 'accept') {
+            $q.notify({
+                type: 'negative',
+                color: 'negative',
+                message: 'File type is not accepted',
+            });
+        }
+    });
+}
+
 async function upload() {
     // if there is no manuscript file, return
     if (manuscriptFile.value === null) return;
@@ -305,11 +425,18 @@ async function upload() {
     console.log(dirtyState);
     isDirty.value = dirtyState;
 
+    // clear file
+    manuscriptFile.value = null;
+
     $q.notify({
         type: 'positive',
         color: 'primary',
         message: 'File uploaded successfully',
     });
+}
+
+async function submit() {
+    console.log('submit');
 }
 </script>
 

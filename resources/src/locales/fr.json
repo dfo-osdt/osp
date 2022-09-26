@@ -8,5 +8,15 @@
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès"
+  },
+  "manuscript": {
+    "primary": "Primaire",
+    "secondary": "Secondaire",
+    "draft": "Brouillon",
+    "in_review": "En revue",
+    "reviewed": "Révisé",
+    "submitted": "Soumis",
+    "accepted": "Accepté",
+    "withdrawn": "Retiré"
   }
 }

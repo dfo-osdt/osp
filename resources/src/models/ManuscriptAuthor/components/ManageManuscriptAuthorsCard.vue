@@ -1,6 +1,11 @@
 <template>
     <ContentCard>
-        <template #title>Authors</template>
+        <template #title>Author(s) and Affiliations</template>
+        <p>
+            Enter all authors, their affiliations and at least one corresponding
+            author. Authors will appears in the list in the order they are
+            entered.
+        </p>
         <q-field
             label="Authors"
             outlined
@@ -18,11 +23,16 @@
                             @delete:manuscript-author="
                                 deleteManuscriptAuthor(item)
                             "
-                            @edit:manuscript-author="editManuscriptAuthor(item)"
+                            @edit:toggle-corresponding-author="
+                                toggleCorrespondingAuthor(item, $event)
+                            "
                         />
                     </template>
                     <template v-else>
-                        <span>No authors, please add at least one author.</span>
+                        <span
+                            >No authors, please add at least one author prior to
+                            submission.</span
+                        >
                     </template>
                 </div>
             </template>
@@ -105,9 +115,27 @@ const addedManuscriptAuthor = (manuscriptAuthor: ManuscriptAuthorResource) => {
     loadManuscriptAuthors();
 };
 
-const editManuscriptAuthor = () => {
-    console.log('edit author');
-};
+async function toggleCorrespondingAuthor(
+    item: ManuscriptAuthorResource,
+    isCorresponding: boolean
+) {
+    const manuscriptAuthor = item.data;
+    manuscriptAuthor.is_corresponding_author = isCorresponding;
+    await ManuscriptAuthorService.update(manuscriptAuthor)
+        .then(() => {
+            $q.notify({
+                type: 'positive',
+                color: 'primary',
+                message: `${
+                    manuscriptAuthor.author?.data.first_name ?? 'Author'
+                } updated successfully.`,
+            });
+            loadManuscriptAuthors();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 // delete manuscript author
 const deleteManuscriptAuthor = async (

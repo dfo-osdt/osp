@@ -57,16 +57,12 @@
             </q-item-section>
             <q-item-section side top>
                 <span>
-                    <q-badge
-                        outline
-                        color="primary"
-                        :label="manuscript.data.type"
+                    <manuscript-type-badge
+                        :type="manuscript.data.type"
                         class="q-mr-xs"
                     />
-                    <q-badge
-                        outline
-                        color="blue"
-                        :label="manuscript.data.status"
+                    <manuscript-status-badge
+                        :status="manuscript.data.status"
                     /> </span
             ></q-item-section>
         </q-item>
@@ -75,6 +71,8 @@
 
 <script setup lang="ts">
 import { ManuscriptRecordResource } from '../ManuscriptRecord';
+import ManuscriptTypeBadge from './ManuscriptTypeBadge.vue';
+import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue';
 
 const props = defineProps<{
     manuscripts: ManuscriptRecordResource[];

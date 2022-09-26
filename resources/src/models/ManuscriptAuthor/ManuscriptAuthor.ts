@@ -63,4 +63,14 @@ export class ManuscriptAuthorService {
         });
         return response.data;
     }
+
+    /** Update manuscript author */
+    public static async update(manuscriptAuthor: ManuscriptAuthor) {
+        const { manuscript_record_id, id } = manuscriptAuthor;
+        const url = `api/manuscript-records/${manuscript_record_id}/manuscript-authors/${id}`;
+        const response = await http.put<any, R>(url, {
+            is_corresponding_author: manuscriptAuthor.is_corresponding_author,
+        });
+        return response.data;
+    }
 }
