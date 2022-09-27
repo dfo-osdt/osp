@@ -23,7 +23,7 @@ class AuthorController extends Controller
         $limit = $this->getLimitFromRequest($request);
         $authorListQuery = new AuthorListQuery($request);
 
-        return AuthorResource::collection($authorListQuery->paginate($limit)->appends($request->query()));
+        return AuthorResource::collection($authorListQuery->with('organization')->paginate($limit)->appends($request->query()));
     }
 
     /**

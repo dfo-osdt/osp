@@ -6,6 +6,7 @@
         :option-value="optionValue"
         :option-disable="optionDisable"
         :option-label="optionLabel"
+        clearable
         label="Author"
         :loading="authorsLoading"
         use-input
@@ -44,6 +45,22 @@
                         >
                     </q-btn>
                 </q-item-section>
+            </q-item>
+        </template>
+        <template #option="scope">
+            <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                    <q-item-label
+                        >{{ scope.opt.data.first_name }}
+                        {{ scope.opt.data.last_name }}</q-item-label
+                    >
+                    <q-item-label caption>
+                        {{ scope.opt.data.email }}
+                    </q-item-label>
+                </q-item-section>
+                <q-item-section side>{{
+                    scope.opt.data.organization.data[`name_${$i18n.locale}`]
+                }}</q-item-section>
             </q-item>
         </template>
         <template #after-options>
