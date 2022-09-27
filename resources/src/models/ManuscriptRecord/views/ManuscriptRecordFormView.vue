@@ -1,6 +1,6 @@
 <template>
     <MainPageLayout icon="mdi-file-document" :title="title">
-        <ContentCard class="q-ma-md bg-grey-1">
+        <ContentCard class="q-ma-md">
             <template #title>Manuscript Record Form</template>
             <template #title-right>
                 <!-- Save button, icon only, caption, disabled if no changes -->
@@ -352,23 +352,8 @@ const manuscriptFile: Ref<File | null> = ref(null);
 const uploadingFile = ref(false);
 const authStore = useAuthStore();
 
-onMounted(async () => {
-    await ManuscriptRecordService.find(props.id)
-        .then((response) => {
-            manuscriptResource.value = response;
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        .finally(() => {
-            loading.value = false;
-        });
-    loading.value = false;
-});
-
 // watch if there is a change
 const isDirty = ref(false);
-
 watch(
     manuscriptResource,
     (newVal, oldValue) => {
@@ -379,30 +364,6 @@ watch(
     },
     { deep: true }
 );
-
-// warn the user if they try to leave the page while there are unsaved changes
-onBeforeRouteLeave((to, from, next) => {
-    // if user is logged out ... don't warn them
-    if (!authStore.isAuthenticated) {
-        next();
-        return;
-    }
-
-    if (isDirty.value) {
-        $q.dialog({
-            title: t('Unsaved Changes'),
-            message: t(
-                'You have unsaved changes. Are you sure you want to leave?'
-            ),
-            cancel: true,
-            persistent: true,
-        }).onOk(() => {
-            next();
-        });
-    } else {
-        next();
-    }
-});
 
 const title = computed(
     () =>
@@ -422,6 +383,7 @@ const generalSectionStatus = computed(() => {
         return 'error';
     }
 
+    // you can't save the manuscript if the title is empty
     if (manuscript.title === '') return 'error';
 
     const complete =
@@ -432,6 +394,20 @@ const generalSectionStatus = computed(() => {
         manuscript.relevant_to;
 
     return complete ? 'complete' : 'incomplete';
+});
+
+onMounted(async () => {
+    await ManuscriptRecordService.find(props.id)
+        .then((response) => {
+            manuscriptResource.value = response;
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+    loading.value = false;
 });
 
 const save = async () => {
@@ -511,6 +487,30 @@ async function upload() {
 async function submit() {
     console.log('submit');
 }
+
+// warn the user if they try to leave the page while there are unsaved changes
+onBeforeRouteLeave((to, from, next) => {
+    // if user is logged out ... don't warn them
+    if (!authStore.isAuthenticated) {
+        next();
+        return;
+    }
+
+    if (isDirty.value) {
+        $q.dialog({
+            title: t('Unsaved Changes'),
+            message: t(
+                'You have unsaved changes. Are you sure you want to leave?'
+            ),
+            cancel: true,
+            persistent: true,
+        }).onOk(() => {
+            next();
+        });
+    } else {
+        next();
+    }
+});
 </script>
 
 <style scoped></style>
