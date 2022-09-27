@@ -18,7 +18,7 @@ class ManuscriptAuthorController extends Controller
      */
     public function index(ManuscriptRecord $manuscriptRecord)
     {
-        $manuscriptAuthors = $manuscriptRecord->manuscriptAuthors()->with('author', 'organization')->get();
+        $manuscriptAuthors = $manuscriptRecord->manuscriptAuthors()->with('author', 'organization')->orderBy('id')->get();
 
         return ManuscriptAuthorResource::collection($manuscriptAuthors);
     }
