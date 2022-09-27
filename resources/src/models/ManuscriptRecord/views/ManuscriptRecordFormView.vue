@@ -237,7 +237,7 @@
                     use-chips
                     :label="
                         manuscriptResource?.data.manuscript_pdf
-                            ? 'Upload new version of manuscript'
+                            ? 'Upload a new version of the manuscript'
                             : 'Upload manuscript'
                     "
                     hint="Only PDF files are accepted. Maximum file size is 10MB."

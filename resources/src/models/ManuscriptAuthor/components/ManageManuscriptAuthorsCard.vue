@@ -1,6 +1,9 @@
 <template>
     <ContentCard>
         <template #title>Author(s) and Affiliation(s)</template>
+        <template #title-right
+            ><FormSectionStatusIcon :status="sectionStatus"
+        /></template>
         <p>
             Enter all authors, their affiliations and at least one corresponding
             author. Authors will appears in the list in the order they are
@@ -12,6 +15,8 @@
             stack-label
             bg-color="white"
             :loading="loading"
+            bottom-slots
+            :error="hasNoCorrespondingAuthor"
         >
             <template #control>
                 <div class="self-center full-width no-outline" tabindex="0">
@@ -46,6 +51,9 @@
                     @click="addManuscriptAuthor"
                 />
             </template>
+            <template #error>
+                <div>At least one corresponding author is required.</div>
+            </template>
             <AddManuscriptAuthorDialog
                 v-if="showAddDialog"
                 v-model="showAddDialog"
@@ -68,6 +76,7 @@ import {
 import ManuscriptAuthorChip from './ManuscriptAuthorChip.vue';
 import { useQuasar } from 'quasar';
 import AddManuscriptAuthorDialog from './AddManuscriptAuthorDialog.vue';
+import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
 
 const $q = useQuasar();
 const props = defineProps<{
@@ -79,6 +88,24 @@ const manuscriptAuthors: Ref<ManuscriptAuthorResourceList> = ref({ data: [] });
 
 const hasNoAuthors = computed(() => {
     return manuscriptAuthors.value.data.length === 0;
+});
+
+const hasNoCorrespondingAuthor = computed(() => {
+    return (
+        manuscriptAuthors.value.data.filter(
+            (item) => item.data.is_corresponding_author
+        ).length === 0
+    );
+});
+
+const sectionStatus = computed(() => {
+    if (hasNoAuthors.value) {
+        return 'incomplete';
+    }
+    if (hasNoCorrespondingAuthor.value) {
+        return 'error';
+    }
+    return 'complete';
 });
 
 // on mounted get the manuscript authors
