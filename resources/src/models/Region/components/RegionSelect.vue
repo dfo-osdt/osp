@@ -3,6 +3,7 @@
         v-model="value"
         :options="options"
         :option-label="label"
+        :readonly="readonly"
         autocomplete="name_en"
         option-value="id"
         :label="$t('common.dfo-region')"
@@ -19,9 +20,15 @@ const localeStore = useLocaleStore();
 const regionStore = useRegionStore();
 regionStore.getRegions();
 
-const props = defineProps<{
-    modelValue: number | null;
-}>();
+const props = withDefaults(
+    defineProps<{
+        modelValue: number | null;
+        readonly?: boolean;
+    }>(),
+    {
+        readonly: false,
+    }
+);
 
 const emit = defineEmits(['update:modelValue']);
 

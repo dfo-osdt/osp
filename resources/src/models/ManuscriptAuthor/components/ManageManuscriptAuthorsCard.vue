@@ -15,8 +15,9 @@
             stack-label
             bg-color="white"
             :loading="loading"
+            :readonly="readonly"
             bottom-slots
-            :error="hasNoCorrespondingAuthor"
+            :error="!hasNoAuthors && hasNoCorrespondingAuthor"
         >
             <template #control>
                 <div class="self-center full-width no-outline" tabindex="0">
@@ -25,6 +26,7 @@
                             v-for="item in manuscriptAuthors.data"
                             :key="item.data.id"
                             :manuscript-author="item"
+                            :readonly="readonly"
                             @delete:manuscript-author="
                                 deleteManuscriptAuthor(item)
                             "
@@ -41,7 +43,7 @@
                     </template>
                 </div>
             </template>
-            <template #append>
+            <template v-if="!readonly" #append>
                 <q-btn
                     icon="mdi-plus"
                     color="primary"
@@ -79,9 +81,15 @@ import AddManuscriptAuthorDialog from './AddManuscriptAuthorDialog.vue';
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
 
 const $q = useQuasar();
-const props = defineProps<{
-    manuscriptRecordId: number;
-}>();
+const props = withDefaults(
+    defineProps<{
+        manuscriptRecordId: number;
+        readonly?: boolean;
+    }>(),
+    {
+        readonly: false,
+    }
+);
 
 const loading = ref(true);
 const manuscriptAuthors: Ref<ManuscriptAuthorResourceList> = ref({ data: [] });

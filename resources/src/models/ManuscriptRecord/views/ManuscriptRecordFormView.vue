@@ -45,18 +45,28 @@
             </template>
             <ManageManuscriptAuthorsCard
                 :manuscript-record-id="id"
+                :readonly="isManuscriptReadOnly"
                 class="q-ma-sm"
             />
             <ContentCard class="q-ma-sm">
                 <template #title>General Information</template>
+                <template #title-right>
+                    <FormSectionStatusIcon :status="generalSectionStatus" />
+                </template>
+                <div class="flex justify-end">
+                    <RequiredSpan
+                        :is-definition="true"
+                        class="text-caption text-grey-8"
+                    />
+                </div>
                 <template v-if="manuscriptResource?.data">
-                    <q-form>
+                    <q-form ref="generalInformationForm">
                         <div class="q-mb-md">
                             <div class="q-ml-xs">
                                 <div
                                     class="text-body1 text-primary text-weight-medium"
                                 >
-                                    Manuscript's Working Title
+                                    Manuscript's Working Title<RequiredSpan />
                                 </div>
                                 <div class="q-my-xs">
                                     <p>
@@ -68,11 +78,13 @@
                                 </div>
                             </div>
                             <q-input
+                                id="workingTitle"
                                 v-model="manuscriptResource.data.title"
                                 outlined
                                 bg-color="white"
                                 label="Manuscript's Working Title"
                                 :disable="loading"
+                                :readonly="isManuscriptReadOnly"
                                 :rules="[
                                     (val) =>
                                         val.length > 0 || 'Title is required',
@@ -85,7 +97,7 @@
                                 <div
                                     class="text-body1 text-primary text-weight-medium"
                                 >
-                                    Lead Region
+                                    Lead Region<RequiredSpan />
                                 </div>
                                 <div class="q-my-xs">
                                     <p>
@@ -101,6 +113,7 @@
                                 label="DFO Lead Region"
                                 outlined
                                 :disable="loading"
+                                :readonly="isManuscriptReadOnly"
                                 bg-color="white"
                             />
                         </div>
@@ -109,6 +122,8 @@
                             v-model="manuscriptResource.data.abstract"
                             title="Abstract"
                             :disable="loading"
+                            :readonly="isManuscriptReadOnly"
+                            required
                             class="q-mb-lg"
                         >
                             <p>Copy your manuscript's abstract here.</p>
@@ -117,6 +132,8 @@
                             v-model="manuscriptResource.data.pls"
                             title="Plain Language Summary"
                             :disable="loading"
+                            :readonly="isManuscriptReadOnly"
+                            required
                             class="q-mb-md"
                         >
                             <p>
@@ -135,6 +152,8 @@
                             "
                             title="Scientific Implications"
                             :disable="loading"
+                            required
+                            :readonly="isManuscriptReadOnly"
                             class="q-mb-md"
                         >
                             <p>
@@ -149,6 +168,7 @@
                             "
                             title="Geographical Scope and Species"
                             :disable="loading"
+                            :readonly="isManuscriptReadOnly"
                             class="q-mb-md"
                         >
                             <p>
@@ -161,6 +181,8 @@
                             v-model="manuscriptResource.data.relevant_to"
                             title="Relevant to programs, projects, etc."
                             :disable="loading"
+                            required
+                            :readonly="isManuscriptReadOnly"
                             class="q-mb-md"
                         >
                             <p>
@@ -177,6 +199,7 @@
                             "
                             title="Additional Information of Importance"
                             :disable="loading"
+                            :readonly="isManuscriptReadOnly"
                             class="q-mb-md"
                         >
                             <p>
@@ -191,7 +214,21 @@
                 </template>
             </ContentCard>
             <ContentCard class="q-mx-sm q-mt-md">
+                <template #title>Sensitive Issues</template>
+                <template #title-right
+                    ><FormSectionStatusIcon status="complete"
+                /></template>
+            </ContentCard>
+            <ContentCard class="q-mx-sm q-mt-md">
                 <template #title>Attach Manuscript</template>
+                <template #title-right
+                    ><FormSectionStatusIcon
+                        :status="
+                            manuscriptResource?.data.manuscript_pdf
+                                ? 'complete'
+                                : 'incomplete'
+                        "
+                /></template>
                 <p>
                     Upload the most recent copy of your manuscript as a PDF.
                     This file can be updated as required.
@@ -284,7 +321,7 @@
 
 <script setup lang="ts">
 import { Ref } from 'vue';
-import { QRejectedEntry, useQuasar } from 'quasar';
+import { QForm, QRejectedEntry, useQuasar } from 'quasar';
 import { onBeforeRouteLeave } from 'vue-router';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import {
@@ -297,8 +334,13 @@ import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/Ma
 import RegionSelect from '@/models/Region/components/RegionSelect.vue';
 import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue';
 import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue';
+import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
+import RequiredSpan from '@/components/RequiredSpan.vue';
+
 const { t } = useI18n();
 const $q = useQuasar();
+
+const generalInformationForm = ref<QForm | null>(null);
 
 const props = defineProps<{
     id: number;
@@ -367,6 +409,30 @@ const title = computed(
         'Manuscript: ' + `${manuscriptResource.value?.data.title}` ??
         t('common.loading')
 );
+
+const isManuscriptReadOnly = computed(() => {
+    return manuscriptResource.value?.can?.update === false;
+});
+
+// are all required fields in the general section filled out?
+const generalSectionStatus = computed(() => {
+    const manuscript = manuscriptResource.value?.data;
+
+    if (!manuscript) {
+        return 'error';
+    }
+
+    if (manuscript.title === '') return 'error';
+
+    const complete =
+        manuscript.title !== '' &&
+        manuscript.abstract !== '' &&
+        manuscript.pls !== '' &&
+        manuscript.scientific_implications !== '' &&
+        manuscript.relevant_to;
+
+    return complete ? 'complete' : 'incomplete';
+});
 
 const save = async () => {
     // check that the manuscriptResource is not null

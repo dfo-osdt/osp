@@ -83,10 +83,11 @@
                     <q-item-section>
                         <q-item-label
                             :class="correspondingAuthor ? '' : 'text-grey-5'"
-                            >Corresponding Author</q-item-label
+                        >
+                            Corresponding Author</q-item-label
                         >
                     </q-item-section>
-                    <q-item-section side
+                    <q-item-section v-if="!readonly" side
                         ><q-toggle
                             v-model="correspondingAuthor"
                             @update:model-value="
@@ -113,9 +114,15 @@ import OrcidAvatar from '../../../components/OrcidAvatar.vue';
 
 const { copy, copied, isSupported } = useClipboard();
 
-const props = defineProps<{
-    manuscriptAuthor: ManuscriptAuthorResource;
-}>();
+const props = withDefaults(
+    defineProps<{
+        manuscriptAuthor: ManuscriptAuthorResource;
+        readonly?: boolean;
+    }>(),
+    {
+        readonly: false,
+    }
+);
 
 const correspondingAuthor = ref(
     props.manuscriptAuthor.data.is_corresponding_author
@@ -126,6 +133,9 @@ const name = computed(() => {
 });
 
 const removable = computed(() => {
+    if (props.readonly) {
+        return false;
+    }
     return props.manuscriptAuthor.can?.delete;
 });
 
