@@ -308,6 +308,7 @@ const loading = ref(true);
 const manuscriptResource: Ref<ManuscriptRecordResource | null> = ref(null);
 const manuscriptFile: Ref<File | null> = ref(null);
 const uploadingFile = ref(false);
+const authStore = useAuthStore();
 
 onMounted(async () => {
     await ManuscriptRecordService.find(props.id)
@@ -339,6 +340,12 @@ watch(
 
 // warn the user if they try to leave the page while there are unsaved changes
 onBeforeRouteLeave((to, from, next) => {
+    // if user is logged out ... don't warn them
+    if (!authStore.isAuthenticated) {
+        next();
+        return;
+    }
+
     if (isDirty.value) {
         $q.dialog({
             title: t('Unsaved Changes'),

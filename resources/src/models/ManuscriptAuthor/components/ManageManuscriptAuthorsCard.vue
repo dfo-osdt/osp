@@ -1,6 +1,6 @@
 <template>
     <ContentCard>
-        <template #title>Author(s) and Affiliations</template>
+        <template #title>Author(s) and Affiliation(s)</template>
         <p>
             Enter all authors, their affiliations and at least one corresponding
             author. Authors will appears in the list in the order they are
