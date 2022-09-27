@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -16,10 +17,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 /**
  * App\Models\ManuscriptRecord
  */
-class ManuscriptRecord extends Model implements HasMedia
+class ManuscriptRecord extends Model implements HasMedia, Auditable
 {
     use HasFactory;
     use InteractsWithMedia;
+    use \OwenIt\Auditing\Auditable;
+
+    // Audit Thresholds
+    protected $auditThreshold = 100;
 
     public $guarded = [
         'id',
