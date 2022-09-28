@@ -74,7 +74,7 @@ import { ManuscriptRecordResource } from '../ManuscriptRecord';
 import ManuscriptTypeBadge from './ManuscriptTypeBadge.vue';
 import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue';
 
-const props = defineProps<{
+defineProps<{
     manuscripts: ManuscriptRecordResource[];
 }>();
 </script>

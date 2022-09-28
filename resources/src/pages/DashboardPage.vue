@@ -44,10 +44,7 @@
                     </template>
 
                     <q-tab-panels v-model="tab" animated>
-                        <q-tab-panel
-                            name="manuscripts"
-                            class="bg-grey-1 q-pa-none"
-                        >
+                        <q-tab-panel name="manuscripts" class="q-pa-none">
                             <template v-if="manuscriptStore.empty">
                                 <div class="flex row justify-center">
                                     <div
@@ -115,7 +112,7 @@
                                 />
                             </div>
                         </q-tab-panel>
-                        <q-tab-panel name="reviews" class="bg-grey-1">
+                        <q-tab-panel name="reviews">
                             <div class="flex row justify-center">
                                 <div
                                     class="col-12 col-lg-10 flex column text-center"
@@ -141,7 +138,7 @@
                                 </div>
                             </div>
                         </q-tab-panel>
-                        <q-tab-panel name="publications" class="bg-grey-1">
+                        <q-tab-panel name="publications">
                             <div class="flex row justify-center">
                                 <div
                                     class="col-12 col-lg-10 flex column text-center"
@@ -208,10 +205,10 @@ onMounted(() => {
 // create dialog
 const show = ref(false);
 
-const data = [
+const data = computed(() => [
     {
         title: 'My Manuscripts',
-        value: 7,
+        value: manuscriptStore.manuscripts?.length ?? '-',
         subtitle: 'In progress',
         to: '/my-manuscripts',
     },
@@ -227,5 +224,5 @@ const data = [
         subtitle: 'Overdue',
         to: '/my-publications',
     },
-];
+]);
 </script>
