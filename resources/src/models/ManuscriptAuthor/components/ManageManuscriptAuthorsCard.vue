@@ -116,6 +116,10 @@ const sectionStatus = computed(() => {
     return 'complete';
 });
 
+defineExpose({
+    sectionStatus,
+});
+
 // on mounted get the manuscript authors
 onMounted(async () => {
     loadManuscriptAuthors();

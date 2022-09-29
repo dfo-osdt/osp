@@ -6,7 +6,7 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Models\ManuscriptRecord;
-use Auth;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -55,7 +55,7 @@ class ManuscriptRecordController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord)
     {
-        Auth::user()->can('view', $manuscriptRecord);
+        Gate::authorize('view', $manuscriptRecord);
 
         return new ManuscriptRecordResource($manuscriptRecord);
     }
@@ -69,7 +69,7 @@ class ManuscriptRecordController extends Controller
      */
     public function update(Request $request, ManuscriptRecord $manuscriptRecord)
     {
-        Auth::user()->can('update', $manuscriptRecord);
+        Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
             'title' => 'string|max:255',
@@ -102,7 +102,7 @@ class ManuscriptRecordController extends Controller
     /** Attach a PDF file to this record */
     public function attachPDF(Request $request, ManuscriptRecord $manuscriptRecord)
     {
-        Auth::user()->can('update', $manuscriptRecord);
+        Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf',
@@ -116,7 +116,7 @@ class ManuscriptRecordController extends Controller
     /** Download PDF attached to this record - return NoContent if empty */
     public function downloadPDF(ManuscriptRecord $manuscriptRecord)
     {
-        Auth::user()->can('view', $manuscriptRecord);
+        Gate::authorize('view', $manuscriptRecord);
 
         $pdf = $manuscriptRecord->getManuscriptFile();
 
@@ -125,5 +125,19 @@ class ManuscriptRecordController extends Controller
         } else {
             throw new NotFoundHttpException('No PDF attached to this record');
         }
+    }
+
+    /** Submit the manuscript record */
+    public function submit(ManuscriptRecord $manuscriptRecord)
+    {
+        Gate::authorize('submit', $manuscriptRecord);
+
+        // validate that the record has all the required fields
+        $manuscriptRecord->validateIsFilled();
+
+        $manuscriptRecord->status = ManuscriptRecordStatus::SUBMITTED;
+        $manuscriptRecord->save();
+
+        return new ManuscriptRecordResource($manuscriptRecord);
     }
 }

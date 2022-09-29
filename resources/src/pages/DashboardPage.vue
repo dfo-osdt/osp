@@ -208,7 +208,7 @@ const show = ref(false);
 const data = computed(() => [
     {
         title: 'My Manuscripts',
-        value: manuscriptStore.manuscripts?.length ?? '-',
+        value: manuscriptStore.manuscripts?.length ?? 0,
         subtitle: 'In progress',
         to: '/my-manuscripts',
     },

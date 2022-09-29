@@ -79,6 +79,9 @@ test('a user can save a draft manuscript', function () {
     // assert new data in response and database
     expect($response->json('data'))->toMatchArray($data);
     expect(ManuscriptRecord::find($manuscript->id))->toMatchArray($data);
+
+    // clean up the files created by the test
+    $manuscript->delete();
 });
 
 test('a user can attach and download a pdf version of their manuscript to a manuscript record', function () {
@@ -129,4 +132,28 @@ PDF;
     ])->assertOk();
     $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/pdf")->assertOk();
     $response->assertDownload('test2.pdf');
+});
+
+test('a user cannot submit a manuscript record that does not have all mandatory fields for internal review', function () {
+    $this->seed();
+
+    $manuscript = ManuscriptRecord::factory()->create();
+
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit")->assertStatus(422);
+
+    expect($response->json('errors'))->toHaveKeys(['abstract', 'manuscript_authors', 'manuscript_pdf']);
+});
+
+test('a user can submit a filled manuscript record', function () {
+    $this->seed();
+
+    $radomUser = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->filled()->create();
+
+    // random user cannot submit manuscript
+    $this->actingAs($radomUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit")->assertForbidden();
+
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit")->assertOk();
+
+    expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::SUBMITTED->value);
 });

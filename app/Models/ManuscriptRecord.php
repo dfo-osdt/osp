@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -90,5 +89,35 @@ class ManuscriptRecord extends Model implements HasMedia, Auditable
     public function getManuscriptFile(): ?Media
     {
         return $this->getMedia('manuscript')->last();
+    }
+
+    /**
+     * Validate this manuscript record is filled and can be
+     * submitted for internal review.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function validateIsFilled(): bool
+    {
+        $validator = \Validator::make($this->toArray(), [
+            'title' => 'required',
+            'abstract' => 'required',
+            'pls' => 'required',
+            'scientific_implications' => 'required',
+            'relevant_to' => 'required',
+        ]);
+
+        $validator->after(function ($validator) {
+            if ($this->manuscriptAuthors->where('is_corresponding_author', true)->count() < 1) {
+                $validator->errors()->add('manuscript_authors', 'At least one corresponding author is required.');
+            }
+            if ($this->getMedia('manuscript')->count() < 1) {
+                $validator->errors()->add('manuscript_pdf', 'A manuscript file is required.');
+            }
+        });
+
+        $validator->validate();
+
+        return $validator->passes();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\ManuscriptRecordStatus;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -30,7 +31,10 @@ class ManuscriptRecordPolicy
      */
     public function view(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        //
+        // owners can view their own manuscripts
+        if ($user->id === $manuscriptRecord->user_id) {
+            return true;
+        }
     }
 
     /**
@@ -53,7 +57,13 @@ class ManuscriptRecordPolicy
      */
     public function update(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        return true;
+        // is the manuscript record in draft state?
+        if ($manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
+            return false;
+        }
+
+        // is the user the owner of the manuscript?
+        return $user->id === $manuscriptRecord->user_id;
     }
 
     /**
@@ -65,7 +75,8 @@ class ManuscriptRecordPolicy
      */
     public function delete(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        return false;
+        // can delete if the manuscript is in draft state
+        return $manuscriptRecord->status === ManuscriptRecordStatus::DRAFT;
     }
 
     /**
@@ -90,5 +101,19 @@ class ManuscriptRecordPolicy
     public function forceDelete(User $user, ManuscriptRecord $manuscriptRecord)
     {
         //
+    }
+
+    /**
+     * A user can submit this manuscript for review
+     */
+    public function submit(User $user, ManuscriptRecord $manuscriptRecord)
+    {
+        // can only submit if the manuscript is in draft state
+        if ($manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
+            return false;
+        }
+
+        // can only submit if the user is the owner of the manuscript
+        return $user->id === $manuscriptRecord->user_id;
     }
 }

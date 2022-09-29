@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Models\ManuscriptAuthor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -40,6 +41,10 @@ class ManuscriptRecordFactory extends Factory
             'regions_and_species' => $this->faker->paragraph(),
             'relevant_to' => $this->faker->paragraph(),
             'additional_information' => $this->faker->paragraph(),
-        ]);
+        ])->afterCreating(function ($manuscript) {
+            $manuscript->manuscriptAuthors()->save(ManuscriptAuthor::factory()->make(['is_corresponding_author' => true])); // create a corresponding author
+            $manuscript->manuscriptAuthors()->saveMany(ManuscriptAuthor::factory()->count(3)->make()); // create 3 other authors
+            $manuscript->addMedia(getcwd().'/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('manuscript'); // add a manuscript file
+        });
     }
 }

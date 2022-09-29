@@ -44,6 +44,7 @@
                 <q-separator />
             </template>
             <ManageManuscriptAuthorsCard
+                ref="manuscriptAuthorsCard"
                 :manuscript-record-id="id"
                 :readonly="isManuscriptReadOnly"
                 class="q-ma-sm"
@@ -157,7 +158,7 @@
                             class="q-mb-md"
                         >
                             <p>
-                                Describe the scientifc implications of the
+                                Describe the scientific implications of the
                                 paper. (i.e. field, importance, focus, purpose,
                                 benefits, etc.)
                             </p>
@@ -306,14 +307,23 @@
                     label="Save"
                     @click="save"
                 />
-                <q-btn
-                    class="q-mt-md"
-                    color="primary"
-                    :loading="loading"
-                    :disable="true"
-                    label="Submit"
-                    @click="submit"
-                />
+                <div class="q-ml-sm">
+                    <q-tooltip>
+                        {{
+                            canSubmit
+                                ? 'Submit for review'
+                                : 'Please complete all sections to submit'
+                        }}
+                    </q-tooltip>
+                    <q-btn
+                        class="q-mt-md"
+                        color="primary"
+                        :loading="loading"
+                        :disable="!canSubmit"
+                        label="Submit"
+                        @click="submit"
+                    ></q-btn>
+                </div>
             </q-card-actions>
         </ContentCard>
     </MainPageLayout>
@@ -351,6 +361,9 @@ const manuscriptResource: Ref<ManuscriptRecordResource | null> = ref(null);
 const manuscriptFile: Ref<File | null> = ref(null);
 const uploadingFile = ref(false);
 const authStore = useAuthStore();
+const manuscriptAuthorsCard = ref<InstanceType<
+    typeof ManageManuscriptAuthorsCard
+> | null>(null);
 
 // watch if there is a change
 const isDirty = ref(false);
@@ -394,6 +407,29 @@ const generalSectionStatus = computed(() => {
         manuscript.relevant_to;
 
     return complete ? 'complete' : 'incomplete';
+});
+
+// check if the manuscript be sent for review?
+const canSubmit = computed(() => {
+    const manuscript = manuscriptResource.value?.data;
+
+    if (!manuscript) {
+        return false;
+    }
+
+    // you can't submit the manuscript if the title is empty
+    if (manuscript.title === '') return false;
+
+    // you can't submit the manuscript if the general section is incomplete
+    if (generalSectionStatus.value !== 'complete') return false;
+
+    // you can't submit the manuscript if there are no authors
+    if (manuscriptAuthorsCard.value?.sectionStatus !== 'complete') return false;
+
+    // you can't submit the manuscript if there is no manuscript pdf
+    if (!manuscript.manuscript_pdf) return false;
+
+    return true;
 });
 
 onMounted(async () => {
