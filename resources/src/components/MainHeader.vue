@@ -84,10 +84,18 @@ import { useQuasar } from 'quasar';
 // stores
 const authStore = useAuthStore();
 const localeStore = useLocaleStore();
+
+// toggle the left drawer
+const emit = defineEmits(['toggleLeftDrawer']);
+function toggleLeftDrawer() {
+    emit('toggleLeftDrawer');
+}
+
+// idle timer and auto logout
 const $q = useQuasar();
-const { idle, lastActive } = useIdle(15 * 60 * 1000, {
+const { idle, lastActive } = useIdle(authStore.idleTimerMin * 60 * 1000, {
     listenForVisibilityChange: false,
-}); // 15 minutes
+}); // duration set in .env file as VITE_IDLE_TIMER_MIN
 
 // check if user is idle, notify user, and logout if no activity
 watch(
@@ -123,12 +131,6 @@ watch(
         }
     }
 );
-
-// toggle the left drawer
-const emit = defineEmits(['toggleLeftDrawer']);
-function toggleLeftDrawer() {
-    emit('toggleLeftDrawer');
-}
 </script>
 
 <style scoped></style>

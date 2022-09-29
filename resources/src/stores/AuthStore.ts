@@ -39,6 +39,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         logout: sanctumLogout,
     } = useSanctum();
     const localeStore = useLocaleStore();
+    const idleTimerMin: number = import.meta.env.VITE_IDLE_TIMER_MIN || 30;
     const { t } = i18n.global;
 
     // initial state
@@ -140,6 +141,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         login,
         logout,
         loading,
+        idleTimerMin,
     };
 });
 
