@@ -66,4 +66,14 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
             set: fn ($value) => strtolower($value),
         );
     }
+
+    /**
+     * Get the full name of the user.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
 }

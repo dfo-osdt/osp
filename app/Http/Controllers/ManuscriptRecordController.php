@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Events\ManuscriptRecordToReviewEvent;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Models\ManuscriptRecord;
+use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
@@ -127,15 +129,21 @@ class ManuscriptRecordController extends Controller
         }
     }
 
-    /** Submit the manuscript record */
-    public function submit(ManuscriptRecord $manuscriptRecord)
+    /** Submit the manuscript record for review */
+    public function submitForReview(ManuscriptRecord $manuscriptRecord)
     {
-        Gate::authorize('submit', $manuscriptRecord);
+        Gate::authorize('submitForReview', $manuscriptRecord);
 
         // validate that the record has all the required fields
         $manuscriptRecord->validateIsFilled();
 
-        $manuscriptRecord->status = ManuscriptRecordStatus::SUBMITTED;
+        $user = User::factory()->create();
+
+        // trigger event that the record was submitted
+        ManuscriptRecordToReviewEvent::dispatch($manuscriptRecord, $user);
+
+        $manuscriptRecord->status = ManuscriptRecordStatus::IN_REVIEW;
+        $manuscriptRecord->sent_for_review_at = now();
         $manuscriptRecord->save();
 
         return new ManuscriptRecordResource($manuscriptRecord);

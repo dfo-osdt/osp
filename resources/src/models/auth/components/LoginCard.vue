@@ -77,7 +77,7 @@ const router = useRouter();
 const { t } = useI18n();
 
 //user related data
-const email = ref('');
+const email = ref(router.currentRoute.value.query?.email || '');
 const password = ref('');
 const remember = ref(false);
 
@@ -89,7 +89,11 @@ async function login() {
     loading.value = true;
     await authLogin(email.value, password.value, remember.value)
         .then(() => {
-            router.push({ name: 'dashboard' });
+            router.currentRoute.value.query?.redirect
+                ? router.push(
+                      router.currentRoute.value.query.redirect as string
+                  )
+                : router.push({ name: 'dashboard' });
         })
         .catch((err) => {
             errorMessage.value = extractErrorMessages(err);

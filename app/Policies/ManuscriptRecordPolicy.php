@@ -106,7 +106,7 @@ class ManuscriptRecordPolicy
     /**
      * A user can submit this manuscript for review
      */
-    public function submit(User $user, ManuscriptRecord $manuscriptRecord)
+    public function submitForReview(User $user, ManuscriptRecord $manuscriptRecord)
     {
         // can only submit if the manuscript is in draft state
         if ($manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {

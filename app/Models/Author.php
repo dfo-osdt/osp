@@ -23,6 +23,18 @@ class Author extends Model implements Auditable
         'updated_at',
     ];
 
+    // author fullname
+    public function getFullNameAttribute(): string
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
+
+    // author name for APA citation
+    public function getApaNameAttribute(): string
+    {
+        return $this->last_name.', '.$this->first_name;
+    }
+
     /**
      * Make sure that the email is always stored as lowercase to prevent duplicates.
      *

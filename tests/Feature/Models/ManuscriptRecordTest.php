@@ -2,6 +2,7 @@
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Mail\ManuscriptRecordToReviewMail;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
@@ -139,7 +140,7 @@ test('a user cannot submit a manuscript record that does not have all mandatory 
 
     $manuscript = ManuscriptRecord::factory()->create();
 
-    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit")->assertStatus(422);
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review")->assertStatus(422);
 
     expect($response->json('errors'))->toHaveKeys(['abstract', 'manuscript_authors', 'manuscript_pdf']);
 });
@@ -147,13 +148,21 @@ test('a user cannot submit a manuscript record that does not have all mandatory 
 test('a user can submit a filled manuscript record', function () {
     $this->seed();
 
+    Mail::fake();
+
     $radomUser = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->filled()->create();
 
     // random user cannot submit manuscript
-    $this->actingAs($radomUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit")->assertForbidden();
+    $this->actingAs($radomUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review")->assertForbidden();
 
-    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit")->assertOk();
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review")->assertOk();
 
-    expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::SUBMITTED->value);
+    Mail::assertSent(ManuscriptRecordToReviewMail::class, function ($mail) use ($manuscript) {
+        ray()->mailable($mail);
+
+        return $mail->hasCc($manuscript->user->email);
+    });
+
+    expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::IN_REVIEW->value);
 });

@@ -16,10 +16,14 @@ class AuthorFactory extends Factory
      */
     public function definition()
     {
+        $fistName = $this->faker->firstName;
+        $lastName = $this->faker->lastName;
+        $email = $fistName.'.'.$lastName.'@'.$this->faker->safeEmailDomain;
+
         return [
-            'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName(),
-            'email' => $this->faker->safeEmail(),
+            'first_name' => $fistName,
+            'last_name' => $lastName,
+            'email' => $email,
             'orcid' => $this->faker->unique()->optional()->numerify('####-####-####-####'),
             'organization_id' => \App\Models\Organization::factory(),
         ];
