@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -75,5 +76,16 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
     public function getFullNameAttribute(): string
     {
         return $this->first_name.' '.$this->last_name;
+    }
+
+    // relationships
+    public function invitation(): HasOne
+    {
+        return $this->hasOne(Invitation::class);
+    }
+
+    public function author(): HasOne
+    {
+        return $this->hasOne(Author::class);
     }
 }

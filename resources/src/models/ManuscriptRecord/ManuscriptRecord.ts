@@ -100,7 +100,18 @@ export class ManuscriptRecordService {
             `${this.baseURL}/${id}/pdf`,
             formData
         );
-        console.log(response);
+        return response.data;
+    }
+
+    /** Submit this manuscript for managemment review */
+    public static async submitForReview(id: number, userId: number) {
+        const data = {
+            reviewer_user_id: userId,
+        };
+        const response = await http.put<any, ManuscriptRecordResource>(
+            `${this.baseURL}/${id}/submit-for-review`,
+            data
+        );
         return response.data;
     }
 

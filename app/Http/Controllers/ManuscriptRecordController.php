@@ -145,6 +145,7 @@ class ManuscriptRecordController extends Controller
         // validate that the record has all the required fields
         $manuscriptRecord->validateIsFilled();
 
+        // get review user
         $reviewUser = User::findOrFail($validated['reviewer_user_id']);
 
         // trigger event that the record was submitted

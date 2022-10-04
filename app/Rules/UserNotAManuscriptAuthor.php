@@ -46,6 +46,6 @@ class UserNotAManuscriptAuthor implements Rule
      */
     public function message()
     {
-        return 'The :attribute cannot be an author of this manuscript.';
+        return 'The :attribute cannot be an author or owner of this manuscript.';
     }
 }

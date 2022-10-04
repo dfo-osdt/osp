@@ -26,12 +26,31 @@ class DatabaseSeeder extends Seeder
             $user = \App\Models\User::factory()->create([
                 'first_name' => 'John',
                 'last_name' => 'Doe',
-                'email' => 'test@test.com',
+                'email' => 'author@test.com',
             ]);
 
             // create 3 manuscript records for the test user
             \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->count(3)->create([
                 'user_id' => $user->id,
+            ]);
+
+            // create 1 filled out manuscript record for the test user
+            \App\Models\ManuscriptRecord::factory()->filled()->create([
+                'user_id' => $user->id,
+            ]);
+
+            // create a division manager user
+            $dmUser = \App\Models\User::factory()->create([
+                'first_name' => 'Division',
+                'last_name' => 'Manager',
+                'email' => 'dm@test.com',
+            ]);
+
+            // create a rds user
+            $rdsUser = \App\Models\User::factory()->create([
+                'first_name' => 'RDS',
+                'last_name' => 'User',
+                'email' => 'rds@test.com',
             ]);
         }
     }

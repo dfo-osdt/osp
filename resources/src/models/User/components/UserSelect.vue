@@ -1,25 +1,25 @@
 <template>
     <q-select
-        ref="authorSelect"
-        v-model="selectedAuthor"
-        :options="authors.data"
+        ref="userSelect"
+        v-model="selectedUser"
+        :options="users.data"
         :option-value="optionValue"
         :option-disable="optionDisable"
         :option-label="optionLabel"
         clearable
-        label="Author"
-        :loading="authorsLoading"
+        label="User"
+        :loading="usersLoading"
         use-input
         stack-label
         outlined
-        hint="Start typing to search for an author (first name, last name, or email)"
-        @filter="filterAuthors"
+        hint="Start typing to search for an user (first name, last name, or email)"
+        @filter="filterUsers"
     >
         <template #no-option>
             <q-item>
                 <q-item-section class="text-grey">
                     <template v-if="lastSearchTerm === ''">
-                        Start typing to search for an author
+                        Start typing to search for a user
                     </template>
                     <template v-else>
                         No results found for
@@ -28,9 +28,9 @@
                 </q-item-section>
             </q-item>
             <q-separator />
-            <q-item clickable @click="showCreateAuthorDialog = true">
+            <q-item clickable @click="showInviteUserDialog = true">
                 <q-item-section>
-                    Can't find the author you're looking for?
+                    Can't find the user you're looking for?
                 </q-item-section>
                 <q-item-section side>
                     <q-btn
@@ -38,10 +38,10 @@
                         color="primary"
                         size="sm"
                         round
-                        @click="showCreateAuthorDialog = true"
+                        @click="showInviteUserDialog = true"
                     >
                         <q-tooltip class="text-body2"
-                            >Add a new author</q-tooltip
+                            >Invite a new user</q-tooltip
                         >
                     </q-btn>
                 </q-item-section>
@@ -58,16 +58,13 @@
                         {{ scope.opt.data.email }}
                     </q-item-label>
                 </q-item-section>
-                <q-item-section side>{{
-                    scope.opt.data.organization.data[`name_${$i18n.locale}`]
-                }}</q-item-section>
             </q-item>
         </template>
         <template #after-options>
             <q-separator />
-            <q-item clickable @click="showCreateAuthorDialog = true">
+            <q-item clickable @click="showInviteUserDialog = true">
                 <q-item-section>
-                    Not the author you're looking for?
+                    Not the user you're looking for?
                 </q-item-section>
                 <q-item-section side>
                     <q-btn
@@ -75,84 +72,89 @@
                         color="primary"
                         size="sm"
                         round
-                        @click="showCreateAuthorDialog = true"
+                        @click="showInviteUserDialog = true"
                     >
                         <q-tooltip class="text-body2"
-                            >Add a new author</q-tooltip
+                            >Invite a new user</q-tooltip
                         >
                     </q-btn>
                 </q-item-section>
             </q-item>
         </template>
-        <create-author-dialog
-            v-if="showCreateAuthorDialog"
-            v-model="showCreateAuthorDialog"
-            @created="createdAuthor"
+        <InviteUserDialog
+            v-if="showInviteUserDialog"
+            v-model="showInviteUserDialog"
+            @created="createdUser"
         />
     </q-select>
 </template>
 
 <script setup lang="ts">
 import { QSelect } from 'quasar';
-import { AuthorResource, AuthorResourceList, AuthorService } from '../Author';
-import CreateAuthorDialog from './CreateAuthorDialog.vue';
+import { UserResource, UserResourceList, UserService } from '../User';
+import InviteUserDialog from './InviteUserDialog.vue';
 
-const authorSelect = ref<QSelect | null>(null);
+const userSelect = ref<QSelect | null>(null);
 
 const props = withDefaults(
     defineProps<{
         modelValue: number | null;
-        disabledAuthorIds?: number[];
+        disabledEmails?: string[];
+        disabledIds?: number[];
     }>(),
     {
-        disabledAuthorIds: () => [],
+        disabledEmails: () => [],
+        disabledIds: () => [],
     }
 );
 
-const authors = ref<AuthorResourceList>({ data: [] });
-const selectedAuthor = ref<AuthorResource | null>(null);
+const users = ref<UserResourceList>({ data: [] });
+const selectedUser = ref<UserResource | null>(null);
 const lastSearchTerm = ref('');
-const authorsLoading = ref(false);
-const showCreateAuthorDialog = ref(false);
+const usersLoading = ref(false);
+const showInviteUserDialog = ref(false);
 
 const emit = defineEmits(['update:modelValue']);
-watch(selectedAuthor, (author) => {
+watch(selectedUser, (author) => {
     if (author) {
         emit('update:modelValue', author.data.id);
     }
 });
 
-const filterAuthors = async (val: string, update, abort) => {
+const filterUsers = async (val: string, update, abort) => {
     lastSearchTerm.value = val;
     update(async () => {
         if (val !== '') {
             const needle = val.toLowerCase();
-            authorsLoading.value = true;
-            await AuthorService.list(`limit=10&filter[search]=${needle}`).then(
+            usersLoading.value = true;
+            await UserService.list(`limit=10&filter[search]=${needle}`).then(
                 (response) => {
-                    authors.value = response;
+                    users.value = response;
                 }
             );
-            authorsLoading.value = false;
+            usersLoading.value = false;
         }
     });
 };
 
-function createdAuthor(item: AuthorResource) {
-    authorSelect.value?.updateInputValue('', true);
-    selectedAuthor.value = item;
-    showCreateAuthorDialog.value = false;
+function createdUser(item: UserResource) {
+    userSelect.value?.updateInputValue('', true);
+    selectedUser.value = item;
+    showInviteUserDialog.value = false;
 }
 
-function optionValue(item: AuthorResource) {
+function optionValue(item: UserResource) {
     return item.data.id;
 }
-function optionLabel(item: AuthorResource) {
+function optionLabel(item: UserResource) {
     const { first_name, last_name, email } = item.data;
     return `${first_name} ${last_name} (${email})`;
 }
-function optionDisable(item: AuthorResource) {
-    return props.disabledAuthorIds.includes(item.data.id);
+function optionDisable(item: UserResource) {
+    return (
+        props.disabledEmails.includes(item.data.email) ||
+        props.disabledIds.includes(item.data.id)
+    );
 }
 </script>
 

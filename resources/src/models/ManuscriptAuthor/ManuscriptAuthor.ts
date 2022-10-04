@@ -1,5 +1,5 @@
 import { http } from '@/api/http';
-import { AuthorResource } from '../Authors/Author';
+import { AuthorResource } from '../Author/Author';
 import { OrganizationResource } from '../Organization/Organization';
 import { Resource, ResourceList } from '../Resource';
 

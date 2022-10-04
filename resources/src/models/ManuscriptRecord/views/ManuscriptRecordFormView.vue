@@ -164,21 +164,6 @@
                             </p>
                         </QuestionEditor>
                         <QuestionEditor
-                            v-model="
-                                manuscriptResource.data.regions_and_species
-                            "
-                            title="Geographical Scope and Species"
-                            :disable="loading"
-                            :readonly="isManuscriptReadOnly"
-                            class="q-mb-md"
-                        >
-                            <p>
-                                Describe the geographical scope/region and (if
-                                applicable) species (to include common names) of
-                                the paper.
-                            </p>
-                        </QuestionEditor>
-                        <QuestionEditor
                             v-model="manuscriptResource.data.relevant_to"
                             title="Relevant to programs, projects, etc."
                             :disable="loading"
@@ -192,6 +177,21 @@
                                 supports the department's mandate, how it
                                 supports the department's strategic plan, how it
                                 supports regional priorities, etc.)
+                            </p>
+                        </QuestionEditor>
+                        <QuestionEditor
+                            v-model="
+                                manuscriptResource.data.regions_and_species
+                            "
+                            title="Geographical Scope and Species"
+                            :disable="loading"
+                            :readonly="isManuscriptReadOnly"
+                            class="q-mb-md"
+                        >
+                            <p>
+                                Describe the geographical scope/region and (if
+                                applicable) species (to include common names) of
+                                the paper.
                             </p>
                         </QuestionEditor>
                         <QuestionEditor
@@ -232,7 +232,8 @@
                 /></template>
                 <p>
                     Upload the most recent copy of your manuscript as a PDF.
-                    This file can be updated as required.
+                    This file can be updated as required, even after the
+                    manuscript is submitted.
                 </p>
                 <template v-if="manuscriptResource?.data.manuscript_pdf">
                     <q-card outlined class="q-mb-md">
@@ -299,7 +300,10 @@
                     </template>
                 </q-file>
             </ContentCard>
-            <q-card-actions align="right">
+            <q-card-actions
+                v-if="manuscriptResource?.can?.update"
+                align="right"
+            >
                 <q-btn
                     class="q-mt-md"
                     color="primary"
@@ -312,7 +316,7 @@
                         {{
                             canSubmit
                                 ? 'Submit for review'
-                                : 'Please complete all sections to submit'
+                                : 'Please complete all sections and save to submit'
                         }}
                     </q-tooltip>
                     <q-btn
@@ -324,6 +328,11 @@
                         @click="submit"
                     ></q-btn>
                 </div>
+                <SubmitManuscriptDialog
+                    v-model="showSubmitDialog"
+                    :manuscript-record-id="id"
+                    @submitted="onSubmitted"
+                />
             </q-card-actions>
         </ContentCard>
     </MainPageLayout>
@@ -346,9 +355,11 @@ import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue';
 import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue';
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
 import RequiredSpan from '@/components/RequiredSpan.vue';
+import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue';
 
 const { t } = useI18n();
 const $q = useQuasar();
+const router = useRouter();
 
 const generalInformationForm = ref<QForm | null>(null);
 
@@ -370,7 +381,10 @@ const isDirty = ref(false);
 watch(
     manuscriptResource,
     (newVal, oldValue) => {
-        if (oldValue === null) {
+        if (
+            oldValue === null ||
+            manuscriptResource.value?.data.status !== 'draft'
+        ) {
             return;
         }
         isDirty.value = true;
@@ -409,35 +423,20 @@ const generalSectionStatus = computed(() => {
     return complete ? 'complete' : 'incomplete';
 });
 
-// check if the manuscript be sent for review?
-const canSubmit = computed(() => {
-    const manuscript = manuscriptResource.value?.data;
-
-    if (!manuscript) {
-        return false;
-    }
-
-    // you can't submit the manuscript if the title is empty
-    if (manuscript.title === '') return false;
-
-    // you can't submit the manuscript if the general section is incomplete
-    if (generalSectionStatus.value !== 'complete') return false;
-
-    // you can't submit the manuscript if there are no authors
-    if (manuscriptAuthorsCard.value?.sectionStatus !== 'complete') return false;
-
-    // you can't submit the manuscript if there is no manuscript pdf
-    if (!manuscript.manuscript_pdf) return false;
-
-    return true;
-});
-
 onMounted(async () => {
     await ManuscriptRecordService.find(props.id)
         .then((response) => {
             manuscriptResource.value = response;
         })
         .catch((error) => {
+            if (error.status == 403) {
+                $q.notify({
+                    type: 'negative',
+                    message:
+                        'You do not have permission to view this manuscript record',
+                });
+                router.push({ name: 'notFound' });
+            }
             console.log(error);
         })
         .finally(() => {
@@ -520,8 +519,43 @@ async function upload() {
     });
 }
 
+// submit the manuscript
+const showSubmitDialog = ref(false);
+// check if the manuscript be sent for review?
+const canSubmit = computed(() => {
+    const manuscript = manuscriptResource.value?.data;
+
+    if (!manuscript) {
+        return false;
+    }
+
+    if (isDirty.value) {
+        return false;
+    }
+
+    // you can't submit the manuscript if the title is empty
+    if (manuscript.title === '') return false;
+
+    // you can't submit the manuscript if the general section is incomplete
+    if (generalSectionStatus.value !== 'complete') return false;
+
+    // you can't submit the manuscript if there are no authors
+    if (manuscriptAuthorsCard.value?.sectionStatus !== 'complete') return false;
+
+    // you can't submit the manuscript if there is no manuscript pdf
+    if (!manuscript.manuscript_pdf) return false;
+
+    return true;
+});
+
 async function submit() {
     console.log('submit');
+    showSubmitDialog.value = true;
+}
+
+function onSubmitted(manuscript: ManuscriptRecordResource) {
+    manuscriptResource.value = manuscript;
+    showSubmitDialog.value = false;
 }
 
 // warn the user if they try to leave the page while there are unsaved changes

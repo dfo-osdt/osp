@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import AuthorSelect from '@/models/Authors/components/AuthorSelect.vue';
+import AuthorSelect from '@/models/Author/components/AuthorSelect.vue';
 import {
     ManuscriptAuthorResource,
     ManuscriptAuthorService,

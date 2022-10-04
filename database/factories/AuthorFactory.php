@@ -24,7 +24,7 @@ class AuthorFactory extends Factory
             'first_name' => $fistName,
             'last_name' => $lastName,
             'email' => $email,
-            'orcid' => $this->faker->unique()->optional()->numerify('####-####-####-####'),
+            'orcid' => $this->faker->optional()->numerify('####-####-####-####'),
             'organization_id' => \App\Models\Organization::factory(),
         ];
     }

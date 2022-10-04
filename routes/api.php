@@ -5,6 +5,7 @@ use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManuscriptRecordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,9 +29,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(AuthorController::class)->group(function () {
         Route::get('/authors', 'index');
-        // Route::get('/authors/{author}', 'show');
-        // Route::put('authors/{author}', 'update');
         Route::post('/authors', 'store');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/users', 'index');
     });
 
     Route::controller(ManuscriptAuthorController::class)->group(function () {

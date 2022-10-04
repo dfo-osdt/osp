@@ -5,7 +5,7 @@ As a Division Manager, you have received a new manuscript record submission from
 Please click on the button below or login to your [Open Science Portal]({{config('app.frontend_url')}}#/auth/login?email={{$user->email}}) account to review this manuscript record.
 
 
-@component('mail::button', ['url' => ''])
+@component('mail::button', ['url' => config('app.frontend_url').'#/auth/login?email='.$user->email.'&redirect=/manuscript/'.$manuscriptRecord->id])
 Review Manuscript
 @endcomponent
 
@@ -15,7 +15,7 @@ Review Manuscript
 
 **Author(s):**<br/> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
-**Abstract:** <br />{{ $manuscriptRecord->abstract }}
+**Abstract:** <br />{!! $manuscriptRecord->abstract !!}
 @endcomponent
 
 

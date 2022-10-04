@@ -128,7 +128,7 @@
                         </div>
                     </q-step>
                     <template #navigation
-                        ><q-stepper-navigation>
+                        ><q-stepper-navigation class="flex justify-end">
                             <q-btn
                                 color="primary"
                                 :label="step === 3 ? 'Create' : 'Continue'"

@@ -6,6 +6,7 @@ use App\Http\Resources\ManuscriptAuthorResource;
 use App\Models\Author;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -18,6 +19,8 @@ class ManuscriptAuthorController extends Controller
      */
     public function index(ManuscriptRecord $manuscriptRecord)
     {
+        Gate::authorize('view', $manuscriptRecord);
+
         $manuscriptAuthors = $manuscriptRecord->manuscriptAuthors()->with('author', 'organization')->orderBy('id')->get();
 
         return ManuscriptAuthorResource::collection($manuscriptAuthors);
