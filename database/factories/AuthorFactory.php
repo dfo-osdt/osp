@@ -16,9 +16,9 @@ class AuthorFactory extends Factory
      */
     public function definition()
     {
-        $fistName = $this->faker->firstName;
-        $lastName = $this->faker->lastName;
-        $email = $fistName.'.'.$lastName.'@'.$this->faker->safeEmailDomain;
+        $fistName = $this->faker->firstName();
+        $lastName = $this->faker->lastName();
+        $email = $fistName.'.'.$lastName.'@'.$this->faker->safeEmailDomain();
 
         return [
             'first_name' => $fistName,

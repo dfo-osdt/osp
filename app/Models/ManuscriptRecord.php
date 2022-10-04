@@ -95,9 +95,11 @@ class ManuscriptRecord extends Model implements HasMedia, Auditable
      * Validate this manuscript record is filled and can be
      * submitted for internal review.
      *
+     * @param bool noException If true, return false instead of throwing a ValidationException on failure.
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validateIsFilled(): bool
+    public function validateIsFilled(bool $noExceptions = false): bool
     {
         $validator = \Validator::make($this->toArray(), [
             'title' => 'required',
@@ -116,7 +118,9 @@ class ManuscriptRecord extends Model implements HasMedia, Auditable
             }
         });
 
-        $validator->validate();
+        if (! $noExceptions) {
+            $validator->validate();
+        }
 
         return $validator->passes();
     }

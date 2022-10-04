@@ -8,6 +8,7 @@ use App\Events\ManuscriptRecordToReviewEvent;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
+use App\Rules\UserNotAManuscriptAuthor;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
@@ -130,17 +131,24 @@ class ManuscriptRecordController extends Controller
     }
 
     /** Submit the manuscript record for review */
-    public function submitForReview(ManuscriptRecord $manuscriptRecord)
+    public function submitForReview(Request $request, ManuscriptRecord $manuscriptRecord)
     {
         Gate::authorize('submitForReview', $manuscriptRecord);
+
+        $validated = $request->validate([
+            'reviewer_user_id' => [
+                new UserNotAManuscriptAuthor($manuscriptRecord),
+                'required',
+                'exists:users,id', ],
+        ]);
 
         // validate that the record has all the required fields
         $manuscriptRecord->validateIsFilled();
 
-        $user = User::factory()->create();
+        $reviewUser = User::findOrFail($validated['reviewer_user_id']);
 
         // trigger event that the record was submitted
-        ManuscriptRecordToReviewEvent::dispatch($manuscriptRecord, $user);
+        ManuscriptRecordToReviewEvent::dispatch($manuscriptRecord, $reviewUser);
 
         $manuscriptRecord->status = ManuscriptRecordStatus::IN_REVIEW;
         $manuscriptRecord->sent_for_review_at = now();

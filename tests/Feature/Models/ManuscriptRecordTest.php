@@ -140,9 +140,38 @@ test('a user cannot submit a manuscript record that does not have all mandatory 
 
     $manuscript = ManuscriptRecord::factory()->create();
 
-    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review")->assertStatus(422);
+    $reviewerUser = User::factory()->create();
+
+    $data = [
+        'reviewer_user_id' => $reviewerUser->id,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertStatus(422);
 
     expect($response->json('errors'))->toHaveKeys(['abstract', 'manuscript_authors', 'manuscript_pdf']);
+});
+
+test('a user cannot submit a filled manuscript record to himself or an author of the manuscript', function () {
+    $this->seed();
+
+    $manuscript = ManuscriptRecord::factory()->filled()->create();
+
+    $author = $manuscript->manuscriptAuthors()->first()->author;
+    $authorUser = User::factory()->create(['email' => $author->email]);
+
+    $data = [
+        'reviewer_user_id' => $manuscript->user_id,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertStatus(422);
+
+    expect($response->json('errors'))->toHaveKeys(['reviewer_user_id']);
+
+    $data = [
+        'reviewer_user_id' => $authorUser->id,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertStatus(422);
 });
 
 test('a user can submit a filled manuscript record', function () {
@@ -153,16 +182,18 @@ test('a user can submit a filled manuscript record', function () {
     $radomUser = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->filled()->create();
 
+    $reviewerUser = User::factory()->create();
+
+    $data = [
+        'reviewer_user_id' => $reviewerUser->id,
+    ];
+
     // random user cannot submit manuscript
-    $this->actingAs($radomUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review")->assertForbidden();
+    $this->actingAs($radomUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertForbidden();
 
-    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review")->assertOk();
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertOk();
 
-    Mail::assertSent(ManuscriptRecordToReviewMail::class, function ($mail) use ($manuscript) {
-        ray()->mailable($mail);
-
-        return $mail->hasCc($manuscript->user->email);
-    });
+    Mail::assertSent(ManuscriptRecordToReviewMail::class);
 
     expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::IN_REVIEW->value);
 });
