@@ -8,6 +8,7 @@ export interface Author {
     last_name: string;
     orcid: string | null;
     email: string;
+    user_id: number | null;
     organization_id: number;
     // relationships
     organization?: OrganizationResource;

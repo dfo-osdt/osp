@@ -22,6 +22,7 @@ class AuthorResource extends JsonResource
                 'last_name' => $this->last_name,
                 'orcid' => $this->orcid,
                 'email' => $this->email,
+                'user_id' => $this->user_id,
                 'organization_id' => $this->organization_id,
                 'organization' => OrganizationResource::make($this->whenLoaded('organization')),
             ],

@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Enums\ManuscriptRecordStatus;
-use App\Models\ManuscriptAuthor;
+use App\Models\Author;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ManuscriptAuthorPolicy
+class AuthorPolicy
 {
     use HandlesAuthorization;
 
@@ -26,10 +25,10 @@ class ManuscriptAuthorPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, ManuscriptAuthor $manuscriptAuthor)
+    public function view(User $user, Author $author)
     {
         //
     }
@@ -49,44 +48,41 @@ class ManuscriptAuthorPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, ManuscriptAuthor $manuscriptAuthor)
+    public function update(User $user, Author $author)
     {
-        // can update if the manuscript is in draft and the user is the manuscript owner
-        if ($manuscriptAuthor->manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
-            return false;
+        // this record isn't associated with a user,
+        // any user can update it.
+        if ($author->user_id === null) {
+            return true;
         }
 
-        return $manuscriptAuthor->manuscriptRecord->user_id === $user->id;
+        // user can update their own author record
+        return $author->user_id === $user->id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, ManuscriptAuthor $manuscriptAuthor)
+    public function delete(User $user, Author $author)
     {
-        // can update if the manuscript is in draft and the user is the manuscript owner
-        if ($manuscriptAuthor->manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
-            return false;
-        }
-
-        return $manuscriptAuthor->manuscriptRecord->user_id === $user->id;
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, ManuscriptAuthor $manuscriptAuthor)
+    public function restore(User $user, Author $author)
     {
         //
     }
@@ -95,10 +91,10 @@ class ManuscriptAuthorPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, ManuscriptAuthor $manuscriptAuthor)
+    public function forceDelete(User $user, Author $author)
     {
         //
     }

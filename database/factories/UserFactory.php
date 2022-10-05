@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Author;
+use App\Models\Organization;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -30,6 +33,28 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'active' => true,
         ];
+    }
+
+    /**
+     * Every user has an author record
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            // does an author record already exist for this user?
+            Author::updateOrCreate(
+                [
+                    'email' => $user->email,
+                    'user_id' => null,
+                ],
+                [
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'organization_id' => Organization::factory()->create()->id,
+                    'user_id' => $user->id,
+                ]
+            );
+        });
     }
 
     /**

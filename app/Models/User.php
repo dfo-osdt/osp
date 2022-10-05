@@ -79,11 +79,21 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
     }
 
     // relationships
+
+    /**
+     * Get the invitation record associated with the user. Only users
+     * that were invited to join the application will have one.
+     * This record will not be erased when the user joins.
+     */
     public function invitation(): HasOne
     {
         return $this->hasOne(Invitation::class);
     }
 
+    /**
+     * All users should have an author profile created for them
+     * upon registration.
+     */
     public function author(): HasOne
     {
         return $this->hasOne(Author::class);

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('orcid')->unique()->nullable();
             $table->string('email')->unique()->index();
             $table->foreignId('organization_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
         });
     }
 };

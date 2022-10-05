@@ -61,4 +61,9 @@ class Author extends Model implements Auditable
     {
         return $this->belongsTo('App\Models\Organization');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

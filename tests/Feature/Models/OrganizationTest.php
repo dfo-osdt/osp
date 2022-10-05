@@ -16,7 +16,7 @@ test('a user can get a list of all organization', function () {
     $response = $this->actingAs($user)->getJson('/api/organizations?limit=15')->assertOk();
 
     expect($response->json('data'))->toHaveCount(15);
-    expect($response->json('meta.total'))->toBe(20);
+    expect($response->json('meta.total'))->toBe(Organization::count());
 });
 
 test('a user can create a new organization', function () {

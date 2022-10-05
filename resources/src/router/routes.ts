@@ -34,7 +34,7 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/profile',
-                component: UnderConstruction,
+                component: () => import('@/models/User/views/ProfilePageView.vue'),
                 meta: { requiresAuth: true },
             },
             {

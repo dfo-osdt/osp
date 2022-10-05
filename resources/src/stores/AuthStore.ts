@@ -4,12 +4,14 @@ import { i18n } from '@/plugins/i18n';
 import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
 import { Notify } from 'quasar';
+import { Author, AuthorResource } from '@/models/Author/Author';
 
 class User {
     id: number;
     email: string;
     first_name: string;
     last_name: string;
+    author: Author
 
     constructor(
         id: number,
