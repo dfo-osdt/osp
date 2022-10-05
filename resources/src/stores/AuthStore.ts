@@ -4,31 +4,40 @@ import { i18n } from '@/plugins/i18n';
 import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
 import { Notify } from 'quasar';
-import { Author, AuthorResource } from '@/models/Author/Author';
+import { AuthorResource } from '@/models/Author/Author';
+import { Resource } from '@/models/Resource';
 
-class User {
+export type AuthenticatedUserResource = Resource<IAuthenticatedUser>;
+
+export interface IAuthenticatedUser {
     id: number;
-    email: string;
     first_name: string;
     last_name: string;
-    author: Author
+    email: string;
+    author: AuthorResource;
+}
+class AuthenticatedUser implements IAuthenticatedUser {
 
-    constructor(
-        id: number,
-        email: string,
-        first_name: string,
-        last_name: string
-    ) {
-        this.id = id;
-        this.email = email;
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public id!: number;
+    public first_name!: string;
+    public last_name!: string;
+    public email!: string;
+    public author!: AuthorResource;
+
+    constructor(user: IAuthenticatedUser) {
+        Object.assign(this, user);
     }
 
+    /**
+     * Get the full name of the user.
+     */
     get fullName(): string {
         return `${this.first_name} ${this.last_name}`;
     }
 
+    /**
+     * Get the initials of the user.
+     */
     get initials(): string {
         return `${this.first_name.charAt(0)}${this.last_name.charAt(0)}`;
     }
@@ -45,7 +54,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
     const { t } = i18n.global;
 
     // initial state
-    const user: Ref<User | null> = useStorage('user', null);
+    const user: Ref<AuthenticatedUser | null> = useStorage('user', null);
     const loading = ref(true);
     isLoggedIn(); // check with backend - is our session still valid?
 
@@ -63,11 +72,8 @@ export const useAuthStore = defineStore('AuthStore', () => {
         loading.value = true;
         return await getUser()
             .then((resp) => {
-                user.value = new User(
-                    resp.data.id,
-                    resp.data.email,
-                    resp.data.first_name,
-                    resp.data.last_name
+                user.value = new AuthenticatedUser(
+                    resp.data.data
                 );
                 return true;
             })

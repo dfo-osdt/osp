@@ -1,3 +1,4 @@
+import { AuthenticatedUserResource } from '@/stores/AuthStore';
 import { http } from './http';
 
 export interface SanctumUser {
@@ -12,7 +13,7 @@ export const useSanctum = () => {
 
     const getUser = async () => {
         await csrf();
-        return http.get('/api/user');
+        return http.get<AuthenticatedUserResource>('/api/user');
     };
 
     const login = async (user: SanctumUser) => {

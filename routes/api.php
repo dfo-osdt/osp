@@ -7,6 +7,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManuscriptRecordController;
+use App\Http\Resources\AuthenticatedUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function () {
     // need to change this...
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        return AuthenticatedUserResource::make($request->user()->load('author.organization'));
     });
 
     Route::controller(AuthorController::class)->group(function () {
