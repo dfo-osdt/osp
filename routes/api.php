@@ -30,7 +30,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(AuthorController::class)->group(function () {
         Route::get('/authors', 'index');
+        Route::get('/authors/{author}', 'show');
         Route::post('/authors', 'store');
+        Route::put('/authors/{author}', 'update');
     });
 
     Route::controller(UserController::class)->group(function () {

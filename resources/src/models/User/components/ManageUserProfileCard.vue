@@ -1,8 +1,7 @@
 <template>
     <ContentCard>
         <template #title>Manage User Profile</template>
-        <q-skeleton v-if="!user" height="150px" />
-        <q-form v-else @submit="save()">
+        <q-form v-if="user" @submit="save()">
             <div class="row q-col-gutter-md">
                 <q-input
                     v-model="user.first_name"
@@ -31,10 +30,15 @@
                     hint="Your verified email address cannot be changed manually."
                 />
             </div>
+            <q-card-actions align="right">
+                <q-btn
+                    color="primary"
+                    label="Save"
+                    type="submit"
+                    :loading="loading"
+                />
+            </q-card-actions>
         </q-form>
-        <q-card-actions align="right">
-            <q-btn v-if="user" color="primary" label="Save" type="submit" />
-        </q-card-actions>
     </ContentCard>
 </template>
 
@@ -45,6 +49,10 @@ import { User, UserService } from '../User';
 
 const props = defineProps<{
     userId: number;
+}>();
+
+const emit = defineEmits<{
+    (event: 'saved'): void;
 }>();
 
 const loading = ref(true);
@@ -58,9 +66,11 @@ async function getUser() {
 
 onMounted(async () => {
     getUser();
+    console.log('get user');
 });
 
 async function save() {
+    console.log('save');
     if (!user.value) return;
     loading.value = true;
     const userResource = await UserService.update(
@@ -70,6 +80,7 @@ async function save() {
     );
     user.value = userResource.data;
     loading.value = false;
+    emit('saved');
 }
 </script>
 

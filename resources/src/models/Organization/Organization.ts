@@ -26,6 +26,14 @@ export class OrganizationService {
         return response.data;
     }
 
+    /** Get an organization */
+    public static async find(id: number) {
+        const response = await http.get<OrganizationResource>(
+            `api/organizations/${id}`
+        );
+        return response.data;
+    }
+
     /** Create a new organization */
     public static async create(organization: Organization) {
         const response = await http.post<Organization, OrganizationResource>(

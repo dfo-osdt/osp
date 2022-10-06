@@ -33,6 +33,29 @@ export class AuthorService {
     }
 
     /**
+     * Find an author by author id.
+     * @param id
+     * @returns
+     */
+    public static async find(id: number) {
+        const response = await http.get<AuthorResource>(`api/authors/${id}`);
+        return response.data;
+    }
+
+    /**
+     * Update an author
+     *
+     * @param author
+     */
+    public static async update(author: Author) {
+        const response = await http.put<Author, AuthorResource>(
+            `api/authors/${author.id}`,
+            author
+        );
+        return response.data;
+    }
+
+    /**
      * Create an author
      */
     public static async create(author: Author) {

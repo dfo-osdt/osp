@@ -86,7 +86,12 @@ watch(selectedOrganization, (organization) => {
     }
 });
 
-onMounted(() => {
+onMounted(async () => {
+    if (props.modelValue) {
+        selectedOrganization.value = await OrganizationService.find(
+            props.modelValue
+        );
+    }
     if (props.initialSearchTerm) {
         organizationSelect.value?.filter(props.initialSearchTerm);
     }

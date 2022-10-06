@@ -86,7 +86,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
     // initial state
     const user: Ref<AuthenticatedUser | null> = useStorage('user', null);
     const loading = ref(true);
-    isLoggedIn(); // check with backend - is our session still valid?
+    refreshUser(); // check with backend - is our session still valid?
 
     // computed
     const isAuthenticated = computed(() => user.value !== null);
@@ -98,8 +98,8 @@ export const useAuthStore = defineStore('AuthStore', () => {
      *
      * @returns void
      */
-    async function isLoggedIn() {
-        loading.value = true;
+    async function refreshUser(silent = false) {
+        if (!silent) loading.value = true;
         return await getUser()
             .then((resp) => {
                 user.value = new AuthenticatedUser(resp.data.data);
@@ -136,7 +136,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         // login user and get user data
         await sanctumLogin(sanctumUser)
             .then(async () => {
-                await isLoggedIn();
+                await refreshUser();
             })
             .catch((err) => {
                 user.value = null;
@@ -176,6 +176,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         isAuthenticated,
         login,
         logout,
+        refreshUser,
         loading,
         idleTimerMin,
     };

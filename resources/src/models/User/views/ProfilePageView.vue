@@ -1,13 +1,17 @@
 <template>
-    <MainPageLayout
-        v-if="authStore.user && !authStore.loading"
-        title="My Profile"
-    >
-        <ManageUserProfileCard class="q-ma-md" :user-id="authStore.user.id" />
-        <ManageAuthorProfileCard
-            class="q-ma-md"
-            :author_id="authStore.user.authorId"
-        />
+    <MainPageLayout title="My Profile">
+        <template v-if="authStore.user && !authStore.loading">
+            <ManageUserProfileCard
+                class="q-ma-md"
+                :user-id="authStore.user.id"
+                @saved="authStore.refreshUser(true)"
+            />
+            <ManageAuthorProfileCard
+                class="q-ma-md"
+                :author-id="authStore.user.author.data.id"
+            />
+        </template>
+        <q-skeleton v-else class="q-ma-md" height="200px" />
     </MainPageLayout>
 </template>
 

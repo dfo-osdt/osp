@@ -77,7 +77,7 @@ const router = useRouter();
 const { t } = useI18n();
 
 //user related data
-const email = ref(router.currentRoute.value.query?.email || '');
+const email = ref((router.currentRoute.value.query?.email as string) || '');
 const password = ref('');
 const remember = ref(false);
 

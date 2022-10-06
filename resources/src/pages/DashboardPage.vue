@@ -45,7 +45,12 @@
 
                     <q-tab-panels v-model="tab" animated>
                         <q-tab-panel name="manuscripts" class="q-pa-none">
-                            <template v-if="manuscriptStore.empty">
+                            <template
+                                v-if="
+                                    manuscriptStore.empty &&
+                                    !manuscriptStore.loading
+                                "
+                            >
                                 <div class="flex row justify-center">
                                     <div
                                         class="col-12 col-lg-10 flex column text-center"

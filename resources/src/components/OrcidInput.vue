@@ -3,7 +3,6 @@
         v-model="value"
         outlined
         label="ORCID"
-        class="q-ma-md"
         mask="####-####-####-###X"
         :rules="rules"
     ></q-input>
@@ -11,7 +10,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-    modelValue: string;
+    modelValue: string | null;
 }>();
 
 const rules = [
@@ -19,6 +18,26 @@ const rules = [
         val.length === 0 ||
         /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/.test(val) ||
         'ORCID is invalid',
+    // check orcid checksum
+    (val: string) => {
+        if (val.length < 19) {
+            return true;
+        }
+        // checksum is the last digit
+        const givenCheckSum = val[18];
+        const digits = val
+            .substring(0, 18)
+            .replaceAll('-', '')
+            .split('')
+            .map((x) => parseInt(x));
+        const total = digits.reduce((acc, x) => {
+            return (acc + x) * 2;
+        }, 0);
+        const remainder = total % 11;
+        const result = (12 - remainder) % 11;
+        const checksum = result == 10 ? 'X' : result.toString();
+        return givenCheckSum === checksum || 'ORCID is invalid (checksum)';
+    },
 ];
 
 const value = useVModel(props, 'modelValue');
