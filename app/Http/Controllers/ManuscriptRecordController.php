@@ -124,7 +124,7 @@ class ManuscriptRecordController extends Controller
         $pdf = $manuscriptRecord->getManuscriptFile();
 
         if ($pdf) {
-            return $pdf; // response()->download($pdf->getPath(), $pdf->file_name);
+            return response()->download($pdf->getPath(), $pdf->file_name);
         } else {
             throw new NotFoundHttpException('No PDF attached to this record');
         }
