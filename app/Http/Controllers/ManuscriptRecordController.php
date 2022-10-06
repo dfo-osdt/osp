@@ -125,9 +125,10 @@ class ManuscriptRecordController extends Controller
         Gate::authorize('view', $manuscriptRecord);
 
         $pdf = $manuscriptRecord->getManuscriptFile();
-        $file = new File($pdf->getPath(), true);
 
         if ($pdf) {
+            $file = new File($pdf->getPath(), true);
+
             return response()->download($file->getRealPath(), $pdf->file_name);
         } else {
             throw new NotFoundHttpException('No PDF attached to this record');
