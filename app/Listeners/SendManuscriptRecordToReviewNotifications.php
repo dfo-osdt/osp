@@ -26,6 +26,6 @@ class SendManuscriptRecordToReviewNotifications
      */
     public function handle(ManuscriptRecordToReviewEvent $event)
     {
-        Mail::send(new ManuscriptRecordToReviewMail($event->manuscriptRecord, $event->divisionManagerUser));
+        Mail::queue(new ManuscriptRecordToReviewMail($event->manuscriptRecord, $event->divisionManagerUser));
     }
 }

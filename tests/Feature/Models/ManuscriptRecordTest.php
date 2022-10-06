@@ -179,7 +179,7 @@ test('a user can submit a filled manuscript record', function () {
 
     $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertOk();
 
-    Mail::assertSent(ManuscriptRecordToReviewMail::class);
+    Mail::assertQueued(ManuscriptRecordToReviewMail::class);
 
     expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::IN_REVIEW->value);
 });
