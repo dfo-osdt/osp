@@ -12,6 +12,7 @@ use App\Rules\UserNotAManuscriptAuthor;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ManuscriptRecordController extends Controller
@@ -107,6 +108,8 @@ class ManuscriptRecordController extends Controller
     {
         Gate::authorize('update', $manuscriptRecord);
 
+        ray($request);
+
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf',
         ]);
@@ -122,9 +125,10 @@ class ManuscriptRecordController extends Controller
         Gate::authorize('view', $manuscriptRecord);
 
         $pdf = $manuscriptRecord->getManuscriptFile();
+        $file = new File($pdf->getPath(), true);
 
         if ($pdf) {
-            return response()->download($pdf->getPath(), $pdf->file_name);
+            return response()->download($file->getRealPath(), $pdf->file_name);
         } else {
             throw new NotFoundHttpException('No PDF attached to this record');
         }
