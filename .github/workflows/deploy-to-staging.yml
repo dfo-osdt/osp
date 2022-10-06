@@ -101,7 +101,7 @@ jobs:
             php artisan migrate:fresh --seed --force
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo systemctl reload php8.1-fpm.service
-            chmod -R 771 $STORAGE_PATH
+            sudo chmod -R 771 $STORAGE_PATH
 
   clean-up:
     runs-on: ubuntu-20.04
