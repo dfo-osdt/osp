@@ -89,13 +89,14 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
+          script_stop: true
           script: |
             cd /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
             composer install --optimize-autoloader --no-interaction
-            php artisan migrate optimize:clear
-            php artisan migrate config:clear
+            php artisan optimize:clear
+            php artisan config:clear
             php artisan config:cache
             php artisan migrate:fresh --seed --force
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
