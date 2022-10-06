@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Author;
-use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -50,10 +49,13 @@ class UserFactory extends Factory
                 [
                     'first_name' => $user->first_name,
                     'last_name' => $user->last_name,
-                    'organization_id' => Organization::factory()->create()->id,
+                    'organization_id' => 1,
                     'user_id' => $user->id,
                 ]
             );
+
+            // by default a new user is an author
+            $user->assignRole('author');
         });
     }
 

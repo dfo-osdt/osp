@@ -26,4 +26,21 @@ export class UserService {
         const response = await http.get<UserResourceList>(url);
         return response.data;
     }
+
+    public static async get(id: number) {
+        const response = await http.get<UserResource>(`api/users/${id}`);
+        return response.data;
+    }
+
+    public static async update(
+        id: number,
+        firstName: string,
+        lastName: string
+    ) {
+        const response = await http.put<any, UserResource>(`api/users/${id}`, {
+            first_name: firstName,
+            last_name: lastName,
+        });
+        return response.data;
+    }
 }

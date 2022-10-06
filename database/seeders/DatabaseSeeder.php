@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RegionSeeder::class,
             OrganizationSeeder::class,
+            RoleAndPermissionSeeder::class,
         ]);
 
         // here to test the system / demo - remove later

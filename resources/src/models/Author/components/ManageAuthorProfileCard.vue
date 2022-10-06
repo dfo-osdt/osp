@@ -12,14 +12,7 @@ const props = defineProps<{
     author_id: number;
 }>();
 
-
-async function getAuthor() {
-    const response = await axios.get('/api/author/profile');
-    return response.data;
-}
-
+async function getAuthor() {}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

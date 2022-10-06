@@ -9,8 +9,6 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
 test('an authenticated user can create a new manuscript', function () {
-    $this->seed();
-
     $user = User::factory()->create();
 
     // expected data once created
@@ -34,8 +32,6 @@ test('an authenticated user can create a new manuscript', function () {
 });
 
 test('an authenticated users can get a list of their manuscripts', function () {
-    $this->seed();
-
     $manuscripts = ManuscriptRecord::factory()->count(5)->create();
     $user = User::factory()->create();
     $manuscripts = ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(2))->count(5)->count(5)->create(['user_id' => $user->id]);
@@ -48,8 +44,6 @@ test('an authenticated users can get a list of their manuscripts', function () {
 });
 
 test('a user can save a draft manuscript', function () {
-    $this->seed();
-
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
 
@@ -86,8 +80,6 @@ test('a user can save a draft manuscript', function () {
 });
 
 test('a user can attach and download a pdf version of their manuscript to a manuscript record', function () {
-    $this->seed();
-
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
 
@@ -136,8 +128,6 @@ PDF;
 });
 
 test('a user cannot submit a manuscript record that does not have all mandatory fields for internal review', function () {
-    $this->seed();
-
     $manuscript = ManuscriptRecord::factory()->create();
 
     $reviewerUser = User::factory()->create();
@@ -152,8 +142,6 @@ test('a user cannot submit a manuscript record that does not have all mandatory 
 });
 
 test('a user cannot submit a filled manuscript record to himself or an author of the manuscript', function () {
-    $this->seed();
-
     $manuscript = ManuscriptRecord::factory()->filled()->create();
 
     $author = $manuscript->manuscriptAuthors()->first()->author;
@@ -175,8 +163,6 @@ test('a user cannot submit a filled manuscript record to himself or an author of
 });
 
 test('a user can submit a filled manuscript record', function () {
-    $this->seed();
-
     Mail::fake();
 
     $radomUser = User::factory()->create();

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
-use App\Models\Author;
+use App\Models\User;
 use App\Queries\UserListQuery;
 use App\Traits\PaginationLimitTrait;
+use Gate;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -38,33 +39,49 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Author  $author
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Author $author)
+    public function show(User $user)
     {
-        //
+        Gate::authorize('view', $user);
+
+        $user->load('author');
+
+        return new UserResource($user);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Author  $author
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Author $author)
+    public function update(Request $request, User $user)
     {
-        //
+        Gate::authorize('update', $user);
+
+        $validated = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+        ]);
+
+        $user->update($validated);
+        // also update the author record associated with this user
+        $user->author->update($validated);
+        $user->refresh();
+
+        return new UserResource($user);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Author  $author
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Author $author)
+    public function destroy(User $user)
     {
         //
     }

@@ -5,8 +5,6 @@ use App\Models\Organization;
 use App\Models\User;
 
 test('a user can get list of authors', function () {
-    $this->seed();
-
     Author::factory()->count(15)->create();
 
     $user = User::factory()->create();
@@ -23,8 +21,6 @@ test('a user can get list of authors', function () {
 });
 
 test('a user can create an author', function () {
-    $this->seed();
-
     $user = User::factory()->create();
 
     $minimumData = [
@@ -46,8 +42,6 @@ test('a user can create an author', function () {
 });
 
 test('a user can create an author with an ORCID', function () {
-    $this->seed();
-
     $user = User::factory()->create();
 
     $invalidFormatOrcid = '0000-0002-X868-2722';
@@ -79,8 +73,6 @@ test('a user can create an author with an ORCID', function () {
 });
 
 test('a user cannot create an author if email already exist', function () {
-    $this->seed();
-
     $user = User::factory()->create();
 
     $author = Author::factory()->create();
@@ -99,8 +91,6 @@ test('a user cannot create an author if email already exist', function () {
 });
 
 test('a user cannot create an author if orcid already exists', function () {
-    $this->seed();
-
     $user = User::factory()->create();
 
     $author = Author::factory()->create([

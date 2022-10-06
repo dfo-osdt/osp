@@ -15,14 +15,17 @@ export interface IAuthenticatedUser {
     last_name: string;
     email: string;
     author: AuthorResource;
+    roles: string[];
+    permissions: string[];
 }
 class AuthenticatedUser implements IAuthenticatedUser {
-
     public id!: number;
     public first_name!: string;
     public last_name!: string;
     public email!: string;
     public author!: AuthorResource;
+    public roles!: string[];
+    public permissions!: string[];
 
     constructor(user: IAuthenticatedUser) {
         Object.assign(this, user);
@@ -40,6 +43,33 @@ class AuthenticatedUser implements IAuthenticatedUser {
      */
     get initials(): string {
         return `${this.first_name.charAt(0)}${this.last_name.charAt(0)}`;
+    }
+
+    /**
+     * Get the user's author id.
+     */
+    get authorId(): number {
+        return this.author.data.id;
+    }
+
+    /**
+     * Does this user have the given permission?
+     *
+     * @param permission
+     * @returns
+     */
+    can(permission: string): boolean {
+        return this.permissions.includes(permission);
+    }
+
+    /**
+     * Does this user have the given role?
+     *
+     * @param role
+     * @returns
+     */
+    hasRole(role: string): boolean {
+        return this.roles.includes(role);
     }
 }
 
@@ -72,9 +102,8 @@ export const useAuthStore = defineStore('AuthStore', () => {
         loading.value = true;
         return await getUser()
             .then((resp) => {
-                user.value = new AuthenticatedUser(
-                    resp.data.data
-                );
+                user.value = new AuthenticatedUser(resp.data.data);
+                loading.value = false;
                 return true;
             })
             .catch((err) => {
@@ -82,7 +111,6 @@ export const useAuthStore = defineStore('AuthStore', () => {
                 user.value = null;
                 return false;
             });
-        loading.value = false;
     }
 
     /**

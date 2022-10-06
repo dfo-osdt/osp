@@ -4,7 +4,7 @@ use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 
 test('a user can get a list of all organization', function () {
-    //$this->seed();
+    //
 
     Organization::factory()->count(20)->create();
 
