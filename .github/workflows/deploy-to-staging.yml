@@ -89,7 +89,6 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
-          script_stop: true
           script: |
             cd /var/www/${{secrets.STAGING_SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
