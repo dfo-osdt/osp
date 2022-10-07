@@ -41,9 +41,9 @@
                             authStore.user?.fullName
                         }}</q-item-label>
                         <q-separator></q-separator>
-                        <q-item v-ripple to="/profile" clickable>
+                        <q-item v-ripple to="/settings" clickable>
                             <q-item-section>
-                                <q-item-label>Profile</q-item-label>
+                                <q-item-label>Settings</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
                                 <q-icon name="mdi-account-cog-outline" />

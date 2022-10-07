@@ -6,7 +6,7 @@ export interface Author {
     readonly id: number;
     first_name: string;
     last_name: string;
-    orcid: string | null;
+    orcid: string;
     email: string;
     user_id: number | null;
     organization_id: number;

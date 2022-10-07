@@ -1,6 +1,6 @@
 <template>
-    <ContentCard>
-        <template #title>Manage User Profile</template>
+    <ContentCard secondary>
+        <template #title>User Profile</template>
         <q-form v-if="user" @submit="save()">
             <div class="row q-col-gutter-md">
                 <q-input
@@ -46,6 +46,9 @@
 import ContentCard from '@/components/ContentCard.vue';
 import { Ref } from 'vue';
 import { User, UserService } from '../User';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 const props = defineProps<{
     userId: number;
@@ -81,6 +84,12 @@ async function save() {
     user.value = userResource.data;
     loading.value = false;
     emit('saved');
+    // notify
+    $q.notify({
+        message: 'User profile saved',
+        type: 'positive',
+        position: 'top',
+    });
 }
 </script>
 

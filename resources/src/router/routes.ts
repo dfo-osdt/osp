@@ -33,9 +33,26 @@ const routes: RouteRecordRaw[] = [
                 meta: { requiresAuth: true },
             },
             {
-                path: '/profile',
-                component: () => import('@/models/User/views/ProfilePageView.vue'),
+                path: '/settings',
+                component: () => import('@/pages/SettingsPage.vue'),
                 meta: { requiresAuth: true },
+                children: [
+                    { path: '', redirect: { name: 'settings.profile' } },
+                    {
+                        path: 'profile',
+                        component: () =>
+                            import('@/models/User/views/UserProfileView.vue'),
+                        name: 'settings.profile',
+                    },
+                    {
+                        path: 'author',
+                        component: () =>
+                            import(
+                                '@/models/Author/views/ManageAuthorProfileView.vue'
+                            ),
+                        name: 'settings.author',
+                    },
+                ],
             },
             {
                 path: '/my-manuscripts',

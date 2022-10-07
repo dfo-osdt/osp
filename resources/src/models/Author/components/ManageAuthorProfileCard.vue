@@ -1,8 +1,8 @@
 <template>
     <ContentCard>
-        <template #title>Manage your Author Profile</template>
+        <template #title>Author Profile</template>
         <template v-if="author">
-            <q-form @submit="save()">
+            <q-form ref="form" @submit="save">
                 <div class="row q-col-gutter-md">
                     <q-input
                         v-model="author.data.first_name"
@@ -52,16 +52,14 @@
                     <OrcidInput
                         v-model="author.data.orcid"
                         class="col-12 col-md-6"
-                        label="ORCID"
-                        outlined
                     />
                 </div>
                 <q-card-actions align="right">
                     <q-btn
                         color="primary"
                         label="Save"
-                        type="submit"
                         :loading="loading"
+                        type="submit"
                     />
                 </q-card-actions>
             </q-form>
@@ -73,9 +71,12 @@
 import ContentCard from '@/components/ContentCard.vue';
 import { Ref } from 'vue';
 import { AuthorResource, AuthorService } from '../Author';
+import { QForm, QInput, useQuasar } from 'quasar';
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue';
 import OrcidInput from '@/components/OrcidInput.vue';
 
+const $q = useQuasar();
+const form = ref<QForm | null>(null);
 const props = defineProps<{
     authorId: number;
 }>();
@@ -100,8 +101,20 @@ onMounted(async () => {
 async function save() {
     if (!author.value) return;
     loading.value = true;
-    author.value = await AuthorService.update(author.value.data);
-    loading.value = false;
+    await AuthorService.update(author.value.data)
+        .then((resp) => {
+            $q.notify({
+                type: 'positive',
+                message: 'Author profile saved.',
+            });
+            author.value = resp;
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
+            loading.value = false;
+        });
 }
 </script>
 

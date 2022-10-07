@@ -1,5 +1,6 @@
 <template>
     <q-input
+        ref="input"
         v-model="value"
         outlined
         label="ORCID"
@@ -9,8 +10,10 @@
 </template>
 
 <script setup lang="ts">
+import { QInput } from 'quasar';
+
 const props = defineProps<{
-    modelValue: string | null;
+    modelValue: string;
 }>();
 
 const rules = [
