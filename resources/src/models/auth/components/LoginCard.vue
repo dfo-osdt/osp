@@ -67,14 +67,16 @@
 <script setup lang="ts">
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
+import { useQuasar } from 'quasar';
 
 const props = defineProps<{
     showFooter?: boolean;
 }>();
 
-const { login: authLogin } = useAuthStore();
+const authStore = useAuthStore();
 const router = useRouter();
 const { t } = useI18n();
+const $q = useQuasar();
 
 //user related data
 const email = ref((router.currentRoute.value.query?.email as string) || '');
@@ -87,7 +89,8 @@ const errorMessage: Ref<ErrorResponse | null> = ref(null);
 
 async function login() {
     loading.value = true;
-    await authLogin(email.value, password.value, remember.value)
+    await authStore
+        .login(email.value, password.value, remember.value)
         .then(() => {
             router.currentRoute.value.query?.redirect
                 ? router.push(
@@ -100,6 +103,23 @@ async function login() {
         });
     loading.value = false;
 }
+
+onMounted(async () => {
+    /** Redirect if user is authenticated, likely got here following an email link */
+    if (authStore.isAuthenticated) {
+        // is there a redirect query param?
+        if (router.currentRoute.value.query?.redirect) {
+            router.push(router.currentRoute.value.query.redirect as string);
+        } else {
+            $q.notify({
+                message: t('auth.redirected'),
+                type: 'info',
+                icon: 'mdi-information-outline',
+            });
+            router.push({ name: 'dashboard' });
+        }
+    }
+});
 </script>
 
 <style scoped></style>
