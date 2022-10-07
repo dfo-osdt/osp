@@ -1,5 +1,5 @@
 <template>
-    <q-card flat bordered class="bg-grey-1">
+    <q-card flat bordered>
         <q-card-section class="q-pb-sm">
             <div v-if="to" class="absolute-right q-pa-sm">
                 <q-btn

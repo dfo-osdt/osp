@@ -46,7 +46,7 @@
                                 <q-item-label>Profile</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
-                                <q-icon name="mdi-account-details-outline" />
+                                <q-icon name="mdi-account-cog-outline" />
                             </q-item-section>
                         </q-item>
                         <q-item v-ripple to="/dashboard" clickable>

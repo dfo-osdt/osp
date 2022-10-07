@@ -48,8 +48,9 @@
                 :manuscript-record-id="id"
                 :readonly="isManuscriptReadOnly"
                 class="q-ma-sm"
+                secondary
             />
-            <ContentCard class="q-ma-sm">
+            <ContentCard class="q-ma-sm" secondary>
                 <template #title>General Information</template>
                 <template #title-right>
                     <FormSectionStatusIcon :status="generalSectionStatus" />
@@ -214,13 +215,13 @@
                     <q-skeleton type="text" />
                 </template>
             </ContentCard>
-            <ContentCard class="q-mx-sm q-mt-md">
+            <ContentCard class="q-mx-sm q-mt-md" secondary>
                 <template #title>Sensitive Issues</template>
                 <template #title-right
                     ><FormSectionStatusIcon status="complete"
                 /></template>
             </ContentCard>
-            <ContentCard class="q-mx-sm q-mt-md">
+            <ContentCard class="q-mx-sm q-mt-md" secondary>
                 <template #title>Attach Manuscript</template>
                 <template #title-right
                     ><FormSectionStatusIcon

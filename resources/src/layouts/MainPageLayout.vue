@@ -1,5 +1,5 @@
 <template>
-    <q-page style="padding-top: 60px">
+    <q-page style="padding-top: 60px" class="bg-grey-1">
         <slot></slot>
         <q-page-sticky expand position="top">
             <q-toolbar class="bg-teal-1">
