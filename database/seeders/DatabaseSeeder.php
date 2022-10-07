@@ -53,6 +53,33 @@ class DatabaseSeeder extends Seeder
                 'last_name' => 'User',
                 'email' => 'rds@test.com',
             ]);
+
+            // Make an author for Mark
+            $markAuthor = \App\Models\Author::factory()->create([
+                'first_name' => 'Mark',
+                'last_name' => 'LaFlamme',
+                'email' => 'mark.laflamme@dfo-mpo.gc.ca',
+                'organization_id' => 1,
+                'orcid' => '0000-0001-5955-7098',
+            ]);
+
+            $markUser = \App\Models\User::factory()->create([
+                'first_name' => 'Mark',
+                'last_name' => 'LaFlamme',
+                'email' => 'mark.laflamme@dfo-mpo.gc.ca',
+            ]);
+
+            // create a manuscript record for Mark
+            $marksManuscript = \App\Models\ManuscriptRecord::factory()->filled()->create([
+                'user_id' => $markUser->id,
+            ]);
+
+            $marksManuscript->manuscriptAuthors()->save(\App\Models\ManuscriptAuthor::create([
+                'author_id' => $markAuthor->id,
+                'is_corresponding_author' => true,
+                'manuscript_record_id' => $marksManuscript->id,
+                'organization_id' => $markAuthor->organization_id,
+            ]));
         }
     }
 }
