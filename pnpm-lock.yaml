@@ -4,12 +4,14 @@ specifiers:
   '@intlify/vite-plugin-vue-i18n': ^6.0.3
   '@quasar/extras': ^1.15.4
   '@quasar/vite-plugin': 1.2.3
+  '@types/dompurify': ^2.3.4
   '@types/node': ^18.8.2
   '@typescript-eslint/eslint-plugin': ^5.39.0
   '@typescript-eslint/parser': ^5.39.0
   '@vitejs/plugin-vue': ^3.1.2
   '@vueuse/core': ^9.3.0
   axios: 0.27.2
+  dompurify: ^2.4.0
   eslint: ^8.24.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-prettier: ^4.2.1
@@ -34,6 +36,7 @@ dependencies:
   '@quasar/extras': 1.15.4
   '@vitejs/plugin-vue': 3.1.2_vite@3.1.4+vue@3.2.40
   '@vueuse/core': 9.3.0_vue@3.2.40
+  dompurify: 2.4.0
   eslint-plugin-quasar: 1.1.0
   pinia: 2.0.22_bfjwoga25wxjazzogo7o372nwq
   quasar: 2.9.2
@@ -44,6 +47,7 @@ dependencies:
 devDependencies:
   '@intlify/vite-plugin-vue-i18n': 6.0.3_vite@3.1.4+vue-i18n@9.2.2
   '@quasar/vite-plugin': 1.2.3_ao732exaursengpgvvpc56ugcm
+  '@types/dompurify': 2.3.4
   '@types/node': 18.8.2
   '@typescript-eslint/eslint-plugin': 5.39.0_xyciw6oqjoiiono4dhv3uhn5my
   '@typescript-eslint/parser': 5.39.0_ypn2ylkkyfa5i233caldtndbqa
@@ -289,12 +293,22 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /@types/dompurify/2.3.4:
+    resolution: {integrity: sha512-EXzDatIb5EspL2eb/xPGmaC8pePcTHrkDCONjeisusLFrVfl38Pjea/R0YJGu3k9ZQadSvMqW0WXPI2hEo2Ajg==}
+    dependencies:
+      '@types/trusted-types': 2.0.2
+    dev: true
+
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
 
   /@types/node/18.8.2:
     resolution: {integrity: sha512-cRMwIgdDN43GO4xMWAfJAecYn8wV4JbsOGHNfNUIDiuYkUYAR5ec4Rj7IO2SAhFPEfpPtLtUTbbny/TCT7aDwA==}
+    dev: true
+
+  /@types/trusted-types/2.0.2:
+    resolution: {integrity: sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==}
     dev: true
 
   /@types/web-bluetooth/0.0.15:
@@ -792,6 +806,10 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /dompurify/2.4.0:
+    resolution: {integrity: sha512-Be9tbQMZds4a3C6xTmz68NlMfeONA//4dOavl/1rNw50E+/QO0KVpbcU0PcaW0nsQxurXls9ZocqFxk8R2mWEA==}
+    dev: false
 
   /esbuild-android-64/0.15.10:
     resolution: {integrity: sha512-UI7krF8OYO1N7JYTgLT9ML5j4+45ra3amLZKx7LO3lmLt1Ibn8t3aZbX5Pu4BjWiqDuJ3m/hsvhPhK/5Y/YpnA==}
