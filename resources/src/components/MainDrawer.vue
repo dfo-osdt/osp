@@ -1,5 +1,5 @@
 <template>
-    <q-drawer>
+    <q-drawer :width="225">
         <div class="flex column q-mb-lg">
             <div class="row fit justify-center">
                 <q-img src="/assets/logo.svg" width="40%"></q-img>
