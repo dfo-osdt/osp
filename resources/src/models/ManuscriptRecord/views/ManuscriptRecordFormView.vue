@@ -379,9 +379,11 @@ const manuscriptAuthorsCard = ref<InstanceType<
 
 // watch if there is a change
 const isDirty = ref(false);
+const disableDirtyWatcher = ref(false);
 watch(
     manuscriptResource,
     (newVal, oldValue) => {
+        if (disableDirtyWatcher.value) return;
         if (
             oldValue === null ||
             manuscriptResource.value?.data.status !== 'draft'
@@ -492,8 +494,7 @@ async function upload() {
     // if there is no manuscript file, return
     if (manuscriptFile.value === null) return;
 
-    const dirtyState = isDirty.value;
-    console.log(dirtyState);
+    disableDirtyWatcher.value = true;
     uploadingFile.value = true;
 
     const response = await ManuscriptRecordService.attachPDF(
@@ -507,9 +508,6 @@ async function upload() {
     }
 
     uploadingFile.value = false;
-    console.log(dirtyState);
-    isDirty.value = dirtyState;
-
     // clear file
     manuscriptFile.value = null;
 
@@ -518,6 +516,11 @@ async function upload() {
         color: 'primary',
         message: 'File uploaded successfully',
     });
+
+    // re-enable dirty watcher in 500 ms
+    setTimeout(() => {
+        disableDirtyWatcher.value = false;
+    }, 500);
 }
 
 // submit the manuscript
