@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
 use Illuminate\Database\Seeder;
 
@@ -40,11 +41,23 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $user->id,
             ]);
 
+            // create 1 manuscript record for the test user with a review step
+            $toReview = \App\Models\ManuscriptRecord::factory()->filled()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManuscriptRecordStatus::IN_REVIEW,
+            ]);
+
             // create a division manager user
             $dmUser = \App\Models\User::factory()->create([
                 'first_name' => 'Division',
                 'last_name' => 'Manager',
                 'email' => 'dm@test.com',
+            ]);
+
+            // give the division manager a management review step
+            ManagementReviewStep::factory()->create([
+                'user_id' => $dmUser->id,
+                'manuscript_record_id' => $toReview->id,
             ]);
 
             // create a rds user

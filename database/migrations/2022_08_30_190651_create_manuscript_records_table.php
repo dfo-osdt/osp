@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignId('region_id')->constrained()->comment('lead region id');
             $table->foreignId('user_id')->constrained()->comment('owner of this record');
 
-            // optional (default to empty string) fields
+            // optional (default to empty string via model) fields
             $table->text('abstract')->nullable();
             $table->text('pls')->nullable()->comment('Plain Language Summary');
             $table->text('scientific_implications')->nullable();

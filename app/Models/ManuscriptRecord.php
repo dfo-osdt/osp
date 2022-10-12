@@ -75,6 +75,14 @@ class ManuscriptRecord extends Model implements HasMedia, Auditable
     }
 
     /**
+     * A manuscript has many management review steps.
+     */
+    public function managementReviewSteps(): HasMany
+    {
+        return $this->hasMany('App\Models\ManagementReviewStep');
+    }
+
+    /**
      * Register media collection that will only accept a single PDF file.
      */
     public function registerMediaCollections(): void

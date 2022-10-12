@@ -35,6 +35,12 @@ class ManuscriptRecordPolicy
         if ($user->id === $manuscriptRecord->user_id) {
             return true;
         }
+
+        // reviewers can view manuscripts they've reviewed
+        $reviewerIds = $manuscriptRecord->managementReviewSteps->pluck('user_id')->toArray();
+        if (in_array($user->id, $reviewerIds)) {
+            return true;
+        }
     }
 
     /**
