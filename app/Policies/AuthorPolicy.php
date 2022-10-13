@@ -53,8 +53,6 @@ class AuthorPolicy
      */
     public function update(User $user, Author $author)
     {
-        ray($user, $author);
-
         // this record isn't associated with a user,
         // and user can update authors.
         if ($author->user_id === null && $user->can('update_authors')) {

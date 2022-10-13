@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\ManagementReviewStepStatus;
 use App\Models\ManagementReviewStep;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -9,17 +10,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class ManagementReviewStepPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
 
     /**
      * Determine whether the user can view the model.
@@ -30,11 +20,8 @@ class ManagementReviewStepPolicy
      */
     public function view(User $user, ManagementReviewStep $managementReviewStep)
     {
-        // is the user the owner of the manuscript step?
-        return $user->id === $managementReviewStep->user_id;
-
-        // is the user the owner of the manuscript record?
-        return $user->id === $managementReviewStep->manuscriptRecord->user_id;
+        // if a user can view the manuscript, they can view the management review step
+        return $user->can('view', $managementReviewStep->manuscriptRecord);
     }
 
     /**
@@ -56,6 +43,11 @@ class ManagementReviewStepPolicy
      */
     public function update(User $user, ManagementReviewStep $managementReviewStep)
     {
+        // is the status pending?
+        if ($managementReviewStep->status !== ManagementReviewStepStatus::PENDING) {
+            return false;
+        }
+
         // is the user the owner of the manuscript step?
         return $user->id === $managementReviewStep->user_id;
     }

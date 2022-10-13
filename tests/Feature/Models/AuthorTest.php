@@ -16,8 +16,6 @@ test('a user can get list of authors', function () {
 
     expect($response->json('data'))->toHaveCount(5);
     expect($response->json('meta.total'))->toBe(Author::count());
-
-    ray($response->json());
 });
 
 test('a user can create an author', function () {
@@ -135,8 +133,6 @@ test('a user can update an author profile without an owner', function () {
 
     $response = $this->actingAs($user)->putJson('api/authors/'.$author->id, $data)->assertOk();
 
-    ray($response->json());
-
     $response->assertJson([
         'data' => $data,
     ]);
@@ -156,8 +152,6 @@ test('a user can update their own author profile', function () {
     ];
 
     $response = $this->actingAs($user)->putJson('api/authors/'.$author->id, $data)->assertOk();
-
-    ray($response->json());
 
     // check that first name, last name, and email are not updated here
     $data['first_name'] = $author->first_name;

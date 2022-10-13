@@ -96,13 +96,25 @@ const routes: RouteRecordRaw[] = [
                         redirect: { name: 'manuscript.form' },
                     },
                     {
-                        path: 'mrf',
+                        path: 'form',
                         component: () =>
                             import(
                                 '@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue'
                             ),
                         props: (route) => ({ id: Number(route.params.id) }),
                         name: 'manuscript.form',
+                    },
+                    {
+                        path: 'reviews',
+                        component: UnderConstruction,
+                        props: (route) => ({ id: Number(route.params.id) }),
+                        name: 'manuscript.reviews',
+                    },
+                    {
+                        path: 'progress',
+                        component: UnderConstruction,
+                        props: (route) => ({ id: Number(route.params.id) }),
+                        name: 'manuscript.progress',
                     },
                 ],
             },

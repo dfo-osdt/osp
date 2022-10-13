@@ -80,6 +80,5 @@ test('a user can see an organization', function () {
 
     $resource = OrganizationResource::make($organization)->resolve();
 
-    ray($response->json());
     expect($response->json())->toMatchArray($resource);
 });

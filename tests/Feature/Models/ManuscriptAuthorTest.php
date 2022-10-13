@@ -7,7 +7,7 @@ test('a user can get the manuscript authors associated with a manuscript record'
     $manuscript = \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->create([
         'user_id' => $user->id,
     ]);
-    ray()->showQueries();
+
     $response = $this->actingAs($user)->getJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors');
 
     $response->assertOk()->assertJsonCount(5, 'data');

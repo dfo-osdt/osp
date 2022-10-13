@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\OrganizationController;
@@ -47,6 +48,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}', 'update');
         Route::delete('/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}', 'destroy');
         Route::post('/manuscript-records/{manuscriptRecord}/manuscript-authors', 'store');
+    });
+
+    Route::controller(ManagementReviewStepController::class)->group(function () {
+        Route::get('/manuscript-records/{manuscriptRecord}/management-review-steps', 'index');
+        Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps', 'store');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}', 'update');
+        // actions
+        Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/approve', 'approve');
+        Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withhold', 'withhold');
+        Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/deffer', 'deffer');
     });
 
     Route::controller(ManuscriptRecordController::class)->group(function () {

@@ -94,7 +94,7 @@ class ManuscriptRecord extends Model implements HasMedia, Auditable
     /**
      * Get manuscript file media model.
      */
-    public function getManuscriptFile(): ?Media
+    public function getManuscriptFile()
     {
         return $this->getMedia('manuscript')->last();
     }

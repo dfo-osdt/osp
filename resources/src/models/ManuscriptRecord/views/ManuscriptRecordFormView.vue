@@ -2,7 +2,9 @@
     <ContentCard class="q-ma-md">
         <template #title
             ><div>Manuscript Record Form</div>
-                <div class="text-subtitle2">{{ manuscriptResource?.data.title ?? '' }}</div>
+            <div class="text-subtitle2">
+                {{ manuscriptResource?.data.title ?? '' }}
+            </div>
         </template>
         <template #title-right>
             <!-- Save button, icon only, caption, disabled if no changes -->

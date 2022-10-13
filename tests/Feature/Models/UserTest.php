@@ -35,6 +35,6 @@ test('a user can update their profile', function () {
     $response = $this->actingAs($user)->putJson('api/users/'.$user->id, $data)->assertOk();
     expect($response->json('data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->toArray());
     expect($response->json('data.email'))->toBe($user->email);
-    ray($response->json('data.author'));
+
     expect($response->json('data.author.data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->toArray());
 });
