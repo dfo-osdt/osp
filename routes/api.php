@@ -55,9 +55,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps', 'store');
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}', 'update');
         // actions
-        Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/approve', 'approve');
-        Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withhold', 'withhold');
-        Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/deffer', 'deffer');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/approve', 'approve');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withhold', 'withhold');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/defer', 'defer');
     });
 
     Route::controller(ManuscriptRecordController::class)->group(function () {

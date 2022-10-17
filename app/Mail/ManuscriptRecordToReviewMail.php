@@ -33,13 +33,12 @@ class ManuscriptRecordToReviewMail extends Mailable
      */
     public function build()
     {
-        //$this->$manuscriptRecord->manuscriptAuthors->load('author');
         $this->subject('Manuscript Record Submitted: '.$this->manuscriptRecord->title);
         $this->to($this->user->email, $this->user->fullName);
         $this->cc($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->fullName);
         $this->cc($this->manuscriptRecord->manuscriptAuthors->pluck('author.email')->toArray());
         $this->attach($this->manuscriptRecord->getManuscriptFile());
 
-        return $this->markdown('emails.manuscriptRecord.manuscriptRecordSubmitted');
+        return $this->markdown('mail.manuscriptRecord.manuscriptRecordSubmitted');
     }
 }

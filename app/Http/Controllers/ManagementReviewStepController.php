@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ManagementReviewStepDecision;
+use App\Enums\ManagementReviewStepStatus;
+use App\Enums\ManuscriptRecordStatus;
+use App\Events\ManagementReviewStepCreated;
+use App\Events\ManuscriptManagementReviewComplete;
 use App\Http\Resources\ManagementReviewStepResource;
-use App\Http\Resources\ManuscriptAuthorResource;
-use App\Models\Author;
-use App\Models\ManuscriptAuthor;
+use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Validator;
 
 class ManagementReviewStepController extends Controller
 {
@@ -35,75 +39,155 @@ class ManagementReviewStepController extends Controller
      */
     public function store(Request $request, ManuscriptRecord $manuscriptRecord)
     {
-        $validated = $request->validate([
-            'author_id' => ['required', 'integer', 'exists:authors,id',
-                Rule::unique('manuscript_authors')->where(function ($query) use ($manuscriptRecord) {
-                    return $query->where('manuscript_record_id', $manuscriptRecord->id);
-                }), ],
-            'is_corresponding_author' => 'boolean',
-        ]);
-
-        $author = Author::find($validated['author_id']);
-
-        $manuscriptAuthor = new ManuscriptAuthor();
-        $manuscriptAuthor->manuscript_record_id = $manuscriptRecord->id;
-        $manuscriptAuthor->author_id = $validated['author_id'];
-        $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
-        $manuscriptAuthor->organization_id = $author->organization_id;
-        $manuscriptAuthor->save();
-        $manuscriptAuthor->load('author', 'organization');
-
-        return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
+     * @param  \App\Models\ManagementReviewStep  $managementReviewStep
      * @return \Illuminate\Http\Response
      */
-    public function show(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
+    public function show(ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
     {
-        return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
+     * @param  \App\Models\ManagementReviewStep  $managementReviewStep
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
+    public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
     {
+        Gate::authorize('update', $managementReviewStep);
+
         $validated = $request->validate([
-            //'author_id' => 'integer|exists:authors,id',
-            'is_corresponding_author' => 'boolean',
-            'organization_id' => 'integer|exists:organizations,id',
+            'comments' => 'string',
         ]);
 
-        if (isset($validated['organization_id'])) {
-            $manuscriptAuthor->organization_id = $validated['organization_id'];
-        }
-        if (isset($validated['is_corresponding_author'])) {
-            $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'];
-        }
-        $manuscriptAuthor->save();
-        $manuscriptAuthor->refresh()->load('author', 'organization');
+        $managementReviewStep->update($validated);
 
-        return ManuscriptAuthorResource::make($manuscriptAuthor);
+        return new ManagementReviewStepResource($managementReviewStep);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
+     * @param  \App\Models\ManagementReviewStep  $managementReviewStep
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
+    public function destroy(ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
     {
-        $manuscriptAuthor->delete();
-        // response 204
-        return response()->noContent();
+    }
+
+    // actions
+    public function approve(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
+    {
+        Gate::authorize('update', $managementReviewStep);
+
+        $validated = $request->validate([
+            'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
+        ]);
+
+        // if the next user is not set, then the review is complete and the manuscript review is complete.
+        if (isset($validated['next_user_id'])) {
+            // a comment is required to send to the next user.
+            Validator::make($managementReviewStep->toArray(), [
+                'comments' => 'required|string',
+            ])->validate();
+
+            $nextReviewStep = new ManagementReviewStep();
+            $nextReviewStep->user_id = $validated['next_user_id'];
+            $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
+            $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
+            $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
+            $nextReviewStep->previous_step_id = $managementReviewStep->id;
+
+            $nextReviewStep->saveOrFail();
+
+            // send event that a management review step has been created.
+            ManagementReviewStepCreated::dispatch($nextReviewStep);
+        } else {
+            // this is the final step of the review.
+            $manuscriptRecord->status = ManuscriptRecordStatus::REVIEWED;
+
+            // send event that a manuscript record review is complete.
+            ManuscriptManagementReviewComplete::dispatch($manuscriptRecord);
+        }
+
+        $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->decision = ManagementReviewStepDecision::APPROVED;
+
+        return new ManagementReviewStepResource($managementReviewStep);
+    }
+
+    public function withhold(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
+    {
+        Gate::authorize('update', $managementReviewStep);
+
+        $validated = $request->validate([
+            'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
+        ]);
+
+        // a comment is always required if the manuscript is being withheld.
+        Validator::make($managementReviewStep->toArray(), [
+            'comments' => 'required|string',
+        ])->validate();
+
+        // if the next user is not set, then the review is complete and the manuscript review is complete.
+        if (isset($validated['next_user_id'])) {
+            $nextReviewStep = new ManagementReviewStep();
+            $nextReviewStep->user_id = $validated['next_user_id'];
+            $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
+            $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
+            $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
+            $nextReviewStep->previous_step_id = $managementReviewStep->id;
+
+            $nextReviewStep->saveOrFail();
+
+            // send event that a management review step has been created.
+            ManagementReviewStepCreated::dispatch($nextReviewStep);
+        } else {
+            // this is the final step of the review.
+            $manuscriptRecord->status = ManuscriptRecordStatus::REVIEWED;
+
+            // send event that a manuscript record review is complete.
+            ManuscriptManagementReviewComplete::dispatch($manuscriptRecord);
+        }
+
+        $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->decision = ManagementReviewStepDecision::WITHHELD;
+
+        return new ManagementReviewStepResource($managementReviewStep);
+    }
+
+    public function defer(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
+    {
+        Gate::authorize('update', $managementReviewStep);
+
+        $validated = $request->validate([
+            'next_user_id' => ['required', 'exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
+        ]);
+
+        // validate that the review step has a comment
+        Validator::make($managementReviewStep->toArray(), [
+            'comments' => 'required|string',
+        ])->validate();
+
+        $nextReviewStep = new ManagementReviewStep();
+        $nextReviewStep->user_id = $validated['next_user_id'];
+        $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
+        $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
+        $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
+        $nextReviewStep->previous_step_id = $managementReviewStep->id;
+        $nextReviewStep->saveOrFail();
+
+        // send event that a management review step has been created.
+        ManagementReviewStepCreated::dispatch($nextReviewStep);
+
+        $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+
+        return new ManagementReviewStepResource($managementReviewStep);
     }
 }
