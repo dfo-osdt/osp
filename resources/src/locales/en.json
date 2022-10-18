@@ -4,7 +4,14 @@
     "app-name": "Open Science Portal",
     "register": "Register",
     "dfo-region": "DFO Region",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "pending": "Pending",
+    "deferred": "Deferred",
+    "completed": "Completed",
+    "approved": "Approved",
+    "none": "None",
+    "withheld": "Withheld",
+    "unknown": "Unknown"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",

@@ -5,7 +5,7 @@ specifiers:
   '@quasar/extras': ^1.15.5
   '@quasar/vite-plugin': 1.2.3
   '@types/dompurify': ^2.3.4
-  '@types/node': ^18.11.0
+  '@types/node': 18.8.0
   '@typescript-eslint/eslint-plugin': ^5.40.0
   '@typescript-eslint/parser': ^5.40.0
   '@vitejs/plugin-vue': ^3.1.2
@@ -48,7 +48,7 @@ devDependencies:
   '@intlify/vite-plugin-vue-i18n': 6.0.3_vite@3.1.8+vue-i18n@9.2.2
   '@quasar/vite-plugin': 1.2.3_e2ybwapbrtvdv3akg52rweizje
   '@types/dompurify': 2.3.4
-  '@types/node': 18.11.0
+  '@types/node': 18.8.0
   '@typescript-eslint/eslint-plugin': 5.40.0_25sstg4uu2sk4pm7xcyzuov7xq
   '@typescript-eslint/parser': 5.40.0_z4bbprzjrhnsfa24uvmcbu7f5q
   axios: 0.27.2
@@ -299,8 +299,8 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
 
-  /@types/node/18.11.0:
-    resolution: {integrity: sha512-IOXCvVRToe7e0ny7HpT/X9Rb2RYtElG1a+VshjwT00HxrM2dWBApHQoqsI6WiY7Q03vdf2bCrIGzVrkF/5t10w==}
+  /@types/node/18.8.0:
+    resolution: {integrity: sha512-u+h43R6U8xXDt2vzUaVP3VwjjLyOJk6uEciZS8OSyziUQGOwmk+l+4drxcsDboHXwyTaqS1INebghmWMRxq3LA==}
     dev: true
 
   /@types/trusted-types/2.0.2:

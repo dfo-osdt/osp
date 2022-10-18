@@ -22,7 +22,7 @@ class ManagementReviewStepResource extends JsonResource
                 'previous_step_id' => $this->previous_step_id,
                 'user_id' => $this->user_id,
                 'completed_at' => $this->completed_at,
-                'comments' => $this->comments,
+                'comments' => $this->comments ?? '',
                 'status' => $this->status,
                 'decision' => $this->decision,
                 'manuscript_record' => ManuscriptRecordResource::make($this->whenLoaded('manuscriptRecord')),

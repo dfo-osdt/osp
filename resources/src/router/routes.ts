@@ -89,11 +89,11 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/pages/ManuscriptRecordPage.vue'),
                 meta: { requiresAuth: true },
                 props: (route) => ({ id: Number(route.params.id) }),
-                name: 'manuscript',
                 children: [
                     {
                         path: '',
                         redirect: { name: 'manuscript.form' },
+                        name: 'manuscript',
                     },
                     {
                         path: 'form',
@@ -106,7 +106,10 @@ const routes: RouteRecordRaw[] = [
                     },
                     {
                         path: 'reviews',
-                        component: UnderConstruction,
+                        component: () =>
+                            import(
+                                '@/models/ManagementReviewStep/views/ManagementReviewStepsView.vue'
+                            ),
                         props: (route) => ({ id: Number(route.params.id) }),
                         name: 'manuscript.reviews',
                     },

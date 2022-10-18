@@ -1,5 +1,5 @@
 <template>
-    <ContentCard class="q-ma-md">
+    <ContentCard class="q-ma-md bg-transparent">
         <template #title
             ><div>Manuscript Record Form</div>
             <div class="text-subtitle2">

@@ -1,3 +1,4 @@
+import { http } from '@/api/http';
 import { ManuscriptRecordResource } from '../ManuscriptRecord/ManuscriptRecord';
 import { Resource, ResourceList } from '../Resource';
 import { UserResource } from '../User/User';
@@ -25,3 +26,21 @@ export interface ManagementReviewStep {
 export type ManagementReviewStepResource = Resource<ManagementReviewStep>;
 export type ManagementReviewStepResourceList =
     ResourceList<ManagementReviewStep>;
+
+type R = ManagementReviewStepResource;
+type RList = ManagementReviewStepResourceList;
+
+export class ManagementReviewStepService {
+    /**
+     * Get a list of management review steps
+     *
+     * @param manuscriptRecordId the manuscript record to get the management review steps for
+     * @returns all existing management review steps for the manuscript record
+     */
+    public static async list(manuscriptRecordId: number) {
+        const response = await http.get<RList>(
+            `api/manuscript-records/${manuscriptRecordId}/management-review-steps`
+        );
+        return response.data;
+    }
+}

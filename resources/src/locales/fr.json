@@ -4,7 +4,13 @@
     "app-name": "Portail de la science ouverte",
     "register": "S'inscrire",
     "dfo-region": "Région MPO",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "pending": "En attente",
+    "deferred": "Différé",
+    "completed": "Complété",
+    "approved": "Approuvé",
+    "none": "Aucune",
+    "withheld": "Refuser"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",

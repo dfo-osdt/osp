@@ -111,13 +111,17 @@ class ManagementReviewStepController extends Controller
         } else {
             // this is the final step of the review.
             $manuscriptRecord->status = ManuscriptRecordStatus::REVIEWED;
+            $manuscriptRecord->reviewed_at = now();
+            $manuscriptRecord->saveOrFail();
 
             // send event that a manuscript record review is complete.
             ManuscriptManagementReviewComplete::dispatch($manuscriptRecord);
         }
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->completed_at = now();
         $managementReviewStep->decision = ManagementReviewStepDecision::APPROVED;
+        $managementReviewStep->saveOrFail();
 
         return new ManagementReviewStepResource($managementReviewStep);
     }
@@ -151,13 +155,17 @@ class ManagementReviewStepController extends Controller
         } else {
             // this is the final step of the review.
             $manuscriptRecord->status = ManuscriptRecordStatus::REVIEWED;
+            $manuscriptRecord->reviewed_at = now();
+            $manuscriptRecord->saveOrFail();
 
             // send event that a manuscript record review is complete.
             ManuscriptManagementReviewComplete::dispatch($manuscriptRecord);
         }
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->completed_at = now();
         $managementReviewStep->decision = ManagementReviewStepDecision::WITHHELD;
+        $managementReviewStep->saveOrFail();
 
         return new ManagementReviewStepResource($managementReviewStep);
     }
@@ -187,6 +195,8 @@ class ManagementReviewStepController extends Controller
         ManagementReviewStepCreated::dispatch($nextReviewStep);
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->completed_at = now();
+        $managementReviewStep->saveOrFail();
 
         return new ManagementReviewStepResource($managementReviewStep);
     }
