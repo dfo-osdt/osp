@@ -1,61 +1,50 @@
 <template>
-    <ContentCard class="q-ma-md bg-transparent">
-        <template #title
-            ><div>Manuscript Record Form</div>
-            <div class="text-subtitle2">
-                {{ manuscriptResource?.data.title ?? '' }}
+    <div class="q-pa-lg">
+        <div class="q-mt-md q-mb-lg row justify-between">
+            <div class="col-8">
+                <div class="text-h4 text-primary">Manuscript Record Form</div>
+                <div
+                    v-if="manuscriptResource"
+                    class="text-subtitle2 text-uppercase text-weight-bold text-grey-7 q-py-xs ellipsis"
+                >
+                    {{ manuscriptResource.data.title }}
+                </div>
             </div>
-        </template>
-        <template #title-right>
-            <!-- Save button, icon only, caption, disabled if no changes -->
-            <q-btn
-                v-if="!isManuscriptReadOnly"
-                :icon="
-                    isDirty
-                        ? 'mdi-content-save-alert-outline'
-                        : 'mdi-content-save-outline'
-                "
-                color="primary"
-                flat
-                :loading="loading"
-                @click="save"
-            >
-                <q-tooltip>Save</q-tooltip>
-            </q-btn>
-        </template>
-        <template #nav>
-            <div
-                v-if="manuscriptResource?.data"
-                class="row flex justify-between q-mx-md q-my-sm"
-            >
-                <div class="text-subtitle1 text-weight-light">
-                    Manuscript Type:
+            <div v-if="manuscriptResource">
+                <div class="q-mt-sm">
+                    <span
+                        class="text-subtitle2 text-uppercase text-weight-bold text-grey-7 q-py-xs"
+                    >
+                        Manuscript Type:
+                    </span>
                     <ManuscriptTypeBadge
                         :type="manuscriptResource.data.type"
-                        class="text-body2 text-weight-light"
-                        :outline="false"
+                        outline
+                        class="text-subtitle2"
                     />
                 </div>
-                <div class="text-subtitle1 text-weight-light">
-                    Status:
+                <div class="text-right q-mt-sm">
+                    <span
+                        class="text-subtitle2 text-uppercase text-weight-bold text-grey-7 q-py-xs"
+                    >
+                        Status:
+                    </span>
                     <ManuscriptStatusBadge
                         :status="manuscriptResource.data.status"
-                        class="text-body2 text-weight-light"
-                        :outline="false"
+                        outline
+                        class="text-subtitle2"
                     />
                 </div>
             </div>
-
-            <q-separator />
-        </template>
+        </div>
         <ManageManuscriptAuthorsCard
             ref="manuscriptAuthorsCard"
             :manuscript-record-id="id"
             :readonly="isManuscriptReadOnly"
-            class="q-ma-sm"
+            class="q-mb-lg"
             secondary
         />
-        <ContentCard class="q-ma-sm" secondary>
+        <ContentCard class="q-mb-lg" secondary>
             <template #title>General Information</template>
             <template #title-right>
                 <FormSectionStatusIcon :status="generalSectionStatus" />
@@ -214,13 +203,13 @@
                 <q-skeleton type="text" />
             </template>
         </ContentCard>
-        <ContentCard class="q-mx-sm q-mt-md" secondary>
+        <ContentCard class="q-mb-lg" secondary>
             <template #title>Sensitive Issues</template>
             <template #title-right
                 ><FormSectionStatusIcon status="complete"
             /></template>
         </ContentCard>
-        <ContentCard class="q-mx-sm q-mt-md" secondary>
+        <ContentCard class="q-mb-md" secondary>
             <template #title>Attach Manuscript</template>
             <template #title-right
                 ><FormSectionStatusIcon
@@ -299,7 +288,12 @@
                 </template>
             </q-file>
         </ContentCard>
-        <q-card-actions v-if="manuscriptResource?.can?.update" align="right">
+        <q-card-actions
+            v-if="manuscriptResource?.can?.update"
+            ref="actionsSection"
+            align="right"
+            class="q-mb-lg"
+        >
             <q-btn
                 class="q-mt-md"
                 color="primary"
@@ -331,7 +325,26 @@
             />
         </q-card-actions>
         <WarnOnUnsavedChanges :is-dirty="isDirty" />
-    </ContentCard>
+        <q-page-sticky
+            v-if="
+                !isScrolling && !isManuscriptReadOnly && !actionSectionVisible
+            "
+            position="bottom-right"
+            :offset="[18, 18]"
+        >
+            <q-btn
+                fab
+                :icon="
+                    isDirty
+                        ? 'mdi-content-save-alert-outline'
+                        : 'mdi-content-save-outline'
+                "
+                color="accent"
+                :loading="loading"
+                @click="save"
+            />
+        </q-page-sticky>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -433,6 +446,10 @@ onMounted(async () => {
         });
     loading.value = false;
 });
+
+const { isScrolling } = useScroll(window);
+const actionsSection = ref<HTMLElement | null>(null);
+const actionSectionVisible = useElementVisibility(actionsSection);
 
 const save = async () => {
     // check that the manuscriptResource is not null
