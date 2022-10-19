@@ -2,6 +2,7 @@ import { http } from '@/api/http';
 import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import { Region } from '../Region/Region';
 import { Resource, ResourceList, Media } from '../Resource';
+import { UserResource } from '../User/User';
 
 export type ManuscriptRecordType = 'primary' | 'secondary';
 
@@ -46,6 +47,9 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     // relationships
     region?: Region;
     manuscript_authors?: ManuscriptAuthorResource[];
+    user?: UserResource;
+    // special model permissions
+    can_attach_manuscript: boolean;
 }
 
 export type ManuscriptRecordResource = Resource<ManuscriptRecord>;

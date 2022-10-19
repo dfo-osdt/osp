@@ -30,6 +30,9 @@ class ManuscriptRecord extends Model implements HasMedia, Auditable
         'created_at',
         'updated_at',
         'user_id',
+        'status',
+        'sent_for_review_at',
+        'reviewed_at',
     ];
 
     protected $casts = [

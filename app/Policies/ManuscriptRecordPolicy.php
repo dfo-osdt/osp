@@ -98,15 +98,12 @@ class ManuscriptRecordPolicy
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ManuscriptRecord  $manuscriptRecord
-     * @return \Illuminate\Auth\Access\Response|bool
+     * Can the user attach an copy of the manuscript to the record?
      */
-    public function forceDelete(User $user, ManuscriptRecord $manuscriptRecord)
+    public function attachManuscript(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        //
+        // can attach if the manuscript is in draft state
+        return $user->id === $manuscriptRecord->user_id;
     }
 
     /**

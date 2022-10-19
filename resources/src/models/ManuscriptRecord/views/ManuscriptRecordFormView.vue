@@ -5,36 +5,55 @@
                 <div class="text-h4 text-primary">Manuscript Record Form</div>
                 <div
                     v-if="manuscriptResource"
-                    class="text-subtitle2 text-uppercase text-weight-bold text-grey-7 q-py-xs ellipsis"
+                    class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs ellipsis"
                 >
                     {{ manuscriptResource.data.title }}
                 </div>
             </div>
-            <div v-if="manuscriptResource">
-                <div class="q-mt-sm">
-                    <span
-                        class="text-subtitle2 text-uppercase text-weight-bold text-grey-7 q-py-xs"
-                    >
-                        Manuscript Type:
-                    </span>
-                    <ManuscriptTypeBadge
-                        :type="manuscriptResource.data.type"
-                        outline
-                        class="text-subtitle2"
-                    />
-                </div>
-                <div class="text-right q-mt-sm">
-                    <span
-                        class="text-subtitle2 text-uppercase text-weight-bold text-grey-7 q-py-xs"
-                    >
-                        Status:
-                    </span>
-                    <ManuscriptStatusBadge
-                        :status="manuscriptResource.data.status"
-                        outline
-                        class="text-subtitle2"
-                    />
-                </div>
+            <div v-if="manuscriptResource" class="col-grow">
+                <q-card bordered flat class="q-pa-md">
+                    <div class="row justify-between">
+                        <div
+                            class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
+                        >
+                            Manuscript Type
+                        </div>
+                        <ManuscriptTypeBadge
+                            :type="manuscriptResource.data.type"
+                            outline
+                            class="text-body2"
+                        />
+                    </div>
+                    <q-separator class="q-my-sm" />
+                    <div class="row justify-between">
+                        <div
+                            class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
+                        >
+                            Status
+                        </div>
+                        <ManuscriptStatusBadge
+                            :status="manuscriptResource.data.status"
+                            outline
+                            class="text-body2"
+                        />
+                    </div>
+                    <q-separator class="q-my-sm" />
+                    <div class="row justify-between">
+                        <div
+                            class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
+                        >
+                            Applicant
+                        </div>
+                        <div class="text-body2 text-grey-7 q-py-xs">
+                            {{
+                                manuscriptResource.data.user?.data.first_name +
+                                ' ' +
+                                manuscriptResource.data.user?.data.last_name
+                            }}
+                            ({{ manuscriptResource.data.user?.data.email }})
+                        </div>
+                    </div>
+                </q-card>
             </div>
         </div>
         <ManageManuscriptAuthorsCard
@@ -221,8 +240,8 @@
             /></template>
             <p>
                 Upload the most recent copy of your manuscript as a PDF. This
-                file can be updated as required, even after the manuscript is
-                submitted.
+                file can be updated as required by the applicant, even after the
+                manuscript is submitted.
             </p>
             <template v-if="manuscriptResource?.data.manuscript_pdf">
                 <q-card outlined class="q-mb-md">
@@ -259,6 +278,7 @@
                 </q-card>
             </template>
             <q-file
+                v-if="manuscriptResource?.data.can_attach_manuscript"
                 v-model="manuscriptFile"
                 outlined
                 use-chips
@@ -351,8 +371,8 @@
 import { Ref } from 'vue';
 import { QForm, QRejectedEntry, useQuasar } from 'quasar';
 import {
-    ManuscriptRecordService,
     ManuscriptRecordResource,
+    ManuscriptRecordService,
 } from '../ManuscriptRecord';
 import QuestionEditor from '@/components/QuestionEditor.vue';
 import ContentCard from '@/components/ContentCard.vue';

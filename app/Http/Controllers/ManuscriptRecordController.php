@@ -47,7 +47,7 @@ class ManuscriptRecordController extends Controller
         $manuscript->save();
         $manuscript->refresh();
 
-        return new ManuscriptRecordResource($manuscript);
+        return new ManuscriptRecordResource($manuscript->load('user'));
     }
 
     /**
@@ -60,7 +60,7 @@ class ManuscriptRecordController extends Controller
     {
         Gate::authorize('view', $manuscriptRecord);
 
-        return new ManuscriptRecordResource($manuscriptRecord);
+        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
     }
 
     /**
@@ -88,7 +88,7 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord->update($validated);
 
-        return new ManuscriptRecordResource($manuscriptRecord);
+        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
     }
 
     /**
@@ -105,7 +105,7 @@ class ManuscriptRecordController extends Controller
     /** Attach a PDF file to this record */
     public function attachPDF(Request $request, ManuscriptRecord $manuscriptRecord)
     {
-        Gate::authorize('update', $manuscriptRecord);
+        Gate::authorize('attachManuscript', $manuscriptRecord);
 
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf',

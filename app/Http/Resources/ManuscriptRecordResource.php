@@ -44,6 +44,9 @@ class ManuscriptRecordResource extends JsonResource
                 'manuscript_pdf' => MediaResource::make($this->getManuscriptFile()),
                 'region' => RegionResource::make($this->whenLoaded('region')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
+                'user' => UserResource::make($this->whenLoaded('user')),
+                // special model permissions
+                'can_attach_manuscript' => Auth::user()->can('attachManuscript', $this->resource),
             ],
             'can' => [
 
