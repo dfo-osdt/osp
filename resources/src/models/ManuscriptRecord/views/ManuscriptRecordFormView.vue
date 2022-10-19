@@ -240,8 +240,8 @@
             /></template>
             <p>
                 Upload the most recent copy of your manuscript as a PDF. This
-                file can be updated as required by the applicant, even after the
-                manuscript is submitted.
+                file can be updated as required by the applicant, even after
+                submitting the manuscript.
             </p>
             <template v-if="manuscriptResource?.data.manuscript_pdf">
                 <q-card outlined class="q-mb-md">

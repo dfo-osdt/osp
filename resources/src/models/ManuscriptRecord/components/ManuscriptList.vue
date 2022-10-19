@@ -1,5 +1,5 @@
 <template>
-    <q-list separator>
+    <q-list bordered separator>
         <q-item
             v-for="manuscript in manuscripts"
             :key="manuscript.data.id"
@@ -14,7 +14,7 @@
                     class="text-body1 text-weight-medium text-accent"
                     >{{ manuscript.data.title }}</q-item-label
                 >
-                <q-item-label caption>
+                <q-item-label caption lines="2">
                     <template v-if="manuscript.data.manuscript_authors">
                         <template
                             v-if="manuscript.data.manuscript_authors.length > 0"

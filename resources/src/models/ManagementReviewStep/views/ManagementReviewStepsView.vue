@@ -61,7 +61,7 @@ const processStatus = computed(() => {
     }
     switch (manuscriptRecord.value.data.status) {
         case 'draft':
-            return 'Not Started';
+            return 'Not Started - Submit your form to begin';
         case 'in_review':
             return 'In Progress';
         default:
