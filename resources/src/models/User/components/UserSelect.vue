@@ -14,6 +14,7 @@
         outlined
         hint="Start typing to search for an user (first name, last name, or email)"
         @filter="filterUsers"
+        @clear="selectedUser = null"
     >
         <template #no-option>
             <q-item>
@@ -115,9 +116,18 @@ const usersLoading = ref(false);
 const showInviteUserDialog = ref(false);
 
 const emit = defineEmits(['update:modelValue']);
-watch(selectedUser, (author) => {
-    if (author) {
-        emit('update:modelValue', author.data.id);
+watch(selectedUser, (user) => {
+    if (user) {
+        emit('update:modelValue', user.data.id);
+    } else {
+        emit('update:modelValue', null);
+    }
+});
+
+onMounted(async () => {
+    if (props.modelValue) {
+        const user = await UserService.get(props.modelValue);
+        selectedUser.value = user;
     }
 });
 

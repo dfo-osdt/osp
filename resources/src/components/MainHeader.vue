@@ -80,7 +80,6 @@
 </template>
 
 <script setup lang="ts">
-
 // stores
 const authStore = useAuthStore();
 const localeStore = useLocaleStore();
@@ -90,7 +89,6 @@ const emit = defineEmits(['toggleLeftDrawer']);
 function toggleLeftDrawer() {
     emit('toggleLeftDrawer');
 }
-
 </script>
 
 <style scoped></style>

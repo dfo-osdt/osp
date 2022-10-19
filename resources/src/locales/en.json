@@ -11,7 +11,8 @@
     "approved": "Approved",
     "none": "None",
     "withheld": "Withheld",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "saved": "Saved"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",

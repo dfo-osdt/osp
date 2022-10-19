@@ -21,6 +21,7 @@
                 ) in managementReviewSteps.data"
                 :key="managementReviewStep.data.id"
                 v-model="managementReviewSteps.data[index]"
+                @decision="decisionSubmitted"
             />
         </template>
         <q-timeline-entry
@@ -76,6 +77,10 @@ onMounted(() => {
     getManuscriptRecord();
     getManagementReviewSteps();
 });
+
+const decisionSubmitted = async () => {
+    await getManagementReviewSteps();
+};
 </script>
 
 <style scoped></style>

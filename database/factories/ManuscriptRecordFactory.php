@@ -47,4 +47,14 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->addMedia(getcwd().'/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('manuscript'); // add a manuscript file
         });
     }
+
+    /**
+     * A manuscript record that has been submitted for internal review
+     */
+    public function in_review()
+    {
+        return $this->filled()->state([
+            'status' => ManuscriptRecordStatus::IN_REVIEW,
+        ]);
+    }
 }

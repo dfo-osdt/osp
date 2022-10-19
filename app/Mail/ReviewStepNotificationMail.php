@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\ManagementReviewStep;
+use App\Models\ManuscriptRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -13,6 +14,8 @@ class ReviewStepNotificationMail extends Mailable
 
     public ManagementReviewStep $previousStep;
 
+    public ManuscriptRecord $manuscriptRecord;
+
     /**
      * Create a new message instance.
      *
@@ -21,6 +24,7 @@ class ReviewStepNotificationMail extends Mailable
     public function __construct(public ManagementReviewStep $managementReviewStep)
     {
         $this->previousStep = $managementReviewStep->previousStep;
+        $this->manuscriptRecord = $managementReviewStep->manuscriptRecord;
     }
 
     /**

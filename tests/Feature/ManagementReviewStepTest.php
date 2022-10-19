@@ -12,7 +12,7 @@ use App\Models\User;
 test('a reviewer can view all review steps associated with manuscript', function () {
     $owner = User::factory()->create();
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $owner->id]);
+    $manuscript = ManuscriptRecord::factory()->in_review()->create(['user_id' => $owner->id]);
 
     // no review steps yet, so the reviewer should not be able to view any
     $this->actingAs($reviewer)->getJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps')
@@ -50,7 +50,7 @@ test('a reviewer can view all review steps associated with manuscript', function
 
 test('a reviewer can update their review comments', function () {
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->filled()->
+    $manuscript = ManuscriptRecord::factory()->in_review()->
     has(ManagementReviewStep::factory()->for($reviewer))->create();
 
     $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id, [
@@ -66,7 +66,7 @@ test('a reviewer can approve and send to the next reviewer', function () {
 
     // to send to the next step, a comment is required
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->filled()->
+    $manuscript = ManuscriptRecord::factory()->in_review()->
     has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment here'))->create();
     $reviewer2 = User::factory()->create();
 
@@ -81,7 +81,7 @@ test('a reviewer can approve and send to the next reviewer', function () {
 test('a reviewer can approve and complete the review', function () {
     Mail::fake();
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->filled()->
+    $manuscript = ManuscriptRecord::factory()->in_review()->
     has(ManagementReviewStep::factory()->for($reviewer))->create();
 
     $response = $this->actingAs($reviewer)
@@ -96,7 +96,7 @@ test('a reviewer can defer and send to the next reviewer', function () {
 
     // to send to the next step, a comment is required
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->filled()->
+    $manuscript = ManuscriptRecord::factory()->in_review()->
     has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required'))->create();
     $reviewer2 = User::factory()->create();
 
@@ -117,7 +117,7 @@ test('a reviewer can withhold and send to the next reviewer', function () {
 
     // to send to the next step, a comment is required
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->filled()->
+    $manuscript = ManuscriptRecord::factory()->in_review()->
     has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required'))->create();
     $reviewer2 = User::factory()->create();
 
@@ -135,7 +135,7 @@ test('a reviewer can withhold and send to the next reviewer', function () {
 test('a reviewer can withhold and complete the review', function () {
     Mail::fake();
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->filled()->
+    $manuscript = ManuscriptRecord::factory()->in_review()->
     has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required here'))->create();
 
     $response = $this->actingAs($reviewer)
@@ -143,4 +143,18 @@ test('a reviewer can withhold and complete the review', function () {
         ->assertOk();
 
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
+});
+
+test('a reviewer can list their reviews', function () {
+    $reviewer = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->in_review()->
+    has(ManagementReviewStep::factory()->for($reviewer))->create();
+
+    $response = $this->actingAs($reviewer)->getJson('/api/my/management-review-steps')
+        ->assertOk();
+
+    ray($response->json());
+    expect($response->json('data'))->toHaveCount(1);
+    expect($response->json('data.0.data.id'))->toBe($manuscript->managementReviewSteps->first()->id);
+    expect($response->json('data.0.data.manuscript_record'))->toBeTruthy();
 });

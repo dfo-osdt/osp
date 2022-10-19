@@ -63,7 +63,7 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('update', $managementReviewStep);
 
         $validated = $request->validate([
-            'comments' => 'string',
+            'comments' => 'string|nullable',
         ]);
 
         $managementReviewStep->update($validated);
@@ -194,7 +194,7 @@ class ManagementReviewStepController extends Controller
         // send event that a management review step has been created.
         ManagementReviewStepCreated::dispatch($nextReviewStep);
 
-        $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->status = ManagementReviewStepStatus::DEFERRED;
         $managementReviewStep->completed_at = now();
         $managementReviewStep->saveOrFail();
 

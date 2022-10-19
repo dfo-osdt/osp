@@ -10,7 +10,8 @@
     "completed": "Complété",
     "approved": "Approuvé",
     "none": "Aucune",
-    "withheld": "Refuser"
+    "withheld": "Refuser",
+    "saved": "Enregistré"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",

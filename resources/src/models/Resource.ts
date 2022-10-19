@@ -5,13 +5,25 @@ interface ModelPermissions {
 
 interface Meta {
     current_page: number;
+    from: number;
+    last_page: number;
+    links: MetaLink[];
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+}
+interface MetaLink {
+    url: string;
+    label: string;
+    active: boolean;
 }
 
 interface Links {
     first: string;
     last: string;
-    prev: string;
-    next: string;
+    prev: string | null;
+    next: string | null;
 }
 
 export interface Resource<T> {

@@ -3,9 +3,9 @@
 {{ $previousStep->user->fullName }} has identified you as the next management reviewer for the manuscript titled "{{ $manuscriptRecord->title }}".
 
 @component('mail::panel')
-# Previous Step Summary
+# Previous Review Summary
 **Decision:**<br/>
-{{ $previousStep->decisions }}
+{{ $previousStep->decision }}
 
 **Comments:** <br/>
 {!! $previousStep->comments !!}

@@ -8,7 +8,7 @@
             <ManagementReviewStepStatusSpan
                 :status="managementStep.data.status"
             />
-            <div v-if="completedAtDate">- {{ completedAtDate }}</div>
+            <span v-if="completedAtDate"> - {{ completedAtDate }}</span>
         </template>
         <template v-if="canUpdate">
             <q-card class="q-pa-md" bordered flat>
@@ -16,8 +16,8 @@
                     Management Review Guidelines
                 </div>
                 <p>
-                    Please refer to the Fisheries and Oceans Canada National
-                    Policy for Science Publications for more details.
+                    Please refer to the National Policy for Science Publications
+                    for more details.
                 </p>
                 <ul class="q-mb-md">
                     <li>
@@ -31,8 +31,8 @@
                         Review the manuscript to identify sensitive issues,
                         solely for the purpose of briefing senior management and
                         the Communications Branch prior to publication of the
-                        science paper. Identified sensitive issues are to be
-                        added to the form's "Sensitive Issues" section.
+                        science paper. Identified sensitive issues must be added
+                        to the form's "Sensitive Issues" section.
                     </li>
                     <li>
                         At no time, will the inclusion of sensitive material
@@ -40,63 +40,100 @@
                         of scientific papers.
                     </li>
                 </ul>
-
                 <question-editor
                     v-model="managementStep.data.comments"
                     title="Reviewer Comments"
                 >
                     <p>
-                        Comments entered here should support your decision,
-                        provide feedback to the next reviewers and authors.
-                        Comments will be visible to anyone with access to this
-                        manuscript record. A comment is required unless you
-                        approve and complete the management review without
-                        sending to another reviewer.
+                        Comments are required unless you approve and complete
+                        the management review without sending it to another
+                        reviewer. Comments entered here should support your
+                        decision and, if applicable, provide feedback to the
+                        subsequent reviewers. Your comments will be visible to
+                        anyone with access to this manuscript record.
                     </p>
                 </question-editor>
+                <q-card-actions align="right">
+                    <q-btn
+                        color="primary"
+                        outline
+                        label="Save Comments"
+                        @click="save"
+                    />
+                    <q-btn
+                        icon="mdi-arrow-decision"
+                        color="primary"
+                        label="Submit Decision"
+                        @click="showDecisionDialog"
+                    />
+                    <SubmitDecisionDialog
+                        v-if="submitDecisionDialog"
+                        v-model="submitDecisionDialog"
+                        :management-review-step="managementStep.data"
+                        @decision="decisionSubmitted"
+                    />
+                </q-card-actions>
             </q-card>
         </template>
         <template v-else>
-            <div v-if="managementStep.data.decision !== 'none'" class="q-mb-md">
-                <span
-                    class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
-                    >Manuscript</span
-                >
-                <ManagementReviewStepDecisionSpan
-                    class="text-weight-bold text-uppercase text-accent"
-                    :class="`text-${color}`"
-                    :decision="managementStep.data.decision"
-                />
-            </div>
-            <div v-if="managementStep.data.comments !== ''">
+            <q-card
+                v-if="managementStep.data.status !== 'pending'"
+                bordered
+                flat
+                class="bg-white q-pa-md"
+            >
                 <div
-                    class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
+                    v-if="managementStep.data.decision !== 'none'"
+                    class="q-mb-md"
                 >
-                    Comments
+                    <span
+                        class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
+                        >Manuscript</span
+                    >
+                    <ManagementReviewStepDecisionSpan
+                        class="text-weight-bold text-uppercase text-accent"
+                        :class="`text-${color}`"
+                        :decision="managementStep.data.decision"
+                    />
                 </div>
-                <span class="text-grey-8">
-                    <!-- eslint-disable-next-line vue/no-v-html -->
-                    <div v-html="safeComments" />
-                </span>
-            </div>
+                <div v-if="managementStep.data.comments !== ''">
+                    <div
+                        class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
+                    >
+                        Comments
+                    </div>
+                    <span class="text-grey-8">
+                        <!-- eslint-disable-next-line vue/no-v-html -->
+                        <div v-html="safeComments" />
+                    </span>
+                </div>
+            </q-card>
         </template>
     </q-timeline-entry>
 </template>
 
 <script setup lang="ts">
-import { ManagementReviewStepResource } from '../ManagementReviewStep';
+import {
+    ManagementReviewStepResource,
+    ManagementReviewStepService,
+} from '../ManagementReviewStep';
 import ManagementReviewStepStatusSpan from '../components/ManagementReviewStepStatusSpan.vue';
 import QuestionEditor from '@/components/QuestionEditor.vue';
 import ManagementReviewStepDecisionSpan from './ManagementReviewStepDecisionSpan.vue';
 import DOMPurify from 'dompurify';
 import { useLocaleDate } from '@/composables/useLocaleDate';
+import { useQuasar } from 'quasar';
+import SubmitDecisionDialog from './SubmitDecisionDialog.vue';
+
 const { t } = useI18n();
+const $q = useQuasar();
 
 const props = defineProps<{
     modelValue: ManagementReviewStepResource;
 }>();
 const emit = defineEmits<{
     (event: 'update:modelValue', value: ManagementReviewStepResource): void;
+    (event: 'decision', value: ManagementReviewStepResource): void;
 }>();
 const managementStep = useVModel(props, 'modelValue', emit);
 
@@ -134,7 +171,7 @@ const color = computed(() => {
         case 'pending':
             return 'orange';
         case 'deferred':
-            return 'primary';
+            return 'secondary';
         default:
             return 'primary';
     }
@@ -142,10 +179,31 @@ const color = computed(() => {
 
 const completedAtDate = useLocaleDate(managementStep.value.data.completed_at);
 
-// The comments from the user but purify the HTML
+// The comments from the user but sanitize the HTML
 const safeComments = computed(() => {
     return DOMPurify.sanitize(managementStep.value.data.comments);
 });
+
+async function save() {
+    ManagementReviewStepService.update(managementStep.value.data);
+
+    $q.notify({
+        message: 'Review Comments Saved',
+        type: 'positive',
+    });
+}
+
+const submitDecisionDialog = ref(false);
+async function showDecisionDialog() {
+    await save();
+    submitDecisionDialog.value = true;
+}
+function decisionSubmitted(decision: ManagementReviewStepResource) {
+    console.log(decision);
+    managementStep.value = decision;
+    submitDecisionDialog.value = false;
+    emit('decision', decision);
+}
 </script>
 
 <style scoped></style>

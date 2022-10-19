@@ -7,6 +7,7 @@ use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserManagementReviewSteps;
 use App\Http\Controllers\UserManuscriptRecordController;
 use App\Http\Resources\AuthenticatedUserResource;
 use Illuminate\Http\Request;
@@ -74,6 +75,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // routes for user specific resources
     Route::prefix('my')->group(function () {
         Route::get('/manuscript-records', [UserManuscriptRecordController::class, 'index']);
+        Route::get('/management-review-steps', [UserManagementReviewSteps::class, 'index']);
     });
 
     Route::controller(OrganizationController::class)->group(function () {

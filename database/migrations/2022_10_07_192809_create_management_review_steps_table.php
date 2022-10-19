@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('management_review_steps', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('manuscript_record_id')->cascadeOnDelete();
+            $table->foreignId('manuscript_record_id')->constrained()->cascadeOnDelete();
             $table->foreignId('previous_step_id')->nullable()->references('id')->on('management_review_steps');
             $table->foreignId('user_id')->constrained('users');
             $table->dateTime('completed_at')->nullable();
