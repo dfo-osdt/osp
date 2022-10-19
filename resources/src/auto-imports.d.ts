@@ -190,6 +190,7 @@ declare global {
   const useLocaleDate: typeof import('./composables/useLocaleDate')['useLocaleDate']
   const useLocaleStore: typeof import('./stores/LocaleStore')['useLocaleStore']
   const useMagicKeys: typeof import('@vueuse/core')['useMagicKeys']
+  const useManagementReviewStepStore: typeof import('./stores/ManagementReviewStepStore')['useManagementReviewStepStore']
   const useManualRefHistory: typeof import('@vueuse/core')['useManualRefHistory']
   const useManuscriptStore: typeof import('./stores/ManuscriptStore')['useManuscriptStore']
   const useMediaControls: typeof import('@vueuse/core')['useMediaControls']
@@ -479,6 +480,7 @@ declare module '@vue/runtime-core' {
     readonly useLocaleDate: UnwrapRef<typeof import('./composables/useLocaleDate')['useLocaleDate']>
     readonly useLocaleStore: UnwrapRef<typeof import('./stores/LocaleStore')['useLocaleStore']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>
+    readonly useManagementReviewStepStore: UnwrapRef<typeof import('./stores/ManagementReviewStepStore')['useManagementReviewStepStore']>
     readonly useManualRefHistory: UnwrapRef<typeof import('@vueuse/core')['useManualRefHistory']>
     readonly useManuscriptStore: UnwrapRef<typeof import('./stores/ManuscriptStore')['useManuscriptStore']>
     readonly useMediaControls: UnwrapRef<typeof import('@vueuse/core')['useMediaControls']>

@@ -37,7 +37,21 @@
                             class="text-grey-8"
                         >
                             <q-tab name="manuscripts" label="Manuscripts" />
-                            <q-tab name="reviews" label="Reviews" />
+                            <q-tab name="reviews">
+                                <span class="text-weight-medium q-pr-xs"
+                                    >Reviews</span
+                                >
+                                <q-badge
+                                    v-if="reviewSteps.pendingReviewCount > 0"
+                                    color="primary"
+                                    rounded
+                                    floating
+                                    transparent
+                                    >{{
+                                        reviewSteps.pendingReviewCount
+                                    }}</q-badge
+                                >
+                            </q-tab>
                             <q-tab name="publications" label="Publications" />
                         </q-tabs>
                         <q-separator />
@@ -46,10 +60,7 @@
                     <q-tab-panels v-model="tab" animated>
                         <q-tab-panel name="manuscripts" class="q-pa-none">
                             <template
-                                v-if="
-                                    manuscriptStore.empty &&
-                                    !manuscriptStore.loading
-                                "
+                                v-if="manuscripts.empty && !manuscripts.loading"
                             >
                                 <div class="flex row justify-center">
                                     <div
@@ -98,9 +109,9 @@
                                 </div>
                             </template>
                             <ManuscriptList
-                                v-if="!manuscriptStore.empty"
+                                v-if="!manuscripts.empty"
                                 class="q-mb-lg"
-                                :manuscripts="manuscriptStore.recentManuscripts"
+                                :manuscripts="manuscripts.recentManuscripts"
                             />
                             <div class="text-center">
                                 <q-btn
@@ -117,31 +128,8 @@
                                 />
                             </div>
                         </q-tab-panel>
-                        <q-tab-panel name="reviews">
-                            <div class="flex row justify-center">
-                                <div
-                                    class="col-12 col-lg-10 flex column text-center"
-                                >
-                                    <div>
-                                        <q-img
-                                            src="/assets/splash_images/undraw_done_checking_re_6vyx.svg"
-                                            width="250px"
-                                            class="q-mb-sm"
-                                        />
-                                    </div>
-                                    <div
-                                        class="text-h5 text-weight-light text-accent q-mb-sm"
-                                    >
-                                        You have nothing to review
-                                    </div>
-                                    <div class="text-body1 text-grey-8">
-                                        <p>
-                                            Manuscripts you've recently been
-                                            asked to review will appear here.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                        <q-tab-panel name="reviews" class="q-pa-none">
+                            <RecentManagementReviewStepsView />
                         </q-tab-panel>
                         <q-tab-panel name="publications">
                             <div class="flex row justify-center">
@@ -198,13 +186,17 @@ import ContentCard from '../components/ContentCard.vue';
 import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateManuscriptDialog.vue';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import ManuscriptList from '@/models/ManuscriptRecord/components/ManuscriptList.vue';
+import RecentManagementReviewStepsView from '@/models/ManagementReviewStep/views/RecentManagementReviewStepsView.vue';
 
-const manuscriptStore = useManuscriptStore();
+const manuscripts = useManuscriptStore();
+const reviewSteps = useManagementReviewStepStore();
+
 const tab = useStorage('dashboard-recent-tab', 'manuscripts');
 
 // load the latest manuscripts
 onMounted(() => {
-    manuscriptStore.getMyManuscripts(true);
+    manuscripts.getMyManuscripts(true);
+    reviewSteps.getMyManagementReviewSteps(true);
 });
 
 // create dialog
@@ -213,13 +205,13 @@ const show = ref(false);
 const data = computed(() => [
     {
         title: 'My Manuscripts',
-        value: manuscriptStore.manuscripts?.length ?? 0,
+        value: manuscripts.manuscripts?.length ?? 0,
         subtitle: 'In progress',
         to: '/my-manuscripts',
     },
     {
         title: 'My Reviews',
-        value: 2,
+        value: reviewSteps.pendingReviewCount,
         subtitle: 'Pending',
         to: '/my-reviews',
     },

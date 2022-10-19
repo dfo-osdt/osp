@@ -15,7 +15,10 @@
                             Help us <span class="text-teal-5">grow</span>.
                         </div>
                         <div class="q-my-lg text-h5 text-grey-8">
-                            The Open Science Portal is an intuitive web-based application to promote open science and track science publications within Fisheries and Oceans Canada.
+                            The Open Science Portal is an intuitive web-based
+                            application to promote open science and track
+                            science publications within Fisheries and Oceans
+                            Canada.
                         </div>
                         <div
                             v-if="!authStore.isAuthenticated"
@@ -52,6 +55,4 @@ const $q = useQuasar();
 const authStore = useAuthStore();
 </script>
 
-<style>
-
-</style>
+<style></style>

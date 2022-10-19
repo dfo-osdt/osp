@@ -11,7 +11,10 @@
     "approved": "Approuvé",
     "none": "Aucune",
     "withheld": "Refuser",
-    "saved": "Enregistré"
+    "saved": "Enregistré",
+    "warnings": {
+      "unsaved-changes": {}
+    }
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -26,5 +29,11 @@
     "submitted": "Soumis",
     "accepted": "Accepté",
     "withdrawn": "Retiré"
+  },
+  "dialog": {
+    "unsaved-changes": {
+      "message": "Vous avez des changements non enregistrés. \nÊtes-vous sûr de vouloir quitter?",
+      "title": "Modifications non enregistrées"
+    }
   }
 }

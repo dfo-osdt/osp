@@ -5,8 +5,7 @@ import {
 import { Ref } from 'vue';
 
 /**
- * This store will be used to store the application's regions, as
- * they nearly never change, it will be cached here.
+ * This store will be used to store the applicants recent manuscript record
  */
 export const useManuscriptStore = defineStore('ManuscriptStore', () => {
     // initial state
@@ -20,6 +19,7 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
      * @returns void
      */
     async function getMyManuscripts(force = false) {
+        if (loading.value) return; // don't load if we're already loading
         if (manuscripts.value === undefined || force) {
             loading.value = true;
             manuscripts.value =

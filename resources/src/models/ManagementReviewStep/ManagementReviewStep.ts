@@ -37,7 +37,16 @@ type RList = ManagementReviewStepResourceList;
 
 export class ManagementReviewStepService {
     /**
-     * Get a list of management review steps
+     * Get all my management review steps.
+     */
+    public static async listMy() {
+        const response = await http.get<RList>(
+            'api/my/management-review-steps'
+        );
+        return response.data;
+    }
+    /**
+     * Get a list of management review steps from a given manuscript record.
      *
      * @param manuscriptRecordId the manuscript record to get the management review steps for
      * @returns all existing management review steps for the manuscript record

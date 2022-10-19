@@ -109,6 +109,7 @@
                 </div>
             </q-card>
         </template>
+        <WarnOnUnsavedChanges :is-dirty="isDirty" />
     </q-timeline-entry>
 </template>
 
@@ -124,6 +125,7 @@ import DOMPurify from 'dompurify';
 import { useLocaleDate } from '@/composables/useLocaleDate';
 import { useQuasar } from 'quasar';
 import SubmitDecisionDialog from './SubmitDecisionDialog.vue';
+import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
 
 const { t } = useI18n();
 const $q = useQuasar();
@@ -184,13 +186,23 @@ const safeComments = computed(() => {
     return DOMPurify.sanitize(managementStep.value.data.comments);
 });
 
+const isDirty = ref(false);
+watch(
+    () => managementStep.value.data.comments,
+    () => {
+        isDirty.value = true;
+    }
+);
+
 async function save() {
-    ManagementReviewStepService.update(managementStep.value.data);
+    await ManagementReviewStepService.update(managementStep.value.data);
 
     $q.notify({
         message: 'Review Comments Saved',
         type: 'positive',
     });
+
+    isDirty.value = false;
 }
 
 const submitDecisionDialog = ref(false);

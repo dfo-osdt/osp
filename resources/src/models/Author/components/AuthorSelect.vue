@@ -122,7 +122,10 @@ watch(selectedAuthor, (author) => {
     }
 });
 
-const filterAuthors = async (val: string, update, abort) => {
+const filterAuthors = async (
+    val: string,
+    update: (arg0: () => Promise<void>) => void
+) => {
     lastSearchTerm.value = val;
     update(async () => {
         if (val !== '') {

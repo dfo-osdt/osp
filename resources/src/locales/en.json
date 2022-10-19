@@ -12,7 +12,10 @@
     "none": "None",
     "withheld": "Withheld",
     "unknown": "Unknown",
-    "saved": "Saved"
+    "saved": "Saved",
+    "warnings": {
+      "unsaved-changes": {}
+    }
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -27,5 +30,11 @@
     "submitted": "Submitted",
     "accepted": "Accepted",
     "withdrawn": "Withdrawn"
+  },
+  "dialog": {
+    "unsaved-changes": {
+      "message": "You have unsaved changes. Are you sure you want to leave?",
+      "title": "Unsaved Changes"
+    }
   }
 }

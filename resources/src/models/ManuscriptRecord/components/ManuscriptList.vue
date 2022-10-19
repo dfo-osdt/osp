@@ -10,7 +10,6 @@
             }"
         >
             <q-item-section>
-                <q-item-label></q-item-label>
                 <q-item-label
                     class="text-body1 text-weight-medium text-accent"
                     >{{ manuscript.data.title }}</q-item-label

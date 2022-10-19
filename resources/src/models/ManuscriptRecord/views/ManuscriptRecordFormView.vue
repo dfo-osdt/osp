@@ -330,13 +330,13 @@
                 @submitted="onSubmitted"
             />
         </q-card-actions>
+        <WarnOnUnsavedChanges :is-dirty="isDirty" />
     </ContentCard>
 </template>
 
 <script setup lang="ts">
 import { Ref } from 'vue';
 import { QForm, QRejectedEntry, useQuasar } from 'quasar';
-import { onBeforeRouteLeave } from 'vue-router';
 import {
     ManuscriptRecordService,
     ManuscriptRecordResource,
@@ -350,8 +350,8 @@ import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue';
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
 import RequiredSpan from '@/components/RequiredSpan.vue';
 import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue';
+import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
 
-const { t } = useI18n();
 const $q = useQuasar();
 const router = useRouter();
 
@@ -365,7 +365,6 @@ const loading = ref(true);
 const manuscriptResource: Ref<ManuscriptRecordResource | null> = ref(null);
 const manuscriptFile: Ref<File | null> = ref(null);
 const uploadingFile = ref(false);
-const authStore = useAuthStore();
 const manuscriptAuthorsCard = ref<InstanceType<
     typeof ManageManuscriptAuthorsCard
 > | null>(null);
@@ -386,12 +385,6 @@ watch(
         isDirty.value = true;
     },
     { deep: true }
-);
-
-const title = computed(
-    () =>
-        'Manuscript: ' + `${manuscriptResource.value?.data.title}` ??
-        t('common.loading')
 );
 
 const isManuscriptReadOnly = computed(() => {
@@ -554,30 +547,6 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
     manuscriptResource.value = manuscript;
     showSubmitDialog.value = false;
 }
-
-// warn the user if they try to leave the page while there are unsaved changes
-onBeforeRouteLeave((to, from, next) => {
-    // if user is logged out ... don't warn them
-    if (!authStore.isAuthenticated) {
-        next();
-        return;
-    }
-
-    if (isDirty.value) {
-        $q.dialog({
-            title: t('Unsaved Changes'),
-            message: t(
-                'You have unsaved changes. Are you sure you want to leave?'
-            ),
-            cancel: true,
-            persistent: true,
-        }).onOk(() => {
-            next();
-        });
-    } else {
-        next();
-    }
-});
 </script>
 
 <style scoped></style>
