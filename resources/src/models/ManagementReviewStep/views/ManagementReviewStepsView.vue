@@ -14,7 +14,47 @@
             title="Submitted for Review"
             :color="submittedColor"
             :subtitle="sentForReview"
-        />
+        >
+            <p>
+                The management review will reviews the manuscript for compliance
+                with the
+                <a
+                    href="https://www.dfo-mpo.gc.ca/copyright-droits-eng.htm"
+                    target="_blank"
+                    >Intellectual Property Policy/Copyright Act</a
+                >, the
+                <a
+                    href="https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-privacy-act/pa_brief/"
+                    target="_blank"
+                    >Privacy Act</a
+                >, the Financial Administration Act (with respect to approvals
+                of publication costs) and the
+                <a
+                    href="https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-eng.htm"
+                    target="_blank"
+                    >Values and Ethics Code for DFO</a
+                >. It will also identify potential sensitive issues, solely for
+                the purpose of briefing senior management and the Communications
+                Branch prior to publication of the science paper. At no time,
+                will the inclusion of sensitive material (e.g. data, scientific
+                conclusions) prevent publication of scientific papers.
+            </p>
+            <p>
+                Science management commits to a 10 working-day turnaround for
+                sign-off of manuscripts for publication. If managers do not
+                respond with an approval within 10 working days, authors may
+                submit their manuscripts to the publisher.
+            </p>
+            <p>
+                For more information please refer to the
+                <a
+                    href="https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html"
+                >
+                    Fisheries and Oceans Canada National Policy for Science
+                    Publications </a
+                >.
+            </p>
+        </q-timeline-entry>
         <template v-if="managementReviewSteps !== null">
             <ManagementReviewStepTimelineEntry
                 v-for="(

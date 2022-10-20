@@ -156,7 +156,13 @@
                             through outreach and communication. It is intended
                             for internal use to identify linkages to programs,
                             policies and stakeholders and for use in the plain
-                            language promotion of science
+                            language promotion of science. Tips for writing a
+                            PLS can be found
+                            <a
+                                href="https://www.agu.org/-/media/Files/Share-and-Advocate-for-Science/Toolkit---PLS.pdf"
+                                target="_blank"
+                                >here</a
+                            >.
                         </p>
                     </QuestionEditor>
                     <QuestionEditor

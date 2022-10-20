@@ -6,6 +6,7 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Events\ManuscriptRecordToReviewEvent;
 use App\Http\Resources\ManuscriptRecordResource;
+use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use App\Rules\UserNotAManuscriptAuthor;
@@ -113,7 +114,7 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord->addMedia($validated['pdf'])->toMediaCollection('manuscript');
 
-        return new ManuscriptRecordResource($manuscriptRecord);
+        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
     }
 
     /** Download PDF attached to this record - return NoContent if empty */
@@ -148,6 +149,12 @@ class ManuscriptRecordController extends Controller
         // get review user
         $reviewUser = User::findOrFail($validated['reviewer_user_id']);
 
+        // create the first management review step for this record
+        $reviewStep = new ManagementReviewStep();
+        $reviewStep->manuscript_record_id = $manuscriptRecord->id;
+        $reviewStep->user_id = $reviewUser->id;
+        $reviewStep->save();
+
         // trigger event that the record was submitted
         ManuscriptRecordToReviewEvent::dispatch($manuscriptRecord, $reviewUser);
 
@@ -155,6 +162,6 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->sent_for_review_at = now();
         $manuscriptRecord->save();
 
-        return new ManuscriptRecordResource($manuscriptRecord);
+        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
     }
 }

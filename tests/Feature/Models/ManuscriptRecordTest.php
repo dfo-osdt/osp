@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Mail\ManuscriptRecordToReviewMail;
@@ -182,4 +183,9 @@ test('a user can submit a filled manuscript record', function () {
     Mail::assertQueued(ManuscriptRecordToReviewMail::class);
 
     expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::IN_REVIEW->value);
+
+    // check that a management review step has been created and for it belongs to the reviewer
+    expect($manuscript->managementReviewSteps()->count())->toBe(1);
+    expect($manuscript->managementReviewSteps()->first()->user_id)->toBe($reviewerUser->id);
+    expect($manuscript->managementReviewSteps()->first()->status)->toBe(ManagementReviewStepStatus::PENDING);
 });

@@ -29,8 +29,11 @@ class ManagementReviewStep extends Model implements Auditable
         'decision' => \App\Enums\ManagementReviewStepDecision::class,
     ];
 
+    // Default attributes
     protected $attributes = [
         'comments' => '',
+        'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+        'decision' => \App\Enums\ManagementReviewStepDecision::NONE,
     ];
 
     public function manuscriptRecord(): BelongsTo
