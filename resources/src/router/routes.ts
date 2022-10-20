@@ -115,7 +115,10 @@ const routes: RouteRecordRaw[] = [
                     },
                     {
                         path: 'progress',
-                        component: UnderConstruction,
+                        component: () =>
+                            import(
+                                '@/models/ManuscriptRecord/views/ManuscriptRecordProgressView.vue'
+                            ),
                         props: (route) => ({ id: Number(route.params.id) }),
                         name: 'manuscript.progress',
                     },
