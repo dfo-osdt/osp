@@ -55,6 +55,7 @@ class ManuscriptRecordFactory extends Factory
     {
         return $this->filled()->state([
             'status' => ManuscriptRecordStatus::IN_REVIEW,
+            'sent_for_review_at' => now(),
         ]);
     }
 }

@@ -42,9 +42,8 @@ class DatabaseSeeder extends Seeder
             ]);
 
             // create 1 manuscript record for the test user with a review step
-            $toReview = \App\Models\ManuscriptRecord::factory()->filled()->create([
+            $toReview = \App\Models\ManuscriptRecord::factory()->in_review()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManuscriptRecordStatus::IN_REVIEW,
             ]);
 
             // create a division manager user

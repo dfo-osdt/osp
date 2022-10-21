@@ -16,8 +16,7 @@
             :subtitle="sentForReview"
         >
             <p>
-                The management review will reviews the manuscript for compliance
-                with the
+                Reviews the manuscript for compliance with the
                 <a
                     href="https://www.dfo-mpo.gc.ca/copyright-droits-eng.htm"
                     target="_blank"
@@ -148,7 +147,7 @@ const reviewCompletedOn = computed(() => {
             return 'Pending';
         default:
             return (
-                'Submitted on ' +
+                'Completed on ' +
                 useLocaleDate(manuscriptRecord.value.data.reviewed_at).value
             );
     }
@@ -168,6 +167,7 @@ const completedColor = computed(() => {
 });
 
 async function getManagementReviewSteps() {
+    managementReviewSteps.value = null;
     await ManagementReviewStepService.list(props.id)
         .then((response) => {
             managementReviewSteps.value = response;
@@ -193,7 +193,9 @@ onMounted(() => {
 });
 
 const decisionSubmitted = async () => {
+    console.log('decision submitted');
     await getManagementReviewSteps();
+    await getManuscriptRecord();
 };
 </script>
 
