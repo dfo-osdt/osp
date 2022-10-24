@@ -5,7 +5,7 @@
             <div
                 class="text-subtitle2 text-weight-bold text-grey-7 text-uppercase"
             >
-                IN REVIEW
+                <ManuscriptStatusSpan :status="manuscriptRecord.data.status" />
             </div>
         </q-timeline-entry>
         <q-timeline-entry
@@ -23,7 +23,7 @@
         <q-timeline-entry
             class="q-mx-lg"
             icon="mdi-send-check-outline"
-            title="Submitted for Management Review"
+            title="Submit for Management Review"
             :subtitle="submittedReviewSubtitle"
             :color="submittedReviewColor"
         >
@@ -35,9 +35,9 @@
         <q-timeline-entry
             class="q-mx-lg"
             icon="mdi-thumb-up-outline"
-            title="Management Review Complete"
-            subtitle="Pending"
-            color="secondary"
+            title="Completion of Management Review"
+            :subtitle="managementReviewSubtitle"
+            :color="managementReviewColor"
         >
             <p>
                 The manuscript complies with Fisheries and Oceans Canada
@@ -82,6 +82,7 @@ import {
     ManuscriptRecordResource,
     ManuscriptRecordService,
 } from '../ManuscriptRecord';
+import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue';
 
 const props = defineProps<{
     id: number;
@@ -119,9 +120,29 @@ const submittedReviewSubtitle = computed(() => {
 });
 
 const submittedReviewColor = computed(() => {
+    if (manuscriptRecord.value === null) return 'grey-7';
+    if (manuscriptRecord.value.data.sent_for_review_at === null)
+        return 'secondary';
+    return 'primary';
+});
+
+const managementReviewSubtitle = computed(() => {
     if (manuscriptRecord.value === null) {
-        return 'grey-7';
+        return '';
     }
+    if (manuscriptRecord.value.data.reviewed_at === null) {
+        return 'Pending';
+    }
+    return (
+        'Submitted on ' +
+        useLocaleDate(manuscriptRecord.value.data.reviewed_at).value
+    );
+});
+
+const managementReviewColor = computed(() => {
+    if (manuscriptRecord.value === null) return 'grey-7';
+    if (manuscriptRecord.value.data.sent_for_review_at === null)
+        return 'secondary';
     return 'primary';
 });
 

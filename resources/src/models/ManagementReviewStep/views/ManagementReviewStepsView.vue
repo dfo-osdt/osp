@@ -11,7 +11,7 @@
         <q-timeline-entry
             class="q-mx-lg"
             icon="mdi-send-check-outline"
-            title="Submitted for Review"
+            title="Submission for Review"
             :color="submittedColor"
             :subtitle="sentForReview"
         >
