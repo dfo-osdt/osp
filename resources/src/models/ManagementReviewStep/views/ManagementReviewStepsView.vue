@@ -67,7 +67,7 @@
         <q-timeline-entry
             class="q-mx-lg"
             icon="mdi-check-all"
-            title="Management Review Complete"
+            title="Completion of Management Review"
             :color="completedColor"
             :subtitle="reviewCompletedOn"
         />
