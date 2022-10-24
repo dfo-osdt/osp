@@ -132,12 +132,23 @@ test('a reviewer can withhold and send to the next reviewer', function () {
     Mail::assertQueued(ReviewStepNotificationMail::class);
 });
 
-test('a reviewer can withhold and complete the review', function () {
+test('a reviewer that has director permission can withhold and complete the review', function () {
     Mail::fake();
     $reviewer = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->in_review()->
     has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required here'))->create();
 
+    // user does not have director permission, should be forbidden
+    $response = $this->actingAs($reviewer)
+        ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/withhold')
+        ->assertForbidden();
+
+    Mail::assertNothingQueued();
+
+    // add director permission
+    $reviewer->assignRole('director');
+
+    // should succeed
     $response = $this->actingAs($reviewer)
         ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/withhold')
         ->assertOk();

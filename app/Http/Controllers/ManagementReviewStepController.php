@@ -134,6 +134,11 @@ class ManagementReviewStepController extends Controller
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
         ]);
 
+        // if the next user is not set, only a user with permission can complete the review.
+        if (! isset($validated['next_user_id'])) {
+            Gate::authorize('withhold_and_complete_management_review');
+        }
+
         // a comment is always required if the manuscript is being withheld.
         Validator::make($managementReviewStep->toArray(), [
             'comments' => 'required|string',

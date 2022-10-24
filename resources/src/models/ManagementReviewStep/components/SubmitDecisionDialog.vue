@@ -27,114 +27,26 @@
                         Select your decision
                     </div>
                     <q-list>
-                        <q-item v-ripple tag="label">
-                            <q-item-section avatar>
-                                <q-radio
-                                    v-model="decision"
-                                    val="approveAndComplete"
-                                />
-                            </q-item-section>
-                            <q-item-section>
-                                <q-item-label class="text-body1"
-                                    >Approve and Complete</q-item-label
-                                >
-                                <q-item-label class="text-body2 text-grey-8"
-                                    >You approve this manuscript for publication
-                                    and are ending the management review
-                                    process.
-                                </q-item-label>
-                            </q-item-section>
-                        </q-item>
                         <q-item
+                            v-for="option in options"
+                            :key="option.value"
                             v-ripple
                             tag="label"
-                            :disable="stepHasNoComments"
+                            :disable="option.disabled"
                         >
                             <q-item-section avatar>
                                 <q-radio
                                     v-model="decision"
-                                    val="approveAndForward"
-                                    :disable="stepHasNoComments"
+                                    :val="option.value"
+                                    :disable="option.disabled"
                                 />
                             </q-item-section>
                             <q-item-section>
-                                <q-item-label class="text-body1"
-                                    >Approve and Forward</q-item-label
-                                >
+                                <q-item-label class="text-body1">{{
+                                    option.label
+                                }}</q-item-label>
                                 <q-item-label class="text-body2 text-grey-8"
-                                    >You recommend approval of this manuscript
-                                    for publication and are forwarding it to the
-                                    next reviewer.
-                                </q-item-label>
-                            </q-item-section>
-                        </q-item>
-                        <q-item
-                            v-ripple
-                            tag="label"
-                            :disable="stepHasNoComments"
-                        >
-                            <q-item-section avatar>
-                                <q-radio
-                                    v-model="decision"
-                                    val="withholdAndComplete"
-                                    :disable="stepHasNoComments"
-                                />
-                            </q-item-section>
-                            <q-item-section>
-                                <q-item-label class="text-body1"
-                                    >Withhold and Complete</q-item-label
-                                >
-                                <q-item-label class="text-body2 text-grey-8"
-                                    >You withhold this manuscript for
-                                    publication and are ending the management
-                                    review process.
-                                </q-item-label>
-                            </q-item-section>
-                        </q-item>
-                        <q-item
-                            v-ripple
-                            tag="label"
-                            :disable="stepHasNoComments"
-                        >
-                            <q-item-section avatar>
-                                <q-radio
-                                    v-model="decision"
-                                    val="withholdAndForward"
-                                    :disable="stepHasNoComments"
-                                />
-                            </q-item-section>
-                            <q-item-section>
-                                <q-item-label class="text-body1"
-                                    >Withhold and Forward</q-item-label
-                                >
-                                <q-item-label class="text-body2 text-grey-8"
-                                    >You recommend this manuscript be withheld
-                                    for publication and are forwarding it to the
-                                    next reviewer.
-                                </q-item-label>
-                            </q-item-section>
-                        </q-item>
-                        <q-item
-                            v-ripple
-                            tag="label"
-                            :disable="stepHasNoComments"
-                        >
-                            <q-item-section avatar>
-                                <q-radio
-                                    v-model="decision"
-                                    val="defer"
-                                    :disable="stepHasNoComments"
-                                />
-                            </q-item-section>
-                            <q-item-section>
-                                <q-item-label class="text-body1"
-                                    >Defer</q-item-label
-                                >
-                                <q-item-label class="text-body2 text-grey-8"
-                                    >You are not the right reviewer for this
-                                    manuscript and defer this review to the
-                                    proper reviewer without making a
-                                    recommendation.
+                                    >{{ option.description }}
                                 </q-item-label>
                             </q-item-section>
                         </q-item>
@@ -245,6 +157,8 @@ import {
     ManagementReviewStepService,
 } from '../ManagementReviewStep';
 
+const authStore = useAuthStore();
+
 const props = defineProps<{
     managementReviewStep: ManagementReviewStep;
 }>();
@@ -259,9 +173,6 @@ const stepper: Ref<QStepper | null> = ref(null);
 const step = ref(1);
 const validationError = ref(false);
 
-const authorEmails = ref<string[]>([]);
-const ownerId = ref<number>(0);
-
 type Decision =
     | 'approveAndComplete'
     | 'approveAndForward'
@@ -269,8 +180,17 @@ type Decision =
     | 'withholdAndForward'
     | 'defer';
 
+type DecisionOption = {
+    label: string;
+    value: Decision;
+    description: string;
+    disabled: boolean;
+};
+
 const decision: Ref<Decision> = ref('approveAndComplete');
 const nextUserId = ref<number | null>(null);
+
+/** Decision flow variables */
 const agreeToTerms = ref(false);
 const agreeToTermsOptions = ref([
     {
@@ -300,9 +220,69 @@ const nextDisabled = computed(() => {
     }
 });
 
+/**
+ * This is used to determine which options are available to the user.
+ */
 const stepHasNoComments = computed(() => {
     return props.managementReviewStep.comments.length === 0;
 });
+
+/**
+ * Checks that the user has permission to withhold a manuscript.
+ */
+const userCanWithholdAndComplete = computed(() => {
+    return (
+        authStore.user?.can('withhold_and_complete_management_review') ?? false
+    );
+});
+
+/**
+ * The options available to the user for their decision.
+ */
+const options = ref<DecisionOption[]>([
+    {
+        label: 'Approve and Complete',
+        value: 'approveAndComplete',
+        description:
+            'You approve this manuscript for publication and are ending the management review process.',
+        disabled: false,
+    },
+    {
+        label: 'Approve and Forward',
+        value: 'approveAndForward',
+        description:
+            'You recommend approval of this manuscript for publication and are forwarding it to the next reviewer.',
+        disabled: stepHasNoComments.value,
+    },
+    {
+        label: 'Withhold and Complete',
+        value: 'withholdAndComplete',
+        description:
+            'You withhold this manuscript for publication and are ending the management review process. Only a RDS or DG can make this decision.',
+        disabled: stepHasNoComments.value || !userCanWithholdAndComplete.value,
+    },
+    {
+        label: 'Withhold and Forward',
+        value: 'withholdAndForward',
+        description:
+            'You recommend this manuscript be withheld for publication and are forwarding it to the next reviewer.',
+        disabled: stepHasNoComments.value,
+    },
+    {
+        label: 'Defer',
+        value: 'defer',
+        description:
+            'You are not the correct reviewer for this manuscript and defer this review to the proper reviewer without making a recommendation.',
+        disabled: stepHasNoComments.value,
+    },
+]);
+
+/**
+ * Variables used to ensure that the next reviewer is not the author or the
+ * owner of the manuscript.
+ */
+const authorEmails = ref<string[]>([]);
+const ownerId = ref<number>(0);
 
 onMounted(async () => {
     authorEmails.value = await getAllManuscriptAuthorsEmails();
@@ -323,6 +303,9 @@ async function getManuscriptOwnerId(): Promise<number> {
     return mansuscriptRecord.data.user_id;
 }
 
+/**
+ * Submits the decision to the API.
+ */
 const loading = ref(false);
 async function submit() {
     var response: ManagementReviewStepResource | null = null;
@@ -342,6 +325,9 @@ async function submit() {
             );
             break;
         case 'withholdAndComplete':
+            if (!userCanWithholdAndComplete.value) {
+                throw new Error('User cannot withhold and complete');
+            }
             response = await ManagementReviewStepService.withhold(
                 props.managementReviewStep
             );

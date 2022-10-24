@@ -30,5 +30,13 @@ class RoleAndPermissionSeeder extends Seeder
 
         $authorRole = Role::create(['name' => 'author']);
         $authorRole->syncPermissions($authorPermissions);
+
+        // what permission does have RDS or DG have
+        $directorPermissions = collect([
+            Permission::create(['name' => 'withhold_and_complete_management_review']),
+        ]);
+
+        $directorRole = Role::create(['name' => 'director']);
+        $directorRole->syncPermissions($directorPermissions);
     }
 }

@@ -65,6 +65,7 @@ class DatabaseSeeder extends Seeder
                 'last_name' => 'User',
                 'email' => 'rds@test.com',
             ]);
+            $rdsUser->assignRole('director');
 
             // Make an author for Mark
             $markAuthor = \App\Models\Author::factory()->create([
