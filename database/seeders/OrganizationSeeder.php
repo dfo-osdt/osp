@@ -15,7 +15,10 @@ class OrganizationSeeder extends Seeder
      */
     public function run()
     {
-        $organizations = SimpleExcelReader::create('database/seeders/data/organizations.csv')->getRows();
+        // get full system path to data/organizations.csv file
+        $path = database_path('seeders/data/organizations.csv');
+
+        $organizations = SimpleExcelReader::create($path)->getRows();
 
         $organizations->each(function ($organization) {
             Organization::firstOrCreate([

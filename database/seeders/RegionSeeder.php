@@ -15,7 +15,10 @@ class RegionSeeder extends Seeder
      */
     public function run()
     {
-        $regions = SimpleExcelReader::create('database/seeders/data/dfo_regions.csv')->getRows();
+        // get full system path to dfo_regions.csv file
+        $path = database_path('seeders/data/dfo_regions.csv');
+
+        $regions = SimpleExcelReader::create($path)->getRows();
 
         $regions->each(function ($region) {
             Region::firstOrCreate([

@@ -1,0 +1,907 @@
+{
+  "cypress.factory": {
+    "name": "cypress.factory",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@factory",
+    "uri": "__cypress__/factory",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.login": {
+    "name": "cypress.login",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@login",
+    "uri": "__cypress__/login",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.logout": {
+    "name": "cypress.logout",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@logout",
+    "uri": "__cypress__/logout",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.artisan": {
+    "name": "cypress.artisan",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@artisan",
+    "uri": "__cypress__/artisan",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.run-php": {
+    "name": "cypress.run-php",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@runPhp",
+    "uri": "__cypress__/run-php",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.csrf-token": {
+    "name": "cypress.csrf-token",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@csrfToken",
+    "uri": "__cypress__/csrf_token",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "cypress.routes": {
+    "name": "cypress.routes",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@routes",
+    "uri": "__cypress__/routes",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.current-user": {
+    "name": "cypress.current-user",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@currentUser",
+    "uri": "__cypress__/current-user",
+    "method": [
+      "POST"
+    ]
+  },
+  "sanctum.csrf-cookie": {
+    "name": "sanctum.csrf-cookie",
+    "domain": null,
+    "action": "Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController@show",
+    "uri": "sanctum/csrf-cookie",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::uh7ZNqaEwkujTY70": {
+    "name": "generated::uh7ZNqaEwkujTY70",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\MailController@index",
+    "uri": "telescope/telescope-api/mail",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::0proHJVUHWD1aS5u": {
+    "name": "generated::0proHJVUHWD1aS5u",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\MailController@show",
+    "uri": "telescope/telescope-api/mail/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::Zy4hlSGAmm4MgfyZ": {
+    "name": "generated::Zy4hlSGAmm4MgfyZ",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\MailHtmlController@show",
+    "uri": "telescope/telescope-api/mail/{telescopeEntryId}/preview",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::2NFs6wEz3zPG55Np": {
+    "name": "generated::2NFs6wEz3zPG55Np",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\MailEmlController@show",
+    "uri": "telescope/telescope-api/mail/{telescopeEntryId}/download",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::RHVr8v61bLX6IRYE": {
+    "name": "generated::RHVr8v61bLX6IRYE",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ExceptionController@index",
+    "uri": "telescope/telescope-api/exceptions",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::MBUtalVxIao690Bg": {
+    "name": "generated::MBUtalVxIao690Bg",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ExceptionController@show",
+    "uri": "telescope/telescope-api/exceptions/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::768QqlVehnW3e8Qh": {
+    "name": "generated::768QqlVehnW3e8Qh",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ExceptionController@update",
+    "uri": "telescope/telescope-api/exceptions/{telescopeEntryId}",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::uFuVF0BibHoIeXyq": {
+    "name": "generated::uFuVF0BibHoIeXyq",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\DumpController@index",
+    "uri": "telescope/telescope-api/dumps",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::QBLbVdWYcpIxwsdT": {
+    "name": "generated::QBLbVdWYcpIxwsdT",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\LogController@index",
+    "uri": "telescope/telescope-api/logs",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::hoSrfF3LpW6Nq1tL": {
+    "name": "generated::hoSrfF3LpW6Nq1tL",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\LogController@show",
+    "uri": "telescope/telescope-api/logs/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::u7EM5AITb5U67Sfa": {
+    "name": "generated::u7EM5AITb5U67Sfa",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\NotificationsController@index",
+    "uri": "telescope/telescope-api/notifications",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::32uul1b2bdF3w3ec": {
+    "name": "generated::32uul1b2bdF3w3ec",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\NotificationsController@show",
+    "uri": "telescope/telescope-api/notifications/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::sXrAPV2hm8tqzuuD": {
+    "name": "generated::sXrAPV2hm8tqzuuD",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\QueueController@index",
+    "uri": "telescope/telescope-api/jobs",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::VLZVfTk6GVx3Rrnn": {
+    "name": "generated::VLZVfTk6GVx3Rrnn",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\QueueController@show",
+    "uri": "telescope/telescope-api/jobs/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::cDKbZc8nqZ3LE3Sz": {
+    "name": "generated::cDKbZc8nqZ3LE3Sz",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\QueueBatchesController@index",
+    "uri": "telescope/telescope-api/batches",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::xMxQQC5bxrL8TaR4": {
+    "name": "generated::xMxQQC5bxrL8TaR4",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\QueueBatchesController@show",
+    "uri": "telescope/telescope-api/batches/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::AlEkCAlWH9ErYkIa": {
+    "name": "generated::AlEkCAlWH9ErYkIa",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\EventsController@index",
+    "uri": "telescope/telescope-api/events",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::WAJFaA73k4hl8u99": {
+    "name": "generated::WAJFaA73k4hl8u99",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\EventsController@show",
+    "uri": "telescope/telescope-api/events/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::LCM7Oe9BSSt5fMGy": {
+    "name": "generated::LCM7Oe9BSSt5fMGy",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\GatesController@index",
+    "uri": "telescope/telescope-api/gates",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::8Qlv6URkhd3QGzp7": {
+    "name": "generated::8Qlv6URkhd3QGzp7",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\GatesController@show",
+    "uri": "telescope/telescope-api/gates/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::fqITBP08kbHwODfM": {
+    "name": "generated::fqITBP08kbHwODfM",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\CacheController@index",
+    "uri": "telescope/telescope-api/cache",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::9SCwqekp5sfSHICG": {
+    "name": "generated::9SCwqekp5sfSHICG",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\CacheController@show",
+    "uri": "telescope/telescope-api/cache/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::EX8L5saHzAMG4lwi": {
+    "name": "generated::EX8L5saHzAMG4lwi",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\QueriesController@index",
+    "uri": "telescope/telescope-api/queries",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::Nzpkmpj7RJsMCckV": {
+    "name": "generated::Nzpkmpj7RJsMCckV",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\QueriesController@show",
+    "uri": "telescope/telescope-api/queries/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::HX1dflHPT4PqjS9p": {
+    "name": "generated::HX1dflHPT4PqjS9p",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ModelsController@index",
+    "uri": "telescope/telescope-api/models",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::a0tfEIZ0GPSvWf0U": {
+    "name": "generated::a0tfEIZ0GPSvWf0U",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ModelsController@show",
+    "uri": "telescope/telescope-api/models/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::cZzYCnEGhMxI1ARM": {
+    "name": "generated::cZzYCnEGhMxI1ARM",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\RequestsController@index",
+    "uri": "telescope/telescope-api/requests",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::83EUuIzJc5Urtoe6": {
+    "name": "generated::83EUuIzJc5Urtoe6",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\RequestsController@show",
+    "uri": "telescope/telescope-api/requests/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::uNClgTC8ylxPGnpO": {
+    "name": "generated::uNClgTC8ylxPGnpO",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ViewsController@index",
+    "uri": "telescope/telescope-api/views",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::lJEBqCl9O2kWw4ik": {
+    "name": "generated::lJEBqCl9O2kWw4ik",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ViewsController@show",
+    "uri": "telescope/telescope-api/views/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::JSi5E7AGhx4ZdlMZ": {
+    "name": "generated::JSi5E7AGhx4ZdlMZ",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\CommandsController@index",
+    "uri": "telescope/telescope-api/commands",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::4WGnOEEvZ5ktwq2e": {
+    "name": "generated::4WGnOEEvZ5ktwq2e",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\CommandsController@show",
+    "uri": "telescope/telescope-api/commands/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::oAwSWKL4zp3saSlq": {
+    "name": "generated::oAwSWKL4zp3saSlq",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ScheduleController@index",
+    "uri": "telescope/telescope-api/schedule",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::fE7FHcfLFqncKIyr": {
+    "name": "generated::fE7FHcfLFqncKIyr",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ScheduleController@show",
+    "uri": "telescope/telescope-api/schedule/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::kac2MF9y62v4jttQ": {
+    "name": "generated::kac2MF9y62v4jttQ",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\RedisController@index",
+    "uri": "telescope/telescope-api/redis",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::iM7I7PtIDRDV4ooM": {
+    "name": "generated::iM7I7PtIDRDV4ooM",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\RedisController@show",
+    "uri": "telescope/telescope-api/redis/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::krgvoJkdD2ZhAlnE": {
+    "name": "generated::krgvoJkdD2ZhAlnE",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ClientRequestController@index",
+    "uri": "telescope/telescope-api/client-requests",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::0v76l6NVAGofAhqQ": {
+    "name": "generated::0v76l6NVAGofAhqQ",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\ClientRequestController@show",
+    "uri": "telescope/telescope-api/client-requests/{telescopeEntryId}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::MxHUdK1Z80I4L0XJ": {
+    "name": "generated::MxHUdK1Z80I4L0XJ",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\MonitoredTagController@index",
+    "uri": "telescope/telescope-api/monitored-tags",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::qxaFl6yHlL6YjDFx": {
+    "name": "generated::qxaFl6yHlL6YjDFx",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\MonitoredTagController@store",
+    "uri": "telescope/telescope-api/monitored-tags",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::d7MtPH2NzdJVwnyM": {
+    "name": "generated::d7MtPH2NzdJVwnyM",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\MonitoredTagController@destroy",
+    "uri": "telescope/telescope-api/monitored-tags/delete",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::BMuyWgqjIzX0383t": {
+    "name": "generated::BMuyWgqjIzX0383t",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\RecordingController@toggle",
+    "uri": "telescope/telescope-api/toggle-recording",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::o8w4dJFAOdPqAErG": {
+    "name": "generated::o8w4dJFAOdPqAErG",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\EntriesController@destroy",
+    "uri": "telescope/telescope-api/entries",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "telescope": {
+    "name": "telescope",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\HomeController@index",
+    "uri": "telescope/{view?}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "ignition.healthCheck": {
+    "name": "ignition.healthCheck",
+    "domain": null,
+    "action": "Spatie\\LaravelIgnition\\Http\\Controllers\\HealthCheckController",
+    "uri": "_ignition/health-check",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "ignition.executeSolution": {
+    "name": "ignition.executeSolution",
+    "domain": null,
+    "action": "Spatie\\LaravelIgnition\\Http\\Controllers\\ExecuteSolutionController",
+    "uri": "_ignition/execute-solution",
+    "method": [
+      "POST"
+    ]
+  },
+  "ignition.updateConfig": {
+    "name": "ignition.updateConfig",
+    "domain": null,
+    "action": "Spatie\\LaravelIgnition\\Http\\Controllers\\UpdateConfigController",
+    "uri": "_ignition/update-config",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::37PhjzuXY0xsbkHH": {
+    "name": "generated::37PhjzuXY0xsbkHH",
+    "domain": null,
+    "action": "Closure",
+    "uri": "api/user",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::cTaiHnokVFTc2eXz": {
+    "name": "generated::cTaiHnokVFTc2eXz",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\AuthorController@index",
+    "uri": "api/authors",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::O0MAZx7uRqKG4OhM": {
+    "name": "generated::O0MAZx7uRqKG4OhM",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\AuthorController@show",
+    "uri": "api/authors/{author}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::pu6KipPV2vy2yg1Y": {
+    "name": "generated::pu6KipPV2vy2yg1Y",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\AuthorController@store",
+    "uri": "api/authors",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::b4SNf3GdXDiaCps1": {
+    "name": "generated::b4SNf3GdXDiaCps1",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\AuthorController@update",
+    "uri": "api/authors/{author}",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::a74NLzgnojfUS2y2": {
+    "name": "generated::a74NLzgnojfUS2y2",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserController@index",
+    "uri": "api/users",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::XpWR5NgnzMwYii5G": {
+    "name": "generated::XpWR5NgnzMwYii5G",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserController@show",
+    "uri": "api/users/{user}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::Ez3DONtmXYtPCphz": {
+    "name": "generated::Ez3DONtmXYtPCphz",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserController@update",
+    "uri": "api/users/{user}",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::V11ueGq8EPvT6thZ": {
+    "name": "generated::V11ueGq8EPvT6thZ",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptAuthorController@index",
+    "uri": "api/manuscript-records/{manuscriptRecord}/manuscript-authors",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::wzDHE6A3NBzkqVJQ": {
+    "name": "generated::wzDHE6A3NBzkqVJQ",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptAuthorController@show",
+    "uri": "api/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::MqIGCmWELmqsnFkX": {
+    "name": "generated::MqIGCmWELmqsnFkX",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptAuthorController@update",
+    "uri": "api/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::xqcE81LycYg7msVv": {
+    "name": "generated::xqcE81LycYg7msVv",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptAuthorController@destroy",
+    "uri": "api/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "generated::KuAw5l57o6FTUYqv": {
+    "name": "generated::KuAw5l57o6FTUYqv",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptAuthorController@store",
+    "uri": "api/manuscript-records/{manuscriptRecord}/manuscript-authors",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::QHhlBWMdvveQDSZr": {
+    "name": "generated::QHhlBWMdvveQDSZr",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManagementReviewStepController@index",
+    "uri": "api/manuscript-records/{manuscriptRecord}/management-review-steps",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::WuMRVA8xikQydw6L": {
+    "name": "generated::WuMRVA8xikQydw6L",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManagementReviewStepController@store",
+    "uri": "api/manuscript-records/{manuscriptRecord}/management-review-steps",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::svRGHz0qMbO7EtUP": {
+    "name": "generated::svRGHz0qMbO7EtUP",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManagementReviewStepController@update",
+    "uri": "api/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::Jc4lw0lBfvxAKv2I": {
+    "name": "generated::Jc4lw0lBfvxAKv2I",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManagementReviewStepController@approve",
+    "uri": "api/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/approve",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::pAuuXvsBTqaOow0v": {
+    "name": "generated::pAuuXvsBTqaOow0v",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManagementReviewStepController@withhold",
+    "uri": "api/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withhold",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::7umUZjlOpnHZw65B": {
+    "name": "generated::7umUZjlOpnHZw65B",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManagementReviewStepController@defer",
+    "uri": "api/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/defer",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::Eo39a3TvME2ucM43": {
+    "name": "generated::Eo39a3TvME2ucM43",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptRecordController@show",
+    "uri": "api/manuscript-records/{manuscriptRecord}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::SkogALRm2okvpGXU": {
+    "name": "generated::SkogALRm2okvpGXU",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptRecordController@update",
+    "uri": "api/manuscript-records/{manuscriptRecord}",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::heq0aBwCvMk0U5G9": {
+    "name": "generated::heq0aBwCvMk0U5G9",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptRecordController@store",
+    "uri": "api/manuscript-records",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::Sx4KfLk16eXgZIuH": {
+    "name": "generated::Sx4KfLk16eXgZIuH",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptRecordController@downloadPdf",
+    "uri": "api/manuscript-records/{manuscriptRecord}/pdf",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::x5KQcjP8G8hrP0wR": {
+    "name": "generated::x5KQcjP8G8hrP0wR",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptRecordController@attachPdf",
+    "uri": "api/manuscript-records/{manuscriptRecord}/pdf",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::kVhj2g9OoD6Ylypg": {
+    "name": "generated::kVhj2g9OoD6Ylypg",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ManuscriptRecordController@submitForReview",
+    "uri": "api/manuscript-records/{manuscriptRecord}/submit-for-review",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::kStgi2ETbljPE5Vq": {
+    "name": "generated::kStgi2ETbljPE5Vq",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserManuscriptRecordController@index",
+    "uri": "api/my/manuscript-records",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::Pj9T9hy5HK1hJ7hp": {
+    "name": "generated::Pj9T9hy5HK1hJ7hp",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserManagementReviewSteps@index",
+    "uri": "api/my/management-review-steps",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::HAjkVMOlaXvxB5IZ": {
+    "name": "generated::HAjkVMOlaXvxB5IZ",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\OrganizationController@index",
+    "uri": "api/organizations",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::jxhPiNIKIDJ5p1lB": {
+    "name": "generated::jxhPiNIKIDJ5p1lB",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\OrganizationController@show",
+    "uri": "api/organizations/{organization}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::Q4vta6VxYUrxO2kj": {
+    "name": "generated::Q4vta6VxYUrxO2kj",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\OrganizationController@update",
+    "uri": "api/organizations/{organization}",
+    "method": [
+      "PUT"
+    ]
+  },
+  "generated::5ODQKcyroKQN3BOy": {
+    "name": "generated::5ODQKcyroKQN3BOy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\OrganizationController@store",
+    "uri": "api/organizations",
+    "method": [
+      "POST"
+    ]
+  },
+  "generated::XwQ2NY2Wn9eNuyim": {
+    "name": "generated::XwQ2NY2Wn9eNuyim",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\RegionController@index",
+    "uri": "api/regions",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "generated::o8pj57OqZuIq64ma": {
+    "name": "generated::o8pj57OqZuIq64ma",
+    "domain": null,
+    "action": "Closure",
+    "uri": "/",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "register": {
+    "name": "register",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\RegisteredUserController@store",
+    "uri": "register",
+    "method": [
+      "POST"
+    ]
+  },
+  "login": {
+    "name": "login",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@store",
+    "uri": "login",
+    "method": [
+      "POST"
+    ]
+  },
+  "password.email": {
+    "name": "password.email",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@store",
+    "uri": "forgot-password",
+    "method": [
+      "POST"
+    ]
+  },
+  "password.update": {
+    "name": "password.update",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\NewPasswordController@store",
+    "uri": "reset-password",
+    "method": [
+      "POST"
+    ]
+  },
+  "verification.verify": {
+    "name": "verification.verify",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\VerifyEmailController@__invoke",
+    "uri": "verify-email/{id}/{hash}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "verification.send": {
+    "name": "verification.send",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController@store",
+    "uri": "email/verification-notification",
+    "method": [
+      "POST"
+    ]
+  },
+  "logout": {
+    "name": "logout",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
+    "uri": "logout",
+    "method": [
+      "POST"
+    ]
+  }
+}

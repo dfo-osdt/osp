@@ -3,7 +3,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "lint": "eslint --ext .ts,.vue resources/src"
+        "lint": "eslint --ext .ts,.vue resources/src",
+        "cy:open": "vite build && cypress open"
     },
     "devDependencies": {
         "@intlify/vite-plugin-vue-i18n": "^6.0.3",
@@ -13,6 +14,7 @@
         "@typescript-eslint/eslint-plugin": "^5.40.1",
         "@typescript-eslint/parser": "^5.40.1",
         "axios": "0.27.2",
+        "cypress": "^10.11.0",
         "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
