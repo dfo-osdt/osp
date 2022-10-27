@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="lHh Lpr lFf">
+    <q-layout view="hHh Lpr lFf">
         <MainHeader @toggle-left-drawer="toggleLeftDrawer"></MainHeader>
         <MainDrawer v-if="authStore.isAuthenticated" show-if-above bordered />
         <q-page-container>
