@@ -1,12 +1,7 @@
 <template>
     <q-layout view="lHh Lpr lFf">
         <MainHeader @toggle-left-drawer="toggleLeftDrawer"></MainHeader>
-        <MainDrawer
-            v-if="authStore.isAuthenticated"
-            v-model="leftDrawerOpen"
-            show-if-above
-            bordered
-        />
+        <MainDrawer v-if="authStore.isAuthenticated" show-if-above bordered />
         <q-page-container>
             <router-view />
         </q-page-container>

@@ -171,6 +171,12 @@ export const useAuthStore = defineStore('AuthStore', () => {
         loading.value = false;
     }
 
+    /**
+     * general application state - we can eventually move this to a separate store
+     * should it grow too large
+     */
+    const isDrawerOpen = useStorage('isDrawerOpen', true);
+
     return {
         user,
         isAuthenticated,
@@ -179,6 +185,8 @@ export const useAuthStore = defineStore('AuthStore', () => {
         refreshUser,
         loading,
         idleTimerMin,
+        // general application state
+        isDrawerOpen,
     };
 });
 
