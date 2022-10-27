@@ -56,7 +56,7 @@
             <p>
                 The manuscript was submitted to the target journal for
                 peer-review. We track this stage to gather statistics on the
-                time it takes to get a manuscript published.
+                time it takes to get manuscript accepted and published.
             </p>
         </q-timeline-entry>
         <q-timeline-entry
@@ -68,9 +68,9 @@
         >
             <p>
                 The manuscript was accepted for publication by the target
-                journal. Confirming this step will create a new publication
-                where you can upload the final manuscript and update the
-                publication details.
+                journal and is entering the production process. Confirming this
+                step will create a new publication record where you can upload
+                the final manuscript and update the publication details.
             </p>
         </q-timeline-entry>
     </q-timeline>
