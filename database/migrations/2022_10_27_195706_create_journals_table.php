@@ -21,8 +21,6 @@ return new class extends Migration
             $table->timestamps();
             $table->string('title_en', 255);
             $table->string('title_fr', 255)->nullable();
-            $table->string('issn', 255)->nullable()->comment('International Standard Serial Number');
-            $table->string('eissn', 255)->nullable()->comment('Electronic International Standard Serial Number');
             $table->string('scopus_source_record_id', 50)->nullable()->comment('Scopus source record ID');
             $table->string('publisher', 255);
         });

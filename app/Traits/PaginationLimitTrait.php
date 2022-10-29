@@ -12,13 +12,16 @@ trait PaginationLimitTrait
      * @param Request request with "limit" value
      * @return int
      */
-    public function getLimitFromRequest(Request $request, int $defaultLimit = 10, int $max = 100): int
+    public function getLimitFromRequest(Request $request, int $default = null, int $max = null): int
     {
+        $default = $default ?? config('osp.api_pagination.default', 10);
+        $max = $max ?? config('osp.api_pagination.max', 100);
+
         $validated = $request->validate([
             'limit' => ['integer', 'min:1', 'max:'.$max],
         ]);
 
-        $limit = $validated['limit'] ?? $defaultLimit;
+        $limit = $validated['limit'] ?? $default;
         $limit = min($limit, $max);
 
         return $limit;

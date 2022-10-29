@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
@@ -83,6 +84,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/organizations/{organization}', 'show');
         Route::put('organizations/{organization}', 'update');
         Route::post('/organizations', 'store');
+    });
+
+    Route::controller(JournalController::class)->group(function () {
+        Route::get('/journals', 'index');
+        Route::get('/journals/{journal}', 'show');
     });
 
     Route::get('/regions', [RegionController::class, 'index']);

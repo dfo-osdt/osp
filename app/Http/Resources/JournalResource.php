@@ -20,8 +20,6 @@ class JournalResource extends JsonResource
                 'title_en' => $this->title_en,
                 'title_fr' => $this->title_fr,
                 'publisher' => $this->publisher,
-                'issn' => $this->issn,
-                'eissn' => $this->eissn,
             ],
             'can' => [
                 'update' => false,

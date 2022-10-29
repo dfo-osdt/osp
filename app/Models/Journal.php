@@ -9,7 +9,8 @@ class Journal extends Model
 {
     use HasFactory;
 
-    // static variable for the DFO series publisher
+    // Static value for the DFO series publisher - if this is changed once it is in the
+    // production database it will will also need to be changed in the database!
     public static $dfoPublisher = 'Fisheries and Oceans Canada - Pêches et Océans Canada';
 
     /** Create a scope for DFO series */
