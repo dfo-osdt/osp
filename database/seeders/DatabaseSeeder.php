@@ -19,13 +19,16 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             OrganizationSeeder::class,
             RoleAndPermissionSeeder::class,
-            DfoSeriesJournalSeeder::class,
         ]);
 
         // here to test the system / demo - remove later
         // do not use in testing
 
         if (config('app.env') != 'testing') {
+            $this->call([
+                JournalsTableSeeder::class,
+            ]);
+
             $user = \App\Models\User::factory()->create([
                 'first_name' => 'John',
                 'last_name' => 'Doe',
@@ -94,6 +97,7 @@ class DatabaseSeeder extends Seeder
                 'manuscript_record_id' => $marksManuscript->id,
                 'organization_id' => $markAuthor->organization_id,
             ]));
+            $this->call(JournalsTableSeeder::class);
         }
     }
 }

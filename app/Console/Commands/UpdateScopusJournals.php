@@ -81,7 +81,7 @@ class UpdateScopusJournals extends Command
 
         // temporarily disable mass assignment protection for Journal
         Journal::unguard();
-
+        $start = now();
         // go through the rows, only import ones that have an ASJC code we want
         $rows->each(function ($row) use ($asjcCodes) {
             // 'All Science Journal Classification Codes (ASJC)' column uses the following
@@ -122,6 +122,8 @@ class UpdateScopusJournals extends Command
         });
 
         Journal::unguard(false);
+        $time = now()->diffInSeconds($start);
+        $this->info("Completed in {$time} seconds.");
 
         return Command::SUCCESS;
     }

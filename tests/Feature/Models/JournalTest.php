@@ -22,8 +22,8 @@ test('a user can get a list of all dfo journals', function () {
     // create a user
     $user = User::factory()->create();
 
-    // Seeder should have created the 6 DFO journals
-    // Create a few more journals so confirm test only returns DFO journals
+    // Make 6 dfo journals
+    Journal::factory()->count(6)->dfoSeries()->create();
     Journal::factory()->count(5)->create();
 
     // authenticated user can get a list of journals
