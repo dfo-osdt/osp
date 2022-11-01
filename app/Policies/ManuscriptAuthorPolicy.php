@@ -54,6 +54,8 @@ class ManuscriptAuthorPolicy
      */
     public function update(User $user, ManuscriptAuthor $manuscriptAuthor)
     {
+        $manuscriptAuthor->load('manuscriptRecord');
+
         // can update if the manuscript is in draft and the user is the manuscript owner
         if ($manuscriptAuthor->manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
             return false;

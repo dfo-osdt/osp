@@ -18,7 +18,7 @@ class ManuscriptManagementReviewComplete extends Mailable
      */
     public function __construct(public ManuscriptRecord $manuscriptRecord)
     {
-        //
+        $manuscriptRecord->load('user', 'manuscriptAuthors.author', 'managementReviewSteps.user');
     }
 
     /**

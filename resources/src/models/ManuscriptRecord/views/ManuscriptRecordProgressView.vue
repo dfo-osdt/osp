@@ -134,7 +134,7 @@ const managementReviewSubtitle = computed(() => {
         return 'Pending';
     }
     return (
-        'Submitted on ' +
+        'Completed on ' +
         useLocaleDate(manuscriptRecord.value.data.reviewed_at).value
     );
 });

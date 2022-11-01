@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             OrganizationSeeder::class,
             RoleAndPermissionSeeder::class,
+            // DfoSeriesJournalSeeder::class // enable this seeder when we go live
         ]);
 
         // here to test the system / demo - remove later
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
 
         if (config('app.env') != 'testing') {
             $this->call([
+                //
                 JournalsTableSeeder::class,
             ]);
 

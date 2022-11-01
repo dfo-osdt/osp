@@ -23,7 +23,7 @@ class ManuscriptRecordToReviewMail extends Mailable
      */
     public function __construct(public ManuscriptRecord $manuscriptRecord, public User $user)
     {
-        //
+        $manuscriptRecord->load('user', 'manuscriptAuthors.author');
     }
 
     /**

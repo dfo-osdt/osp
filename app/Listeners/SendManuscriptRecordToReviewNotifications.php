@@ -4,9 +4,10 @@ namespace App\Listeners;
 
 use App\Events\ManuscriptRecordToReviewEvent;
 use App\Mail\ManuscriptRecordToReviewMail;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendManuscriptRecordToReviewNotifications
+class SendManuscriptRecordToReviewNotifications implements ShouldQueue
 {
     /**
      * Create the event listener.

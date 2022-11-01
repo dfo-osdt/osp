@@ -4,9 +4,10 @@ namespace App\Listeners;
 
 use App\Events\ManagementReviewStepCreated;
 use App\Mail\ReviewStepNotificationMail;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Mail;
 
-class SendManagementReviewNotification
+class SendManagementReviewNotification implements ShouldQueue
 {
     /**
      * Create the event listener.

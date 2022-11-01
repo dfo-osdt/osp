@@ -4,9 +4,10 @@ namespace App\Listeners;
 
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Mail\ManuscriptManagementReviewComplete as MailManuscriptManagementReviewComplete;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Mail;
 
-class SendManuscriptManagementReviewCompleteNotification
+class SendManuscriptManagementReviewCompleteNotification implements ShouldQueue
 {
     /**
      * Create the event listener.

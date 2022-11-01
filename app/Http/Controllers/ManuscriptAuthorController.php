@@ -20,7 +20,6 @@ class ManuscriptAuthorController extends Controller
     public function index(ManuscriptRecord $manuscriptRecord)
     {
         Gate::authorize('view', $manuscriptRecord);
-
         $manuscriptAuthors = $manuscriptRecord->manuscriptAuthors()->with('author', 'organization')->orderBy('id')->get();
 
         return ManuscriptAuthorResource::collection($manuscriptAuthors);

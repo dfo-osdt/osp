@@ -23,8 +23,8 @@ class ReviewStepNotificationMail extends Mailable
      */
     public function __construct(public ManagementReviewStep $managementReviewStep)
     {
-        $this->previousStep = $managementReviewStep->previousStep;
-        $this->manuscriptRecord = $managementReviewStep->manuscriptRecord;
+        $this->previousStep = $managementReviewStep->previousStep->load('user');
+        $this->manuscriptRecord = $managementReviewStep->manuscriptRecord->load('user', 'manuscriptAuthors.author');
     }
 
     /**
