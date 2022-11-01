@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             OrganizationSeeder::class,
             RoleAndPermissionSeeder::class,
+            DfoSeriesJournalSeeder::class,
         ]);
 
         // here to test the system / demo - remove later
