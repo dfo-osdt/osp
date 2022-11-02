@@ -16,4 +16,6 @@ export default defineConfig({
         specPattern: 'tests/cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
         supportFile: 'tests/cypress/support/index.js',
     },
+    viewportHeight: 1080,
+    viewportWidth: 1920,
 });
