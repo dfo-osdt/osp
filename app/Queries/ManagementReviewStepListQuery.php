@@ -8,9 +8,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ManagementReviewStepListQuery extends QueryBuilder
 {
-    public function __construct($subject, $request)
+    public function __construct($request, $baseQuery = null)
     {
-        parent::__construct($subject ?? ManagementReviewStep::query(), $request);
+        parent::__construct($baseQuery ?? ManagementReviewStep::query(), $request);
 
         $this
         ->defaultSort('id')

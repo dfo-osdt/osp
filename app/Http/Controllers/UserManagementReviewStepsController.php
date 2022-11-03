@@ -9,7 +9,7 @@ use App\Traits\PaginationLimitTrait;
 use Auth;
 use Illuminate\Http\Request;
 
-class UserManagementReviewSteps extends Controller
+class UserManagementReviewStepsController extends Controller
 {
     use PaginationLimitTrait;
 
@@ -22,7 +22,7 @@ class UserManagementReviewSteps extends Controller
     {
         $limit = $this->getLimitFromRequest($request);
         $baseQuery = ManagementReviewStep::where('user_id', Auth::user()->id)->with('manuscriptRecord');
-        $listQuery = new ManagementReviewStepListQuery($baseQuery, $request);
+        $listQuery = new ManagementReviewStepListQuery($request, $baseQuery);
 
         return ManagementReviewStepResource::collection($listQuery->paginate($limit)->appends($request->query()));
     }

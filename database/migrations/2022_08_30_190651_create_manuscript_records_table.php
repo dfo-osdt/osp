@@ -17,6 +17,7 @@ return new class extends Migration
             // automatic fields
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
 
             // required fields
             $table->string('type', 20)->comment('primary, secondary, etc.');

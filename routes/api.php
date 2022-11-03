@@ -6,10 +6,12 @@ use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserManagementReviewSteps;
+use App\Http\Controllers\UserManagementReviewStepsController;
 use App\Http\Controllers\UserManuscriptRecordController;
+use App\Http\Controllers\UserPublicationController;
 use App\Http\Resources\AuthenticatedUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -76,7 +78,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // routes for user specific resources
     Route::prefix('my')->group(function () {
         Route::get('/manuscript-records', [UserManuscriptRecordController::class, 'index']);
-        Route::get('/management-review-steps', [UserManagementReviewSteps::class, 'index']);
+        Route::get('/management-review-steps', [UserManagementReviewStepsController::class, 'index']);
+        Route::get('/publications/', [UserPublicationController::class, 'index']);
     });
 
     Route::controller(OrganizationController::class)->group(function () {
@@ -89,6 +92,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(JournalController::class)->group(function () {
         Route::get('/journals', 'index');
         Route::get('/journals/{journal}', 'show');
+    });
+
+    Route::controller(PublicationController::class)->group(function () {
+        Route::get('/publications', 'index');
+        Route::get('/publications/{publication}', 'show');
     });
 
     Route::get('/regions', [RegionController::class, 'index']);
