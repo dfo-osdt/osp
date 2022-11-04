@@ -21,7 +21,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         // create author permissions
         $authorPermissions = collect([
-            Permission::create(['name' => 'create_manuscripts_records']),
+            Permission::create(['name' => 'create_manuscript_records']),
             Permission::create(['name' => 'create_publications']),
             Permission::create(['name' => 'create_authors']),
             Permission::create(['name' => 'update_authors']),

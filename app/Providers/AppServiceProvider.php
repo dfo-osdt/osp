@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         // prevent lazy loading
         Model::preventLazyLoading(! app()->isProduction());
         Model::preventSilentlyDiscardingAttributes();
+        Model::preventAccessingMissingAttributes();
 
         // https://spatie.be/docs/laravel-permission/v5/prerequisites#content-schema-limitation-in-mysql
         Schema::defaultStringLength(125);

@@ -30,6 +30,11 @@ class Publication extends Model implements Auditable
         'embargoed_until' => 'date',
     ];
 
+    public $attributes = [
+        // default is false
+        'is_open_access' => false,
+    ];
+
     // Relationships
     public function journal(): BelongsTo
     {

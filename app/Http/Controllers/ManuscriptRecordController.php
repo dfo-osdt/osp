@@ -35,6 +35,8 @@ class ManuscriptRecordController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', ManuscriptRecord::class);
+
         // validate that we have a type, title, and region_id
         $validated = $request->validate([
             'title' => 'required|max:255',

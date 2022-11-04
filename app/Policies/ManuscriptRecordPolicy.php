@@ -51,7 +51,9 @@ class ManuscriptRecordPolicy
      */
     public function create(User $user)
     {
-        //
+        ray($user->can('create_manuscript_records'));
+
+        return $user->can('create_manuscript_records');
     }
 
     /**

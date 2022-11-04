@@ -20,6 +20,7 @@ class PublicationResource extends JsonResource
                 'id' => $this->id,
                 'title' => $this->title,
                 'doi' => $this->doi,
+                'is_open_access' => $this->is_open_access,
                 'accepted_on' => $this->accepted_on,
                 'published_on' => $this->published_on,
                 'embargoed_until' => $this->embargoed_until,

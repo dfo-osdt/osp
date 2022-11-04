@@ -41,7 +41,7 @@ class PublicationPolicy
      */
     public function create(User $user)
     {
-        $user->can('create_publications');
+        return $user->can('create_publications');
     }
 
     /**

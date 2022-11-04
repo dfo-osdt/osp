@@ -97,6 +97,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(PublicationController::class)->group(function () {
         Route::get('/publications', 'index');
         Route::get('/publications/{publication}', 'show');
+        Route::post('/publications', 'store');
     });
 
     Route::get('/regions', [RegionController::class, 'index']);
