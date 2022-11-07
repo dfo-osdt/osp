@@ -64,6 +64,16 @@ class PublicationFactory extends Factory
         });
     }
 
+    /** has authors */
+    public function withAuthors()
+    {
+        return $this->afterCreating(
+            function (\App\Models\Publication $publication) {
+                $publication->authors()->saveMany(\App\Models\Author::factory()->count(3)->make());
+            }
+        );
+    }
+
     public function getDOI(): string
     {
         // DOI regular expression

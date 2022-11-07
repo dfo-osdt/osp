@@ -8,6 +8,7 @@ export default defineConfig({
     videosFolder: 'tests/cypress/videos',
     screenshotsFolder: 'tests/cypress/screenshots',
     fixturesFolder: 'tests/cypress/fixture',
+    downloadsFolder: 'tests/cypress/downloads',
     e2e: {
         setupNodeEvents(on, config) {
             return require('./tests/cypress/plugins/index.js')(on, config);

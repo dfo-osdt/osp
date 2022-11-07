@@ -7,7 +7,10 @@ use App\Models\Publication;
 use App\Queries\PublicationListQuery;
 use App\Rules\Doi;
 use App\Traits\PaginationLimitTrait;
+use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PublicationController extends Controller
 {
@@ -39,6 +42,7 @@ class PublicationController extends Controller
 
         // validate the request
         $validated = $request->validate([
+            'status' => new Enum(PublicationStatus::class),
             'title' => 'required',
             'journal_id' => 'required|exists:journals,id',
             'doi' => ['string', 'required', new Doi],
@@ -77,6 +81,34 @@ class PublicationController extends Controller
     public function update(Request $request, Publication $publication)
     {
         //
+    }
+
+    /** Attach a PDF file to this publication */
+    public function attachPDF(Request $request, Publication $publication)
+    {
+        Gate::authorize('update', $publication);
+
+        $validated = $request->validate([
+            'pdf' => 'required|file|mimes:pdf',
+        ]);
+
+        $publication->addMedia($validated['pdf'])->toMediaCollection('publication');
+
+        return new PublicationResource($publication->load('user'));
+    }
+
+    /** Download PDF attached to this publication - return NoContent if empty */
+    public function downloadPDF(Publication $publication)
+    {
+        Gate::authorize('view', $publication);
+
+        $pdf = $publication->getPublicationFile();
+
+        if ($pdf) {
+            return $pdf;
+        } else {
+            throw new NotFoundHttpException('No PDF attached to this publication');
+        }
     }
 
     /**

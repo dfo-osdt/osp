@@ -33,6 +33,8 @@ class ManuscriptAuthorController extends Controller
      */
     public function store(Request $request, ManuscriptRecord $manuscriptRecord)
     {
+        Gate::authorize('update', $manuscriptRecord);
+
         $validated = $request->validate([
             'author_id' => ['required', 'integer', 'exists:authors,id',
                 Rule::unique('manuscript_authors')->where(function ($query) use ($manuscriptRecord) {
@@ -62,6 +64,10 @@ class ManuscriptAuthorController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
     {
+        Gate::authorize('view', $manuscriptRecord);
+
+        $manuscriptAuthor->load('author', 'organization');
+
         return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
 
@@ -74,6 +80,8 @@ class ManuscriptAuthorController extends Controller
      */
     public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
     {
+        Gate::authorize('update', $manuscriptRecord);
+
         $validated = $request->validate([
             //'author_id' => 'integer|exists:authors,id',
             'is_corresponding_author' => 'boolean',
@@ -100,6 +108,8 @@ class ManuscriptAuthorController extends Controller
      */
     public function destroy(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
     {
+        Gate::authorize('delete', $manuscriptAuthor);
+
         $manuscriptAuthor->delete();
         // response 204
         return response()->noContent();

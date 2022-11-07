@@ -27,9 +27,12 @@ class PublicationResource extends JsonResource
                 'manuscript_record_id' => $this->manuscript_record_id,
                 'journal_id' => $this->journal_id,
                 'user_id' => $this->user_id,
+                // relationships - if loaded
                 'manuscript_record' => ManuscriptRecordResource::make($this->whenLoaded('manuscriptRecord')),
                 'journal' => JournalResource::make($this->whenLoaded('journal')),
                 'user' => UserResource::make($this->whenLoaded('user')),
+                'publication_authors' => PublicationAuthorResource::collection($this->whenLoaded('publicationAuthors')),
+                'publication_pdf' => MediaResource::make($this->whenLoaded('publicationPdf')),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

@@ -2,17 +2,22 @@
 
 namespace App\Models;
 
+use App\Enums\PublicationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Publication extends Model implements Auditable
+class Publication extends Model implements Auditable, HasMedia
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
+    use InteractsWithMedia;
 
     // Audit Thresholds
     protected $auditThreshold = 100;
@@ -28,11 +33,14 @@ class Publication extends Model implements Auditable
         'accepted_on' => 'date',
         'published_on' => 'date',
         'embargoed_until' => 'date',
+        'status' => PublicationStatus::class,
     ];
 
     public $attributes = [
         // default is false
         'is_open_access' => false,
+        // default is accepted
+        'status' => PublicationStatus::ACCEPTED,
     ];
 
     // Relationships
@@ -41,6 +49,10 @@ class Publication extends Model implements Auditable
         return $this->belongsTo(Journal::class);
     }
 
+    /**
+     * Manuscript record - can be null as we allow creation of
+     * publications without a manuscript record.
+     */
     public function manuscriptRecord(): BelongsTo
     {
         return $this->belongsTo(ManuscriptRecord::class);
@@ -49,6 +61,26 @@ class Publication extends Model implements Auditable
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function publicationAuthors(): HasMany
+    {
+        return $this->hasMany(PublicationAuthor::class);
+    }
+
+    // media
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('publication')
+            ->acceptsMimeTypes(['application/pdf']);
+    }
+
+    /**
+     * Get publication file media model.
+     */
+    public function getPublicationFile()
+    {
+        return $this->getMedia('publication')->last();
     }
 
     // Scopes

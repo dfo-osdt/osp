@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->string('status', 20)->comment('accepted, published, etc.');
             $table->string('title');
             $table->string('doi')->nullable();
             $table->date('accepted_on')->nullable();

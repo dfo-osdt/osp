@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
+use App\Models\PublicationAuthor;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +28,6 @@ class DatabaseSeeder extends Seeder
 
         if (config('app.env') != 'testing') {
             $this->call([
-                //
                 JournalsTableSeeder::class,
             ]);
 
@@ -51,6 +51,15 @@ class DatabaseSeeder extends Seeder
             $toReview = \App\Models\ManuscriptRecord::factory()->in_review()->create([
                 'user_id' => $user->id,
             ]);
+
+            // create 2 publications without a manuscript record for the test user
+            \App\Models\Publication::factory()->count(2)
+                ->has(PublicationAuthor::factory([
+                    'author_id' => $user->author->id,
+                ]))->create([
+                    'user_id' => $user->id,
+                    'journal_id' => \App\Models\Journal::first()->id,
+                ]);
 
             // create a division manager user
             $dmUser = \App\Models\User::factory()->create([
@@ -99,7 +108,6 @@ class DatabaseSeeder extends Seeder
                 'manuscript_record_id' => $marksManuscript->id,
                 'organization_id' => $markAuthor->organization_id,
             ]));
-            $this->call(JournalsTableSeeder::class);
         }
     }
 }

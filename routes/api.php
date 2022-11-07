@@ -6,6 +6,7 @@ use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PublicationAuthorController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserController;
@@ -98,6 +99,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/publications', 'index');
         Route::get('/publications/{publication}', 'show');
         Route::post('/publications', 'store');
+    });
+
+    Route::controller(PublicationAuthorController::class)->group(function () {
+        Route::get('/publications/{publication}/publication-authors', 'index');
+        Route::get('/publications/{publication}/publication-authors/{publicationAuthor}', 'show');
+        Route::post('/publications/{publication}/publication-authors', 'store');
+        Route::put('/publications/{publication}/publication-authors/{publicationAuthor}', 'update');
+        Route::delete('/publications/{publication}/publication-authors/{publicationAuthor}', 'destroy');
     });
 
     Route::get('/regions', [RegionController::class, 'index']);
