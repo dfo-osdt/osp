@@ -19,6 +19,7 @@ class PublicationResource extends JsonResource
             'data' => [
                 'id' => $this->id,
                 'title' => $this->title,
+                'status' => $this->status,
                 'doi' => $this->doi,
                 'is_open_access' => $this->is_open_access,
                 'accepted_on' => $this->accepted_on,
@@ -27,12 +28,12 @@ class PublicationResource extends JsonResource
                 'manuscript_record_id' => $this->manuscript_record_id,
                 'journal_id' => $this->journal_id,
                 'user_id' => $this->user_id,
+                'publication_pdf' => MediaResource::make($this->whenLoaded('publicationPdf')),
                 // relationships - if loaded
                 'manuscript_record' => ManuscriptRecordResource::make($this->whenLoaded('manuscriptRecord')),
                 'journal' => JournalResource::make($this->whenLoaded('journal')),
                 'user' => UserResource::make($this->whenLoaded('user')),
                 'publication_authors' => PublicationAuthorResource::collection($this->whenLoaded('publicationAuthors')),
-                'publication_pdf' => MediaResource::make($this->whenLoaded('publicationPdf')),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

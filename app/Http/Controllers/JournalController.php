@@ -44,7 +44,7 @@ class JournalController extends Controller
      */
     public function show(Journal $journal)
     {
-        //
+        return new JournalResource($journal);
     }
 
     /**

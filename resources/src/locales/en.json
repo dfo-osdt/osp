@@ -36,5 +36,9 @@
       "message": "You have unsaved changes. Are you sure you want to leave?",
       "title": "Unsaved Changes"
     }
+  },
+  "publication": {
+    "accepted": "Accepted",
+    "publsihed": "Published"
   }
 }

@@ -118,60 +118,72 @@
                                     rounded
                                     color="primary"
                                     class="q-mb-md"
-                                    @click="show = true"
+                                    @click="showCreateManuscript = true"
                                 >
                                     Create Manuscript
                                 </q-btn>
                                 <create-manuscript-dialog
-                                    v-if="show"
-                                    v-model="show"
+                                    v-if="showCreateManuscript"
+                                    v-model="showCreateManuscript"
                                 />
                             </div>
                         </q-tab-panel>
                         <q-tab-panel name="reviews" class="q-pa-none">
                             <RecentManagementReviewStepsView />
                         </q-tab-panel>
-                        <q-tab-panel name="publications">
-                            <div class="flex row justify-center">
-                                <div
-                                    class="col-12 col-lg-10 flex column text-center"
-                                >
-                                    <div>
-                                        <q-img
-                                            src="/assets/splash_images/undraw_scientist_0ft9.svg"
-                                            width="250px"
-                                            class="q-mb-sm"
-                                        />
-                                    </div>
+                        <q-tab-panel name="publications" class="q-pa-none">
+                            <template v-if="publications.empty">
+                                <div class="flex row justify-center">
                                     <div
-                                        class="text-h5 text-weight-light text-accent q-mb-sm"
+                                        class="col-12 col-lg-10 flex column text-center"
                                     >
-                                        Add a publication
-                                    </div>
-                                    <div
-                                        class="text-body1 text-grey-8 text-left"
-                                    >
-                                        <p>
-                                            Manuscripts that have been reviewed
-                                            will appear here. Once published,
-                                            you can update the publication
-                                            details. You can also add any past
-                                            publication here so that it is part
-                                            of our database and available for
-                                            all to see.
-                                        </p>
+                                        <div>
+                                            <q-img
+                                                src="/assets/splash_images/undraw_scientist_0ft9.svg"
+                                                width="250px"
+                                                class="q-mb-sm"
+                                            />
+                                        </div>
+                                        <div
+                                            class="text-h5 text-weight-light text-accent q-mb-sm"
+                                        >
+                                            Add a publication
+                                        </div>
+                                        <div
+                                            class="text-body1 text-grey-8 text-left"
+                                        >
+                                            <p>
+                                                Manuscripts that have been
+                                                reviewed will appear here. Once
+                                                published, you can update the
+                                                publication details. You can
+                                                also add any past publication
+                                                here so that it is part of our
+                                                database and available for all
+                                                to see.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="text-center">
+                            </template>
+                            <PublicationList
+                                v-if="!publications.empty"
+                                class="q-mb-lg"
+                                :publications="publications.recentPublications"
+                            />
+                            <div class="text-center q-mb-md">
                                 <q-btn
                                     rounded
                                     color="primary"
-                                    to="/publications/create"
+                                    @click="showCreatePublication = true"
                                 >
                                     Add Publication
                                 </q-btn>
                             </div>
+                            <CreatePublicationDialog
+                                v-if="showCreatePublication"
+                                v-model="showCreatePublication"
+                            />
                         </q-tab-panel>
                     </q-tab-panels>
                 </content-card>
@@ -187,9 +199,12 @@ import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateM
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import ManuscriptList from '@/models/ManuscriptRecord/components/ManuscriptList.vue';
 import RecentManagementReviewStepsView from '@/models/ManagementReviewStep/views/RecentManagementReviewStepsView.vue';
+import PublicationList from '@/models/Publication/components/PublicationList.vue';
+import CreatePublicationDialog from '@/models/Publication/components/CreatePublicationDialog.vue';
 
 const manuscripts = useManuscriptStore();
 const reviewSteps = useManagementReviewStepStore();
+const publications = usePublicationStore();
 
 const tab = useStorage('dashboard-recent-tab', 'manuscripts');
 
@@ -197,10 +212,12 @@ const tab = useStorage('dashboard-recent-tab', 'manuscripts');
 onMounted(() => {
     manuscripts.getMyManuscripts(true);
     reviewSteps.getMyManagementReviewSteps(true);
+    publications.getMyPublications(true);
 });
 
 // create dialog
-const show = ref(false);
+const showCreateManuscript = ref(false);
+const showCreatePublication = ref(false);
 
 const data = computed(() => [
     {

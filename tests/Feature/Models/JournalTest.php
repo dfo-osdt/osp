@@ -31,3 +31,18 @@ test('a user can get a list of all dfo journals', function () {
 
     expect($response->json('data'))->toHaveCount(6);
 });
+
+test('a user can get a specific journal by id', function () {
+    // create a user
+    $user = User::factory()->create();
+
+    // create a journal
+    $journal = Journal::factory()->create();
+
+    // unauthenticated user cannot get a specific journal
+    $response = $this->getJson('/api/journals/'.$journal->id)->assertUnauthorized();
+
+    // authenticated user can get a specific journal
+    $response = $this->actingAs($user)->getJson('/api/journals/'.$journal->id)->assertOk();
+    expect($response->json('data.id'))->toBe($journal->id);
+});

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PublicationStatus;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
 use App\Models\PublicationAuthor;
@@ -57,8 +58,11 @@ class DatabaseSeeder extends Seeder
                 ->has(PublicationAuthor::factory([
                     'author_id' => $user->author->id,
                 ]))->create([
+                    'status' => PublicationStatus::PUBLISHED,
                     'user_id' => $user->id,
                     'journal_id' => \App\Models\Journal::first()->id,
+                    'published_on' => now()->subMonths(10),
+                    'accepted_on' => now()->subMonths(11),
                 ]);
 
             // create a division manager user

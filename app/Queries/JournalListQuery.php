@@ -14,13 +14,13 @@ class JournalListQuery extends QueryBuilder
         parent::__construct(Journal::query());
 
         $this
-        ->defaultSort('name_en')
-        ->allowedSorts('name_en', 'name_fr', 'publisher')
+        ->defaultSort('title_en')
+        ->allowedSorts('title_en', 'title_fr', 'publisher')
         ->allowedFilters([
             AllowedFilter::exact('id'),
-            AllowedFilter::partial('name_en'),
-            AllowedFilter::partial('name_fr'),
-            AllowedFilter::custom('search', new FuzzyFilter('name_en', 'name_fr')),
+            AllowedFilter::partial('title_en'),
+            AllowedFilter::partial('title_fr'),
+            AllowedFilter::custom('search', new FuzzyFilter('title_en', 'title_fr')),
             AllowedFilter::scope('dfo_series'),
         ]);
     }

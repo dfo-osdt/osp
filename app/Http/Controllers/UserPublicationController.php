@@ -21,7 +21,7 @@ class UserPublicationController extends Controller
     public function index(Request $request)
     {
         $limit = $this->getLimitFromRequest($request);
-        $baseQuery = Publication::where('user_id', Auth::user()->id)->with('manuscriptRecord');
+        $baseQuery = Publication::where('user_id', Auth::user()->id)->with('manuscriptRecord', 'journal', 'publicationAuthors.author', 'publicationAuthors.organization');
         $listQuery = new PublicationListQuery($request, $baseQuery);
 
         return PublicationResource::collection($listQuery->paginate($limit)->appends($request->query()));

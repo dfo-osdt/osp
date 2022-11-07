@@ -35,5 +35,9 @@
       "message": "Vous avez des changements non enregistrés. \nÊtes-vous sûr de vouloir quitter?",
       "title": "Modifications non enregistrées"
     }
+  },
+  "publication": {
+    "accepted": "Accepté",
+    "publsihed": "Publié"
   }
 }

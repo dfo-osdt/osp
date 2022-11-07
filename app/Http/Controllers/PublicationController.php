@@ -47,8 +47,8 @@ class PublicationController extends Controller
             'journal_id' => 'required|exists:journals,id',
             'doi' => ['string', 'required', new Doi],
             'accepted_on' => 'date|required',
-            'published_on' => 'date|required',
-            'embargoed_until' => 'date|nullable',
+            'published_on' => 'date',
+            'embargoed_until' => 'date',
             'is_open_access' => 'boolean',
         ]);
 
