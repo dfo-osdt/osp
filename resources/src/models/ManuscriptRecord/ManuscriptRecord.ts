@@ -1,5 +1,6 @@
 import { http } from '@/api/http';
 import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
+import axios from 'axios';
 import { Region } from '../Region/Region';
 import { Resource, ResourceList, Media } from '../Resource';
 import { UserResource } from '../User/User';
@@ -102,7 +103,12 @@ export class ManuscriptRecordService {
         formData.append('pdf', file);
         const response = await http.post<FormData, ManuscriptRecordResource>(
             `${this.baseURL}/${id}/pdf`,
-            formData
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
         );
         return response.data;
     }
