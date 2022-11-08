@@ -15,9 +15,9 @@ export interface Publication {
     title: string;
     doi: string;
     is_open_access: boolean;
-    accepted_on: string;
+    accepted_on: string | null;
     published_on: string | null;
-    embargo_until: string | null;
+    embargoed_until: string | null;
     journal_id: number;
     manuscript_record_id: number;
     user_id: number;
@@ -28,6 +28,16 @@ export interface Publication {
     user?: UserResource;
     publication_authors?: PublicationAuthorResource[];
 }
+
+export type PublicationCreate = Omit<
+    Publication,
+    | 'id'
+    | 'created_at'
+    | 'updated_at'
+    | 'manuscript_record_id'
+    | 'user_id'
+    | 'publication_pdf'
+>;
 
 export type PublicationResource = Resource<Publication>;
 export type PublicationResourceList = ResourceList<Publication>;
@@ -56,8 +66,8 @@ export class PublicationService {
     }
 
     /** Create a new publication */
-    public static async create(data: Publication) {
-        const response = await http.post<Publication, R>(
+    public static async create(data: PublicationCreate) {
+        const response = await http.post<PublicationCreate, R>(
             `api/publications`,
             data
         );
@@ -81,7 +91,7 @@ export class PublicationService {
 
     /** Get a list of publications for logged in user */
     public static async getMyPublications() {
-        const response = await http.get<RList>(`api/my/publications`);
+        const response = await http.get<RList>(`api/my/publications?limit=100`);
         return response.data.data;
     }
 }

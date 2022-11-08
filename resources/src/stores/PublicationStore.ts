@@ -42,12 +42,22 @@ export const usePublicationStore = defineStore('PublicationStore', () => {
             .slice(0, 5);
     });
 
+    /**
+     * Get the number of publications that have an accepted status
+     */
+    const overduePublications = computed(() => {
+        if (publications.value === undefined) return 0;
+        return publications.value.filter((p) => p.data.status === 'accepted')
+            .length;
+    });
+
     return {
         loading,
         empty,
         recentPublications,
         publications,
         getMyPublications,
+        overduePublications,
     };
 });
 

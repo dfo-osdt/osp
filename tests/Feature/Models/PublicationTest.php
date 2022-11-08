@@ -46,6 +46,7 @@ test('a user can create a new publication without a manuscript attached', functi
     $journal = Journal::factory()->create();
 
     $response = $this->actingAs($user)->postJson('/api/publications', [
+        'status' => 'published',
         'title' => 'Test Publication',
         'doi' => '10.1234/1234',
         'is_open_access' => true,

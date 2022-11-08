@@ -234,8 +234,8 @@ const data = computed(() => [
     },
     {
         title: 'My Publications',
-        value: 1,
-        subtitle: 'Overdue',
+        value: publications.overduePublications,
+        subtitle: 'Awaiting Publication',
         to: '/my-publications',
     },
 ]);

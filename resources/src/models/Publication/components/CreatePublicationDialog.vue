@@ -35,9 +35,8 @@
                         />
                     </template>
                     If you are here to get your manuscript reviewed prior to
-                    submission to a journal, in order to comply with the
-                    national policy for science publication, do not continue,
-                    create a new manuscript record instead.
+                    submission to a journal, do not continue, create a new
+                    manuscript record instead.
                 </q-banner>
             </q-step>
             <q-step
@@ -49,8 +48,8 @@
                 style="min-height: 275px"
             >
                 <q-form ref="detailsForm" class="q-ma-md">
-                    <div class="text-body1">
-                        Publication Details<RequiredSpan />
+                    <div class="text-body1 text-accent text-weight-medium">
+                        Publication Details
                     </div>
                     <q-separator class="q-mb-md" />
                     <q-input
@@ -77,26 +76,31 @@
                 :name="3"
                 title="Dates and Access"
                 icon="mdi-calendar"
+                :error="!datesValid"
                 :done="step > 3"
                 style="min-height: 275px"
             >
                 <q-form ref="datesForm">
-                    <div class="text-body1">
-                        Publication Dates<RequiredSpan />
+                    <div class="text-body1 text-accent text-weight-medium">
+                        Publication Dates
                     </div>
                     <q-separator class="q-mb-md" />
                     <DateInput
                         v-model="acceptedOn"
-                        label="Accepted On"
+                        label="Accepted On (Optional)"
                         class="q-mb-md"
-                        required
                     />
                     <DateInput
                         v-model="publishedOn"
                         label="Published On"
                         class="q-mb-md"
+                        required
                     />
-                    <div class="text-body1 q-mt-lg">Publication Access</div>
+                    <div
+                        class="text-body1 q-mt-lg text-accent text-weight-medium"
+                    >
+                        Publication Access
+                    </div>
                     <q-separator class="q-mb-md" />
                     <q-toggle
                         v-model="isOpenAccess"
@@ -138,10 +142,10 @@
 <script setup lang="ts">
 import BaseDialog from '@/components/BaseDialog.vue';
 import DateInput from '@/components/DateInput.vue';
-import RequiredSpan from '@/components/RequiredSpan.vue';
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue';
 import { QForm, QStepper } from 'quasar';
 import { Ref } from 'vue';
+import { PublicationCreate, PublicationService } from '../Publication';
 import DoiInput from './DoiInput.vue';
 
 const today = new Date().toISOString().split('T')[0].replace(/-/g, '/');
@@ -149,7 +153,7 @@ const today = new Date().toISOString().split('T')[0].replace(/-/g, '/');
 const journalId = ref<number | null>(null);
 const title = ref('');
 const doi = ref('');
-const acceptedOn = ref(today);
+const acceptedOn = ref('');
 const publishedOn = ref(today);
 const embargoedUntil = ref('');
 const isOpenAccess = ref(false);
@@ -159,6 +163,21 @@ const detailsForm: Ref<QForm | null> = ref(null);
 const datesForm: Ref<QForm | null> = ref(null);
 const detailsValid = ref(true);
 const datesValid = ref(true);
+/*
+ * Watch for open access to change - if it does, clear the embargoed
+ * until date and reset the form validation
+ */
+watch(
+    isOpenAccess,
+    (val) => {
+        if (val) {
+            embargoedUntil.value = '';
+            datesForm.value?.resetValidation();
+            datesValid.value = true;
+        }
+    },
+    { immediate: true }
+);
 
 // stepper
 const stepper: Ref<QStepper | null> = ref(null);
@@ -171,7 +190,9 @@ async function next() {
             detailsValid.value = false;
             return;
         } else {
+            detailsValid.value = true;
             stepper.value?.next();
+            return;
         }
     }
     if (step.value === 3) {
@@ -180,10 +201,28 @@ async function next() {
             datesValid.value = false;
             return;
         } else {
-            stepper.value?.next();
+            create();
+            return;
         }
     }
     stepper.value?.next();
+}
+
+/** Create the publication */
+async function create() {
+    const publication: PublicationCreate = {
+        status: 'published',
+        title: title.value,
+        doi: doi.value,
+        is_open_access: isOpenAccess.value,
+        accepted_on: acceptedOn.value,
+        published_on: publishedOn.value,
+        embargoed_until: embargoedUntil.value,
+        journal_id: journalId.value ?? 0,
+    };
+
+    const resource = await PublicationService.create(publication);
+    console.log(resource);
 }
 </script>
 

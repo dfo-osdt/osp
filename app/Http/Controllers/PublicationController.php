@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PublicationStatus;
 use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
@@ -46,9 +47,9 @@ class PublicationController extends Controller
             'title' => 'required',
             'journal_id' => 'required|exists:journals,id',
             'doi' => ['string', 'required', new Doi],
-            'accepted_on' => 'date|required',
-            'published_on' => 'date',
-            'embargoed_until' => 'date',
+            'accepted_on' => 'date|nullable',
+            'published_on' => 'date|required',
+            'embargoed_until' => 'date|nullable',
             'is_open_access' => 'boolean',
         ]);
 
