@@ -12,6 +12,7 @@
         stack-label
         outlined
         hint="Start typing to search for a journal"
+        :hide-hint="isReadOnly"
         @filter="filterJournals"
         @clear="selectedJournal = null"
     >
@@ -66,6 +67,9 @@ const journals = ref<JournalResourceList>({ data: [] });
 const selectedJournal = ref<JournalResource | null>(null);
 const lastSearchTerm = ref('');
 const journalsLoading = ref(false);
+const isReadOnly = computed(
+    () => journalSelect.value?.$props.readonly ?? false
+);
 
 const emit = defineEmits(['update:modelValue']);
 watch(selectedJournal, (journal) => {

@@ -5,7 +5,7 @@
             :key="publication.data.id"
             clickable
             :to="{
-                name: 'publication.form',
+                name: 'publication',
                 params: { id: publication.data.id },
             }"
         >

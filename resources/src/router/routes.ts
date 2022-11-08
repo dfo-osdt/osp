@@ -124,6 +124,16 @@ const routes: RouteRecordRaw[] = [
                     },
                 ],
             },
+            {
+                path: '/publication/:id',
+                component: () =>
+                    import(
+                        '@/models/Publication/views/PublicationPageView.vue'
+                    ),
+                meta: { requiresAuth: true },
+                props: (route) => ({ id: Number(route.params.id) }),
+                name: 'publication',
+            },
         ],
     },
     {

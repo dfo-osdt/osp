@@ -19,7 +19,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->string('status', 20)->comment('accepted, published, etc.');
-            $table->string('title');
+            $table->string('title', 500);
             $table->string('doi')->nullable();
             $table->date('accepted_on')->nullable();
             $table->date('published_on')->nullable();

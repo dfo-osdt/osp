@@ -22,7 +22,7 @@ return new class extends Migration
             // required fields
             $table->string('type', 20)->comment('primary, secondary, etc.');
             $table->string('status', 20)->comment('draft, submitted, etc.');
-            $table->string('title', 255);
+            $table->string('title', 500);
             $table->foreignId('region_id')->constrained()->comment('lead region id');
             $table->foreignId('user_id')->constrained()->comment('owner of this record');
 

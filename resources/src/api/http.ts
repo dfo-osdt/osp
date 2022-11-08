@@ -139,6 +139,10 @@ class Http {
                 this.notifyError(errorMessage, 'Resource Not Found');
                 break;
             }
+            default: {
+                this.notifyError(errorMessage, 'Unknown Error');
+                break;
+            }
         }
 
         console.log('HTTP.TS Handling error: ' + error.statusText);

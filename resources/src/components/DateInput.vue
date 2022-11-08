@@ -1,9 +1,9 @@
 <template>
     <q-input
         v-model="date"
-        hint="Format: YYYY/MM/DD"
+        hint="ISO Date Format (YYYY-MM-DD)"
         outlined
-        mask="date"
+        :mask="isoDateMask"
         :rules="rules"
     >
         <template #append>
@@ -13,7 +13,7 @@
                     transition-show="scale"
                     transition-hide="scale"
                 >
-                    <q-date v-model="date">
+                    <q-date v-model="date" mask="YYYY-MM-DD">
                         <div class="row items-center justify-end">
                             <q-btn
                                 v-close-popup
@@ -39,15 +39,10 @@ const emit = defineEmits(['update:modelValue']);
 
 const date = useVModel(props, 'modelValue', emit);
 
+// ISO date mask
+const isoDateMask = '####-##-##';
+
 const rules = [
-    // valid format
-    (val: string) => {
-        if (val === '') {
-            return true;
-        }
-        const dateRegex = /^\d{4}\/\d{2}\/\d{2}$/;
-        return dateRegex.test(val) || 'Invalid Format: YYYY/MM/DD';
-    },
     // date actually existed
     (val: string) => {
         if (val === '') {

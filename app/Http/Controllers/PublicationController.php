@@ -10,7 +10,9 @@ use App\Rules\Doi;
 use App\Traits\PaginationLimitTrait;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PublicationController extends Controller
@@ -69,7 +71,10 @@ class PublicationController extends Controller
      */
     public function show(Publication $publication)
     {
-        //
+        Gate::authorize('view', $publication);
+        $publication->load('journal', 'user', 'publicationAuthors.author', 'publicationAuthors.organization');
+
+        return new PublicationResource($publication);
     }
 
     /**
@@ -81,7 +86,40 @@ class PublicationController extends Controller
      */
     public function update(Request $request, Publication $publication)
     {
-        //
+        Gate::authorize('update', $publication);
+
+        // check if user is seeking to change the status from accepted to published
+        if (isset($request['status'])) {
+            $validatedStatus = $request->validate([
+                'status' => new Enum(PublicationStatus::class),
+            ]);
+            if ($validatedStatus['status'] !== $publication->status) {
+                switch($validatedStatus['status']) {
+                    case PublicationStatus::PUBLISHED->value:
+                        $publication->status = PublicationStatus::PUBLISHED;
+                        break;
+                    default:
+                        // likely, only way we're here is someone is having a go at the API directly.
+                        throw ValidationException::withMessages(['status' => 'Cannot change status back to accepted']);
+                }
+            }
+        }
+
+        // validate the rest of the request
+        $validated = $request->validate([
+            'title' => 'sometimes|required|string',
+            'journal_id' => 'sometimes|required|exists:journals,id',
+            'doi' => ['sometimes', 'string', 'required', new Doi],
+            'accepted_on' => ['date', 'nullable', Rule::requiredIf($publication->status === PublicationStatus::ACCEPTED)],
+            'published_on' => ['date', 'nullable', Rule::requiredIf($publication->status === PublicationStatus::PUBLISHED)],
+            'embargoed_until' => 'date|nullable',
+            'is_open_access' => 'boolean',
+        ]);
+
+        // update the publication
+        $publication->update($validated);
+
+        return new PublicationResource($publication->load('journal', 'user', 'publicationAuthors.author', 'publicationAuthors.organization'));
     }
 
     /** Attach a PDF file to this publication */

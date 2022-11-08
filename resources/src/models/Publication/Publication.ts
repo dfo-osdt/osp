@@ -15,9 +15,9 @@ export interface Publication {
     title: string;
     doi: string;
     is_open_access: boolean;
-    accepted_on: string | null;
-    published_on: string | null;
-    embargoed_until: string | null;
+    accepted_on: string;
+    published_on: string;
+    embargoed_until: string;
     journal_id: number;
     manuscript_record_id: number;
     user_id: number;
@@ -59,8 +59,8 @@ export class PublicationService {
         return response.data;
     }
 
-    /** Get a publication by id */
-    public static async get(id: number) {
+    /** Find a publication by id */
+    public static async find(id: number) {
         const response = await http.get<R>(`api/publications/${id}`);
         return response.data;
     }
