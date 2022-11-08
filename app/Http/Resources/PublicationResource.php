@@ -22,6 +22,8 @@ class PublicationResource extends JsonResource
                 'status' => $this->status,
                 'doi' => $this->doi,
                 'is_open_access' => $this->is_open_access,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
                 'accepted_on' => $this->accepted_on,
                 'published_on' => $this->published_on,
                 'embargoed_until' => $this->embargoed_until,
