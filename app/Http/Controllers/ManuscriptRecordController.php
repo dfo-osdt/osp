@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreatePublicationFromManuscript;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Events\ManuscriptRecordAccepted;
+use App\Events\ManuscriptRecordSubmitted;
 use App\Events\ManuscriptRecordToReviewEvent;
+use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Http\Resources\ManuscriptRecordResource;
+use App\Models\Journal;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use App\Rules\UserNotAManuscriptAuthor;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -163,6 +169,68 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->status = ManuscriptRecordStatus::IN_REVIEW;
         $manuscriptRecord->sent_for_review_at = now();
         $manuscriptRecord->save();
+
+        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+    }
+
+    /** Withdraw this manuscript - it will not be published */
+    public function withdraw(ManuscriptRecord $manuscriptRecord)
+    {
+        Gate::authorize('withdraw', $manuscriptRecord);
+
+        $manuscriptRecord->status = ManuscriptRecordStatus::WITHDRAWN;
+        $manuscriptRecord->withdrawn_on = now();
+        $manuscriptRecord->save();
+
+        ManuscriptRecordWithdrawnByAuthor::dispatch($manuscriptRecord);
+
+        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+    }
+
+    /** Mark the manuscript as submitted */
+    public function submitted(Request $request, ManuscriptRecord $manuscriptRecord)
+    {
+        Gate::authorize('markSubmitted', $manuscriptRecord);
+
+        // validate the request has the submitted on date
+        $validated = $request->validate([
+            'submitted_to_journal_on' => 'required|date',
+        ]);
+
+        $manuscriptRecord->status = ManuscriptRecordStatus::SUBMITTED;
+        $manuscriptRecord->submitted_to_journal_on = $validated['submitted_to_journal_on'];
+        $manuscriptRecord->save();
+
+        ManuscriptRecordSubmitted::dispatch($manuscriptRecord);
+
+        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+    }
+
+    /** Mark the manuscript as accepted */
+    public function accepted(Request $request, ManuscriptRecord $manuscriptRecord)
+    {
+        Gate::authorize('markAccepted', $manuscriptRecord);
+
+        // validate the request has the submitted on date
+        $validated = $request->validate([
+            'submitted_to_journal_on' => ['date', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
+            'accepted_on' => 'required|date',
+            'journal_id' => 'required|exists:journals,id',
+        ]);
+
+        $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
+        // if the submitted to journal date is given, set it.
+        if ($validated['submitted_to_journal_on']) {
+            $manuscriptRecord->submitted_to_journal_on = $validated['submitted_to_journal_on'];
+        }
+        $manuscriptRecord->accepted_on = $validated['accepted_on'];
+        $manuscriptRecord->save();
+
+        // create the accepted publication
+        $journal = Journal::findOrFail($validated['journal_id']);
+        CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
+
+        ManuscriptRecordAccepted::dispatch($manuscriptRecord);
 
         return new ManuscriptRecordResource($manuscriptRecord->load('user'));
     }

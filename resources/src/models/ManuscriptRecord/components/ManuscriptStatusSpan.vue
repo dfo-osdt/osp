@@ -27,6 +27,8 @@ const statusLabel = computed(() => {
             return t.t('manuscript.accepted');
         case 'withdrawn':
             return t.t('manuscript.withdrawn');
+        case 'withheld':
+            return t.t('manuscript.withheld');
     }
 });
 </script>

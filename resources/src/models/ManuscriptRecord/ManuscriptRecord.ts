@@ -13,7 +13,8 @@ export type ManuscriptRecordStatus =
     | 'reviewed'
     | 'submitted'
     | 'accepted'
-    | 'withdrawn';
+    | 'withdrawn'
+    | 'withheld';
 
 /**
  * The minimum set of data required to create a new manuscript record.

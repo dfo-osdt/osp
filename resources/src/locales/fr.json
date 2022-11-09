@@ -28,7 +28,8 @@
     "reviewed": "Révisé",
     "submitted": "Soumis",
     "accepted": "Accepté",
-    "withdrawn": "Retiré"
+    "withdrawn": "Retiré",
+    "withheld": "Retenu"
   },
   "dialog": {
     "unsaved-changes": {

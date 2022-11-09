@@ -29,7 +29,8 @@
     "reviewed": "Reviewed",
     "submitted": "Submitted",
     "accepted": "Accepted",
-    "withdrawn": "Withdrawn"
+    "withdrawn": "Withdrawn",
+    "withheld": "Withheld"
   },
   "dialog": {
     "unsaved-changes": {

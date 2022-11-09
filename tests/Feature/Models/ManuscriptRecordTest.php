@@ -3,7 +3,10 @@
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Events\ManuscriptRecordSubmitted;
+use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptRecordToReviewMail;
+use App\Models\Journal;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
@@ -188,4 +191,70 @@ test('a user can submit a filled manuscript record', function () {
     expect($manuscript->managementReviewSteps()->count())->toBe(1);
     expect($manuscript->managementReviewSteps()->first()->user_id)->toBe($reviewerUser->id);
     expect($manuscript->managementReviewSteps()->first()->status)->toBe(ManagementReviewStepStatus::PENDING);
+});
+
+test('a user can withdraw a manuscript record', function () {
+    Event::fake();
+
+    $manuscript = ManuscriptRecord::factory()->filled()->create();
+
+    // check they cannot withdraw if they are not the author
+    $this->actingAs(User::factory()->create())->putJson("/api/manuscript-records/{$manuscript->id}/withdraw")->assertForbidden();
+
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/withdraw")->assertOk();
+
+    Event::assertDispatched(ManuscriptRecordWithdrawnByAuthor::class);
+
+    expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::WITHDRAWN->value);
+});
+
+test('a user cannot withdraw a manuscript record that was accepted', function () {
+    $manuscript = ManuscriptRecord::factory()->filled()->create();
+    $manuscript->status = ManuscriptRecordStatus::ACCEPTED;
+    $manuscript->save();
+
+    $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/withdraw")->assertForbidden();
+});
+
+test('a user can mark their manuscript as submitted', function () {
+    Event::fake();
+
+    // manuscript must be reviewed
+    $manuscript = ManuscriptRecord::factory()->filled()->create([
+        'status' => ManuscriptRecordStatus::REVIEWED,
+    ]);
+
+    $data = [
+        'submitted_to_journal_on' => now()->toDateTimeString(),
+    ];
+
+    // only the author can mark the manuscript as submitted
+    $this->actingAs(User::factory()->create())->putJson("/api/manuscript-records/{$manuscript->id}/submitted", $data)->assertForbidden();
+
+    $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submitted", $data)->assertOk();
+
+    Event::assertDispatched(ManuscriptRecordSubmitted::class);
+
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::SUBMITTED);
+});
+
+test('a user can mark their manuscript as accepted', function () {
+    // create a manuscript that has been submitted
+    $manuscript = ManuscriptRecord::factory()->filled()->create([
+        'status' => ManuscriptRecordStatus::SUBMITTED,
+    ]);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => Journal::factory()->create()->id,
+    ];
+
+    // only the author can mark the manuscript as accepted
+    $this->actingAs(User::factory()->create())->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertForbidden();
+
+    $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
+
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
 });

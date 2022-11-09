@@ -51,8 +51,6 @@ class ManuscriptRecordPolicy
      */
     public function create(User $user)
     {
-        ray($user->can('create_manuscript_records'));
-
         return $user->can('create_manuscript_records');
     }
 
@@ -119,6 +117,47 @@ class ManuscriptRecordPolicy
         }
 
         // can only submit if the user is the owner of the manuscript
+        return $user->id === $manuscriptRecord->user_id;
+    }
+
+    /**
+     * A user can withdraw a manuscript from review
+     */
+    public function withdraw(User $user, ManuscriptRecord $manuscriptRecord)
+    {
+        // cannot withdraw if the manuscript is accepted
+        if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
+            return false;
+        }
+
+        // can only withdraw if the user is the owner of the manuscript
+        return $user->id === $manuscriptRecord->user_id;
+    }
+
+    /**
+     * A user can mark the manuscript as submitted
+     */
+    public function markSubmitted(User $user, ManuscriptRecord $manuscriptRecord)
+    {
+        // can only mark as submitted if the manuscript is reviewed
+        if ($manuscriptRecord->status !== ManuscriptRecordStatus::REVIEWED) {
+            return false;
+        }
+
+        // can only mark as submitted if the user is the owner of the manuscript
+        return $user->id === $manuscriptRecord->user_id;
+    }
+
+    /**
+     * A user can mark the manuscript as accepted
+     */
+    public function markAccepted(User $user, ManuscriptRecord $manuscriptRecord)
+    {
+        // can only mark as accepted if the manuscript is reviewed or submitted
+        if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED])) {
+            return false;
+        }
+        // can only mark as accepted if the user is the owner of the manuscript
         return $user->id === $manuscriptRecord->user_id;
     }
 }

@@ -53,7 +53,9 @@ class PublicationAuthorPolicy
      */
     public function update(User $user, PublicationAuthor $publicationAuthor)
     {
-        //
+        $publicationAuthor->load('publication');
+
+        return $user->id === $publicationAuthor->publication->user_id;
     }
 
     /**
@@ -65,7 +67,9 @@ class PublicationAuthorPolicy
      */
     public function delete(User $user, PublicationAuthor $publicationAuthor)
     {
-        //
+        $publicationAuthor->load('publication');
+
+        return $user->id === $publicationAuthor->publication->user_id;
     }
 
     /**

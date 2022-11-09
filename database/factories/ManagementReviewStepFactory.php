@@ -29,4 +29,30 @@ class ManagementReviewStepFactory extends Factory
             'decision' => \App\Enums\ManagementReviewStepDecision::NONE,
         ];
     }
+
+    /**
+     * A management review step that has been approved and completed
+     */
+    public function accepted()
+    {
+        return $this->state([
+            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::APPROVED,
+            'comments' => 'This manuscript is approved - great job!',
+            'completed_at' => now(),
+        ]);
+    }
+
+    /**
+     * A withheld management review step
+     */
+    public function withheld()
+    {
+        return $this->state([
+            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::WITHHELD,
+            'comments' => 'This manuscript is not ready for publication',
+            'completed_at' => now(),
+        ]);
+    }
 }

@@ -38,8 +38,13 @@ class DatabaseSeeder extends Seeder
                 'email' => 'author@test.com',
             ]);
 
-            // create 3 manuscript records for the test user
-            \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->count(3)->create([
+            // create 1 manuscript records for the test user
+            \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->count(1)->create([
+                'user_id' => $user->id,
+            ]);
+
+            // create 1 manuscript records that is accepted for the test user
+            \App\Models\ManuscriptRecord::factory()->accepted()->create([
                 'user_id' => $user->id,
             ]);
 

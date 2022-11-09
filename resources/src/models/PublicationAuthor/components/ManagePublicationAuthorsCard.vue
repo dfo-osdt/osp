@@ -1,9 +1,6 @@
 <template>
     <ContentCard>
         <template #title>Author(s) and Affiliation(s)</template>
-        <template #title-right
-            ><FormSectionStatusIcon :status="sectionStatus"
-        /></template>
         <p>
             Enter all authors, their affiliations and at least one corresponding
             author. Authors will appears in the list in the order they are
@@ -27,7 +24,7 @@
                             :key="item.data.id"
                             :publication-author="item"
                             :readonly="readonly"
-                            @delete:manuscript-author="
+                            @delete:publication-author="
                                 deletePublicationAuthor(item)
                             "
                             @edit:toggle-corresponding-author="

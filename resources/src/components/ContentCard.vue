@@ -1,9 +1,9 @@
 <template>
     <q-card outlined flat bordered>
-        <q-card-section class="text-accent" :class="bgClass">
+        <q-card-section class="text-primary" :class="bgClass">
             <div
                 class="row flex justify-between"
-                :class="secondary ? 'text-h6' : 'text-h5'"
+                :class="secondary ? 'text-h6 text-weight-regular' : 'text-h5'"
             >
                 <div><slot name="title">Title here</slot></div>
                 <div><slot name="title-right"></slot></div>

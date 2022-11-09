@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\MediaLibrary\HasMedia;
@@ -85,6 +86,14 @@ class ManuscriptRecord extends Model implements HasMedia, Auditable
     public function managementReviewSteps(): HasMany
     {
         return $this->hasMany('App\Models\ManagementReviewStep');
+    }
+
+    /**
+     * A manuscript can have one publication
+     */
+    public function publication(): HasOne
+    {
+        return $this->hasOne('App\Models\Publication');
     }
 
     /**

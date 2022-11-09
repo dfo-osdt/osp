@@ -35,6 +35,7 @@ class ManuscriptRecordFactory extends Factory
     public function filled()
     {
         return $this->state([
+            'title' => 'A fully filled out manuscript record, ready to be submitted for internal review',
             'abstract' => $this->faker->paragraph(),
             'pls' => $this->faker->paragraph(),
             'scientific_implications' => $this->faker->paragraph(),
@@ -54,8 +55,23 @@ class ManuscriptRecordFactory extends Factory
     public function in_review()
     {
         return $this->filled()->state([
+            'title' => 'A manuscript record that has been submitted for internal review',
             'status' => ManuscriptRecordStatus::IN_REVIEW,
             'sent_for_review_at' => now(),
         ]);
+    }
+
+    /**
+     * A manuscript record that has been accepted for publication
+     */
+    public function accepted()
+    {
+        return $this->in_review()->state([
+            'title' => 'A manuscript record that has been accepted for publication',
+            'status' => ManuscriptRecordStatus::ACCEPTED,
+            'accepted_on' => now(),
+        ])->afterCreating(function ($manuscript) {
+            $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->accepted()->make());
+        });
     }
 }

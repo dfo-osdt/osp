@@ -51,6 +51,39 @@
                                 ({{ publication.data.user?.data.email }})
                             </div>
                         </div>
+                        <q-separator class="q-my-sm" />
+                        <div class="row justify-between">
+                            <div
+                                class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
+                            >
+                                Manuscript Record
+                            </div>
+                            <div class="text-body2 text-grey-7 q-py-xs">
+                                <div
+                                    v-if="publication.data.manuscript_record_id"
+                                >
+                                    <router-link
+                                        :to="`/manuscript/${publication.data.manuscript_record_id}/form`"
+                                    >
+                                        <q-icon
+                                            name="mdi-file-document-outline"
+                                            class="q-mr-sm"
+                                        />
+                                    </router-link>
+                                </div>
+                                <div v-else>
+                                    <q-icon
+                                        name="mdi-file-document-outline"
+                                        class="q-mr-sm"
+                                        color="primary"
+                                        size="xs"
+                                    />
+                                    <span class="text-grey-7"
+                                        >Not Available</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
                     </q-card>
                 </div>
             </div>
@@ -61,7 +94,7 @@
             />
             <ContentCard class="q-mb-lg" secondary>
                 <template #title>
-                    <div class="text-h5 text-primary">General Information</div>
+                    <div>General Information</div>
                 </template>
                 <q-form @submit="save">
                     <q-input

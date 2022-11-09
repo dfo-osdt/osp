@@ -24,7 +24,7 @@
             </div>
         </div>
         <div v-else>
-            <ManagementReviewStepList :manuscripts="steps.recent" />
+            <ManagementReviewStepList :management-review-steps="steps.recent" />
         </div>
     </div>
 </template>

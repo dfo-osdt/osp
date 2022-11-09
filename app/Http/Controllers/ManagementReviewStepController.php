@@ -158,8 +158,8 @@ class ManagementReviewStepController extends Controller
             // send event that a management review step has been created.
             ManagementReviewStepCreated::dispatch($nextReviewStep);
         } else {
-            // this is the final step of the review.
-            $manuscriptRecord->status = ManuscriptRecordStatus::REVIEWED;
+            // this is the final step of the review - the manuscript was withheld!
+            $manuscriptRecord->status = ManuscriptRecordStatus::WITHHELD;
             $manuscriptRecord->reviewed_at = now();
             $manuscriptRecord->saveOrFail();
 

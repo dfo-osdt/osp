@@ -74,6 +74,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('manuscript-records/{manuscriptRecord}/pdf', 'attachPdf');
         // actions
         Route::put('manuscript-records/{manuscriptRecord}/submit-for-review', 'submitForReview');
+        Route::put('manuscript-records/{manuscriptRecord}/withdraw', 'withdraw');
+        Route::put('manuscript-records/{manuscriptRecord}/submitted', 'submitted');
+        Route::put('manuscript-records/{manuscriptRecord}/accepted', 'accepted');
     });
 
     // routes for user specific resources

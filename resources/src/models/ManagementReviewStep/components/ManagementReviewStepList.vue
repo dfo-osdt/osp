@@ -1,7 +1,7 @@
 <template>
     <q-list bordered separator>
         <q-item
-            v-for="step in manuscripts"
+            v-for="step in managementReviewSteps"
             :key="step.data.id"
             clickable
             :to="{
@@ -17,7 +17,8 @@
                     }}</q-item-label
                 >
                 <q-item-label caption>
-                    Review request received on
+                    Review request received from
+                    {{ userName(step) }} on
                     {{ useLocaleDate(step.data.created_at).value }}
                 </q-item-label>
             </q-item-section>
@@ -46,8 +47,18 @@ import ManagementReviewStepDecisionSpan from './ManagementReviewStepDecisionSpan
 import { useLocaleDate } from '@/composables/useLocaleDate';
 
 defineProps<{
-    manuscripts: ManagementReviewStepResource[];
+    managementReviewSteps: ManagementReviewStepResource[];
 }>();
+
+const userName = (step: ManagementReviewStepResource) => {
+    let user = null;
+    if (step.data.previous_step_id === null) {
+        user = step.data.manuscript_record?.data.user;
+    } else {
+        user = step.data.previous_step?.data.user;
+    }
+    return user ? `${user.data.first_name} ${user.data.last_name}` : 'Unknown';
+};
 </script>
 
 <style scoped></style>
