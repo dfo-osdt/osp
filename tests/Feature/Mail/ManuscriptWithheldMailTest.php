@@ -16,8 +16,8 @@ test('a withheld email is generated', function () {
 
     // Create the email
     $mailable = new ManuscriptWithheldMail($manuscript);
+    $mailable->build();
 
-    // Assert email is sent to the user and cc'd only to emails that have a dfo-mpo.gc.ca domain
     $mailable->assertTo($manuscript->user->email);
     $mailable->assertHasCc($author->email);
     expect($mailable->to)->toHaveCount(1);
