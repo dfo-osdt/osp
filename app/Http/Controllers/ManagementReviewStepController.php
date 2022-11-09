@@ -7,6 +7,7 @@ use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Events\ManagementReviewStepCreated;
 use App\Events\ManuscriptManagementReviewComplete;
+use App\Events\ManuscriptRecordWithheldByManagement;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -163,8 +164,8 @@ class ManagementReviewStepController extends Controller
             $manuscriptRecord->reviewed_at = now();
             $manuscriptRecord->saveOrFail();
 
-            // send event that a manuscript record review is complete.
-            ManuscriptManagementReviewComplete::dispatch($manuscriptRecord);
+            // send event that a manuscript record is withheld by management.
+            ManuscriptRecordWithheldByManagement::dispatch($manuscriptRecord);
         }
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;

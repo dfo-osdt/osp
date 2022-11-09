@@ -74,4 +74,17 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->accepted()->make());
         });
     }
+
+    /**
+     * A manuscript record that has been withheld by the management review
+     */
+    public function withheld()
+    {
+        return $this->in_review()->state([
+            'title' => 'A manuscript record that has been withheld by the management review',
+            'status' => ManuscriptRecordStatus::WITHHELD,
+        ])->afterCreating(function ($manuscript) {
+            $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->withheld()->make());
+        });
+    }
 }

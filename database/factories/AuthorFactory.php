@@ -28,4 +28,18 @@ class AuthorFactory extends Factory
             'organization_id' => \App\Models\Organization::factory(),
         ];
     }
+
+    /**
+     * A factory for an author with a user account
+     */
+    public function isFromDFO()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'user_id' => \App\Models\User::factory(),
+                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
+                'organization_id' => 1,
+            ];
+        });
+    }
 }

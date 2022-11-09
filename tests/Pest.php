@@ -13,8 +13,8 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(Tests\TestCase::class)->in('Feature');
-uses(RefreshDatabase::class)->in('Feature');
+uses(Tests\TestCase::class)->in('Feature', 'Listeners', 'Mail');
+uses(RefreshDatabase::class)->in('Feature', 'Listeners', 'Mail');
 
 /*
 |--------------------------------------------------------------------------

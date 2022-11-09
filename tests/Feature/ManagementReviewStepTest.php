@@ -4,6 +4,7 @@ use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Mail\ManuscriptManagementReviewComplete;
+use App\Mail\ManuscriptWithheldMail;
 use App\Mail\ReviewStepNotificationMail;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -153,7 +154,7 @@ test('a reviewer that has director permission can withhold and complete the revi
         ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/withhold')
         ->assertOk();
 
-    Mail::assertQueued(ManuscriptManagementReviewComplete::class);
+    Mail::assertQueued(ManuscriptWithheldMail::class);
 });
 
 test('a reviewer can list their reviews', function () {
@@ -164,7 +165,6 @@ test('a reviewer can list their reviews', function () {
     $response = $this->actingAs($reviewer)->getJson('/api/my/management-review-steps')
         ->assertOk();
 
-    ray($response->json());
     expect($response->json('data'))->toHaveCount(1);
     expect($response->json('data.0.data.id'))->toBe($manuscript->managementReviewSteps->first()->id);
     expect($response->json('data.0.data.manuscript_record'))->toBeTruthy();
