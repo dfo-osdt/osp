@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\ManuscriptRecordStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,6 +46,8 @@ class ManuscriptRecordResource extends JsonResource
                 'region' => RegionResource::make($this->whenLoaded('region')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
                 'user' => UserResource::make($this->whenLoaded('user')),
+                'publication' => $this->when($this->status === ManuscriptRecordStatus::ACCEPTED, PublicationResource::make($this->publication)),
+                // if this manuscript is accepted, include the publication id
                 // special model permissions
                 'can_attach_manuscript' => Auth::user()->can('attachManuscript', $this->resource),
             ],

@@ -33,7 +33,7 @@ class ManagementReviewStepFactory extends Factory
     /**
      * A management review step that has been approved and completed
      */
-    public function accepted()
+    public function approved()
     {
         return $this->state([
             'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,

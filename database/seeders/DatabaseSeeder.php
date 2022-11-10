@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             // create 1 manuscript records that is accepted for the test user
-            \App\Models\ManuscriptRecord::factory()->accepted()->create([
+            \App\Models\ManuscriptRecord::factory()->reviewed()->create([
                 'user_id' => $user->id,
             ]);
 

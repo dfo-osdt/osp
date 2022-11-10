@@ -1,6 +1,6 @@
 import { http } from '@/api/http';
 import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
-import axios from 'axios';
+import { PublicationResource } from '../Publication/Publication';
 import { Region } from '../Region/Region';
 import { Resource, ResourceList, Media } from '../Resource';
 import { UserResource } from '../User/User';
@@ -50,6 +50,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     region?: Region;
     manuscript_authors?: ManuscriptAuthorResource[];
     user?: UserResource;
+    publication?: PublicationResource;
     // special model permissions
     can_attach_manuscript: boolean;
 }
@@ -121,6 +122,37 @@ export class ManuscriptRecordService {
         };
         const response = await http.put<any, ManuscriptRecordResource>(
             `${this.baseURL}/${id}/submit-for-review`,
+            data
+        );
+        return response.data;
+    }
+
+    /** Mark this manuscript as being submitted to a journal */
+    public static async submitted(id: number, date: string) {
+        const data = {
+            submitted_to_journal_on: date,
+        };
+        const response = await http.put<any, ManuscriptRecordResource>(
+            `${this.baseURL}/${id}/submitted`,
+            data
+        );
+        return response.data;
+    }
+
+    /** Mark this manuscript as being accepted by a journal */
+    public static async accepted(
+        id: number,
+        submittedOn: string,
+        acceptedOn: string,
+        journalId: number
+    ) {
+        const data = {
+            submitted_to_journal_on: submittedOn,
+            accepted_on: acceptedOn,
+            journal_id: journalId,
+        };
+        const response = await http.put<any, ManuscriptRecordResource>(
+            `${this.baseURL}/${id}/accepted`,
             data
         );
         return response.data;

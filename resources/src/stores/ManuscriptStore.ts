@@ -44,11 +44,23 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
             .slice(0, 5);
     });
 
+    // Manuscript in progress - where status is 'in_review', 'reviewed, or 'submitted'
+    const inProgressManuscripts = computed(() => {
+        if (manuscripts.value === undefined) return [];
+        return manuscripts.value.filter(
+            (m) =>
+                m.data.status === 'in_review' ||
+                m.data.status === 'reviewed' ||
+                m.data.status === 'submitted'
+        );
+    });
+
     return {
         loading,
         empty,
         recentManuscripts,
         manuscripts,
+        inProgressManuscripts,
         getMyManuscripts,
     };
 });

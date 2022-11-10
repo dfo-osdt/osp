@@ -222,7 +222,7 @@ const showCreatePublication = ref(false);
 const data = computed(() => [
     {
         title: 'My Manuscripts',
-        value: manuscripts.manuscripts?.length ?? 0,
+        value: manuscripts.inProgressManuscripts.length,
         subtitle: 'In progress',
         to: '/my-manuscripts',
     },
