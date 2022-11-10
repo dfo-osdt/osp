@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-    modelValue: string;
+    modelValue: string | null;
     required?: boolean;
 }>();
 

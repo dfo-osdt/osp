@@ -49,16 +49,13 @@
                         </template>
                     </template>
                 </q-item-label>
-                <q-item-label caption>
-                    <span class="text-uppercase">{{
-                        publication.data.journal?.data.title_en
-                    }}</span>
-                </q-item-label>
-                <q-item-label caption>
+                <q-item-label caption class="text-uppercase">
                     <div class="q-pt-sm flex">
                         <div>
                             {{ publishedYear(publication) }}
                         </div>
+                        <div class="q-mx-sm">|</div>
+                        <div>{{ publication.data.journal?.data.title_en }}</div>
                         <div class="q-mx-sm">|</div>
                         <div>DOI: <DOILink :doi="publication.data.doi" /></div>
                     </div>
@@ -87,7 +84,7 @@ const publishedYear = (publication: PublicationResource) => {
     if (publication.data.published_on) {
         return new Date(publication.data.published_on).getFullYear();
     }
-    return '';
+    return 'Pending Publication';
 };
 </script>
 

@@ -196,7 +196,7 @@ test('a user can submit a filled manuscript record', function () {
 test('a user can withdraw a manuscript record', function () {
     Event::fake();
 
-    $manuscript = ManuscriptRecord::factory()->filled()->create();
+    $manuscript = ManuscriptRecord::factory()->reviewed()->create();
 
     // check they cannot withdraw if they are not the author
     $this->actingAs(User::factory()->create())->putJson("/api/manuscript-records/{$manuscript->id}/withdraw")->assertForbidden();

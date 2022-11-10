@@ -13,11 +13,11 @@ export interface Publication {
     readonly updated_at: string;
     status: PublicationStatus;
     title: string;
-    doi: string;
+    doi: string | null;
     is_open_access: boolean;
-    accepted_on: string;
-    published_on: string;
-    embargoed_until: string;
+    accepted_on: string | null;
+    published_on: string | null;
+    embargoed_until: string | null;
     journal_id: number;
     manuscript_record_id: number;
     user_id: number;

@@ -52,7 +52,10 @@
             </p>
         </q-timeline-entry>
         <q-timeline-entry
-            v-if="manuscriptRecord.data.status !== 'withheld'"
+            v-if="
+                manuscriptRecord.data.status !== 'withheld' &&
+                manuscriptRecord.data.status !== 'withdrawn'
+            "
             class="q-mx-lg"
             icon="mdi-send-check-outline"
             title="Initial Submission to Target Publication"
@@ -71,12 +74,19 @@
                     "
                     color="primary"
                     label="Mark as Submitted"
+                    :disable="
+                        manuscriptRecord.data.status === 'in_review' ||
+                        manuscriptRecord.data.status === 'draft'
+                    "
                     @click="showSubmittedToJournalDialog = true"
                 />
             </div>
         </q-timeline-entry>
         <q-timeline-entry
-            v-if="manuscriptRecord.data.status !== 'withheld'"
+            v-if="
+                manuscriptRecord.data.status !== 'withheld' &&
+                manuscriptRecord.data.status !== 'withdrawn'
+            "
             class="q-mx-lg"
             icon="mdi-check-all"
             title="Accepted for Publication"
@@ -94,34 +104,62 @@
                     v-if="manuscriptRecord.data.status !== 'accepted'"
                     color="primary"
                     label="Accepted for Publication"
+                    :disable="
+                        manuscriptRecord.data.status === 'draft' ||
+                        manuscriptRecord.data.status === 'in_review'
+                    "
                     @click="showAcceptedByJournalDialog = true"
                 />
                 <q-btn
-                    v-if="
-                        manuscriptRecord.data.status === 'reviewed' ||
-                        manuscriptRecord.data.status === 'submitted'
-                    "
+                    v-if="manuscriptRecord.data.status !== 'accepted'"
                     color="negative"
                     outline
                     label="Withdraw Manuscript"
+                    :disable="
+                        manuscriptRecord.data.status === 'draft' ||
+                        manuscriptRecord.data.status === 'in_review'
+                    "
+                    @click="showWithdrawManuscriptDialog = true"
                 />
                 <q-btn
-                    v-if="manuscriptRecord.data.status === 'accepted'"
+                    v-if="manuscriptRecord.data.publication"
                     color="primary"
                     label="Go to the Publication"
                     :to="`/publication/${manuscriptRecord.data.publication?.data.id}`"
+                    icon-right="mdi-arrow-right"
                 />
             </div>
         </q-timeline-entry>
+        <q-timeline-entry
+            v-if="manuscriptRecord.data.status === 'withdrawn'"
+            class="q-mx-lg"
+            icon="mdi-sign-caution"
+            title="Withdrawn by Applicant"
+            :subtitle="withdrawnSubtitle"
+            color="red"
+        >
+            <p>
+                The manuscript was withdrawn by the applicant. The manuscript
+                record will be archived after 30 days.
+            </p>
+        </q-timeline-entry>
         <SubmittedToJournalDialog
+            v-if="showSubmittedToJournalDialog"
             v-model="showSubmittedToJournalDialog"
             :manuscript-record-id="manuscriptRecord.data.id"
             @updated="submittedToJournal"
         />
         <AcceptedByJournalDialog
+            v-if="showAcceptedByJournalDialog"
             v-model="showAcceptedByJournalDialog"
             :manuscript-record="manuscriptRecord.data"
             @updated="acceptedToJournal"
+        />
+        <WithdrawManuscriptDialog
+            v-if="showWithdrawManuscriptDialog"
+            v-model="showWithdrawManuscriptDialog"
+            :manuscript-record-id="manuscriptRecord.data.id"
+            @updated="withdrawManuscript"
         />
     </q-timeline>
 </template>
@@ -135,6 +173,7 @@ import {
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue';
 import SubmittedToJournalDialog from '../components/SubmittedToJournalDialog.vue';
 import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue';
+import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue';
 import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
@@ -209,6 +248,9 @@ const managementReviewIcon = computed(() => {
     if (manuscriptRecord.value?.data.status === 'withheld') {
         return 'mdi-alert-octagon';
     }
+    if (manuscriptRecord.value?.data.status === 'in_review') {
+        return 'mdi-progress-check';
+    }
     return 'mdi-thumb-up-outline';
 });
 
@@ -251,6 +293,19 @@ const acceptedToJournalColor = computed(() => {
     return 'primary';
 });
 
+const withdrawnSubtitle = computed(() => {
+    if (
+        manuscriptRecord.value === null ||
+        manuscriptRecord.value.data.withdrawn_on === null
+    ) {
+        return '';
+    }
+    return (
+        'Withdrawn on ' +
+        useLocaleDate(manuscriptRecord.value.data.withdrawn_on).value
+    );
+});
+
 async function getManuscriptRecord() {
     await ManuscriptRecordService.find(props.id)
         .then((response) => {
@@ -278,6 +333,14 @@ const showAcceptedByJournalDialog = ref(false);
 function acceptedToJournal(record: ManuscriptRecordResource) {
     manuscriptRecord.value = record;
     showAcceptedByJournalDialog.value = false;
+    showUpdatedNotification();
+}
+// withdraw manuscript
+const showWithdrawManuscriptDialog = ref(false);
+
+function withdrawManuscript(record: ManuscriptRecordResource) {
+    manuscriptRecord.value = record;
+    showWithdrawManuscriptDialog.value = false;
     showUpdatedNotification();
 }
 

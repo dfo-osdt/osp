@@ -12,7 +12,9 @@
                     <div
                         class="text-caption text-uppercase text-weight-medium text-grey-7 ellipsis flex"
                     >
-                        <div>{{ publicationYear }}</div>
+                        <div>
+                            {{ publicationYear }}
+                        </div>
                         <div class="q-mx-xs">|</div>
                         <div>
                             {{
@@ -20,7 +22,10 @@
                             }}
                         </div>
                         <div class="q-mx-xs">|</div>
-                        <div><DoiLink :doi="publication.data.doi" /></div>
+                        <div>
+                            <span>DOI: </span>
+                            <DoiLink :doi="publication.data.doi" />
+                        </div>
                     </div>
                 </div>
                 <div class="col-grow">
@@ -62,14 +67,14 @@
                                 <div
                                     v-if="publication.data.manuscript_record_id"
                                 >
-                                    <router-link
+                                    <q-btn
+                                        dense
+                                        size="sm"
+                                        flat
+                                        label="Go to Manuscript Record"
                                         :to="`/manuscript/${publication.data.manuscript_record_id}/form`"
-                                    >
-                                        <q-icon
-                                            name="mdi-file-document-outline"
-                                            class="q-mr-sm"
-                                        />
-                                    </router-link>
+                                        icon-right="mdi-arrow-right"
+                                    />
                                 </div>
                                 <div v-else>
                                     <q-icon
@@ -233,7 +238,11 @@ const canEdit = computed(() => {
 
 // display elements
 const publicationYear = computed(() => {
-    return publication.value?.data.published_on?.split('-')[0] ?? ' - ';
+    //if (publication.value?.data?.published_on === null) return 'Pending';
+    return (
+        publication.value?.data.published_on?.split('-')[0] ??
+        'Publication Date Pending'
+    );
 });
 
 const save = async () => {

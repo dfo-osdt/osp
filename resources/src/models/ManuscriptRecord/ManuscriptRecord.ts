@@ -158,7 +158,15 @@ export class ManuscriptRecordService {
         return response.data;
     }
 
-    //** Get the logged in users' manuscripts */
+    // Withdraw the manuscript
+    public static async withdraw(id: number) {
+        const response = await http.put<any, ManuscriptRecordResource>(
+            `${this.baseURL}/${id}/withdraw`
+        );
+        return response.data;
+    }
+
+    /** Get the logged in users' manuscripts */
     public static async getMyManuscripts() {
         const response = await http.get<ManuscriptRecordResourceList>(
             `api/my/manuscript-records`

@@ -137,8 +137,8 @@ class ManuscriptRecordPolicy
      */
     public function withdraw(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        // cannot withdraw if the manuscript is accepted
-        if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
+        // Can only be withdrawn if the manuscript is reviewed or submitted
+        if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::SUBMITTED, ManuscriptRecordStatus::REVIEWED])) {
             return false;
         }
 
