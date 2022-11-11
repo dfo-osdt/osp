@@ -93,7 +93,7 @@ class PublicationController extends Controller
             $validatedStatus = $request->validate([
                 'status' => new Enum(PublicationStatus::class),
             ]);
-            if ($validatedStatus['status'] !== $publication->status) {
+            if ($validatedStatus['status'] !== $publication->status->value) {
                 switch($validatedStatus['status']) {
                     case PublicationStatus::PUBLISHED->value:
                         $publication->status = PublicationStatus::PUBLISHED;
@@ -109,7 +109,7 @@ class PublicationController extends Controller
         $validated = $request->validate([
             'title' => 'sometimes|required|string',
             'journal_id' => 'sometimes|required|exists:journals,id',
-            'doi' => ['sometimes', 'string', 'required', new Doi],
+            'doi' => ['string', 'nullable', new Doi],
             'accepted_on' => ['date', 'nullable', Rule::requiredIf($publication->status === PublicationStatus::ACCEPTED)],
             'published_on' => ['date', 'nullable', Rule::requiredIf($publication->status === PublicationStatus::PUBLISHED)],
             'embargoed_until' => 'date|nullable',

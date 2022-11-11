@@ -248,22 +248,25 @@ const publicationYear = computed(() => {
 const save = async () => {
     if (publication.value === null) return;
 
-    try {
-        loading.value = true;
-        publication.value = await PublicationService.update(
-            publication.value.data.id,
-            publication.value.data
-        );
-        $q.notify({
-            type: 'positive',
-            message: 'Publication updated successfully',
+    loading.value = true;
+    await PublicationService.update(
+        publication.value.data.id,
+        publication.value.data
+    )
+        .then((response) => {
+            publication.value = response;
+            $q.notify({
+                type: 'positive',
+                message: 'Publication updated successfully',
+            });
+        })
+        .catch((e) => {
+            console.log(e);
+        })
+        .finally(() => {
+            loading.value = false;
+            isDirty.value = false;
         });
-    } catch (e) {
-        console.log(e);
-    } finally {
-        loading.value = false;
-        isDirty.value = false;
-    }
 };
 </script>
 

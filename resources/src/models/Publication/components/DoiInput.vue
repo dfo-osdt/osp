@@ -14,7 +14,8 @@
 import { QInput } from 'quasar';
 
 const props = defineProps<{
-    modelValue: string;
+    modelValue: string | null;
+    required?: boolean;
 }>();
 const emit = defineEmits(['update:modelValue']);
 
@@ -24,15 +25,19 @@ const doiInput = ref<QInput | null>(null);
 const isReadOnly = computed(() => doiInput.value?.$props.readonly ?? false);
 
 const rules = [
-    (val: string) => {
-        if (val === '') {
-            return true;
-        }
+    // required
+    (val: string | null) => {
+        if (!props.required) return true;
+        const msg = 'DOI is required';
+        if (val === null) return msg;
+        return val.length > 0 || msg;
+    },
+    (val: string | null) => {
+        if (val === '') return true;
+        if (val === null) return true;
         const doiRegex = /^10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
         return doiRegex.test(val) || 'Invalid DOI';
     },
-    // required
-    (val: string) => val.length > 0 || 'DOI is required',
 ];
 </script>
 

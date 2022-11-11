@@ -43,17 +43,20 @@ const date = useVModel(props, 'modelValue', emit);
 const isoDateMask = '####-##-##';
 
 const rules = [
+    // required
+    (val: string | null) => {
+        if (!props.required) return true;
+        const msg = 'Date is required';
+        if (val === null) return msg;
+        return val.length > 0 || msg;
+    },
     // date actually existed
-    (val: string) => {
-        if (val === '') {
-            return true;
-        }
+    (val: string | null) => {
+        if (val === '') return true;
+        if (val === null) return true;
         const date = new Date(val);
         return !isNaN(date.getTime()) || 'Invalid date';
     },
-    // required
-    (val: string) =>
-        props.required ? val.length > 0 || 'Date is required' : true,
 ];
 </script>
 
