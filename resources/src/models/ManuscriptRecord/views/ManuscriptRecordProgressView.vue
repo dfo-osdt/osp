@@ -70,7 +70,7 @@
             <div>
                 <q-btn
                     v-if="
-                        manuscriptRecord.data.submitted_to_journal_on === null
+                        manuscriptRecord.data.submitted_to_journal_on === null && manuscriptRecord.data.can_attach_manuscript
                     "
                     color="primary"
                     label="Mark as Submitted"
@@ -101,7 +101,7 @@
             </p>
             <div class="row q-gutter-md">
                 <q-btn
-                    v-if="manuscriptRecord.data.status !== 'accepted'"
+                    v-if="manuscriptRecord.data.status !== 'accepted' && manuscriptRecord.data.can_attach_manuscript"
                     color="primary"
                     label="Accepted for Publication"
                     :disable="
@@ -111,7 +111,7 @@
                     @click="showAcceptedByJournalDialog = true"
                 />
                 <q-btn
-                    v-if="manuscriptRecord.data.status !== 'accepted'"
+                    v-if="manuscriptRecord.data.status !== 'accepted' && manuscriptRecord.data.can_attach_manuscript"
                     color="negative"
                     outline
                     label="Withdraw Manuscript"
