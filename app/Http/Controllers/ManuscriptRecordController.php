@@ -213,8 +213,8 @@ class ManuscriptRecordController extends Controller
 
         // validate the request has the submitted on date
         $validated = $request->validate([
-            'submitted_to_journal_on' => ['date', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
-            'accepted_on' => 'required|date',
+            'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
+            'accepted_on' => 'required|date|after_or_equal:submitted_to_journal_on',
             'journal_id' => 'required|exists:journals,id',
         ]);
 

@@ -110,8 +110,8 @@ class PublicationController extends Controller
             'title' => 'sometimes|required|string',
             'journal_id' => 'sometimes|required|exists:journals,id',
             'doi' => ['string', 'nullable', new Doi],
-            'accepted_on' => ['date', 'nullable', Rule::requiredIf($publication->status === PublicationStatus::ACCEPTED)],
-            'published_on' => ['date', 'nullable', Rule::requiredIf($publication->status === PublicationStatus::PUBLISHED)],
+            'accepted_on' => ['date', 'nullable', Rule::when($publication->status === PublicationStatus::PUBLISHED, ['before_or_equal:published_on']), Rule::requiredIf($publication->status === PublicationStatus::ACCEPTED)],
+            'published_on' => ['date', 'nullable', 'after_or_equal:accepted_on', Rule::requiredIf($publication->status === PublicationStatus::PUBLISHED)],
             'embargoed_until' => 'date|nullable',
             'is_open_access' => 'boolean',
         ]);

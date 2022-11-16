@@ -134,6 +134,7 @@
                             :disable="loading"
                             :readonly="!canEdit"
                             :required="publication.data.status === 'accepted'"
+                            :max-date="publication.data.published_on"
                             class="q-mb-md col-grow"
                         />
                         <DateInput
@@ -142,6 +143,7 @@
                             :disable="loading"
                             :readonly="!canEdit"
                             :required="publication.data.status === 'published'"
+                            :min-date="publication.data.accepted_on"
                             class="q-mb-md col-grow"
                         />
                     </div>
@@ -161,9 +163,10 @@
                         v-if="!publication.data.is_open_access"
                         v-model="publication.data.embargoed_until"
                         label="Embargoed Until"
-                        :required="!publication.data.is_open_access"
+                        :required="!publication.data.is_open_access && publication.data.status === 'published'"
                         :disable="loading"
                         :readonly="!canEdit"
+                        :min-date="publication.data.published_on"
                         class="q-mb-md"
                     />
                     <q-card-actions align="right">
