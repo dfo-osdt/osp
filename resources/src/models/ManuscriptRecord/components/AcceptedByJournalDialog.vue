@@ -16,12 +16,14 @@
                     class="q-mx-sm"
                     label="Submitted to Journal On"
                     required
+                    :max-date="acceptedOn"
                 />
                 <DateInput
                     v-model="acceptedOn"
                     class="q-mx-sm"
                     label="Accepted for Publication On"
                     required
+                    :min-date="submittedOn"
                 />
                 <JournalSelect
                     v-model="journalId"
@@ -81,7 +83,7 @@ async function submit() {
             props.manuscriptRecord.id,
             submittedOn.value,
             acceptedOn.value,
-            journalId.value
+            journalId.value! // should not be null because of validation
         );
         emit('updated', resource);
     } catch (error) {
