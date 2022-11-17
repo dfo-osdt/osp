@@ -138,6 +138,7 @@
                             class="q-mb-md col-grow"
                         />
                         <DateInput
+                            v-if="publication.data.status === 'published'"
                             v-model="publication.data.published_on"
                             label="Published On"
                             :disable="loading"
@@ -163,13 +164,23 @@
                         v-if="!publication.data.is_open_access"
                         v-model="publication.data.embargoed_until"
                         label="Embargoed Until"
-                        :required="!publication.data.is_open_access && publication.data.status === 'published'"
+                        :required="
+                            !publication.data.is_open_access &&
+                            publication.data.status === 'published'
+                        "
                         :disable="loading"
                         :readonly="!canEdit"
                         :min-date="publication.data.published_on"
                         class="q-mb-md"
                     />
                     <q-card-actions align="right">
+                        <q-btn
+                            v-if="publication.data.status === 'accepted'"
+                            label="Mark as Published"
+                            color="primary"
+                            icon="mdi-flag-checkered"
+                            @click="markAsPublished"
+                        />
                         <q-btn
                             v-if="canEdit"
                             label="Save"
@@ -208,6 +219,18 @@ const props = defineProps<{
 // load publication data
 const loading = ref(true);
 const publication = ref<PublicationResource | null>(null);
+
+/**
+ * Marks the publication as published, won't take effect
+ * until user saves but will be reflected in the UI and validation.
+ */
+function markAsPublished() {
+    if (!publication.value) return;
+    publication.value.data.status = 'published';
+    publication.value.data.published_on = new Date()
+        .toISOString()
+        .substring(0, 10);
+}
 
 // on mount load publication data
 onMounted(async () => {
