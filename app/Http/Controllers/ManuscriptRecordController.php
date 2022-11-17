@@ -50,13 +50,13 @@ class ManuscriptRecordController extends Controller
             'type' => ['required', new Enum(ManuscriptRecordType::class)],
         ]);
 
-        $manuscript = new ManuscriptRecord($validated);
-        $manuscript->status = ManuscriptRecordStatus::DRAFT;
-        $manuscript->user_id = auth()->id();
-        $manuscript->save();
-        $manuscript->refresh();
+        $manuscriptRecord = new ManuscriptRecord($validated);
+        $manuscriptRecord->status = ManuscriptRecordStatus::DRAFT;
+        $manuscriptRecord->user_id = auth()->id();
+        $manuscriptRecord->save();
+        $manuscriptRecord->refresh();
 
-        return new ManuscriptRecordResource($manuscript->load('user'));
+        return $this->defaultResource($manuscriptRecord);
     }
 
     /**
@@ -69,7 +69,7 @@ class ManuscriptRecordController extends Controller
     {
         Gate::authorize('view', $manuscriptRecord);
 
-        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+        return $this->defaultResource($manuscriptRecord);
     }
 
     /**
@@ -97,7 +97,7 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord->update($validated);
 
-        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+        return $this->defaultResource($manuscriptRecord);
     }
 
     /**
@@ -122,7 +122,7 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord->addMedia($validated['pdf'])->toMediaCollection('manuscript');
 
-        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+        return $this->defaultResource($manuscriptRecord);
     }
 
     /** Download PDF attached to this record - return NoContent if empty */
@@ -170,7 +170,7 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->sent_for_review_at = now();
         $manuscriptRecord->save();
 
-        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+        return $this->defaultResource($manuscriptRecord);
     }
 
     /** Withdraw this manuscript - it will not be published */
@@ -184,7 +184,7 @@ class ManuscriptRecordController extends Controller
 
         ManuscriptRecordWithdrawnByAuthor::dispatch($manuscriptRecord);
 
-        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+        return $this->defaultResource($manuscriptRecord);
     }
 
     /** Mark the manuscript as submitted */
@@ -203,7 +203,7 @@ class ManuscriptRecordController extends Controller
 
         ManuscriptRecordSubmitted::dispatch($manuscriptRecord);
 
-        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+        return $this->defaultResource($manuscriptRecord);
     }
 
     /** Mark the manuscript as accepted */
@@ -232,6 +232,17 @@ class ManuscriptRecordController extends Controller
 
         ManuscriptRecordAccepted::dispatch($manuscriptRecord);
 
-        return new ManuscriptRecordResource($manuscriptRecord->load('user'));
+        return $this->defaultResource($manuscriptRecord);
+    }
+
+    /** Default Resource with eager loaded properties */
+    private function defaultResource(ManuscriptRecord $manuscriptRecord)
+    {
+        $relationships = collect('user');
+        if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
+            $relationships->push('publication');
+        }
+
+        return new ManuscriptRecordResource($manuscriptRecord->load($relationships->toArray()));
     }
 }
