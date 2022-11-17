@@ -171,7 +171,7 @@ const color = computed(() => {
                 ? 'primary'
                 : 'red';
         case 'pending':
-            return 'orange';
+            return 'yellow-8';
         case 'deferred':
             return 'secondary';
         default:

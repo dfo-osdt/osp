@@ -131,7 +131,7 @@ const submittedColor = computed(() => {
     }
     switch (manuscriptRecord.value.data.status) {
         case 'draft':
-            return 'secondary';
+            return 'yellow-8';
         default:
             return 'primary';
     }
@@ -160,7 +160,7 @@ const completedColor = computed(() => {
     switch (manuscriptRecord.value.data.status) {
         case 'draft':
         case 'in_review':
-            return 'secondary';
+            return 'yellow-8';
         default:
             return 'primary';
     }

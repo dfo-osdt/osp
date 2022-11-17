@@ -32,6 +32,11 @@ class DatabaseSeeder extends Seeder
                 JournalsTableSeeder::class,
             ]);
 
+            // create a blank slate user
+            \App\Models\User::factory()->create([
+                'email' => 'new@test.com',
+            ]);
+
             $user = \App\Models\User::factory()->create([
                 'first_name' => 'John',
                 'last_name' => 'Doe',

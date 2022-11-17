@@ -70,7 +70,8 @@
             <div>
                 <q-btn
                     v-if="
-                        manuscriptRecord.data.submitted_to_journal_on === null && manuscriptRecord.data.can_attach_manuscript
+                        manuscriptRecord.data.submitted_to_journal_on ===
+                            null && manuscriptRecord.data.can_attach_manuscript
                     "
                     color="primary"
                     label="Mark as Submitted"
@@ -101,7 +102,10 @@
             </p>
             <div class="row q-gutter-md">
                 <q-btn
-                    v-if="manuscriptRecord.data.status !== 'accepted' && manuscriptRecord.data.can_attach_manuscript"
+                    v-if="
+                        manuscriptRecord.data.status !== 'accepted' &&
+                        manuscriptRecord.data.can_attach_manuscript
+                    "
                     color="primary"
                     label="Accepted for Publication"
                     :disable="
@@ -111,7 +115,10 @@
                     @click="showAcceptedByJournalDialog = true"
                 />
                 <q-btn
-                    v-if="manuscriptRecord.data.status !== 'accepted' && manuscriptRecord.data.can_attach_manuscript"
+                    v-if="
+                        manuscriptRecord.data.status !== 'accepted' &&
+                        manuscriptRecord.data.can_attach_manuscript
+                    "
                     color="negative"
                     outline
                     label="Withdraw Manuscript"
@@ -216,7 +223,7 @@ const submittedReviewSubtitle = computed(() => {
 const submittedReviewColor = computed(() => {
     if (manuscriptRecord.value === null) return 'grey-7';
     if (manuscriptRecord.value.data.sent_for_review_at === null)
-        return 'secondary';
+        return 'yellow-8';
     return 'primary';
 });
 
@@ -239,7 +246,7 @@ const managementReviewSubtitle = computed(() => {
 const managementReviewColor = computed(() => {
     if (manuscriptRecord.value === null) return 'grey-7';
     if (manuscriptRecord.value.data.sent_for_review_at === null)
-        return 'secondary';
+        return 'yellow-8';
     if (manuscriptRecord.value.data.status === 'withheld') return 'red';
     return 'primary';
 });
@@ -270,7 +277,7 @@ const submittedToJournalSubtitle = computed(() => {
 const submittedToJournalColor = computed(() => {
     if (manuscriptRecord.value === null) return 'grey-7';
     if (manuscriptRecord.value.data.submitted_to_journal_on === null)
-        return 'secondary';
+        return 'yellow-8';
     return 'primary';
 });
 
@@ -289,7 +296,7 @@ const acceptedToJournalSubtitle = computed(() => {
 
 const acceptedToJournalColor = computed(() => {
     if (manuscriptRecord.value === null) return 'grey-7';
-    if (manuscriptRecord.value.data.accepted_on === null) return 'secondary';
+    if (manuscriptRecord.value.data.accepted_on === null) return 'yellow-8';
     return 'primary';
 });
 
