@@ -208,6 +208,11 @@ async function next() {
     stepper.value?.next();
 }
 
+// define the created emit
+const emit = defineEmits<{
+    (e: 'created', publication: PublicationCreate): void;
+}>();
+
 /** Create the publication */
 async function create() {
     const publication: PublicationCreate = {
@@ -221,8 +226,12 @@ async function create() {
         journal_id: journalId.value ?? 0,
     };
 
-    const resource = await PublicationService.create(publication);
-    console.log(resource);
+    try {
+        await PublicationService.create(publication);
+        emit('created', publication);
+    } catch (e) {
+        console.error(e);
+    }
 }
 </script>
 

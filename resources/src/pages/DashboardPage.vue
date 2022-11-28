@@ -183,6 +183,7 @@
                             <CreatePublicationDialog
                                 v-if="showCreatePublication"
                                 v-model="showCreatePublication"
+                                @created="showCreatePublication = false"
                             />
                         </q-tab-panel>
                     </q-tab-panels>

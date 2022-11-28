@@ -101,7 +101,7 @@
                 <template #title>
                     <div>General Information</div>
                 </template>
-                <q-form @submit="save">
+                <q-form ref="generalInformationForm">
                     <q-input
                         v-model="publication.data.title"
                         label="Title"
@@ -109,12 +109,14 @@
                         :disable="loading"
                         :readonly="!canEdit"
                         outlined
+                        :rules="[(val) => !!val || 'Title is required']"
                         class="q-mb-md"
                     />
                     <JournalSelect
                         v-model="publication.data.journal_id"
                         :disable="loading"
                         :readonly="!canEdit"
+                        :rules="[(val) => !!val || 'Journal is required']"
                         class="q-mb-md"
                     />
                     <DoiInput
@@ -173,24 +175,24 @@
                         :min-date="publication.data.published_on"
                         class="q-mb-md"
                     />
-                    <q-card-actions align="right">
-                        <q-btn
-                            v-if="publication.data.status === 'accepted'"
-                            label="Mark as Published"
-                            color="primary"
-                            icon="mdi-flag-checkered"
-                            @click="markAsPublished"
-                        />
-                        <q-btn
-                            v-if="canEdit"
-                            label="Save"
-                            color="primary"
-                            :loading="loading"
-                            type="submit"
-                        />
-                    </q-card-actions>
                 </q-form>
             </ContentCard>
+            <q-card-actions align="right">
+                <q-btn
+                    v-if="publication.data.status === 'accepted'"
+                    label="Mark as Published"
+                    color="primary"
+                    icon="mdi-flag-checkered"
+                    @click="markAsPublished"
+                />
+                <q-btn
+                    v-if="canEdit"
+                    label="Save"
+                    color="primary"
+                    :loading="loading"
+                    @click="save"
+                />
+            </q-card-actions>
         </div>
         <WarnOnUnsavedChanges :is-dirty="isDirty" />
     </MainPageLayout>
@@ -199,7 +201,7 @@
 <script setup lang="ts">
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import { PublicationResource, PublicationService } from '../Publication';
-import { useQuasar } from 'quasar';
+import { QForm, useQuasar } from 'quasar';
 import PublicationStatusBadge from '../components/PublicationStatusBadge.vue';
 import ContentCard from '@/components/ContentCard.vue';
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue';
@@ -271,8 +273,15 @@ const publicationYear = computed(() => {
     );
 });
 
+const generalInformationForm = ref<QForm | null>(null);
+
 const save = async () => {
     if (publication.value === null) return;
+
+    const valid = await generalInformationForm.value?.validate();
+    console.log('valid', valid);
+
+    if (!valid) return;
 
     loading.value = true;
     await PublicationService.update(
