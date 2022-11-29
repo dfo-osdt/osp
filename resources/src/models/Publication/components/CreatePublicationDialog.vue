@@ -145,7 +145,11 @@ import DateInput from '@/components/DateInput.vue';
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue';
 import { QForm, QStepper } from 'quasar';
 import { Ref } from 'vue';
-import { PublicationCreate, PublicationService } from '../Publication';
+import {
+    PublicationCreate,
+    PublicationResource,
+    PublicationService,
+} from '../Publication';
 import DoiInput from './DoiInput.vue';
 
 const today = new Date().toISOString().split('T')[0].replace(/-/g, '/');
@@ -210,7 +214,7 @@ async function next() {
 
 // define the created emit
 const emit = defineEmits<{
-    (e: 'created', publication: PublicationCreate): void;
+    (e: 'created', publication: PublicationResource): void;
 }>();
 
 /** Create the publication */
@@ -227,8 +231,8 @@ async function create() {
     };
 
     try {
-        await PublicationService.create(publication);
-        emit('created', publication);
+        const pub = await PublicationService.create(publication);
+        emit('created', pub);
     } catch (e) {
         console.error(e);
     }

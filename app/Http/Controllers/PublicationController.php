@@ -48,7 +48,7 @@ class PublicationController extends Controller
             'status' => new Enum(PublicationStatus::class),
             'title' => 'required',
             'journal_id' => 'required|exists:journals,id',
-            'doi' => ['string', 'required', new Doi],
+            'doi' => ['nullable', 'string', new Doi],
             'accepted_on' => 'date|nullable',
             'published_on' => 'date|required',
             'embargoed_until' => 'date|nullable',

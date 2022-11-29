@@ -183,7 +183,7 @@
                             <CreatePublicationDialog
                                 v-if="showCreatePublication"
                                 v-model="showCreatePublication"
-                                @created="showCreatePublication = false"
+                                @created="publicationCreated"
                             />
                         </q-tab-panel>
                     </q-tab-panels>
@@ -202,6 +202,7 @@ import ManuscriptList from '@/models/ManuscriptRecord/components/ManuscriptList.
 import RecentManagementReviewStepsView from '@/models/ManagementReviewStep/views/RecentManagementReviewStepsView.vue';
 import PublicationList from '@/models/Publication/components/PublicationList.vue';
 import CreatePublicationDialog from '@/models/Publication/components/CreatePublicationDialog.vue';
+import { PublicationResource } from '@/models/Publication/Publication';
 
 const manuscripts = useManuscriptStore();
 const reviewSteps = useManagementReviewStepStore();
@@ -215,10 +216,6 @@ onMounted(() => {
     reviewSteps.getMyManagementReviewSteps(true);
     publications.getMyPublications(true);
 });
-
-// create dialog
-const showCreateManuscript = ref(false);
-const showCreatePublication = ref(false);
 
 const data = computed(() => [
     {
@@ -240,4 +237,21 @@ const data = computed(() => [
         to: '/my-publications',
     },
 ]);
+
+// manuscript section
+const showCreateManuscript = ref(false);
+
+// publication section
+const showCreatePublication = ref(false);
+
+/**
+ * Closes the dialog and adds the created publication
+ * to the publication store.
+ *
+ * @param publication the publication that was created
+ */
+const publicationCreated = (publication: PublicationResource) => {
+    if (publications.publications) publications.publications.push(publication);
+    showCreatePublication.value = false;
+};
 </script>
