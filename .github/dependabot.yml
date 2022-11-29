@@ -8,6 +8,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # until Quasar supports Sass 2.0 (avoids deprecation warnings)
+      - dependency-name: "sass"
+        versions:
+          - ">=1.32.0"
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
