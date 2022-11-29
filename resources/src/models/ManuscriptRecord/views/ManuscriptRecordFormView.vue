@@ -1,4 +1,30 @@
 <template>
+    <q-banner
+        v-if="showPublishBanner"
+        class="bg-secondary text-white q-px-md q-pt-lg q-pb-md"
+    >
+        <div class="flex justify-between items-center">
+            <div class="text-subtitle1 flex items-center">
+                <q-icon
+                    name="mdi-information-outline"
+                    size="md"
+                    class="q-mr-sm"
+                />
+                <span>
+                    This manuscript has been reviewed but still needs to be
+                    marked as published by the applicant.
+                </span>
+            </div>
+            <div>
+                <q-btn
+                    flat
+                    class="text-white"
+                    icon-right="mdi-arrow-right-thin-circle-outline"
+                    :to="`/manuscript/${id}/progress`"
+                />
+            </div>
+        </div>
+    </q-banner>
     <div class="q-pa-lg">
         <div class="q-mt-md q-mb-lg row justify-between">
             <div class="col-8">
@@ -590,6 +616,19 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
     manuscriptResource.value = manuscript;
     showSubmitDialog.value = false;
 }
+
+// display banner if the manuscript is reviewed but still needs to be published
+const showPublishBanner = computed(() => {
+    const manuscript = manuscriptResource.value?.data;
+
+    if (!manuscript) {
+        return false;
+    }
+
+    return (
+        manuscript.status === 'reviewed' || manuscript.status === 'submitted'
+    );
+});
 </script>
 
 <style scoped></style>
