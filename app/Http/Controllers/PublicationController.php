@@ -139,7 +139,7 @@ class PublicationController extends Controller
     /** Download PDF attached to this publication - return NoContent if empty */
     public function downloadPDF(Publication $publication)
     {
-        Gate::authorize('view', $publication);
+        Gate::authorize('viewPdf', $publication);
 
         $pdf = $publication->getPublicationFile();
 
@@ -159,5 +159,21 @@ class PublicationController extends Controller
     public function destroy(Publication $publication)
     {
         //
+    }
+
+    /**
+     * Default Resource with eager loaded relationships
+     */
+    private function defaultResource(Publication $publication)
+    {
+        $relationship = collect([
+            'journal',
+            'user',
+            'publicationAuthors.author',
+            'publicationAuthors.organization',
+            'manuscript',
+        ]);
+
+        return new PublicationResource($publication->load($relationship->toArray()));
     }
 }

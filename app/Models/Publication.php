@@ -83,6 +83,16 @@ class Publication extends Model implements Auditable, HasMedia
         return $this->getMedia('publication')->last();
     }
 
+    /** Is the publication under embargo? */
+    public function isUnderEmbargo(): bool
+    {
+        if ($this->is_open_access) {
+            return false;
+        }
+
+        return $this->embargoed_until && $this->embargoed_until->isFuture();
+    }
+
     // Scopes
 
     /** Get the open access publications */
@@ -94,7 +104,7 @@ class Publication extends Model implements Auditable, HasMedia
     /** Get the publication that are no longer under embargo */
     public function scopeNotUnderEmbargo($query)
     {
-        return $query->where('embargoed_until', '<', now());
+        return $query->where('embargoed_until', '<', now())->orWhere('is_open_access', true);
     }
 
     /** Get the publications under embargo */

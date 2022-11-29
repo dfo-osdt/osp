@@ -94,4 +94,20 @@ export class PublicationService {
         const response = await http.get<RList>(`api/my/publications?limit=100`);
         return response.data.data;
     }
+
+    /** Attach a PDF file to the publication */
+    public static async attachPDF(file: File, id: number) {
+        const formData = new FormData();
+        formData.append('pdf', file);
+        const response = await http.post<FormData, PublicationResource>(
+            `api/publications/${id}/pdf`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        );
+        return response.data;
+    }
 }

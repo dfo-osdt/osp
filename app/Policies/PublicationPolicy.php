@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PublicationStatus;
 use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -30,7 +31,38 @@ class PublicationPolicy
      */
     public function view(User $user, Publication $publication)
     {
-        return true;
+        // if the status is published, then anyone can view it
+        if ($publication->status == PublicationStatus::PUBLISHED) {
+            return true;
+        }
+
+        // if they are the owner, then they can view it
+        if ($publication->user_id == $user->id) {
+            return true;
+        }
+
+        // if the user is an author on the publication, then they can view it
+        if ($publication->publicationAuthors->contains('user_id', $user->id)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can view the pdf of the publication
+     */
+    public function viewPdf(User $user, Publication $publication)
+    {
+        if ($publication->user_id == $user->id) {
+            return true;
+        }
+        // if the user is an author on the publication, then they can view it
+        if ($publication->publicationAuthors->contains('user_id', $user->id)) {
+            return true;
+        }
+
+        return ! $publication->isUnderEmbargo();
     }
 
     /**

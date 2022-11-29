@@ -4,6 +4,7 @@ use App\Enums\PublicationStatus;
 use App\Models\Journal;
 use App\Models\Publication;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 
 /** Test that a user can query publications */
 test('a user can get a list of publications', function () {
@@ -161,4 +162,44 @@ test('a user cannot update their publication to be published without a published
     $response->assertStatus(422);
     $response->assertJsonValidationErrors('published_on');
     expect(Publication::find($publication->id)->status)->toBe(PublicationStatus::ACCEPTED);
+});
+
+test('a user can attach a new publication pdf to their publication', function () {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create([
+        'user_id' => $user->id,
+        'status' => PublicationStatus::PUBLISHED,
+    ]);
+
+    // fake pdf
+    $fakePdfContent = <<<'PDF'
+        %PDF-1.4
+        1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+        2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
+        3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
+        xref
+        0 4
+        0000000000 65535 f
+        0000000009 00000 n
+        0000000052 00000 n
+        0000000101 00000 n
+        trailer<</Size 4/Root 1 0 R>>
+        startxref
+        178
+        %%EOF
+        PDF;
+
+    // upload pdf
+    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
+
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/pdf', [
+        'pdf' => $file,
+    ]);
+
+    $response->assertOk();
+    expect($response->json('data.publication_pdf'))->not()->toBeNull();
+
+    // check that user can download the pdf
+    $response = $this->actingAs($user)->get('/api/publications/'.$publication->id.'/pdf');
+    $response->assertOk();
 });

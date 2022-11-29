@@ -177,6 +177,78 @@
                     />
                 </q-form>
             </ContentCard>
+            <ContentCard class="q-mb-md" secondary>
+                <template #title>Attach Manuscript</template>
+                <p>
+                    Upload the most recent copy of your publication as a PDF. We
+                    will not allow portal users to see this file until the end
+                    of its embargo period.
+                </p>
+                <template v-if="publication?.data.publication_pdf">
+                    <q-card outlined class="q-mb-md">
+                        <q-list>
+                            <q-item>
+                                <q-item-section>
+                                    <q-item-label>{{
+                                        publication.data.publication_pdf
+                                            .file_name
+                                    }}</q-item-label>
+                                    <q-item-label caption>
+                                        {{
+                                            publication.data.publication_pdf
+                                                .size_bytes / 1000
+                                        }}
+                                        KB uploaded on
+                                        {{
+                                            new Date(
+                                                publication.data.publication_pdf.created_at
+                                            ).toLocaleString()
+                                        }}
+                                    </q-item-label>
+                                </q-item-section>
+                                <q-item-section side>
+                                    <q-btn
+                                        icon="mdi-file-download-outline"
+                                        color="primary"
+                                        :loading="loading"
+                                        :href="`api/publications/${id}/pdf`"
+                                    />
+                                </q-item-section>
+                            </q-item>
+                        </q-list>
+                    </q-card>
+                </template>
+                <q-file
+                    v-if="publication?.can?.update"
+                    v-model="publicationFile"
+                    outlined
+                    use-chips
+                    :label="
+                        publication?.data.publication_pdf
+                            ? 'Upload a new version of the publication'
+                            : 'Upload the publication'
+                    "
+                    hint="Only PDF files are accepted. Maximum file size is 10MB."
+                    accept="application/pdf"
+                    max-file-size="10000000"
+                    counter
+                    :loading="uploadingFile"
+                    @rejected="onFileRejected"
+                >
+                    <template #prepend>
+                        <q-icon name="mdi-file-pdf-box" />
+                    </template>
+                    <template #append>
+                        <q-btn
+                            color="primary"
+                            :loading="uploadingFile"
+                            :disable="!publicationFile"
+                            label="Upload"
+                            @click="upload"
+                        />
+                    </template>
+                </q-file>
+            </ContentCard>
             <q-card-actions align="right">
                 <q-btn
                     v-if="publication.data.status === 'accepted'"
@@ -201,7 +273,7 @@
 <script setup lang="ts">
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import { PublicationResource, PublicationService } from '../Publication';
-import { QForm, useQuasar } from 'quasar';
+import { QForm, QRejectedEntry, useQuasar } from 'quasar';
 import PublicationStatusBadge from '../components/PublicationStatusBadge.vue';
 import ContentCard from '@/components/ContentCard.vue';
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue';
@@ -303,6 +375,62 @@ const save = async () => {
             isDirty.value = false;
         });
 };
+
+// file upload
+const publicationFile = ref<File | null>(null);
+const uploadingFile = ref(false);
+
+function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
+    console.log(rejectedEntries);
+    rejectedEntries.forEach((rejectedEntry) => {
+        if (rejectedEntry.failedPropValidation === 'max-file-size') {
+            $q.notify({
+                type: 'negative',
+                color: 'negative',
+                message: 'File size is too large',
+            });
+        } else if (rejectedEntry.failedPropValidation === 'accept') {
+            $q.notify({
+                type: 'negative',
+                color: 'negative',
+                message: 'File type is not accepted',
+            });
+        }
+    });
+}
+
+async function upload() {
+    // if there is no manuscript file, return
+    if (publicationFile.value === null) return;
+
+    disableDirtyWatcher.value = true;
+    uploadingFile.value = true;
+
+    const response = await PublicationService.attachPDF(
+        publicationFile.value,
+        props.id
+    );
+
+    if (publication.value?.data) {
+        publication.value.data['publication_pdf'] =
+            response.data.publication_pdf;
+    }
+
+    uploadingFile.value = false;
+    // clear file
+    publicationFile.value = null;
+
+    $q.notify({
+        type: 'positive',
+        color: 'primary',
+        message: 'File uploaded successfully',
+    });
+
+    // re-enable dirty watcher in 500 ms
+    setTimeout(() => {
+        disableDirtyWatcher.value = false;
+    }, 500);
+}
 </script>
 
 <style scoped></style>
