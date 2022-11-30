@@ -47,6 +47,22 @@ test('an authenticated users can get a list of their manuscripts', function () {
     expect($response->json('data.0.data.manuscript_authors'))->toHaveCount(2);
 });
 
+test('an authenticator user can see the manuscript for which they are an author', function () {
+    $author = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(2))->create();
+    // add the author to the manuscript
+    $manuscript->manuscriptAuthors()->create([
+        'author_id' => $author->author->id,
+        'is_corresponding_author' => false,
+        'organization_id' => $author->author->organization_id,
+    ]);
+
+    $response = $this->actingAs($author)->getJson('/api/my/manuscript-records')->assertOk();
+
+    expect($response->json('data'))->toHaveCount(1);
+    expect($response->json('data.0.data'))->toMatchArray($manuscript->toArray());
+});
+
 test('a user can save a draft manuscript', function () {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
