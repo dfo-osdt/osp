@@ -22,7 +22,7 @@ export class SpatieQuery {
     public filter(
         name: string,
         values?: boolean | string | string[] | number | number[]
-    ): SpatieQuery {
+    ): this {
         let val: string[] = [];
 
         // applies the filter to the query
@@ -52,19 +52,19 @@ export class SpatieQuery {
     }
 
     /** Add a sort to the query */
-    public sort(name: string, direction: 'asc' | 'desc'): SpatieQuery {
+    public sort(name: string, direction: 'asc' | 'desc'): this {
         this.sorts.push({ name, direction });
         return this;
     }
 
     /** Add an include to the query */
-    public include(name: string): SpatieQuery {
+    public include(name: string): this {
         this.includes.push({ name });
         return this;
     }
 
     /** Add a pagination to the query */
-    public paginate(page?: number, limit?: number): SpatieQuery {
+    public paginate(page?: number, limit?: number): this {
         this.pagination = { page, limit };
         return this;
     }
@@ -113,7 +113,6 @@ export class SpatieQuery {
         return params.toString();
     }
 }
-
 interface SpatieFilter {
     name: string;
     values: string[];

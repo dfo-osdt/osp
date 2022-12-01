@@ -50,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+import { SpatieQuery } from '@/api/SpatieQuery';
 import { QSelect } from 'quasar';
 import {
     JournalResource,
@@ -93,9 +94,11 @@ const filterJournals = async (val: string, update, abort) => {
         if (val !== '') {
             const needle = val.toLowerCase();
             journalsLoading.value = true;
-            await JournalService.list(
-                `limit=10&filter[title_en]=${needle}`
-            ).then((response) => {
+
+            const query = new SpatieQuery();
+            query.filter('title_en', needle).paginate(1, 10);
+
+            await JournalService.list(query).then((response) => {
                 // order response by length of title
                 response.data.sort((a, b) => {
                     return a.data.title_en.length - b.data.title_en.length;

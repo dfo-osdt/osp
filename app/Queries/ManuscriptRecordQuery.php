@@ -15,12 +15,17 @@ class ManuscriptRecordQuery extends QueryBuilder
         $this->
          defaultSort('updated_at')->
          allowedFilters([
-             AllowedFilter::exact('id'),
              AllowedFilter::exact('user_id'),
              AllowedFilter::exact('region_id'),
              AllowedFilter::exact('status'),
              AllowedFilter::exact('type'),
              AllowedFilter::partial('title'),
+         ])->allowedSorts([
+             'updated_at',
+             'created_at',
+             'title',
+             'type',
+             'status',
          ]);
     }
 }

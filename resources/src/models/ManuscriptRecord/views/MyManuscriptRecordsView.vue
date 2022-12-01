@@ -21,6 +21,7 @@ import ContentCard from '@/components/ContentCard.vue';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import ManuscriptList from '../components/ManuscriptList.vue';
 import {
+    ManuscriptQuery,
     ManuscriptRecordResource,
     ManuscriptRecordService,
 } from '../ManuscriptRecord';
@@ -33,7 +34,11 @@ onMounted(() => {
 });
 
 async function getManuscripts() {
-    manuscripts.value = await ManuscriptRecordService.getMyManuscripts();
+    // build the query
+    const query = new ManuscriptQuery();
+    query.sort('title', 'asc');
+
+    manuscripts.value = await ManuscriptRecordService.getMyManuscripts(query);
 }
 </script>
 

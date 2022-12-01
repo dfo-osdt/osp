@@ -1,4 +1,5 @@
 import {
+    ManuscriptQuery,
     ManuscriptRecordResource,
     ManuscriptRecordService,
 } from '@/models/ManuscriptRecord/ManuscriptRecord';
@@ -22,8 +23,13 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
         if (loading.value) return; // don't load if we're already loading
         if (manuscripts.value === undefined || force) {
             loading.value = true;
-            manuscripts.value =
-                await ManuscriptRecordService.getMyManuscripts();
+
+            const query = new ManuscriptQuery();
+            query.sort('updated_at', 'desc').paginate(1, 25);
+
+            manuscripts.value = await ManuscriptRecordService.getMyManuscripts(
+                query
+            );
             loading.value = false;
         }
     }

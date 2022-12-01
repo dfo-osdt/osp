@@ -1,5 +1,6 @@
 import { http } from '@/api/http';
 import { Resource, ResourceList } from '../Resource';
+import { SpatieQuery } from '@/api/SpatieQuery';
 
 export interface Journal {
     readonly id: number;
@@ -19,10 +20,10 @@ type RList = JournalResourceList;
  */
 export class JournalService {
     /** Get a list of journals */
-    public static async list(query?: string) {
+    public static async list(query?: SpatieQuery) {
         let url = 'api/journals';
         if (query) {
-            url += `?${query}`;
+            url += `?${query.toQueryString()}`;
         }
         const response = await http.get<RList>(url);
         return response.data;

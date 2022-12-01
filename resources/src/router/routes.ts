@@ -56,7 +56,10 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/my-manuscripts',
-                component: UnderConstruction,
+                component: () =>
+                    import(
+                        '@/models/ManuscriptRecord/views/MyManuscriptRecordsView.vue'
+                    ),
                 meta: { requiresAuth: true },
             },
             {

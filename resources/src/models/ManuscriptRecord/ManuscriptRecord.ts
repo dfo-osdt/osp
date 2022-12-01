@@ -1,4 +1,5 @@
 import { http } from '@/api/http';
+import { SpatieQuery } from '@/api/SpatieQuery';
 import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import { PublicationResource } from '../Publication/Publication';
 import { Region } from '../Region/Region';
@@ -167,10 +168,54 @@ export class ManuscriptRecordService {
     }
 
     /** Get the logged in users' manuscripts */
-    public static async getMyManuscripts() {
-        const response = await http.get<ManuscriptRecordResourceList>(
-            `api/my/manuscript-records`
-        );
+    public static async getMyManuscripts(query?: ManuscriptQuery) {
+        let url = 'api/my/manuscript-records';
+        if (query) {
+            url += `?${query.toQueryString()}`;
+        }
+        const response = await http.get<ManuscriptRecordResourceList>(url);
         return response.data.data;
     }
 }
+
+export class ManuscriptQuery extends SpatieQuery {
+    public filterUserId(userId: number[]): ManuscriptQuery {
+        this.filter('user_id', userId);
+        return this;
+    }
+
+    public filterTitle(title: string[]): ManuscriptQuery {
+        this.filter('title', title);
+        return this;
+    }
+
+    public filterRegionId(regionId: number[]): ManuscriptQuery {
+        this.filter('region_id', regionId);
+        return this;
+    }
+
+    public filterType(type: ManuscriptRecordType[]): ManuscriptQuery {
+        this.filter('type', type);
+        return this;
+    }
+
+    public filterStatus(status: ManuscriptRecordStatus[]): ManuscriptQuery {
+        this.filter('status', status);
+        return this;
+    }
+
+    public sort(
+        name: ManuscriptQuerySort,
+        direction: 'asc' | 'desc'
+    ): ManuscriptQuery {
+        super.sort(name, direction);
+        return this;
+    }
+}
+
+type ManuscriptQuerySort =
+    | 'created_at'
+    | 'updated_at'
+    | 'title'
+    | 'status'
+    | 'type';
