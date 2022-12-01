@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.41.0.
+ * Generated for Laravel 9.42.2.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -2186,7 +2186,7 @@ namespace Illuminate\Support\Facades {
          * Attempt to authenticate a user with credentials and additional callbacks.
          *
          * @param  array  $credentials
-         * @param  array|callable  $callbacks
+         * @param  array|callable|null  $callbacks
          * @param  bool  $remember
          * @return bool
          * @static
@@ -11944,6 +11944,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Gets the list of trusted proxies.
          *
+         * @return string[]
          * @static
          */
         public static function getTrustedProxies()
@@ -11978,6 +11979,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Gets the list of trusted host patterns.
          *
+         * @return string[]
          * @static
          */
         public static function getTrustedHosts()
@@ -12420,6 +12422,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Gets the mime types associated with the format.
          *
+         * @return string[]
          * @static
          */
         public static function getMimeTypes($format)
@@ -12441,7 +12444,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Associates a format with mime types.
          *
-         * @param  string|array  $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
+         * @param  string|string[]  $mimeTypes The associated mime types (the preferred one must be the first as it will be used as the content type)
          * @static
          */
         public static function setFormat($format, $mimeTypes)
@@ -12480,14 +12483,27 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Gets the format associated with the request.
+         * Gets the usual name of the format associated with the request's media type (provided in the Content-Type header).
          *
+         * @deprecated since Symfony 6.2, use getContentTypeFormat() instead
          * @static
          */
         public static function getContentType()
         {            //Method inherited from \Symfony\Component\HttpFoundation\Request
             /** @var \Illuminate\Http\Request $instance */
             return $instance->getContentType();
+        }
+
+        /**
+         * Gets the usual name of the format associated with the request's media type (provided in the Content-Type header).
+         *
+         * @see Request::$formats
+         * @static
+         */
+        public static function getContentTypeFormat()
+        {            //Method inherited from \Symfony\Component\HttpFoundation\Request
+            /** @var \Illuminate\Http\Request $instance */
+            return $instance->getContentTypeFormat();
         }
 
         /**
@@ -12603,6 +12619,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param  bool  $asResource If true, a resource will be returned
          * @return string|resource
+         * @psalm-return ($asResource is true ? resource : string)
          * @static
          */
         public static function getContent($asResource = false)
@@ -12662,6 +12679,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Gets a list of languages acceptable by the client browser ordered in the user browser preferences.
          *
+         * @return string[]
          * @static
          */
         public static function getLanguages()
@@ -12673,6 +12691,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Gets a list of charsets acceptable by the client browser in preferable order.
          *
+         * @return string[]
          * @static
          */
         public static function getCharsets()
@@ -12684,6 +12703,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Gets a list of encodings acceptable by the client browser in preferable order.
          *
+         * @return string[]
          * @static
          */
         public static function getEncodings()
@@ -12695,6 +12715,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Gets a list of content types acceptable by the client browser in preferable order.
          *
+         * @return string[]
          * @static
          */
         public static function getAcceptableContentTypes()
@@ -14089,6 +14110,64 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Routing\Router $instance */
             return $instance->apiResource($name, $controller, $options);
+        }
+
+        /**
+         * Register an array of singleton resource controllers.
+         *
+         * @param  array  $singletons
+         * @param  array  $options
+         * @return void
+         * @static
+         */
+        public static function singletons($singletons, $options = [])
+        {
+            /** @var \Illuminate\Routing\Router $instance */
+            $instance->singletons($singletons, $options);
+        }
+
+        /**
+         * Route a singleton resource to a controller.
+         *
+         * @param  string  $name
+         * @param  string  $controller
+         * @param  array  $options
+         * @return \Illuminate\Routing\PendingSingletonResourceRegistration
+         * @static
+         */
+        public static function singleton($name, $controller, $options = [])
+        {
+            /** @var \Illuminate\Routing\Router $instance */
+            return $instance->singleton($name, $controller, $options);
+        }
+
+        /**
+         * Register an array of API singleton resource controllers.
+         *
+         * @param  array  $singletons
+         * @param  array  $options
+         * @return void
+         * @static
+         */
+        public static function apiSingletons($singletons, $options = [])
+        {
+            /** @var \Illuminate\Routing\Router $instance */
+            $instance->apiSingletons($singletons, $options);
+        }
+
+        /**
+         * Route an API singleton resource to a controller.
+         *
+         * @param  string  $name
+         * @param  string  $controller
+         * @param  array  $options
+         * @return \Illuminate\Routing\PendingSingletonResourceRegistration
+         * @static
+         */
+        public static function apiSingleton($name, $controller, $options = [])
+        {
+            /** @var \Illuminate\Routing\Router $instance */
+            return $instance->apiSingleton($name, $controller, $options);
         }
 
         /**
