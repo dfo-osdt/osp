@@ -1,5 +1,5 @@
 <template>
-    <q-list bordered separator>
+    <q-list separator>
         <q-item
             v-for="manuscript in manuscripts"
             :key="manuscript.data.id"

@@ -11,7 +11,9 @@
         </q-card-section>
         <q-separator v-if="secondary" />
         <slot name="nav"></slot>
-        <q-card-section><slot></slot></q-card-section>
+        <q-card-section :class="noPadding ? 'q-pa-none' : ''">
+            <slot></slot>
+        </q-card-section>
     </q-card>
 </template>
 
@@ -19,6 +21,7 @@
 const props = withDefaults(
     defineProps<{
         secondary?: boolean;
+        noPadding?: boolean;
     }>(),
     {
         secondary: false,

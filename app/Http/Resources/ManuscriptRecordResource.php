@@ -52,7 +52,6 @@ class ManuscriptRecordResource extends JsonResource
                 'can_attach_manuscript' => Auth::user()->can('attachManuscript', $this->resource),
             ],
             'can' => [
-
                 'update' => Auth::user()->can('update', $this->resource),
                 'delete' => Auth::user()->can('delete', $this->resource),
             ],

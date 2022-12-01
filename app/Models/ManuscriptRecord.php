@@ -146,4 +146,6 @@ class ManuscriptRecord extends Model implements HasMedia, Auditable
 
         return $validator->passes();
     }
+
+    /// Scope methods
 }

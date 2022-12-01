@@ -18,6 +18,22 @@ export interface IAuthenticatedUser {
     roles: string[];
     permissions: string[];
 }
+/**
+ * List of available permissions
+ */
+type AuthenticatedUserPermissions =
+    | 'create_manuscript_records'
+    | 'create_publications'
+    | 'create_authors'
+    | 'update_authors'
+    | 'create_organizations'
+    | 'withhold_and_complete_management_review';
+
+/**
+ * List of available roles
+ */
+type AuthenticatedUserRoles = 'author' | 'director';
+
 class AuthenticatedUser implements IAuthenticatedUser {
     public id!: number;
     public first_name!: string;
@@ -58,7 +74,7 @@ class AuthenticatedUser implements IAuthenticatedUser {
      * @param permission
      * @returns
      */
-    can(permission: string): boolean {
+    can(permission: AuthenticatedUserPermissions): boolean {
         return this.permissions.includes(permission);
     }
 
@@ -68,7 +84,7 @@ class AuthenticatedUser implements IAuthenticatedUser {
      * @param role
      * @returns
      */
-    hasRole(role: string): boolean {
+    hasRole(role: AuthenticatedUserRoles): boolean {
         return this.roles.includes(role);
     }
 }

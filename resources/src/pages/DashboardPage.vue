@@ -212,9 +212,9 @@ const tab = useStorage('dashboard-recent-tab', 'manuscripts');
 
 // load the latest manuscripts
 onMounted(() => {
-    manuscripts.getMyManuscripts(true);
-    reviewSteps.getMyManagementReviewSteps(true);
-    publications.getMyPublications(true);
+    manuscripts.getMyManuscripts();
+    reviewSteps.getMyManagementReviewSteps();
+    publications.getMyPublications();
 });
 
 const data = computed(() => [

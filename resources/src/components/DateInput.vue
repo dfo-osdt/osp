@@ -13,7 +13,11 @@
                     transition-show="scale"
                     transition-hide="scale"
                 >
-                    <q-date v-model="date" mask="YYYY-MM-DD" :options="dateRangeFn">
+                    <q-date
+                        v-model="date"
+                        mask="YYYY-MM-DD"
+                        :options="dateRangeFn"
+                    >
                         <div class="row items-center justify-end">
                             <q-btn
                                 v-close-popup
@@ -46,24 +50,26 @@ const isoDateMask = '####-##-##';
 
 // compute the options function to pass to the date picker
 const dateRangeFn = computed(() => {
-    return (val: string) : boolean => {
+    return (val: string): boolean => {
         const date = new Date(val);
-        if(props.minDate && props.maxDate){
-            return date >= new Date(props.minDate) && date <= new Date(props.maxDate)
+        if (props.minDate && props.maxDate) {
+            return (
+                date >= new Date(props.minDate) &&
+                date <= new Date(props.maxDate)
+            );
         }
-        if(props.minDate){
-            return date >= new Date(props.minDate)
+        if (props.minDate) {
+            return date >= new Date(props.minDate);
         }
-        if(props.maxDate){
+        if (props.maxDate) {
             // add a day to the max date to allow the user to select the last day
             let maxDate = new Date(props.maxDate);
             maxDate.setDate(maxDate.getDate() + 1);
             return date <= maxDate;
         }
         return true;
-    }
+    };
 });
-
 
 const rules = [
     // required
