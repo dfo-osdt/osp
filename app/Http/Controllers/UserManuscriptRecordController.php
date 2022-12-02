@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ManuscriptRecordResource;
+use App\Models\ManuscriptRecord;
 use App\Queries\ManuscriptRecordQuery;
 use App\Traits\PaginationLimitTrait;
 use Auth;
@@ -21,17 +22,30 @@ class UserManuscriptRecordController extends Controller
     {
         $limit = $this->getLimitFromRequest(request());
 
-        $baseQuery = new ManuscriptRecordQuery($request);
-
-        $listQuery = $baseQuery->where('user_id', Auth::user()->id)
-            ->orWhereHas('manuscriptAuthors', function ($q) {
-                $q->whereHas('author', function ($q) {
-                    $q->where('user_id', Auth::user()->id);
+        $userId = Auth::id();
+        /**
+         * Initially, this query was part of the base query, however,
+         * this caused the filter to be ignored. Since is very unlikely
+         * to have thousands of records, this should not be a problem.
+         * If it is, we can always review this query.
+         */
+        $manuscriptIds = ManuscriptRecord::select('id')
+            ->where('user_id', $userId)
+            ->orWhereHas('manuscriptAuthors', function ($q) use ($userId) {
+                $q->whereHas('author', function ($q) use ($userId) {
+                    $q->where('user_id', $userId);
                 });
             })
-            ->orWhereHas('managementReviewSteps', function ($q) {
-                $q->where('user_id', Auth::user()->id);
-            })->with('manuscriptAuthors.organization', 'manuscriptAuthors.author');
+            ->orWhereHas('managementReviewSteps', function ($q) use ($userId) {
+                $q->where('user_id', $userId);
+            })
+            ->get()
+            ->pluck('id');
+
+        $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)
+            ->with('manuscriptAuthors.organization', 'manuscriptAuthors.author');
+
+        $listQuery = new ManuscriptRecordQuery($request, $baseQuery);
 
         return ManuscriptRecordResource::collection($listQuery->paginate($limit)->appends($request->query()));
     }

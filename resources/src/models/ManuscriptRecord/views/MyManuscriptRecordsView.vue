@@ -54,7 +54,7 @@
                 <ContentCard secondary>
                     <template #title>{{ mainFilterTitle }}</template>
                     <template #title-right
-                        ><SearchInput v-model="search" label="Search"
+                        ><SearchInput v-model="search" label="Filter"
                     /></template>
                     <ManuscriptList :manuscripts="manuscripts" />
                 </ContentCard>
@@ -79,7 +79,6 @@ import {
 const manuscripts = ref<ManuscriptRecordResource[]>([]);
 
 onMounted(() => {
-    console.log('mounted');
     getManuscripts();
 });
 
@@ -165,7 +164,7 @@ const mainFilterOptions = ref<MainFilterOption[]>([
         icon: 'mdi-check-circle',
         active: false,
         filter: (query: ManuscriptQuery): ManuscriptQuery => {
-            return query.filterStatus(['accepted']);
+            return query.filterStatus(['accepted', 'withdrawn', 'withheld']);
         },
     },
 ]);
