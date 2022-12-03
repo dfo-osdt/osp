@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ManuscriptRecordResource;
+use App\Http\Resources\ManuscriptRecordSummaryResource;
 use App\Models\ManuscriptRecord;
 use App\Queries\ManuscriptRecordQuery;
 use App\Traits\PaginationLimitTrait;
@@ -47,6 +47,6 @@ class UserManuscriptRecordController extends Controller
 
         $listQuery = new ManuscriptRecordQuery($request, $baseQuery);
 
-        return ManuscriptRecordResource::collection($listQuery->paginate($limit)->appends($request->query()));
+        return ManuscriptRecordSummaryResource::collection($listQuery->paginate($limit)->appends($request->query()));
     }
 }

@@ -104,7 +104,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/publications/{publication}', 'update');
         Route::post('/publications', 'store');
         Route::post('/publications/{publication}/pdf', 'attachPdf');
-        Route::get('/publications/{publication}/pdf', 'downloadPdf');
+        Route::get('/publications/{publication}/pdf', 'getPDFInfo');
+        Route::get('/publications/{publication}/pdf/download', 'downloadPdf');
     });
 
     Route::controller(PublicationAuthorController::class)->group(function () {

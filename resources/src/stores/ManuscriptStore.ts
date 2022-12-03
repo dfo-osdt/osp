@@ -1,6 +1,6 @@
 import {
     ManuscriptQuery,
-    ManuscriptRecordResource,
+    ManuscriptRecordSummaryResource,
     ManuscriptRecordService,
 } from '@/models/ManuscriptRecord/ManuscriptRecord';
 import { Ref } from 'vue';
@@ -11,7 +11,7 @@ import { Ref } from 'vue';
 export const useManuscriptStore = defineStore('ManuscriptStore', () => {
     // initial state
     const loading: Ref<boolean> = ref(false);
-    const manuscripts: Ref<ManuscriptRecordResource[] | undefined> =
+    const manuscripts: Ref<ManuscriptRecordSummaryResource[] | undefined> =
         ref(undefined);
 
     /** get values if they're not already loaded.

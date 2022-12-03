@@ -26,7 +26,6 @@ test('a user can get a list of publications with a filter', function () {
 
     $response->assertOk();
     $response->assertJsonCount(1, 'data');
-    ray($response->json('data'));
     expect($response->json('data.0.data.id'))->toBe($openAccessPublication->id);
 });
 
@@ -78,8 +77,6 @@ test('a user cannot create a publication with an invalid DOI', function () {
         'published_on' => '2021-03-01',
         'embargoed_until' => '2021-12-31',
     ]);
-
-    ray($response->json());
 
     $response->assertStatus(422);
     $response->assertJsonValidationErrors('doi');
@@ -197,7 +194,13 @@ test('a user can attach a new publication pdf to their publication', function ()
     ]);
 
     $response->assertOk();
-    expect($response->json('data.publication_pdf'))->not()->toBeNull();
+    //expect($response->json('data.publication_pdf'))->not()->toBeNull();
+
+    // check that user can see the pdf resrouce
+    $response = $this->actingAs($user)->get('/api/publications/'.$publication->id.'/pdf');
+    $response->assertOk();
+    ray($response->json());
+    expect($response->json('data.file_name'))->toBe('test.pdf');
 
     // check that user can download the pdf
     $response = $this->actingAs($user)->get('/api/publications/'.$publication->id.'/pdf');

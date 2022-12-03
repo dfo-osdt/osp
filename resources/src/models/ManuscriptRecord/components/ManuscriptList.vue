@@ -69,12 +69,12 @@
 </template>
 
 <script setup lang="ts">
-import { ManuscriptRecordResource } from '../ManuscriptRecord';
+import { ManuscriptRecordSummaryResource } from '../ManuscriptRecord';
 import ManuscriptTypeBadge from './ManuscriptTypeBadge.vue';
 import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue';
 
 defineProps<{
-    manuscripts: ManuscriptRecordResource[];
+    manuscripts: ManuscriptRecordSummaryResource[];
 }>();
 </script>
 

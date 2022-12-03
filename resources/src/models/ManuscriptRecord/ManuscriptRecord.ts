@@ -56,8 +56,24 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     can_attach_manuscript: boolean;
 }
 
+export type ManuscriptRecordSummary = Omit<
+    ManuscriptRecord,
+    | 'abstract'
+    | 'pls'
+    | 'scientific_implications'
+    | 'regions_and_species'
+    | 'relevant_to'
+    | 'additional_information'
+    | 'manuscript_pdf'
+    | 'publication'
+    | 'can_attach_manuscript'
+>;
+
 export type ManuscriptRecordResource = Resource<ManuscriptRecord>;
 export type ManuscriptRecordResourceList = ResourceList<ManuscriptRecord>;
+export type ManuscriptRecordSummaryResource = Resource<ManuscriptRecordSummary>;
+export type ManuscriptRecordSummaryResourceList =
+    ResourceList<ManuscriptRecordSummary>;
 
 export class ManuscriptRecordService {
     private static baseURL = 'api/manuscript-records';
@@ -173,41 +189,40 @@ export class ManuscriptRecordService {
         if (query) {
             url += `?${query.toQueryString()}`;
         }
-        const response = await http.get<ManuscriptRecordResourceList>(url);
+        const response = await http.get<ManuscriptRecordSummaryResourceList>(
+            url
+        );
         return response.data.data;
     }
 }
 
 export class ManuscriptQuery extends SpatieQuery {
-    public filterUserId(userId: number[]): ManuscriptQuery {
+    public filterUserId(userId: number[]): this {
         this.filter('user_id', userId);
         return this;
     }
 
-    public filterTitle(title: string[]): ManuscriptQuery {
+    public filterTitle(title: string[]): this {
         this.filter('title', title);
         return this;
     }
 
-    public filterRegionId(regionId: number[]): ManuscriptQuery {
+    public filterRegionId(regionId: number[]): this {
         this.filter('region_id', regionId);
         return this;
     }
 
-    public filterType(type: ManuscriptRecordType[]): ManuscriptQuery {
+    public filterType(type: ManuscriptRecordType[]): this {
         this.filter('type', type);
         return this;
     }
 
-    public filterStatus(status: ManuscriptRecordStatus[]): ManuscriptQuery {
+    public filterStatus(status: ManuscriptRecordStatus[]): this {
         this.filter('status', status);
         return this;
     }
 
-    public sort(
-        name: ManuscriptQuerySort,
-        direction: 'asc' | 'desc'
-    ): ManuscriptQuery {
+    public sort(name: ManuscriptQuerySort, direction: 'asc' | 'desc'): this {
         super.sort(name, direction);
         return this;
     }

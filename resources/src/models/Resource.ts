@@ -44,3 +44,5 @@ export interface Media {
     collection_name: string;
     mime_type: string;
 }
+
+export type MediaResource = Resource<Media>;

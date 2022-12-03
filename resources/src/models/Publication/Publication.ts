@@ -2,7 +2,7 @@ import { http } from '@/api/http';
 import { JournalResource } from '../Journal/Journal';
 import { ManuscriptRecordResource } from '../ManuscriptRecord/ManuscriptRecord';
 import { PublicationAuthorResource } from '../PublicationAuthor/PublicationAuthor';
-import { Media, Resource, ResourceList } from '../Resource';
+import { MediaResource, Resource, ResourceList } from '../Resource';
 import { UserResource } from '../User/User';
 
 export type PublicationStatus = 'accepted' | 'published';
@@ -21,7 +21,6 @@ export interface Publication {
     journal_id: number;
     manuscript_record_id: number;
     user_id: number;
-    publication_pdf: Media | null;
     // relationships
     journal?: JournalResource;
     manuscript_record?: ManuscriptRecordResource;
@@ -95,11 +94,19 @@ export class PublicationService {
         return response.data.data;
     }
 
+    /** Get PDF media resource - if it exits */
+    public static async getPDF(id: number) {
+        const response = await http.get<MediaResource>(
+            `api/publications/${id}/pdf`
+        );
+        return response.data;
+    }
+
     /** Attach a PDF file to the publication */
     public static async attachPDF(file: File, id: number) {
         const formData = new FormData();
         formData.append('pdf', file);
-        const response = await http.post<FormData, PublicationResource>(
+        const response = await http.post<FormData, MediaResource>(
             `api/publications/${id}/pdf`,
             formData,
             {

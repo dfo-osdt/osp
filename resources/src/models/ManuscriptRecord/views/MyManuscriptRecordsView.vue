@@ -72,11 +72,11 @@ import CreateManuscriptDialog from '../components/CreateManuscriptDialog.vue';
 import ManuscriptList from '../components/ManuscriptList.vue';
 import {
     ManuscriptQuery,
-    ManuscriptRecordResource,
     ManuscriptRecordService,
+    ManuscriptRecordSummaryResource,
 } from '../ManuscriptRecord';
 
-const manuscripts = ref<ManuscriptRecordResource[]>([]);
+const manuscripts = ref<ManuscriptRecordSummaryResource[]>([]);
 
 onMounted(() => {
     getManuscripts();

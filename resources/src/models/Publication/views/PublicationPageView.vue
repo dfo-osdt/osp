@@ -116,7 +116,7 @@
                         v-model="publication.data.journal_id"
                         :disable="loading"
                         :readonly="!canEdit"
-                        :rules="[(val) => !!val || 'Journal is required']"
+                        :rules="[(val: number | null) => !!val || 'Journal is required']"
                         class="q-mb-md"
                     />
                     <DoiInput
@@ -184,24 +184,23 @@
                     will not allow portal users to see this file until the end
                     of its embargo period.
                 </p>
-                <template v-if="publication?.data.publication_pdf">
+                <template v-if="publicationResource?.data">
                     <q-card outlined class="q-mb-md">
                         <q-list>
                             <q-item>
                                 <q-item-section>
                                     <q-item-label>{{
-                                        publication.data.publication_pdf
-                                            .file_name
+                                        publicationResource.data.file_name
                                     }}</q-item-label>
                                     <q-item-label caption>
                                         {{
-                                            publication.data.publication_pdf
+                                            publicationResource.data
                                                 .size_bytes / 1000
                                         }}
                                         KB uploaded on
                                         {{
                                             new Date(
-                                                publication.data.publication_pdf.created_at
+                                                publicationResource.data.created_at
                                             ).toLocaleString()
                                         }}
                                     </q-item-label>
@@ -211,7 +210,7 @@
                                         icon="mdi-file-download-outline"
                                         color="primary"
                                         :loading="loading"
-                                        :href="`api/publications/${id}/pdf`"
+                                        :href="`api/publications/${id}/pdf/download`"
                                     />
                                 </q-item-section>
                             </q-item>
@@ -224,7 +223,7 @@
                     outlined
                     use-chips
                     :label="
-                        publication?.data.publication_pdf
+                        publicationResource?.data
                             ? 'Upload a new version of the publication'
                             : 'Upload the publication'
                     "
@@ -282,6 +281,7 @@ import DateInput from '@/components/DateInput.vue';
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
 import DoiLink from '../components/DoiLink.vue';
 import ManagePublicationAuthorsCard from '@/models/PublicationAuthor/components/ManagePublicationAuthorsCard.vue';
+import { MediaResource } from '@/models/Resource';
 
 const $q = useQuasar();
 const router = useRouter();
@@ -310,6 +310,7 @@ function markAsPublished() {
 onMounted(async () => {
     try {
         publication.value = await PublicationService.find(props.id);
+        publicationResource.value = await PublicationService.getPDF(props.id);
     } catch (error) {
         console.log(error);
         router.push({ name: 'notFound' });
@@ -377,6 +378,7 @@ const save = async () => {
 };
 
 // file upload
+const publicationResource = ref<MediaResource | null>(null);
 const publicationFile = ref<File | null>(null);
 const uploadingFile = ref(false);
 
@@ -411,10 +413,7 @@ async function upload() {
         props.id
     );
 
-    if (publication.value?.data) {
-        publication.value.data['publication_pdf'] =
-            response.data.publication_pdf;
-    }
+    publicationResource.value = response;
 
     uploadingFile.value = false;
     // clear file

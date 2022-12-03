@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PublicationStatus;
+use App\Http\Resources\MediaResource;
 use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
@@ -133,7 +134,21 @@ class PublicationController extends Controller
 
         $publication->addMedia($validated['pdf'])->toMediaCollection('publication');
 
-        return new PublicationResource($publication->load('user'));
+        return new MediaResource($publication->getPublicationFile('publication'));
+    }
+
+    /** return pdf media resource if it exists null response otherwise */
+    public function getPDFInfo(Request $request, Publication $publication)
+    {
+        Gate::authorize('view', $publication);
+
+        $media = $publication->getPublicationFile('publication');
+
+        if ($media) {
+            return MediaResource::make($media);
+        }
+
+        return response()->noContent();
     }
 
     /** Download PDF attached to this publication - return NoContent if empty */
