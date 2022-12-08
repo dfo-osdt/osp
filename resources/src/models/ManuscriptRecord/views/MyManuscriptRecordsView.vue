@@ -48,14 +48,41 @@
                             </q-item-section>
                         </q-item>
                     </q-list>
+                    <div
+                        v-if="
+                            authorStore.user?.can('create_manuscript_records')
+                        "
+                        class="flex-center flex q-mt-lg q-mb-sm q-mx-md"
+                    >
+                        <q-btn
+                            label="Create manuscript"
+                            color="primary"
+                            outline
+                            icon="mdi-plus"
+                            @click="showCreateManuscriptDialog = true"
+                        />
+                    </div>
                 </ContentCard>
             </div>
             <div class="col q-pr-lg">
                 <ContentCard secondary>
-                    <template #title>{{ mainFilterTitle }}</template>
+                    <template #title>{{ mainFilter?.label }}</template>
+                    <template #subtitle>{{ mainFilter?.caption }}</template>
                     <template #title-right
                         ><SearchInput v-model="search" label="Filter"
                     /></template>
+                    <template
+                        v-if="manuscripts.length === 0 && !hasAnyManuscripts"
+                    >
+                        <NoManuscriptExistsDiv
+                            title="No manuscripts exists or are shared with you"
+                        />
+                    </template>
+                    <template
+                        v-if="manuscripts.length === 0 && hasAnyManuscripts"
+                    >
+                        <NoResultFoundDiv />
+                    </template>
                     <ManuscriptList :manuscripts="manuscripts" />
                 </ContentCard>
             </div>
@@ -70,6 +97,9 @@ import SearchInput from '@/components/SearchInput.vue';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import CreateManuscriptDialog from '../components/CreateManuscriptDialog.vue';
 import ManuscriptList from '../components/ManuscriptList.vue';
+import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue';
+import NoManuscriptExistsDiv from '../components/NoManuscriptExistsDiv.vue';
+
 import {
     ManuscriptQuery,
     ManuscriptRecordService,
@@ -110,6 +140,14 @@ const showCreateManuscriptDialog = ref(false);
 // user store
 const authorStore = useAuthStore();
 
+// manuscript store - used to determine if the user has any manuscripts
+const manuscriptStore = useManuscriptStore();
+manuscriptStore.getMyManuscripts();
+const hasAnyManuscripts = computed(() => {
+    if (!manuscriptStore.manuscripts) return false;
+    return manuscriptStore.manuscripts?.length > 0;
+});
+
 // type for main filter options
 type MainFilterOption = {
     id: number;
@@ -147,6 +185,7 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     {
         id: 3,
         label: 'In Progress',
+        caption: 'Actions still required',
         icon: 'mdi-progress-clock',
         active: false,
         filter: (query: ManuscriptQuery): ManuscriptQuery => {
@@ -161,6 +200,7 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     {
         id: 4,
         label: 'Completed',
+        caption: 'No actions required',
         icon: 'mdi-check-circle',
         active: false,
         filter: (query: ManuscriptQuery): ManuscriptQuery => {
@@ -179,8 +219,8 @@ const mainFilterClick = (filterId: number) => {
     getManuscripts();
 };
 
-const mainFilterTitle = computed(() => {
-    return mainFilterOptions.value.find((f) => f.active)?.label;
+const mainFilter = computed(() => {
+    return mainFilterOptions.value.find((f) => f.active);
 });
 
 // pagination

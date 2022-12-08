@@ -5,7 +5,12 @@
                 class="row flex justify-between"
                 :class="secondary ? 'text-h6 text-weight-regular' : 'text-h5'"
             >
-                <div><slot name="title">Title here</slot></div>
+                <div>
+                    <slot name="title">Title here</slot>
+                    <div class="text-subtitle2 text-grey-6">
+                        <slot name="subtitle" />
+                    </div>
+                </div>
                 <div><slot name="title-right"></slot></div>
             </div>
         </q-card-section>
