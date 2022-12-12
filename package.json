@@ -7,7 +7,7 @@
         "cy:open": "vite build && cypress open"
     },
     "devDependencies": {
-        "@intlify/vite-plugin-vue-i18n": "^6.0.3",
+        "@intlify/vite-plugin-vue-i18n": "^7.0.0",
         "@quasar/vite-plugin": "1.2.3",
         "@types/dompurify": "^2.4.0",
         "@types/node": "18.11.13",
