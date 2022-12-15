@@ -6,7 +6,7 @@ import { useStorage } from '@vueuse/core';
  * All i18n resources specified in the plugin `include` option can be loaded
  * at once using the import syntax
  */
-import messages from '@intlify/vite-plugin-vue-i18n/messages';
+import messages from '@intlify/unplugin-vue-i18n/messages';
 
 // if it's the users' first visit, set the locale to the one they have set in their browser
 const browserLocale = navigator.language.split('-')[0];
