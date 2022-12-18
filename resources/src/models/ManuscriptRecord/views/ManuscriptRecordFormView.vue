@@ -193,7 +193,8 @@
                         <div
                             v-if="
                                 !isManuscriptReadOnly &&
-                                manuscriptResource.data.pls === '' &&
+                                (manuscriptResource.data.pls === '' ||
+                                    PLSLoading) &&
                                 manuscriptResource.data.abstract !== ''
                             "
                             class="row justify-end q-mr-sm"
