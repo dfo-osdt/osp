@@ -201,8 +201,8 @@
                             <div
                                 class="text-body1 text-primary q-pt-sm q-pr-md"
                             >
-                                Need some help? Click here to generate a draft
-                                PLS to get you started.
+                                Need some help? Using your manuscript's
+                                abstract, we can generate a draft PLS.
                             </div>
                             <q-btn
                                 class="q-mb-md"
