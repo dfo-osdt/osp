@@ -5,6 +5,7 @@ use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
+use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PublicationAuthorController;
 use App\Http\Controllers\PublicationController;
@@ -117,4 +118,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('/regions', [RegionController::class, 'index']);
+
+    Route::prefix('utils')->group(function () {
+        Route::post('/generate-pls', GeneratePLSController::class);
+    });
 });

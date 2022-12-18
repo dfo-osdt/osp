@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.0.1",
         "laravel/telescope": "^4.9.6",
         "laravel/tinker": "^2.7.3",
+        "orhanerday/open-ai": "^3.2",
         "owen-it/laravel-auditing": "^13.0.5",
         "predis/predis": "^2.0.3",
         "spatie/laravel-medialibrary": "^10.7.3",

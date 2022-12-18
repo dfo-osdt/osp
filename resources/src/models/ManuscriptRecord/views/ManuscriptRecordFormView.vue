@@ -170,7 +170,7 @@
                     <QuestionEditor
                         v-model="manuscriptResource.data.pls"
                         title="Plain Language Summary"
-                        :disable="loading"
+                        :disable="loading || PLSLoading"
                         :readonly="isManuscriptReadOnly"
                         required
                         class="q-mb-md"
@@ -190,6 +190,31 @@
                                 >here</a
                             >.
                         </p>
+                        <div
+                            v-if="
+                                !isManuscriptReadOnly &&
+                                manuscriptResource.data.pls === '' &&
+                                manuscriptResource.data.abstract !== ''
+                            "
+                            class="row justify-end q-mr-sm"
+                        >
+                            <div
+                                class="text-body1 text-primary q-pt-sm q-pr-md"
+                            >
+                                Need some help? Click here to generate a draft
+                                PLS to get you started.
+                            </div>
+                            <q-btn
+                                class="q-mb-md"
+                                color="primary"
+                                label="Generate PLS"
+                                icon="mdi-brain"
+                                outline
+                                rounded
+                                :loading="PLSLoading"
+                                @click="generatePLS"
+                            />
+                        </div>
                     </QuestionEditor>
                     <QuestionEditor
                         v-model="
@@ -416,6 +441,7 @@ import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
 import RequiredSpan from '@/components/RequiredSpan.vue';
 import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue';
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
+import { UtilityService } from '@/api/utils';
 
 const $q = useQuasar();
 const router = useRouter();
@@ -629,6 +655,32 @@ const showPublishBanner = computed(() => {
         manuscript.status === 'reviewed' || manuscript.status === 'submitted'
     );
 });
+
+// PLS generation
+const PLSLoading = ref(false);
+
+async function generatePLS() {
+    PLSLoading.value = true;
+    if (!manuscriptResource.value?.data.abstract) return;
+    if (manuscriptResource.value?.data.abstract === '') return;
+    manuscriptResource.value.data.pls = 'Generating PLS... please be patient';
+    await UtilityService.generatePls(manuscriptResource.value.data.abstract)
+        .then((response) => {
+            if (!manuscriptResource.value) return;
+            manuscriptResource.value.data.pls = response.data.pls;
+            $q.notify({
+                type: 'positive',
+                color: 'primary',
+                message: 'PLS generated successfully',
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        .finally(() => {
+            PLSLoading.value = false;
+        });
+}
 </script>
 
 <style scoped></style>
