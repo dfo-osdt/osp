@@ -29,7 +29,14 @@ class GeneratePLSController extends Controller
         // clean up the abstract - it could have html tags we don't want
         $validated['abstract'] = strip_tags($validated['abstract']);
 
-        $openAi = new OpenAi(env('OPENAI_API_KEY'));
+        // if API key is not set, return an error
+        if (config('osp.openai_api_key') === null) {
+            return response()->json([
+                'message' => 'Feature temporarily unavailable.',
+            ], 500);
+        }
+
+        $openAi = new OpenAi(config('osp.openai_api_key'));
         $result = $openAi->completion($this->buildOpenAiPrompt($validated['abstract']));
 
         ray($result);

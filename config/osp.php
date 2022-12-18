@@ -11,4 +11,9 @@ return [
         'max' => 100,
     ],
 
+    /*
+        The OpenAI API key.
+    */
+    'openai_api_key' => env('OPENAI_API_KEY'),
+
 ];
