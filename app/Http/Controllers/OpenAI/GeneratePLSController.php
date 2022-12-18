@@ -31,15 +31,18 @@ class GeneratePLSController extends Controller
 
         // if API key is not set, return an error
         if (config('osp.openai_api_key') === null) {
-            return response()->json([
-                'message' => 'Feature temporarily unavailable.',
-            ], 500);
+            return $this->error();
         }
 
         $openAi = new OpenAi(config('osp.openai_api_key'));
         $result = $openAi->completion($this->buildOpenAiPrompt($validated['abstract']));
 
         ray($result);
+
+        // does result contain an error?
+        if (isset($result['error'])) {
+            return $this->error();
+        }
 
         // take results, from json to an array
         $result = json_decode($result, true);
@@ -77,5 +80,12 @@ class GeneratePLSController extends Controller
             'frequency_penalty' => 0,
             'presence_penalty' => 0,
         ];
+    }
+
+    private function error($message = 'Feature temporarily unavailable.')
+    {
+        return response()->json([
+            'message' => $message,
+        ], 500);
     }
 }
