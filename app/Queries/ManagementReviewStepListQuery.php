@@ -20,6 +20,7 @@ class ManagementReviewStepListQuery extends QueryBuilder
             AllowedFilter::exact('status'),
             AllowedFilter::exact('decision'),
             AllowedFilter::exact('user_id'),
+            AllowedFilter::partial('manuscriptRecord.title'),
         ]);
     }
 }

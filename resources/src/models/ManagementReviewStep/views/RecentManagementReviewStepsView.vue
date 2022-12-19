@@ -3,26 +3,7 @@
         <q-spinner-dots size="50px" color="primary" />
     </div>
     <div v-else>
-        <div v-if="steps.empty" class="flex row justify-center">
-            <div class="col-12 col-lg-10 flex column text-center">
-                <div>
-                    <q-img
-                        src="/assets/splash_images/undraw_done_checking_re_6vyx.svg"
-                        width="250px"
-                        class="q-mb-sm"
-                    />
-                </div>
-                <div class="text-h5 text-weight-light text-accent q-mb-sm">
-                    You have nothing to review
-                </div>
-                <div class="text-body1 text-grey-8">
-                    <p>
-                        Manuscripts you've recently been asked to review will
-                        appear here.
-                    </p>
-                </div>
-            </div>
-        </div>
+        <NoManagementStepExistsDiv v-if="steps.empty" />
         <div v-else>
             <ManagementReviewStepList :management-review-steps="steps.recent" />
         </div>
@@ -31,6 +12,7 @@
 
 <script setup lang="ts">
 import ManagementReviewStepList from '../components/ManagementReviewStepList.vue';
+import NoManagementStepExistsDiv from '../components/NoManagementStepExistsDiv.vue';
 
 const steps = useManagementReviewStepStore();
 

@@ -1,4 +1,5 @@
 import {
+    ManagementReviewQuery,
     ManagementReviewStepResourceList,
     ManagementReviewStepService,
 } from '@/models/ManagementReviewStep/ManagementReviewStep';
@@ -23,8 +24,11 @@ export const useManagementReviewStepStore = defineStore(
             if (loading.value) return; // don't load if we're already loading
             if (managementReviewSteps.value === undefined || force) {
                 loading.value = true;
+                const query = new ManagementReviewQuery();
+                query.sort('updated_at', 'asc');
+                query.paginate(1, 10);
                 managementReviewSteps.value =
-                    await ManagementReviewStepService.listMy();
+                    await ManagementReviewStepService.listMy(query);
                 loading.value = false;
             }
         }
@@ -46,7 +50,6 @@ export const useManagementReviewStepStore = defineStore(
                 .slice(0, 5);
         });
 
-        // TODO: this results is limited to 10 by API query, but we need to get all of them.
         const pendingReviewCount = computed(() => {
             if (managementReviewSteps.value === undefined) return 0;
             return managementReviewSteps.value.data.filter(

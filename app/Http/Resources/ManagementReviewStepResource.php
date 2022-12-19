@@ -28,7 +28,7 @@ class ManagementReviewStepResource extends JsonResource
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
                 // relationships
-                'manuscript_record' => ManuscriptRecordResource::make($this->whenLoaded('manuscriptRecord')),
+                'manuscript_record' => ManuscriptRecordSummaryResource::make($this->whenLoaded('manuscriptRecord')),
                 'previous_step' => ManagementReviewStepResource::make($this->whenLoaded('previousStep')),
                 'user' => UserResource::make($this->whenLoaded('user')),
             ],

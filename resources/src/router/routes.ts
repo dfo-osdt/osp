@@ -69,7 +69,10 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/my-reviews',
-                component: UnderConstruction,
+                component: () =>
+                    import(
+                        '@/models/ManagementReviewStep/views/MyManagementReviewStepsView.vue'
+                    ),
                 meta: { requiresAuth: true },
             },
             {

@@ -1,5 +1,6 @@
 import { http } from '@/api/http';
-import { ManuscriptRecordResource } from '../ManuscriptRecord/ManuscriptRecord';
+import { SpatieQuery } from '@/api/SpatieQuery';
+import { ManuscriptRecordSummaryResource } from '../ManuscriptRecord/ManuscriptRecord';
 import { Resource, ResourceList } from '../Resource';
 import { UserResource } from '../User/User';
 
@@ -23,7 +24,7 @@ export interface ManagementReviewStep {
     previous_step_id: number | null;
     user_id: number;
     // relationships
-    manuscript_record?: ManuscriptRecordResource;
+    manuscript_record?: ManuscriptRecordSummaryResource;
     user?: UserResource;
     previous_step?: ManagementReviewStepResource;
 }
@@ -39,10 +40,11 @@ export class ManagementReviewStepService {
     /**
      * Get all my management review steps.
      */
-    public static async listMy() {
-        const response = await http.get<RList>(
-            'api/my/management-review-steps'
-        );
+    public static async listMy(query?: ManagementReviewQuery) {
+        let url = 'api/my/management-review-steps';
+        if (query) url += `?${query.toQueryString()}`;
+        const response = await http.get<RList>(url);
+
         return response.data;
     }
     /**
@@ -135,3 +137,37 @@ export class ManagementReviewStepService {
         return response.data;
     }
 }
+
+export class ManagementReviewQuery extends SpatieQuery {
+    public filterUserId(userId: number) {
+        this.filter('user_id', userId);
+        return this;
+    }
+    public filterStatus(status: ManagementReviewStepStatus[]) {
+        this.filter('status', status);
+        return this;
+    }
+    public filterDecision(decision: ManagementReviewStepDecision[]) {
+        this.filter('decision', decision);
+        return this;
+    }
+    public filterManuscriptRecordTitle(title: string[]) {
+        this.filter('manuscriptRecord.title', title);
+        return this;
+    }
+
+    public includeManuscriptRecord() {
+        this.include('manuscriptRecord');
+        return this;
+    }
+    public includeUser() {
+        this.include('user');
+        return this;
+    }
+    public sort(sort: ManagementReviewQuerySort, direction: 'asc' | 'desc') {
+        super.sort(sort, direction);
+        return this;
+    }
+}
+
+type ManagementReviewQuerySort = 'created_at' | 'updated_at';
