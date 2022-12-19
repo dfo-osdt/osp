@@ -21,7 +21,8 @@ export const usePublicationStore = defineStore('PublicationStore', () => {
         if (loading.value) return; // don't load if we're already loading
         if (publications.value === undefined || force) {
             loading.value = true;
-            publications.value = await PublicationService.getMyPublications();
+            const response = await PublicationService.getMyPublications();
+            publications.value = response.data;
             loading.value = false;
         }
     }

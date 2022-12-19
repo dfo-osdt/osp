@@ -91,38 +91,9 @@
                         </q-tab-panel>
                         <q-tab-panel name="publications" class="q-pa-none">
                             <template v-if="publications.empty">
-                                <div class="flex row justify-center">
-                                    <div
-                                        class="col-12 col-lg-10 flex column text-center"
-                                    >
-                                        <div>
-                                            <q-img
-                                                src="/assets/splash_images/undraw_scientist_0ft9.svg"
-                                                width="250px"
-                                                class="q-mb-sm"
-                                            />
-                                        </div>
-                                        <div
-                                            class="text-h5 text-weight-light text-accent q-mb-sm"
-                                        >
-                                            Add a publication
-                                        </div>
-                                        <div
-                                            class="text-body1 text-grey-8 text-left"
-                                        >
-                                            <p>
-                                                Manuscripts that have been
-                                                reviewed will appear here. Once
-                                                published, you can update the
-                                                publication details. You can
-                                                also add any past publication
-                                                here so that it is part of our
-                                                database and available for all
-                                                to see.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <NoPublicationExistDiv
+                                    title="Add your first publication"
+                                />
                             </template>
                             <PublicationList
                                 v-if="!publications.empty"
@@ -162,6 +133,7 @@ import PublicationList from '@/models/Publication/components/PublicationList.vue
 import CreatePublicationDialog from '@/models/Publication/components/CreatePublicationDialog.vue';
 import { PublicationResource } from '@/models/Publication/Publication';
 import NoManuscriptExistsDiv from '@/models/ManuscriptRecord/components/NoManuscriptExistsDiv.vue';
+import NoPublicationExistDiv from '@/models/Publication/components/NoPublicationExistDiv.vue';
 
 const manuscripts = useManuscriptStore();
 const reviewSteps = useManagementReviewStepStore();

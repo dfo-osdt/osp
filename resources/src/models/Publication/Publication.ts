@@ -1,4 +1,5 @@
 import { http } from '@/api/http';
+import { SpatieQuery } from '@/api/SpatieQuery';
 import { JournalResource } from '../Journal/Journal';
 import { ManuscriptRecordResource } from '../ManuscriptRecord/ManuscriptRecord';
 import { PublicationAuthorResource } from '../PublicationAuthor/PublicationAuthor';
@@ -49,10 +50,10 @@ export type RList = PublicationResourceList;
  */
 export class PublicationService {
     /** Get a list of publications */
-    public static async list(query?: string) {
+    public static async list(query?: PublicationQuery) {
         let url = 'api/publications';
         if (query) {
-            url += `?${query}`;
+            url += `?${query.toQueryString()}`;
         }
         const response = await http.get<RList>(url);
         return response.data;
@@ -89,9 +90,13 @@ export class PublicationService {
     }
 
     /** Get a list of publications for logged in user */
-    public static async getMyPublications() {
-        const response = await http.get<RList>(`api/my/publications?limit=100`);
-        return response.data.data;
+    public static async getMyPublications(query?: PublicationQuery) {
+        let url = 'api/my/publications';
+        if (query) {
+            url += `?${query.toQueryString()}`;
+        }
+        const response = await http.get<RList>(url);
+        return response.data;
     }
 
     /** Get PDF media resource - if it exits */
@@ -118,3 +123,44 @@ export class PublicationService {
         return response.data;
     }
 }
+
+export class PublicationQuery extends SpatieQuery {
+    public filterId(id: number[]) {
+        this.filter('id', id);
+        return this;
+    }
+    public filterUserId(userId: number[]) {
+        this.filter('user_id', userId);
+        return this;
+    }
+    public filterStatus(status: PublicationStatus[]) {
+        this.filter('status', status);
+        return this;
+    }
+    public filterJournalID(journalId: number[]) {
+        this.filter('journal_id', journalId);
+        return this;
+    }
+    public filterTitle(title: string) {
+        this.filter('title', title);
+        return this;
+    }
+    public filterOpenAccess() {
+        this.filter('open_access', true);
+        return this;
+    }
+    public filterNotUnderEmbargo() {
+        this.filter('not_under_embargo', true);
+        return this;
+    }
+    public filterUnderEmbargo() {
+        this.filter('under_embargo', true);
+        return this;
+    }
+    public sort(sort: PublicationQuerySort, direction: 'asc' | 'desc') {
+        super.sort(sort, direction);
+        return this;
+    }
+}
+
+type PublicationQuerySort = 'title' | 'created_at' | 'updated_at';
