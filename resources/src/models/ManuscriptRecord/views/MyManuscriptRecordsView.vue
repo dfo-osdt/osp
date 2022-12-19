@@ -72,18 +72,29 @@
                         ><SearchInput v-model="search" label="Filter"
                     /></template>
                     <template
-                        v-if="manuscripts.length === 0 && !hasAnyManuscripts"
+                        v-if="
+                            manuscripts?.data.length === 0 && !hasAnyManuscripts
+                        "
                     >
                         <NoManuscriptExistsDiv
                             title="No manuscripts exists or are shared with you"
                         />
                     </template>
                     <template
-                        v-if="manuscripts.length === 0 && hasAnyManuscripts"
+                        v-if="
+                            manuscripts?.data.length === 0 && hasAnyManuscripts
+                        "
                     >
                         <NoResultFoundDiv />
                     </template>
-                    <ManuscriptList :manuscripts="manuscripts" />
+                    <ManuscriptList :manuscripts="manuscripts?.data ?? []" />
+                    <q-card-section>
+                        <PaginationDiv
+                            v-model="currentPage"
+                            :meta="manuscripts?.meta ?? null"
+                            :disable="loading"
+                        ></PaginationDiv>
+                    </q-card-section>
                 </ContentCard>
             </div>
         </div>
@@ -103,16 +114,19 @@ import NoManuscriptExistsDiv from '../components/NoManuscriptExistsDiv.vue';
 import {
     ManuscriptQuery,
     ManuscriptRecordService,
-    ManuscriptRecordSummaryResource,
+    ManuscriptRecordSummaryResourceList,
 } from '../ManuscriptRecord';
+import PaginationDiv from '@/components/PaginationDiv.vue';
 
-const manuscripts = ref<ManuscriptRecordSummaryResource[]>([]);
+const manuscripts = ref<ManuscriptRecordSummaryResourceList>();
 
 onMounted(() => {
     getManuscripts();
 });
 
+const loading = ref(false);
 async function getManuscripts() {
+    if (loading.value) return;
     // build the query
     let query = new ManuscriptQuery();
 
@@ -124,14 +138,16 @@ async function getManuscripts() {
     });
 
     // is there a search term?
-    if (search.value) {
+    if (search?.value) {
         query = query.filterTitle([search.value]);
     }
 
     query.sort('title', 'asc');
-    query.paginate(currentPage.value, 10);
+    query.paginate(currentPage.value, 5);
 
+    loading.value = true;
     manuscripts.value = await ManuscriptRecordService.getMyManuscripts(query);
+    loading.value = false;
 }
 
 // create manuscript dialog
@@ -210,12 +226,12 @@ const mainFilterOptions = ref<MainFilterOption[]>([
 ]);
 
 const mainFilterClick = (filterId: number) => {
-    // clear search filter
-    search.value = '';
     mainFilterOptions.value = mainFilterOptions.value.map((f) => {
         f.active = f.id === filterId;
         return f;
     });
+    search.value = '';
+    currentPage.value = 1;
     getManuscripts();
 };
 
@@ -225,6 +241,9 @@ const mainFilter = computed(() => {
 
 // pagination
 const currentPage = ref(1);
+watch(currentPage, () => {
+    getManuscripts();
+});
 
 // search
 const search = ref<string | null>(null);
@@ -232,6 +251,7 @@ const search = ref<string | null>(null);
 watchThrottled(
     search,
     () => {
+        currentPage.value = 1;
         getManuscripts();
     },
     { throttle: 750 }

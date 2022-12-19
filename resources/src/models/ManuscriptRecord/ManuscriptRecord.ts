@@ -192,7 +192,7 @@ export class ManuscriptRecordService {
         const response = await http.get<ManuscriptRecordSummaryResourceList>(
             url
         );
-        return response.data.data;
+        return response.data;
     }
 }
 

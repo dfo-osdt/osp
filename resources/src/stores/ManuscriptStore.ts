@@ -27,9 +27,10 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
             const query = new ManuscriptQuery();
             query.sort('updated_at', 'desc').paginate(1, 10);
 
-            manuscripts.value = await ManuscriptRecordService.getMyManuscripts(
+            const response = await ManuscriptRecordService.getMyManuscripts(
                 query
             );
+            manuscripts.value = response.data;
             loading.value = false;
         }
     }

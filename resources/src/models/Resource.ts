@@ -3,7 +3,7 @@ interface ModelPermissions {
     delete?: boolean;
 }
 
-interface Meta {
+export interface Meta {
     current_page: number;
     from: number;
     last_page: number;
