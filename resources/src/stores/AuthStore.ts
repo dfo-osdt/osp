@@ -97,7 +97,6 @@ export const useAuthStore = defineStore('AuthStore', () => {
     } = useSanctum();
     const localeStore = useLocaleStore();
     const idleTimerMin: number = import.meta.env.VITE_IDLE_TIMER_MIN || 30;
-    const { t } = i18n.global;
 
     // initial state
     const user: Ref<AuthenticatedUser | null> = useStorage('user', null);
@@ -173,7 +172,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
             .then(() => {
                 user.value = null;
                 Router.push({ name: 'login' });
-                const msg = t('auth.logged-out-successfully');
+                const msg = t('auth.logout.success');
 
                 setTimeout(() => {
                     Notify.create({

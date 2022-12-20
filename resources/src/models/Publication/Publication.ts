@@ -146,7 +146,7 @@ export class PublicationQuery extends SpatieQuery {
     }
 
     public filterAuthorID(authorId: number[]) {
-        this.filter('publicationAuthor.author_id', authorId);
+        this.filter('publicationAuthors.author_id', authorId);
         return this;
     }
 

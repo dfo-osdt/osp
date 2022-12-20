@@ -118,6 +118,10 @@ function optionLabel(item: JournalResource) {
     const { title_en, publisher } = item.data;
     return `${title_en} (${publisher})`;
 }
+
+defineExpose({
+    selectedJournal,
+});
 </script>
 
 <style scoped></style>

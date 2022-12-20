@@ -1,7 +1,7 @@
 <template>
     <MainPageLayout title="Publications">
         <div class="row q-gutter-lg q-col-gutter-lg flex">
-            <div class="cols-2">
+            <div class="col-3">
                 <ContentCard secondary no-padding>
                     <template #title>Publications</template>
                     <q-list class="text-body1">
@@ -31,8 +31,33 @@
                     <template #title>{{ mainFilter?.label }}</template>
                     <template #subtitle>{{ mainFilter?.caption }}</template>
                     <template #title-right
-                        ><SearchInput v-model="search" label="Filter"
+                        ><SearchInput v-model="search" label="Filter Title"
                     /></template>
+                    <template #nav>
+                        <q-expansion-item
+                            v-model="showFilters"
+                            icon="mdi-filter-variant"
+                            label="Filters"
+                            :caption="filterCaption"
+                        >
+                            <q-card-section class="column q-gutter-md">
+                                <JournalSelect
+                                    ref="journalSelect"
+                                    v-model="journalId"
+                                    label="Journal"
+                                    :disable="loading"
+                                ></JournalSelect>
+                                <AuthorSelect
+                                    ref="authorSelect"
+                                    v-model="authorId"
+                                    label="Author"
+                                    :disable="loading"
+                                    :hide-create-author-dialog="true"
+                                ></AuthorSelect>
+                            </q-card-section>
+                        </q-expansion-item>
+                        <q-separator />
+                    </template>
                     <template v-if="publications?.data.length === 0">
                         <NoResultFoundDiv />
                     </template>
@@ -62,6 +87,8 @@ import {
     PublicationResourceList,
     PublicationService,
 } from '../Publication';
+import JournalSelect from '@/models/Journal/components/JournalSelect.vue';
+import AuthorSelect from '@/models/Author/components/AuthorSelect.vue';
 
 const publications = ref<PublicationResourceList>();
 
@@ -87,8 +114,16 @@ async function getPublications() {
         query = query.filterTitle(search.value);
     }
 
+    if (journalId.value) {
+        query = query.filterJournalID([journalId.value]);
+    }
+
+    if (authorId.value) {
+        query = query.filterAuthorID([authorId.value]);
+    }
+
     query.sort('title', 'asc');
-    query.paginate(currentPage.value, 5);
+    query.paginate(currentPage.value, 15);
 
     loading.value = true;
     publications.value = await PublicationService.list(query);
@@ -101,7 +136,7 @@ type MainFilterOption = {
     label: string;
     caption?: string;
     icon: string;
-    active: boolean | (() => boolean);
+    active: boolean;
     filter: (query: PublicationQuery) => PublicationQuery;
 };
 
@@ -119,7 +154,7 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     },
     {
         id: 2,
-        label: 'Open Access Publications',
+        label: 'Open Access',
         caption: 'Publications published as open access',
         icon: 'mdi-lock-open-outline',
         active: false,
@@ -180,6 +215,29 @@ watchThrottled(
     },
     { throttle: 750 }
 );
+
+// filters
+const showFilters = ref(false);
+const journalId = ref<number | null>(null);
+const journalSelect = ref<InstanceType<typeof JournalSelect> | null>(null);
+const authorId = ref<number | null>(null);
+const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null);
+
+const filterCaption = computed(() => {
+    let caption = '';
+    if (journalId.value) {
+        const { title_en } = journalSelect?.value?.selectedJournal?.data || {};
+        caption += `in ${title_en} `;
+    }
+    if (authorId.value) {
+        const { first_name, last_name } =
+            authorSelect?.value?.selectedAuthor?.data || {};
+        caption += `by ${first_name} ${last_name} `;
+    }
+    if (caption.length > 0) caption = 'Publications ' + caption.slice(0, -1);
+    else caption = 'No filters applied';
+    return caption;
+});
 </script>
 
 <style scoped></style>

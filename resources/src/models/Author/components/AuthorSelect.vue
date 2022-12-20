@@ -28,7 +28,11 @@
                 </q-item-section>
             </q-item>
             <q-separator />
-            <q-item clickable @click="showCreateAuthorDialog = true">
+            <q-item
+                v-if="!hideCreateAuthorDialog"
+                clickable
+                @click="showCreateAuthorDialog = true"
+            >
                 <q-item-section>
                     Can't find the author you're looking for?
                 </q-item-section>
@@ -63,7 +67,7 @@
                 }}</q-item-section>
             </q-item>
         </template>
-        <template #after-options>
+        <template v-if="!hideCreateAuthorDialog" #after-options>
             <q-separator />
             <q-item clickable @click="showCreateAuthorDialog = true">
                 <q-item-section>
@@ -103,6 +107,7 @@ const props = withDefaults(
     defineProps<{
         modelValue: number | null;
         disabledAuthorIds?: number[];
+        hideCreateAuthorDialog?: boolean;
     }>(),
     {
         disabledAuthorIds: () => [],
@@ -119,6 +124,8 @@ const emit = defineEmits(['update:modelValue']);
 watch(selectedAuthor, (author) => {
     if (author) {
         emit('update:modelValue', author.data.id);
+    } else {
+        emit('update:modelValue', null);
     }
 });
 
@@ -157,6 +164,10 @@ function optionLabel(item: AuthorResource) {
 function optionDisable(item: AuthorResource) {
     return props.disabledAuthorIds.includes(item.data.id);
 }
+
+defineExpose({
+    selectedAuthor,
+});
 </script>
 
 <style scoped></style>
