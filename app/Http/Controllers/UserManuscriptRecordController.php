@@ -23,6 +23,7 @@ class UserManuscriptRecordController extends Controller
         $limit = $this->getLimitFromRequest(request());
 
         $userId = Auth::id();
+
         /**
          * Initially, this query was part of the base query, however,
          * this caused the filter to be ignored. Since is very unlikely

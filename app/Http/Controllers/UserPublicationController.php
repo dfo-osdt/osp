@@ -21,7 +21,30 @@ class UserPublicationController extends Controller
     public function index(Request $request)
     {
         $limit = $this->getLimitFromRequest($request);
-        $baseQuery = Publication::where('user_id', Auth::user()->id)->with('manuscriptRecord', 'journal', 'publicationAuthors.author', 'publicationAuthors.organization');
+
+        $userId = Auth::id();
+
+        /**
+         * Initially, this query was part of the base query, however,
+         * this caused the filter to be ignored. Since is very unlikely
+         * to have thousands of records, this should not be a problem.
+         * If it is, we can always review this query.
+         */
+        $publicationIds = Publication::select('id')
+            ->where('user_id', $userId)
+            ->orWhereHas('publicationAuthors', function ($q) use ($userId) {
+                $q->whereHas('author', function ($q) use ($userId) {
+                    $q->where('user_id', $userId);
+                });
+            })
+            ->get()->pluck('id');
+
+        $baseQuery = Publication::whereIn('id', $publicationIds)
+            ->with('manuscriptRecord',
+                'journal',
+                'publicationAuthors.author',
+                'publicationAuthors.organization');
+
         $listQuery = new PublicationListQuery($request, $baseQuery);
 
         return PublicationResource::collection($listQuery->paginate($limit)->appends($request->query()));
