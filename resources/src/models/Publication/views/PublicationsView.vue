@@ -1,26 +1,5 @@
 <template>
-    <MainPageLayout title="My Publications">
-        <template v-if="authorStore.user?.can('create_publications')" #toolbar>
-            <div class="flex justify-end">
-                <q-fab
-                    v-model="showCreatePublicationDialog"
-                    color="primary"
-                    icon="mdi-plus"
-                    padding="md"
-                    class="absolute-top-right q-mr-lg q-mt-lg"
-                >
-                    <template #tooltip>
-                        <q-tooltip
-                            class="text-body2"
-                            anchor="center left"
-                            self="center right"
-                        >
-                            Create Publication</q-tooltip
-                        >
-                    </template>
-                </q-fab>
-            </div>
-        </template>
+    <MainPageLayout title="Publications">
         <div class="row q-gutter-lg q-col-gutter-lg flex">
             <div class="cols-2">
                 <ContentCard secondary no-padding>
@@ -45,18 +24,6 @@
                             </q-item-section>
                         </q-item>
                     </q-list>
-                    <div
-                        v-if="authorStore.user?.can('create_publications')"
-                        class="flex-center flex q-mt-lg q-mb-sm q-mx-md"
-                    >
-                        <q-btn
-                            label="Create publication"
-                            color="primary"
-                            outline
-                            icon="mdi-plus"
-                            @click="showCreatePublicationDialog = true"
-                        />
-                    </div>
                 </ContentCard>
             </div>
             <div class="col q-pr-lg">
@@ -66,20 +33,7 @@
                     <template #title-right
                         ><SearchInput v-model="search" label="Filter"
                     /></template>
-                    <template
-                        v-if="
-                            publications?.data.length === 0 &&
-                            !hasAnyPublications
-                        "
-                    >
-                        <NoPublicationsExistDiv title="No publications found" />
-                    </template>
-                    <template
-                        v-if="
-                            publications?.data.length === 0 &&
-                            hasAnyPublications
-                        "
-                    >
+                    <template v-if="publications?.data.length === 0">
                         <NoResultFoundDiv />
                     </template>
                     <PublicationList :publications="publications?.data ?? []" />
@@ -93,7 +47,6 @@
                 </ContentCard>
             </div>
         </div>
-        <CreatePublicationDialog v-model="showCreatePublicationDialog" />
     </MainPageLayout>
 </template>
 
@@ -102,7 +55,6 @@ import ContentCard from '@/components/ContentCard.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue';
-import NoPublicationsExistDiv from '../components/NoPublicationExistDiv.vue';
 import PaginationDiv from '@/components/PaginationDiv.vue';
 import PublicationList from '../components/PublicationList.vue';
 import {
@@ -110,7 +62,6 @@ import {
     PublicationResourceList,
     PublicationService,
 } from '../Publication';
-import CreatePublicationDialog from '../components/CreatePublicationDialog.vue';
 
 const publications = ref<PublicationResourceList>();
 
@@ -140,23 +91,9 @@ async function getPublications() {
     query.paginate(currentPage.value, 5);
 
     loading.value = true;
-    publications.value = await PublicationService.getMyPublications(query);
+    publications.value = await PublicationService.list(query);
     loading.value = false;
 }
-
-// create publication dialog
-const showCreatePublicationDialog = ref(false);
-
-// user store
-const authorStore = useAuthStore();
-
-// publication store - used to determine if the user has any publications
-const publicationStore = usePublicationStore();
-publicationStore.getMyPublications();
-const hasAnyPublications = computed(() => {
-    if (!publicationStore.publications) return false;
-    return publicationStore.publications?.length > 0;
-});
 
 // type for main filter options
 type MainFilterOption = {
@@ -164,7 +101,7 @@ type MainFilterOption = {
     label: string;
     caption?: string;
     icon: string;
-    active: boolean;
+    active: boolean | (() => boolean);
     filter: (query: PublicationQuery) => PublicationQuery;
 };
 
@@ -173,7 +110,7 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     {
         id: 1,
         label: 'All Publications',
-        caption: 'Includes ones shared with me',
+        caption: 'All published publications',
         icon: 'mdi-all-inclusive',
         active: true,
         filter: (query: PublicationQuery): PublicationQuery => {
@@ -182,34 +119,32 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     },
     {
         id: 2,
-        label: 'My Publications',
-        caption: 'I am responsible for this publication record',
-        icon: 'mdi-account-arrow-left-outline',
+        label: 'Open Access Publications',
+        caption: 'Publications published as open access',
+        icon: 'mdi-lock-open-outline',
         active: false,
         filter: (query: PublicationQuery): PublicationQuery => {
-            return authorStore.user
-                ? query.filterUserId([authorStore.user.id])
-                : query;
+            return query.filterOpenAccess();
         },
     },
     {
         id: 3,
-        label: 'In Progress',
-        caption: 'Actions still required',
-        icon: 'mdi-progress-clock',
+        label: 'Under Embargo',
+        caption: 'Publications under embargo',
+        icon: 'mdi-calendar-clock-outline',
         active: false,
         filter: (query: PublicationQuery): PublicationQuery => {
-            return query.filterStatus(['accepted']);
+            return query.filterUnderEmbargo();
         },
     },
     {
         id: 4,
-        label: 'Published',
-        caption: 'No actions required',
-        icon: 'mdi-check-circle',
+        label: 'Secondary Publications',
+        caption: 'Published in DFO journals',
+        icon: 'mdi-bank-outline',
         active: false,
         filter: (query: PublicationQuery): PublicationQuery => {
-            return query.filterStatus(['published']);
+            return query.filterSecondaryPublication();
         },
     },
 ]);

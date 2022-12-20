@@ -112,4 +112,10 @@ class Publication extends Model implements Auditable, HasMedia
     {
         return $query->where('embargoed_until', '>=', now());
     }
+
+    /** Secondary publications */
+    public function scopeSecondaryPublication($query)
+    {
+        return $query->whereIn('journal_id', Journal::dfoSeries()->pluck('id'));
+    }
 }

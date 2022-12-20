@@ -129,34 +129,52 @@ export class PublicationQuery extends SpatieQuery {
         this.filter('id', id);
         return this;
     }
+
     public filterUserId(userId: number[]) {
         this.filter('user_id', userId);
         return this;
     }
+
     public filterStatus(status: PublicationStatus[]) {
         this.filter('status', status);
         return this;
     }
+
     public filterJournalID(journalId: number[]) {
         this.filter('journal_id', journalId);
         return this;
     }
+
+    public filterAuthorID(authorId: number[]) {
+        this.filter('publicationAuthor.author_id', authorId);
+        return this;
+    }
+
     public filterTitle(title: string) {
         this.filter('title', title);
         return this;
     }
+
     public filterOpenAccess() {
         this.filter('open_access', true);
         return this;
     }
+
     public filterNotUnderEmbargo() {
         this.filter('not_under_embargo', true);
         return this;
     }
+
     public filterUnderEmbargo() {
         this.filter('under_embargo', true);
         return this;
     }
+
+    public filterSecondaryPublication() {
+        this.filter('secondary_publication', true);
+        return this;
+    }
+
     public sort(sort: PublicationQuerySort, direction: 'asc' | 'desc') {
         super.sort(sort, direction);
         return this;

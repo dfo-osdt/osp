@@ -78,7 +78,8 @@ const routes: RouteRecordRaw[] = [
             },
             {
                 path: '/publications',
-                component: UnderConstruction,
+                component: () =>
+                    import('@/models/Publication/views/PublicationsView.vue'),
                 meta: { requiresAuth: true },
             },
             {
