@@ -30,7 +30,6 @@ class PublicationResource extends JsonResource
                 'manuscript_record_id' => $this->manuscript_record_id,
                 'journal_id' => $this->journal_id,
                 'user_id' => $this->user_id,
-                //'publication_pdf' => MediaResource::make($this->getPublicationFile()),
                 // relationships - if loaded
                 'manuscript_record' => ManuscriptRecordResource::make($this->whenLoaded('manuscriptRecord')),
                 'journal' => JournalResource::make($this->whenLoaded('journal')),

@@ -28,7 +28,12 @@ class PublicationController extends Controller
     public function index(Request $request)
     {
         $limit = $this->getLimitFromRequest($request);
-        $publicationListQuery = new PublicationListQuery($request);
+
+        // We should only show published publications
+        $baseQuery = Publication::where('status', PublicationStatus::PUBLISHED->value)
+            ->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization');
+
+        $publicationListQuery = new PublicationListQuery($request, $baseQuery);
 
         return PublicationResource::collection($publicationListQuery->paginate($limit));
     }

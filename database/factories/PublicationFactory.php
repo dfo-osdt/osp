@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PublicationStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -45,9 +46,10 @@ class PublicationFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             $acceptedOn = $attributes['accepted_on'] ?? Carbon::instance($this->faker->dateTimeBetween('-1 year', 'now'));
-            $publishedOn = $acceptedOn->addDays($this->faker->numberBetween(15, 30));
+            $publishedOn = Carbon::parse($acceptedOn)->addDays($this->faker->numberBetween(15, 30));
 
             return [
+                'status' => PublicationStatus::PUBLISHED,
                 'accepted_on' => $acceptedOn,
                 'published_on' => $publishedOn,
             ];

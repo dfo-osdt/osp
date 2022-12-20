@@ -9,9 +9,13 @@ use Illuminate\Http\UploadedFile;
 /** Test that a user can query publications */
 test('a user can get a list of publications', function () {
     $user = User::factory()->create();
-    $publications = Publication::factory()->count(5)->create(['user_id' => $user->id]);
+    $publications = Publication::factory()->count(5)->published()->create();
+    // can't see unpublished publications
+    Publication::factory()->create();
 
     $response = $this->actingAs($user)->getJson('/api/publications');
+
+    ray($response->json());
 
     $response->assertOk();
     $response->assertJsonCount(5, 'data');
@@ -19,8 +23,8 @@ test('a user can get a list of publications', function () {
 
 test('a user can get a list of publications with a filter', function () {
     $user = User::factory()->create();
-    $publications = Publication::factory()->count(5)->create(['user_id' => $user->id]);
-    $openAccessPublication = Publication::factory()->openAccess()->create(['user_id' => $user->id]);
+    $publications = Publication::factory()->count(5)->published()->create();
+    $openAccessPublication = Publication::factory()->published()->openAccess()->create();
 
     $response = $this->actingAs($user)->getJson('/api/publications?filter[open_access]=1');
 
