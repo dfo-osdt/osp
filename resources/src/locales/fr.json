@@ -14,7 +14,8 @@
     "saved": "Enregistré",
     "warnings": {
       "unsaved-changes": {}
-    }
+    },
+    "unknown": "Inconnue"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",

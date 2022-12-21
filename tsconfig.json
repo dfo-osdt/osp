@@ -16,8 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "types": [
       "vite/client",
-      "vue/ref-macros",
-      "@intlify/vite-plugin-vue-i18n/client"
+      "vue/ref-macros"
     ],
     "paths": {
       "@/*": ["resources/src/*"]
