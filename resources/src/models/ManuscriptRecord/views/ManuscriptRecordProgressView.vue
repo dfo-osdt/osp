@@ -247,6 +247,7 @@ const managementReviewColor = computed(() => {
     if (manuscriptRecord.value === null) return 'grey-7';
     if (manuscriptRecord.value.data.sent_for_review_at === null)
         return 'yellow-8';
+    if (manuscriptRecord.value.data.reviewed_at === null) return 'secondary';
     if (manuscriptRecord.value.data.status === 'withheld') return 'red';
     return 'primary';
 });
