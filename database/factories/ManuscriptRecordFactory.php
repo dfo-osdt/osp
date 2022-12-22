@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Models\FundingSource;
 use App\Models\ManuscriptAuthor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -45,6 +46,7 @@ class ManuscriptRecordFactory extends Factory
         ])->afterCreating(function ($manuscript) {
             $manuscript->manuscriptAuthors()->save(ManuscriptAuthor::factory()->make(['is_corresponding_author' => true])); // create a corresponding author
             $manuscript->manuscriptAuthors()->saveMany(ManuscriptAuthor::factory()->count(3)->make()); // create 3 other authors
+            $manuscript->fundingSources()->saveMany(FundingSource::factory()->count(3)->make()); // create 3 funding sources
             $manuscript->addMedia(getcwd().'/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('manuscript'); // add a manuscript file
         });
     }
