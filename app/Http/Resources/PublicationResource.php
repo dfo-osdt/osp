@@ -35,6 +35,7 @@ class PublicationResource extends JsonResource
                 'journal' => JournalResource::make($this->whenLoaded('journal')),
                 'user' => UserResource::make($this->whenLoaded('user')),
                 'publication_authors' => PublicationAuthorResource::collection($this->whenLoaded('publicationAuthors')),
+                'funding_sources' => FundingSourceResource::collection($this->whenLoaded('fundingSources')),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

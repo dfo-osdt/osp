@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Contracts\Fundable;
 use App\Enums\PublicationStatus;
+use App\Traits\FundableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,12 +14,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Publication extends Model implements Auditable, HasMedia
+class Publication extends Model implements Auditable, HasMedia, Fundable
 {
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
     use InteractsWithMedia;
+    use FundableTrait;
 
     // Audit Thresholds
     protected $auditThreshold = 100;

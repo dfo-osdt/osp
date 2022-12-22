@@ -47,6 +47,7 @@ class ManuscriptRecordResource extends JsonResource
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
                 'user' => UserResource::make($this->whenLoaded('user')),
                 'publication' => $this->when($this->status === ManuscriptRecordStatus::ACCEPTED, PublicationResource::make($this->whenLoaded('publication'))),
+                'funding_sources' => FundingSourceResource::collection($this->whenLoaded('fundingSources')),
                 // if this manuscript is accepted, include the publication id
                 // special model permissions
                 'can_attach_manuscript' => Auth::user()->can('attachManuscript', $this->resource),

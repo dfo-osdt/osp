@@ -11,6 +11,7 @@ use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PublicationAuthorController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\PublicationFundingSourceController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManagementReviewStepsController;
@@ -87,6 +88,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/manuscript-records/{manuscriptRecord}/funding-sources', 'store');
         Route::put('/manuscript-records/{manuscriptRecord}/funding-sources/{fundingSource}', 'update');
         Route::delete('/manuscript-records/{manuscriptRecord}/funding-sources/{fundingSource}', 'destroy');
+    });
+
+    Route::controller(PublicationFundingSourceController::class)->group(function () {
+        Route::get('/publications/{publication}/funding-sources', 'index');
+        Route::post('/publications/{publication}/funding-sources', 'store');
+        Route::put('/publications/{publication}/funding-sources/{fundingSource}', 'update');
+        Route::delete('/publications/{publication}/funding-sources/{fundingSource}', 'destroy');
     });
 
     // routes for user specific resources
