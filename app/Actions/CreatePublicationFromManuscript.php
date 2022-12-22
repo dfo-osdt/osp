@@ -29,6 +29,15 @@ class CreatePublicationFromManuscript
             ]);
         });
 
+        // attach the manuscript's fundingSources to the publication
+        $manuscriptRecord->fundingSources()->each(function ($fundingSource) use ($publication) {
+            $publication->fundingSources()->create([
+                'funder_id' => $fundingSource->funder_id,
+                'title' => $fundingSource->title,
+                'description' => $fundingSource->description,
+            ]);
+        });
+
         return $publication;
     }
 }
