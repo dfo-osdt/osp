@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\FunderController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
+use App\Http\Controllers\ManuscriptRecordFundingSourceController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PublicationAuthorController;
@@ -80,6 +82,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('manuscript-records/{manuscriptRecord}/accepted', 'accepted');
     });
 
+    Route::controller(ManuscriptRecordFundingSourceController::class)->group(function () {
+        Route::get('/manuscript-records/{manuscriptRecord}/funding-sources', 'index');
+        Route::post('/manuscript-records/{manuscriptRecord}/funding-sources', 'store');
+        Route::put('/manuscript-records/{manuscriptRecord}/funding-sources/{fundingSource}', 'update');
+        Route::delete('/manuscript-records/{manuscriptRecord}/funding-sources/{fundingSource}', 'destroy');
+    });
+
     // routes for user specific resources
     Route::prefix('my')->group(function () {
         Route::get('/manuscript-records', [UserManuscriptRecordController::class, 'index']);
@@ -97,6 +106,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(JournalController::class)->group(function () {
         Route::get('/journals', 'index');
         Route::get('/journals/{journal}', 'show');
+    });
+
+    Route::controller(FunderController::class)->group(function () {
+        Route::get('/funders', 'index');
+        Route::get('/funders/{funder}', 'show');
     });
 
     Route::controller(PublicationController::class)->group(function () {

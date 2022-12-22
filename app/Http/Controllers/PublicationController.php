@@ -66,7 +66,7 @@ class PublicationController extends Controller
         $publication->user_id = $request->user()->id;
         $publication->save();
 
-        return new PublicationResource($publication);
+        return $this->defaultResource($publication);
     }
 
     /**
@@ -78,9 +78,8 @@ class PublicationController extends Controller
     public function show(Publication $publication)
     {
         Gate::authorize('view', $publication);
-        $publication->load('journal', 'user', 'publicationAuthors.author', 'publicationAuthors.organization');
 
-        return new PublicationResource($publication);
+        return $this->defaultResource($publication);
     }
 
     /**
@@ -125,7 +124,7 @@ class PublicationController extends Controller
         // update the publication
         $publication->update($validated);
 
-        return new PublicationResource($publication->load('journal', 'user', 'publicationAuthors.author', 'publicationAuthors.organization'));
+        return $this->defaultResource($publication);
     }
 
     /** Attach a PDF file to this publication */
@@ -191,7 +190,7 @@ class PublicationController extends Controller
             'user',
             'publicationAuthors.author',
             'publicationAuthors.organization',
-            'manuscript',
+            'manuscriptRecord',
         ]);
 
         return new PublicationResource($publication->load($relationship->toArray()));

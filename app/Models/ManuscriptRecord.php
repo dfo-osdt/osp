@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Contracts\Fundable;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Traits\FundableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,17 +15,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * App\Models\ManuscriptRecord
  */
-class ManuscriptRecord extends Model implements HasMedia, Auditable
+class ManuscriptRecord extends Model implements HasMedia, Auditable, Fundable
 {
     use HasFactory;
     use InteractsWithMedia;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
+    use FundableTrait;
 
     // Audit Thresholds
     protected $auditThreshold = 100;

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RegionSeeder::class,
             OrganizationSeeder::class,
+            FunderSeeder::class,
             RoleAndPermissionSeeder::class,
             // DfoSeriesJournalSeeder::class // enable this seeder when we go live
         ]);

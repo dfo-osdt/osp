@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->boolean('is_validated')->default(false);
-            $table->string('name_en')->unique();
-            $table->string('name_fr')->unique();
-            $table->string('abbr_en')->nullable();
-            $table->string('abbr_fr')->nullable();
+            $table->string('name_en')->unique()->index();
+            $table->string('name_fr')->unique()->index();
+            $table->string('abbr_en')->nullable()->index();
+            $table->string('abbr_fr')->nullable()->index();
         });
     }
 };
