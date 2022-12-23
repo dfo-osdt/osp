@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Auth;
+use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FundingSourceResource extends JsonResource
@@ -23,6 +24,8 @@ class FundingSourceResource extends JsonResource
                 'title' => $this->title,
                 'description' => $this->description,
                 'funder_id' => $this->funder_id,
+                'fundable_id' => $this->fundable_id,
+                'fundable_type' => $this->fundableType($this->fundable_type),
                 // relationships
                 'funder' => new FunderResource($this->whenLoaded('funder')),
             ],
@@ -31,5 +34,14 @@ class FundingSourceResource extends JsonResource
                 'delete' => Auth::user()->can('delete', $this->resource),
             ],
         ];
+    }
+
+    private function fundableType(string $type): string
+    {
+        return match ($type) {
+            'App\Models\ManuscriptRecord' => 'manuscript-records',
+            'App\Models\Publication' => 'publications',
+            default => throw new Exception('Unknown fundable type: '.$type),
+        };
     }
 }

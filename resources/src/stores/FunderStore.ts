@@ -1,4 +1,4 @@
-import { FunderResource, FunderService } from '@/models/Funder/Funder';
+import { Funder, FunderService } from '@/models/Funder/Funder';
 import { Ref } from 'vue';
 
 /**
@@ -8,7 +8,7 @@ import { Ref } from 'vue';
 export const useFunderStore = defineStore('FunderStore', () => {
     // initial state
     const loading: Ref<boolean> = ref(false);
-    const funders: Ref<FunderResource[] | undefined> = ref(undefined);
+    const funders: Ref<Funder[] | undefined> = ref(undefined);
 
     /** get values if they're not already loaded.
      *
@@ -19,7 +19,9 @@ export const useFunderStore = defineStore('FunderStore', () => {
         if (funders.value === undefined || force) {
             loading.value = true;
             try {
-                funders.value = (await FunderService.all()).data;
+                const response = await FunderService.all();
+                // extract the Funder from the resource
+                funders.value = response.data.map((f) => f.data);
             } catch (err) {
                 console.error(err);
                 funders.value = undefined;

@@ -283,6 +283,7 @@
         <ManageFundingSourcesCard
             v-if="manuscriptResource?.data"
             :fundable-id="manuscriptResource.data.id"
+            :readonly="isManuscriptReadOnly"
             fundable-type="manuscript-records"
         />
         <ContentCard class="q-mb-md" secondary>

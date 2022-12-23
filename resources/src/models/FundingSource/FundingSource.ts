@@ -4,24 +4,29 @@ import { Resource, ResourceList } from '../Resource';
 
 /** Funding Source is a polymorphic relationship which can
  * be attached to a manuscript record or a publication. */
-export type FundingSourceRelationship = 'manuscript-records' | 'publications';
+export type FundableType = 'manuscript-records' | 'publications';
 
 export interface FundingSource {
     readonly id: number;
     title: string;
     description: string | null;
     funder_id: number;
+    fundable_type: FundableType;
+    fundable_id: number;
     funder?: FunderResource;
 }
 
-export type FundingSourceCreate = Omit<FundingSource, 'id' | 'funder'>;
+export type FundingSourceCreate = Omit<
+    FundingSource,
+    'id' | 'funder' | 'fundable_id' | 'fundable_type'
+>;
 export type FundingSourceResource = Resource<FundingSource>;
 export type FundingSourceResourceList = ResourceList<FundingSource>;
 
 export class FundingSourceService {
     private baseUrl: string;
 
-    constructor(relationship: FundingSourceRelationship) {
+    constructor(relationship: FundableType) {
         this.baseUrl = `api/${relationship}`;
     }
 
@@ -51,11 +56,20 @@ export class FundingSourceService {
     }
 
     /** update a funding source from the fundable */
-    public async update(fundableId: number, data: FundingSource) {
+    public async update(data: FundingSource) {
         const response = await http.put<FundingSource, FundingSourceResource>(
-            `${this.baseUrl}/${fundableId}/funding-sources/${data.id}`,
+            `${this.baseUrl}/${data.fundable_id}/funding-sources/${data.id}`,
             data
         );
         return response.data;
+    }
+
+    /** delete a funding source from the funable */
+    public async delete(data: FundingSource): Promise<boolean> {
+        const response = await http.delete(
+            `${this.baseUrl}/${data.fundable_id}/funding-sources/${data.id}`
+        );
+        // response should be empty with a 204 status code
+        return response.status === 204;
     }
 }

@@ -71,7 +71,7 @@ class ManuscriptRecordFundingSourceController extends Controller
      * @param  \App\Models\FundingSource  $fundingSource
      * @return \Illuminate\Http\Response
      */
-    public function update(ManuscriptRecord $manuscriptRecord, Request $request, FundingSource $fundingSource)
+    public function update(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource, Request $request)
     {
         Gate::authorize('update', $manuscriptRecord);
 

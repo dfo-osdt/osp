@@ -4,7 +4,10 @@
             v-for="fundingSource in fundingSources"
             :key="fundingSource.data.id"
             :funding-source="fundingSource"
+            :fundable-type="fundableType"
             :readonly="readonly"
+            @edited:funding-source="editedFundingSource"
+            @delete:funding-source="deleteFundingSource"
         />
     </q-list>
     <div v-else>
@@ -26,13 +29,33 @@
 </template>
 
 <script setup lang="ts">
-import { FundingSourceResource } from '../FundingSource';
+import { FundableType, FundingSourceResource } from '../FundingSource';
 import FundingSourceListItem from './FundingSourceListItem.vue';
 
-const props = defineProps<{
+defineProps<{
+    fundableType: FundableType;
     fundingSources: FundingSourceResource[];
     readonly?: boolean;
 }>();
+
+const emit = defineEmits<{
+    (
+        event: 'edited:funding-source',
+        fundingSource: FundingSourceResource
+    ): void;
+    (
+        event: 'delete:funding-source',
+        fundingSource: FundingSourceResource
+    ): void;
+}>();
+
+function editedFundingSource(fundingSource: FundingSourceResource) {
+    emit('edited:funding-source', fundingSource);
+}
+
+function deleteFundingSource(fundingSource: FundingSourceResource) {
+    emit('delete:funding-source', fundingSource);
+}
 </script>
 
 <style scoped></style>

@@ -19,7 +19,7 @@
                     round
                     icon="mdi-pencil"
                     color="primary"
-                    @click="editFundingSource"
+                    @click="showEditDialog = true"
                 />
                 <q-btn
                     class="gt-xs"
@@ -33,31 +33,45 @@
                 />
             </div>
         </q-item-section>
+        <EditFundingSourceDialog
+            v-if="showEditDialog"
+            v-model="showEditDialog"
+            :funding-source="fundingSource.data"
+            @edited:funding-source="editedFundingSource"
+        ></EditFundingSourceDialog>
     </q-item>
 </template>
 
 <script setup lang="ts">
 import { FundingSourceResource } from '../FundingSource';
+import EditFundingSourceDialog from './EditFundingSourceDialog.vue';
 
 const props = defineProps<{
     readonly?: boolean;
     fundingSource: FundingSourceResource;
 }>();
 
-defineEmits<{
-    (event: 'edit:funding-source', fundingSource: FundingSourceResource): void;
+const emit = defineEmits<{
+    (
+        event: 'edited:funding-source',
+        fundingSource: FundingSourceResource
+    ): void;
     (
         event: 'delete:funding-source',
         fundingSource: FundingSourceResource
     ): void;
 }>();
 
-async function editFundingSource() {
-    console.log('edit funding source');
+async function deleteFundingSource() {
+    emit('delete:funding-source', props.fundingSource);
 }
 
-async function deleteFundingSource() {
-    console.log('delete funding source');
+// edit dialog
+const showEditDialog = ref(false);
+
+async function editedFundingSource(fundingSource: FundingSourceResource) {
+    showEditDialog.value = false;
+    emit('edited:funding-source', fundingSource);
 }
 </script>
 
