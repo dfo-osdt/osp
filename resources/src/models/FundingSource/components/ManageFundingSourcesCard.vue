@@ -5,7 +5,7 @@
             ><FormSectionStatusIcon status="complete" />
         </template>
         <p>
-            If applicable, please enter the funding source(s) that have help
+            If applicable, please enter the funding source(s) that have helped
             generate this work.
         </p>
         <FundingSourceList
