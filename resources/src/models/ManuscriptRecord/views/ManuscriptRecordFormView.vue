@@ -280,12 +280,11 @@
                 <q-skeleton type="text" />
             </template>
         </ContentCard>
-        <ContentCard class="q-mb-lg" secondary>
-            <template #title>Sensitive Issues</template>
-            <template #title-right
-                ><FormSectionStatusIcon status="complete"
-            /></template>
-        </ContentCard>
+        <ManageFundingSourcesCard
+            v-if="manuscriptResource?.data"
+            :fundable-id="manuscriptResource.data.id"
+            fundable-type="manuscript-records"
+        />
         <ContentCard class="q-mb-md" secondary>
             <template #title>Attach Manuscript</template>
             <template #title-right
@@ -443,6 +442,7 @@ import RequiredSpan from '@/components/RequiredSpan.vue';
 import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue';
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
 import { UtilityService } from '@/api/utils';
+import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue';
 
 const $q = useQuasar();
 const router = useRouter();
