@@ -54,3 +54,5 @@ jobs:
         build: npm run build
       env:
         CYPRESS_baseUrl: http://localhost:8000
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
