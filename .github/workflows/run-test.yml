@@ -52,3 +52,4 @@ jobs:
         browser: chrome
         command: pnpm run cy:run
         build: pnpm run build
+        working-directory: client
