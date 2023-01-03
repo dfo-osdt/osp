@@ -52,6 +52,6 @@ jobs:
         browser: chrome
         command: npm run cy:run
         build: npm run build
-        env:
-          CYPRESS_host: localhost
-          CYPRESS_port: 8000
+      env:
+        CYPRESS_host: localhost
+        CYPRESS_port: 8000
