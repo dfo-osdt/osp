@@ -48,5 +48,8 @@ jobs:
         browser: chrome
         command: npm run cy:run
         build: npm run build
+        record: true
       env:
         CYPRESS_baseUrl: http://127.0.0.1:8000
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
