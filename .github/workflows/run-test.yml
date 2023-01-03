@@ -44,10 +44,9 @@ jobs:
       uses: cypress-io/github-action@v5
       with:
         start: php artisan serve
-        wait-on: 'http://localhost:8000'
         wait-on-timeout: 60
         browser: chrome
         command: npm run cy:run
         build: npm run build
       env:
-        CYPRESS_baseUrl: http://localhost:8000
+        CYPRESS_baseUrl: http://127.0.0.1:8000
