@@ -46,8 +46,8 @@ jobs:
         start: php artisan serve
         wait-on-timeout: 60
         browser: chrome
-        command: npm run cy:run
-        build: npm run build
+        command: pnpm run cy:run --record
+        build: pnpm run build
         record: true
       env:
         CYPRESS_baseUrl: http://127.0.0.1:8000
