@@ -15,8 +15,8 @@
 
 /// <reference types="./" />
 
-import './laravel-commands';
 import './laravel-routes';
+import './laravel-commands';
 import './assertions';
 
 before(() => {

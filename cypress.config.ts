@@ -1,4 +1,8 @@
 import { defineConfig } from 'cypress';
+import {
+    activateCypressEnvFile,
+    activateLocalEnvFile,
+} from './tests/cypress/plugins/swap-env';
 
 export default defineConfig({
     projectId: '7wfgwp',
@@ -12,11 +16,11 @@ export default defineConfig({
     downloadsFolder: 'tests/cypress/downloads',
     e2e: {
         setupNodeEvents(on, config) {
-            return require('./tests/cypress/plugins/index.js')(on, config);
+            on('task', { activateCypressEnvFile, activateLocalEnvFile });
         },
         baseUrl: 'https://osp.test',
         specPattern: 'tests/cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
-        supportFile: 'tests/cypress/support/index.js',
+        supportFile: 'tests/cypress/support/index.ts',
     },
     viewportHeight: 1080,
     viewportWidth: 1920,
