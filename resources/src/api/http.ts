@@ -117,11 +117,13 @@ class Http {
                 // Handle Unauthorized - likely an expired session
                 // should we be authenticated on this route?
                 if (Router.currentRoute.value.meta.requiresAuth) {
-                    this.notifyError(errorMessage, 'Unauthorized');
-                    authStore.user = null;
+                    setTimeout(() => {
+                        this.notifyError(errorMessage, 'Unauthorized');
+                    }, 500);
+                    authStore.refreshUser();
                     Router.push({ name: 'login' });
                 }
-                console.log('Router: ', Router.currentRoute.value);
+                //console.log('Router: ', Router.currentRoute.value);
                 break;
             }
             case StatusCode.TooManyRequests: {
@@ -145,7 +147,8 @@ class Http {
             }
         }
 
-        console.log('HTTP.TS Handling error: ' + error.statusText);
+        if (status !== StatusCode.Unauthorized)
+            console.log('HTTP.TS Handling error: ' + error.statusText);
 
         return Promise.reject(error);
     }

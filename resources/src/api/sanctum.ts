@@ -18,11 +18,11 @@ export const useSanctum = () => {
 
     const login = async (user: SanctumUser) => {
         await csrf();
-        return http.post('/login', user);
+        return await http.post('/login', user);
     };
 
     const logout = async () => {
-        return http.post('/logout');
+        return await http.post('/logout');
     };
 
     return {

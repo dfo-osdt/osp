@@ -23,6 +23,7 @@
                         (val) =>
                             /^\S+@\S+\.\S+$/.test(val) || 'Email is invalid',
                     ]"
+                    data-cy="email"
                     @focus="errorMessage = null"
                 />
                 <q-input
@@ -31,6 +32,7 @@
                     filled
                     label="Your password"
                     :rules="[(val) => !!val || 'Password is required']"
+                    data-cy="password"
                     @focus="errorMessage = null"
                 />
 
@@ -41,6 +43,7 @@
                         label="Login"
                         type="submit"
                         color="primary"
+                        data-cy="login"
                         :loading="loading"
                     />
                     <q-btn

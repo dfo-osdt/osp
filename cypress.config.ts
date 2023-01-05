@@ -9,7 +9,7 @@ export default defineConfig({
     chromeWebSecurity: false,
     retries: 2,
     defaultCommandTimeout: 5000,
-    watchForFileChanges: false,
+    watchForFileChanges: true,
     videosFolder: 'tests/cypress/videos',
     screenshotsFolder: 'tests/cypress/screenshots',
     fixturesFolder: 'tests/cypress/fixture',

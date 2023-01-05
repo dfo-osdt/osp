@@ -100,7 +100,8 @@ export const useAuthStore = defineStore('AuthStore', () => {
     const { t } = i18n.global;
 
     // initial state
-    const user: Ref<AuthenticatedUser | null> = useStorage('user', null);
+    // const user: Ref<AuthenticatedUser | null> = useStorage('authUser', null);
+    const user: Ref<AuthenticatedUser | null> = ref(null);
     const loading = ref(true);
     refreshUser(); // check with backend - is our session still valid?
 
@@ -123,7 +124,6 @@ export const useAuthStore = defineStore('AuthStore', () => {
                 return true;
             })
             .catch((err) => {
-                console.log(err);
                 user.value = null;
                 return false;
             });
@@ -156,7 +156,6 @@ export const useAuthStore = defineStore('AuthStore', () => {
             })
             .catch((err) => {
                 user.value = null;
-                console.log(err);
                 return Promise.reject(err);
             });
 
@@ -168,22 +167,18 @@ export const useAuthStore = defineStore('AuthStore', () => {
      */
     async function logout() {
         loading.value = true;
+        await sanctumLogout().then(() => {
+            user.value = null;
 
-        await sanctumLogout()
-            .then(() => {
-                user.value = null;
-                Router.push({ name: 'login' });
-                const msg = t('auth.logged-out-successfully');
+            const msg = t('auth.logged-out-successfully');
 
-                setTimeout(() => {
-                    Notify.create({
-                        message: msg,
-                        color: 'green',
-                    });
-                }, 500);
-            })
-            .catch((err) => console.log(err));
-
+            setTimeout(() => {
+                Notify.create({
+                    message: msg,
+                    color: 'green',
+                });
+            }, 500);
+        });
         loading.value = false;
     }
 

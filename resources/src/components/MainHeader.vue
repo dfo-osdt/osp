@@ -57,7 +57,7 @@
                                 <q-icon name="mdi-view-dashboard-outline" />
                             </q-item-section>
                         </q-item>
-                        <q-item v-ripple clickable @click="authStore.logout">
+                        <q-item v-ripple to="/auth/logout" clickable>
                             <q-item-section>
                                 <q-item-label>Logout</q-item-label>
                             </q-item-section>

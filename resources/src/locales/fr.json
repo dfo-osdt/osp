@@ -15,7 +15,8 @@
     "warnings": {
       "unsaved-changes": {}
     },
-    "unknown": "Inconnue"
+    "unknown": "Inconnue",
+    "logged-out": "Déconnecté"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",

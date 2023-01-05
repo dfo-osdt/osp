@@ -15,7 +15,9 @@
     "saved": "Saved",
     "warnings": {
       "unsaved-changes": {}
-    }
+    },
+    "logout": "Logout",
+    "logged-out": "Logged Out"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
