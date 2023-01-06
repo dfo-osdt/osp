@@ -7,7 +7,7 @@
                 flat
                 dense
                 round
-                :icon="authStore.isDrawerMini ? 'mdi-menu' : 'mdi-menu-open'"
+                :icon="authStore.leftDrawerOpen ? 'mdi-menu-open' : 'mdi-menu'"
                 aria-label="Menu"
                 @click="toggleLeftDrawer"
             />
@@ -84,9 +84,11 @@
 const authStore = useAuthStore();
 const localeStore = useLocaleStore();
 
+const emit = defineEmits(['toggleLeftDrawer']);
+
 // toggle the left drawer
 function toggleLeftDrawer() {
-    authStore.isDrawerMini = !authStore.isDrawerMini;
+    emit('toggleLeftDrawer');
 }
 </script>
 

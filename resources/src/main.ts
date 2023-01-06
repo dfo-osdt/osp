@@ -18,6 +18,8 @@ installRouter(myApp);
 const authStore = useAuthStore();
 Router.beforeEach((to, from, next) => {
     // check if pages requires auth
+    if (authStore.loading) return next();
+
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (authStore.isAuthenticated) {
             next();

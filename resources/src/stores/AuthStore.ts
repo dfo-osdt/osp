@@ -99,7 +99,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
     const { t } = i18n.global;
 
     // initial state
-    // const user: Ref<AuthenticatedUser | null> = useStorage('authUser', null);
+    //const user: Ref<AuthenticatedUser | null> = useStorage('authUser', null);
     const user: Ref<AuthenticatedUser | null> = ref(null);
     const loading = ref(true);
     refreshUser(); // check with backend - is our session still valid?
@@ -116,16 +116,26 @@ export const useAuthStore = defineStore('AuthStore', () => {
      */
     async function refreshUser(silent = false) {
         if (!silent) loading.value = true;
-        return await getUser()
-            .then((resp) => {
-                user.value = new AuthenticatedUser(resp.data.data);
-                loading.value = false;
-                return true;
-            })
-            .catch((err) => {
-                user.value = null;
-                return false;
-            });
+        try {
+            user.value = await getAuthenticatedUser();
+        } catch (err) {
+            user.value = null;
+            console.log(err);
+        }
+    }
+
+    /**
+     * Get authenticated user from backend
+     * @returns AuthenticatedUser | null (if not authenticated)
+     */
+    async function getAuthenticatedUser(): Promise<AuthenticatedUser | null> {
+        try {
+            const response = await getUser();
+            const authUser = new AuthenticatedUser(response.data.data);
+            return authUser;
+        } catch (err) {
+            return null;
+        }
     }
 
     /**
@@ -186,6 +196,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
      * should it grow too large
      */
     const isDrawerMini = useStorage('isDrawerMini', true);
+    const leftDrawerOpen = useStorage('leftDrawerOpen', true);
 
     return {
         user,
@@ -197,6 +208,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         idleTimerMin,
         // general application state
         isDrawerMini,
+        leftDrawerOpen,
     };
 });
 

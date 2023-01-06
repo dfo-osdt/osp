@@ -1,7 +1,12 @@
 <template>
     <q-layout view="hHh Lpr lFf">
         <MainHeader @toggle-left-drawer="toggleLeftDrawer"></MainHeader>
-        <MainDrawer v-if="authStore.isAuthenticated" show-if-above bordered />
+        <MainDrawer
+            v-if="authStore.isAuthenticated"
+            v-model="authStore.leftDrawerOpen"
+            show-if-above
+            bordered
+        />
         <q-page-container>
             <router-view />
         </q-page-container>
@@ -14,10 +19,9 @@ import MainDrawer from '@/components/MainDrawer.vue';
 import { useQuasar } from 'quasar';
 
 const authStore = useAuthStore();
-const leftDrawerOpen = useStorage('leftDrawerOpen', true);
 
 function toggleLeftDrawer() {
-    leftDrawerOpen.value = !leftDrawerOpen.value;
+    authStore.leftDrawerOpen = !authStore.leftDrawerOpen;
 }
 
 // idle timer and auto logout

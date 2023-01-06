@@ -1,5 +1,10 @@
 <template>
-    <q-drawer :width="225" :mini="authStore.isDrawerMini">
+    <q-drawer
+        :width="225"
+        :mini="authStore.isDrawerMini"
+        @mouseover="authStore.isDrawerMini = false"
+        @mouseout="authStore.isDrawerMini = true"
+    >
         <q-list padding class="menu-list">
             <DrawerMenuItem
                 v-for="item in userMenuItems"
