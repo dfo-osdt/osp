@@ -54,13 +54,15 @@
                         class="q-ml-sm"
                     />
                 </div>
-                <div
-                    v-if="props.showFooter"
-                    class="flex row justify-center q-pt-md"
-                >
-                    <div>Forgot your password?</div>
+                <q-separator class="q-mt-lg" />
+                <div class="flex row justify-center">
+                    <router-link to="/" class="text-grey-8"
+                        >Forgot your password?</router-link
+                    >
                     <div class="q-px-sm">|</div>
-                    <div>Don't have an account?</div>
+                    <router-link :to="{ name: 'register' }" class="text-grey-8"
+                        >Don't have an account?</router-link
+                    >
                 </div>
             </q-form>
         </q-card-section>

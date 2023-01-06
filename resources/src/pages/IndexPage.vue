@@ -36,7 +36,7 @@
                                 class="q-ml-md"
                                 outline
                                 :label="$t('common.register')"
-                                to="/register"
+                                :to="{ name: 'register' }"
                             />
                         </div>
                     </div>
