@@ -2,7 +2,8 @@
 {{-- Header --}}
 @slot('header')
 @component('mail::header', ['url' => config('app.url')])
-Open Science Portal
+<img src="{{ asset('assets/logo_sm.png') }}" class="logo" alt="OSP Logo">
+</div>
 @endcomponent
 @endslot
 
@@ -21,7 +22,7 @@ Open Science Portal
 {{-- Footer --}}
 @slot('footer')
 @component('mail::footer')
-© {{ date('Y') }} Open Science Portal. @lang('All rights reserved.')
+© {{ date('Y') }} Open Science Portal - Portail de la science ouverte. @lang('All rights reserved.')
 @endcomponent
 @endslot
 @endcomponent

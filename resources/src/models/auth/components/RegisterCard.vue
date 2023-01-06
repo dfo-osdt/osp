@@ -118,6 +118,7 @@ const props = defineProps<{
 
 const authStore = useAuthStore();
 const router = useRouter();
+const localeStore = useLocaleStore();
 const { t } = useI18n();
 const $q = useQuasar();
 
@@ -140,6 +141,7 @@ async function register() {
         email: email.value,
         password: password.value,
         password_confirmation: password_confirmation.value,
+        locale: localeStore.locale,
     };
 
     await sanctum.register(user).catch((err) => {

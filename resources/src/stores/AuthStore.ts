@@ -1,5 +1,4 @@
 import { useSanctum } from '@/api/sanctum';
-import { Router } from '@/plugins/router';
 import { i18n } from '@/plugins/i18n';
 import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
