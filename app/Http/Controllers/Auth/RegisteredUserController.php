@@ -38,6 +38,9 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->email_verification_token = User::generateEmailVerificationToken();
+        $user->save();
+
         event(new Registered($user));
 
         return response()->noContent();

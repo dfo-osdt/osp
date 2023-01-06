@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Permission\Traits\HasRoles;
+use Str;
 
 class User extends Authenticatable implements MustVerifyEmail, Auditable
 {
@@ -46,6 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
         'created_at',
         'updated_at',
         'email_verified_at',
+        'email_verification_token',
     ];
 
     /**
@@ -55,6 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'active' => 'boolean',
     ];
 
     /**
@@ -99,5 +102,41 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
     public function author(): HasOne
     {
         return $this->hasOne(Author::class);
+    }
+
+    /**
+     * Override the default verification email to use a random token instead.
+     * We are doing this because we do not allow login until the user has
+     * verified their email address and hashing the email address can be
+     * used to circumvent this verification process.
+     *
+     * @override MustVerifyEmail
+     */
+    public function getEmailForVerification(): string|null
+    {
+        return $this->email_verification_token;
+    }
+
+    /**
+     * Generate a new email verification token.
+     */
+    public static function generateEmailVerificationToken(): string
+    {
+        return hash_hmac('sha256', Str::random(40), config('app.key'));
+    }
+
+    /**
+     * Mark the given user's email as verified. This also activates the user so
+     * that they can login for the first time.
+     *
+     * @override MustVerifyEmail
+     */
+    public function markEmailAsVerified(): bool
+    {
+        return $this->forceFill([
+            'email_verified_at' => $this->freshTimestamp(),
+            'email_verification_token' => null,
+            'active' => true,
+        ])->save();
     }
 }

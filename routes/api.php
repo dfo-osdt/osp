@@ -33,7 +33,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    // need to change this...
     Route::get('/user', function (Request $request) {
         return AuthenticatedUserResource::make($request->user()->load('author.organization'));
     });

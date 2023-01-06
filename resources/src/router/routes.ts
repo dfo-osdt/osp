@@ -32,6 +32,13 @@ const routes: RouteRecordRaw[] = [
                         name: 'logout',
                         meta: { requiresAuth: false },
                     },
+                    {
+                        path: 'register',
+                        component: () =>
+                            import('@/models/auth/components/RegisterCard.vue'),
+                        name: 'register',
+                        meta: { requiresAuth: false },
+                    },
                 ],
             },
             {
