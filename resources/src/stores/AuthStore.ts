@@ -121,6 +121,8 @@ export const useAuthStore = defineStore('AuthStore', () => {
         } catch (err) {
             user.value = null;
             console.log(err);
+        } finally {
+            loading.value = false;
         }
     }
 
