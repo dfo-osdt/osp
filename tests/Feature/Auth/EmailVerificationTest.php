@@ -7,6 +7,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
+use Notification;
 use Tests\TestCase;
 
 class EmailVerificationTest extends TestCase
@@ -50,5 +51,46 @@ class EmailVerificationTest extends TestCase
 
         $this->assertFalse($user->fresh()->hasVerifiedEmail());
         $response->assertRedirect(config('app.frontend_url').'#/auth/register?verified=0');
+    }
+
+    public function test_verification_email_can_be_sent_again()
+    {
+        $user = User::factory()->unverified()->create();
+
+        Notification::fake();
+
+        $response = $this->postJson('/email/verification-notification', [
+            'email' => $user->email,
+        ]);
+
+        $response->assertJson(['status' => 'verification-link-sent']);
+        Notification::assertSentToTimes($user, \Illuminate\Auth\Notifications\VerifyEmail::class, 1);
+    }
+
+    public function test_verification_email_wont_be_sent_if_already_verified()
+    {
+        $user = User::factory()->create();
+
+        Notification::fake();
+
+        $response = $this->postJson('/email/verification-notification', [
+            'email' => $user->email,
+        ]);
+
+        $response->assertJson(['status' => 'already-verified']);
+        Notification::assertNothingSent();
+    }
+
+    public function test_verification_email_wont_be_sent_if_user_doesnt_exist()
+    {
+        Notification::fake();
+
+        $response = $this->postJson('/email/verification-notification', [
+            'email' => 'nobody@nobody.com',
+        ]);
+
+        ray($response->json());
+        $response->assertJson(['message' => 'The selected email is invalid.']);
+        Notification::assertNothingSent();
     }
 }

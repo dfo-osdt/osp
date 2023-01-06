@@ -10,7 +10,10 @@ test('new users can register', function () {
         'password' => 'password',
         'password_confirmation' => 'password',
     ]);
-    $response->assertNoContent();
+    $response->assertJson([
+        'message' => 'registered',
+        'email' => 'test@example.com',
+    ]);
 });
 
 test('an email is always stored in lowercase', function () {
@@ -39,7 +42,7 @@ test('a user cannot register twice with same email', function () {
         'password_confirmation' => 'password',
     ]);
 
-    $response->assertNoContent();
+    $response->assertOk();
 
     $response = $this->postJson('/register', [
         'first_name' => 'John',

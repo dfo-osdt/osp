@@ -13,6 +13,11 @@ export interface SanctumRegisterUser extends SanctumUser {
     password_confirmation: string;
 }
 
+export interface SanctumRegisterResponse {
+    message: string;
+    email: string;
+}
+
 export const useSanctum = () => {
     const csrf = () => http.get('/sanctum/csrf-cookie');
 
@@ -32,7 +37,10 @@ export const useSanctum = () => {
 
     const register = async (user: SanctumRegisterUser) => {
         await csrf();
-        return await http.post<SanctumRegisterUser, any>('/register', user);
+        return await http.post<SanctumRegisterUser, SanctumRegisterResponse>(
+            '/register',
+            user
+        );
     };
 
     return {

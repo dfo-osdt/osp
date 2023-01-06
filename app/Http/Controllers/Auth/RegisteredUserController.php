@@ -48,6 +48,9 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        return response()->noContent();
+        return response()->json([
+            'message' => 'registered',
+            'email' => $user->email,
+        ]);
     }
 }

@@ -164,6 +164,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/ErrorNotFound.vue'),
         name: 'notFound',
     },
+    {
+        path: '/invalid-signature',
+        component: () => import('@/pages/ErrorInvalidSignature.vue'),
+        name: 'invalidSignature',
+    },
 ];
 
 export default routes;

@@ -1,7 +1,7 @@
 <template>
     <q-card>
         <q-card-section class="bg-primary text-white">
-            <div class="text-h5">Register</div>
+            <div class="text-h5">{{ title }}</div>
         </q-card-section>
         <q-banner v-if="errorMessage" dark class="bg-negative">
             <template #avatar
@@ -9,7 +9,7 @@
             /></template>
             <div>{{ errorMessage.message }}</div>
         </q-banner>
-        <q-card-section class="q-mt-md">
+        <q-card-section v-if="registered === null" class="q-mt-md">
             <q-form class="q-gutter-md" autofocus @submit="register">
                 <q-input
                     v-model="first_name"
@@ -91,15 +91,25 @@
                         class="q-ml-sm"
                     />
                 </div>
-                <div
-                    v-if="props.showFooter"
-                    class="flex row justify-center q-pt-md"
-                >
-                    <div>Forgot your password?</div>
-                    <div class="q-px-sm">|</div>
-                    <div>Don't have an account?</div>
-                </div>
             </q-form>
+        </q-card-section>
+        <q-card-section v-else>
+            <div class="row justify-center">
+                <q-img
+                    src="/assets/splash_images/undraw_mailbox_re_dvds.svg"
+                    alt="Mailbox"
+                    width="50%"
+                    class="col-auto"
+                />
+                <div class="text-h5 col-12 text-center">
+                    Just one last step...
+                </div>
+                <div class="text-body1 q-mt-md text-grey-8 col-12">
+                    Please check your email ({{ registered.email }}) for a
+                    confirmation link. To protect your account, you will not be
+                    able to login until you've confirmed your email address.
+                </div>
+            </div>
         </q-card-section>
     </q-card>
 </template>
@@ -108,7 +118,11 @@
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { SanctumRegisterUser, useSanctum } from '@/api/sanctum';
+import {
+    SanctumRegisterResponse,
+    SanctumRegisterUser,
+    useSanctum,
+} from '@/api/sanctum';
 
 const sanctum = useSanctum();
 
@@ -132,6 +146,10 @@ const last_name = ref('');
 // UI related data
 const loading = ref(false);
 const errorMessage: Ref<ErrorResponse | null> = ref(null);
+const registered: Ref<SanctumRegisterResponse | null> = ref(null);
+const title = computed(() => {
+    return registered.value === null ? 'Register' : 'Registered';
+});
 
 async function register() {
     loading.value = true;
@@ -144,9 +162,16 @@ async function register() {
         locale: localeStore.locale,
     };
 
-    await sanctum.register(user).catch((err) => {
-        errorMessage.value = extractErrorMessages(err);
-    });
+    await sanctum
+        .register(user)
+        .then((response) => {
+            if (response.status === 200) {
+                registered.value = response.data;
+            }
+        })
+        .catch((err) => {
+            errorMessage.value = extractErrorMessages(err);
+        });
 
     loading.value = false;
 }
