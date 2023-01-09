@@ -35,13 +35,13 @@ class DatabaseSeeder extends Seeder
 
             // create a blank slate user
             \App\Models\User::factory()->create([
-                'email' => 'new@test.com',
+                'email' => 'new@vinnet.dev',
             ]);
 
             $user = \App\Models\User::factory()->create([
                 'first_name' => 'John',
                 'last_name' => 'Doe',
-                'email' => 'author@test.com',
+                'email' => 'author@vinnet.dev',
             ]);
 
             // create 1 manuscript records for the test user
@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
             $dmUser = \App\Models\User::factory()->create([
                 'first_name' => 'Division',
                 'last_name' => 'Manager',
-                'email' => 'dm@test.com',
+                'email' => 'dm@vinnet.dev',
             ]);
 
             // give the division manager a management review step
@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
             $rdsUser = \App\Models\User::factory()->create([
                 'first_name' => 'RDS',
                 'last_name' => 'User',
-                'email' => 'rds@test.com',
+                'email' => 'rds@vinnet.dev',
             ]);
             $rdsUser->assignRole('director');
 
