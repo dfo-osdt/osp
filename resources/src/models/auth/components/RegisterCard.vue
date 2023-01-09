@@ -94,20 +94,17 @@
 <script setup lang="ts">
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
-import { useQuasar } from 'quasar';
 import {
+    locale,
     SanctumRegisterResponse,
     SanctumRegisterUser,
     useSanctum,
 } from '@/api/sanctum';
 
 const sanctum = useSanctum();
-
-const authStore = useAuthStore();
 const router = useRouter();
 const localeStore = useLocaleStore();
 const { t } = useI18n();
-const $q = useQuasar();
 
 //user related data
 const email = ref((router.currentRoute.value.query?.email as string) || '');
@@ -134,7 +131,7 @@ async function register() {
         email: email.value,
         password: password.value,
         password_confirmation: password_confirmation.value,
-        locale: localeStore.locale,
+        locale: localeStore.locale as locale,
     };
 
     await sanctum
@@ -146,27 +143,13 @@ async function register() {
         })
         .catch((err) => {
             errorMessage.value = extractErrorMessages(err);
+            setTimeout(() => {
+                errorMessage.value = null;
+            }, 10000);
         });
 
     loading.value = false;
 }
-
-onMounted(async () => {
-    /** Redirect if user is authenticated, likely got here following an email link */
-    if (authStore.isAuthenticated) {
-        // is there a redirect query param?
-        if (router.currentRoute.value.query?.redirect) {
-            router.push(router.currentRoute.value.query.redirect as string);
-        } else {
-            $q.notify({
-                message: t('auth.redirected'),
-                type: 'info',
-                icon: 'mdi-information-outline',
-            });
-            router.push({ name: 'dashboard' });
-        }
-    }
-});
 
 // rules
 const nameRules = computed(() => [

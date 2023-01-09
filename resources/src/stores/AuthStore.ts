@@ -1,4 +1,4 @@
-import { useSanctum } from '@/api/sanctum';
+import { locale, useSanctum } from '@/api/sanctum';
 import { i18n } from '@/plugins/i18n';
 import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
@@ -157,7 +157,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
             email,
             password,
             remember,
-            locale: localeStore.locale,
+            locale: localeStore.locale as locale,
         };
 
         // login user and get user data

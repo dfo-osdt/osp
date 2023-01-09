@@ -80,5 +80,15 @@
     "registered": {
       "text": "Please check your email ({0}) for a confirmation link. To protect your account, you will not be able to login until you've confirmed your email address."
     }
+  },
+  "forgot-password-card": {
+    "cancel": "Return to Login",
+    "title": "Reset Your Password",
+    "text": "Don't fret, we've all been there before. Simply click the password reset button and we'll send you some instructions to get you back on track."
+  },
+  "reset-password": {
+    "invalid-request-title": "Invalid Password Reset Request",
+    "text": "Enter a new password for {0}.",
+    "title": "Enter new password"
   }
 }

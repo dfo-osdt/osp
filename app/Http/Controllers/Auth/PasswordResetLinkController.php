@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Traits\LocaleTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
 class PasswordResetLinkController extends Controller
 {
+    use LocaleTrait;
+
     /**
      * Handle an incoming password reset link request.
      *
@@ -19,6 +22,8 @@ class PasswordResetLinkController extends Controller
      */
     public function store(Request $request)
     {
+        $this->setLocaleFromRequest($request);
+
         $request->validate([
             'email' => ['required', 'email'],
         ]);

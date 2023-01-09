@@ -47,9 +47,13 @@
                 </div>
                 <q-separator class="q-mt-lg" />
                 <div class="flex row justify-center">
-                    <router-link to="/" class="text-grey-8">{{
-                        $t('login-card.forgot-your-password')
-                    }}</router-link>
+                    <router-link
+                        :to="{ name: 'forgotPassword' }"
+                        class="text-grey-8"
+                        >{{
+                            $t('login-card.forgot-your-password')
+                        }}</router-link
+                    >
                     <div class="q-px-sm">|</div>
                     <router-link
                         :to="{ name: 'register' }"
@@ -96,6 +100,9 @@ async function login() {
         })
         .catch((err) => {
             errorMessage.value = extractErrorMessages(err);
+            setTimeout(() => {
+                errorMessage.value = null;
+            }, 10000);
         });
     loading.value = false;
 }

@@ -33,7 +33,7 @@ return [
     'dimensions' => "Le :attribute a des dimensions d'image incorrectes.",
     'distinct' => 'Le champ :attribute a une valeur en double.',
     'doesnt_start_with' => "Le :attribute ne peut pas commencer par l'un des éléments suivants : :values.",
-    'email' => 'Le :attribute doit être une adresse email valide.',
+    'email' => 'Le :attribute doit être une adresse courriel valide.',
     'ends_with' => "Le :attribute doit se terminer par l'un des éléments suivants: :values.",
     'enum' => "Le :attribute sélectionné n'est pas valide.",
     'exists' => "Le :attribute sélectionné n'est pas valide.",

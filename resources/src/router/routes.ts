@@ -39,6 +39,24 @@ const routes: RouteRecordRaw[] = [
                         name: 'register',
                         meta: { requiresAuth: false },
                     },
+                    {
+                        path: 'forgot-password',
+                        component: () =>
+                            import(
+                                '@/models/auth/components/ForgotPasswordCard.vue'
+                            ),
+                        name: 'forgotPassword',
+                        meta: { requiresAuth: false },
+                    },
+                    {
+                        path: 'password-reset',
+                        component: () =>
+                            import(
+                                '@/models/auth/components/ResetPasswordCard.vue'
+                            ),
+                        name: 'resetPassword',
+                        meta: { requiresAuth: false },
+                    },
                 ],
             },
             {

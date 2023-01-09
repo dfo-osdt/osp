@@ -80,5 +80,15 @@
       "text": "Veuillez vérifier votre e-mail ({0}) pour un lien de confirmation. \nPour protéger votre compte, vous ne pourrez pas vous connecter tant que vous n'aurez pas confirmé votre adresse e-mail."
     },
     "registered-subtitle": "Juste une dernière étape..."
+  },
+  "forgot-password-card": {
+    "cancel": "Revenir à la connexion",
+    "title": "Réinitialisez votre mot de passe",
+    "text": "Ne vous inquiétez pas, nous sommes tous déjà passés par là. \nCliquez simplement sur le bouton de réinitialisation du mot de passe et nous vous enverrons des instructions pour vous remettre sur la bonne voie."
+  },
+  "reset-password": {
+    "invalid-request-title": "Demande de réinitialisation de mot de passe invalide",
+    "title": "Entrez un nouveau mot de passe",
+    "text": "Entrez un nouveau mot de passe pour {0}."
   }
 }
