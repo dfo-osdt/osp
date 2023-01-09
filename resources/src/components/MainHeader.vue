@@ -8,7 +8,6 @@
                 dense
                 round
                 :icon="authStore.leftDrawerOpen ? 'mdi-menu-open' : 'mdi-menu'"
-                aria-label="Menu"
                 @click="toggleLeftDrawer"
             />
             <router-link to="/">
@@ -23,8 +22,7 @@
                 outline
                 dense
                 icon="mdi-login"
-                label="Login"
-                aria-label="Login"
+                :label="$t('common.login')"
                 padding="xs md"
                 @click="$router.push({ name: 'login' })"
             ></q-btn>
@@ -43,7 +41,9 @@
                         <q-separator></q-separator>
                         <q-item v-ripple to="/settings" clickable>
                             <q-item-section>
-                                <q-item-label>Settings</q-item-label>
+                                <q-item-label>{{
+                                    $t('common.settings')
+                                }}</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
                                 <q-icon name="mdi-account-cog-outline" />
@@ -51,7 +51,7 @@
                         </q-item>
                         <q-item v-ripple to="/dashboard" clickable>
                             <q-item-section>
-                                <q-item-label>Dashboard</q-item-label>
+                                <q-item-label>{{ $t('common.dashboard') }}</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
                                 <q-icon name="mdi-view-dashboard-outline" />
@@ -59,7 +59,7 @@
                         </q-item>
                         <q-item v-ripple to="/auth/logout" clickable>
                             <q-item-section>
-                                <q-item-label>Logout</q-item-label>
+                                <q-item-label>{{ $t('common.logout') }}</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
                                 <q-icon name="mdi-logout" />

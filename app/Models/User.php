@@ -105,10 +105,44 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
     }
 
     /**
+     * Associate or create an author profile for the user. This function
+     * checks if an author profile with the same email already exists
+     * in the database. If it does, it will associate the user with that
+     * author profile. If it does not, it will create a new author profile
+     * based on the user's information and associate the user with that.
+     */
+    public function associateAuthor(): Author
+    {
+        // if user has already been associated with an author, return that author
+        if ($this->author) {
+            return $this->author;
+        }
+
+        $author = Author::where('email', $this->email)->first();
+
+        if ($author) {
+            $this->author()->save($author);
+        } else {
+            $author = Author::create([
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'email' => $this->email,
+                'organization_id' => Organization::getDefaultOrganization()->id,
+            ]);
+
+            $this->author()->save($author);
+        }
+
+        $this->save();
+
+        return $author;
+    }
+
+    /**
      * Override the default verification email to use a random token instead.
      * We are doing this because we do not allow login until the user has
      * verified their email address and hashing the email address can be
-     * used to circumvent this verification process.
+     * used to circumvent this verification process if app key compromised.
      *
      * @override MustVerifyEmail
      */
@@ -122,7 +156,7 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
      */
     public static function generateEmailVerificationToken(): string
     {
-        return hash_hmac('sha256', Str::random(40), config('app.key'));
+        return Str::random(40);
     }
 
     /**

@@ -16,4 +16,9 @@ return [
     */
     'openai_api_key' => env('OPENAI_API_KEY'),
 
+    /*
+        The default organization to use when creating new authors.
+    */
+    'default_organization' => 'Fisheries and Oceans Canada',
+
 ];

@@ -16,7 +16,25 @@
       "unsaved-changes": {}
     },
     "unknown": "Inconnue",
-    "logged-out": "Déconnecté"
+    "logged-out": "Déconnecté",
+    "logout": "Se déconnecter",
+    "your-email": "Votre courriel",
+    "validation": {
+      "email-invalid": "Le courriel est invalide",
+      "password-required": "Mot de passe requis",
+      "email-required": "Le courriel est requis",
+      "name-required": "Le nom est requis",
+      "name-invalid": "Le nom n'est pas valide",
+      "passwords-match": "Les mots de passe ne correspondent pas"
+    },
+    "your-password": "Votre mot de passe",
+    "reset": "Réinitialiser",
+    "settings": "Paramètres",
+    "dashboard": "Tableau de bord",
+    "confirm-password": "Confirmez le mot de passe",
+    "registered": "Inscrit",
+    "your-first-name": "Ton prénom",
+    "your-last-name": "Votre nom de famille"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -42,5 +60,25 @@
   "publication": {
     "accepted": "Accepté",
     "publsihed": "Publié"
+  },
+  "error-invalid-signature": {
+    "invalid-signature": "Signature non valide",
+    "link-expired-text": "Le lien signé que vous utilisez a probablement expiré."
+  },
+  "logout-card": {
+    "text": "Merci d'utiliser le portail science ouverte."
+  },
+  "login-card": {
+    "email-verified-text": "Courriel verifié. \nVous pouvez maintenant vous connecter.",
+    "remember-me": "Souviens-toi de moi",
+    "forgot-your-password": "Mot de passe oublié?",
+    "dont-have-an-account": "Vous n'avez pas de compte?"
+  },
+  "main-header": {},
+  "register-card": {
+    "registered": {
+      "text": "Veuillez vérifier votre e-mail ({0}) pour un lien de confirmation. \nPour protéger votre compte, vous ne pourrez pas vous connecter tant que vous n'aurez pas confirmé votre adresse e-mail."
+    },
+    "registered-subtitle": "Juste une dernière étape..."
   }
 }

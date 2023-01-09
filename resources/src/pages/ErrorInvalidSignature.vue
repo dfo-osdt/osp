@@ -7,9 +7,11 @@
             />
         </div>
         <div class="text-h1 text-primary text-weight-light">403</div>
-        <div class="text-subtitle1 text-primary">Invalid Signature</div>
+        <div class="text-subtitle1 text-primary">
+            {{ $t('error-invalid-signature.invalid-signature') }}
+        </div>
         <div class="text-body2 text-grey-8">
-            The signed link you're using has likely expired.
+            {{ $t('error-invalid-signature.link-expired-text') }}
         </div>
         <div class="q-mt-lg">
             <q-btn
@@ -17,8 +19,8 @@
                 outline
                 color="primary"
                 :to="authStore.isAuthenticated ? '/dashboard' : '/'"
+                icon="mdi-home"
             >
-                <q-icon name="mdi-home" />
             </q-btn>
         </div>
     </div>

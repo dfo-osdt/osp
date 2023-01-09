@@ -9,20 +9,21 @@
             /></template>
             <div>{{ errorMessage.message }}</div>
         </q-banner>
+        <q-banner v-if="showVerified" dark class="bg-secondary">
+            <template #avatar
+                ><q-icon name="mdi-email-seal-outline"
+            /></template>
+            <div>{{ $t('login-card.email-verified-text') }}</div>
+        </q-banner>
         <q-card-section class="q-mt-md">
             <q-form class="q-gutter-md" autofocus @submit="login">
                 <q-input
                     v-model="email"
                     type="email"
                     filled
-                    label="Your email"
+                    :label="$t('common.your-email')"
                     lazy-rules
-                    :rules="[
-                        (val) => !!val || 'Email is required',
-                        // must be valid email
-                        (val) =>
-                            /^\S+@\S+\.\S+$/.test(val) || 'Email is invalid',
-                    ]"
+                    :rules="emailRules"
                     data-cy="email"
                     @focus="errorMessage = null"
                 />
@@ -30,38 +31,32 @@
                     v-model="password"
                     type="password"
                     filled
-                    label="Your password"
-                    :rules="[(val) => !!val || 'Password is required']"
+                    :label="$t('common.your-password')"
+                    :rules="passwordRules"
                     data-cy="password"
                     @focus="errorMessage = null"
                 />
-
-                <q-toggle v-model="remember" label="Remember me" />
-
                 <div class="flex justify-end">
                     <q-btn
-                        label="Login"
+                        :label="$t('common.login')"
                         type="submit"
                         color="primary"
                         data-cy="login"
                         :loading="loading"
                     />
-                    <q-btn
-                        label="Reset"
-                        type="reset"
-                        color="primary"
-                        flat
-                        class="q-ml-sm"
-                    />
                 </div>
                 <q-separator class="q-mt-lg" />
                 <div class="flex row justify-center">
-                    <router-link to="/" class="text-grey-8"
-                        >Forgot your password?</router-link
-                    >
+                    <router-link to="/" class="text-grey-8">{{
+                        $t('login-card.forgot-your-password')
+                    }}</router-link>
                     <div class="q-px-sm">|</div>
-                    <router-link :to="{ name: 'register' }" class="text-grey-8"
-                        >Don't have an account?</router-link
+                    <router-link
+                        :to="{ name: 'register' }"
+                        class="text-grey-8"
+                        >{{
+                            $t('login-card.dont-have-an-account')
+                        }}</router-link
                     >
                 </div>
             </q-form>
@@ -73,10 +68,6 @@
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
 import { useQuasar } from 'quasar';
-
-const props = defineProps<{
-    showFooter?: boolean;
-}>();
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -124,7 +115,36 @@ onMounted(async () => {
             router.push({ name: 'dashboard' });
         }
     }
+    // show verified email message as a banner
+    if (verified.value === '1') {
+        $q.notify({
+            message: t('login-card.email-verified-text'),
+            type: 'info',
+            icon: 'mdi-information-outline',
+        });
+    }
 });
+
+// verified email section
+const verified = ref(
+    (router.currentRoute.value.query?.verified as string) || ''
+);
+
+const showVerified = computed(() => {
+    return verified.value === '1';
+});
+
+// rules
+const emailRules = computed(() => [
+    (val: string) => !!val || t('common.validation.email-required'),
+    // must be valid email
+    (val: string) =>
+        /^\S+@\S+\.\S+$/.test(val) || t('common.validation.email-invalid'),
+]);
+
+const passwordRules = computed(() => [
+    (val: string) => !!val || t('common.validation.password-required'),
+]);
 </script>
 
 <style scoped></style>

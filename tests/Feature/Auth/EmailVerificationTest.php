@@ -34,7 +34,7 @@ class EmailVerificationTest extends TestCase
         $this->assertTrue($user->hasVerifiedEmail());
         $this->assertNull($user->email_verification_token);
         $this->assertTrue($user->active);
-        $response->assertRedirect(config('app.frontend_url').'#/auth/register?verified=1'.'&email='.$user->email);
+        $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
     }
 
     public function test_email_is_not_verified_with_invalid_hash()
@@ -50,7 +50,7 @@ class EmailVerificationTest extends TestCase
         $response = $this->get($verificationUrl);
 
         $this->assertFalse($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect(config('app.frontend_url').'#/auth/register?verified=0');
+        $response->assertRedirect(config('app.frontend_url').'#/invalid-signature');
     }
 
     public function test_verification_email_can_be_sent_again()

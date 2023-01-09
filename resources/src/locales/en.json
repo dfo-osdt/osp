@@ -17,7 +17,24 @@
       "unsaved-changes": {}
     },
     "logout": "Logout",
-    "logged-out": "Logged Out"
+    "logged-out": "Logged Out",
+    "your-email": "Your email",
+    "validation": {
+      "email-required": "Email is required",
+      "email-invalid": "Email is invalid",
+      "password-required": "Password is required",
+      "name-required": "Name is required",
+      "name-invalid": "Name is invalid",
+      "passwords-match": "Passwords do not match"
+    },
+    "your-password": "Your password",
+    "reset": "Reset",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "your-first-name": "Your first name",
+    "your-last-name": "Your last name",
+    "confirm-password": "Confirm password",
+    "registered": "Registered"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -43,5 +60,25 @@
   "publication": {
     "accepted": "Accepted",
     "publsihed": "Published"
+  },
+  "error-invalid-signature": {
+    "invalid-signature": "Invalid Signature",
+    "link-expired-text": "The signed link you're using has likely expired."
+  },
+  "logout-card": {
+    "text": "Thank you for using the Open Science Portal."
+  },
+  "login-card": {
+    "email-verified-text": "Email verified. You may now login.",
+    "remember-me": "Remember me",
+    "forgot-your-password": "Forgot your password?",
+    "dont-have-an-account": "Don't have an account?"
+  },
+  "main-header": {},
+  "register-card": {
+    "registered-subtitle": "Just one last step...",
+    "registered": {
+      "text": "Please check your email ({0}) for a confirmation link. To protect your account, you will not be able to login until you've confirmed your email address."
+    }
   }
 }

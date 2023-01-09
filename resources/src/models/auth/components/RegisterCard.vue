@@ -15,13 +15,9 @@
                     v-model="first_name"
                     type="text"
                     filled
-                    label="Your first name"
+                    :label="$t('common.your-first-name')"
                     lazy-rules
-                    :rules="[
-                        (val) => !!val || 'Name is required',
-                        // must be valid name
-                        (val) => /^[a-zA-Z ]+$/.test(val) || 'Name is invalid',
-                    ]"
+                    :rules="nameRules"
                     data-cy="name"
                     @focus="errorMessage = null"
                 />
@@ -29,13 +25,9 @@
                     v-model="last_name"
                     type="text"
                     filled
-                    label="Your last name"
+                    :label="$t('common.your-last-name')"
                     lazy-rules
-                    :rules="[
-                        (val) => !!val || 'Name is required',
-                        // must be valid name
-                        (val) => /^[a-zA-Z ]+$/.test(val) || 'Name is invalid',
-                    ]"
+                    :rules="nameRules"
                     data-cy="name"
                     @focus="errorMessage = null"
                 />
@@ -43,14 +35,9 @@
                     v-model="email"
                     type="email"
                     filled
-                    label="Your email"
+                    :label="$t('common.your-email')"
                     lazy-rules
-                    :rules="[
-                        (val) => !!val || 'Email is required',
-                        // must be valid email
-                        (val) =>
-                            /^\S+@\S+\.\S+$/.test(val) || 'Email is invalid',
-                    ]"
+                    :rules="emailRules"
                     data-cy="email"
                     @focus="errorMessage = null"
                 />
@@ -58,8 +45,8 @@
                     v-model="password"
                     type="password"
                     filled
-                    label="Your password"
-                    :rules="[(val) => !!val || 'Password is required']"
+                    :label="$t('common.your-password')"
+                    :rules="passwordRules"
                     data-cy="password"
                     @focus="errorMessage = null"
                 />
@@ -67,28 +54,18 @@
                     v-model="password_confirmation"
                     type="password"
                     filled
-                    label="Confirm password"
-                    :rules="[
-                        (val) => !!val || 'Password is required',
-                        (val) => val === password || 'Passwords do not match',
-                    ]"
+                    :label="$t('common.confirm-password')"
+                    :rules="passwordConfirmationRules"
                     data-cy="password"
                     @focus="errorMessage = null"
                 />
                 <div class="flex justify-end">
                     <q-btn
-                        label="Register"
+                        :label="$t('common.register')"
                         type="submit"
                         color="primary"
                         data-cy="login"
                         :loading="loading"
-                    />
-                    <q-btn
-                        label="Reset"
-                        type="reset"
-                        color="primary"
-                        flat
-                        class="q-ml-sm"
                     />
                 </div>
             </q-form>
@@ -102,12 +79,12 @@
                     class="col-auto"
                 />
                 <div class="text-h5 col-12 text-center">
-                    Just one last step...
+                    {{ $t('register-card.registered-subtitle') }}
                 </div>
                 <div class="text-body1 q-mt-md text-grey-8 col-12">
-                    Please check your email ({{ registered.email }}) for a
-                    confirmation link. To protect your account, you will not be
-                    able to login until you've confirmed your email address.
+                    {{
+                        $t('register-card.registered.text', [registered.email])
+                    }}
                 </div>
             </div>
         </q-card-section>
@@ -125,10 +102,6 @@ import {
 } from '@/api/sanctum';
 
 const sanctum = useSanctum();
-
-const props = defineProps<{
-    showFooter?: boolean;
-}>();
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -148,7 +121,9 @@ const loading = ref(false);
 const errorMessage: Ref<ErrorResponse | null> = ref(null);
 const registered: Ref<SanctumRegisterResponse | null> = ref(null);
 const title = computed(() => {
-    return registered.value === null ? 'Register' : 'Registered';
+    return registered.value === null
+        ? t('common.register')
+        : t('common.registered');
 });
 
 async function register() {
@@ -192,6 +167,31 @@ onMounted(async () => {
         }
     }
 });
+
+// rules
+const nameRules = computed(() => [
+    (val: string) => !!val || t('common.validation.name-required'),
+    // must be valid name
+    (val: string) =>
+        /^[a-zA-Z ]+$/.test(val) || t('common.validation.name-invalid'),
+]);
+
+const emailRules = computed(() => [
+    (val: string) => !!val || t('common.validation.email-required'),
+    // must be valid email
+    (val: string) =>
+        /^\S+@\S+\.\S+$/.test(val) || t('common.validation.email-invalid'),
+]);
+
+const passwordRules = computed(() => [
+    (val: string) => !!val || t('common.validation.password-required'),
+]);
+
+const passwordConfirmationRules = computed(() => [
+    (val: string) => !!val || t('common.validation.password-required'),
+    (val: string) =>
+        val === password.value || t('common.validation.passwords-match'),
+]);
 </script>
 
 <style scoped></style>

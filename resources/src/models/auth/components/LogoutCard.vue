@@ -1,28 +1,32 @@
 <template>
-    <q-card>
-        <q-card-section class="bg-primary text-white">
-            <div class="text-h5">{{ t('common.logged-out') }}</div>
-        </q-card-section>
+    <q-card flat>
         <q-card-section class="q-mt-md flex justify-around">
-            <p>You've been logged out from the portal.</p>
+            <q-img src="/assets/splash_images/undraw_adventure_map_hnin.svg" />
+        </q-card-section>
+        <q-card-section class="flex-center flex">
+            <div class="text-h2 text-primary">
+                {{ $t('common.logged-out') }}
+            </div>
+            <div class="text-body2 text-grey-8 q-mt-md">
+                {{ $t('logout-card.text') }}
+            </div>
         </q-card-section>
         <q-card-actions class="flex justify-around">
             <q-btn
-                label="Login"
-                type="submit"
+                round
+                outline
                 color="primary"
                 data-cy="login"
                 :to="{ name: 'login' }"
-                icon="mdi-login"
-            />
+                icon="mdi-home"
+            >
+            </q-btn>
         </q-card-actions>
     </q-card>
 </template>
 
 <script setup lang="ts">
 const authStore = useAuthStore();
-
-const { t } = useI18n();
 
 // UI related data
 const loading = ref(false);

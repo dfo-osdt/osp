@@ -29,9 +29,13 @@ test('an email is always stored in lowercase', function () {
 
     $user = User::latest()->first();
     expect($user->email)->toBe('john.doe@jel.com');
+    // check that author profile is created
+    expect($user->author->email)->toBe('john.doe@jel.com');
+    // check that user is assigned author role
+    expect($user->hasRole('author'))->toBeTrue();
 });
 
-test('a user cannot register twice with same email', function () {
+test('a user cannot register twice with the same email', function () {
     $email = 'John.Doe@jel.com';
 
     $response = $this->postJson('/register', [
