@@ -3,14 +3,14 @@
         <q-card-section class="q-mt-md flex justify-around">
             <q-img
                 src="/assets/splash_images/undraw_adventure_map_hnin.svg"
-                width="100%"
+                width="75%"
             />
         </q-card-section>
-        <q-card-section class="flex-center flex">
-            <h1 class="text-h2 text-primary q-mb-xs">
+        <q-card-section>
+            <h1 class="text-h2 text-primary q-mb-xs text-center">
                 {{ $t('common.logged-out') }}
             </h1>
-            <p class="text-body2 text-grey-8">
+            <p class="text-body2 text-grey-8 text-center">
                 {{ $t('logout-card.text') }}
             </p>
         </q-card-section>
