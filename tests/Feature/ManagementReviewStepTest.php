@@ -92,7 +92,7 @@ test('a reviewer can approve and complete the review', function () {
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
 });
 
-test('a reviewer can defer and send to the next reviewer', function () {
+test('a reviewer can reassign and send to the next reviewer', function () {
     Mail::fake();
 
     // to send to the next step, a comment is required
@@ -102,10 +102,10 @@ test('a reviewer can defer and send to the next reviewer', function () {
     $reviewer2 = User::factory()->create();
 
     // no next user id provided, should fail
-    $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/defer')
+    $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/reassign')
         ->assertStatus(422);
 
-    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/defer', [
+    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/reassign', [
         'next_user_id' => $reviewer2->id,
     ])->assertOk();
 

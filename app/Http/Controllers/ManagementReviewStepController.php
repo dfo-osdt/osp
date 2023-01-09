@@ -176,7 +176,7 @@ class ManagementReviewStepController extends Controller
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
-    public function defer(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
+    public function reassign(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
     {
         Gate::authorize('update', $managementReviewStep);
 
@@ -200,7 +200,7 @@ class ManagementReviewStepController extends Controller
         // send event that a management review step has been created.
         ManagementReviewStepCreated::dispatch($nextReviewStep);
 
-        $managementReviewStep->status = ManagementReviewStepStatus::DEFERRED;
+        $managementReviewStep->status = ManagementReviewStepStatus::REASSIGN;
         $managementReviewStep->completed_at = now();
         $managementReviewStep->saveOrFail();
 

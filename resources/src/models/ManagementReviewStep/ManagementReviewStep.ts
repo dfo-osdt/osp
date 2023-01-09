@@ -119,19 +119,22 @@ export class ManagementReviewStepService {
     }
 
     /**
-     * Defer the management review step.
+     * Reassign the management review step.
      *
      * @param step the management review step to defer
      * @param nextUserId the user id of the next user in the workflow.
      */
-    public static async defer(step: ManagementReviewStep, nextUserId: number) {
+    public static async reassign(
+        step: ManagementReviewStep,
+        nextUserId: number
+    ) {
         const data: DecisionStep = {
             comments: step.comments,
             next_user_id: nextUserId,
         };
 
         const response = await http.put<DecisionStep, R>(
-            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/defer`,
+            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/reassign`,
             data
         );
         return response.data;

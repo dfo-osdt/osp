@@ -178,7 +178,7 @@ type Decision =
     | 'approveAndForward'
     | 'withholdAndComplete'
     | 'withholdAndForward'
-    | 'defer';
+    | 'reassign';
 
 type DecisionOption = {
     label: string;
@@ -269,10 +269,10 @@ const options = ref<DecisionOption[]>([
         disabled: stepHasNoComments.value,
     },
     {
-        label: 'Defer',
-        value: 'defer',
+        label: 'Reassign',
+        value: 'reassign',
         description:
-            'You are not the correct reviewer for this manuscript and defer this review to the proper reviewer without making a recommendation.',
+            'You are not the correct reviewer for this manuscript and reassign this review to the proper reviewer without making a recommendation.',
         disabled: stepHasNoComments.value,
     },
 ]);
@@ -341,11 +341,11 @@ async function submit() {
                 nextUserId.value
             );
             break;
-        case 'defer':
+        case 'reassign':
             if (nextUserId.value === null) {
                 throw new Error('nextUserId is null');
             }
-            response = await ManagementReviewStepService.defer(
+            response = await ManagementReviewStepService.reassign(
                 props.managementReviewStep,
                 nextUserId.value
             );
