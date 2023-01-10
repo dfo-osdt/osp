@@ -293,7 +293,9 @@ async function getAllManuscriptAuthorsEmails(): Promise<string[]> {
     const manuscriptAuthors = await ManuscriptAuthorService.list(
         props.managementReviewStep.manuscript_record_id
     );
-    return manuscriptAuthors.data.map((author) => author.data.author?.email);
+    return manuscriptAuthors.data.map(
+        (manuscriptAuthor) => manuscriptAuthor.data.author?.data.email ?? ''
+    );
 }
 
 async function getManuscriptOwnerId(): Promise<number> {
