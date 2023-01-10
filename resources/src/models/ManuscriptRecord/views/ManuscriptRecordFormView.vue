@@ -190,31 +190,32 @@
                                 >here</a
                             >.
                         </p>
-                        <div
-                            v-if="
-                                !isManuscriptReadOnly &&
-                                (manuscriptResource.data.pls === '' ||
-                                    PLSLoading) &&
-                                manuscriptResource.data.abstract !== ''
-                            "
-                            class="row justify-end q-mr-sm"
-                        >
+                        <div class="row justify-end q-mr-sm">
                             <div
                                 class="text-body1 text-primary q-pt-sm q-pr-md"
                             >
                                 Need some help? Using your manuscript's
                                 abstract, we can generate a draft PLS.
                             </div>
-                            <q-btn
-                                class="q-mb-md"
-                                color="primary"
-                                label="Generate PLS"
-                                icon="mdi-brain"
-                                outline
-                                rounded
-                                :loading="PLSLoading"
-                                @click="generatePLS"
-                            />
+                            <div>
+                                <q-btn
+                                    class="q-mb-md"
+                                    color="primary"
+                                    label="Generate PLS"
+                                    icon="mdi-brain"
+                                    outline
+                                    rounded
+                                    :disable="!enablePLSPrompt"
+                                    :loading="PLSLoading"
+                                    @click="generatePLS"
+                                >
+                                </q-btn>
+                                <q-tooltip
+                                    v-if="!enablePLSPrompt"
+                                    class="text-body2"
+                                    >Your abstract is too short.</q-tooltip
+                                >
+                            </div>
                         </div>
                     </QuestionEditor>
                     <QuestionEditor
@@ -660,6 +661,19 @@ const showPublishBanner = computed(() => {
 
 // PLS generation
 const PLSLoading = ref(false);
+
+const enablePLSPrompt = computed(() => {
+    if (!manuscriptResource.value?.data) {
+        console.log('no manuscript resource');
+        return false;
+    }
+
+    return (
+        !isManuscriptReadOnly.value &&
+        (manuscriptResource.value.data.pls === '' || PLSLoading) &&
+        manuscriptResource.value.data.abstract.length > 250
+    );
+});
 
 async function generatePLS() {
     PLSLoading.value = true;
