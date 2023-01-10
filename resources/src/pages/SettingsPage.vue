@@ -21,15 +21,12 @@
                                 <q-item-label>Author Profile</q-item-label>
                             </q-item-section>
                         </q-item>
-                        <q-item clickable to="/settings/password">
+                        <q-item clickable to="/settings/security">
                             <q-item-section avatar>
                                 <q-icon name="mdi-shield-lock-outline" />
                             </q-item-section>
                             <q-item-section>
-                                <q-item-label>Password</q-item-label>
-                                <q-item-label caption>
-                                    Change your password.
-                                </q-item-label>
+                                <q-item-label>Account Security</q-item-label>
                             </q-item-section>
                         </q-item>
                         <q-item clickable to="/settings/invitations">

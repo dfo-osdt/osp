@@ -85,6 +85,14 @@ const routes: RouteRecordRaw[] = [
                             ),
                         name: 'settings.author',
                     },
+                    {
+                        path: 'security',
+                        component: () =>
+                            import(
+                                '@/models/User/views/UserAccountSecurityView.vue'
+                            ),
+                        name: 'settings.security',
+                    },
                 ],
             },
             {

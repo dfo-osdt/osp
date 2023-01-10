@@ -2,13 +2,28 @@
 
 use App\Models\User;
 
-test('new users can register', function () {
+test('new users cannot register with poor password', function () {
     $response = $this->post('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => 'test@example.com',
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'passwordpassword',
+        'password_confirmation' => 'passwordpassword',
+    ]);
+
+    $response->assertStatus(422);
+});
+
+test('new users can register', function () {
+    // generate random 16 character long string
+    $password = Str::random(12);
+
+    $response = $this->post('/register', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => 'test@example.com',
+        'password' => $password,
+        'password_confirmation' => $password,
     ]);
     $response->assertJson([
         'message' => 'registered',
@@ -19,12 +34,15 @@ test('new users can register', function () {
 test('an email is always stored in lowercase', function () {
     $email = 'John.Doe@jel.com';
 
+    // generate random 16 character long string
+    $password = Str::random(12);
+
     $response = $this->post('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => $email,
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => $password,
+        'password_confirmation' => $password,
     ]);
 
     $user = User::latest()->first();
@@ -38,12 +56,15 @@ test('an email is always stored in lowercase', function () {
 test('a user cannot register twice with the same email', function () {
     $email = 'John.Doe@jel.com';
 
+    // generate random 16 character long string
+    $password = Str::random(12);
+
     $response = $this->postJson('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => $email,
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => $password,
+        'password_confirmation' => $password,
     ]);
 
     $response->assertOk();

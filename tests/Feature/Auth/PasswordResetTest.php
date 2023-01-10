@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
@@ -32,14 +33,38 @@ class PasswordResetTest extends TestCase
         $this->postJson('/forgot-password', ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+            $password = Str::random(16);
+
             $response = $this->postJson('/reset-password', [
                 'token' => $notification->token,
                 'email' => $user->email,
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => $password,
+                'password_confirmation' => $password,
             ]);
 
-            $response->assertSessionHasNoErrors();
+            $response->assertOk();
+
+            return true;
+        });
+    }
+
+    public function test_password_cant_be_reset_with_valid_token_and_poor_password()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create();
+
+        $this->postJson('/forgot-password', ['email' => $user->email]);
+
+        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+            $response = $this->postJson('/reset-password', [
+                'token' => $notification->token,
+                'email' => $user->email,
+                'password' => 'passwordpassword',
+                'password_confirmation' => 'passwordpassword',
+            ]);
+
+            $response->assertStatus(422);
 
             return true;
         });

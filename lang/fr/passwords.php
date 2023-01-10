@@ -6,4 +6,5 @@ return [
     'throttled' => 'Veuillez patienter avant de réessayer.',
     'token' => "Ce jeton de réinitialisation de mot de passe n'est pas valide.",
     'user' => 'Nous ne pouvons pas trouver un utilisateur avec ce courriel.',
+    'changed' => 'Mot de passe changé avec succès',
 ];

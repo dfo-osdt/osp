@@ -18,6 +18,7 @@ import MainHeader from '@/components/MainHeader.vue';
 import MainDrawer from '@/components/MainDrawer.vue';
 import { useQuasar } from 'quasar';
 
+const router = useRouter();
 const authStore = useAuthStore();
 
 function toggleLeftDrawer() {
@@ -43,7 +44,7 @@ watch(
             );
 
             const logoutTimeout = setTimeout(() => {
-                if (idle.value) authStore.logout();
+                if (idle.value) router.push({ name: 'logout' });
             }, 2 * 60 * 1000);
 
             $q.notify({
