@@ -193,5 +193,14 @@
     "method": [
       "POST"
     ]
+  },
+  "change.password": {
+    "name": "change.password",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\ChangePasswordController@changePassword",
+    "uri": "change-password",
+    "method": [
+      "POST"
+    ]
   }
 }
