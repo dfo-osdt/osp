@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\FunderController;
 use App\Http\Controllers\JournalController;
@@ -17,8 +18,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManagementReviewStepsController;
 use App\Http\Controllers\UserManuscriptRecordController;
 use App\Http\Controllers\UserPublicationController;
-use App\Http\Resources\AuthenticatedUserResource;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,8 +32,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/user', function (Request $request) {
-        return AuthenticatedUserResource::make($request->user()->load('author.organization'));
+    Route::controller(AuthenticatedUserController::class)->group(function () {
+        Route::get('/user', 'user');
+        Route::get('/user/authentications', 'authentications');
     });
 
     Route::controller(AuthorController::class)->group(function () {

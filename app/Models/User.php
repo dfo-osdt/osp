@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
+use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
 use Str;
 
@@ -20,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
     use HasRoles;
+    use AuthenticationLoggable;
 
     // Audit Thresholds - amount of audit records to keep
     protected $auditThreshold = 50;

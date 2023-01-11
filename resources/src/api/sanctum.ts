@@ -1,4 +1,7 @@
-import { AuthenticatedUserResource } from '@/stores/AuthStore';
+import {
+    AuthenticatedUserResource,
+    UserAuthenticationResource,
+} from '@/stores/AuthStore';
 import { http } from './http';
 
 export type locale = 'en' | 'fr';
@@ -46,11 +49,6 @@ export interface SanctumChangePasswordRequest {
 export const useSanctum = () => {
     const csrf = () => http.get('/sanctum/csrf-cookie');
 
-    const getUser = async () => {
-        await csrf();
-        return http.get<AuthenticatedUserResource>('/api/user');
-    };
-
     const login = async (user: SanctumUser) => {
         await csrf();
         return await http.post('/login', user);
@@ -82,6 +80,16 @@ export const useSanctum = () => {
 
     // Methods below will only work if the user is authenticated,
     // they do not need to call csrf() first.
+    const getUser = async () => {
+        return http.get<AuthenticatedUserResource>('/api/user');
+    };
+
+    const getUserAuthentications = async () => {
+        return http.get<UserAuthenticationResource>(
+            '/api/user/authentications'
+        );
+    };
+
     const logout = async () => {
         return await http.post('/logout');
     };
@@ -95,6 +103,7 @@ export const useSanctum = () => {
 
     return {
         getUser,
+        getUserAuthentications,
         login,
         logout,
         register,

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29fae6fb3da957763155ccc5a226cdf8",
+    "content-hash": "cb4cf79c63bb25e7fa7c556bac9818e9",
     "packages": [
         {
             "name": "brick/math",
@@ -1026,6 +1026,141 @@
             "time": "2022-05-21T17:30:32+00:00"
         },
         {
+            "name": "jaybizzle/crawler-detect",
+            "version": "v1.2.112",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JayBizzle/Crawler-Detect.git",
+                "reference": "2c555ce35a07a5c1c808cee7d5bb52c41a4c7b2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JayBizzle/Crawler-Detect/zipball/2c555ce35a07a5c1c808cee7d5bb52c41a4c7b2f",
+                "reference": "2c555ce35a07a5c1c808cee7d5bb52c41a4c7b2f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.5|^6.5|^9.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jaybizzle\\CrawlerDetect\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Beech",
+                    "email": "m@rkbee.ch",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CrawlerDetect is a PHP class for detecting bots/crawlers/spiders via the user agent",
+            "homepage": "https://github.com/JayBizzle/Crawler-Detect/",
+            "keywords": [
+                "crawler",
+                "crawler detect",
+                "crawler detector",
+                "crawlerdetect",
+                "php crawler detect"
+            ],
+            "support": {
+                "issues": "https://github.com/JayBizzle/Crawler-Detect/issues",
+                "source": "https://github.com/JayBizzle/Crawler-Detect/tree/v1.2.112"
+            },
+            "time": "2022-10-05T21:52:44+00:00"
+        },
+        {
+            "name": "jenssegers/agent",
+            "version": "v2.6.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jenssegers/agent.git",
+                "reference": "daa11c43729510b3700bc34d414664966b03bffe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jenssegers/agent/zipball/daa11c43729510b3700bc34d414664966b03bffe",
+                "reference": "daa11c43729510b3700bc34d414664966b03bffe",
+                "shasum": ""
+            },
+            "require": {
+                "jaybizzle/crawler-detect": "^1.2",
+                "mobiledetect/mobiledetectlib": "^2.7.6",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^5.0|^6.0|^7.0"
+            },
+            "suggest": {
+                "illuminate/support": "Required for laravel service providers"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Jenssegers\\Agent\\AgentServiceProvider"
+                    ],
+                    "aliases": {
+                        "Agent": "Jenssegers\\Agent\\Facades\\Agent"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jenssegers\\Agent\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jens Segers",
+                    "homepage": "https://jenssegers.com"
+                }
+            ],
+            "description": "Desktop/mobile user agent parser with support for Laravel, based on Mobiledetect",
+            "homepage": "https://github.com/jenssegers/agent",
+            "keywords": [
+                "Agent",
+                "browser",
+                "desktop",
+                "laravel",
+                "mobile",
+                "platform",
+                "user agent",
+                "useragent"
+            ],
+            "support": {
+                "issues": "https://github.com/jenssegers/agent/issues",
+                "source": "https://github.com/jenssegers/agent/tree/v2.6.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jenssegers",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/jenssegers/agent",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-06-13T08:05:20+00:00"
+        },
+        {
             "name": "laracasts/cypress",
             "version": "3.0.0",
             "source": {
@@ -2009,6 +2144,62 @@
                 }
             ],
             "time": "2022-12-08T12:29:14+00:00"
+        },
+        {
+            "name": "mobiledetect/mobiledetectlib",
+            "version": "2.8.41",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/serbanghita/Mobile-Detect.git",
+                "reference": "fc9cccd4d3706d5a7537b562b59cc18f9e4c0cb1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/fc9cccd4d3706d5a7537b562b59cc18f9e4c0cb1",
+                "reference": "fc9cccd4d3706d5a7537b562b59cc18f9e4c0cb1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8.35||~5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Detection": "namespaced/"
+                },
+                "classmap": [
+                    "Mobile_Detect.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Serban Ghita",
+                    "email": "serbanghita@gmail.com",
+                    "homepage": "http://mobiledetect.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Mobile_Detect is a lightweight PHP class for detecting mobile devices. It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.",
+            "homepage": "https://github.com/serbanghita/Mobile-Detect",
+            "keywords": [
+                "detect mobile devices",
+                "mobile",
+                "mobile detect",
+                "mobile detector",
+                "php mobile detect"
+            ],
+            "support": {
+                "issues": "https://github.com/serbanghita/Mobile-Detect/issues",
+                "source": "https://github.com/serbanghita/Mobile-Detect/tree/2.8.41"
+            },
+            "time": "2022-11-08T18:31:26+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3669,6 +3860,77 @@
                 }
             ],
             "time": "2022-12-31T22:20:34+00:00"
+        },
+        {
+            "name": "rappasoft/laravel-authentication-log",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rappasoft/laravel-authentication-log.git",
+                "reference": "9cba918fa3dce4e046e320a5ed8fdceee6ce89dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rappasoft/laravel-authentication-log/zipball/9cba918fa3dce4e046e320a5ed8fdceee6ce89dc",
+                "reference": "9cba918fa3dce4e046e320a5ed8fdceee6ce89dc",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.4.3"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^6.0",
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.2",
+                "spatie/laravel-ray": "^1.29",
+                "vimeo/psalm": "^4.20"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rappasoft\\LaravelAuthenticationLog\\LaravelAuthenticationLogServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rappasoft\\LaravelAuthenticationLog\\": "src",
+                    "Rappasoft\\LaravelAuthenticationLog\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Rappa",
+                    "email": "rappa819@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Log user authentication details and send new device notifications.",
+            "homepage": "https://github.com/rappasoft/laravel-authentication-log",
+            "keywords": [
+                "laravel",
+                "laravel-authentication-log",
+                "rappasoft"
+            ],
+            "support": {
+                "issues": "https://github.com/rappasoft/laravel-authentication-log/issues",
+                "source": "https://github.com/rappasoft/laravel-authentication-log/tree/v2.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/rappasoft",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-02-19T19:29:42+00:00"
         },
         {
             "name": "spatie/backtrace",
@@ -6900,6 +7162,86 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.6"
             },
             "time": "2023-01-03T09:29:04+00:00"
+        },
+        {
+            "name": "torann/geoip",
+            "version": "3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Torann/laravel-geoip.git",
+                "reference": "3d730ae7470b86ae828b4128b1757a96156fd941"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Torann/laravel-geoip/zipball/3d730ae7470b86ae828b4128b1757a96156fd941",
+                "reference": "3d730ae7470b86ae828b4128b1757a96156fd941",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "^8.0|^9.0",
+                "illuminate/console": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "geoip2/geoip2": "~2.1",
+                "mockery/mockery": "^1.3",
+                "phpstan/phpstan": "^0.12.14",
+                "phpunit/phpunit": "^8.0",
+                "squizlabs/php_codesniffer": "^3.5",
+                "vlucas/phpdotenv": "^5.0"
+            },
+            "suggest": {
+                "geoip2/geoip2": "Required to use the MaxMind database or web service with GeoIP (~2.1).",
+                "monolog/monolog": "Allows for storing location not found errors to the log"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Torann\\GeoIP\\GeoIPServiceProvider"
+                    ],
+                    "aliases": {
+                        "GeoIP": "Torann\\GeoIP\\Facades\\GeoIP"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Torann\\GeoIP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Stainback",
+                    "email": "torann@gmail.com"
+                }
+            ],
+            "description": "Support for multiple GeoIP services.",
+            "keywords": [
+                "IP API",
+                "geoip",
+                "geolocation",
+                "infoDB",
+                "laravel",
+                "location",
+                "maxmind"
+            ],
+            "support": {
+                "issues": "https://github.com/Torann/laravel-geoip/issues",
+                "source": "https://github.com/Torann/laravel-geoip/tree/3.0.4"
+            },
+            "time": "2022-02-09T14:48:24+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

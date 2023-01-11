@@ -38,3 +38,29 @@ test('a user can update their profile', function () {
 
     expect($response->json('data.author.data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->toArray());
 });
+
+test('a user can see their authentication history', function () {
+    $user = User::factory()->create();
+
+    // login and log out the user, this should create an authentication record
+    $this->postJson('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ])->assertNoContent();
+
+    $this->postJson('/logout')->assertNoContent();
+
+    expect($user->authentications->count())->toBe(1);
+
+    $response = $this->actingAs($user)->getJson('api/user/authentications')->assertOk();
+
+    expect($response->json('data'))->toHaveCount(1);
+});
+
+test('a user can get their authenticated user resource', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->getJson('api/user')->assertOk();
+
+    expect($response->json('data'))->toHaveKeys(['id', 'first_name', 'last_name', 'email', 'author', 'roles', 'permissions'])->toHaveKey('id', $user->id);
+});

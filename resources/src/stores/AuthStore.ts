@@ -7,6 +7,33 @@ import { AuthorResource } from '@/models/Author/Author';
 import { Resource } from '@/models/Resource';
 
 export type AuthenticatedUserResource = Resource<IAuthenticatedUser>;
+export type UserAuthenticationResource = Resource<UserAuthentication[]>;
+interface UserAuthentication {
+    ip_address: string;
+    user_agent: string;
+    user_agent_for_humans: string;
+    login_at: null | string;
+    login_successful: boolean;
+    logout_at: null | string;
+    location: Location | null;
+}
+
+interface Location {
+    ip: string;
+    lat: number;
+    lon: number;
+    city: string;
+    state: string;
+    cached: boolean;
+    country: string;
+    default: boolean;
+    currency: string;
+    iso_code: string;
+    timezone: string;
+    continent: string;
+    state_name: string;
+    postal_code: string;
+}
 
 export interface IAuthenticatedUser {
     id: number;
@@ -91,6 +118,7 @@ class AuthenticatedUser implements IAuthenticatedUser {
 export const useAuthStore = defineStore('AuthStore', () => {
     const {
         getUser,
+        getUserAuthentications,
         login: sanctumLogin,
         logout: sanctumLogout,
     } = useSanctum();
@@ -101,6 +129,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
     // initial state
     //const user: Ref<AuthenticatedUser | null> = useStorage('authUser', null);
     const user: Ref<AuthenticatedUser | null> = ref(null);
+    const userAuthentications: Ref<UserAuthentication[] | null> = ref(null);
     const loading = ref(true);
     refreshUser(); // check with backend - is our session still valid?
 
@@ -137,6 +166,18 @@ export const useAuthStore = defineStore('AuthStore', () => {
             return authUser;
         } catch (err) {
             return null;
+        }
+    }
+
+    async function getAuthentications(force = false): Promise<boolean> {
+        if (userAuthentications.value && !force) return true;
+        try {
+            const response = await getUserAuthentications();
+            userAuthentications.value = response.data.data;
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
         }
     }
 
@@ -208,6 +249,8 @@ export const useAuthStore = defineStore('AuthStore', () => {
         refreshUser,
         loading,
         idleTimerMin,
+        getAuthentications,
+        userAuthentications,
         // general application state
         isDrawerMini,
         leftDrawerOpen,
