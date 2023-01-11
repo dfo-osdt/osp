@@ -25,7 +25,9 @@
       "email-required": "Le courriel est requis",
       "name-required": "Le nom est requis",
       "name-invalid": "Le nom n'est pas valide",
-      "passwords-match": "Les mots de passe ne correspondent pas"
+      "passwords-match": "Les mots de passe ne correspondent pas",
+      "passwords-different": "Votre mot de passe actuel et votre nouveau mot de passe doivent être différents",
+      "password-length": "Le mot de passe doit comporter au moins 12 caractères"
     },
     "your-password": "Votre mot de passe",
     "reset": "Réinitialiser",
@@ -34,7 +36,10 @@
     "confirm-password": "Confirmez le mot de passe",
     "registered": "Inscrit",
     "your-first-name": "Ton prénom",
-    "your-last-name": "Votre nom de famille"
+    "your-last-name": "Votre nom de famille",
+    "show": "Voir",
+    "hide": "Cacher",
+    "current-password": "Mot de passe actuel"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -66,7 +71,8 @@
     "link-expired-text": "Le lien signé que vous utilisez a probablement expiré."
   },
   "logout-card": {
-    "text": "Merci d'utiliser le portail science ouverte."
+    "text": "Merci d'utiliser le portail science ouverte.",
+    "text-inactive": "Vous avez été déconnecté pour cause d'inactivité."
   },
   "login-card": {
     "email-verified-text": "Courriel verifié. \nVous pouvez maintenant vous connecter.",
@@ -90,5 +96,12 @@
     "invalid-request-title": "Demande de réinitialisation de mot de passe invalide",
     "title": "Entrez un nouveau mot de passe",
     "text": "Entrez un nouveau mot de passe pour {0}."
+  },
+  "change-password-card": {
+    "change-password": "Changer le mot de passe",
+    "confirm-new-password": "Confirmer le nouveau mot de passe",
+    "new-password": "Nouveau mot de passe",
+    "subtitle": "Assurez-vous que votre compte utilise un mot de passe long (12 caractères ou plus) aléatoire pour rester en sécurité.",
+    "title": "Changez votre mot de passe"
   }
 }

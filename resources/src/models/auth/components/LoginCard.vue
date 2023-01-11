@@ -27,9 +27,8 @@
                     data-cy="email"
                     @focus="errorMessage = null"
                 />
-                <q-input
+                <PasswordWithToggleInput
                     v-model="password"
-                    type="password"
                     filled
                     :label="$t('common.your-password')"
                     :rules="passwordRules"
@@ -72,6 +71,7 @@
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
 import { useQuasar } from 'quasar';
+import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();

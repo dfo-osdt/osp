@@ -25,7 +25,9 @@
       "password-required": "Password is required",
       "name-required": "Name is required",
       "name-invalid": "Name is invalid",
-      "passwords-match": "Passwords do not match"
+      "passwords-match": "Passwords do not match",
+      "password-length": "Password must be at least 12 characters",
+      "passwords-different": "Your current and new password should be different"
     },
     "your-password": "Your password",
     "reset": "Reset",
@@ -34,7 +36,10 @@
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
     "confirm-password": "Confirm password",
-    "registered": "Registered"
+    "registered": "Registered",
+    "show": "Show",
+    "hide": "Hide",
+    "current-password": "Current Password"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -66,7 +71,8 @@
     "link-expired-text": "The signed link you're using has likely expired."
   },
   "logout-card": {
-    "text": "Thank you for using the Open Science Portal."
+    "text": "Thank you for using the Open Science Portal.",
+    "text-inactive": "You've been logged out due to inactivity."
   },
   "login-card": {
     "email-verified-text": "Email verified. You may now login.",
@@ -90,5 +96,12 @@
     "invalid-request-title": "Invalid Password Reset Request",
     "text": "Enter a new password for {0}.",
     "title": "Enter new password"
+  },
+  "change-password-card": {
+    "title": "Change Your Password",
+    "subtitle": "Ensure your account is using a long (12 characters or more), random password to stay secure.",
+    "new-password": "New Password",
+    "confirm-new-password": "Confirm New Password",
+    "change-password": "Change Password"
   }
 }

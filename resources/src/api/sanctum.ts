@@ -36,6 +36,13 @@ export interface SanctumResetPasswordRequest {
     locale?: locale;
 }
 
+export interface SanctumChangePasswordRequest {
+    current_password: string;
+    password: string;
+    password_confirmation: string;
+    locale?: locale;
+}
+
 export const useSanctum = () => {
     const csrf = () => http.get('/sanctum/csrf-cookie');
 
@@ -47,10 +54,6 @@ export const useSanctum = () => {
     const login = async (user: SanctumUser) => {
         await csrf();
         return await http.post('/login', user);
-    };
-
-    const logout = async () => {
-        return await http.post('/logout');
     };
 
     const register = async (user: SanctumRegisterUser) => {
@@ -77,6 +80,19 @@ export const useSanctum = () => {
         >('/reset-password', data);
     };
 
+    // Methods below will only work if the user is authenticated,
+    // they do not need to call csrf() first.
+    const logout = async () => {
+        return await http.post('/logout');
+    };
+
+    const changePassword = async (data: SanctumChangePasswordRequest) => {
+        return await http.post<
+            SanctumChangePasswordRequest,
+            SanctumStatusResponse
+        >('/change-password', data);
+    };
+
     return {
         getUser,
         login,
@@ -84,5 +100,6 @@ export const useSanctum = () => {
         register,
         forgotPassword,
         resetPassword,
+        changePassword,
     };
 };

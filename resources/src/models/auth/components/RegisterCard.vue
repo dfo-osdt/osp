@@ -41,18 +41,16 @@
                     data-cy="email"
                     @focus="errorMessage = null"
                 />
-                <q-input
+                <PasswordWithToggleInput
                     v-model="password"
-                    type="password"
                     filled
                     :label="$t('common.your-password')"
                     :rules="passwordRules"
                     data-cy="password"
                     @focus="errorMessage = null"
                 />
-                <q-input
+                <PasswordWithToggleInput
                     v-model="password_confirmation"
-                    type="password"
                     filled
                     :label="$t('common.confirm-password')"
                     :rules="passwordConfirmationRules"
@@ -100,6 +98,7 @@ import {
     SanctumRegisterUser,
     useSanctum,
 } from '@/api/sanctum';
+import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue';
 
 const sanctum = useSanctum();
 const router = useRouter();
@@ -168,6 +167,7 @@ const emailRules = computed(() => [
 
 const passwordRules = computed(() => [
     (val: string) => !!val || t('common.validation.password-required'),
+    (val: string) => val.length >= 12 || t('common.validation.password-length'),
 ]);
 
 const passwordConfirmationRules = computed(() => [

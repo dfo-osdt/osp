@@ -44,7 +44,8 @@ watch(
             );
 
             const logoutTimeout = setTimeout(() => {
-                if (idle.value) router.push({ name: 'logout' });
+                if (idle.value)
+                    router.push({ name: 'logout', query: { inactive: '1' } });
             }, 2 * 60 * 1000);
 
             $q.notify({
