@@ -46,13 +46,13 @@ jobs:
     runs-on: ubuntu-20.04
     needs: build-release
     steps:
-    - name: Install jq
-      run: sudo apt-get install jq
-    - name: Get GitHub Actions container IP
-      id: get_ip
-      run: |
-        SOURCE_IP=$(echo ${{ env.GITHUB_SERVER_URL }} | grep -oP '(?<=//)\d+(\.\d+){3}')
-        echo "::set-output name=ip::$SOURCE_IP"
+    - name: Doorkeeper open
+      uses: patoroco/doorkeeper@master
+      with:
+        digitaloceanToken: ${{ secrets.DO_TOKEN }}
+        firewallName: "name_of_the_firewall"
+        actionToDo: "add"
+        dryRun: false
     - name: Get artifact from previous step
       uses: actions/download-artifact@v3
       with:
