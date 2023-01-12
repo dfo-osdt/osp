@@ -49,8 +49,10 @@ jobs:
     - name: Doorkeeper open
       uses: patoroco/doorkeeper@master
       with:
+        protocol: "ssh"
+        port: 22
         digitaloceanToken: ${{ secrets.DO_TOKEN }}
-        firewallName: "name_of_the_firewall"
+        firewallName: "web-firewall"
         actionToDo: "add"
         dryRun: false
     - name: Get artifact from previous step
