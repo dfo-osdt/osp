@@ -49,7 +49,7 @@ jobs:
     - name: Doorkeeper open
       uses: patoroco/doorkeeper@master
       with:
-        protocol: "ssh"
+        protocol: "tcp"
         port: 22
         digitaloceanToken: ${{ secrets.DO_TOKEN }}
         firewallName: "web-firewall"
