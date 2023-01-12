@@ -39,7 +39,27 @@
     "your-last-name": "Votre nom de famille",
     "show": "Voir",
     "hide": "Cacher",
-    "current-password": "Mot de passe actuel"
+    "current-password": "Mot de passe actuel",
+    "timeAgo": {
+      "ago": "il y a {0}",
+      "day": "jour | journées",
+      "hour": "heure | heures",
+      "in": "dans {0}",
+      "just-now": "juste maintenant",
+      "last-month": "le mois dernier",
+      "last-week": "La semaine dernière",
+      "last-year": "l'année dernière",
+      "minute": "minutes | minutes",
+      "month": "mois | mois",
+      "next-month": "le mois prochain",
+      "next-week": "la semaine prochaine",
+      "next-year": "L'année prochaine",
+      "second": "seconde | secondes",
+      "tomorrow": "demain",
+      "week": "semaine | semaines",
+      "year": "année | ans",
+      "yesterday": "hier"
+    }
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
