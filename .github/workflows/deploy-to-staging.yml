@@ -46,6 +46,13 @@ jobs:
     runs-on: ubuntu-20.04
     needs: build-release
     steps:
+    - name: Install jq
+      run: sudo apt-get install jq
+    - name: Get GitHub Actions container IP
+      id: get_ip
+      run: |
+        SOURCE_IP=$(echo ${{ env.GITHUB_SERVER_URL }} | grep -oP '(?<=//)\d+(\.\d+){3}')
+        echo "::set-output name=ip::$SOURCE_IP"
     - name: Get artifact from previous step
       uses: actions/download-artifact@v3
       with:

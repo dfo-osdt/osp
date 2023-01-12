@@ -24,7 +24,7 @@ interface Location {
     lon: number;
     city: string;
     state: string;
-    cached: boolean;
+    cached?: boolean;
     country: string;
     default: boolean;
     currency: string;
