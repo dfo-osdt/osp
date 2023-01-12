@@ -46,15 +46,6 @@ jobs:
     runs-on: ubuntu-20.04
     needs: build-release
     steps:
-    - name: Doorkeeper open
-      uses: patoroco/doorkeeper@master
-      with:
-        protocol: "tcp"
-        port: 22
-        digitaloceanToken: ${{ secrets.DO_TOKEN }}
-        firewallName: "web-firewall"
-        actionToDo: "add"
-        dryRun: false
     - name: Get artifact from previous step
       uses: actions/download-artifact@v3
       with:
