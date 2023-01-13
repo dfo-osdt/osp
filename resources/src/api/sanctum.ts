@@ -3,13 +3,13 @@ import {
     UserAuthenticationResource,
 } from '@/stores/AuthStore';
 import { http } from './http';
+import { Locale } from './Locale';
 
-export type locale = 'en' | 'fr';
 export interface SanctumUser {
     email: string;
     password: string;
     remember?: boolean;
-    locale?: locale;
+    locale?: Locale;
 }
 export interface SanctumRegisterUser extends SanctumUser {
     first_name: string;
@@ -24,7 +24,7 @@ export interface SanctumRegisterResponse {
 
 export interface SanctumForgotPasswordRequest {
     email: string;
-    locale?: locale;
+    locale?: Locale;
 }
 
 export interface SanctumStatusResponse {
@@ -36,14 +36,14 @@ export interface SanctumResetPasswordRequest {
     password: string;
     password_confirmation: string;
     token: string;
-    locale?: locale;
+    locale?: Locale;
 }
 
 export interface SanctumChangePasswordRequest {
     current_password: string;
     password: string;
     password_confirmation: string;
-    locale?: locale;
+    locale?: Locale;
 }
 
 export const useSanctum = () => {
@@ -62,7 +62,7 @@ export const useSanctum = () => {
         );
     };
 
-    const forgotPassword = async (email: string, locale: locale) => {
+    const forgotPassword = async (email: string, locale: Locale) => {
         await csrf();
         return await http.post<
             SanctumForgotPasswordRequest,

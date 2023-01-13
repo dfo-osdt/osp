@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,7 +15,7 @@ use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
 use Str;
 
-class User extends Authenticatable implements MustVerifyEmail, Auditable
+class User extends Authenticatable implements MustVerifyEmail, Auditable, HasLocalePreference
 {
     use HasApiTokens;
     use HasFactory;
@@ -36,6 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
         'last_name',
         'email',
         'password',
+        'locale',
     ];
 
     /**
@@ -174,5 +176,13 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
             'email_verification_token' => null,
             'active' => true,
         ])->save();
+    }
+
+    /**
+     * Get the preferred locale of the user.
+     */
+    public function preferredLocale(): string
+    {
+        return $this->locale;
     }
 }

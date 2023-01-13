@@ -18,7 +18,7 @@ test('a user can view their profile and profile has author relationship', functi
 
     $response = $this->actingAs($user)->getJson('api/users/'.$user->id)->assertOk();
 
-    expect($response->json('data'))->toHaveKeys(['id', 'first_name', 'last_name', 'email', 'author']);
+    expect($response->json('data'))->toHaveKeys(['id', 'first_name', 'last_name', 'email', 'author', 'locale']);
 });
 
 test('a user can update their profile', function () {
@@ -29,11 +29,12 @@ test('a user can update their profile', function () {
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => 'john.doe@dfo-mpo.gc.ca',
+        'locale' => 'fr',
     ];
 
     $this->actingAs($user2)->putJson('api/users/'.$user->id, $data)->assertForbidden();
     $response = $this->actingAs($user)->putJson('api/users/'.$user->id, $data)->assertOk();
-    expect($response->json('data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->toArray());
+    expect($response->json('data'))->toMatchArray(collect($data)->only('first_name', 'last_name', 'locale')->toArray());
     expect($response->json('data.email'))->toBe($user->email);
 
     expect($response->json('data.author.data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->toArray());

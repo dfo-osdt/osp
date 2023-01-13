@@ -29,6 +29,18 @@
                     :disable="true"
                     hint="Your verified email address cannot be changed manually."
                 />
+                <q-select
+                    v-model="user.locale"
+                    emit-value
+                    map-options
+                    class="col-12 col-md-6"
+                    label="Language Preference"
+                    outlined
+                    :options="[
+                        { label: 'English', value: 'en' },
+                        { label: 'French', value: 'fr' },
+                    ]"
+                />
             </div>
             <q-card-actions align="right">
                 <q-btn
@@ -79,7 +91,8 @@ async function save() {
     const userResource = await UserService.update(
         user.value.id,
         user.value?.first_name,
-        user.value?.last_name
+        user.value?.last_name,
+        user.value?.locale
     );
     user.value = userResource.data;
     loading.value = false;

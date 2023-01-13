@@ -42,7 +42,7 @@
     "current-password": "Mot de passe actuel",
     "timeAgo": {
       "ago": "il y a {0}",
-      "day": "jour | journées",
+      "day": "jour | jours",
       "hour": "heure | heures",
       "in": "dans {0}",
       "just-now": "juste maintenant",

@@ -51,7 +51,7 @@ class RegisteredUserController extends Controller
         // give the user the author role - this is the default role
         $user->assignRole('author');
 
-        event(new Registered($user));
+        event(new Registered($user->refresh()));
 
         return response()->json([
             'message' => 'registered',

@@ -1,4 +1,5 @@
 import { http } from '@/api/http';
+import { Locale } from '@/api/Locale';
 import { AuthorResource } from '../Author/Author';
 import { Resource, ResourceList } from '../Resource';
 
@@ -7,6 +8,7 @@ export interface User {
     first_name: string;
     last_name: string;
     email: string;
+    locale: Locale;
     author?: AuthorResource;
 }
 
@@ -35,11 +37,13 @@ export class UserService {
     public static async update(
         id: number,
         firstName: string,
-        lastName: string
+        lastName: string,
+        locale: Locale
     ) {
         const response = await http.put<any, UserResource>(`api/users/${id}`, {
             first_name: firstName,
             last_name: lastName,
+            locale,
         });
         return response.data;
     }

@@ -65,11 +65,13 @@ class UserController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
+            'locale' => 'string|in:en,fr',
         ]);
 
         $user->update($validated);
         // also update the author record associated with this user
-        $user->author->update($validated);
+        $authorVariables = collect($validated)->only(['first_name', 'last_name'])->toArray();
+        $user->author->update($authorVariables);
         $user->refresh();
 
         return new UserResource($user);
