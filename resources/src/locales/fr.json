@@ -123,5 +123,15 @@
     "new-password": "Nouveau mot de passe",
     "subtitle": "Assurez-vous que votre compte utilise un mot de passe long (12 caractères ou plus) aléatoire pour rester en sécurité.",
     "title": "Changez votre mot de passe"
+  },
+  "authentication-history-card": {
+    "title": "Historique d'authentification",
+    "subtitle": "Activité suspecte? \nModifiez votre mot de passe et signalez-le nous immédiatement.",
+    "ip_address": "Adresse IP",
+    "browser": "Navigateur",
+    "location": "Emplacement",
+    "login-at": "Connexion à",
+    "successful": "Réussie",
+    "logout-at": "Déconnexion à"
   }
 }

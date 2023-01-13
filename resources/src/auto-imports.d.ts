@@ -195,6 +195,7 @@ declare global {
   const useLocalStorage: typeof import('@vueuse/core')['useLocalStorage']
   const useLocaleDate: typeof import('./composables/useLocaleDate')['useLocaleDate']
   const useLocaleStore: typeof import('./stores/LocaleStore')['useLocaleStore']
+  const useLocaleTimeAgo: typeof import('./composables/useLocaleTimeAgo')['useLocaleTimeAgo']
   const useMagicKeys: typeof import('@vueuse/core')['useMagicKeys']
   const useManagementReviewStepStore: typeof import('./stores/ManagementReviewStepStore')['useManagementReviewStepStore']
   const useManualRefHistory: typeof import('@vueuse/core')['useManualRefHistory']
@@ -493,6 +494,7 @@ declare module 'vue' {
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
     readonly useLocaleDate: UnwrapRef<typeof import('./composables/useLocaleDate')['useLocaleDate']>
     readonly useLocaleStore: UnwrapRef<typeof import('./stores/LocaleStore')['useLocaleStore']>
+    readonly useLocaleTimeAgo: UnwrapRef<typeof import('./composables/useLocaleTimeAgo')['useLocaleTimeAgo']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>
     readonly useManagementReviewStepStore: UnwrapRef<typeof import('./stores/ManagementReviewStepStore')['useManagementReviewStepStore']>
     readonly useManualRefHistory: UnwrapRef<typeof import('@vueuse/core')['useManualRefHistory']>

@@ -15,8 +15,8 @@ class AuthenticatedUserController extends Controller
 
     public function authentications(Request $request)
     {
-        // get the last 10 authentications (reverse order by id)
-        $authentications = $request->user()->authentications()->orderByDesc('id')->limit(15)->get();
+        // get the last authentications (reverse order by id)
+        $authentications = $request->user()->authentications()->orderByDesc('id')->limit(50)->get();
 
         return UserAuthenticationResource::collection($authentications);
     }

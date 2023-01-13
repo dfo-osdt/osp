@@ -123,5 +123,15 @@
     "new-password": "New Password",
     "confirm-new-password": "Confirm New Password",
     "change-password": "Change Password"
+  },
+  "authentication-history-card": {
+    "title": "Authentication History",
+    "subtitle": "Suspicious activity? Change your password and immediately report it to us.",
+    "ip_address": "IP Address",
+    "browser": "Browser",
+    "location": "Location",
+    "login-at": "Login At",
+    "successful": "Successful",
+    "logout-at": "Logout At"
   }
 }

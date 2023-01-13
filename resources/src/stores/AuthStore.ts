@@ -131,6 +131,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
     const user: Ref<AuthenticatedUser | null> = ref(null);
     const userAuthentications: Ref<UserAuthentication[] | null> = ref(null);
     const loading = ref(true);
+    const authenticationsLoading = ref(false);
     refreshUser(); // check with backend - is our session still valid?
 
     // computed
@@ -171,6 +172,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
 
     async function getAuthentications(force = false): Promise<boolean> {
         if (userAuthentications.value && !force) return true;
+        authenticationsLoading.value = true;
         try {
             const response = await getUserAuthentications();
             userAuthentications.value = response.data.data;
@@ -178,6 +180,8 @@ export const useAuthStore = defineStore('AuthStore', () => {
         } catch (err) {
             console.log(err);
             return false;
+        } finally {
+            authenticationsLoading.value = false;
         }
     }
 
@@ -251,6 +255,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         idleTimerMin,
         getAuthentications,
         userAuthentications,
+        authenticationsLoading,
         // general application state
         isDrawerMini,
         leftDrawerOpen,
