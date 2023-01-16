@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,6 +32,34 @@ class EmailVerificationTest extends TestCase
         Event::assertDispatched(Verified::class);
         $user->refresh();
 
+        $this->assertTrue($user->hasVerifiedEmail());
+        $this->assertNull($user->email_verification_token);
+        $this->assertTrue($user->active);
+        $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
+    }
+
+    public function test_email_can_be_verified_for_user_with_invitation()
+    {
+        $user = User::factory()->unverified()->create();
+        $user->invitation()->create([
+            'invitation_token' => Invitation::generateInvitationToken(),
+            'invited_by' => User::factory()->create()->id,
+        ]);
+
+        Event::fake();
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]
+        );
+
+        $response = $this->get($verificationUrl);
+
+        Event::assertDispatched(Verified::class);
+        $user->refresh();
+
+        $this->assertNotNull($user->invitation->registered_at);
         $this->assertTrue($user->hasVerifiedEmail());
         $this->assertNull($user->email_verification_token);
         $this->assertTrue($user->active);

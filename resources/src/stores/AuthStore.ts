@@ -1,5 +1,5 @@
 import { useSanctum } from '@/api/sanctum';
-import { Locale } from '@/api/Locale';
+import { Locale } from '@/stores/LocaleStore';
 import { i18n } from '@/plugins/i18n';
 import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
@@ -41,6 +41,7 @@ export interface IAuthenticatedUser {
     first_name: string;
     last_name: string;
     email: string;
+    locale: Locale;
     author: AuthorResource;
     roles: string[];
     permissions: string[];
@@ -66,6 +67,7 @@ class AuthenticatedUser implements IAuthenticatedUser {
     public first_name!: string;
     public last_name!: string;
     public email!: string;
+    public locale!: Locale;
     public author!: AuthorResource;
     public roles!: string[];
     public permissions!: string[];

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique()->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('email_verification_token')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('locale', 2)->default('en');
             $table->rememberToken();
             $table->boolean('active')->default(false);

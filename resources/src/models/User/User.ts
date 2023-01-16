@@ -1,5 +1,5 @@
 import { http } from '@/api/http';
-import { Locale } from '@/api/Locale';
+import { Locale } from '@/stores/LocaleStore';
 import { AuthorResource } from '../Author/Author';
 import { Resource, ResourceList } from '../Resource';
 

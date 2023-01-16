@@ -3,7 +3,7 @@ import {
     UserAuthenticationResource,
 } from '@/stores/AuthStore';
 import { http } from './http';
-import { Locale } from './Locale';
+import { Locale } from '@/stores/LocaleStore';
 
 export interface SanctumUser {
     email: string;

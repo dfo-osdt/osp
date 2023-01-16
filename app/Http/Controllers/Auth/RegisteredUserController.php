@@ -32,21 +32,38 @@ class RegisteredUserController extends Controller
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'confirmed', Password::min(config('auth.password_min_length'))->uncompromised()],
         ]);
 
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // check if the user already exists
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            // User exits and does not have an invitation or is active (has registered)
+            if ($user->active) {
+                $request->validate([
+                    'email' => ['unique:users'],
+                ]);
+                throw new \Exception('User already exists');
+            }
+
+            // User exists but is not active (has not registered), so update the user
+            // with the new password.
+            $user->password = Hash::make($request->password);
+            $user->active = true;
+            $user->save();
+        } else {
+            $user = User::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+        }
 
         $user->email_verification_token = User::generateEmailVerificationToken();
-        $user->save();
-
         $user->associateAuthor();
+        $user->save();
 
         // give the user the author role - this is the default role
         $user->assignRole('author');

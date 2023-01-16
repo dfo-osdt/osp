@@ -34,4 +34,50 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
     }
+
+    public function test_a_user_with_a_null_password_cannot_login()
+    {
+        $user = User::factory()->create([
+            'password' => null,
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => '',
+        ]);
+
+        $response->assertStatus(422);
+
+        $this->assertGuest();
+    }
+
+    public function test_an_invited_user_cannot_login_before_accepting_the_invitation_or_registering()
+    {
+        $user = User::factory()->invited()->create();
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'null',
+        ]);
+
+        $response->assertStatus(422);
+
+        $this->assertGuest();
+    }
+
+    public function test_a_user_without_an_active_account_cannot_login()
+    {
+        $user = User::factory()->create([
+            'active' => false,
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(422);
+
+        $this->assertGuest();
+    }
 }
