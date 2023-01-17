@@ -20,6 +20,7 @@ class AuthenticatedUserResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'locale' => $this->locale,
+            'new_password_required' => $this->new_password_required,
             'author' => AuthorResource::make($this->author),
             'roles' => $this->getRoleNames(),
             'permissions' => $this->getAllPermissions()->pluck('name'),

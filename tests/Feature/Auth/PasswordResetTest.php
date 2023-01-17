@@ -28,7 +28,7 @@ class PasswordResetTest extends TestCase
     {
         Notification::fake();
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['new_password_required' => true]);
 
         $this->postJson('/forgot-password', ['email' => $user->email]);
 
@@ -46,6 +46,9 @@ class PasswordResetTest extends TestCase
 
             return true;
         });
+
+        $user->refresh();
+        $this->assertFalse($user->new_password_required);
     }
 
     public function test_password_cant_be_reset_with_valid_token_and_poor_password()

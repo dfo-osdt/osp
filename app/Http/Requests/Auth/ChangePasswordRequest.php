@@ -41,6 +41,7 @@ class ChangePasswordRequest extends FormRequest
         $this->user()->forceFill([
             'password' => Hash::make($this->password),
             'remember_token' => Str::random(60),
+            'new_password_required' => false,
         ])->save();
 
         event(new PasswordChanged($this->user()));

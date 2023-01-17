@@ -7,7 +7,9 @@
 
 {{ __('Use the password below to login. You will be asked to change your password on your first login.') }}
 
-> **{{ __('Temporary Password') }}:** {{ $password }}
+<x-mail::panel>
+**{{ __('Temporary Password') }}:** {{ $password }}
+</x-mail::panel>
 
 <x-mail::button :url="$url">
 {{ __('Accept Invitation') }}

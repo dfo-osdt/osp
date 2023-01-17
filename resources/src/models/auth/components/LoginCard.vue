@@ -92,6 +92,17 @@ async function login() {
     await authStore
         .login(email.value, password.value, remember.value)
         .then(() => {
+            if (authStore.user?.new_password_required) {
+                router.push({ name: 'settings.security' });
+                setTimeout(() => {
+                    $q.notify({
+                        message: t('login-card.new-password-required'),
+                        type: 'info',
+                        icon: 'mdi-information-outline',
+                    });
+                }, 500);
+                return;
+            }
             router.currentRoute.value.query?.redirect
                 ? router.push(
                       router.currentRoute.value.query.redirect as string

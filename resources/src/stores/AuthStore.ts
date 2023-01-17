@@ -42,6 +42,7 @@ export interface IAuthenticatedUser {
     last_name: string;
     email: string;
     locale: Locale;
+    new_password_required: boolean;
     author: AuthorResource;
     roles: string[];
     permissions: string[];
@@ -68,6 +69,7 @@ class AuthenticatedUser implements IAuthenticatedUser {
     public last_name!: string;
     public email!: string;
     public locale!: Locale;
+    public new_password_required!: boolean;
     public author!: AuthorResource;
     public roles!: string[];
     public permissions!: string[];

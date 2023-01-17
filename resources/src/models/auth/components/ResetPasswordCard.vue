@@ -35,18 +35,16 @@
                 <div>{{ statusMessage }}</div>
             </q-banner>
             <q-form class="q-gutter-md" autofocus @submit="reset">
-                <q-input
+                <PasswordWithToggleInput
                     v-model="password"
-                    type="password"
                     outlined
                     :label="$t('common.your-password')"
                     :rules="passwordRules"
                     data-cy="password"
                     @focus="errorMessage = null"
                 />
-                <q-input
+                <PasswordWithToggleInput
                     v-model="password_confirmation"
-                    type="password"
                     outlined
                     :label="$t('common.confirm-password')"
                     :rules="passwordConfirmationRules"
@@ -81,6 +79,7 @@
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
 import { locale, SanctumResetPasswordRequest, useSanctum } from '@/api/sanctum';
+import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue';
 
 const sanctum = useSanctum();
 const router = useRouter();

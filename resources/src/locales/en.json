@@ -98,7 +98,8 @@
     "email-verified-text": "Email verified. You may now login.",
     "remember-me": "Remember me",
     "forgot-your-password": "Forgot your password?",
-    "dont-have-an-account": "Don't have an account?"
+    "dont-have-an-account": "Don't have an account?",
+    "new-password-required": "You've been redirected because your account requires a new password."
   },
   "main-header": {},
   "register-card": {
@@ -122,7 +123,8 @@
     "subtitle": "Ensure your account is using a long (12 characters or more), random password to stay secure.",
     "new-password": "New Password",
     "confirm-new-password": "Confirm New Password",
-    "change-password": "Change Password"
+    "change-password": "Change Password",
+    "new-password-required": "Your account security is important to us. You're using a temporary or expired password, please change it now."
   },
   "authentication-history-card": {
     "title": "Authentication History",

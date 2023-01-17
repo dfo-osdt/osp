@@ -98,7 +98,8 @@
     "email-verified-text": "Courriel verifié. \nVous pouvez maintenant vous connecter.",
     "remember-me": "Souviens-toi de moi",
     "forgot-your-password": "Mot de passe oublié?",
-    "dont-have-an-account": "Vous n'avez pas de compte?"
+    "dont-have-an-account": "Vous n'avez pas de compte?",
+    "new-password-required": "Vous avez été redirigé car votre compte nécessite un nouveau mot de passe."
   },
   "main-header": {},
   "register-card": {
@@ -122,7 +123,8 @@
     "confirm-new-password": "Confirmer le nouveau mot de passe",
     "new-password": "Nouveau mot de passe",
     "subtitle": "Assurez-vous que votre compte utilise un mot de passe long (12 caractères ou plus) aléatoire pour rester en sécurité.",
-    "title": "Changez votre mot de passe"
+    "title": "Changez votre mot de passe",
+    "new-password-required": "La sécurité de votre compte est importante pour nous. \nVous utilisez un mot de passe temporaire ou expiré, veuillez le changer maintenant."
   },
   "authentication-history-card": {
     "title": "Historique d'authentification",

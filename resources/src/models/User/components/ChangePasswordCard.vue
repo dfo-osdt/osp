@@ -3,6 +3,16 @@
         <template #title>{{ $t('change-password-card.title') }}</template>
         <template #subtitle>{{ $t('change-password-card.subtitle') }}</template>
         <q-banner
+            v-if="authStore.user?.new_password_required"
+            rounded
+            class="bg-warning text-white q-mx-md q-mb-md"
+        >
+            <template #avatar
+                ><q-icon name="mdi-lock-alert-outline"
+            /></template>
+            {{ $t('change-password-card.new-password-required') }}
+        </q-banner>
+        <q-banner
             v-if="errorMessage"
             rounded
             class="bg-negative text-white q-mx-md"
@@ -10,7 +20,7 @@
             <template #avatar
                 ><q-icon name="mdi-alert-circle-outline"
             /></template>
-            <div>{{ errorMessage.message }}</div>
+            <div>{{ errorMessage?.message }}</div>
         </q-banner>
         <q-banner v-if="changed" rounded class="bg-positive text-white q-mx-md">
             <template #avatar
@@ -19,7 +29,7 @@
             {{ changed.status }}</q-banner
         >
         <q-card-section>
-            <q-form @submit="changePassword">
+            <q-form ref="form" @submit="changePassword" @reset="onReset">
                 <PasswordWithToggleInput
                     v-model="password"
                     :label="$t('common.current-password')"
@@ -60,6 +70,7 @@ import { ErrorResponse } from '@/api/errors';
 import ContentCard from '@/components/ContentCard.vue';
 import { SanctumStatusResponse, useSanctum } from '@/api/sanctum';
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue';
+import { QForm } from 'quasar';
 
 const password = ref('');
 const newPassword = ref('');
@@ -67,10 +78,12 @@ const newPasswordConfirmation = ref('');
 
 const { t } = useI18n();
 const localeStore = useLocaleStore();
+const authStore = useAuthStore();
 const sanctum = useSanctum();
 const loading = ref(false);
 const errorMessage = ref<ErrorResponse | null>(null);
 const changed = ref<SanctumStatusResponse | null>(null);
+const form = ref<QForm | null>(null);
 
 async function changePassword() {
     loading.value = true;
@@ -86,23 +99,27 @@ async function changePassword() {
         })
         .then((response) => {
             changed.value = response.data;
-            // clear form
-            password.value = '';
-            newPassword.value = '';
-            newPasswordConfirmation.value = '';
+            form.value?.reset();
         })
         .catch((error) => {
             errorMessage.value = error.data;
         })
         .finally(() => {
+            authStore.refreshUser();
             loading.value = false;
         });
 
     console.log('changePassword');
 }
 
-// rules
+function onReset() {
+    // clear form
+    password.value = '';
+    newPassword.value = '';
+    newPasswordConfirmation.value = '';
+}
 
+// rules
 const passwordRules = computed(() => [
     (v: string) => !!v || t('common.validation.password-required'),
 ]);
