@@ -1,7 +1,7 @@
 import {
     AuthenticatedUserResource,
     UserAuthenticationResource,
-} from '@/stores/AuthStore';
+} from '@/models/User/AuthenticatedUser';
 import { http } from './http';
 import { Locale } from '@/stores/LocaleStore';
 
@@ -80,15 +80,6 @@ export const useSanctum = () => {
 
     // Methods below will only work if the user is authenticated,
     // they do not need to call csrf() first.
-    const getUser = async () => {
-        return http.get<AuthenticatedUserResource>('/api/user');
-    };
-
-    const getUserAuthentications = async () => {
-        return http.get<UserAuthenticationResource>(
-            '/api/user/authentications'
-        );
-    };
 
     const logout = async () => {
         return await http.post('/logout');
@@ -102,8 +93,6 @@ export const useSanctum = () => {
     };
 
     return {
-        getUser,
-        getUserAuthentications,
         login,
         logout,
         register,
