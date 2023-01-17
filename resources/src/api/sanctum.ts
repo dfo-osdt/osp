@@ -1,7 +1,3 @@
-import {
-    AuthenticatedUserResource,
-    UserAuthenticationResource,
-} from '@/models/User/AuthenticatedUser';
 import { http } from './http';
 import { Locale } from '@/stores/LocaleStore';
 
