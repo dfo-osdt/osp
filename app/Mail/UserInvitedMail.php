@@ -31,7 +31,7 @@ class UserInvitedMail extends Mailable
     {
         $this->user = $event->invitation->user;
         $this->url = $event->invitation->getSignedLink();
-        $this->invitedBy = $event->invitation->invitedBy;
+        $this->invitedBy = $event->invitation->invitedByUser;
         $this->password = $event->password;
     }
 

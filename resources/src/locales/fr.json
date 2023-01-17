@@ -59,7 +59,9 @@
       "week": "semaine | semaines",
       "year": "année | ans",
       "yesterday": "hier"
-    }
+    },
+    "french": "Français",
+    "english": "Anglais"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -135,5 +137,8 @@
     "login-at": "Connexion à",
     "successful": "Réussie",
     "logout-at": "Déconnexion à"
+  },
+  "LocaleSelect": {
+    "label": "Préférence linguistique"
   }
 }

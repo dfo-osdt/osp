@@ -12,6 +12,8 @@ export interface User {
     author?: AuthorResource;
 }
 
+type InviteUserRequest = Omit<User, 'id' | 'author'>;
+
 export type UserResource = Resource<User>;
 export type UserResourceList = ResourceList<UserResource>;
 
@@ -45,6 +47,14 @@ export class UserService {
             last_name: lastName,
             locale,
         });
+        return response.data;
+    }
+
+    public static async invite(user: InviteUserRequest) {
+        const response = await http.post<InviteUserRequest, UserResource>(
+            'api/users/invite',
+            user
+        );
         return response.data;
     }
 }

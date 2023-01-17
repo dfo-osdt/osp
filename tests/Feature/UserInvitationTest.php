@@ -18,10 +18,14 @@ test('an existing user can invite a new user', function () {
         'locale' => 'fr',
     ]);
 
-    $response->assertStatus(200);
+    $response->assertCreated();
     $response->assertJson([
-        'message' => __('Invitation sent'),
-    ]);
+        'data' => [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john.doe@test.com',
+            'locale' => 'fr',
+        ]]);
 
     Event::assertDispatched(Invited::class, function ($event) {
         ray($event);

@@ -18,6 +18,14 @@ class Invitation extends Model
         'registered_at',
     ];
 
+    protected $casts = [
+        'registered_at' => 'datetime',
+    ];
+
+    protected $hidden = [
+        'invitation_token',
+    ];
+
     // relationships
 
     /**
@@ -31,7 +39,7 @@ class Invitation extends Model
     /**
      * Get the user that invited the user.
      */
-    public function invitedBy()
+    public function invitedByUser()
     {
         return $this->belongsTo(User::class, 'invited_by');
     }

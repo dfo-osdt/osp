@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Events\Auth\Invited;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\Invitation;
 use App\Models\User;
 use Hash;
@@ -49,9 +50,7 @@ class InvitedUserController extends Controller
 
         event(new Invited($invitation, $password));
 
-        return response()->json([
-            'message' => __('Invitation sent'),
-        ]);
+        return UserResource::make($user);
     }
 
     public function accept($id, $hash)

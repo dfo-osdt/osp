@@ -59,7 +59,9 @@
       "hour": "hour | hours",
       "minute": "minute | minutes",
       "second": "second | seconds"
-    }
+    },
+    "english": "English",
+    "french": "French"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -135,5 +137,8 @@
     "login-at": "Login At",
     "successful": "Successful",
     "logout-at": "Logout At"
+  },
+  "LocaleSelect": {
+    "label": "Language Preference"
   }
 }

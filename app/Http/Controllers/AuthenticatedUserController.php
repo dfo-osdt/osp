@@ -20,4 +20,12 @@ class AuthenticatedUserController extends Controller
 
         return UserAuthenticationResource::collection($authentications);
     }
+
+    public function invitations(Request $request)
+    {
+        // get this user's invitations (reverse order by id)
+        $invitations = $request->user()->sentInvitations()->orderByDesc('id')->limit(50)->get();
+
+        return UserAuthenticationResource::collection($invitations);
+    }
 }

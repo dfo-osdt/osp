@@ -120,7 +120,7 @@ watch(selectedUser, (user) => {
     if (user) {
         emit('update:modelValue', user.data.id);
     } else {
-        emit('update:modelValue', null);
+        //emit('update:modelValue', null);
     }
 });
 

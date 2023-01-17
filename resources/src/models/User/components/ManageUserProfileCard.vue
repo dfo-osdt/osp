@@ -29,18 +29,7 @@
                     :disable="true"
                     hint="Your verified email address cannot be changed manually."
                 />
-                <q-select
-                    v-model="user.locale"
-                    emit-value
-                    map-options
-                    class="col-12 col-md-6"
-                    label="Language Preference"
-                    outlined
-                    :options="[
-                        { label: 'English', value: 'en' },
-                        { label: 'French', value: 'fr' },
-                    ]"
-                />
+                <LocaleSelect v-model="user.locale" />
             </div>
             <q-card-actions align="right">
                 <q-btn
@@ -59,6 +48,7 @@ import ContentCard from '@/components/ContentCard.vue';
 import { Ref } from 'vue';
 import { User, UserService } from '../User';
 import { useQuasar } from 'quasar';
+import LocaleSelect from '@/components/LocaleSelect.vue';
 
 const $q = useQuasar();
 

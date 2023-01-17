@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -101,6 +102,14 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable, HasLoc
     }
 
     /**
+     * Get the invitations sent by the user.
+     */
+    public function sentInvitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'invited_by', 'id')->with('user');
+    }
+
+    /**
      * All users should have an author profile created for them
      * upon registration.
      */
@@ -173,6 +182,7 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable, HasLoc
     public function markEmailAsVerified(): bool
     {
         if ($this->invitation) {
+            $this->invitation->invitation_token = '';
             $this->invitation->registered_at = now();
             $this->invitation->save();
         }
