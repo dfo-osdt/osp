@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\InvitedUserController;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\FunderController;
@@ -31,6 +32,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Need to ben authenticated to access these routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(AuthenticatedUserController::class)->group(function () {
         Route::get('/user', 'user');
@@ -48,6 +50,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/users', 'index');
         Route::get('/users/{user}', 'show');
         Route::put('/users/{user}', 'update');
+    });
+
+    Route::controller(InvitedUserController::class)->group(function () {
+        Route::post('/users/invite', 'invite');
     });
 
     Route::controller(ManuscriptAuthorController::class)->group(function () {

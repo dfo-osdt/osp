@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\InvitedUserController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -40,3 +41,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::post('/change-password', [ChangePasswordController::class, 'changePassword'])
                 ->middleware(['auth', 'respond.json', 'locale'])
                 ->name('change.password');
+
+Route::get('/verify-invitation/{id}/{hash}', [InvitedUserController::class, 'accept'])
+                ->middleware(['signed', 'throttle:6,1'])
+                ->name('invitation.verify');

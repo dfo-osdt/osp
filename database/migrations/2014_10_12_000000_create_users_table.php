@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('locale', 2)->default('en');
             $table->rememberToken();
             $table->boolean('active')->default(false);
+            $table->boolean('new_password_required')->default(false);
             $table->timestamps();
         });
     }

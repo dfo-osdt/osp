@@ -62,6 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable, HasLoc
     protected $casts = [
         'email_verified_at' => 'datetime',
         'active' => 'boolean',
+        'new_password_required' => 'boolean',
     ];
 
     /**

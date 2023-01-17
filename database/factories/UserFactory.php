@@ -86,7 +86,8 @@ class UserFactory extends Factory
                 'active' => false,
                 'email_verified_at' => null,
                 'email_verification_token' => null,
-                'password' => null,
+                'password' => Str::random(20),
+                'new_password_required' => true,
             ];
         });
     }
