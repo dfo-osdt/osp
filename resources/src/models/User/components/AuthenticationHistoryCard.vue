@@ -13,10 +13,10 @@
             :rows="authStore.userAuthentications ?? []"
         >
             <template #body-cell-login_at="props">
-                <AuthenticationTimeStampTd :props="props" />
+                <TimeStampTd :props="props" />
             </template>
             <template #body-cell-logout_at="props">
-                <AuthenticationTimeStampTd :props="props" />
+                <TimeStampTd :props="props" />
             </template>
             <template #body-cell-login_successful="props">
                 <q-td :props="props">
@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue';
 import { QTableProps } from 'quasar';
-import AuthenticationTimeStampTd from './AuthenticationsTable/AuthenticationTimeStampTd.vue';
+import TimeStampTd from './Table/TimeStampTd.vue';
 
 const authStore = useAuthStore();
 authStore.getAuthentications();

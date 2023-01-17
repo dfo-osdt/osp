@@ -51,7 +51,6 @@ test('a user cannot invited a user that already exists', function () {
     ]);
 
     $response->assertStatus(422);
-    ray($response->json());
 });
 
 test('a invited user can accept their invitation', function () {
@@ -62,11 +61,7 @@ test('a invited user can accept their invitation', function () {
 
     $verificationUrl = $invitation->getSignedLink();
 
-    ray($verificationUrl);
-
     $response = $this->get($verificationUrl);
-
-    ray($response);
 
     Event::assertDispatched(Verified::class);
     $user = User::find($invitation->user->id);
@@ -75,4 +70,18 @@ test('a invited user can accept their invitation', function () {
     $this->assertTrue($user->new_password_required);
 
     $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
+});
+
+test('a user can see their sent invitations', function () {
+    $user = User::factory()->create();
+
+    $invitations = Invitation::factory()->count(5)->create([
+        'invited_by' => $user->id,
+    ]);
+
+    $response = $this->actingAs($user)->getJson('/api/user/invitations');
+
+    expect($response->json('data'))->toHaveCount(5);
+
+    $response->assertOk();
 });

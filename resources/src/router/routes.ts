@@ -93,6 +93,14 @@ const routes: RouteRecordRaw[] = [
                             ),
                         name: 'settings.security',
                     },
+                    {
+                        path: 'invitations',
+                        component: () =>
+                            import(
+                                '@/models/User/views/UserInvitationsView.vue'
+                            ),
+                        name: 'settings.invitations',
+                    },
                 ],
             },
             {

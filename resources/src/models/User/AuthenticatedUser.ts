@@ -38,12 +38,14 @@ export interface UserInvitation {
     id: number;
     user_id: number;
     invited_by: number;
-    registered_at: string;
+    registered_at: string | null;
     user: UserResource;
     invited_by_user?: UserResource;
+    invited_at: string;
 }
 
-type UserInvitationResourceList = ResourceList<UserInvitation>;
+export type UserInvitationResource = Resource<UserInvitation>;
+export type UserInvitationResourceList = ResourceList<UserInvitation>;
 
 export interface IAuthenticatedUser {
     id: number;

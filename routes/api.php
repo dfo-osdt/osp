@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(AuthenticatedUserController::class)->group(function () {
         Route::get('/user', 'user');
         Route::get('/user/authentications', 'authentications');
+        Route::get('/user/invitations', 'invitations');
     });
 
     Route::controller(AuthorController::class)->group(function () {

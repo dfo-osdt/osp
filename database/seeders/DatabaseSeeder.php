@@ -44,6 +44,11 @@ class DatabaseSeeder extends Seeder
                 'email' => 'author@vinnet.dev',
             ]);
 
+            // create 5 invitations for the test user
+            \App\Models\Invitation::factory()->count(5)->create([
+                'invited_by' => $user->id,
+            ]);
+
             // create 1 manuscript records for the test user
             \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->count(1)->create([
                 'user_id' => $user->id,

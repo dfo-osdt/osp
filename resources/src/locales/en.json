@@ -61,7 +61,10 @@
       "second": "second | seconds"
     },
     "english": "English",
-    "french": "French"
+    "french": "French",
+    "status": "Status",
+    "user": "User",
+    "email": "Email"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -140,5 +143,16 @@
   },
   "LocaleSelect": {
     "label": "Language Preference"
+  },
+  "SentInvitationsCard": {
+    "title": "Sent Invitations",
+    "subtitle": "List of the invitations you have sent.",
+    "invited-at": "Invited At",
+    "registered-at": "Registered At"
+  },
+  "SettingsPage": {
+    "user-profile": "User Profile",
+    "author-profile": "Author Profile",
+    "account-security": "Account Security"
   }
 }

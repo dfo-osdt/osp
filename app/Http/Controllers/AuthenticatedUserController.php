@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AuthenticatedUserResource;
+use App\Http\Resources\InvitationResource;
 use App\Http\Resources\UserAuthenticationResource;
 use Illuminate\Http\Request;
 
@@ -26,6 +27,6 @@ class AuthenticatedUserController extends Controller
         // get this user's invitations (reverse order by id)
         $invitations = $request->user()->sentInvitations()->orderByDesc('id')->limit(50)->get();
 
-        return UserAuthenticationResource::collection($invitations);
+        return InvitationResource::collection($invitations);
     }
 }

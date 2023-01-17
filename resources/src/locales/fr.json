@@ -61,7 +61,10 @@
       "yesterday": "hier"
     },
     "french": "Français",
-    "english": "Anglais"
+    "english": "Anglais",
+    "email": "E-mail",
+    "status": "Statut",
+    "user": "Utilisateur"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -140,5 +143,16 @@
   },
   "LocaleSelect": {
     "label": "Préférence linguistique"
+  },
+  "SentInvitationsCard": {
+    "invited-at": "Invité à",
+    "registered-at": "Inscrit à",
+    "subtitle": "Liste des invitations que vous avez envoyées.",
+    "title": "Invitations envoyées"
+  },
+  "SettingsPage": {
+    "account-security": "Sécurité du compte",
+    "author-profile": "Profil de l'auteur",
+    "user-profile": "Profil de l'utilisateur"
   }
 }

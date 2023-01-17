@@ -71,7 +71,6 @@ async function getUser() {
 
 onMounted(async () => {
     getUser();
-    console.log('get user');
 });
 
 async function save() {
