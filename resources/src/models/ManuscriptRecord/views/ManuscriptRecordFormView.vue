@@ -213,8 +213,9 @@
                                 <q-tooltip
                                     v-if="!enablePLSPrompt"
                                     class="text-body2"
-                                    >Your abstract is too short.</q-tooltip
                                 >
+                                    {{ plsDisabledTooltip }}
+                                </q-tooltip>
                             </div>
                         </div>
                     </QuestionEditor>
@@ -673,6 +674,23 @@ const enablePLSPrompt = computed(() => {
         (manuscriptResource.value.data.pls === '' || PLSLoading) &&
         manuscriptResource.value.data.abstract.length > 250
     );
+});
+
+const plsDisabledTooltip = computed(() => {
+    if (!manuscriptResource.value?.data) {
+        console.log('no manuscript resource');
+        return '';
+    }
+
+    if (manuscriptResource.value.data.pls !== '') {
+        return 'PLS already generated - erase it to generate a new one';
+    }
+
+    if (manuscriptResource.value.data.abstract.length < 250) {
+        return 'Abstract must be at least 250 characters';
+    }
+
+    return '';
 });
 
 async function generatePLS() {
