@@ -20,7 +20,10 @@
                         (val) => !!val || t('common.required'),
                         (val) =>
                             val.length <= 255 ||
-                            t('common.validation.must-be-less-than-x-characters', 255),
+                            t(
+                                'common.validation.must-be-less-than-x-characters',
+                                [255]
+                            ),
                     ]"
                     class="q-mb-md"
                 />
@@ -32,14 +35,26 @@
                     :rules="[
                         (val) =>
                             val.length <= 1500 ||
-                            t('common.validation.must-be-less-than-x-characters', 1500),
+                            t(
+                                'common.validation.must-be-less-than-x-characters',
+                                [1500]
+                            ),
                     ]"
                     class="q-mb-md"
                 />
             </q-card-section>
             <q-card-actions class="justify-end">
-                <q-btn v-close-popup :label="$t('common.cancel')" color="primary" outline />
-                <q-btn :label="$t('common.create')" type="submit" color="primary" />
+                <q-btn
+                    v-close-popup
+                    :label="$t('common.cancel')"
+                    color="primary"
+                    outline
+                />
+                <q-btn
+                    :label="$t('common.create')"
+                    type="submit"
+                    color="primary"
+                />
             </q-card-actions>
         </q-form>
     </BaseDialog>
