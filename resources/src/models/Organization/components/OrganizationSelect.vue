@@ -71,6 +71,8 @@ const props = defineProps<{
     initialSearchTerm?: string;
 }>();
 
+const localeStore = useLocaleStore();
+
 const organizationSelect = ref<QSelect | null>(null);
 
 const organizations = ref<OrganizationResourceList>({ data: [] });
@@ -124,8 +126,23 @@ function optionValue(item: OrganizationResource) {
     return item.data.id;
 }
 function optionLabel(item: OrganizationResource) {
+    let label: string;
+
+    if (localeStore.locale === 'fr') {
+        label = item.data.name_fr;
+        if (item.data.abbr_fr) {
+            label += ` (${item.data.abbr_fr})`;
+        }
+        return label;
+    }
+
+    // Default to English
     const { name_en, abbr_en } = item.data;
-    return `${name_en} (${abbr_en})`;
+    label = name_en;
+    if (abbr_en) {
+        label += ` (${abbr_en})`;
+    }
+    return label;
 }
 </script>
 

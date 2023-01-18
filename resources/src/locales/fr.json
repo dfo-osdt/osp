@@ -94,7 +94,8 @@
     "save": "Sauver",
     "description": "La description",
     "funder": "Bailleur de fonds",
-    "title": "Titre"
+    "title": "Titre",
+    "cancel": "Annuler"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
