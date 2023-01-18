@@ -7,6 +7,8 @@
 <script setup lang="ts">
 export type FormSectionStatus = 'complete' | 'incomplete' | 'error';
 
+const { t } = useI18n();
+
 const props = defineProps<{
     status: FormSectionStatus;
 }>();
@@ -36,11 +38,11 @@ const color = computed(() => {
 const tooltip = computed(() => {
     switch (props.status) {
         case 'complete':
-            return 'Section complete';
+            return t('form-section-status.section-complete');
         case 'incomplete':
-            return 'Section incomplete';
+            return t('form-section-status.section-incomplete');
         case 'error':
-            return 'Section error';
+            return t('form-section-status.section-error');
     }
 });
 </script>

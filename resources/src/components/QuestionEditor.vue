@@ -14,7 +14,7 @@
             :disable="disable"
             :readonly="readonly"
             :toolbar="
-                readonly
+                readonly === true
                     ? []
                     : [
                           ['bold', 'italic', 'underline'],
@@ -63,7 +63,7 @@ const onPaste = (e: ClipboardEvent) => {
     if (!e.clipboardData) return;
     let text = e.clipboardData.getData('text/html');
     if (text === '') text = e.clipboardData.getData('text/plain');
-    // clean all ms formatting except for allowed tags and attributes
+    // clean all formatting except for allowed tags and attributes
     const cleanText = DOMPurify.sanitize(text, {
         ALLOWED_TAGS: [
             'b',

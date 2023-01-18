@@ -1,13 +1,14 @@
 <template>
     <template v-if="isDefinition">
         <span
-            >(<span class="text-red">*</span>) Fields marked with an * are
-            required.</span
+            >(<span class="text-red">*</span>)&nbsp;{{
+                $t('required-span.definition')
+            }}</span
         >
     </template>
     <template v-else>
         <span class="text-red q-ml-xs"
-            >*<q-tooltip>This field is required</q-tooltip></span
+            >*<q-tooltip>{{ $t('required-span.tooltip') }}</q-tooltip></span
         >
     </template>
 </template>

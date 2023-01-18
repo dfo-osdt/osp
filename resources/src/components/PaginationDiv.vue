@@ -2,7 +2,8 @@
     <div v-if="meta" class="row justify-between">
         <div class="text-body2 text-grey-6 q-mt-xs">
             <div v-if="meta.total >= 1">
-                Showing: {{ meta.from }} - {{ meta.to }} of {{ meta.total }}
+                {{ $t('common.showing') }}: {{ meta.from }} - {{ meta.to }}
+                {{ $t('common.of') }} {{ meta.total }}
             </div>
         </div>
         <q-pagination

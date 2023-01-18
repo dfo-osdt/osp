@@ -1,7 +1,7 @@
 <template>
     <q-input
         v-model="date"
-        hint="ISO Date Format (YYYY-MM-DD)"
+        :hint="$t('date-input.hint')"
         outlined
         :mask="isoDateMask"
         :rules="rules"
@@ -21,7 +21,7 @@
                         <div class="row items-center justify-end">
                             <q-btn
                                 v-close-popup
-                                label="Close"
+                                :label="$t('common.close')"
                                 color="primary"
                                 flat
                             />
@@ -34,6 +34,8 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n();
+
 const props = defineProps<{
     modelValue: string | null;
     required?: boolean;
@@ -75,7 +77,7 @@ const rules = [
     // required
     (val: string | null) => {
         if (!props.required) return true;
-        const msg = 'Date is required';
+        const msg = t('common.required');
         if (val === null) return msg;
         return val.length > 0 || msg;
     },
@@ -84,7 +86,7 @@ const rules = [
         if (val === '') return true;
         if (val === null) return true;
         const date = new Date(val);
-        return !isNaN(date.getTime()) || 'Invalid date';
+        return !isNaN(date.getTime()) || t('common.validation.invalid-date');
     },
     // date is greater or equal to min date if provided
     (val: string | null) => {
@@ -94,7 +96,7 @@ const rules = [
         if (props.minDate === null) return true;
         const date = new Date(val);
         const minDate = new Date(props.minDate);
-        return date >= minDate || 'Date is too early';
+        return date >= minDate || t('common.validation.date-is-too-early');
     },
     // date is less or equal to max date if provided
     (val: string | null) => {
@@ -104,7 +106,7 @@ const rules = [
         if (props.maxDate === null) return true;
         const date = new Date(val);
         const maxDate = new Date(props.maxDate);
-        return date <= maxDate || 'Date is too late';
+        return date <= maxDate || t('common.validation.date-is-too-late');
     },
 ];
 </script>

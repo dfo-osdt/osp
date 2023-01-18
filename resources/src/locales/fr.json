@@ -27,7 +27,12 @@
       "name-invalid": "Le nom n'est pas valide",
       "passwords-match": "Les mots de passe ne correspondent pas",
       "passwords-different": "Votre mot de passe actuel et votre nouveau mot de passe doivent être différents",
-      "password-length": "Le mot de passe doit comporter au moins 12 caractères"
+      "password-length": "Le mot de passe doit comporter au moins 12 caractères",
+      "date-is-too-early": "La date est trop tôt",
+      "date-is-too-late": "La date est trop tard",
+      "invalid-date": "Date invalide",
+      "orcid-is-invalid-checksum": "ORCID n'est pas valide (somme de contrôle)",
+      "orcid-invalid": "ORCID n'est pas valide"
     },
     "your-password": "Votre mot de passe",
     "reset": "Réinitialiser",
@@ -64,7 +69,17 @@
     "english": "Anglais",
     "email": "Courriel",
     "status": "Statut",
-    "user": "Utilisateur"
+    "user": "Utilisateur",
+    "close": "Fermer",
+    "required": "Obligatoire",
+    "my-manuscripts": "Mes manuscrits",
+    "my-reviews": "Mes révisions",
+    "my-publications": "Mes Publications",
+    "sensitive-issues": "Renseignements critiques",
+    "authors": "Auteurs",
+    "publications": "Publications",
+    "showing": "Montrant",
+    "of": "de"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -154,5 +169,25 @@
     "account-security": "Sécurité du compte",
     "author-profile": "Profil de l'auteur",
     "user-profile": "Profil de l'utilisateur"
+  },
+  "osp": {
+    "description": "Le Portail de la science ouverte est une application Web intuitive pour promouvoir la science ouverte et suivre les publications scientifiques au sein de Pêches et Océans Canada.",
+    "slogan": {
+      "p1": "Partagez votre travail",
+      "p2": "Aidez nous à",
+      "p3": "grandir"
+    }
+  },
+  "date-input": {
+    "hint": "Format de date ISO (AAAA-MM-JJ)"
+  },
+  "form-section-status": {
+    "section-complete": "Section terminée",
+    "section-error": "Erreur dans la section",
+    "section-incomplete": "Section incomplète"
+  },
+  "required-span": {
+    "tooltip": "Ce champ est obligatoire",
+    "definition": "Les champs marqués d'un * sont obligatoires."
   }
 }

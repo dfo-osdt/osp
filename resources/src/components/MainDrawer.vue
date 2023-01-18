@@ -35,28 +35,28 @@ const userMenuItems = computed<MenuItem[]>(() => {
     return [
         {
             icon: 'mdi-view-dashboard',
-            label: 'Dashboard',
+            label: t('common.dashboard'),
             to: '/dashboard',
             visible: true,
             tooltipVisible: authStore.isDrawerMini,
         },
         {
             icon: 'mdi-file-document-multiple',
-            label: 'My Manuscripts',
+            label: t('common.my-manuscripts'),
             to: '/my-manuscripts',
             visible: true,
             tooltipVisible: authStore.isDrawerMini,
         },
         {
             icon: 'mdi-newspaper-variant-multiple-outline',
-            label: 'My Publications',
+            label: t('common.my-publications'),
             to: '/my-publications',
             visible: true,
             tooltipVisible: authStore.isDrawerMini,
         },
         {
             icon: 'mdi-file-sign',
-            label: 'My Reviews',
+            label: t('common.my-reviews'),
             to: '/my-reviews',
             visible: true,
             tooltipVisible: authStore.isDrawerMini,
@@ -68,25 +68,25 @@ const exploreMenuItems = computed<MenuItem[]>(() => {
     return [
         {
             icon: 'mdi-newspaper-variant-multiple-outline',
-            label: 'Publications',
+            label: t('common.publications'),
             to: '/publications',
             visible: true,
             tooltipVisible: authStore.isDrawerMini,
         },
         {
             icon: 'mdi-account-group-outline',
-            label: 'Authors',
+            label: t('common.authors'),
             to: '/authors',
             visible: true,
             tooltipVisible: authStore.isDrawerMini,
         },
-        {
-            icon: 'mdi-archive-star-outline',
-            label: 'Sensitive Issues',
-            to: '/sensitive-issues',
-            visible: true,
-            tooltipVisible: authStore.isDrawerMini,
-        },
+        // {
+        //     icon: 'mdi-archive-star-outline',
+        //     label: t('common.sensitive-issues'),
+        //     to: '/sensitive-issues',
+        //     visible: true,
+        //     tooltipVisible: authStore.isDrawerMini,
+        // },
     ];
 });
 </script>

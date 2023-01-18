@@ -27,7 +27,12 @@
       "name-invalid": "Name is invalid",
       "passwords-match": "Passwords do not match",
       "password-length": "Password must be at least 12 characters",
-      "passwords-different": "Your current and new password should be different"
+      "passwords-different": "Your current and new password should be different",
+      "invalid-date": "Invalid date",
+      "date-is-too-early": "Date is too early",
+      "date-is-too-late": "Date is too late",
+      "orcid-invalid": "ORCID is invalid",
+      "orcid-is-invalid-checksum": "ORCID is invalid (checksum)"
     },
     "your-password": "Your password",
     "reset": "Reset",
@@ -64,7 +69,19 @@
     "french": "French",
     "status": "Status",
     "user": "User",
-    "email": "Email"
+    "email": "Email",
+    "close": "Close",
+    "required": "Required",
+    "my-manuscripts": "My Manuscripts",
+    "my-publications": "My Publications",
+    "my-reviews": "My Reviews",
+    "publications": "Publications",
+    "authors": "Authors",
+    "sensitive-issues": "Sensitive Issues",
+    "no-results-found": "No Results Found",
+    "no-results-found-hint": "Try adjusting your search criteria or filters to find what you're looking for.",
+    "showing": "Showing",
+    "of": "of"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -154,5 +171,25 @@
     "user-profile": "User Profile",
     "author-profile": "Author Profile",
     "account-security": "Account Security"
+  },
+  "osp": {
+    "slogan": {
+      "p1": "Share your work",
+      "p2": "Help us",
+      "p3": "grow"
+    },
+    "description": "The Open Science Portal is an intuitive web-based application to promote open science and track science publications within Fisheries and Oceans Canada."
+  },
+  "date-input": {
+    "hint": "ISO Date Format (YYYY-MM-DD)"
+  },
+  "form-section-status": {
+    "section-complete": "Section complete",
+    "section-incomplete": "Section incomplete",
+    "section-error": "Section error"
+  },
+  "required-span": {
+    "definition": "Fields marked with an * are required.",
+    "tooltip": "This field is required"
   }
 }

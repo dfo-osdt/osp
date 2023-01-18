@@ -12,6 +12,8 @@
 <script setup lang="ts">
 import { QInput } from 'quasar';
 
+const { t } = useI18n();
+
 const props = defineProps<{
     modelValue: string;
 }>();
@@ -20,7 +22,7 @@ const rules = [
     (val: string) =>
         val.length === 0 ||
         /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/.test(val) ||
-        'ORCID is invalid',
+        t('common.validation.orcid-invalid'),
     // check orcid checksum
     (val: string) => {
         if (val.length < 19) {
@@ -39,7 +41,10 @@ const rules = [
         const remainder = total % 11;
         const result = (12 - remainder) % 11;
         const checksum = result == 10 ? 'X' : result.toString();
-        return givenCheckSum === checksum || 'ORCID is invalid (checksum)';
+        return (
+            givenCheckSum === checksum ||
+            t('common.validation.orcid-is-invalid-checksum')
+        );
     },
 ];
 

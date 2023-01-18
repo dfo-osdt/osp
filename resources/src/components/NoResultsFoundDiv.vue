@@ -8,12 +8,11 @@
                 />
             </div>
             <div class="text-h5 text-weight-light text-accent q-mb-sm">
-                No Results Found
+                {{ $t('common.no-results-found') }}
             </div>
             <div class="text-body1 text-grey-8">
                 <p>
-                    Try adjusting your search criteria or filters to find what
-                    you're looking for.
+                    {{ $t('common.no-results-found-hint') }}
                 </p>
             </div>
         </div>
