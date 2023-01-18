@@ -32,7 +32,8 @@
       "date-is-too-late": "La date est trop tard",
       "invalid-date": "Date invalide",
       "orcid-is-invalid-checksum": "ORCID n'est pas valide (somme de contrôle)",
-      "orcid-invalid": "ORCID n'est pas valide"
+      "orcid-invalid": "ORCID n'est pas valide",
+      "must-be-less-than-x-characters": "Doit contenir moins de {0} caractères"
     },
     "your-password": "Votre mot de passe",
     "reset": "Réinitialiser",
@@ -76,10 +77,24 @@
     "my-reviews": "Mes révisions",
     "my-publications": "Mes Publications",
     "sensitive-issues": "Renseignements critiques",
-    "authors": "Auteurs",
     "publications": "Publications",
     "showing": "Montrant",
-    "of": "de"
+    "of": "de",
+    "stay-logged-in": "Rester connecté",
+    "inactive-msg": "Vous avez été inactif pendant {0} minutes. \nVous serez déconnecté dans 2 minutes.",
+    "author": "Auteur",
+    "no-results-found": "Aucun résultat trouvé",
+    "no-results-found-hint": "Essayez d'ajuster vos critères de recherche ou vos filtres pour trouver ce que vous cherchez.",
+    "no-results-found-for": "Aucun résultat trouvé pour",
+    "affiliation": "Affiliation",
+    "create": "Créer",
+    "first-name": "Prénom",
+    "last-name": "Nom de famille",
+    "current-affiliation": "Affiliation actuelle",
+    "save": "Sauver",
+    "description": "La description",
+    "funder": "Bailleur de fonds",
+    "title": "Titre"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -189,5 +204,25 @@
   "required-span": {
     "tooltip": "Ce champ est obligatoire",
     "definition": "Les champs marqués d'un * sont obligatoires."
+  },
+  "author-select": {
+    "hint": "Commencez à taper pour rechercher un auteur (prénom, nom ou courriel)",
+    "add-a-new-author": "Ajouter un nouvel auteur",
+    "cant-find-text": "Vous ne trouvez pas l'auteur que vous recherchez ?",
+    "empty-search-hint": "Commencez à taper pour rechercher un auteur",
+    "not-the-author-youre-looking-for": "Ce n'est pas l'auteur que vous recherchez ?"
+  },
+  "create-author-dialog": {
+    "title": "Créer un nouvel auteur"
+  },
+  "manage-author-profile-card": {
+    "synced-to-your-user-profile": "Synchronisé avec votre profil utilisateur.",
+    "current-affiliation-hint": "Cela n'affectera pas l'affiliation de vos publications passées."
+  },
+  "manage-author-profile-view": {
+    "title": "Disciplines, Compétences et Expertises"
+  },
+  "funding-source": {
+    "create-funding-source": "Créer une source de financement"
   }
 }

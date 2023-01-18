@@ -69,7 +69,7 @@
 <script setup lang="ts">
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
-import { locale, useSanctum } from '@/api/sanctum';
+import { useSanctum } from '@/api/sanctum';
 
 const sanctum = useSanctum();
 const router = useRouter();
@@ -87,7 +87,7 @@ const statusMessage = ref('');
 async function reset() {
     loading.value = true;
     await sanctum
-        .forgotPassword(email.value, localeStore.locale as locale)
+        .forgotPassword(email.value, localeStore.locale)
         .then((resp) => {
             console.log(resp);
             statusMessage.value = resp.data.status;

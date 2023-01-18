@@ -18,6 +18,7 @@ import MainHeader from '@/components/MainHeader.vue';
 import MainDrawer from '@/components/MainDrawer.vue';
 import { useQuasar } from 'quasar';
 
+const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
 
@@ -49,13 +50,13 @@ watch(
             }, 2 * 60 * 1000);
 
             $q.notify({
-                message: `You have been inactive for ${inactiveMinutes} minutes. You will be logged out in 2 minutes.`,
+                message: t('common.inactive-msg', [inactiveMinutes]),
                 color: 'warning',
                 timeout: 120000,
                 progress: true,
                 actions: [
                     {
-                        label: 'Stay logged in',
+                        label: t('common.stay-logged-in'),
                         color: 'white',
                         handler: () => {
                             clearTimeout(logoutTimeout);

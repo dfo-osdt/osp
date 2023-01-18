@@ -1,53 +1,66 @@
 <template>
     <ContentCard>
-        <template #title>Author Profile</template>
+        <template #title>{{ $t('SettingsPage.author-profile') }}</template>
         <template v-if="author">
             <q-form ref="form" @submit="save">
                 <div class="row q-col-gutter-md">
                     <q-input
                         v-model="author.data.first_name"
                         class="col-12 col-md-6"
-                        label="First Name"
+                        :label="$t('common.first-name')"
                         outlined
                         :disable="hasOwner"
                         :rules="[
-                            (val) => val.length > 0 || 'First Name is required',
+                            (val) => val.length > 0 || t('common.required'),
                         ]"
                         :show-hint="hasOwner"
-                        hint="Synced to your user profile."
+                        :hint="
+                            $t(
+                                'manage-author-profile-card.synced-to-your-user-profile'
+                            )
+                        "
                     />
                     <q-input
                         v-model="author.data.last_name"
                         class="col-12 col-md-6"
-                        label="Last Name"
+                        :label="$t('common.last-name')"
                         outlined
                         :disable="hasOwner"
                         :rules="[
-                            (val) => val.length > 0 || 'Last Name is required',
+                            (val) => val.length > 0 || t('common.required'),
                         ]"
                         :show-hint="hasOwner"
-                        hint="Synced to your user profile."
+                        :hint="
+                            $t(
+                                'manage-author-profile-card.synced-to-your-user-profile'
+                            )
+                        "
                     />
                     <q-input
                         v-model="author.data.email"
                         class="col-12 col-md-6"
-                        label="Email"
+                        :label="$t('common.email')"
                         outlined
                         :disable="true"
                         :show-hint="hasOwner"
-                        hint="Synced to your user profile."
+                        :hint="
+                            $t(
+                                'manage-author-profile-card.synced-to-your-user-profile'
+                            )
+                        "
                     />
                     <OrganizationSelect
                         v-model="author.data.organization_id"
                         class="col-12 col-md-6"
-                        label="Current Affiliation"
+                        :label="$t('common.current-affiliation')"
                         outlined
-                        hint="This will not affect the affiliation of any of your
-                            past publications."
+                        :hint="
+                            $t(
+                                'manage-author-profile-card.current-affiliation-hint'
+                            )
+                        "
                         clearable
-                        :rules="[
-                            (val) => val !== null || 'Organization is required',
-                        ]"
+                        :rules="[(val) => val !== null || t('common.required')]"
                     />
                     <OrcidInput
                         v-model="author.data.orcid"
@@ -57,7 +70,7 @@
                 <q-card-actions align="right">
                     <q-btn
                         color="primary"
-                        label="Save"
+                        :label="$t('common.save')"
                         :loading="loading"
                         type="submit"
                     />
@@ -76,6 +89,7 @@ import OrganizationSelect from '@/models/Organization/components/OrganizationSel
 import OrcidInput from '@/components/OrcidInput.vue';
 
 const $q = useQuasar();
+const { t } = useI18n();
 const form = ref<QForm | null>(null);
 const props = defineProps<{
     authorId: number;
@@ -105,7 +119,7 @@ async function save() {
         .then((resp) => {
             $q.notify({
                 type: 'positive',
-                message: 'Author profile saved.',
+                message: t('common.saved'),
             });
             author.value = resp;
         })

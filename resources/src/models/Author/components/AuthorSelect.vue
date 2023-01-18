@@ -7,22 +7,22 @@
         :option-disable="optionDisable"
         :option-label="optionLabel"
         clearable
-        label="Author"
+        :label="$t('common.author', 1)"
         :loading="authorsLoading"
         use-input
         stack-label
         outlined
-        hint="Start typing to search for an author (first name, last name, or email)"
+        :hint="$t('author-select.hint')"
         @filter="filterAuthors"
     >
         <template #no-option>
             <q-item>
                 <q-item-section class="text-grey">
                     <template v-if="lastSearchTerm === ''">
-                        Start typing to search for an author
+                        {{ $t('author-select.empty-search-hint') }}
                     </template>
                     <template v-else>
-                        No results found for
+                        {{ $t('common.no-results-found-for') }}
                         <strong>{{ lastSearchTerm }}</strong>
                     </template>
                 </q-item-section>
@@ -34,7 +34,7 @@
                 @click="showCreateAuthorDialog = true"
             >
                 <q-item-section>
-                    Can't find the author you're looking for?
+                    {{ $t('author-select.cant-find-text') }}
                 </q-item-section>
                 <q-item-section side>
                     <q-btn
@@ -44,9 +44,9 @@
                         round
                         @click="showCreateAuthorDialog = true"
                     >
-                        <q-tooltip class="text-body2"
-                            >Add a new author</q-tooltip
-                        >
+                        <q-tooltip class="text-body2">{{
+                            $t('author-select.add-a-new-author')
+                        }}</q-tooltip>
                     </q-btn>
                 </q-item-section>
             </q-item>
@@ -71,7 +71,7 @@
             <q-separator />
             <q-item clickable @click="showCreateAuthorDialog = true">
                 <q-item-section>
-                    Not the author you're looking for?
+                    {{ $t('author-select.not-the-author-youre-looking-for') }}
                 </q-item-section>
                 <q-item-section side>
                     <q-btn
@@ -81,9 +81,9 @@
                         round
                         @click="showCreateAuthorDialog = true"
                     >
-                        <q-tooltip class="text-body2"
-                            >Add a new author</q-tooltip
-                        >
+                        <q-tooltip class="text-body2">{{
+                            $t('author-select.add-a-new-author')
+                        }}</q-tooltip>
                     </q-btn>
                 </q-item-section>
             </q-item>

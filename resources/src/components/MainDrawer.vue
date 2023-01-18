@@ -75,7 +75,7 @@ const exploreMenuItems = computed<MenuItem[]>(() => {
         },
         {
             icon: 'mdi-account-group-outline',
-            label: t('common.authors'),
+            label: t('common.author', 2),
             to: '/authors',
             visible: true,
             tooltipVisible: authStore.isDrawerMini,

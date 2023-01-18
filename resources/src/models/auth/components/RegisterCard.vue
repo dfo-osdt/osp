@@ -93,7 +93,6 @@
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
 import {
-    locale,
     SanctumRegisterResponse,
     SanctumRegisterUser,
     useSanctum,
@@ -130,7 +129,7 @@ async function register() {
         email: email.value,
         password: password.value,
         password_confirmation: password_confirmation.value,
-        locale: localeStore.locale as locale,
+        locale: localeStore.locale,
     };
 
     await sanctum

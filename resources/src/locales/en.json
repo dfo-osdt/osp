@@ -32,7 +32,8 @@
       "date-is-too-early": "Date is too early",
       "date-is-too-late": "Date is too late",
       "orcid-invalid": "ORCID is invalid",
-      "orcid-is-invalid-checksum": "ORCID is invalid (checksum)"
+      "orcid-is-invalid-checksum": "ORCID is invalid (checksum)",
+      "must-be-less-than-x-characters": "Must be less than {0} characters"
     },
     "your-password": "Your password",
     "reset": "Reset",
@@ -76,12 +77,25 @@
     "my-publications": "My Publications",
     "my-reviews": "My Reviews",
     "publications": "Publications",
-    "authors": "Authors",
     "sensitive-issues": "Sensitive Issues",
     "no-results-found": "No Results Found",
     "no-results-found-hint": "Try adjusting your search criteria or filters to find what you're looking for.",
     "showing": "Showing",
-    "of": "of"
+    "of": "of",
+    "inactive-msg": "You have been inactive for {0} minutes. You will be logged out in 2 minutes.",
+    "stay-logged-in": "Stay logged in",
+    "author": "Author | Authors",
+    "no-results-found-for": "No results found for",
+    "first-name": "First Name",
+    "last-name": "Last Name",
+    "affiliation": "Affiliation",
+    "create": "Create",
+    "current-affiliation": "Current Affiliation",
+    "save": "Save",
+    "funder": "Funder",
+    "description": "Description",
+    "title": "Title",
+    "cancel": "Cancel"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -191,5 +205,25 @@
   "required-span": {
     "definition": "Fields marked with an * are required.",
     "tooltip": "This field is required"
+  },
+  "author-select": {
+    "hint": "Start typing to search for an author (first name, last name, or email)",
+    "empty-search-hint": "Start typing to search for an author",
+    "cant-find-text": "Can't find the author you're looking for?",
+    "add-a-new-author": "Add a new author",
+    "not-the-author-youre-looking-for": "Not the author you're looking for?"
+  },
+  "create-author-dialog": {
+    "title": "Create a new Author"
+  },
+  "manage-author-profile-card": {
+    "synced-to-your-user-profile": "Synced to your user profile.",
+    "current-affiliation-hint": "This will not affect the affiliation of any of your past publications."
+  },
+  "manage-author-profile-view": {
+    "title": "Disciplines, Skills and Expertise"
+  },
+  "funding-source": {
+    "create-funding-source": "Create Funding Source"
   }
 }

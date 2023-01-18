@@ -58,8 +58,8 @@ export class AuthorService {
     /**
      * Create an author
      */
-    public static async create(author: Author) {
-        const response = await http.post<Author, AuthorResource>(
+    public static async create(author: Partial<Author>) {
+        const response = await http.post<Partial<Author>, AuthorResource>(
             'api/authors',
             author
         );

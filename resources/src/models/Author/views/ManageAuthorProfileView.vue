@@ -5,7 +5,7 @@
         secondary
     />
     <ContentCard secondary class="q-mt-lg">
-        <template #title>Disciplines, Skills and Expertise</template>
+        <template #title>{{ $t('manage-author-profile-view.title') }}</template>
     </ContentCard>
 </template>
 

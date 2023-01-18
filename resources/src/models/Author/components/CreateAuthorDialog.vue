@@ -1,40 +1,40 @@
 <template>
-    <BaseDialog persistent title="Create a new Author">
+    <BaseDialog persistent :title="$t('create-author-dialog.title')">
         <q-form @submit="createAuthor">
             <q-input
                 v-model="firstName"
                 outlined
-                label="First Name"
+                :label="$t('common.first-name')"
                 class="q-ma-md"
-                :rules="[(val: string) => val !== '' || 'Required']"
+                :rules="[(val: string) => val !== '' || t('common.required')]"
             />
             <q-input
                 v-model="lastName"
                 outlined
-                label="Last Name"
+                :label="$t('common.last-name')"
                 class="q-ma-md"
-                :rules="[(val: string) => val !== '' || 'Required']"
+                :rules="[(val: string) => val !== '' || t('common.required')]"
             />
             <OrganizationSelect
                 v-model="organizationId"
-                label="Affiliation"
+                :label="$t('common.affiliation')"
                 class="q-ma-md"
-                :rules="[(val: number|null) => val !== null || 'Organization is required']"
+                :rules="[(val: number|null) => val !== null || t('common.required')]"
             />
             <q-input
                 v-model="email"
                 outlined
-                label="Email"
+                :label="$t('common.email')"
                 class="q-ma-md"
                 :rules="[
-                        (val: string) => val !== '' || 'Required',
-                        (val: string) => /^\S+@\S+\.\S+$/.test(val) || 'Email is invalid']"
+                        (val: string) => val !== '' || t('common.required'),
+                        (val: string) => /^\S+@\S+\.\S+$/.test(val) || t('common.validation.email-invalid')]"
             />
             <OrcidInput v-model="orcId" class="q-ma-md" />
             <div class="flex justify-end">
                 <q-btn
                     color="primary"
-                    label="Create"
+                    :label="$t('common.create')"
                     type="submit"
                     class="q-ma-md"
                 />
@@ -48,6 +48,8 @@ import { AuthorResource, AuthorService, Author } from '../Author';
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 import OrcidInput from '@/components/OrcidInput.vue';
+
+const { t } = useI18n();
 
 const emit = defineEmits<{
     (event: 'created', payload: AuthorResource): void;
@@ -64,8 +66,7 @@ const createAuthor = async () => {
         return;
     }
 
-    const data: Author = {
-        id: 0,
+    const data: Partial<Author> = {
         first_name: firstName.value,
         last_name: lastName.value,
         email: email.value,
