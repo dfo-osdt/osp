@@ -13,12 +13,17 @@
                 <q-item-label
                     class="text-body1 text-weight-medium text-accent"
                     >{{
-                        step.data.manuscript_record?.data.title ?? 'No title'
+                        step.data.manuscript_record?.data.title ??
+                        $t('common.no-title')
                     }}</q-item-label
                 >
                 <q-item-label caption>
-                    Review request received from
-                    {{ userName(step) }} on
+                    {{
+                        $t(
+                            'management-review-step-list.review-request-received-from'
+                        )
+                    }}
+                    {{ userName(step) }} {{ $t('common.on') }}
                     {{ useLocaleDate(step.data.created_at).value }}
                 </q-item-label>
             </q-item-section>
@@ -45,6 +50,7 @@ import { ManagementReviewStepResource } from '../ManagementReviewStep';
 import ManagementReviewStepStatusSpan from './ManagementReviewStepStatusSpan.vue';
 import ManagementReviewStepDecisionSpan from './ManagementReviewStepDecisionSpan.vue';
 import { useLocaleDate } from '@/composables/useLocaleDate';
+const { t } = useI18n();
 
 defineProps<{
     managementReviewSteps: ManagementReviewStepResource[];
@@ -57,7 +63,9 @@ const userName = (step: ManagementReviewStepResource) => {
     } else {
         user = step.data.previous_step?.data.user;
     }
-    return user ? `${user.data.first_name} ${user.data.last_name}` : 'Unknown';
+    return user
+        ? `${user.data.first_name} ${user.data.last_name}`
+        : t('common.unknown');
 };
 </script>
 

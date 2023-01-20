@@ -19,7 +19,7 @@ const value = computed(() => {
         case 'withheld':
             return t('common.withheld');
         default:
-            return 'Unknown';
+            return t('common.unknown');
     }
 });
 </script>

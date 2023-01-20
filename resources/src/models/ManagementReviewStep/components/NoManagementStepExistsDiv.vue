@@ -9,12 +9,11 @@
                 />
             </div>
             <div class="text-h5 text-weight-light text-accent q-mb-sm">
-                You have nothing to review
+                {{ $t('no-management-review.title') }}
             </div>
             <div class="text-body1 text-grey-8">
                 <p>
-                    Manuscripts you've recently been asked to review will appear
-                    here.
+                    {{ $t('no-management-review.subtitle') }}
                 </p>
             </div>
         </div>

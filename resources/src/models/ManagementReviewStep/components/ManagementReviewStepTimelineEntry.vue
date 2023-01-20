@@ -1,9 +1,11 @@
 <template>
     <q-timeline-entry class="q-mx-lg" :icon="icon" :color="color">
-        <template v-if="canUpdate" #title
-            >Your Review : {{ userName }}</template
-        >
-        <template v-else #title>Review by {{ userName }}</template>
+        <template v-if="canUpdate" #title>{{
+            $t('review-step.your-review', [userName])
+        }}</template>
+        <template v-else #title>{{
+            $t('review-step.review-by', [userName])
+        }}</template>
         <template #subtitle>
             <ManagementReviewStepStatusSpan
                 :status="managementStep.data.status"
@@ -13,57 +15,41 @@
         <template v-if="canUpdate">
             <q-card class="q-pa-md" bordered flat>
                 <div class="text-body1 text-weight-medium text-accent">
-                    Management Review Guidelines
+                    {{ $t('management-review-guidelines.title') }}
                 </div>
                 <p>
-                    Please refer to the National Policy for Science Publications
-                    for more details.
+                    {{ $t('management-review-guidelines.subtitle') }}
                 </p>
                 <ul class="q-mb-md">
                     <li>
-                        Reviews the manuscript for compliance with the
-                        Intellectual Property Policy/Copyright Act, the Privacy
-                        Act, the Financial Administration Act (with respect to
-                        approvals of publication costs) and the Values and
-                        Ethics Code for DFO.
+                        {{ $t('management-review-guidelines.tip-one') }}
                     </li>
                     <li>
-                        Review the manuscript to identify sensitive issues,
-                        solely for the purpose of briefing senior management and
-                        the Communications Branch prior to publication of the
-                        science paper. Identified sensitive issues must be added
-                        to the form's "Sensitive Issues" section.
+                        {{ $t('management-review-guidelines.tip-two') }}
                     </li>
                     <li>
-                        At no time, will the inclusion of sensitive material
-                        (e.g. data, scientific conclusions) prevent publication
-                        of scientific papers.
+                        {{ $t('management-review-guidelines.tip-three') }}
                     </li>
                 </ul>
                 <question-editor
                     v-model="managementStep.data.comments"
-                    title="Reviewer Comments"
+                    :title="$t('reviewer-comments.title')"
                 >
                     <p>
-                        Comments are required unless you approve and complete
-                        the management review without sending it to another
-                        reviewer. Comments entered here should support your
-                        decision and, if applicable, provide feedback to the
-                        subsequent reviewers. Your comments will be visible to
-                        anyone with access to this manuscript record.
+                        {{ $t('reviewer-comments.description') }}
                     </p>
                 </question-editor>
                 <q-card-actions align="right">
                     <q-btn
                         color="primary"
                         outline
-                        label="Save Comments"
+                        :label="$t('review-step.save-comments')"
                         @click="save"
                     />
                     <q-btn
                         icon="mdi-arrow-decision"
                         color="primary"
-                        label="Submit Decision"
+                        :label="$t('review-step.submit-decision')"
                         @click="showDecisionDialog"
                     />
                     <SubmitDecisionDialog
@@ -88,7 +74,7 @@
                 >
                     <span
                         class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
-                        >Manuscript</span
+                        >{{ $t('common.manuscript') }}</span
                     >
                     <ManagementReviewStepDecisionSpan
                         class="text-weight-bold text-uppercase text-accent"
@@ -100,7 +86,7 @@
                     <div
                         class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
                     >
-                        Comments
+                        {{ $t('common.comments') }}
                     </div>
                     <span class="text-grey-8">
                         <!-- eslint-disable-next-line vue/no-v-html -->
@@ -198,7 +184,7 @@ async function save() {
     await ManagementReviewStepService.update(managementStep.value.data);
 
     $q.notify({
-        message: 'Review Comments Saved',
+        message: t('common.saved'),
         type: 'positive',
     });
 

@@ -6,12 +6,12 @@
         :option-value="optionValue"
         :option-label="optionLabel"
         clearable
-        label="Journal"
+        :label="$t('common.journal')"
         :loading="journalsLoading"
         use-input
         stack-label
         outlined
-        hint="Start typing to search for a journal"
+        :hint="$t('journal-select.search-hint')"
         :hide-hint="isReadOnly"
         @filter="filterJournals"
         @clear="selectedJournal = null"
@@ -20,10 +20,10 @@
             <q-item>
                 <q-item-section class="text-grey">
                     <template v-if="lastSearchTerm === ''">
-                        Start typing to search for a journal
+                        {{ $t('journal-select.search-hint') }}
                     </template>
                     <template v-else>
-                        No results found for
+                        {{ $t('common.no-results-found-for') }}
                         <strong>{{ lastSearchTerm }}</strong>
                     </template>
                 </q-item-section>
@@ -31,17 +31,16 @@
             <q-separator />
             <q-item>
                 <q-item-section>
-                    Can't find the user you're looking for? Please contact us so
-                    we can add it.
+                    {{ $t('journal-select.not-found-msg') }}
                 </q-item-section>
             </q-item>
         </template>
-        <template #option="scope">
-            <q-item v-bind="scope.itemProps">
+        <template #option="{ itemProps, opt }">
+            <q-item v-bind="itemProps">
                 <q-item-section>
-                    <q-item-label>{{ scope.opt.data.title_en }}</q-item-label>
+                    <q-item-label>{{ getJournalName(opt) }}</q-item-label>
                     <q-item-label caption>
-                        {{ scope.opt.data.publisher }}
+                        {{ opt.data.publisher }}
                     </q-item-label>
                 </q-item-section>
             </q-item>
@@ -96,7 +95,7 @@ const filterJournals = async (val: string, update, abort) => {
             journalsLoading.value = true;
 
             const query = new SpatieQuery();
-            query.filter('title_en', needle).paginate(1, 10);
+            query.filter('search', needle).paginate(1, 10);
 
             await JournalService.list(query).then((response) => {
                 // order response by length of title
@@ -122,6 +121,16 @@ function optionLabel(item: JournalResource) {
 defineExpose({
     selectedJournal,
 });
+
+// locale
+const localeStore = useLocaleStore();
+function getJournalName(journal: JournalResource) {
+    const { title_en, title_fr } = journal.data;
+    if (localeStore.locale === 'fr') {
+        return title_fr ?? title_en;
+    }
+    return title_en;
+}
 </script>
 
 <style scoped></style>

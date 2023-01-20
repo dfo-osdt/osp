@@ -95,7 +95,20 @@
     "description": "La description",
     "funder": "Bailleur de fonds",
     "title": "Titre",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "funding-sources": "Sources de financement",
+    "created": "Créé",
+    "deleted": "Supprimé",
+    "journal": "Journal",
+    "no-title": "Pas de titre",
+    "on": "le",
+    "comments": "commentaires",
+    "manuscript": "Manuscrit",
+    "submit": "Soumettre",
+    "next": "Suivant",
+    "back": "Retour",
+    "no": "Non",
+    "yes": "Oui"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -225,5 +238,63 @@
   },
   "funding-source": {
     "create-funding-source": "Créer une source de financement"
+  },
+  "funding-source-list": {
+    "no-funding-source-given": "Aucune source de financement indiquée."
+  },
+  "manage-funding-source-card": {
+    "subtitle": "Le cas échéant, veuillez saisir la ou les sources de financement qui ont aidé à générer ce travail.",
+    "add-funding-source": "Ajouter une source de financement"
+  },
+  "journal-select": {
+    "search-hint": "Commencez à taper pour rechercher un journal",
+    "not-found-msg": "Vous ne trouvez pas le journal que vous cherchez ? \nVeuillez nous contacter afin que nous puissions l'ajouter."
+  },
+  "management-review-step-list": {
+    "review-request-received-from": "Demande de revue reçue de"
+  },
+  "management-review-guidelines": {
+    "subtitle": "Veuillez consulter la Politique nationale des publications scientifiques pour plus de détails.",
+    "tip-one": "Examiner le manuscrit pour s'assurer qu'il est conforme à la Politique sur la propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique du MPO.",
+    "tip-three": "À aucun moment, l'inclusion de matériel sensible (par exemple, des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
+    "tip-two": "Examinez le manuscrit pour identifier les questions sensibles, uniquement dans le but d'informer la haute direction et la Direction des communications avant la publication de l'article scientifique. \nLes problèmes sensibles identifiés doivent être ajoutés à la section \"Problèmes sensibles\" du formulaire.",
+    "title": "Lignes directrices sur la revue de direction"
+  },
+  "review-step": {
+    "review-by": "Examen par {0}",
+    "your-review": "Votre avis : {0}",
+    "save-comments": "Enregistrer les commentaires",
+    "submit-decision": "Soumettre la décision"
+  },
+  "reviewer-comments": {
+    "description": "Les commentaires sont obligatoires, sauf si vous approuvez et terminez la revue de direction sans l'envoyer à un autre relecteur. \nLes commentaires saisis ici doivent appuyer votre décision et, le cas échéant, fournir des commentaires aux examinateurs suivants. \nVos commentaires seront visibles par toute personne ayant accès à ce dossier manuscrit.",
+    "title": "Commentaires de l'examinateur"
+  },
+  "no-management-review": {
+    "subtitle": "Les manuscrits que vous avez récemment été invités à réviser apparaîtront ici.",
+    "title": "Vous n'avez rien à revoir"
+  },
+  "decision": {
+    "approve-and-complete": "Approuver et terminer",
+    "approve-and-complete-desc": "Vous approuvez la publication de ce manuscrit et vous mettez fin au processus de revue de direction.",
+    "approve-and-forward": "Approuver et transmettre",
+    "approve-and-forward-desc": "Vous recommandez l'approbation de ce manuscrit pour publication et vous le transmettez au prochain examinateur.",
+    "reassign": "Réaffecter",
+    "reassign-desc": "Vous n'êtes pas le bon réviseur pour ce manuscrit et réaffectez cette révision au bon réviseur sans faire de recommandation.",
+    "withhold-and-complete": "Retenir et compléter",
+    "withhold-and-complete-desc": "Vous retenez ce manuscrit pour publication et vous mettez fin au processus de revue de direction. \nSeul un RDS ou un DG peut prendre cette décision.",
+    "withhold-and-forward": "Retenir et transférer",
+    "withhold-and-forward-desc": "Vous recommandez que ce manuscrit ne soit pas publié et vous le transmettez au prochain examinateur."
+  },
+  "submit-decision-dialog": {
+    "certify-text": "Je certifie qu'à ma connaissance, ma décision est fondée sur les lignes directrices énoncées dans les publications de la Politique nationale pour les sciences du MPO. \nLe cas échéant, j'ai lu les commentaires fournis par l'examinateur précédent et les ai pris en compte dans ma décision.",
+    "confirm-decision": "Confirmer la décision",
+    "next-reviewer": "Réviseur suivant",
+    "next-reviewer-hint": "Recherchez le réviseur approprié dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
+    "no-comments-warning": "Votre avis n'a pas de commentaires. \nPar conséquent, vous ne pouvez qu'approuver et compléter cet examen. \nVeuillez ajouter des commentaires pour appuyer votre décision si vous souhaitez sélectionner parmi les autres options.",
+    "select-decision": "Sélectionnez votre décision",
+    "select-next-reviewer": "Prochain réviseur",
+    "subsequent-reviewer-is-required": "Compte tenu de votre décision, un réviseur ultérieur est requis",
+    "your-decision": "Votre décision"
   }
 }

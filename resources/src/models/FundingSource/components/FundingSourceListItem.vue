@@ -1,9 +1,7 @@
 <template>
     <q-item>
         <q-item-section>
-            <q-item-label overline>{{
-                fundingSource.data.funder?.data.name_en
-            }}</q-item-label>
+            <q-item-label overline>{{ fundingSourceName }}</q-item-label>
             <q-item-label>{{ fundingSource.data.title }} </q-item-label>
             <q-item-label caption>{{
                 fundingSource.data.description
@@ -73,6 +71,17 @@ async function editedFundingSource(fundingSource: FundingSourceResource) {
     showEditDialog.value = false;
     emit('edited:funding-source', fundingSource);
 }
+
+// locale
+const localeStore = useLocaleStore();
+const fundingSourceName = computed(() => {
+    const { name_en, name_fr } = props.fundingSource.data.funder?.data ?? {
+        name_en: 'Undefined',
+        name_fr: 'Indéfini',
+    };
+    if (localeStore.locale === 'fr') return name_fr;
+    return name_en;
+});
 </script>
 
 <style scoped></style>

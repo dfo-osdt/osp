@@ -1,5 +1,9 @@
 <template>
-    <BaseDialog ref="dialog" title="Submit Decision" persistent>
+    <BaseDialog
+        ref="dialog"
+        :title="$t('review-step.submit-decision')"
+        persistent
+    >
         <q-form
             ref="form"
             @validation-error="validationError = true"
@@ -17,14 +21,14 @@
                 <q-separator />
                 <q-step
                     :name="1"
-                    title="Your Decision"
+                    :title="$t('submit-decision-dialog.your-decision')"
                     icon="mdi-check"
                     :done="step > 1"
                 >
                     <div
                         class="q-mx-md text-body1 text-primary text-weight-medium"
                     >
-                        Select your decision
+                        {{ $t('submit-decision-dialog.select-decision') }}
                     </div>
                     <q-list>
                         <q-item
@@ -54,7 +58,7 @@
                 </q-step>
                 <q-step
                     :name="2"
-                    title="Select Next Reviewer"
+                    :title="$t('submit-decision-dialog.select-next-reviewer')"
                     icon="mdi-account-search"
                     :error="validationError"
                     style="min-height: 275px"
@@ -64,35 +68,28 @@
                     <div
                         class="q-mx-md text-body1 text-primary text-weight-medium"
                     >
-                        Next Reviewer
+                        {{ $t('submit-decision-dialog.next-reviewer') }}
                     </div>
                     <p class="q-ma-md">
-                        Search for the appropriate reviewer within the user
-                        list. If you cannot find their name, they are likely not
-                        yet registered, and you will be able to invite them to
-                        the portal.
+                        {{ $t('submit-decision-dialog.next-reviewer-hint') }}
                     </p>
                     <UserSelect
                         v-model="nextUserId"
-                        label="Next Reviewer"
+                        :label="$t('submit-decision-dialog.next-reviewer')"
                         class="q-ma-md"
                         :disabled-emails="authorEmails"
                         :disabled-ids="[ownerId, managementReviewStep.user_id]"
-                        :rules="[(val: number|null) => val !== null || 'Given your decision, a subsequent reviewer is required']"
+                        :rules="[(val: number|null) => val !== null || $t('submit-decision-dialog.subsequent-reviewer-is-required')]"
                     />
                 </q-step>
                 <q-step
                     :name="3"
-                    title="Confirm Decision"
+                    :title="$t('submit-decision-dialog.confirm-decision')"
                     icon="mdi-check-decagram"
                     :done="step > 3"
                 >
                     <p class="q-ma-md">
-                        I certify that, to the best of my knowledge, my decision
-                        is based on the guidelines outlined in the DFO National
-                        Policy for Science publications. If applicable, I have
-                        read the comments provided by the previous reviewer and
-                        have considered them in my decision.
+                        {{ $t('submit-decision-dialog.certify-text') }}
                     </p>
                     <q-option-group
                         v-model="agreeToTerms"
@@ -107,19 +104,27 @@
                         <q-btn
                             v-if="step > 1"
                             color="primary"
-                            label="Back"
+                            :label="$t('common.back')"
                             class="q-mr-sm"
                             outline
                             @click="stepper?.previous()"
                         />
                         <q-btn
                             color="primary"
-                            :label="step === 3 ? 'Submit' : 'Next'"
+                            :label="
+                                step === 3
+                                    ? $t('common.submit')
+                                    : $t('common.next')
+                            "
                             :loading="loading"
                             :disable="nextDisabled"
                             @click="step === 3 ? submit() : stepper?.next()"
                         />
-                        <q-btn v-close-popup flat label="Cancel" />
+                        <q-btn
+                            v-close-popup
+                            flat
+                            :label="$t('common.cancel')"
+                        />
                     </q-stepper-navigation>
                 </template>
                 <template #message>
@@ -133,10 +138,7 @@
                                 size="md"
                             />
                         </template>
-                        Your review has no comments. Therefore, you can only
-                        approve and complete this review. Please add comments to
-                        support your decision if you want to select from the
-                        other options.
+                        {{ $t('submit-decision-dialog.no-comments-warning') }}
                     </q-banner>
                 </template>
             </q-stepper>
@@ -158,6 +160,7 @@ import {
 } from '../ManagementReviewStep';
 
 const authStore = useAuthStore();
+const { t } = useI18n();
 
 const props = defineProps<{
     managementReviewStep: ManagementReviewStep;
@@ -194,11 +197,11 @@ const nextUserId = ref<number | null>(null);
 const agreeToTerms = ref(false);
 const agreeToTermsOptions = ref([
     {
-        label: 'Yes',
+        label: t('common.yes'),
         value: true,
     },
     {
-        label: 'No',
+        label: t('common.no'),
         value: false,
     },
 ]);
@@ -241,38 +244,33 @@ const userCanWithholdAndComplete = computed(() => {
  */
 const options = ref<DecisionOption[]>([
     {
-        label: 'Approve and Complete',
+        label: t('decision.approve-and-complete'),
         value: 'approveAndComplete',
-        description:
-            'You approve this manuscript for publication and are ending the management review process.',
+        description: t('decision.approve-and-complete-desc'),
         disabled: false,
     },
     {
-        label: 'Approve and Forward',
+        label: t('decision.approve-and-forward'),
         value: 'approveAndForward',
-        description:
-            'You recommend approval of this manuscript for publication and are forwarding it to the next reviewer.',
+        description: t('decision.approve-and-forward-desc'),
         disabled: stepHasNoComments.value,
     },
     {
-        label: 'Withhold and Complete',
+        label: t('decision.withhold-and-complete'),
         value: 'withholdAndComplete',
-        description:
-            'You withhold this manuscript for publication and are ending the management review process. Only a RDS or DG can make this decision.',
+        description: t('decision.withhold-and-complete-desc'),
         disabled: stepHasNoComments.value || !userCanWithholdAndComplete.value,
     },
     {
-        label: 'Withhold and Forward',
+        label: t('decision.withhold-and-forward'),
         value: 'withholdAndForward',
-        description:
-            'You recommend this manuscript be withheld for publication and are forwarding it to the next reviewer.',
+        description: t('decision.withhold-and-forward-desc'),
         disabled: stepHasNoComments.value,
     },
     {
-        label: 'Reassign',
+        label: t('decision.reassign'),
         value: 'reassign',
-        description:
-            'You are not the correct reviewer for this manuscript and reassign this review to the proper reviewer without making a recommendation.',
+        description: t('decision.reassign-desc'),
         disabled: stepHasNoComments.value,
     },
 ]);

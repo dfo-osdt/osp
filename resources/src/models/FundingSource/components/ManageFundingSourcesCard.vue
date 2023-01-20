@@ -1,12 +1,11 @@
 <template>
     <ContentCard class="q-mb-lg" secondary>
-        <template #title>Funding Sources</template>
+        <template #title>{{ $t('common.funding-sources') }}</template>
         <template #title-right
             ><FormSectionStatusIcon status="complete" />
         </template>
         <p>
-            If applicable, please enter the funding source(s) that have helped
-            generate this work.
+            {{ $t('manage-funding-source-card.subtitle') }}
         </p>
         <FundingSourceList
             :funding-sources="fundingSources"
@@ -19,7 +18,7 @@
             <q-btn
                 v-if="!readonly"
                 icon="mdi-plus"
-                label="Add Funding Source"
+                :label="$t('manage-funding-source-card.add-funding-source')"
                 color="primary"
                 outline
                 @click="showCreateDialog = true"
@@ -47,6 +46,7 @@ import FundingSourceList from './FundingSourceList.vue';
 import { useQuasar } from 'quasar';
 import CreateFundingSourceDialog from './CreateFundingSourceDialog.vue';
 const $q = useQuasar();
+const { t } = useI18n();
 
 const props = defineProps<{
     fundableId: number;
@@ -72,7 +72,7 @@ async function loadFundingSources() {
 async function createFundingSource(fundingSource: FundingSourceResource) {
     fundingSources.value.push(fundingSource);
     $q.notify({
-        message: 'Funding source created.',
+        message: t('common.created'),
         color: 'positive',
         icon: 'mdi-check-circle',
     });
@@ -93,7 +93,7 @@ async function deleteFundingSource(fundingSource: FundingSourceResource) {
         await fundingService.delete(fundingSource.data);
         loadFundingSources();
         $q.notify({
-            message: 'Funding source deleted.',
+            message: t('common.deleted'),
             color: 'positive',
             icon: 'mdi-check-circle',
         });

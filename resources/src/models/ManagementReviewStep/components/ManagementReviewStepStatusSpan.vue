@@ -19,7 +19,7 @@ const value = computed(() => {
         case 'completed':
             return t('common.completed');
         default:
-            return 'Unknown';
+            return t('common.unknown');
     }
 });
 </script>

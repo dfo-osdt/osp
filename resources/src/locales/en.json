@@ -95,7 +95,20 @@
     "funder": "Funder",
     "description": "Description",
     "title": "Title",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "funding-sources": "Funding Sources",
+    "created": "Created",
+    "deleted": "Deleted",
+    "journal": "Journal",
+    "no-title": "No title",
+    "on": "on",
+    "manuscript": "Manuscript",
+    "comments": "Comments",
+    "back": "Back",
+    "submit": "Submit",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -225,5 +238,63 @@
   },
   "funding-source": {
     "create-funding-source": "Create Funding Source"
+  },
+  "funding-source-list": {
+    "no-funding-source-given": "No funding source given."
+  },
+  "manage-funding-source-card": {
+    "subtitle": "If applicable, please enter the funding source(s) that have helped generate this work.",
+    "add-funding-source": "Add Funding Source"
+  },
+  "journal-select": {
+    "search-hint": "Start typing to search for a journal",
+    "not-found-msg": "Can't find the journal you're looking for? Please contact us so we can add it."
+  },
+  "management-review-step-list": {
+    "review-request-received-from": "Review request received from"
+  },
+  "management-review-guidelines": {
+    "title": "Management Review Guidelines",
+    "subtitle": "Please refer to the National Policy for Science Publications for more details.",
+    "tip-one": "Reviews the manuscript for compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs) and the Values and Ethics Code for DFO.",
+    "tip-two": "Review the manuscript to identify sensitive issues, solely for the purpose of briefing senior management and the Communications Branch prior to publication of the science paper. Identified sensitive issues must be added to the form's \"Sensitive Issues\" section.",
+    "tip-three": "At no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers."
+  },
+  "reviewer-comments": {
+    "title": "Reviewer Comments",
+    "description": "Comments are required unless you approve and complete the management review without sending it to another reviewer. Comments entered here should support your decision and, if applicable, provide feedback to the subsequent reviewers. Your comments will be visible to anyone with access to this manuscript record."
+  },
+  "review-step": {
+    "your-review": "Your Review : {0}",
+    "review-by": "Review by {0}",
+    "save-comments": "Save Comments",
+    "submit-decision": "Submit Decision"
+  },
+  "no-management-review": {
+    "title": "You have nothing to review",
+    "subtitle": "Manuscripts you've recently been asked to review will appear here."
+  },
+  "submit-decision-dialog": {
+    "your-decision": "Your Decision",
+    "select-decision": "Select your decision",
+    "select-next-reviewer": "Select Next Reviewer",
+    "next-reviewer": "Next Reviewer",
+    "next-reviewer-hint": "Search for the appropriate reviewer within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
+    "subsequent-reviewer-is-required": "Given your decision, a subsequent reviewer is required",
+    "confirm-decision": "Confirm Decision",
+    "certify-text": "I certify that, to the best of my knowledge, my decision is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous reviewer and have considered them in my decision.",
+    "no-comments-warning": "Your review has no comments. Therefore, you can only approve and complete this review. Please add comments to support your decision if you want to select from the other options."
+  },
+  "decision": {
+    "approve-and-complete": "Approve and Complete",
+    "approve-and-complete-desc": "You approve this manuscript for publication and are ending the management review process.",
+    "approve-and-forward": "Approve and Forward",
+    "approve-and-forward-desc": "You recommend approval of this manuscript for publication and are forwarding it to the next reviewer.",
+    "withhold-and-complete": "Withhold and Complete",
+    "withhold-and-complete-desc": "You withhold this manuscript for publication and are ending the management review process. Only a RDS or DG can make this decision.",
+    "withhold-and-forward": "Withhold and Forward",
+    "withhold-and-forward-desc": "You recommend this manuscript be withheld for publication and are forwarding it to the next reviewer.",
+    "reassign": "Reassign",
+    "reassign-desc": "You are not the correct reviewer for this manuscript and reassign this review to the proper reviewer without making a recommendation."
   }
 }

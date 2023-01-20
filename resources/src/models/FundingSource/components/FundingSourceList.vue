@@ -18,9 +18,9 @@
                 </q-item-section>
                 <q-item-section>
                     <q-item-label>
-                        <span class="text-grey-8"
-                            >No funding source given.</span
-                        >
+                        <span class="text-grey-8">{{
+                            $t('funding-source-list.no-funding-source-given')
+                        }}</span>
                     </q-item-label>
                 </q-item-section>
             </q-item>
