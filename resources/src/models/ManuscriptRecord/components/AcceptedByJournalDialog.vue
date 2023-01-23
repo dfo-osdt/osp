@@ -1,46 +1,43 @@
 <template>
     <BaseDialog title="Journal accepted for publication">
         <div class="q-pa-md q">
-            <div class="text-primary text-h6 q-mb-sm">Congratulations!</div>
+            <div class="text-primary text-h6 q-mb-sm">
+                {{ $t('common.congratulations') }}
+            </div>
             <p>
-                You can now mark this manuscript as having been accepted for
-                publication by a journal. This step will create a new
-                publication to your profile allowing you to update the
-                publication details. Once you know the publication details,
-                please remember to update publication record and mark it as
-                published so that we can help share it within the DFO community.
+                {{ $t('accepted-by-journal-dialog.text') }}
             </p>
             <q-form class="q-gutter-y-md q-mt-md" @submit="submit">
                 <DateInput
                     v-model="submittedOn"
                     class="q-mx-sm"
-                    label="Submitted to Journal On"
+                    :label="$t('common.submitted-to-journal-on')"
                     required
                     :max-date="acceptedOn"
                 />
                 <DateInput
                     v-model="acceptedOn"
                     class="q-mx-sm"
-                    label="Accepted for Publication On"
+                    :label="$t('common.accepted-for-publication-on')"
                     required
                     :min-date="submittedOn"
                 />
                 <JournalSelect
                     v-model="journalId"
                     class="q-mx-sm"
-                    label="Journal"
+                    :label="$t('common.journal')"
                     :rules="[(val: number|null) => val !== null || 'Journal is required']"
                 />
                 <q-card-actions align="right">
                     <q-btn
                         v-close-popup
-                        label="Cancel"
+                        label="$t('common.cancel')"
                         color="secondary"
                         outline
                     />
                     <q-btn
                         color="primary"
-                        label="Update"
+                        label="$t('common.update')"
                         type="submit"
                         :loading="loading"
                     />
@@ -83,6 +80,7 @@ async function submit() {
             props.manuscriptRecord.id,
             submittedOn.value,
             acceptedOn.value,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             journalId.value! // should not be null because of validation
         );
         emit('updated', resource);

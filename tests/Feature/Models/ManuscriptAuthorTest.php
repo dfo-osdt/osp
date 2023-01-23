@@ -50,6 +50,13 @@ test('a user can add a new manuscript author to their manuscript record', functi
         'author',
     ]);
 
+    // this is there as if it doesn't exist we can't tell the frontend
+    // if the user can update or delete the record (e.g. AuthorChip)
+    expect($response->json('can'))->toBeArray([
+        'update' => true,
+        'delete' => true,
+    ]);
+
     expect($manuscript->manuscriptAuthors()->count())->toBe(1);
 });
 

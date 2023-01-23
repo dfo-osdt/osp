@@ -1,7 +1,7 @@
 <template>
     <BaseDialog
         ref="dialog"
-        title="Submit Manuscript for Management Review"
+        title="$t('submit-manuscript-dialog.title')"
         persistent
     >
         <q-form
@@ -20,22 +20,21 @@
                 <q-separator />
                 <q-step
                     :name="1"
-                    title="Confirm Submission"
+                    :title="$t('submit-manuscript-dialog.step1.title')"
                     icon="mdi-check"
                     :done="step > 1"
                 >
                     <div
                         class="q-mx-md text-body1 text-primary text-weight-medium"
                     >
-                        Submission for Management Review
+                        {{ $t('submit-manuscript-dialog.step1.subtitle') }}
                     </div>
                     <p class="q-ma-md">
-                        I certify that, to the best of my knowledge, this
-                        manuscript is in compliance with the Intellectual
-                        Property Policy/Copyright Act, the Privacy Act, the
-                        Financial Administration Act (with respect to approvals
-                        of publication costs), and the Values and Ethics Code
-                        for DFO.
+                        {{
+                            $t(
+                                'submit-manuscript-dialog.step1.confirmation-text'
+                            )
+                        }}
                     </p>
                     <q-option-group
                         v-model="agreeToTerms"
@@ -47,7 +46,7 @@
                 </q-step>
                 <q-step
                     :name="2"
-                    title="Select Reviewer"
+                    :title="$t('submit-manuscript-dialog.step2.title')"
                     icon="mdi-account-search"
                     :error="validationError"
                     style="min-height: 275px"
@@ -55,39 +54,41 @@
                     <div
                         class="q-mx-md text-body1 text-primary text-weight-medium"
                     >
-                        Division Manager/Director
+                        {{ $t('submit-manuscript-dialog.step2.subtitle') }}
                     </div>
                     <p class="q-ma-md">
-                        To submit the manuscript for management review, search
-                        for the appropriate division manager/director within the
-                        user list. If you cannot find their name, they are
-                        likely not yet registered, and you will be able to
-                        invite them to the portal.
+                        {{ $t('submit-manuscript-dialog.step2.p1') }}
                     </p>
                     <p class="q-ma-md">
-                        Note; you will not be able to select someone that is an
-                        author on this manuscript or the owner of this
-                        manuscript record.
+                        {{ $t('submit-manuscript-dialog.step2.p2') }}
                     </p>
                     <UserSelect
                         v-model="divisionManagerUserId"
-                        label="Division Manager"
+                        label="$t('common.division-manager')"
                         class="q-ma-md"
                         :disabled-emails="authorEmails"
                         :disabled-ids="[ownerId]"
-                        :rules="[(val: number|null) => val !== null || 'Division Manager is required']"
+                        :rules="[(val: number|null) => val !== null || $t('common.required')]"
                     />
                 </q-step>
                 <template #navigation>
                     <q-stepper-navigation class="flex justify-end">
                         <q-btn
                             color="primary"
-                            :label="step === 2 ? 'Submit' : 'Next'"
+                            :label="
+                                step === 2
+                                    ? $t('common.submit')
+                                    : $t('common.next')
+                            "
                             :disable="!agreeToTerms"
                             :loading="loading"
                             @click="step === 2 ? submit() : stepper?.next()"
                         />
-                        <q-btn v-close-popup flat label="Cancel" />
+                        <q-btn
+                            v-close-popup
+                            flat
+                            :label="$t('common.cancel')"
+                        />
                     </q-stepper-navigation>
                 </template>
             </q-stepper>
@@ -96,7 +97,6 @@
 </template>
 
 <script setup lang="ts">
-import { extractErrorMessages } from '@/api/errors';
 import BaseDialog from '@/components/BaseDialog.vue';
 import { ManuscriptAuthorService } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import UserSelect from '@/models/User/components/UserSelect.vue';
@@ -106,6 +106,7 @@ import {
     ManuscriptRecordResource,
     ManuscriptRecordService,
 } from '../ManuscriptRecord';
+const { t } = useI18n();
 
 const props = defineProps<{
     manuscriptRecordId: number;
@@ -128,11 +129,11 @@ const divisionManagerUserId = ref<number | null>(null);
 const agreeToTerms = ref(false);
 const agreeToTermsOptions = ref([
     {
-        label: 'Yes',
+        label: t('common.yes'),
         value: true,
     },
     {
-        label: 'No',
+        label: t('common.no'),
         value: false,
     },
 ]);
@@ -146,14 +147,16 @@ async function getAllManuscriptAuthorsEmails(): Promise<string[]> {
     const manuscriptAuthors = await ManuscriptAuthorService.list(
         props.manuscriptRecordId
     );
-    return manuscriptAuthors.data.map((author) => author.data.author?.email);
+    return manuscriptAuthors.data.map(
+        (author) => author.data.author?.data.email ?? ''
+    );
 }
 
 async function getManuscriptOwnerId(): Promise<number> {
-    const mansuscriptRecord = await ManuscriptRecordService.find(
+    const manuscriptRecord = await ManuscriptRecordService.find(
         props.manuscriptRecordId
     );
-    return mansuscriptRecord.data.user_id;
+    return manuscriptRecord.data.user_id;
 }
 
 const loading = ref(false);

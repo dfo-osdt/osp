@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ManuscriptRecordType } from '../ManuscriptRecord';
 
-const t = useI18n();
+const { t } = useI18n();
 
 const props = defineProps<{
     type: ManuscriptRecordType;
@@ -16,9 +16,9 @@ const props = defineProps<{
 const typeLabel = computed(() => {
     switch (props.type) {
         case 'primary':
-            return t.t('manuscript.primary');
+            return t('manuscript.primary');
         case 'secondary':
-            return t.t('manuscript.secondary');
+            return t('manuscript.secondary');
     }
 });
 </script>

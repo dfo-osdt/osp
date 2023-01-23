@@ -31,12 +31,6 @@
                                 />
                                 {{ item.data.author?.data.last_name }},
                                 {{ item.data.author?.data.first_name }}
-                                <span v-if="item?.data.organization">
-                                    ({{ item.data.organization.data.abbr_en }})
-                                    <q-tooltip>{{
-                                        item.data.organization.data.name_en
-                                    }}</q-tooltip>
-                                </span>
                                 <span
                                     v-if="
                                         index <
@@ -49,7 +43,7 @@
                             </span>
                         </template>
                         <template v-else>
-                            <span>No authors</span>
+                            <span>{{ $t('common.no-authors') }}</span>
                         </template>
                     </template>
                 </q-item-label>

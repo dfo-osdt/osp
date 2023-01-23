@@ -55,9 +55,13 @@
                                 )
                             "
                         >
-                            <q-tooltip>Copy to clipboard</q-tooltip>
+                            <q-tooltip>{{
+                                $t('common.copy-to-clipboard')
+                            }}</q-tooltip>
                         </q-btn>
-                        <div v-else class="text-caption">Copied</div>
+                        <div v-else class="text-caption">
+                            {{ $t('common.copied') }}
+                        </div>
                     </q-item-section>
                 </q-item>
                 <q-item
@@ -84,7 +88,9 @@
                         <q-item-label
                             :class="correspondingAuthor ? '' : 'text-grey-5'"
                         >
-                            Corresponding Author</q-item-label
+                            {{
+                                $t('common.corresponding-author')
+                            }}</q-item-label
                         >
                     </q-item-section>
                     <q-item-section v-if="!readonly" side
@@ -96,10 +102,9 @@
                                     correspondingAuthor
                                 )
                             "
-                            ><q-tooltip
-                                >Toggles whether this is a corresponding
-                                author</q-tooltip
-                            ></q-toggle
+                            ><q-tooltip>{{
+                                $t('common.corresponding-author-toggle')
+                            }}</q-tooltip></q-toggle
                         ></q-item-section
                     >
                 </q-item>

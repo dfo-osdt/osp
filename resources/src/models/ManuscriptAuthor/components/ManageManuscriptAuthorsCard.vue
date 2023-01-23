@@ -1,16 +1,16 @@
 <template>
     <ContentCard>
-        <template #title>Author(s) and Affiliation(s)</template>
+        <template #title>{{
+            $t('manage-manuscript-author-card.title')
+        }}</template>
         <template #title-right
             ><FormSectionStatusIcon :status="sectionStatus"
         /></template>
         <p>
-            Enter all authors, their affiliations and at least one corresponding
-            author. Authors will appears in the list in the order they are
-            entered.
+            {{ $t('manage-manuscript-author-card.instructions') }}
         </p>
         <q-field
-            label="Authors"
+            :label="$t('common.author', 2)"
             outlined
             stack-label
             bg-color="white"
@@ -36,10 +36,7 @@
                         />
                     </template>
                     <template v-else>
-                        <span
-                            >No authors, please add at least one author prior to
-                            submission.</span
-                        >
+                        <span>{{ $t('common.validation.no-authors') }}</span>
                     </template>
                 </div>
             </template>
@@ -54,7 +51,7 @@
                 />
             </template>
             <template #error>
-                <div>At least one corresponding author is required.</div>
+                <div>{{ $t('common.validation.at-least-one-author') }}</div>
             </template>
             <AddManuscriptAuthorDialog
                 v-if="showAddDialog"
@@ -79,7 +76,7 @@ import ManuscriptAuthorChip from './ManuscriptAuthorChip.vue';
 import { useQuasar } from 'quasar';
 import AddManuscriptAuthorDialog from './AddManuscriptAuthorDialog.vue';
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
-
+const { t } = useI18n();
 const $q = useQuasar();
 const props = withDefaults(
     defineProps<{
@@ -147,8 +144,8 @@ const addedManuscriptAuthor = (manuscriptAuthor: ManuscriptAuthorResource) => {
         type: 'positive',
         color: 'primary',
         message: `${
-            manuscriptAuthor.data.author?.data.first_name ?? 'Author'
-        } added successfully.`,
+            manuscriptAuthor.data.author?.data.first_name ?? t('common.author')
+        } ${t('common.added-successfully')}`,
     });
     showAddDialog.value = false;
     loadManuscriptAuthors();
@@ -166,8 +163,9 @@ async function toggleCorrespondingAuthor(
                 type: 'positive',
                 color: 'primary',
                 message: `${
-                    manuscriptAuthor.author?.data.first_name ?? 'Author'
-                } updated successfully.`,
+                    manuscriptAuthor.author?.data.first_name ??
+                    t('common.author')
+                } ${t('common.updated-successfully')}`,
             });
             loadManuscriptAuthors();
         })
@@ -182,8 +180,8 @@ const deleteManuscriptAuthor = async (
 ) => {
     // confirm with the user first
     $q.dialog({
-        title: 'Delete author',
-        message: 'Are you sure you want to delete this author?',
+        title: t('manage-manuscript-author-card.delete-author'),
+        message: t('manage-manuscript-author-card.delete-author-msg'),
         cancel: true,
     }).onOk(async () => {
         await ManuscriptAuthorService.delete(manuscriptAuthor.data)

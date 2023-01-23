@@ -1,28 +1,26 @@
 <template>
-    <BaseDialog title="Update the manuscript status as submitted">
+    <BaseDialog :title="$t('submitted-to-journal-dialog.title')">
         <div class="q-pa-md text-body1">
             <p>
-                Mark this manuscript as having been submitted to a journal. This
-                step is optional and allows you to let all users involved in the
-                management review that you submitted your manuscript.
+                {{ $t('submitted-to-journal-dialog.text') }}
             </p>
             <q-form @submit="submit">
                 <DateInput
                     v-model="submittedOn"
                     class="q-mx-sm"
-                    label="Submitted to Journal On"
+                    :label="$t('common.submitted-to-journal-on')"
                     required
                 />
                 <q-card-actions align="right">
                     <q-btn
                         v-close-popup
-                        label="Cancel"
+                        :label="$t('common.cancel')"
                         color="secondary"
                         outline
                     />
                     <q-btn
                         color="primary"
-                        label="Update"
+                        :label="$t('common.update')"
                         type="submit"
                         :loading="loading"
                     />

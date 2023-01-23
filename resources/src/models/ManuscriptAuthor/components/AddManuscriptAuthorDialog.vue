@@ -1,16 +1,13 @@
 <template>
-    <base-dialog title="Add an author to this manuscript">
+    <base-dialog :title="$t('manuscript-author-dialog.title')">
         <q-form @submit="addManuscriptAuthor">
             <div
                 class="q-mx-md q-mt-lg text-body1 text-primary text-weight-medium"
             >
-                Author
+                {{ $t('common.author') }}
             </div>
             <p class="q-ma-md">
-                Search for the author you'd want to add using their name or
-                professional email. If you cannot find the author you are
-                looking for, or their affiliation or email has changed, you can
-                create a new author record.
+                {{ $t('manuscript-author-dialog.instructions') }}
             </p>
             <author-select
                 v-model="authorId"
@@ -20,20 +17,13 @@
             />
             <div class="q-mx-md q-mt-lg">
                 <div class="text-body1 text-primary text-weight-medium">
-                    Corresponding Author
+                    {{ $t('common.corresponding-author') }}
                 </div>
                 <p>
-                    The corresponding author communicates with the journal(s)
-                    and is responsible for managing editorial issues and the
-                    manuscript's final format and content. This person is not
-                    necessarily the "first" author, which could have different
-                    meanings in different fields. For example, it could be a
-                    first or the last author or the person overseeing the
-                    publication process and, often, responsible for conceiving,
-                    supporting, and managing the project.
+                    {{ $t('common.corresponding-author-desc') }}
                 </p>
                 <p class="text-primary text-body1">
-                    Is a corresponding author?
+                    {{ $t('common.is-a-corresponding-author') }}
                 </p>
                 <q-option-group
                     v-model="isCorresponding"
@@ -43,7 +33,7 @@
                 <div class="flex justify-end">
                     <q-btn
                         color="primary"
-                        label="Add"
+                        :label="$t('common.add')"
                         type="submit"
                         class="q-ma-md"
                     />
@@ -60,6 +50,7 @@ import {
     ManuscriptAuthorService,
 } from '../ManuscriptAuthor';
 import BaseDialog from '@/components/BaseDialog.vue';
+const { t } = useI18n();
 
 const props = withDefaults(
     defineProps<{
@@ -82,12 +73,11 @@ const disabledAuthorIds = computed(() =>
 const authorId = ref<number | null>(null);
 const isCorresponding = ref(false);
 const isCorrespondingOptions = [
-    { label: 'Yes', value: true },
-    { label: 'No', value: false },
+    { label: t('common.yes'), value: true },
+    { label: t('common.no'), value: false },
 ];
 
 async function addManuscriptAuthor() {
-    console.log('adding author..');
     if (authorId.value === null) {
         return;
     }

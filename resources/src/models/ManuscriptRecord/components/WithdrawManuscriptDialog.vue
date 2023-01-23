@@ -1,21 +1,20 @@
 <template>
-    <BaseDialog title="Withdraw this manuscript">
+    <BaseDialog :title="$t('withdraw-manuscript-dialog.title')">
         <div class="q-pa-md text-body1">
             <p>
-                Withdraw this manuscript. This lets us know that this manuscript
-                will not be published and closes this manuscript record.
+                {{ $t('withdraw-manuscript-dialog.text') }}
             </p>
             <q-form @submit="submit">
                 <q-card-actions align="right">
                     <q-btn
                         v-close-popup
-                        label="Cancel"
+                        :label="$t('common.cancel')"
                         color="secondary"
                         outline
                     />
                     <q-btn
                         color="primary"
-                        label="Withdraw"
+                        :label="$t('common.withdraw')"
                         type="submit"
                         :loading="loading"
                     />
@@ -40,9 +39,6 @@ const props = defineProps<{
 const emit = defineEmits<{
     (event: 'updated', arg: ManuscriptRecordResource): void;
 }>();
-
-const now = new Date().toISOString().substring(0, 10);
-const submittedOn = ref(now);
 
 const loading = ref(false);
 

@@ -12,19 +12,11 @@
             </div>
             <div class="text-body1 text-grey-8 text-left">
                 <p>
-                    Need to publish a primary or secondary publication? You've
-                    come to the right place. Create a manuscript record and
-                    start the process of publishing your manuscript following
-                    the national policy for science publications.
+                    {{ $t('no-manuscript-exists-div.p1') }}
                 </p>
 
                 <p>
-                    The national policy ensures a consistent treatment of
-                    scientific publications across DFO regions, recognition of
-                    the scientific impact of the Department through the use of a
-                    standard affiliation, and effective tracking of our
-                    publications to better integrate science into departmental
-                    processes.
+                    {{ $t('no-manuscript-exists-div.p2') }}
                 </p>
             </div>
         </div>

@@ -33,7 +33,9 @@
       "invalid-date": "Date invalide",
       "orcid-is-invalid-checksum": "ORCID n'est pas valide (somme de contrôle)",
       "orcid-invalid": "ORCID n'est pas valide",
-      "must-be-less-than-x-characters": "Doit contenir moins de {0} caractères"
+      "must-be-less-than-x-characters": "Doit contenir moins de {0} caractères",
+      "no-authors": "Aucun auteur, veuillez ajouter au moins un auteur avant la soumission.",
+      "at-least-one-author": "Au moins un auteur correspondant est requis."
     },
     "your-password": "Votre mot de passe",
     "reset": "Réinitialiser",
@@ -82,7 +84,7 @@
     "of": "de",
     "stay-logged-in": "Rester connecté",
     "inactive-msg": "Vous avez été inactif pendant {0} minutes. \nVous serez déconnecté dans 2 minutes.",
-    "author": "Auteur",
+    "author": "Auteur | Auteurs",
     "no-results-found": "Aucun résultat trouvé",
     "no-results-found-hint": "Essayez d'ajuster vos critères de recherche ou vos filtres pour trouver ce que vous cherchez.",
     "no-results-found-for": "Aucun résultat trouvé pour",
@@ -116,7 +118,28 @@
     "reviews": "Révisions",
     "filter": "Filtre",
     "i-need-to-take-action": "Je dois agir",
-    "no-actions-required": "Aucune action requise"
+    "no-actions-required": "Aucune action requise",
+    "add": "Ajouter",
+    "corresponding-author": "Auteur correspondant",
+    "corresponding-author-desc": "L'auteur correspondant communique avec la ou les revues et est responsable de la gestion des questions éditoriales ainsi que du format et du contenu finaux du manuscrit. \nCette personne n'est pas nécessairement le \"premier\" auteur, ce qui peut avoir des significations différentes selon les domaines. \nPar exemple, il peut s'agir du premier ou du dernier auteur ou de la personne qui supervise le processus de publication et, souvent, responsable de la conception, du soutien et de la gestion du projet.",
+    "is-a-corresponding-author": "Est-ce un auteur correspondant ?",
+    "added-successfully": "ajouté avec succès",
+    "updated-successfully": "Mis à jour avec succés",
+    "congratulations": "Toutes nos félicitations!",
+    "accepted-for-publication-on": "Accepté pour publication le",
+    "copied": "Copié",
+    "copy-to-clipboard": "Copier dans le presse-papier",
+    "corresponding-author-toggle": "Bascule s'il s'agit d'un auteur correspondant",
+    "submitted-to-journal-on": "Soumis au journal le",
+    "update": "Mettre à jour",
+    "contiue": "Continuez",
+    "no-authors": "Aucun auteur",
+    "primary-publication": "Publication principale",
+    "secondary-publication": "Publication secondaire",
+    "type-of-publication": "Type de parution",
+    "manuscript-type": "Type de manuscrit",
+    "primary-manuscript": "Manuscrit principal",
+    "secondary-manuscript": "Manuscrit secondaire"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -131,7 +154,8 @@
     "submitted": "Soumis",
     "accepted": "Accepté",
     "withdrawn": "Retiré",
-    "withheld": "Retenu"
+    "withheld": "Retenu",
+    "please-select-the-lead-region": "Veuillez sélectionner la région principale"
   },
   "dialog": {
     "unsaved-changes": {
@@ -329,5 +353,40 @@
   "review-step-view": {
     "all-my-reviews": "Mes révisions",
     "list-of-all-my-reviews": "Toutes mes révisions"
+  },
+  "manuscript-author-dialog": {
+    "title": "Ajouter un auteur à ce manuscrit",
+    "instructions": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse e-mail professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse e-mail a changé, vous pouvez créer une nouvelle fiche d'auteur."
+  },
+  "manage-manuscript-author-card": {
+    "title": "Auteur(s) et Affiliation(s)",
+    "instructions": "Entrez tous les auteurs, leurs affiliations et au moins un auteur correspondant. \nLes auteurs apparaîtront dans la liste dans l'ordre dans lequel ils sont entrés.",
+    "delete-author": "Supprimer l'auteur",
+    "delete-author-msg": "Voulez-vous vraiment supprimer cet auteur ?"
+  },
+  "accepted-by-journal-dialog": {
+    "text": "Vous pouvez maintenant marquer ce manuscrit comme ayant été accepté pour publication par une revue. \nCette étape créera une nouvelle publication sur votre profil vous permettant de mettre à jour les détails de la publication. \nUne fois que vous connaissez les détails de la publication, n'oubliez pas de mettre à jour le dossier de publication et de le marquer comme publié afin que nous puissions aider à le partager au sein de la communauté du MPO."
+  },
+  "create-manuscript-record-dialog": {
+    "create-text": "Une fois créé, vous serez redirigé vers le formulaire d'enregistrement du manuscrit. \nLe formulaire d'enregistrement du manuscrit sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour examen.",
+    "enter-the-title-of-your-manuscript": "Entrez le titre de votre manuscrit",
+    "primary-pub-desc": "Une publication dans une des principales publications à comité de lecture (revues scientifiques, numéros spéciaux, chapitres de livre, livres et actes de conférence.)",
+    "secondary-pub-desc": "Une publication dans les publications scientifiques secondaires de Pêches et Océans Canada (MPO) telles que la série « Rapport technique canadien sur les sciences halieutiques et aquatiques » du MPO, « Rapport de données canadien sur les sciences halieutiques et aquatiques », et d'autres séries.",
+    "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de l'examen de ce manuscrit.",
+    "step1": {
+      "text": "Veuillez sélectionner le type de notice manuscrite que vous souhaitez créer. \nAvez-vous l'intention de soumettre ce manuscrit à une revue primaire ou secondaire ?"
+    },
+    "step2": {
+      "title": "Détails du manuscrit"
+    },
+    "title": "Créer une nouvelle notice manuscrite",
+    "what-is-the-working-title-of-your-manuscript": "Quel est le titre de travail de votre manuscrit ?"
+  },
+  "no-manuscript-exists-div": {
+    "p1": "Besoin de publier une publication primaire ou secondaire ? \nVous êtes arrivé au bon endroit. \nCréez un dossier de manuscrit et lancez le processus de publication de votre manuscrit conformément à la politique nationale pour les publications scientifiques.",
+    "p2": "La politique nationale assure un traitement uniforme des publications scientifiques dans toutes les régions du MPO, la reconnaissance de l'impact scientifique du Ministère grâce à l'utilisation d'une affiliation standard et un suivi efficace de nos publications afin de mieux intégrer la science dans les processus ministériels."
+  },
+  "submit-manuscript-dialog": {
+    "title": "Soumettre le manuscrit pour examen par la direction"
   }
 }
