@@ -1,9 +1,9 @@
 <template>
-    <MainPageLayout title="My Reviews">
+    <MainPageLayout :title="$t('common.my-reviews')">
         <div class="row q-gutter-lg q-col-gutter-lg flex">
             <div class="cols-2">
                 <ContentCard secondary no-padding>
-                    <template #title>Reviews</template>
+                    <template #title>{{ $t('common.reviews') }}</template>
                     <q-list class="text-body1">
                         <q-item
                             v-for="f in mainFilterOptions"
@@ -31,7 +31,9 @@
                     <template #title>{{ mainFilter?.label }}</template>
                     <template #subtitle>{{ mainFilter?.caption }}</template>
                     <template #title-right
-                        ><SearchInput v-model="search" label="Filter"
+                        ><SearchInput
+                            v-model="search"
+                            :label="$t('common.filter')"
                     /></template>
                     <template
                         v-if="
@@ -79,6 +81,7 @@ import {
     ManagementReviewStepService,
 } from '../ManagementReviewStep';
 import NoManagementStepExistsDiv from '../components/NoManagementStepExistsDiv.vue';
+const { t } = useI18n();
 
 const reviews = ref<ManagementReviewStepResourceList>();
 
@@ -134,8 +137,8 @@ type MainFilterOption = {
 const mainFilterOptions = ref<MainFilterOption[]>([
     {
         id: 1,
-        label: 'All My Reviews',
-        caption: 'List of all my reviews',
+        label: t('review-step-view.all-my-reviews'),
+        caption: t('review-step-view.list-of-all-my-reviews'),
         icon: 'mdi-all-inclusive',
         active: true,
         filter: (query: ManagementReviewQuery): ManagementReviewQuery => {
@@ -144,8 +147,8 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     },
     {
         id: 2,
-        label: 'Pending',
-        caption: 'I need to take action',
+        label: t('common.pending'),
+        caption: t('common.i-need-to-take-action'),
         icon: 'mdi-progress-clock',
         active: false,
         filter: (query: ManagementReviewQuery): ManagementReviewQuery => {
@@ -154,8 +157,8 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     },
     {
         id: 3,
-        label: 'Completed',
-        caption: 'No actions required',
+        label: t('common.completed'),
+        caption: t('common.no-actions-required'),
         icon: 'mdi-check-circle',
         active: false,
         filter: (query: ManagementReviewQuery): ManagementReviewQuery => {

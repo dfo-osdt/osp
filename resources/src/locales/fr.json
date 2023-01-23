@@ -108,7 +108,15 @@
     "next": "Suivant",
     "back": "Retour",
     "no": "Non",
-    "yes": "Oui"
+    "yes": "Oui",
+    "in-progress": "En cours",
+    "complete": "Compléter",
+    "submitted-on": "Soumis le",
+    "completed-on": "Terminé le",
+    "reviews": "Révisions",
+    "filter": "Filtre",
+    "i-need-to-take-action": "Je dois agir",
+    "no-actions-required": "Aucune action requise"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -296,5 +304,30 @@
     "select-next-reviewer": "Prochain réviseur",
     "subsequent-reviewer-is-required": "Compte tenu de votre décision, un réviseur ultérieur est requis",
     "your-decision": "Votre décision"
+  },
+  "policy": {
+    "message": {
+      "p1": "Examine le manuscrit pour vérifier qu'il respecte le {copyrightsAct}, la {privacyAct}, la loi sur la gestion financière (en ce qui concerne les approbations des coûts de publication) et le {valueAndEthicsCode}. Il identifiera également des problèmes potentiellement sensibles, uniquement dans le but de briefer la direction générale et la branche des communications avant la publication de l'article scientifique. En aucun cas, l'inclusion de matériel sensible (par exemple, données, conclusions scientifiques) n'empêchera la publication d'articles scientifiques."
+    },
+    "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/copyright-droits-fra.htm",
+    "intellectual-property-policy-copyright-act": "Droit d'auteur de la Couronne",
+    "privacy-act-link": "https://www.priv.gc.ca/fr/sujets-lies-a-la-protection-de-la-vie-privee/lois-sur-la-protection-des-renseignements-personnels-au-canada/la-loi-sur-la-protection-des-renseignements-personnels/lprp_survol/",
+    "privacy-act": "Loi sur la protection des renseignements personnels",
+    "values-and-ethics-code-for-dfo": "Code de valeurs et d'éthique du MPO",
+    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-fra.htm",
+    "p2": "Le Secteur des sciences s’engage à approuver les manuscrits en vue de leur publication dans un délai de dix jours ouvrables. Si les directeurs ne donnent pas leur approbation dans un délai de dix jours ouvrables, les auteurs peuvent soumettre leur manuscrit à l’éditeur.",
+    "for-more-info": "Pour plus d'informations, veuillez consulter la {policy}.",
+    "national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
+    "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html"
+  },
+  "management-review-step-view": {
+    "title": "Examen de la direction",
+    "submission-for-review": "Soumission pour examen",
+    "not-started-submit-your-form-to-begin": "Pas commencé - Soumettez votre formulaire pour commencer",
+    "completion-of-management-review": "Fin de l'examen de la direction"
+  },
+  "review-step-view": {
+    "all-my-reviews": "Mes révisions",
+    "list-of-all-my-reviews": "Toutes mes révisions"
   }
 }

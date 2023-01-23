@@ -108,7 +108,15 @@
     "submit": "Submit",
     "next": "Next",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "in-progress": "In Progress",
+    "complete": "Complete",
+    "submitted-on": "Submitted on",
+    "completed-on": "Completed on",
+    "reviews": "Reviews",
+    "filter": "Filter",
+    "i-need-to-take-action": "I need to take action",
+    "no-actions-required": "No actions required"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -296,5 +304,30 @@
     "withhold-and-forward-desc": "You recommend this manuscript be withheld for publication and are forwarding it to the next reviewer.",
     "reassign": "Reassign",
     "reassign-desc": "You are not the correct reviewer for this manuscript and reassign this review to the proper reviewer without making a recommendation."
+  },
+  "management-review-step-view": {
+    "title": "Management Review",
+    "submission-for-review": "Submission for Review",
+    "completion-of-management-review": "Completion of Management Review",
+    "not-started-submit-your-form-to-begin": "Not Started - Submit your form to begin"
+  },
+  "policy": {
+    "message": {
+      "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {valueAndEthicsCode}. It will also identify potential sensitive issues, solely for the purpose of briefing senior management and the Communications Branch prior to publication of the science paper. At no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers."
+    },
+    "intellectual-property-policy-copyright-act": "Intellectual Property Policy/Copyright Act",
+    "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/copyright-droits-eng.htm",
+    "privacy-act": "Privacy Act",
+    "privacy-act-link": "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-privacy-act/pa_brief/",
+    "values-and-ethics-code-for-dfo": "Values and Ethics Code for DFO",
+    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-eng.htm",
+    "p2": "Science management commits to a 10 working-day turnaround for sign-off of manuscripts for publication. If managers do not respond with an approval within 10 working days, authors may submit their manuscripts to the publisher.",
+    "for-more-info": "For more information please refer to the {policy}.",
+    "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
+    "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html"
+  },
+  "review-step-view": {
+    "all-my-reviews": "All My Reviews",
+    "list-of-all-my-reviews": "List of all my reviews"
   }
 }

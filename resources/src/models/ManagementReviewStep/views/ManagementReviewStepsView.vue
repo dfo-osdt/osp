@@ -1,7 +1,9 @@
 <template>
     <q-timeline color="primary" class="q-pa-lg">
         <q-timeline-entry heading
-            ><div class="text-h4 text-primary">Management Review</div>
+            ><div class="text-h4 text-primary">
+                {{ $t('management-review-step-view.title') }}
+            </div>
             <div
                 class="text-subtitle2 text-weight-bold text-grey-7 text-uppercase"
             >
@@ -11,48 +13,59 @@
         <q-timeline-entry
             class="q-mx-lg"
             icon="mdi-send-check-outline"
-            title="Submission for Review"
+            :title="$t('management-review-step-view.submission-for-review')"
             :color="submittedColor"
             :subtitle="sentForReview"
         >
+            <i18n-t keypath="policy.message.p1" tag="p" scope="global">
+                <template #copyrightsAct>
+                    <a
+                        :href="
+                            $t(
+                                'policy.intellectual-property-policy-copyright-act-link'
+                            )
+                        "
+                        target="_blank"
+                        >{{
+                            $t(
+                                'policy.intellectual-property-policy-copyright-act'
+                            )
+                        }}</a
+                    >
+                </template>
+                <template #privacyAct>
+                    <a :href="$t('policy.privacy-act-link')" target="_blank">{{
+                        $t('policy.privacy-act')
+                    }}</a>
+                </template>
+                <template #valueAndEthicsCode>
+                    <a
+                        :href="$t('policy.values-and-ethics-code-for-dfo-link')"
+                        target="_blank"
+                        >{{ $t('policy.values-and-ethics-code-for-dfo') }}</a
+                    >
+                </template>
+            </i18n-t>
             <p>
-                Reviews the manuscript for compliance with the
-                <a
-                    href="https://www.dfo-mpo.gc.ca/copyright-droits-eng.htm"
-                    target="_blank"
-                    >Intellectual Property Policy/Copyright Act</a
-                >, the
-                <a
-                    href="https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-privacy-act/pa_brief/"
-                    target="_blank"
-                    >Privacy Act</a
-                >, the Financial Administration Act (with respect to approvals
-                of publication costs) and the
-                <a
-                    href="https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-eng.htm"
-                    target="_blank"
-                    >Values and Ethics Code for DFO</a
-                >. It will also identify potential sensitive issues, solely for
-                the purpose of briefing senior management and the Communications
-                Branch prior to publication of the science paper. At no time,
-                will the inclusion of sensitive material (e.g. data, scientific
-                conclusions) prevent publication of scientific papers.
+                {{ $t('policy.p2') }}
             </p>
-            <p>
-                Science management commits to a 10 working-day turnaround for
-                sign-off of manuscripts for publication. If managers do not
-                respond with an approval within 10 working days, authors may
-                submit their manuscripts to the publisher.
-            </p>
-            <p>
-                For more information please refer to the
-                <a
-                    href="https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html"
-                >
-                    Fisheries and Oceans Canada National Policy for Science
-                    Publications </a
-                >.
-            </p>
+            <i18n-t keypath="policy.for-more-info" tag="p" scope="global">
+                <template #policy>
+                    <a
+                        :href="
+                            $t(
+                                'policy.national-policy-for-science-publications-link'
+                            )
+                        "
+                        target="_blank"
+                        >{{
+                            $t(
+                                'policy.national-policy-for-science-publications'
+                            )
+                        }}</a
+                    >
+                </template>
+            </i18n-t>
         </q-timeline-entry>
         <template v-if="managementReviewSteps !== null">
             <ManagementReviewStepTimelineEntry
@@ -67,7 +80,11 @@
         <q-timeline-entry
             class="q-mx-lg"
             icon="mdi-check-all"
-            title="Completion of Management Review"
+            :title="
+                $t(
+                    'management-review-step-view.completion-of-management-review'
+                )
+            "
             :color="completedColor"
             :subtitle="reviewCompletedOn"
         />
@@ -85,6 +102,7 @@ import {
     ManuscriptRecordResource,
     ManuscriptRecordService,
 } from '@/models/ManuscriptRecord/ManuscriptRecord';
+const { t } = useI18n();
 
 const props = defineProps<{
     id: number;
@@ -96,29 +114,32 @@ const manuscriptRecord: Ref<ManuscriptRecordResource | null> = ref(null);
 
 const processStatus = computed(() => {
     if (manuscriptRecord.value === null) {
-        return 'Unknown';
+        return t('common.unknown');
     }
     switch (manuscriptRecord.value.data.status) {
         case 'draft':
-            return 'Not Started - Submit your form to begin';
+            return t(
+                'management-review-step-view.not-started-submit-your-form-to-begin'
+            );
         case 'in_review':
-            return 'In Progress';
+            return t('common.in-progress');
         default:
-            return 'Complete';
+            return t('common.complete');
     }
     return null;
 });
 
 const sentForReview = computed(() => {
     if (manuscriptRecord.value === null) {
-        return 'Pending';
+        return t('common.pending');
     }
     switch (manuscriptRecord.value.data.status) {
         case 'draft':
-            return 'Pending';
+            return t('common.pending');
         default:
             return (
-                'Submitted on ' +
+                t('common.submitted-on') +
+                ' ' +
                 useLocaleDate(manuscriptRecord.value.data.sent_for_review_at)
                     .value
             );
@@ -139,15 +160,16 @@ const submittedColor = computed(() => {
 
 const reviewCompletedOn = computed(() => {
     if (manuscriptRecord.value === null) {
-        return 'Pending';
+        return t('common.pending');
     }
     switch (manuscriptRecord.value.data.status) {
         case 'draft':
         case 'in_review':
-            return 'Pending';
+            return t('common.pending');
         default:
             return (
-                'Completed on ' +
+                t('common.completed-on') +
+                ' ' +
                 useLocaleDate(manuscriptRecord.value.data.reviewed_at).value
             );
     }
@@ -193,7 +215,6 @@ onMounted(() => {
 });
 
 const decisionSubmitted = async () => {
-    console.log('decision submitted');
     await getManagementReviewSteps();
     await getManuscriptRecord();
 };
