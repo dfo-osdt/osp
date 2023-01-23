@@ -1,5 +1,5 @@
 <template>
-    <BaseDialog title="Create a Publication" persistent>
+    <BaseDialog :title="$t('create-publication-dialog.title')" persistent>
         <q-stepper
             ref="stepper"
             v-model="step"
@@ -11,20 +11,17 @@
             <q-separator />
             <q-step
                 :name="1"
-                title="Before your start"
+                :title="$t('create-publication-dialog.before-your-start')"
                 icon="mdi-call-split"
                 active-icon="mdi-information-variant"
                 :done="step > 1"
                 style="min-height: 275px"
             >
                 <div class="text-body1 text-accent text-weight-medium q-mb-md">
-                    Before Continuing...
+                    {{ $t('create-publication-dialog.before-continuing') }}
                 </div>
                 <p>
-                    This wizard lets you add published publications to the
-                    portal; allowing you to share past publications or to add
-                    publications where the manuscript record form (MRF) was done
-                    through other means.
+                    {{ $t('create-publication-dialog.step1.p1') }}
                 </p>
                 <q-banner rounded class="bg-teal-1">
                     <template #avatar>
@@ -34,14 +31,12 @@
                             color="primary"
                         />
                     </template>
-                    If you are here to get your manuscript reviewed prior to
-                    submission to a journal, do not continue, create a new
-                    manuscript record instead.
+                    {{ $t('create-publication-dialog.step1.warning') }}
                 </q-banner>
             </q-step>
             <q-step
                 :name="2"
-                title="Publication Details"
+                :title="$t('create-publication-dialog.publication-details')"
                 icon="mdi-file-document-edit-outline"
                 :error="!detailsValid"
                 :done="step > 2"
@@ -49,16 +44,18 @@
             >
                 <q-form ref="detailsForm" class="q-ma-md">
                     <div class="text-body1 text-accent text-weight-medium">
-                        Publication Details
+                        {{
+                            $t('create-publication-dialog.publication-details')
+                        }}
                     </div>
                     <q-separator class="q-mb-md" />
                     <q-input
                         v-model="title"
-                        label="Title"
+                        :label="$t('common.title')"
                         class="q-mb-md"
                         outlined
                         :rules="[
-                            (val) => val.length > 0 || 'Title is required',
+                            (val) => val.length > 0 || $t('common.required'),
                         ]"
                     />
                     <JournalSelect
@@ -66,7 +63,7 @@
                         class="q-mb-md"
                         :rules="[
                     (val: number) =>
-                        val !== null || 'Journal is required',
+                        val !== null || $t('common.required'),
                 ]"
                     ></JournalSelect>
                     <DoiInput v-model="doi" class="q-mb-md" />
@@ -74,7 +71,7 @@
             </q-step>
             <q-step
                 :name="3"
-                title="Dates and Access"
+                :title="$t('create-publication-dialog.dates-and-access')"
                 icon="mdi-calendar"
                 :error="!datesValid"
                 :done="step > 3"
@@ -82,34 +79,36 @@
             >
                 <q-form ref="datesForm">
                     <div class="text-body1 text-accent text-weight-medium">
-                        Publication Dates
+                        {{ $t('create-publication-dialog.publication-dates') }}
                     </div>
                     <q-separator class="q-mb-md" />
                     <DateInput
                         v-model="acceptedOn"
-                        label="Accepted On (Optional)"
+                        :label="
+                            $t('create-publication-dialog.accepted-on-optional')
+                        "
                         class="q-mb-md"
                     />
                     <DateInput
                         v-model="publishedOn"
-                        label="Published On"
+                        :label="$t('create-publication-dialog.published-on')"
                         class="q-mb-md"
                         required
                     />
                     <div
                         class="text-body1 q-mt-lg text-accent text-weight-medium"
                     >
-                        Publication Access
+                        {{ $t('create-publication-dialog.publication-access') }}
                     </div>
                     <q-separator class="q-mb-md" />
                     <q-toggle
                         v-model="isOpenAccess"
-                        label="Published as Open Access"
+                        :label="$t('common.published-as-open-access')"
                     />
                     <DateInput
                         v-if="!isOpenAccess"
                         v-model="embargoedUntil"
-                        label="Embargoed Until"
+                        :label="$t('common.embargoed-until')"
                         :required="!isOpenAccess"
                     />
                 </q-form>
@@ -118,7 +117,9 @@
                 ><q-stepper-navigation class="flex justify-end">
                     <q-btn
                         color="primary"
-                        :label="step === 3 ? 'Create' : 'Continue'"
+                        :label="
+                            step === 3 ? $t('common.create') : $t('common.next')
+                        "
                         class="q-mr-sm"
                         @click="next()"
                     />
@@ -126,13 +127,13 @@
                         v-if="step > 1"
                         flat
                         color="primary"
-                        label="Back"
+                        :label="$t('common.back')"
                         @click="stepper?.previous()"
                     />
                     <q-btn
                         v-close-popup
                         flat
-                        label="Cancel"
+                        :label="$t('common.cancel')"
                     /> </q-stepper-navigation
             ></template>
         </q-stepper>

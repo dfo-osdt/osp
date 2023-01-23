@@ -5,33 +5,33 @@
         :options="organizations.data"
         :option-value="optionValue"
         :option-label="optionLabel"
-        label="Organization"
+        :label="$t('common.organization')"
         :loading="organizationsLoading"
         use-input
         stack-label
         outlined
-        hint="Start typing to search for an Organization (name or abbreviation)"
+        :hint="$t('organization-select.hint')"
         @filter="filterOrganizations"
     >
         <template #no-option>
             <template v-if="lastSearchTerm === ''">
                 <q-item>
                     <q-item-section class="text-grey">
-                        Start typing to search for an organization
+                        {{ $t('organization-select.hint') }}
                     </q-item-section>
                 </q-item>
             </template>
             <template v-else>
                 <q-item>
                     <q-item-section class="text-grey">
-                        No results found for
+                        {{ $t('common.no-results-found-for') }}
                         <strong>{{ lastSearchTerm }}</strong>
                     </q-item-section>
                 </q-item>
                 <q-separator />
                 <q-item clickable @click="showCreateOrganizationDialog = true">
                     <q-item-section>
-                        Can't find the organization you're looking for?
+                        {{ $t('organization-select.cant-find') }}
                     </q-item-section>
                     <q-item-section side>
                         <q-btn
@@ -41,9 +41,9 @@
                             round
                             @click="showCreateOrganizationDialog = true"
                         >
-                            <q-tooltip class="text-body2"
-                                >Add a new author</q-tooltip
-                            >
+                            <q-tooltip class="text-body2">{{
+                                $t('organization-select.add-a-new-organization')
+                            }}</q-tooltip>
                         </q-btn>
                     </q-item-section>
                 </q-item>

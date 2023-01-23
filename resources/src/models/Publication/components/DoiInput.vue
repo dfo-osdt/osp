@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { QInput } from 'quasar';
+const { t } = useI18n();
 
 const props = defineProps<{
     modelValue: string | null;
@@ -28,7 +29,7 @@ const rules = [
     // required
     (val: string | null) => {
         if (!props.required) return true;
-        const msg = 'DOI is required';
+        const msg = t('common.required');
         if (val === null) return msg;
         return val.length > 0 || msg;
     },
@@ -36,7 +37,7 @@ const rules = [
         if (val === '') return true;
         if (val === null) return true;
         const doiRegex = /^10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
-        return doiRegex.test(val) || 'Invalid DOI';
+        return doiRegex.test(val) || t('common.validation.invalid-doi');
     },
 ];
 </script>

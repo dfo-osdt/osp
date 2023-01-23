@@ -35,7 +35,10 @@
       "orcid-is-invalid-checksum": "ORCID is invalid (checksum)",
       "must-be-less-than-x-characters": "Must be less than {0} characters",
       "no-authors": "No authors, please add at least one author prior to submission.",
-      "at-least-one-author": "At least one corresponding author is required."
+      "at-least-one-author": "At least one corresponding author is required.",
+      "invalid-doi": "Invalid DOI",
+      "file-size-is-too-large": "File size is too large",
+      "file-type-is-not-accepted": "File type is not accepted"
     },
     "your-password": "Your password",
     "reset": "Reset",
@@ -141,7 +144,19 @@
     "primary-manuscript": "Primary Manuscript",
     "secondary-manuscript": "Secondary Manuscript",
     "division-manager": "Division Manager",
-    "withdraw": "Withdraw"
+    "withdraw": "Withdraw",
+    "organization": "Organization",
+    "published-as-open-access": "Published as Open Access",
+    "embargoed-until": "Embargoed Until",
+    "pending-publication": "Pending Publication",
+    "manuscript-record-form": "Manuscript Record Form",
+    "applicant": "Applicant",
+    "lead-region": "Lead Region",
+    "abstract": "Abstract",
+    "plain-language-summary": "Plain Language Summary",
+    "kb-uploaded-on": "KB uploaded on",
+    "upload": "Upload",
+    "file-uploaded-successfully": "File uploaded successfully"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -409,5 +424,80 @@
   "withdraw-manuscript-dialog": {
     "title": "Withdraw this manuscript",
     "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record."
+  },
+  "create-organization-dialog": {
+    "title": "Create new Organization",
+    "p1": "Once created, this organization will be available to all users. Please make sure to use the official name and abbreviation for the organization. (E.g.: do not include departments, branches or regions.)",
+    "p2": "If the name of the organization does not have an official French or English equivalent, please copy the official name in both fields.",
+    "organization-name-english": "Organization Name (English)",
+    "organization-name-french": "Organization Name (French)",
+    "abbreviation-english": "Abbreviation (English)",
+    "abbreviation-french": "Abbreviation (French)"
+  },
+  "organization-select": {
+    "hint": "Start typing to search for an organization",
+    "cant-find": "Can't find the organization you're looking for?",
+    "add-a-new-organization": "Add a new organiztion"
+  },
+  "create-publication-dialog": {
+    "title": "Create a Publication",
+    "before-your-start": "Before your start",
+    "before-continuing": "Before Continuing...",
+    "step1": {
+      "p1": "This wizard lets you add published publications to the portal; allowing you to share past publications or to add publications where the manuscript record form (MRF) was done through other means.",
+      "warning": "If you are here to get your manuscript reviewed prior to submission to a journal, do not continue, create a new manuscript record instead."
+    },
+    "publication-details": "Publication Details",
+    "dates-and-access": "Dates and Access",
+    "publication-dates": "Publication Dates",
+    "accepted-on-optional": "Accepted On (Optional)",
+    "published-on": "Published On",
+    "publication-access": "Publication Access"
+  },
+  "no-publication-exist-div": {
+    "p1": "Manuscripts that have been reviewed will appear here. Once published, you can update the publication details. You can also add any past publication here so that it is part of our database and available for all to see."
+  },
+  "my-publication-view": {
+    "create-publication": "Create Publication",
+    "no-publications-found": "No publications found",
+    "all-publications": "All Publications",
+    "includes-ones-shared-with-me": "Includes ones shared with me",
+    "my-publications": "My Publications",
+    "i-am-responsible-for-this-publication-record": "I am responsible for this publication record",
+    "actions-still-required": "Actions still required"
+  },
+  "mrf": {
+    "ready-to-marked-published": "This manuscript has been reviewed but still needs to be marked as published by the applicant.",
+    "manuscripts-working-title": "Manuscript's Working Title",
+    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
+    "lead-region-text": "Select the DFO region responsible for the review of this manuscript. If more than one region is responsible, select the region that will lead the review.",
+    "copy-your-manuscripts-abstract-here": "Copy your manuscript's abstract here.",
+    "pls-text": "Plain Language Summary (PLS) of the manuscript to explain the relevance of the science to the Department and to promote the value of science through outreach and communication. It is intended for internal use to identify linkages to programs, policies and stakeholders and for use in the plain language promotion of science.",
+    "pls-help-ai-text": "Need some help? Using your manuscript's abstract, we can generate a draft PLS.",
+    "generate-pls": "Generate PLS",
+    "scientific-implications": "Scientific Implications",
+    "scientific-implication-text": "Describe the scientific implications of the paper. (i.e. field, importance, focus, purpose, benefits, etc.)",
+    "relevant-title": "Relevant to programs, projects, etc.",
+    "geographical-title": "Geographical Scope and Species",
+    "additional-information-of-importance": "Additional Information of Importance",
+    "additional-text": "Provide any additional information of importance to the manuscript.",
+    "attach-manuscript": "Attach Manuscript",
+    "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
+    "replace-manuscript": "Upload a new version of the manuscript",
+    "upload-manuscript": "Upload manuscript",
+    "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
+    "submit-tooltip": "Submit for review",
+    "submit-tooltip-disabled": "Please complete all sections and save to submit",
+    "not-authorized-text": "You do not have permission to view this manuscript record",
+    "manuscript-saved-successfully": "Manuscript saved successfully",
+    "pls-already-generated-erase-it-to-generate-a-new-one": "PLS already generated - erase it to generate a new one",
+    "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
+    "generating-pls-please-be-patient": "Generating PLS... please be patient",
+    "pls-generated-successfully": "PLS generated successfully"
+  },
+  "mfr": {
+    "general-information": "General Information",
+    "relevant-text": "Describe how the paper is relevant to programs, projects, acts, initiatives, etc. (i.e. how it supports the department's mandate, how it supports the department's strategic plan, how it supports regional priorities, etc.)",
+    "geographical-text": "Describe the geographical scope/region and (if applicable) species (to include common names) of the paper."
   }
 }

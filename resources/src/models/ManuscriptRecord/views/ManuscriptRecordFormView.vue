@@ -11,8 +11,7 @@
                     class="q-mr-sm"
                 />
                 <span>
-                    This manuscript has been reviewed but still needs to be
-                    marked as published by the applicant.
+                    {{ $t('mrf.ready-to-marked-published') }}
                 </span>
             </div>
             <div>
@@ -28,7 +27,9 @@
     <div class="q-pa-lg">
         <div class="q-mt-md q-mb-lg row justify-between">
             <div class="col-8">
-                <div class="text-h4 text-primary">Manuscript Record Form</div>
+                <div class="text-h4 text-primary">
+                    {{ $t('common.manuscript-record-form') }}
+                </div>
                 <div
                     v-if="manuscriptResource"
                     class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs ellipsis"
@@ -42,7 +43,7 @@
                         <div
                             class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                         >
-                            Manuscript Type
+                            {{ $t('common.manuscript-type') }}
                         </div>
                         <ManuscriptTypeBadge
                             :type="manuscriptResource.data.type"
@@ -55,7 +56,7 @@
                         <div
                             class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                         >
-                            Status
+                            {{ $t('common.status') }}
                         </div>
                         <ManuscriptStatusBadge
                             :status="manuscriptResource.data.status"
@@ -68,7 +69,7 @@
                         <div
                             class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                         >
-                            Applicant
+                            {{ $t('common.applicant') }}
                         </div>
                         <div class="text-body2 text-grey-7 q-py-xs">
                             {{
@@ -90,7 +91,7 @@
             secondary
         />
         <ContentCard class="q-mb-lg" secondary>
-            <template #title>General Information</template>
+            <template #title>{{ $t('mfr.general-information') }}</template>
             <template #title-right>
                 <FormSectionStatusIcon :status="generalSectionStatus" />
             </template>
@@ -107,13 +108,12 @@
                             <div
                                 class="text-body1 text-primary text-weight-medium"
                             >
-                                Manuscript's Working Title<RequiredSpan />
+                                {{ $t('mrf.manuscripts-working-title')
+                                }}<RequiredSpan />
                             </div>
                             <div class="q-my-xs">
                                 <p>
-                                    Enter to the manuscript's working title. You
-                                    will be able to modify the title when you
-                                    update this manuscript status to published.
+                                    {{ $t('mrf.working-title-text') }}
                                 </p>
                             </div>
                         </div>
@@ -122,11 +122,12 @@
                             v-model="manuscriptResource.data.title"
                             outlined
                             bg-color="white"
-                            label="Manuscript's Working Title"
+                            :label="$t('mrf.manuscripts-working-title')"
                             :disable="loading"
                             :readonly="isManuscriptReadOnly"
                             :rules="[
-                                (val) => val.length > 0 || 'Title is required',
+                                (val) =>
+                                    val.length > 0 || $t('common.required'),
                             ]"
                         ></q-input>
                     </div>
@@ -136,20 +137,17 @@
                             <div
                                 class="text-body1 text-primary text-weight-medium"
                             >
-                                Lead Region<RequiredSpan />
+                                {{ $t('common.lead-region') }}<RequiredSpan />
                             </div>
                             <div class="q-my-xs">
                                 <p>
-                                    Select the DFO region responsible for the
-                                    review of this manuscript. If more than one
-                                    region is responsible, select the region
-                                    that will lead the review.
+                                    {{ $t('mrf.lead-region-text') }}
                                 </p>
                             </div>
                         </div>
                         <RegionSelect
                             v-model="manuscriptResource.data.region_id"
-                            label="DFO Lead Region"
+                            :label="$t('common.lead-region')"
                             outlined
                             :disable="loading"
                             :readonly="isManuscriptReadOnly"
@@ -159,49 +157,38 @@
 
                     <QuestionEditor
                         v-model="manuscriptResource.data.abstract"
-                        title="Abstract"
+                        :title="$t('common.abstract')"
                         :disable="loading"
                         :readonly="isManuscriptReadOnly"
                         required
                         class="q-mb-lg"
                     >
-                        <p>Copy your manuscript's abstract here.</p>
+                        <p>
+                            {{ $t('mrf.copy-your-manuscripts-abstract-here') }}
+                        </p>
                     </QuestionEditor>
                     <QuestionEditor
                         v-model="manuscriptResource.data.pls"
-                        title="Plain Language Summary"
+                        :title="$t('common.plain-language-summary')"
                         :disable="loading || PLSLoading"
                         :readonly="isManuscriptReadOnly"
                         required
                         class="q-mb-md"
                     >
                         <p>
-                            Plain Language Summary (PLS) of the manuscript to
-                            explain the relevance of the science to the
-                            Department and to promote the value of science
-                            through outreach and communication. It is intended
-                            for internal use to identify linkages to programs,
-                            policies and stakeholders and for use in the plain
-                            language promotion of science. Tips for writing a
-                            PLS can be found
-                            <a
-                                href="https://www.agu.org/-/media/Files/Share-and-Advocate-for-Science/Toolkit---PLS.pdf"
-                                target="_blank"
-                                >here</a
-                            >.
+                            {{ $t('mrf.pls-text') }}
                         </p>
                         <div class="row justify-end q-mr-sm">
                             <div
                                 class="text-body1 text-primary q-pt-sm q-pr-md"
                             >
-                                Need some help? Using your manuscript's
-                                abstract, we can generate a draft PLS.
+                                {{ $t('mrf.pls-help-ai-text') }}
                             </div>
                             <div>
                                 <q-btn
                                     class="q-mb-md"
                                     color="primary"
-                                    label="Generate PLS"
+                                    :label="$t('mrf.generate-pls')"
                                     icon="mdi-brain"
                                     outline
                                     rounded
@@ -223,57 +210,48 @@
                         v-model="
                             manuscriptResource.data.scientific_implications
                         "
-                        title="Scientific Implications"
+                        :title="$t('mrf.scientific-implications')"
                         :disable="loading"
                         required
                         :readonly="isManuscriptReadOnly"
                         class="q-mb-md"
                     >
                         <p>
-                            Describe the scientific implications of the paper.
-                            (i.e. field, importance, focus, purpose, benefits,
-                            etc.)
+                            {{ $t('mrf.scientific-implication-text') }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
                         v-model="manuscriptResource.data.relevant_to"
-                        title="Relevant to programs, projects, etc."
+                        :title="$t('mrf.relevant-title')"
                         :disable="loading"
                         required
                         :readonly="isManuscriptReadOnly"
                         class="q-mb-md"
                     >
                         <p>
-                            Describe how the paper is relevant to programs,
-                            projects, acts, initiatives, etc. (i.e. how it
-                            supports the department's mandate, how it supports
-                            the department's strategic plan, how it supports
-                            regional priorities, etc.)
+                            {{ $t('mfr.relevant-text') }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
                         v-model="manuscriptResource.data.regions_and_species"
-                        title="Geographical Scope and Species"
+                        :title="$t('mrf.geographical-title')"
                         :disable="loading"
                         :readonly="isManuscriptReadOnly"
                         class="q-mb-md"
                     >
                         <p>
-                            Describe the geographical scope/region and (if
-                            applicable) species (to include common names) of the
-                            paper.
+                            {{ $t('mfr.geographical-text') }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
                         v-model="manuscriptResource.data.additional_information"
-                        title="Additional Information of Importance"
+                        :title="$t('mrf.additional-information-of-importance')"
                         :disable="loading"
                         :readonly="isManuscriptReadOnly"
                         class="q-mb-md"
                     >
                         <p>
-                            Provide any additional information of importance to
-                            the manuscript.
+                            {{ $t('mrf.additional-text') }}
                         </p>
                     </QuestionEditor>
                 </q-form>
@@ -289,7 +267,7 @@
             fundable-type="manuscript-records"
         />
         <ContentCard class="q-mb-md" secondary>
-            <template #title>Attach Manuscript</template>
+            <template #title>{{ $t('mrf.attach-manuscript') }}</template>
             <template #title-right
                 ><FormSectionStatusIcon
                     :status="
@@ -299,9 +277,7 @@
                     "
             /></template>
             <p>
-                Upload the most recent copy of your manuscript as a PDF. This
-                file can be updated as required by the applicant, even after
-                submitting the manuscript.
+                {{ $t('mrf.upload-text') }}
             </p>
             <template v-if="manuscriptResource?.data.manuscript_pdf">
                 <q-card outlined class="q-mb-md">
@@ -317,7 +293,7 @@
                                         manuscriptResource.data.manuscript_pdf
                                             .size_bytes / 1000
                                     }}
-                                    KB uploaded on
+                                    {{ $t('common.kb-uploaded-on') }}
                                     {{
                                         new Date(
                                             manuscriptResource.data.manuscript_pdf.created_at
@@ -344,10 +320,10 @@
                 use-chips
                 :label="
                     manuscriptResource?.data.manuscript_pdf
-                        ? 'Upload a new version of the manuscript'
-                        : 'Upload manuscript'
+                        ? $t('mrf.replace-manuscript')
+                        : $t('mrf.upload-manuscript')
                 "
-                hint="Only PDF files are accepted. Maximum file size is 10MB."
+                :hint="$t('mrf.upload-hint', { max: 10 })"
                 accept="application/pdf"
                 max-file-size="10000000"
                 counter
@@ -362,7 +338,7 @@
                         color="primary"
                         :loading="uploadingFile"
                         :disable="!manuscriptFile"
-                        label="Upload"
+                        :label="$t('common.upload')"
                         @click="upload"
                     />
                 </template>
@@ -378,15 +354,15 @@
                 class="q-mt-md"
                 color="primary"
                 :loading="loading"
-                label="Save"
+                :label="$t('common.save')"
                 @click="save"
             />
             <div class="q-ml-sm">
                 <q-tooltip>
                     {{
                         canSubmit
-                            ? 'Submit for review'
-                            : 'Please complete all sections and save to submit'
+                            ? $t('mrf.submit-tooltip')
+                            : $t('mrf.submit-tooltip-disabled')
                     }}
                 </q-tooltip>
                 <q-btn
@@ -394,7 +370,7 @@
                     color="primary"
                     :loading="loading"
                     :disable="!canSubmit"
-                    label="Submit"
+                    :label="$t('common.submit')"
                     @click="submit"
                 ></q-btn>
             </div>
@@ -449,6 +425,7 @@ import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFu
 
 const $q = useQuasar();
 const router = useRouter();
+const { t } = useI18n();
 
 const generalInformationForm = ref<QForm | null>(null);
 
@@ -516,8 +493,7 @@ onMounted(async () => {
             if (error.status == 403) {
                 $q.notify({
                     type: 'negative',
-                    message:
-                        'You do not have permission to view this manuscript record',
+                    message: t('mrf.not-authorized-text'),
                 });
                 router.push({ name: 'notFound' });
             }
@@ -544,7 +520,7 @@ const save = async () => {
             $q.notify({
                 type: 'positive',
                 color: 'primary',
-                message: 'Manuscript saved successfully',
+                message: t('mrf.manuscript-saved-successfully'),
             });
         })
         .catch((error) => {
@@ -563,13 +539,13 @@ function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
             $q.notify({
                 type: 'negative',
                 color: 'negative',
-                message: 'File size is too large',
+                message: t('common.validation.file-size-is-too-large'),
             });
         } else if (rejectedEntry.failedPropValidation === 'accept') {
             $q.notify({
                 type: 'negative',
                 color: 'negative',
-                message: 'File type is not accepted',
+                message: t('common.validation.file-type-is-not-accepted'),
             });
         }
     });
@@ -599,7 +575,7 @@ async function upload() {
     $q.notify({
         type: 'positive',
         color: 'primary',
-        message: 'File uploaded successfully',
+        message: t('common.file-uploaded-successfully'),
     });
 
     // re-enable dirty watcher in 500 ms
@@ -665,7 +641,6 @@ const PLSLoading = ref(false);
 
 const enablePLSPrompt = computed(() => {
     if (!manuscriptResource.value?.data) {
-        console.log('no manuscript resource');
         return false;
     }
 
@@ -678,16 +653,15 @@ const enablePLSPrompt = computed(() => {
 
 const plsDisabledTooltip = computed(() => {
     if (!manuscriptResource.value?.data) {
-        console.log('no manuscript resource');
         return '';
     }
 
     if (manuscriptResource.value.data.pls !== '') {
-        return 'PLS already generated - erase it to generate a new one';
+        return t('mrf.pls-already-generated-erase-it-to-generate-a-new-one');
     }
 
     if (manuscriptResource.value.data.abstract.length < 250) {
-        return 'Abstract must be at least 250 characters';
+        return t('mrf.abstract-must-be-at-least-250-characters');
     }
 
     return '';
@@ -697,7 +671,9 @@ async function generatePLS() {
     PLSLoading.value = true;
     if (!manuscriptResource.value?.data.abstract) return;
     if (manuscriptResource.value?.data.abstract === '') return;
-    manuscriptResource.value.data.pls = 'Generating PLS... please be patient';
+    manuscriptResource.value.data.pls = t(
+        'mrf.generating-pls-please-be-patient'
+    );
     await UtilityService.generatePls(manuscriptResource.value.data.abstract)
         .then((response) => {
             if (!manuscriptResource.value) return;
@@ -705,7 +681,7 @@ async function generatePLS() {
             $q.notify({
                 type: 'positive',
                 color: 'primary',
-                message: 'PLS generated successfully',
+                message: t('mrf.pls-generated-successfully'),
             });
         })
         .catch((error) => {

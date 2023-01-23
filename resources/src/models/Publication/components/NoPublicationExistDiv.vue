@@ -13,10 +13,7 @@
             </div>
             <div class="text-body1 text-grey-8 text-left">
                 <p>
-                    Manuscripts that have been reviewed will appear here. Once
-                    published, you can update the publication details. You can
-                    also add any past publication here so that it is part of our
-                    database and available for all to see.
+                    {{ $t('no-publication-exist-div.p1') }}
                 </p>
             </div>
         </div>

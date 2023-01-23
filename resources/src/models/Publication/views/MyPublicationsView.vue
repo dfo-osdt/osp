@@ -1,5 +1,5 @@
 <template>
-    <MainPageLayout title="My Publications">
+    <MainPageLayout :title="$t('common.my-publications')">
         <template v-if="authorStore.user?.can('create_publications')" #toolbar>
             <div class="flex justify-end">
                 <q-fab
@@ -15,7 +15,9 @@
                             anchor="center left"
                             self="center right"
                         >
-                            Create Publication</q-tooltip
+                            {{
+                                $t('my-publication-view.create-publication')
+                            }}</q-tooltip
                         >
                     </template>
                 </q-fab>
@@ -24,7 +26,7 @@
         <div class="row q-gutter-lg q-col-gutter-lg flex">
             <div class="cols-2">
                 <ContentCard secondary no-padding>
-                    <template #title>Publications</template>
+                    <template #title>{{ $t('common.publications') }}</template>
                     <q-list class="text-body1">
                         <q-item
                             v-for="f in mainFilterOptions"
@@ -50,7 +52,9 @@
                         class="flex-center flex q-mt-lg q-mb-sm q-mx-md"
                     >
                         <q-btn
-                            label="Create publication"
+                            :label="
+                                $t('my-publication-view.create-publication')
+                            "
                             color="primary"
                             outline
                             icon="mdi-plus"
@@ -64,7 +68,9 @@
                     <template #title>{{ mainFilter?.label }}</template>
                     <template #subtitle>{{ mainFilter?.caption }}</template>
                     <template #title-right
-                        ><SearchInput v-model="search" label="Filter"
+                        ><SearchInput
+                            v-model="search"
+                            :label="$t('common.filter')"
                     /></template>
                     <template
                         v-if="
@@ -72,7 +78,9 @@
                             !hasAnyPublications
                         "
                     >
-                        <NoPublicationsExistDiv title="No publications found" />
+                        <NoPublicationsExistDiv
+                            title="$t('my-publication-view.no-publications-found')"
+                        />
                     </template>
                     <template
                         v-if="
@@ -111,6 +119,7 @@ import {
     PublicationService,
 } from '../Publication';
 import CreatePublicationDialog from '../components/CreatePublicationDialog.vue';
+const { t } = useI18n();
 
 const publications = ref<PublicationResourceList>();
 
@@ -169,11 +178,11 @@ type MainFilterOption = {
 };
 
 // content filter - sidebar
-const mainFilterOptions = ref<MainFilterOption[]>([
+const mainFilterOptions = computed((): MainFilterOption[] => [
     {
         id: 1,
-        label: 'All Publications',
-        caption: 'Includes ones shared with me',
+        label: t('my-publication-view.all-publications'),
+        caption: t('my-publication-view.includes-ones-shared-with-me'),
         icon: 'mdi-all-inclusive',
         active: true,
         filter: (query: PublicationQuery): PublicationQuery => {
@@ -182,8 +191,10 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     },
     {
         id: 2,
-        label: 'My Publications',
-        caption: 'I am responsible for this publication record',
+        label: t('my-publication-view.my-publications'),
+        caption: t(
+            'my-publication-view.i-am-responsible-for-this-publication-record'
+        ),
         icon: 'mdi-account-arrow-left-outline',
         active: false,
         filter: (query: PublicationQuery): PublicationQuery => {
@@ -194,8 +205,8 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     },
     {
         id: 3,
-        label: 'In Progress',
-        caption: 'Actions still required',
+        label: t('common.in-progress'),
+        caption: t('my-publication-view.actions-still-required'),
         icon: 'mdi-progress-clock',
         active: false,
         filter: (query: PublicationQuery): PublicationQuery => {
@@ -204,8 +215,8 @@ const mainFilterOptions = ref<MainFilterOption[]>([
     },
     {
         id: 4,
-        label: 'Published',
-        caption: 'No actions required',
+        label: t('publication.publsihed'),
+        caption: t('common.no-actions-required'),
         icon: 'mdi-check-circle',
         active: false,
         filter: (query: PublicationQuery): PublicationQuery => {

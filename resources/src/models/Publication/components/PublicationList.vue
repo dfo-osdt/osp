@@ -45,7 +45,7 @@
                             </span>
                         </template>
                         <template v-else>
-                            <span>No authors</span>
+                            <span>{{ $t('common.no-authors') }}</span>
                         </template>
                     </template>
                 </q-item-label>
@@ -55,7 +55,11 @@
                             {{ publishedYear(publication) }}
                         </div>
                         <div class="q-mx-sm">|</div>
-                        <div>{{ publication.data.journal?.data.title_en }}</div>
+                        <div>
+                            <JournalNameSpan
+                                :journal="publication.data.journal"
+                            />
+                        </div>
                         <div class="q-mx-sm">|</div>
                         <div>DOI: <DOILink :doi="publication.data.doi" /></div>
                     </div>
@@ -75,6 +79,8 @@
 import DOILink from './DoiLink.vue';
 import { PublicationResource } from '../Publication';
 import PublicationStatusBadge from './PublicationStatusBadge.vue';
+import JournalNameSpan from '@/models/Journal/components/JournalNameSpan.vue';
+const { t } = useI18n();
 
 defineProps<{
     publications: PublicationResource[];
@@ -84,7 +90,7 @@ const publishedYear = (publication: PublicationResource) => {
     if (publication.data.published_on) {
         return new Date(publication.data.published_on).getFullYear();
     }
-    return 'Pending Publication';
+    return t('common.pending-publication');
 };
 </script>
 
