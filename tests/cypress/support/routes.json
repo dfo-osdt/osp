@@ -202,5 +202,15 @@
     "method": [
       "POST"
     ]
+  },
+  "invitation.verify": {
+    "name": "invitation.verify",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\InvitedUserController@accept",
+    "uri": "verify-invitation/{id}/{hash}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
   }
 }
