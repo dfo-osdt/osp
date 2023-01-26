@@ -43,6 +43,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // ORCID routes
     Route::post('/user/orcid/verify', ImplicitFlowController::class);
+    Route::get('/user/orcid/verify', [ImplicitFlowController::class, 'redirect']);
 
     Route::controller(AuthorController::class)->group(function () {
         Route::get('/authors', 'index');

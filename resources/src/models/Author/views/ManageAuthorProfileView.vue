@@ -23,7 +23,7 @@
             </div>
 
             <div class="flex justify-end">
-                <q-btn outline color="primary" :href="orcidAuthUrl">
+                <q-btn outline color="primary" :href="url">
                     <OrcidAvatar size="md" /><span class="q-ml-md text-grey-8"
                         >{{ $t('ocrid.verify-btn-text') }}
                     </span></q-btn
@@ -36,7 +36,7 @@
                     Verify your ORCID iD (or register for an iD)
                 </div>
                 <div>
-                    <q-btn outline color="primary" :href="orcidAuthUrl">
+                    <q-btn outline color="primary" :href="url">
                         <OrcidAvatar size="md" /><span
                             class="q-ml-md text-grey-8"
                             >{{ $t('ocrid.verify-btn-text') }}
@@ -57,15 +57,7 @@ import ContentCard from '@/components/ContentCard.vue';
 import OrcidAvatar from '@/components/OrcidAvatar.vue';
 const authStore = useAuthStore();
 
-// get VITE environment variables
-const client_id = import.meta.env.VITE_ORCID_CLIENT_ID;
-const redirect_uri = import.meta.env.VITE_ORCID_REDIRECT_URI;
-console.log(import.meta.env.VITE_ORCID_CLIENT_ID);
-console.log(import.meta.env.VITE_ORCID_REDIRECT_URI);
-
-// encode redirect url
-const redirectUriEncoded = encodeURIComponent(redirect_uri);
-const orcidAuthUrl = `https://orcid.org/oauth/authorize?client_id=${client_id}&response_type=token&scope=openid&redirect_uri=${redirectUriEncoded}`;
+const url = '/api/user/orcid/verify';
 </script>
 
 <style scoped></style>

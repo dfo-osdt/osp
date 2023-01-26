@@ -69,4 +69,25 @@ class ImplicitFlowController extends Controller
             return $response->json()['sub'];
         }
     }
+
+    /**
+     * Returns the link to the ORCID authorization endpoint with the required parameters.
+     *
+     * @return void
+     */
+    public function redirect()
+    {
+        $clientID = config('osp.orcid.client_id');
+        $redirectURI = config('osp.orcid.redirect_uri');
+        // encode URI
+        $encoded = urlencode($redirectURI);
+
+        // build the link
+        $link = "https://orcid.org/oauth/authorize?client_id=$clientID&response_type=token&scope=/authenticate&redirect_uri=$encoded";
+
+        ray($link);
+
+        // redirect to ORCID
+        return redirect($link);
+    }
 }

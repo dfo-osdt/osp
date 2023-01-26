@@ -21,4 +21,11 @@ return [
     */
     'default_organization' => 'Fisheries and Oceans Canada',
 
+    /**
+     * The ORCID intergration
+     */
+    'orcid' => [
+        'client_id' => env('ORCID_CLIENT_ID'),
+        'redirect_uri' => env('ORCID_REDIRECT_URI'),
+    ],
 ];
