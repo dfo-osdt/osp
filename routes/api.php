@@ -10,6 +10,7 @@ use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\ManuscriptRecordFundingSourceController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
+use App\Http\Controllers\Orcid\ImplicitFlowController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PublicationAuthorController;
 use App\Http\Controllers\PublicationController;
@@ -39,6 +40,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/user/authentications', 'authentications');
         Route::get('/user/invitations', 'invitations');
     });
+
+    // ORCID routes
+    Route::post('/user/orcid/verify', ImplicitFlowController::class);
 
     Route::controller(AuthorController::class)->group(function () {
         Route::get('/authors', 'index');

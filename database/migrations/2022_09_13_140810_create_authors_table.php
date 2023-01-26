@@ -18,7 +18,9 @@ return new class extends Migration
             $table->timestamps();
             $table->string('first_name')->index();
             $table->string('last_name')->index();
-            $table->string('orcid')->unique()->nullable()->index();
+            $table->string('orcid')->nullable()->index();
+            $table->boolean('orcid_verified')->nullable()->index();
+            $table->string('orcid_access_token', 1500)->nullable();
             $table->string('email')->unique()->index()->index();
             $table->foreignId('organization_id')->constrained();
             $table->foreignId('user_id')->nullable()->constrained();

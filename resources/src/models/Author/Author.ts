@@ -7,6 +7,8 @@ export interface Author {
     first_name: string;
     last_name: string;
     orcid: string;
+    orcid_verified: boolean;
+    orcid_connected: boolean;
     email: string;
     user_id: number | null;
     organization_id: number;
@@ -63,6 +65,15 @@ export class AuthorService {
             'api/authors',
             author
         );
+        return response.data;
+    }
+
+    /** verify a user orcid */
+    public static async verifyOrcid(access_token: string) {
+        const response = await http.post<
+            { access_token: string },
+            AuthorResource
+        >('api/user/orcid/verify', { access_token: access_token });
         return response.data;
     }
 }

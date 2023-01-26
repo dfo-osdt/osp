@@ -64,6 +64,8 @@
                     />
                     <OrcidInput
                         v-model="author.data.orcid"
+                        :disable="author.data.orcid_verified"
+                        :hint="orcidInputHint"
                         class="col-12 col-md-6"
                     />
                 </div>
@@ -107,6 +109,13 @@ async function getAuthor() {
     author.value = await AuthorService.find(props.authorId);
     loading.value = false;
 }
+
+const orcidInputHint = computed(() => {
+    if (author.value?.data.orcid_verified) {
+        return t('manage-author-profile-card.orcid-verified');
+    }
+    return t('manage-author-profile-card.orcid-not-verified');
+});
 
 onMounted(async () => {
     getAuthor();

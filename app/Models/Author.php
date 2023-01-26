@@ -21,6 +21,12 @@ class Author extends Model implements Auditable
         'id',
         'created_at',
         'updated_at',
+        'orcid_verified',
+        'orcid_access_token',
+    ];
+
+    protected $casts = [
+        'orcid_verified' => 'boolean',
     ];
 
     // author fullname

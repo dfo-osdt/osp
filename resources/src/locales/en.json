@@ -280,10 +280,13 @@
   },
   "manage-author-profile-card": {
     "synced-to-your-user-profile": "Synced to your user profile.",
-    "current-affiliation-hint": "This will not affect the affiliation of any of your past publications."
+    "current-affiliation-hint": "This will not affect the affiliation of any of your past publications.",
+    "orcid-verified": "This is a verified ORCID. Use the Manage ORCID to change it.",
+    "orcid-not-verified": "You can also verify or register with ORCID using \"Manage ORCID\" "
   },
   "manage-author-profile-view": {
-    "title": "Disciplines, Skills and Expertise"
+    "title": "Disciplines, Skills and Expertise",
+    "authorize-orcid": "Manage ORCID"
   },
   "funding-source": {
     "create-funding-source": "Create Funding Source"
@@ -499,5 +502,14 @@
     "general-information": "General Information",
     "relevant-text": "Describe how the paper is relevant to programs, projects, acts, initiatives, etc. (i.e. how it supports the department's mandate, how it supports the department's strategic plan, how it supports regional priorities, etc.)",
     "geographical-text": "Describe the geographical scope/region and (if applicable) species (to include common names) of the paper."
+  },
+  "orcid": {
+    "verifying": "Verifying with ORCID.org",
+    "verified-with": "Successfully verified with ORCID.org",
+    "error-verifying": "Error verifying with ORCID.org",
+    "already-verified-text": "Your ORCID has been successfully verified with ORCID.org. If you'd like to change it or verify it again, click below."
+  },
+  "ocrid": {
+    "verify-btn-text": "Verify Your ORCID iD"
   }
 }

@@ -57,6 +57,15 @@ const routes: RouteRecordRaw[] = [
                         name: 'resetPassword',
                         meta: { requiresAuth: false },
                     },
+                    {
+                        path: 'orcid-callback',
+                        component: () =>
+                            import(
+                                '@/models/auth/components/OrcidCallbackCard.vue'
+                            ),
+                        name: 'orcidCallback',
+                        meta: { requiresAuth: true },
+                    },
                 ],
             },
             {

@@ -280,10 +280,13 @@
   },
   "manage-author-profile-card": {
     "synced-to-your-user-profile": "Synchronisé avec votre profil utilisateur.",
-    "current-affiliation-hint": "Cela n'affectera pas l'affiliation de vos publications passées."
+    "current-affiliation-hint": "Cela n'affectera pas l'affiliation de vos publications passées.",
+    "orcid-verified": "Ceci est un ORCID vérifié. \nUtilisez \"Gérer ORCID\" pour le modifier.",
+    "orcid-not-verified": "Vous pouvez également vérifier ou vous inscrire auprès d'ORCID en utilisant \"Gérer ORCID\""
   },
   "manage-author-profile-view": {
-    "title": "Disciplines, Compétences et Expertises"
+    "title": "Disciplines, Compétences et Expertises",
+    "authorize-orcid": "Gérer ORCID"
   },
   "funding-source": {
     "create-funding-source": "Créer une source de financement"
@@ -499,5 +502,14 @@
     "pls-already-generated-erase-it-to-generate-a-new-one": "Résumé déjà généré - effacez-le pour en générer un nouveau",
     "generating-pls-please-be-patient": "Génération de résumé... veuillez patienter",
     "pls-generated-successfully": "Résumé généré avec succès"
+  },
+  "orcid": {
+    "verifying": "Vérification avec ORCID.org",
+    "verified-with": "Vérifié avec succès avec ORCID.org",
+    "error-verifying": "Erreur lors de la vérification avec ORCID.org",
+    "already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le modifier ou le vérifier à nouveau, cliquez ci-dessous."
+  },
+  "ocrid": {
+    "verify-btn-text": "Vérifiez votre identifiant ORCID"
   }
 }

@@ -89,6 +89,11 @@ class AuthorController extends Controller
             unset($validated['email']);
         }
 
+        // does this user have a verified orcid? If so, we don't want to update it here.
+        if ($author->orcid_verified) {
+            unset($validated['orcid']);
+        }
+
         $author->update($validated);
         $author->refresh();
         $author->load('organization');
