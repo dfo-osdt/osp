@@ -39,6 +39,7 @@
 import { Author, AuthorService } from '@/models/Author/Author';
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 const accessToken = ref(
     (router.currentRoute.value.query?.access_token as string) || ''
@@ -54,6 +55,7 @@ async function verifyWithBackend() {
             console.log(response);
             valid.value = true;
             author.value = response.data;
+            authStore.refreshUser(true);
         })
         .catch((error) => {
             console.log(error);
