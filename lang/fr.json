@@ -28,6 +28,7 @@
     "Unknown City": "Ville inconnue",
     "Unknown State": "État inconnu",
     "If this was you, you can ignore this alert. If you suspect any suspicious activity on your account, please change your password.": "Si c'était vous, vous pouvez ignorer cette alerte. Si vous soupçonnez toute activité suspecte sur votre compte, veuillez modifier votre mot de passe.",
-    "There has been a failed login attempt to your :app account.": "Il y a eu une tentative de connexion échouée à votre compte :app."
-
+    "There has been a failed login attempt to your :app account.": "Il y a eu une tentative de connexion échouée à votre compte :app.",
+    "Unable to retrieve ORCID iD from ORCID.": "Impossible de récupérer l'identifiant ORCID depuis ORCID.",
+    "Server side ORCID configuration is missing - please contact the administrator.": "La configuration côté serveur de ORCID est manquante - veuillez contacter l'administrateur."
 }

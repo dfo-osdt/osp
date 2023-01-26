@@ -64,7 +64,7 @@ class ImplicitFlowController extends Controller
         $response = Http::withToken($accessToken)->get('https://orcid.org/oauth/userinfo');
 
         if ($response->failed()) {
-            throw ValidationException::withMessages(['orcid' => 'Unable to retrieve ORCID iD from ORCID.']);
+            throw ValidationException::withMessages(['orcid' => __('Unable to retrieve ORCID iD from ORCID.')]);
         } else {
             return $response->json()['sub'];
         }
@@ -79,13 +79,16 @@ class ImplicitFlowController extends Controller
     {
         $clientID = config('osp.orcid.client_id');
         $redirectURI = config('osp.orcid.redirect_uri');
-        // encode URI
+
+        if (! $clientID || ! $redirectURI) {
+            throw ValidationException::withMessages(['orcid' => __('Server side ORCID configuration is missing - please contact the administrator.')]);
+        }
+
+        // encode URI - if it's not encoded, ORCID will returns to base URL
         $encoded = urlencode($redirectURI);
 
         // build the link
         $link = "https://orcid.org/oauth/authorize?client_id=$clientID&response_type=token&scope=/authenticate&redirect_uri=$encoded";
-
-        ray($link);
 
         // redirect to ORCID
         return redirect($link);
