@@ -58,11 +58,12 @@ import OrcidAvatar from '@/components/OrcidAvatar.vue';
 const authStore = useAuthStore();
 
 // get VITE environment variables
-const { VITE_ORCID_CLIENT_ID, VITE_ORCID_REDIRECT_URI } = import.meta.env;
+const client_id = import.meta.env.VITE_ORCID_CLIENT_ID;
+const redirect_uri = import.meta.env.VITE_ORCID_REDIRECT_URI;
 
 // encode redirect url
-const redirectUrl = encodeURIComponent(VITE_ORCID_REDIRECT_URI);
-const orcidAuthUrl = `https://orcid.org/oauth/authorize?client_id=${VITE_ORCID_CLIENT_ID}&response_type=token&scope=openid&redirect_uri=${redirectUrl}`;
+const redirectUriEncoded = encodeURIComponent(redirect_uri);
+const orcidAuthUrl = `https://orcid.org/oauth/authorize?client_id=${client_id}&response_type=token&scope=openid&redirect_uri=${redirectUriEncoded}`;
 </script>
 
 <style scoped></style>
