@@ -60,6 +60,8 @@ const authStore = useAuthStore();
 // get VITE environment variables
 const client_id = import.meta.env.VITE_ORCID_CLIENT_ID;
 const redirect_uri = import.meta.env.VITE_ORCID_REDIRECT_URI;
+console.log(import.meta.env.VITE_ORCID_CLIENT_ID);
+console.log(import.meta.env.VITE_ORCID_REDIRECT_URI);
 
 // encode redirect url
 const redirectUriEncoded = encodeURIComponent(redirect_uri);
