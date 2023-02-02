@@ -17,7 +17,7 @@
                     <q-separator />
                     <q-step
                         :name="1"
-                        title="$t('common.type-of-publication')"
+                        :title="$t('common.type-of-publication')"
                         icon="mdi-call-split"
                         :done="step > 1"
                         style="min-height: 275px"
@@ -74,7 +74,9 @@
                     </q-step>
                     <q-step
                         :name="2"
-                        title="$t('create-manuscript-record-dialog.step2.title')"
+                        :title="
+                            $t('create-manuscript-record-dialog.step2.title')
+                        "
                         icon="mdi-file-document-edit-outline"
                         :done="step > 2"
                         :error="!manuscriptDetailFormValid"
@@ -126,7 +128,7 @@
                     </q-step>
                     <q-step
                         :name="3"
-                        title="$t('common.create')"
+                        :title="$t('common.create')"
                         icon="mdi-file-document-check"
                         :done="step > 3"
                         style="min-height: 275px"
