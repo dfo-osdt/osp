@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.48.0.
+ * Generated for Laravel 9.50.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1839,7 +1839,7 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Register a callback to be invoked when the command lifecyle duration exceeds a given amount of time.
+         * Register a callback to be invoked when the command lifecycle duration exceeds a given amount of time.
          *
          * @param  \DateTimeInterface|\Carbon\CarbonInterval|float|int  $threshold
          * @param  callable  $handler
@@ -4535,7 +4535,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param  string  $key
          * @param  \Closure|\DateTimeInterface|\DateInterval|int|null  $ttl
-         * @param \Closure():  TCacheValue  $callback
+         * @param  \Closure():  TCacheValue  $callback
          * @return \Illuminate\Cache\TCacheValue
          *
          * @static
@@ -4552,7 +4552,7 @@ namespace Illuminate\Support\Facades {
          * @template TCacheValue
          *
          * @param  string  $key
-         * @param \Closure():  TCacheValue  $callback
+         * @param  \Closure():  TCacheValue  $callback
          * @return \Illuminate\Cache\TCacheValue
          *
          * @static
@@ -4569,7 +4569,7 @@ namespace Illuminate\Support\Facades {
          * @template TCacheValue
          *
          * @param  string  $key
-         * @param \Closure():  TCacheValue  $callback
+         * @param  \Closure():  TCacheValue  $callback
          * @return \Illuminate\Cache\TCacheValue
          *
          * @static
@@ -7681,14 +7681,15 @@ namespace Illuminate\Support\Facades {
          *
          * @param  string  $path
          * @param  string  $content
+         * @param  int|null  $mode
          * @return void
          *
          * @static
          */
-        public static function replace($path, $content)
+        public static function replace($path, $content, $mode = null)
         {
             /** @var \Illuminate\Filesystem\Filesystem $instance */
-            $instance->replace($path, $content);
+            $instance->replace($path, $content, $mode);
         }
 
         /**
@@ -9530,6 +9531,21 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Add a handler to be executed in order to format a given class to a string during translation replacements.
+         *
+         * @param  callable|string  $class
+         * @param  callable|null  $handler
+         * @return void
+         *
+         * @static
+         */
+        public static function stringable($class, $handler = null)
+        {
+            /** @var \Illuminate\Translation\Translator $instance */
+            $instance->stringable($class, $handler);
+        }
+
+        /**
          * Set the parsed value of a key.
          *
          * @param  string  $key
@@ -9768,14 +9784,14 @@ namespace Illuminate\Support\Facades {
          * Unset the given channel instance.
          *
          * @param  string|null  $driver
-         * @return \Illuminate\Log\LogManager
+         * @return void
          *
          * @static
          */
         public static function forgetChannel($driver = null)
         {
             /** @var \Illuminate\Log\LogManager $instance */
-            return $instance->forgetChannel($driver);
+            $instance->forgetChannel($driver);
         }
 
         /**
@@ -22574,7 +22590,7 @@ namespace  {
         }
 
         /**
-         * Get an array with the values of a given column.
+         * Get a collection with the values of a given column.
          *
          * @param  string|\Illuminate\Database\Query\Expression  $column
          * @param  string|null  $key

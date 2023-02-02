@@ -226,6 +226,7 @@ declare global {
   const usePreferredDark: typeof import('@vueuse/core')['usePreferredDark']
   const usePreferredLanguages: typeof import('@vueuse/core')['usePreferredLanguages']
   const usePreferredReducedMotion: typeof import('@vueuse/core')['usePreferredReducedMotion']
+  const usePrevious: typeof import('@vueuse/core')['usePrevious']
   const usePublicationStore: typeof import('./stores/PublicationStore')['usePublicationStore']
   const useRafFn: typeof import('@vueuse/core')['useRafFn']
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
@@ -525,6 +526,7 @@ declare module 'vue' {
     readonly usePreferredDark: UnwrapRef<typeof import('@vueuse/core')['usePreferredDark']>
     readonly usePreferredLanguages: UnwrapRef<typeof import('@vueuse/core')['usePreferredLanguages']>
     readonly usePreferredReducedMotion: UnwrapRef<typeof import('@vueuse/core')['usePreferredReducedMotion']>
+    readonly usePrevious: UnwrapRef<typeof import('@vueuse/core')['usePrevious']>
     readonly usePublicationStore: UnwrapRef<typeof import('./stores/PublicationStore')['usePublicationStore']>
     readonly useRafFn: UnwrapRef<typeof import('@vueuse/core')['useRafFn']>
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>
