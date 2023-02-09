@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@intlify/unplugin-vue-i18n': ^0.8.1
+  '@intlify/unplugin-vue-i18n': ^0.8.2
   '@quasar/extras': ^1.15.10
   '@quasar/vite-plugin': 1.3.0
   '@types/dompurify': ^2.4.0
@@ -18,11 +18,11 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-quasar: ^1.1.0
   eslint-plugin-vue: ^9.9.0
-  laravel-vite-plugin: ^0.7.3
+  laravel-vite-plugin: ^0.7.4
   lodash: ^4.17.21
   pinia: ^2.0.30
   plugin-vue@latest: link:@@vitejs/plugin-vue@latest
-  prettier: ^2.8.3
+  prettier: ^2.8.4
   quasar: ^2.11.5
   sass: ~1.32.13
   typescript: ^4.9.5
@@ -35,7 +35,7 @@ specifiers:
   vue-tsc: ^1.0.24
 
 dependencies:
-  '@intlify/unplugin-vue-i18n': 0.8.1_vue-i18n@9.2.2
+  '@intlify/unplugin-vue-i18n': 0.8.2_vue-i18n@9.2.2
   '@quasar/extras': 1.15.10
   '@vitejs/plugin-vue': 4.0.0_vite@4.1.1+vue@3.2.47
   '@vueuse/core': 9.12.0_vue@3.2.47
@@ -58,11 +58,11 @@ devDependencies:
   cypress: 12.5.1
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0_eslint@8.33.0
-  eslint-plugin-prettier: 4.2.1_jqplj6qf3uqpxpu4gdyhwwasnq
+  eslint-plugin-prettier: 4.2.1_qa2thblfovmfepmgrc7z2owbo4
   eslint-plugin-vue: 9.9.0_eslint@8.33.0
-  laravel-vite-plugin: 0.7.3_vite@4.1.1
+  laravel-vite-plugin: 0.7.4_vite@4.1.1
   lodash: 4.17.21
-  prettier: 2.8.3
+  prettier: 2.8.4
   sass: 1.32.13
   typescript: 4.9.5
   unplugin-auto-import: 0.13.0_@vueuse+core@9.12.0
@@ -532,8 +532,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@intlify/bundle-utils/3.4.0_vue-i18n@9.2.2:
-    resolution: {integrity: sha512-2UQkqiSAOSPEHMGWlybqWm4G2K0X+FyYho5AwXz6QklSX1EY5EDmOSxZmwscn2qmKBnp6OYsme5kUrnN9xrWzQ==}
+  /@intlify/bundle-utils/4.0.0_vue-i18n@9.2.2:
+    resolution: {integrity: sha512-klXrYT9VXyKEXsD6UY3pShg0O5MPC07n0TZ5RrSs5ry6T1eZVolIFGJi9c3qcDrh1qjJxgikRnPBmD7qGDqbjw==}
     engines: {node: '>= 12'}
     peerDependencies:
       petite-vue-i18n: '*'
@@ -595,8 +595,8 @@ packages:
     engines: {node: '>= 14'}
     dev: false
 
-  /@intlify/unplugin-vue-i18n/0.8.1_vue-i18n@9.2.2:
-    resolution: {integrity: sha512-BhigujPmP6JL1FSxmpogCaL+REozncHCVkJuUnefz4GWBu3X+pRe5O7PeJn8/g+Iml2ieQJz4ISPMmEbuGQjqQ==}
+  /@intlify/unplugin-vue-i18n/0.8.2_vue-i18n@9.2.2:
+    resolution: {integrity: sha512-cRnzPqSEZQOmTD+p4pwc3RTS9HxreLqfID0keoqZDZweCy/CGRMLLTNd15S4TUf1vSBhPF03DItEFDr1F+8MDA==}
     engines: {node: '>= 14.16'}
     peerDependencies:
       petite-vue-i18n: '*'
@@ -610,7 +610,7 @@ packages:
       vue-i18n-bridge:
         optional: true
     dependencies:
-      '@intlify/bundle-utils': 3.4.0_vue-i18n@9.2.2
+      '@intlify/bundle-utils': 4.0.0_vue-i18n@9.2.2
       '@intlify/shared': 9.3.0-beta.16
       '@rollup/pluginutils': 4.2.1
       '@vue/compiler-sfc': 3.2.47
@@ -691,18 +691,18 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  /@nuxt/kit/3.1.2:
-    resolution: {integrity: sha512-m8/AF8hBJiG7aTx2CpiDGeLYYz30fUoPbJ9XiSmHqRIXv1goAFWHSkzWfRNEsoAAbMHf76oB917wVUQ3VSSQHg==}
+  /@nuxt/kit/3.2.0:
+    resolution: {integrity: sha512-Otb1S/08tDxbpeQYLMynjr2TX7ssU1ynbWDpVzFzLBdfHkGWHXpIhJr+0u3LdnPUBw6C/xPXe7fd7RuXI9avoA==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
-      '@nuxt/schema': 3.1.2
+      '@nuxt/schema': 3.2.0
       c12: 1.1.0
       consola: 2.15.3
       defu: 6.1.2
       globby: 13.1.3
       hash-sum: 2.0.0
       ignore: 5.2.4
-      jiti: 1.16.2
+      jiti: 1.17.0
       knitwork: 1.0.0
       lodash.template: 4.5.0
       mlly: 1.1.0
@@ -718,15 +718,15 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxt/schema/3.1.2:
-    resolution: {integrity: sha512-wru9LhRXTa6WQlx7c0oYrtvJY7TiVlkBKXY5Rsmfo0StJuWohgZiReu9fu6z6GU4MzZlX25TVjwvq9Q7bNVbSQ==}
+  /@nuxt/schema/3.2.0:
+    resolution: {integrity: sha512-tz9RandI5LgbT9BQ8dE8n4kItV7+4OUgbX42YemcGbtORVJAWJJvQyHGikJ5akUgiTFYTV8tjV6pRPH9Txx0Pg==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
       c12: 1.1.0
       create-require: 1.1.1
       defu: 6.1.2
       hookable: 5.4.2
-      jiti: 1.16.2
+      jiti: 1.17.0
       pathe: 1.1.0
       pkg-types: 1.0.1
       postcss-import-resolver: 2.0.0
@@ -1311,8 +1311,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001450
-      electron-to-chromium: 1.4.288
+      caniuse-lite: 1.0.30001451
+      electron-to-chromium: 1.4.292
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -1334,7 +1334,7 @@ packages:
       defu: 6.1.2
       dotenv: 16.0.3
       giget: 1.0.0
-      jiti: 1.16.2
+      jiti: 1.17.0
       mlly: 1.1.0
       pathe: 1.1.0
       pkg-types: 1.0.1
@@ -1360,8 +1360,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /caniuse-lite/1.0.30001450:
-    resolution: {integrity: sha512-qMBmvmQmFXaSxexkjjfMvD5rnDL0+m+dUMZKoDYsGG8iZN29RuYh9eRoMvKsT6uMAWlyUUGDEQGJJYjzCIO9ew==}
+  /caniuse-lite/1.0.30001451:
+    resolution: {integrity: sha512-XY7UbUpGRatZzoRft//5xOa69/1iGJRBlrieH6QYrkKLIFn3m7OVEJ81dSrKoy2BnKsdbX5cLrOispZNYo9v2w==}
     dev: true
 
   /caseless/0.12.0:
@@ -1675,8 +1675,8 @@ packages:
       safer-buffer: 2.1.2
     dev: true
 
-  /electron-to-chromium/1.4.288:
-    resolution: {integrity: sha512-8s9aJf3YiokIrR+HOQzNOGmEHFXVUQzXM/JaViVvKdCkNUjS+lEa/uT7xw3nDVG/IgfxiIwUGkwJ6AR1pTpYsQ==}
+  /electron-to-chromium/1.4.292:
+    resolution: {integrity: sha512-ESWOSyJy5odDlE8wvh5NNAMORv4r6assPwIPGHEMWrWD0SONXcG/xT+9aD9CQyeRwyYDPo6dJT4Bbeg5uevVQQ==}
     dev: true
 
   /emoji-regex/8.0.0:
@@ -1770,7 +1770,7 @@ packages:
       eslint: 8.33.0
     dev: true
 
-  /eslint-plugin-prettier/4.2.1_jqplj6qf3uqpxpu4gdyhwwasnq:
+  /eslint-plugin-prettier/4.2.1_qa2thblfovmfepmgrc7z2owbo4:
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -1783,7 +1783,7 @@ packages:
     dependencies:
       eslint: 8.33.0
       eslint-config-prettier: 8.6.0_eslint@8.33.0
-      prettier: 2.8.3
+      prettier: 2.8.4
       prettier-linter-helpers: 1.0.0
     dev: true
 
@@ -2457,8 +2457,8 @@ packages:
     resolution: {integrity: sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g==}
     dev: true
 
-  /jiti/1.16.2:
-    resolution: {integrity: sha512-OKBOVWmU3FxDt/UH4zSwiKPuc1nihFZiOD722FuJlngvLz2glX1v2/TJIgoA4+mrpnXxHV6dSAoCvPcYQtoG5A==}
+  /jiti/1.17.0:
+    resolution: {integrity: sha512-CByzPgFqYoB9odEeef7GNmQ3S5THIBOtzRYoSCya2Sv27AuQxy2jgoFjQ6VTF53xsq1MXRm+YWNvOoDHUAteOw==}
     hasBin: true
     dev: true
 
@@ -2544,8 +2544,8 @@ packages:
     resolution: {integrity: sha512-dWl0Dbjm6Xm+kDxhPQJsCBTxrJzuGl0aP9rhr+TG8D3l+GL90N8O8lYUi7dTSAN2uuDqCtNgb6aEuQH5wsiV8Q==}
     dev: true
 
-  /laravel-vite-plugin/0.7.3_vite@4.1.1:
-    resolution: {integrity: sha512-N6hH/JFA98oW1I0OZ2Gx1HF3/QzkBpUIkxqfKqxENQNLWLFx4+CWB7cxP+i4sGXp9LQUlLbH5Lq/eZoXtLAq8w==}
+  /laravel-vite-plugin/0.7.4_vite@4.1.1:
+    resolution: {integrity: sha512-NlIuXbeuI+4NZzRpWNpGHRVTwuFWessvD7QoD+o2MlyAi7qyUS4J8r4/yTlu1dl9lxcR7iKoYUmHQqZDcrw2KA==}
     engines: {node: '>=14'}
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0
@@ -2749,8 +2749,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /minipass/4.0.2:
-    resolution: {integrity: sha512-4Hbzei7ZyBp+1aw0874YWpKOubZd/jc53/XU+gkYry1QV+VvrbO8icLM5CUtm4F0hyXn85DXYKEMIS26gitD3A==}
+  /minipass/4.0.3:
+    resolution: {integrity: sha512-OW2r4sQ0sI+z5ckEt5c1Tri4xTgZwYDxpE54eqWlQloQRoWtXjqt9udJ5Z4dSv7wK+nfFI7FRXyCpBSft+gpFw==}
     engines: {node: '>=8'}
     dev: true
 
@@ -2998,8 +2998,8 @@ packages:
       fast-diff: 1.2.0
     dev: true
 
-  /prettier/2.8.3:
-    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
+  /prettier/2.8.4:
+    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -3348,7 +3348,7 @@ packages:
     dependencies:
       chownr: 2.0.0
       fs-minipass: 2.1.0
-      minipass: 4.0.2
+      minipass: 4.0.3
       minizlib: 2.1.2
       mkdirp: 1.0.4
       yallist: 4.0.0
@@ -3508,7 +3508,7 @@ packages:
         optional: true
     dependencies:
       '@antfu/utils': 0.7.2
-      '@nuxt/kit': 3.1.2
+      '@nuxt/kit': 3.2.0
       '@rollup/pluginutils': 5.0.2
       chokidar: 3.5.3
       debug: 4.3.4

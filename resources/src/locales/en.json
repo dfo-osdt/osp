@@ -156,7 +156,11 @@
     "plain-language-summary": "Plain Language Summary",
     "kb-uploaded-on": "KB uploaded on",
     "upload": "Upload",
-    "file-uploaded-successfully": "File uploaded successfully"
+    "file-uploaded-successfully": "File uploaded successfully",
+    "created-on": "Created on",
+    "accepted-on": "Accepted on",
+    "withdrawn-on": "Withdrawn on",
+    "manuscripts": "Manuscripts"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -511,5 +515,33 @@
   },
   "ocrid": {
     "verify-btn-text": "Verify Your ORCID iD"
+  },
+  "manuscript-progress-view": {
+    "title": "Manuscript Progress",
+    "manuscript-record-created": "Manuscript Record Created",
+    "created-details": "At this stage, only the applicant and authors can see and edit the manuscript record.",
+    "submit-management": "Submit for Management Review",
+    "submit-management-details": "The manuscript is initially submitted to a division manager or director (NCR) for management review.",
+    "completed-title": "Completion of Management Review",
+    "completed-withheld-details": "The manuscript does not comply with Fisheries and Oceans Canada National Policy for Science Publications and is withheld by DFO management.",
+    "completed-details": "The manuscript complies with Fisheries and Oceans Canada National Policy for Science Publications and is approved by DFO management. At this stage, you may now submit the manuscript to your target journal.",
+    "submit-pub-title": "Initial Submission to Target Publication",
+    "submit-pub-details": "The manuscript was submitted to the target journal for peer-review. We track this stage to gather statistics on the time it takes to get manuscript accepted and published.",
+    "mark-as-submitted": "Mark as Submitted",
+    "accepted-title": "Accepted for Publication",
+    "accepted-details": "The manuscript was accepted for publication by the target journal and is entering the production process. Confirming this step will create a new publication record where you can upload the final manuscript and update the publication details.",
+    "withdraw-manuscript": "Withdraw Manuscript",
+    "go-to-the-publication": "Go to the Publication",
+    "withdrawn-by-applicant": "Withdrawn by Applicant",
+    "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days.",
+    "manuscript-status-updated": "Manuscript status updated"
+  },
+  "my-manuscript-records": {
+    "create-manuscript": "Create Manuscript",
+    "no-manuscript": "No manuscripts exists or are shared with you",
+    "all-manuscripts": "All Manuscripts",
+    "all-manuscripts-caption": "Includes ones shared with me",
+    "my-manuscripts-caption": "I am the applicant",
+    "actions-still-required": "Actions still required"
   }
 }

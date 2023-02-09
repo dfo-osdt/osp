@@ -156,7 +156,11 @@
     "plain-language-summary": "Résumé en langage clair",
     "kb-uploaded-on": "Ko téléchargé le",
     "upload": "Télécharger",
-    "file-uploaded-successfully": "Fichier téléchargé avec succès"
+    "file-uploaded-successfully": "Fichier téléchargé avec succès",
+    "accepted-on": "Accepté le",
+    "created-on": "Créé sur",
+    "manuscripts": "Manuscrits",
+    "withdrawn-on": "Retiré le"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -511,5 +515,33 @@
   },
   "ocrid": {
     "verify-btn-text": "Vérifiez votre identifiant ORCID"
+  },
+  "manuscript-progress-view": {
+    "accepted-details": "Le manuscrit a été accepté pour publication par la revue cible et entre dans le processus de production. \nLa confirmation de cette étape créera un nouvel enregistrement de publication dans lequel vous pourrez télécharger le manuscrit final et mettre à jour les détails de la publication.",
+    "accepted-title": "Accepté pour publication",
+    "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est approuvé par la direction du MPO. \nÀ ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
+    "completed-title": "Achèvement de la revue de direction",
+    "completed-withheld-details": "Le manuscrit n'est pas conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est retenu par la direction du MPO.",
+    "created-details": "À ce stade, seuls le demandeur et les auteurs peuvent voir et modifier le dossier du manuscrit.",
+    "go-to-the-publication": "Aller à la parution",
+    "manuscript-record-created": "Notice manuscrite créée",
+    "manuscript-status-updated": "Statut du manuscrit mis à jour",
+    "mark-as-submitted": "Marquer comme soumis",
+    "submit-management": "Soumettre à la revue de direction",
+    "submit-management-details": "Le manuscrit est initialement soumis à un responsable ou directeur de division (NCR) pour examen par la direction.",
+    "submit-pub-details": "Le manuscrit a été soumis à la revue cible pour examen par les pairs. \nNous suivons cette étape pour recueillir des statistiques sur le temps nécessaire pour que le manuscrit soit accepté et publié.",
+    "submit-pub-title": "Soumission initiale à la publication cible",
+    "title": "Avancement du manuscrit",
+    "withdraw-manuscript": "Retirer le manuscrit",
+    "withdrawn-by-applicant": "Retiré par le demandeur",
+    "withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe dossier du manuscrit sera archivé après 30 jours."
+  },
+  "my-manuscript-records": {
+    "actions-still-required": "Actions encore nécessaires",
+    "all-manuscripts": "Tous les manuscrits",
+    "all-manuscripts-caption": "Inclut ceux partagés avec moi",
+    "create-manuscript": "Créer un manuscrit",
+    "my-manuscripts-caption": "je suis le demandeur",
+    "no-manuscript": "Aucun manuscrit n'existe ou n'est partagé avec vous"
   }
 }

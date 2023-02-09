@@ -1,7 +1,9 @@
 <template>
     <q-timeline v-if="manuscriptRecord" color="primary" class="q-pa-lg">
         <q-timeline-entry heading
-            ><div class="text-h4 text-primary">Manuscript Progress</div>
+            ><div class="text-h4 text-primary">
+                {{ $t('manuscript-progress-view.title') }}
+            </div>
             <div
                 class="text-subtitle2 text-weight-bold text-grey-7 text-uppercase"
             >
@@ -11,44 +13,37 @@
         <q-timeline-entry
             class="q-mx-lg"
             icon="mdi-plus"
-            title="Manuscript Record Created"
+            :title="$t('manuscript-progress-view.manuscript-record-created')"
             :subtitle="createdSubtitle"
             :color="createdColor"
         >
             <p>
-                At this stage, only the applicant and authors can see and edit
-                the manuscript record.
+                {{ $t('manuscript-progress-view.created-details') }}
             </p>
         </q-timeline-entry>
         <q-timeline-entry
             class="q-mx-lg"
             icon="mdi-send-check-outline"
-            title="Submit for Management Review"
+            :title="$t('manuscript-progress-view.submit-management')"
             :subtitle="submittedReviewSubtitle"
             :color="submittedReviewColor"
         >
             <p>
-                The manuscript is initially submitted to a division manager or
-                director (NCR) for management review.
+                {{ $t('manuscript-progress-view.submit-management-details') }}
             </p>
         </q-timeline-entry>
         <q-timeline-entry
             class="q-mx-lg"
             :icon="managementReviewIcon"
-            title="Completion of Management Review"
+            :title="$t('manuscript-progress-view.completed-title')"
             :subtitle="managementReviewSubtitle"
             :color="managementReviewColor"
         >
             <p v-if="manuscriptRecord.data.status === 'withheld'">
-                The manuscript does not comply with Fisheries and Oceans Canada
-                National Policy for Science Publications and is withheld by DFO
-                management.
+                {{ $t('manuscript-progress-view.completed-withheld-details') }}
             </p>
             <p v-else>
-                The manuscript complies with Fisheries and Oceans Canada
-                National Policy for Science Publications and is approved by DFO
-                management. At this stage, you may now submit the manuscript to
-                your target journal.
+                {{ $t('manuscript-progress-view.completed-details') }}
             </p>
         </q-timeline-entry>
         <q-timeline-entry
@@ -58,14 +53,12 @@
             "
             class="q-mx-lg"
             icon="mdi-send-check-outline"
-            title="Initial Submission to Target Publication"
+            :title="$t('manuscript-progress-view.submit-pub-title')"
             :subtitle="submittedToJournalSubtitle"
             :color="submittedToJournalColor"
         >
             <p>
-                The manuscript was submitted to the target journal for
-                peer-review. We track this stage to gather statistics on the
-                time it takes to get manuscript accepted and published.
+                {{ $t('manuscript-progress-view.submit-pub-details') }}
             </p>
             <div>
                 <q-btn
@@ -74,7 +67,7 @@
                             null && manuscriptRecord.data.can_attach_manuscript
                     "
                     color="primary"
-                    label="Mark as Submitted"
+                    :label="$t('manuscript-progress-view.mark-as-submitted')"
                     :disable="
                         manuscriptRecord.data.status === 'in_review' ||
                         manuscriptRecord.data.status === 'draft'
@@ -90,15 +83,12 @@
             "
             class="q-mx-lg"
             icon="mdi-check-all"
-            title="Accepted for Publication"
+            :title="$t('manuscript-progress-view.accepted-title')"
             :subtitle="acceptedToJournalSubtitle"
             :color="acceptedToJournalColor"
         >
             <p>
-                The manuscript was accepted for publication by the target
-                journal and is entering the production process. Confirming this
-                step will create a new publication record where you can upload
-                the final manuscript and update the publication details.
+                {{ $t('manuscript-progress-view.accepted-details') }}
             </p>
             <div class="row q-gutter-md">
                 <q-btn
@@ -107,7 +97,7 @@
                         manuscriptRecord.data.can_attach_manuscript
                     "
                     color="primary"
-                    label="Accepted for Publication"
+                    :label="$t('manuscript-progress-view.accepted-title')"
                     :disable="
                         manuscriptRecord.data.status === 'draft' ||
                         manuscriptRecord.data.status === 'in_review'
@@ -121,7 +111,7 @@
                     "
                     color="negative"
                     outline
-                    label="Withdraw Manuscript"
+                    :label="$t('manuscript-progress-view.withdraw-manuscript')"
                     :disable="
                         manuscriptRecord.data.status === 'draft' ||
                         manuscriptRecord.data.status === 'in_review'
@@ -131,7 +121,9 @@
                 <q-btn
                     v-if="manuscriptRecord.data.publication"
                     color="primary"
-                    label="Go to the Publication"
+                    :label="
+                        $t('manuscript-progress-view.go-to-the-publication')
+                    "
                     :to="`/publication/${manuscriptRecord.data.publication?.data.id}`"
                     icon-right="mdi-arrow-right"
                 />
@@ -141,13 +133,12 @@
             v-if="manuscriptRecord.data.status === 'withdrawn'"
             class="q-mx-lg"
             icon="mdi-sign-caution"
-            title="Withdrawn by Applicant"
+            :title="$t('manuscript-progress-view.withdrawn-by-applicant')"
             :subtitle="withdrawnSubtitle"
             color="red"
         >
             <p>
-                The manuscript was withdrawn by the applicant. The manuscript
-                record will be archived after 30 days.
+                {{ $t('manuscript-progress-view.withdrawn-details') }}
             </p>
         </q-timeline-entry>
         <SubmittedToJournalDialog
@@ -184,6 +175,7 @@ import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue
 import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
+const { t } = useI18n();
 
 const props = defineProps<{
     id: number;
@@ -195,7 +187,8 @@ const createdSubtitle = computed(() => {
         return '';
     }
     return (
-        'Created on ' +
+        t('common.created-on') +
+        ' ' +
         useLocaleDate(manuscriptRecord.value.data.created_at).value
     );
 });
@@ -212,10 +205,11 @@ const submittedReviewSubtitle = computed(() => {
         return '';
     }
     if (manuscriptRecord.value.data.sent_for_review_at === null) {
-        return 'Pending';
+        return t('common.pending');
     }
     return (
-        'Submitted on ' +
+        t('common.submitted-on') +
+        ' ' +
         useLocaleDate(manuscriptRecord.value.data.sent_for_review_at).value
     );
 });
@@ -232,13 +226,14 @@ const managementReviewSubtitle = computed(() => {
         return '';
     }
     if (manuscriptRecord.value.data.sent_for_review_at === null) {
-        return 'Pending';
+        return t('common.pending');
     }
     if (manuscriptRecord.value.data.reviewed_at === null) {
-        return 'In Progress';
+        return t('common.in-progress');
     }
     return (
-        'Completed on ' +
+        t('common.completed-on') +
+        ' ' +
         useLocaleDate(manuscriptRecord.value.data.reviewed_at).value
     );
 });
@@ -267,10 +262,11 @@ const submittedToJournalSubtitle = computed(() => {
         return '';
     }
     if (manuscriptRecord.value.data.submitted_to_journal_on === null) {
-        return 'Pending';
+        return t('common.pending');
     }
     return (
-        'Submitted on ' +
+        t('common.submitted-on') +
+        ' ' +
         useLocaleDate(manuscriptRecord.value.data.submitted_to_journal_on).value
     );
 });
@@ -287,10 +283,11 @@ const acceptedToJournalSubtitle = computed(() => {
         return '';
     }
     if (manuscriptRecord.value.data.accepted_on === null) {
-        return 'Pending';
+        return t('common.pending');
     }
     return (
-        'Accepted on ' +
+        t('common.accepted-on') +
+        ' ' +
         useLocaleDate(manuscriptRecord.value.data.accepted_on).value
     );
 });
@@ -309,7 +306,8 @@ const withdrawnSubtitle = computed(() => {
         return '';
     }
     return (
-        'Withdrawn on ' +
+        t('common.withdrawn-on') +
+        ' ' +
         useLocaleDate(manuscriptRecord.value.data.withdrawn_on).value
     );
 });
@@ -354,7 +352,7 @@ function withdrawManuscript(record: ManuscriptRecordResource) {
 
 function showUpdatedNotification() {
     $q.notify({
-        message: 'Manuscript status updated',
+        message: t('manuscript-progress-view.manuscript-status-updated'),
         color: 'positive',
         icon: 'mdi-check',
     });

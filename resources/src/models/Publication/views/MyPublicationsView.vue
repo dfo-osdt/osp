@@ -178,13 +178,14 @@ type MainFilterOption = {
 };
 
 // content filter - sidebar
+const activeFilterId = ref(1);
 const mainFilterOptions = computed((): MainFilterOption[] => [
     {
         id: 1,
         label: t('my-publication-view.all-publications'),
         caption: t('my-publication-view.includes-ones-shared-with-me'),
         icon: 'mdi-all-inclusive',
-        active: true,
+        active: activeFilterId.value === 1,
         filter: (query: PublicationQuery): PublicationQuery => {
             return query;
         },
@@ -196,7 +197,7 @@ const mainFilterOptions = computed((): MainFilterOption[] => [
             'my-publication-view.i-am-responsible-for-this-publication-record'
         ),
         icon: 'mdi-account-arrow-left-outline',
-        active: false,
+        active: activeFilterId.value === 2,
         filter: (query: PublicationQuery): PublicationQuery => {
             return authorStore.user
                 ? query.filterUserId([authorStore.user.id])
@@ -208,7 +209,7 @@ const mainFilterOptions = computed((): MainFilterOption[] => [
         label: t('common.in-progress'),
         caption: t('my-publication-view.actions-still-required'),
         icon: 'mdi-progress-clock',
-        active: false,
+        active: activeFilterId.value === 3,
         filter: (query: PublicationQuery): PublicationQuery => {
             return query.filterStatus(['accepted']);
         },
@@ -218,7 +219,7 @@ const mainFilterOptions = computed((): MainFilterOption[] => [
         label: t('publication.publsihed'),
         caption: t('common.no-actions-required'),
         icon: 'mdi-check-circle',
-        active: false,
+        active: activeFilterId.value === 4,
         filter: (query: PublicationQuery): PublicationQuery => {
             return query.filterStatus(['published']);
         },
@@ -226,10 +227,7 @@ const mainFilterOptions = computed((): MainFilterOption[] => [
 ]);
 
 const mainFilterClick = (filterId: number) => {
-    mainFilterOptions.value = mainFilterOptions.value.map((f) => {
-        f.active = f.id === filterId;
-        return f;
-    });
+    activeFilterId.value = filterId;
     search.value = '';
     currentPage.value = 1;
     getPublications();

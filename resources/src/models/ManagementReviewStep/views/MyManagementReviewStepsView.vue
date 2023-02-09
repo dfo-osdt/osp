@@ -134,44 +134,44 @@ type MainFilterOption = {
 };
 
 // content filter - sidebar
-const mainFilterOptions = ref<MainFilterOption[]>([
-    {
-        id: 1,
-        label: t('review-step-view.all-my-reviews'),
-        caption: t('review-step-view.list-of-all-my-reviews'),
-        icon: 'mdi-all-inclusive',
-        active: true,
-        filter: (query: ManagementReviewQuery): ManagementReviewQuery => {
-            return query;
+const activeFilterId = ref(1);
+const mainFilterOptions = computed<MainFilterOption[]>(() => {
+    return [
+        {
+            id: 1,
+            label: t('review-step-view.all-my-reviews'),
+            caption: t('review-step-view.list-of-all-my-reviews'),
+            icon: 'mdi-all-inclusive',
+            active: activeFilterId.value === 1,
+            filter: (query: ManagementReviewQuery): ManagementReviewQuery => {
+                return query;
+            },
         },
-    },
-    {
-        id: 2,
-        label: t('common.pending'),
-        caption: t('common.i-need-to-take-action'),
-        icon: 'mdi-progress-clock',
-        active: false,
-        filter: (query: ManagementReviewQuery): ManagementReviewQuery => {
-            return query.filterStatus(['pending']);
+        {
+            id: 2,
+            label: t('common.pending'),
+            caption: t('common.i-need-to-take-action'),
+            icon: 'mdi-progress-clock',
+            active: activeFilterId.value === 2,
+            filter: (query: ManagementReviewQuery): ManagementReviewQuery => {
+                return query.filterStatus(['pending']);
+            },
         },
-    },
-    {
-        id: 3,
-        label: t('common.completed'),
-        caption: t('common.no-actions-required'),
-        icon: 'mdi-check-circle',
-        active: false,
-        filter: (query: ManagementReviewQuery): ManagementReviewQuery => {
-            return query.filterStatus(['deferred', 'completed']);
+        {
+            id: 3,
+            label: t('common.completed'),
+            caption: t('common.no-actions-required'),
+            icon: 'mdi-check-circle',
+            active: activeFilterId.value === 3,
+            filter: (query: ManagementReviewQuery): ManagementReviewQuery => {
+                return query.filterStatus(['deferred', 'completed']);
+            },
         },
-    },
-]);
+    ];
+});
 
 const mainFilterClick = (filterId: number) => {
-    mainFilterOptions.value = mainFilterOptions.value.map((f) => {
-        f.active = f.id === filterId;
-        return f;
-    });
+    activeFilterId.value = filterId;
     search.value = '';
     currentPage.value = 1;
     getReviews();

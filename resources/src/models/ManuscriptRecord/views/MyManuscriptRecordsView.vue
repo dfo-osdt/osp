@@ -1,5 +1,5 @@
 <template>
-    <MainPageLayout title="My Manuscripts">
+    <MainPageLayout :title="$t('common.my-manuscripts')">
         <template
             v-if="authorStore.user?.can('create_manuscript_records')"
             #toolbar
@@ -18,7 +18,9 @@
                             anchor="center left"
                             self="center right"
                         >
-                            Create Manuscript</q-tooltip
+                            {{
+                                $t('my-manuscript-records.create-manuscript')
+                            }}</q-tooltip
                         >
                     </template>
                 </q-fab>
@@ -27,7 +29,7 @@
         <div class="row q-gutter-lg q-col-gutter-lg flex">
             <div class="cols-2">
                 <ContentCard secondary no-padding>
-                    <template #title>Manuscripts</template>
+                    <template #title>{{ $t('common.manuscripts') }}</template>
                     <q-list class="text-body1">
                         <q-item
                             v-for="f in mainFilterOptions"
@@ -55,7 +57,9 @@
                         class="flex-center flex q-mt-lg q-mb-sm q-mx-md"
                     >
                         <q-btn
-                            label="Create manuscript"
+                            :label="
+                                $t('my-manuscript-records.create-manuscript')
+                            "
                             color="primary"
                             outline
                             icon="mdi-plus"
@@ -69,7 +73,9 @@
                     <template #title>{{ mainFilter?.label }}</template>
                     <template #subtitle>{{ mainFilter?.caption }}</template>
                     <template #title-right
-                        ><SearchInput v-model="search" label="Filter"
+                        ><SearchInput
+                            v-model="search"
+                            :label="$t('common.filter')"
                     /></template>
                     <template
                         v-if="
@@ -77,7 +83,7 @@
                         "
                     >
                         <NoManuscriptExistsDiv
-                            title="No manuscripts exists or are shared with you"
+                            :title="$t('my-manuscript-records.no-manuscript')"
                         />
                     </template>
                     <template
@@ -117,6 +123,8 @@ import {
     ManuscriptRecordSummaryResourceList,
 } from '../ManuscriptRecord';
 import PaginationDiv from '@/components/PaginationDiv.vue';
+
+const { t } = useI18n();
 
 const manuscripts = ref<ManuscriptRecordSummaryResourceList>();
 
@@ -175,61 +183,65 @@ type MainFilterOption = {
 };
 
 // content filter - sidebar
-const mainFilterOptions = ref<MainFilterOption[]>([
-    {
-        id: 1,
-        label: 'All Manuscripts',
-        caption: 'Includes ones shared with me',
-        icon: 'mdi-all-inclusive',
-        active: true,
-        filter: (query: ManuscriptQuery): ManuscriptQuery => {
-            return query;
+const activeFilterId = ref(1);
+const mainFilterOptions = computed<MainFilterOption[]>(() => {
+    return [
+        {
+            id: 1,
+            label: t('my-manuscript-records.all-manuscripts'),
+            caption: t('my-manuscript-records.all-manuscripts-caption'),
+            icon: 'mdi-all-inclusive',
+            active: activeFilterId.value === 1,
+            filter: (query: ManuscriptQuery): ManuscriptQuery => {
+                return query;
+            },
         },
-    },
-    {
-        id: 2,
-        label: 'My Manuscripts',
-        caption: 'I am the applicant',
-        icon: 'mdi-account-arrow-left-outline',
-        active: false,
-        filter: (query: ManuscriptQuery): ManuscriptQuery => {
-            return authorStore.user
-                ? query.filterUserId([authorStore.user.id])
-                : query;
+        {
+            id: 2,
+            label: t('common.my-manuscripts'),
+            caption: t('my-manuscript-records.my-manuscripts-caption'),
+            icon: 'mdi-account-arrow-left-outline',
+            active: activeFilterId.value === 2,
+            filter: (query: ManuscriptQuery): ManuscriptQuery => {
+                return authorStore.user
+                    ? query.filterUserId([authorStore.user.id])
+                    : query;
+            },
         },
-    },
-    {
-        id: 3,
-        label: 'In Progress',
-        caption: 'Actions still required',
-        icon: 'mdi-progress-clock',
-        active: false,
-        filter: (query: ManuscriptQuery): ManuscriptQuery => {
-            return query.filterStatus([
-                'draft',
-                'in_review',
-                'reviewed',
-                'submitted',
-            ]);
+        {
+            id: 3,
+            label: t('common.in-progress'),
+            caption: t('my-manuscript-records.actions-still-required'),
+            icon: 'mdi-progress-clock',
+            active: activeFilterId.value === 3,
+            filter: (query: ManuscriptQuery): ManuscriptQuery => {
+                return query.filterStatus([
+                    'draft',
+                    'in_review',
+                    'reviewed',
+                    'submitted',
+                ]);
+            },
         },
-    },
-    {
-        id: 4,
-        label: 'Completed',
-        caption: 'No actions required',
-        icon: 'mdi-check-circle',
-        active: false,
-        filter: (query: ManuscriptQuery): ManuscriptQuery => {
-            return query.filterStatus(['accepted', 'withdrawn', 'withheld']);
+        {
+            id: 4,
+            label: t('common.completed'),
+            caption: t('common.no-actions-required'),
+            icon: 'mdi-check-circle',
+            active: activeFilterId.value === 4,
+            filter: (query: ManuscriptQuery): ManuscriptQuery => {
+                return query.filterStatus([
+                    'accepted',
+                    'withdrawn',
+                    'withheld',
+                ]);
+            },
         },
-    },
-]);
+    ];
+});
 
 const mainFilterClick = (filterId: number) => {
-    mainFilterOptions.value = mainFilterOptions.value.map((f) => {
-        f.active = f.id === filterId;
-        return f;
-    });
+    activeFilterId.value = filterId;
     search.value = '';
     currentPage.value = 1;
     getManuscripts();
