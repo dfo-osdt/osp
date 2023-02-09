@@ -1,9 +1,13 @@
 <template>
-    <MainPageLayout title="Publication">
+    <MainPageLayout :title="$t('publication-page.title')">
         <div v-if="publication" class="q-pa-lg">
             <div class="q-mt-md q-mb-lg row justify-between">
                 <div class="col-md-8 col-12 q-mb-md">
-                    <div class="text-h4 text-primary">Publication Details</div>
+                    <div class="text-h4 text-primary">
+                        {{
+                            $t('create-publication-dialog.publication-details')
+                        }}
+                    </div>
                     <div
                         class="text-body2 text-weight-medium text-grey-7 ellipsis-2-lines"
                     >
@@ -34,7 +38,7 @@
                             <div
                                 class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                             >
-                                Publication Status
+                                {{ $t('publication-page.publication-status') }}
                             </div>
                             <PublicationStatusBadge
                                 :status="publication.data.status"
@@ -45,7 +49,7 @@
                             <div
                                 class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                             >
-                                Contact
+                                {{ $t('common.contact') }}
                             </div>
                             <div class="text-body2 text-grey-7 q-py-xs">
                                 {{
@@ -61,7 +65,7 @@
                             <div
                                 class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                             >
-                                Manuscript Record
+                                {{ $t('common.manuscript-record') }}
                             </div>
                             <div class="text-body2 text-grey-7 q-py-xs">
                                 <div
@@ -71,7 +75,11 @@
                                         dense
                                         size="sm"
                                         flat
-                                        label="Go to Manuscript Record"
+                                        :label="
+                                            $t(
+                                                'publication-page.go-to-manuscript-record'
+                                            )
+                                        "
                                         :to="`/manuscript/${publication.data.manuscript_record_id}/form`"
                                         icon-right="mdi-arrow-right"
                                     />
@@ -83,9 +91,9 @@
                                         color="primary"
                                         size="xs"
                                     />
-                                    <span class="text-grey-7"
-                                        >Not Available</span
-                                    >
+                                    <span class="text-grey-7">{{
+                                        $t('common.not-available')
+                                    }}</span>
                                 </div>
                             </div>
                         </div>
@@ -99,24 +107,24 @@
             />
             <ContentCard class="q-mb-lg" secondary>
                 <template #title>
-                    <div>General Information</div>
+                    <div>{{ $t('pub.general-information') }}</div>
                 </template>
                 <q-form ref="generalInformationForm">
                     <q-input
                         v-model="publication.data.title"
-                        label="Title"
+                        :label="$t('common.title')"
                         bg-color="white"
                         :disable="loading"
                         :readonly="!canEdit"
                         outlined
-                        :rules="[(val) => !!val || 'Title is required']"
+                        :rules="[(val) => !!val || $t('common.required')]"
                         class="q-mb-md"
                     />
                     <JournalSelect
                         v-model="publication.data.journal_id"
                         :disable="loading"
                         :readonly="!canEdit"
-                        :rules="[(val: number | null) => !!val || 'Journal is required']"
+                        :rules="[(val: number | null) => !!val || $t('common.required')]"
                         class="q-mb-md"
                     />
                     <DoiInput
@@ -126,13 +134,13 @@
                         class="q-mb-md"
                     />
                     <div class="text-body1 text-accent text-weight-medium">
-                        Publication Dates
+                        {{ $t('create-publication-dialog.publication-dates') }}
                     </div>
                     <q-separator class="q-mb-md" />
                     <div class="row q-gutter-sm">
                         <DateInput
                             v-model="publication.data.accepted_on"
-                            label="Accepted On"
+                            :label="$t('common.accepted-on')"
                             :disable="loading"
                             :readonly="!canEdit"
                             :required="publication.data.status === 'accepted'"
@@ -142,7 +150,7 @@
                         <DateInput
                             v-if="publication.data.status === 'published'"
                             v-model="publication.data.published_on"
-                            label="Published On"
+                            :label="$t('common.published-on')"
                             :disable="loading"
                             :readonly="!canEdit"
                             :required="publication.data.status === 'published'"
@@ -153,19 +161,19 @@
                     <div
                         class="text-body1 q-mt-lg text-accent text-weight-medium"
                     >
-                        Publication Access
+                        {{ $t('create-publication-dialog.publication-access') }}
                     </div>
                     <q-separator class="q-mb-md" />
                     <q-toggle
                         v-model="publication.data.is_open_access"
-                        label="Published as Open Access"
+                        :label="$t('common.published-as-open-access')"
                         :disable="loading"
                         :readonly="!canEdit"
                     />
                     <DateInput
                         v-if="!publication.data.is_open_access"
                         v-model="publication.data.embargoed_until"
-                        label="Embargoed Until"
+                        :label="$t('common.embargoed-until')"
                         :required="
                             !publication.data.is_open_access &&
                             publication.data.status === 'published'
@@ -178,11 +186,11 @@
                 </q-form>
             </ContentCard>
             <ContentCard class="q-mb-md" secondary>
-                <template #title>Attach Manuscript</template>
+                <template #title>{{
+                    $t('publication-page.attach-publication')
+                }}</template>
                 <p>
-                    Upload the most recent copy of your publication as a PDF. We
-                    will not allow portal users to see this file until the end
-                    of its embargo period.
+                    {{ $t('publication-page.attach-pub-details') }}
                 </p>
                 <template v-if="publicationResource?.data">
                     <q-card outlined class="q-mb-md">
@@ -242,7 +250,7 @@
                             color="primary"
                             :loading="uploadingFile"
                             :disable="!publicationFile"
-                            label="Upload"
+                            :label="$t('common.upload')"
                             @click="upload"
                         />
                     </template>
@@ -251,14 +259,14 @@
             <q-card-actions align="right">
                 <q-btn
                     v-if="publication.data.status === 'accepted'"
-                    label="Mark as Published"
+                    :label="$t('publication-page.mark-as-published')"
                     color="primary"
                     icon="mdi-flag-checkered"
                     @click="markAsPublished"
                 />
                 <q-btn
                     v-if="canEdit"
-                    label="Save"
+                    :label="$t('common.save')"
                     color="primary"
                     :loading="loading"
                     @click="save"
@@ -285,6 +293,7 @@ import { MediaResource } from '@/models/Resource';
 
 const $q = useQuasar();
 const router = useRouter();
+const { t } = useI18n();
 
 const props = defineProps<{
     id: number;
@@ -342,7 +351,7 @@ const publicationYear = computed(() => {
     //if (publication.value?.data?.published_on === null) return 'Pending';
     return (
         publication.value?.data.published_on?.split('-')[0] ??
-        'Publication Date Pending'
+        t('publication-page.publication-date-pending')
     );
 });
 
@@ -365,7 +374,7 @@ const save = async () => {
             publication.value = response;
             $q.notify({
                 type: 'positive',
-                message: 'Publication updated successfully',
+                message: t('publication-page.publication-updated-successfully'),
             });
         })
         .catch((e) => {
@@ -389,13 +398,13 @@ function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
             $q.notify({
                 type: 'negative',
                 color: 'negative',
-                message: 'File size is too large',
+                message: t('common.validation.file-size-is-too-large'),
             });
         } else if (rejectedEntry.failedPropValidation === 'accept') {
             $q.notify({
                 type: 'negative',
                 color: 'negative',
-                message: 'File type is not accepted',
+                message: t('common.validation.file-type-is-not-accepted'),
             });
         }
     });
@@ -422,7 +431,7 @@ async function upload() {
     $q.notify({
         type: 'positive',
         color: 'primary',
-        message: 'File uploaded successfully',
+        message: t('common.file-uploaded-successfully'),
     });
 
     // re-enable dirty watcher in 500 ms

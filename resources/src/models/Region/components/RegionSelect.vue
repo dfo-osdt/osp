@@ -4,7 +4,7 @@
         :options="options"
         :option-label="label"
         :readonly="readonly"
-        autocomplete="name_en"
+        :autocomplete="label"
         option-value="id"
         :label="$t('common.dfo-region')"
         :loading="regionStore.loading"

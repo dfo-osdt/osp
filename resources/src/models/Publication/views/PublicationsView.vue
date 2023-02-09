@@ -1,9 +1,9 @@
 <template>
-    <MainPageLayout title="Publications">
+    <MainPageLayout :title="$t('common.publications')">
         <div class="row q-gutter-lg q-col-gutter-lg flex">
             <div class="col-3">
                 <ContentCard secondary no-padding>
-                    <template #title>Publications</template>
+                    <template #title>{{ $t('common.publications') }}</template>
                     <q-list class="text-body1">
                         <q-item
                             v-for="f in mainFilterOptions"
@@ -31,26 +31,28 @@
                     <template #title>{{ mainFilter?.label }}</template>
                     <template #subtitle>{{ mainFilter?.caption }}</template>
                     <template #title-right
-                        ><SearchInput v-model="search" label="Filter Title"
+                        ><SearchInput
+                            v-model="search"
+                            :label="$t('common.filter')"
                     /></template>
                     <template #nav>
                         <q-expansion-item
                             v-model="showFilters"
                             icon="mdi-filter-variant"
-                            label="Filters"
+                            :label="$t('common.filters')"
                             :caption="filterCaption"
                         >
                             <q-card-section class="column q-gutter-md">
                                 <JournalSelect
                                     ref="journalSelect"
                                     v-model="journalId"
-                                    label="Journal"
+                                    :label="$t('common.journal')"
                                     :disable="loading"
                                 ></JournalSelect>
                                 <AuthorSelect
                                     ref="authorSelect"
                                     v-model="authorId"
-                                    label="Author"
+                                    :label="$t('common.author')"
                                     :disable="loading"
                                     :hide-create-author-dialog="true"
                                 ></AuthorSelect>
@@ -91,6 +93,7 @@ import JournalSelect from '@/models/Journal/components/JournalSelect.vue';
 import AuthorSelect from '@/models/Author/components/AuthorSelect.vue';
 
 const publications = ref<PublicationResourceList>();
+const { t } = useI18n();
 
 onMounted(() => {
     getPublications();
@@ -141,54 +144,54 @@ type MainFilterOption = {
 };
 
 // content filter - sidebar
-const mainFilterOptions = ref<MainFilterOption[]>([
-    {
-        id: 1,
-        label: 'All Publications',
-        caption: 'All published publications',
-        icon: 'mdi-all-inclusive',
-        active: true,
-        filter: (query: PublicationQuery): PublicationQuery => {
-            return query;
+const activeFilter = ref(1);
+const mainFilterOptions = computed<MainFilterOption[]>(() => {
+    return [
+        {
+            id: 1,
+            label: t('my-publication-view.all-publications'),
+            caption: t('publications-view.all-published-publications-details'),
+            icon: 'mdi-all-inclusive',
+            active: activeFilter.value === 1,
+            filter: (query: PublicationQuery): PublicationQuery => {
+                return query;
+            },
         },
-    },
-    {
-        id: 2,
-        label: 'Open Access',
-        caption: 'Publications published as open access',
-        icon: 'mdi-lock-open-outline',
-        active: false,
-        filter: (query: PublicationQuery): PublicationQuery => {
-            return query.filterOpenAccess();
+        {
+            id: 2,
+            label: t('common.open-access'),
+            caption: t('publications-view.open-access-filter-details'),
+            icon: 'mdi-lock-open-outline',
+            active: activeFilter.value === 2,
+            filter: (query: PublicationQuery): PublicationQuery => {
+                return query.filterOpenAccess();
+            },
         },
-    },
-    {
-        id: 3,
-        label: 'Under Embargo',
-        caption: 'Publications under embargo',
-        icon: 'mdi-calendar-clock-outline',
-        active: false,
-        filter: (query: PublicationQuery): PublicationQuery => {
-            return query.filterUnderEmbargo();
+        {
+            id: 3,
+            label: t('publications-view.under-embargo'),
+            caption: t('publications-view.under-embargo-caption'),
+            icon: 'mdi-calendar-clock-outline',
+            active: activeFilter.value === 3,
+            filter: (query: PublicationQuery): PublicationQuery => {
+                return query.filterUnderEmbargo();
+            },
         },
-    },
-    {
-        id: 4,
-        label: 'Secondary Publications',
-        caption: 'Published in DFO journals',
-        icon: 'mdi-bank-outline',
-        active: false,
-        filter: (query: PublicationQuery): PublicationQuery => {
-            return query.filterSecondaryPublication();
+        {
+            id: 4,
+            label: t('publications-view.secondary-publications'),
+            caption: t('publications-view.published-in-dfo-journals'),
+            icon: 'mdi-bank-outline',
+            active: activeFilter.value === 4,
+            filter: (query: PublicationQuery): PublicationQuery => {
+                return query.filterSecondaryPublication();
+            },
         },
-    },
-]);
+    ];
+});
 
 const mainFilterClick = (filterId: number) => {
-    mainFilterOptions.value = mainFilterOptions.value.map((f) => {
-        f.active = f.id === filterId;
-        return f;
-    });
+    activeFilter.value = filterId;
     search.value = '';
     currentPage.value = 1;
     getPublications();
@@ -234,8 +237,9 @@ const filterCaption = computed(() => {
             authorSelect?.value?.selectedAuthor?.data || {};
         caption += `by ${first_name} ${last_name} `;
     }
-    if (caption.length > 0) caption = 'Publications ' + caption.slice(0, -1);
-    else caption = 'No filters applied';
+    if (caption.length > 0)
+        caption = t('common.publications') + ' ' + caption.slice(0, -1);
+    else caption = t('common.no-filters-applied');
     return caption;
 });
 </script>

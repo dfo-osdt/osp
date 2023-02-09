@@ -160,7 +160,18 @@
     "created-on": "Created on",
     "accepted-on": "Accepted on",
     "withdrawn-on": "Withdrawn on",
-    "manuscripts": "Manuscripts"
+    "manuscripts": "Manuscripts",
+    "contact": "Contact",
+    "manuscript-record": "Manuscript Record",
+    "not-available": "Not Available",
+    "published-on": "Published on",
+    "filters": "Filters",
+    "open-access": "Open Access",
+    "no-filters-applied": "No filters applied",
+    "recent": "Recent",
+    "page-not-found": "Page Not Found",
+    "form": "Form",
+    "progress": "Progress"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",
@@ -543,5 +554,63 @@
     "all-manuscripts-caption": "Includes ones shared with me",
     "my-manuscripts-caption": "I am the applicant",
     "actions-still-required": "Actions still required"
+  },
+  "publication-page": {
+    "title": "Publication",
+    "publication-status": "Publication Status",
+    "go-to-manuscript-record": "Go to Manuscript Record",
+    "attach-publication": "Attach Manuscript",
+    "attach-pub-details": "Upload the most recent copy of your publication as a PDF. We will not allow portal users to see this file until the end of its embargo period.",
+    "mark-as-published": "Mark as Published",
+    "publication-date-pending": "Publication Date Pending",
+    "publication-updated-successfully": "Publication updated successfully"
+  },
+  "pub": {
+    "general-information": "General Information"
+  },
+  "publications-view": {
+    "all-published-publications-details": "All published publications",
+    "open-access-filter-details": "Publications published as open access",
+    "under-embargo": "Under Embargo",
+    "under-embargo-caption": "Publications under embargo",
+    "secondary-publications": "Secondary Publications",
+    "published-in-dfo-journals": "Published in DFO journals"
+  },
+  "add-pub-author-dialog": {
+    "title": "Add an author to this publication",
+    "dialog-help": "Search for the author you'd want to add using their name or professional email. If you cannot find the author you are looking for, or their affiliation or email has changed, you can create a new author record."
+  },
+  "manage-pub-authors": {
+    "no-authors": "No authors identified, please add the publication authors here."
+  },
+  "pub-author-dialog": {
+    "delete-author": "Delete author",
+    "are-you-sure-you-want-to-delete-this-author": "Are you sure you want to delete this author?"
+  },
+  "invite-user-dialog": {
+    "invite-a-user": "Invite a User",
+    "help": "Invite a new user to the portal. The invite email will be sent to the user's email address and you will be able to whether they have accepted the invitation under the \"Sent Invitation\" tab in the \"Settings\" menu.",
+    "locale-hint": "The invitation email will be sent using the chosen language.",
+    "invite": "Invite"
+  },
+  "user-profile": {
+    "email-hint": "Your verified email address cannot be changed manually."
+  },
+  "user-select": {
+    "start-typing-to-search-for-a-user": "Start typing to search for a user",
+    "cant-find-the-user-youre-looking-for": "Can't find the user you're looking for?",
+    "invite-a-new-user": "Invite a new user",
+    "not-the-user-youre-looking-for": "Not the user you're looking for?"
+  },
+  "dashboard": {
+    "create-your-first-manuscript-record": "Create your first manuscript record",
+    "add-your-first-publication": "Add your first publication",
+    "add-publication": "Add Publication",
+    "in-progress": "In progress",
+    "awaiting-publication": "Awaiting Publication"
+  },
+  "under-construction": {
+    "title": "Under Construction",
+    "subtitle": "Working on it..."
   }
 }

@@ -1,5 +1,5 @@
 <template>
-    <main-page-layout icon="mdi-view-dashboard" title="Dashboard">
+    <main-page-layout icon="mdi-view-dashboard" :title="$t('common.dashboard')">
         <div class="q-pa-md">
             <div class="row">
                 <div
@@ -24,7 +24,7 @@
                             size="sm"
                             left
                         />
-                        <span>Recent</span>
+                        <span>{{ $t('common.recent') }}</span>
                     </template>
                     <template #nav>
                         <q-tabs
@@ -36,11 +36,14 @@
                             active-color="primary"
                             class="text-grey-8"
                         >
-                            <q-tab name="manuscripts" label="Manuscripts" />
+                            <q-tab
+                                name="manuscripts"
+                                :label="$t('common.manuscripts')"
+                            />
                             <q-tab name="reviews">
-                                <span class="text-weight-medium q-pr-xs"
-                                    >Reviews</span
-                                >
+                                <span class="text-weight-medium q-pr-xs">{{
+                                    $t('common.reviews')
+                                }}</span>
                                 <q-badge
                                     v-if="reviewSteps.pendingReviewCount > 0"
                                     color="primary"
@@ -52,7 +55,10 @@
                                     }}</q-badge
                                 >
                             </q-tab>
-                            <q-tab name="publications" label="Publications" />
+                            <q-tab
+                                name="publications"
+                                :label="$t('common.publications')"
+                            />
                         </q-tabs>
                         <q-separator />
                     </template>
@@ -63,7 +69,11 @@
                                 v-if="manuscripts.empty && !manuscripts.loading"
                             >
                                 <NoManuscriptExistsDiv
-                                    title="Create your first manuscript record"
+                                    :title="
+                                        $t(
+                                            'dashboard.create-your-first-manuscript-record'
+                                        )
+                                    "
                                 />
                             </template>
                             <ManuscriptList
@@ -78,7 +88,11 @@
                                     class="q-mb-md"
                                     @click="showCreateManuscript = true"
                                 >
-                                    Create Manuscript
+                                    {{
+                                        $t(
+                                            'my-manuscript-records.create-manuscript'
+                                        )
+                                    }}
                                 </q-btn>
                                 <create-manuscript-dialog
                                     v-if="showCreateManuscript"
@@ -92,7 +106,11 @@
                         <q-tab-panel name="publications" class="q-pa-none">
                             <template v-if="publications.empty">
                                 <NoPublicationExistDiv
-                                    title="Add your first publication"
+                                    :title="
+                                        $t(
+                                            'dashboard.add-your-first-publication'
+                                        )
+                                    "
                                 />
                             </template>
                             <PublicationList
@@ -106,7 +124,7 @@
                                     color="primary"
                                     @click="showCreatePublication = true"
                                 >
-                                    Add Publication
+                                    {{ $t('dashboard.add-publication') }}
                                 </q-btn>
                             </div>
                             <CreatePublicationDialog
@@ -135,6 +153,7 @@ import { PublicationResource } from '@/models/Publication/Publication';
 import NoManuscriptExistsDiv from '@/models/ManuscriptRecord/components/NoManuscriptExistsDiv.vue';
 import NoPublicationExistDiv from '@/models/Publication/components/NoPublicationExistDiv.vue';
 
+const { t } = useI18n();
 const manuscripts = useManuscriptStore();
 const reviewSteps = useManagementReviewStepStore();
 const publications = usePublicationStore();
@@ -150,21 +169,21 @@ onMounted(() => {
 
 const data = computed(() => [
     {
-        title: 'My Manuscripts',
+        title: t('common.my-manuscripts'),
         value: manuscripts.inProgressManuscripts.length,
-        subtitle: 'In progress',
+        subtitle: t('dashboard.in-progress'),
         to: '/my-manuscripts',
     },
     {
-        title: 'My Reviews',
+        title: t('common.my-reviews'),
         value: reviewSteps.pendingReviewCount,
-        subtitle: 'Pending',
+        subtitle: t('common.pending'),
         to: '/my-reviews',
     },
     {
-        title: 'My Publications',
+        title: t('common.my-publications'),
         value: publications.overduePublications,
-        subtitle: 'Awaiting Publication',
+        subtitle: t('dashboard.awaiting-publication'),
         to: '/my-publications',
     },
 ]);

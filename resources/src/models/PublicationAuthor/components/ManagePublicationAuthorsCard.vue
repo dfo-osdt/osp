@@ -1,13 +1,13 @@
 <template>
     <ContentCard>
-        <template #title>Author(s) and Affiliation(s)</template>
+        <template #title>{{
+            $t('manage-manuscript-author-card.title')
+        }}</template>
         <p>
-            Enter all authors, their affiliations and at least one corresponding
-            author. Authors will appears in the list in the order they are
-            entered.
+            {{ $t('manage-manuscript-author-card.instructions') }}
         </p>
         <q-field
-            label="Authors"
+            :label="$t('common.author', 2)"
             outlined
             stack-label
             bg-color="white"
@@ -33,10 +33,7 @@
                         />
                     </template>
                     <template v-else>
-                        <span
-                            >No authors identified, please add the publication
-                            authors here.</span
-                        >
+                        <span>{{ $t('manage-pub-authors.no-authors') }}</span>
                     </template>
                 </div>
             </template>
@@ -51,7 +48,7 @@
                 />
             </template>
             <template #error>
-                <div>At least one corresponding author is required.</div>
+                <div>{{ $t('common.validation.at-least-one-author') }}</div>
             </template>
             <AddPublicationAuthorDialog
                 v-if="showAddDialog"
@@ -68,7 +65,6 @@
 import ContentCard from '@/components/ContentCard.vue';
 import { Ref } from 'vue';
 import { useQuasar } from 'quasar';
-import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
 import {
     PublicationAuthorResource,
     PublicationAuthorResourceList,
@@ -78,6 +74,7 @@ import AddPublicationAuthorDialog from '@/models/PublicationAuthor/components/Ad
 import PublicationAuthorChip from '@/models/PublicationAuthor/components/PublicationAuthorChip.vue';
 
 const $q = useQuasar();
+const { t } = useI18n();
 const props = withDefaults(
     defineProps<{
         publicationId: number;
@@ -148,8 +145,8 @@ const addedPublicationAuthor = (
         type: 'positive',
         color: 'primary',
         message: `${
-            publicationAuthor.data.author?.data.first_name ?? 'Author'
-        } added successfully.`,
+            publicationAuthor.data.author?.data.first_name ?? t('common.author')
+        } ${t('common.added-successfully')}.`,
     });
     showAddDialog.value = false;
     loadPublicationAuthors();
@@ -167,8 +164,9 @@ async function toggleCorrespondingAuthor(
                 type: 'positive',
                 color: 'primary',
                 message: `${
-                    publicationAuthor.author?.data.first_name ?? 'Author'
-                } updated successfully.`,
+                    publicationAuthor.author?.data.first_name ??
+                    t('common.author')
+                } ${t('common.updated-successfully')}.`,
             });
             loadPublicationAuthors();
         })
@@ -183,8 +181,10 @@ const deletePublicationAuthor = async (
 ) => {
     // confirm with the user first
     $q.dialog({
-        title: 'Delete author',
-        message: 'Are you sure you want to delete this author?',
+        title: t('pub-author-dialog.delete-author'),
+        message: t(
+            'pub-author-dialog.are-you-sure-you-want-to-delete-this-author'
+        ),
         cancel: true,
     }).onOk(async () => {
         await PublicationAuthorService.delete(publicationAuthor.data)

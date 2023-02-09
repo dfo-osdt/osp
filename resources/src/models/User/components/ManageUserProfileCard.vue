@@ -1,40 +1,36 @@
 <template>
     <ContentCard secondary>
-        <template #title>User Profile</template>
+        <template #title>{{ $t('SettingsPage.user-profile') }}</template>
         <q-form v-if="user" @submit="save()">
             <div class="row q-col-gutter-md">
                 <q-input
                     v-model="user.first_name"
                     class="col-12 col-md-6"
-                    label="First Name"
+                    :label="$t('common.first-name')"
                     outlined
-                    :rules="[
-                        (val) => val.length > 0 || 'First Name is required',
-                    ]"
+                    :rules="[(val) => val.length > 0 || $t('common.required')]"
                 />
                 <q-input
                     v-model="user.last_name"
                     class="col-12 col-md-6"
-                    label="Last Name"
+                    :label="$t('common.last-name')"
                     outlined
-                    :rules="[
-                        (val) => val.length > 0 || 'Last Name is required',
-                    ]"
+                    :rules="[(val) => val.length > 0 || $t('common.required')]"
                 />
                 <q-input
                     v-model="user.email"
                     class="col-12 col-md-6"
-                    label="Email"
+                    :label="$t('common.email')"
                     outlined
                     :disable="true"
-                    hint="Your verified email address cannot be changed manually."
+                    :hint="$t('user-profile.email-hint')"
                 />
                 <LocaleSelect v-model="user.locale" />
             </div>
             <q-card-actions align="right">
                 <q-btn
                     color="primary"
-                    label="Save"
+                    :label="$t('common.save')"
                     type="submit"
                     :loading="loading"
                 />
@@ -51,6 +47,7 @@ import { useQuasar } from 'quasar';
 import LocaleSelect from '@/components/LocaleSelect.vue';
 
 const $q = useQuasar();
+const { t } = useI18n();
 
 const props = defineProps<{
     userId: number;
@@ -88,7 +85,7 @@ async function save() {
     emit('saved');
     // notify
     $q.notify({
-        message: 'User profile saved',
+        message: t('common.saved'),
         type: 'positive',
         position: 'top',
     });

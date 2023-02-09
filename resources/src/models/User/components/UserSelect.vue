@@ -7,7 +7,7 @@
         :option-disable="optionDisable"
         :option-label="optionLabel"
         clearable
-        label="User"
+        :label="$t('common.user')"
         :loading="usersLoading"
         use-input
         stack-label
@@ -20,10 +20,12 @@
             <q-item>
                 <q-item-section class="text-grey">
                     <template v-if="lastSearchTerm === ''">
-                        Start typing to search for a user
+                        {{
+                            $t('user-select.start-typing-to-search-for-a-user')
+                        }}
                     </template>
                     <template v-else>
-                        No results found for
+                        {{ $t('common.no-results-found-for') }}
                         <strong>{{ lastSearchTerm }}</strong>
                     </template>
                 </q-item-section>
@@ -31,7 +33,7 @@
             <q-separator />
             <q-item clickable @click="showInviteUserDialog = true">
                 <q-item-section>
-                    Can't find the user you're looking for?
+                    {{ $t('user-select.cant-find-the-user-youre-looking-for') }}
                 </q-item-section>
                 <q-item-section side>
                     <q-btn
@@ -41,9 +43,9 @@
                         round
                         @click="showInviteUserDialog = true"
                     >
-                        <q-tooltip class="text-body2"
-                            >Invite a new user</q-tooltip
-                        >
+                        <q-tooltip class="text-body2">{{
+                            $t('user-select.invite-a-new-user')
+                        }}</q-tooltip>
                     </q-btn>
                 </q-item-section>
             </q-item>
@@ -65,7 +67,7 @@
             <q-separator />
             <q-item clickable @click="showInviteUserDialog = true">
                 <q-item-section>
-                    Not the user you're looking for?
+                    {{ $t('user-select.not-the-user-youre-looking-for') }}
                 </q-item-section>
                 <q-item-section side>
                     <q-btn
@@ -75,9 +77,9 @@
                         round
                         @click="showInviteUserDialog = true"
                     >
-                        <q-tooltip class="text-body2"
-                            >Invite a new user</q-tooltip
-                        >
+                        <q-tooltip class="text-body2">{{
+                            $t('user-select.invite-a-new-user')
+                        }}</q-tooltip>
                     </q-btn>
                 </q-item-section>
             </q-item>

@@ -160,7 +160,18 @@
     "accepted-on": "Accepté le",
     "created-on": "Créé sur",
     "manuscripts": "Manuscrits",
-    "withdrawn-on": "Retiré le"
+    "withdrawn-on": "Retiré le",
+    "contact": "Contact",
+    "filters": "Filtres",
+    "manuscript-record": "Dossier manuscrit",
+    "no-filters-applied": "Aucun filtre appliqué",
+    "not-available": "Pas disponible",
+    "open-access": "Libre accès",
+    "published-on": "Publié le",
+    "recent": "Récent",
+    "form": "Former",
+    "page-not-found": "Page non trouvée",
+    "progress": "Progrès"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
@@ -543,5 +554,63 @@
     "create-manuscript": "Créer un manuscrit",
     "my-manuscripts-caption": "je suis le demandeur",
     "no-manuscript": "Aucun manuscrit n'existe ou n'est partagé avec vous"
+  },
+  "pub": {
+    "general-information": "Informations générales"
+  },
+  "publication-page": {
+    "attach-pub-details": "Téléchargez la copie la plus récente de votre publication au format PDF. \nNous n'autoriserons pas les utilisateurs du portail à voir ce fichier avant la fin de sa période d'embargo.",
+    "attach-publication": "Joindre le manuscrit",
+    "go-to-manuscript-record": "Aller à la notice manuscrite",
+    "mark-as-published": "Marquer comme publié",
+    "publication-date-pending": "Date de publication en attente",
+    "publication-status": "Statut de publication",
+    "publication-updated-successfully": "Publication mise à jour avec succès",
+    "title": "Publication"
+  },
+  "publications-view": {
+    "all-published-publications-details": "Toutes les publications publiées",
+    "open-access-filter-details": "Publications publiées en libre accès",
+    "published-in-dfo-journals": "Publié dans les revues du MPO",
+    "secondary-publications": "Publications secondaires",
+    "under-embargo": "Sous embargo",
+    "under-embargo-caption": "Publications sous embargo"
+  },
+  "add-pub-author-dialog": {
+    "dialog-help": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse e-mail professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse e-mail a changé, vous pouvez créer une nouvelle fiche d'auteur.",
+    "title": "Ajouter un auteur à cette publication"
+  },
+  "manage-pub-authors": {
+    "no-authors": "Aucun auteur identifié, veuillez ajouter ici les auteurs de la publication."
+  },
+  "pub-author-dialog": {
+    "are-you-sure-you-want-to-delete-this-author": "Voulez-vous vraiment supprimer cet auteur ?",
+    "delete-author": "Supprimer l'auteur"
+  },
+  "dashboard": {
+    "add-publication": "Ajouter une publication",
+    "add-your-first-publication": "Ajoutez votre première publication",
+    "awaiting-publication": "En attente de publication",
+    "create-your-first-manuscript-record": "Créez votre première notice manuscrite",
+    "in-progress": "En cours"
+  },
+  "invite-user-dialog": {
+    "help": "Invitez un nouvel utilisateur sur le portail. \nL'e-mail d'invitation sera envoyé à l'adresse e-mail de l'utilisateur et vous pourrez savoir s'il a accepté l'invitation sous l'onglet \"Invitation envoyée\" dans le menu \"Paramètres\".",
+    "invite": "Inviter",
+    "invite-a-user": "Inviter un utilisateur",
+    "locale-hint": "L'e-mail d'invitation sera envoyé dans la langue choisie."
+  },
+  "user-profile": {
+    "email-hint": "Votre adresse e-mail vérifiée ne peut pas être modifiée manuellement."
+  },
+  "user-select": {
+    "cant-find-the-user-youre-looking-for": "Vous ne trouvez pas l'utilisateur que vous recherchez ?",
+    "invite-a-new-user": "Inviter un nouvel utilisateur",
+    "not-the-user-youre-looking-for": "Ce n'est pas l'utilisateur que vous recherchez ?",
+    "start-typing-to-search-for-a-user": "Commencez à taper pour rechercher un utilisateur"
+  },
+  "under-construction": {
+    "subtitle": "J'y travaille...",
+    "title": "En cours de construction"
   }
 }

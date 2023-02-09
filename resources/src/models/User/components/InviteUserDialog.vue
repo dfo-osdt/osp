@@ -1,11 +1,8 @@
 <template>
-    <BaseDialog title="Invite a User">
+    <BaseDialog :title="$t('invite-user-dialog.invite-a-user')">
         <q-card-section>
             <p class="q-ma-md">
-                Invite a new user to the portal. The invite email will be sent
-                to the user's email address and you will be able to whether they
-                have accepted the invitation under the "Sent Invitation" tab in
-                the "Settings" menu.
+                {{ $t('invite-user-dialog.help') }}
             </p>
         </q-card-section>
         <q-banner v-if="errorMessage" dark class="bg-negative">
@@ -18,33 +15,38 @@
             <q-form @submit.prevent="onSubmit">
                 <q-input
                     v-model="firstName"
-                    label="First Name"
+                    :label="$t('common.first-name')"
                     outlined
                     :rules="nameRules"
                 />
                 <q-input
                     v-model="lastName"
-                    label="Last Name"
+                    :label="$t('common.last-name')"
                     outlined
                     :rules="nameRules"
                 />
                 <q-input
                     v-model="email"
-                    label="Email"
+                    :label="$t('common.email')"
                     type="email"
                     outlined
                     :rules="emailRules"
                 />
                 <LocaleSelect
                     v-model="locale"
-                    hint="The invitation email will be sent using the chosen language."
+                    :hint="$t('invite-user-dialog.locale-hint')"
                 />
                 <q-card-actions align="right" class="q-mt-md">
-                    <q-btn v-close-popup label="Cancel" color="primary" flat />
+                    <q-btn
+                        v-close-popup
+                        :label="$t('common.cancel')"
+                        color="primary"
+                        flat
+                    />
                     <q-btn
                         type="submit"
                         color="primary"
-                        label="Invite"
+                        :label="$t('invite-user-dialog.invite')"
                         :loading="loading"
                         :disable="loading"
                     />
@@ -62,6 +64,7 @@ import { Locale } from '@/stores/LocaleStore';
 import { UserResource, UserService } from '../User';
 
 const localStore = useLocaleStore();
+const { t } = useI18n();
 
 const emits = defineEmits<{
     (event: 'created', user: UserResource): void;
@@ -97,11 +100,12 @@ function onSubmit() {
 }
 
 // rules
-const nameRules = [(val: string) => !!val || 'Required'];
+const nameRules = [(val: string) => !!val || t('common.required')];
 
 const emailRules = [
-    (val: string) => !!val || 'Email is required',
-    (val: string) => /.+@.+\..+/.test(val) || 'Email must be valid',
+    (val: string) => !!val || t('common.required'),
+    (val: string) =>
+        /.+@.+\..+/.test(val) || t('common.validation.email-invalid'),
 ];
 </script>
 

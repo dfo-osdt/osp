@@ -7,7 +7,9 @@
             />
         </div>
         <div class="text-h1 text-primary text-weight-light">404</div>
-        <div class="text-subtitle1 text-primary">Page Not Found</div>
+        <div class="text-subtitle1 text-primary">
+            {{ $t('common.page-not-found') }}
+        </div>
         <div class="q-mt-lg">
             <q-btn
                 round

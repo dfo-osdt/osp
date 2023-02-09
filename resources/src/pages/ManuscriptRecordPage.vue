@@ -1,5 +1,5 @@
 <template>
-    <MainPageLayout title="Manuscript Record">
+    <MainPageLayout :title="$t('common.manuscript-record')">
         <template #toolbar>
             <q-tabs
                 dense
@@ -10,13 +10,16 @@
                 active-color="primary"
                 class="text-grey-8"
             >
-                <q-route-tab label="Form" :to="`/manuscript/${id}/form`" />
                 <q-route-tab
-                    label="Reviews"
+                    :label="$t('common.form')"
+                    :to="`/manuscript/${id}/form`"
+                />
+                <q-route-tab
+                    :label="$t('common.reviews')"
                     :to="`/manuscript/${id}/reviews`"
                 />
                 <q-route-tab
-                    label="Progress"
+                    :label="$t('common.progress')"
                     :to="`/manuscript/${id}/progress`"
                 />
             </q-tabs>

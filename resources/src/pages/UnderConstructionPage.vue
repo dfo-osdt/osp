@@ -7,9 +7,11 @@
             />
         </div>
         <div class="text-h4 text-primary text-weight-light">
-            Under Construction
+            {{ $t('under-construction.title') }}
         </div>
-        <div class="text-subtitle1 text-primary">Working on it...</div>
+        <div class="text-subtitle1 text-primary">
+            {{ $t('under-construction.subtitle') }}
+        </div>
         <div class="q-mt-lg">
             <q-btn round outline color="primary" @click="back()">
                 <q-icon name="mdi-step-backward" />
