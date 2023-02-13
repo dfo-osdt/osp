@@ -2905,16 +2905,16 @@
         },
         {
             "name": "orhanerday/open-ai",
-            "version": "3.4",
+            "version": "3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orhanerday/open-ai.git",
-                "reference": "cd4a45d3b6a729c108690d908c45ad1edac55651"
+                "reference": "04abf7a4b651556a6af900475de7bfeab75ec1d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orhanerday/open-ai/zipball/cd4a45d3b6a729c108690d908c45ad1edac55651",
-                "reference": "cd4a45d3b6a729c108690d908c45ad1edac55651",
+                "url": "https://api.github.com/repos/orhanerday/open-ai/zipball/04abf7a4b651556a6af900475de7bfeab75ec1d5",
+                "reference": "04abf7a4b651556a6af900475de7bfeab75ec1d5",
                 "shasum": ""
             },
             "require": {
@@ -2952,7 +2952,7 @@
             ],
             "support": {
                 "issues": "https://github.com/orhanerday/open-ai/issues",
-                "source": "https://github.com/orhanerday/open-ai/tree/3.4"
+                "source": "https://github.com/orhanerday/open-ai/tree/3.5"
             },
             "funding": [
                 {
@@ -2960,7 +2960,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-03T07:45:17+00:00"
+            "time": "2023-02-10T09:15:29+00:00"
         },
         {
             "name": "owen-it/laravel-auditing",
