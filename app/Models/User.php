@@ -11,17 +11,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use OwenIt\Auditing\Contracts\Auditable;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
 use Str;
 
-class User extends Authenticatable implements MustVerifyEmail, Auditable, HasLocalePreference
+class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use \OwenIt\Auditing\Auditable;
     use HasRoles;
     use AuthenticationLoggable;
 

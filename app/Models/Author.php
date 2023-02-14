@@ -7,15 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use OwenIt\Auditing\Contracts\Auditable;
 
-class Author extends Model implements Auditable
+class Author extends Model
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
-
-    // Audit Thresholds
-    protected $auditThreshold = 100;
 
     public $guarded = [
         'id',

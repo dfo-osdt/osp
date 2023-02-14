@@ -14,7 +14,6 @@
         "laravel/telescope": "^4.12.0",
         "laravel/tinker": "^2.8.0",
         "orhanerday/open-ai": "^3.4",
-        "owen-it/laravel-auditing": "^13.0.5",
         "predis/predis": "^2.1.1",
         "rappasoft/laravel-authentication-log": "^2.0",
         "spatie/laravel-medialibrary": "^10.7.10",

@@ -5,15 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use OwenIt\Auditing\Contracts\Auditable;
 
-class PublicationAuthor extends Model implements Auditable
+class PublicationAuthor extends Model
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
-
-    // Audit Thresholds
-    protected $auditThreshold = 100;
 
     public $guarded = [
         'id',

@@ -12,23 +12,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * App\Models\ManuscriptRecord
  */
-class ManuscriptRecord extends Model implements HasMedia, Auditable, Fundable
+class ManuscriptRecord extends Model implements HasMedia, Fundable
 {
     use HasFactory;
     use InteractsWithMedia;
-    use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
     use FundableTrait;
-
-    // Audit Thresholds
-    protected $auditThreshold = 100;
 
     public $guarded = [
         'id',

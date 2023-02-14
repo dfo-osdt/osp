@@ -10,20 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Publication extends Model implements Auditable, HasMedia, Fundable
+class Publication extends Model implements HasMedia, Fundable
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
     use InteractsWithMedia;
     use FundableTrait;
-
-    // Audit Thresholds
-    protected $auditThreshold = 100;
 
     public $guarded = [
         'id',
