@@ -77,6 +77,9 @@ class ImplicitFlowController extends Controller
      */
     public function redirect()
     {
+        // get current locale
+        $locale = app()->getLocale();
+
         $clientID = config('osp.orcid.client_id');
         $redirectURI = config('osp.orcid.redirect_uri');
 
@@ -88,7 +91,7 @@ class ImplicitFlowController extends Controller
         $encoded = urlencode($redirectURI);
 
         // build the link
-        $link = "https://orcid.org/oauth/authorize?client_id=$clientID&response_type=token&scope=/authenticate&redirect_uri=$encoded";
+        $link = "https://orcid.org/oauth/authorize?client_id=$clientID&response_type=token&scope=/authenticate&redirect_uri=$encoded&lang=$locale";
 
         // redirect to ORCID
         return redirect($link);

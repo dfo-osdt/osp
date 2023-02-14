@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.51.0.
+ * Generated for Laravel 9.52.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -2949,7 +2949,7 @@ namespace Illuminate\Support\Facades {
          * Check the result of a condition.
          *
          * @param  string  $name
-         * @param  array  $parameters
+         * @param  mixed  $parameters
          * @return bool
          *
          * @static
@@ -3833,7 +3833,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Assert if a job was pushed a number of times.
          *
-         * @param  string  $command
+         * @param  string|\Closure  $command
          * @param  int  $times
          * @return void
          *
@@ -3891,7 +3891,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Assert if a job was pushed synchronously a number of times.
          *
-         * @param  string  $command
+         * @param  string|\Closure  $command
          * @param  int  $times
          * @return void
          *
@@ -3936,7 +3936,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Assert if a job was pushed after the response was sent a number of times.
          *
-         * @param  string  $command
+         * @param  string|\Closure  $command
          * @param  int  $times
          * @return void
          *
@@ -18084,6 +18084,24 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Get a temporary upload URL for the file at the given path.
+         *
+         * @param  string  $path
+         * @param  \DateTimeInterface  $expiration
+         * @param  array  $options
+         * @return array
+         *
+         * @throws \RuntimeException
+         *
+         * @static
+         */
+        public static function temporaryUploadUrl($path, $expiration, $options = [])
+        {
+            /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+            return $instance->temporaryUploadUrl($path, $expiration, $options);
+        }
+
+        /**
          * Get an array of all files in a directory.
          *
          * @param  string|null  $directory
@@ -23889,6 +23907,48 @@ namespace  {
         {
             /** @var \Illuminate\Database\Query\Builder $instance */
             return $instance->from($table, $as);
+        }
+
+        /**
+         * Add an index hint to suggest a query index.
+         *
+         * @param  string  $index
+         * @return \Illuminate\Database\Query\Builder
+         *
+         * @static
+         */
+        public static function useIndex($index)
+        {
+            /** @var \Illuminate\Database\Query\Builder $instance */
+            return $instance->useIndex($index);
+        }
+
+        /**
+         * Add an index hint to force a query index.
+         *
+         * @param  string  $index
+         * @return \Illuminate\Database\Query\Builder
+         *
+         * @static
+         */
+        public static function forceIndex($index)
+        {
+            /** @var \Illuminate\Database\Query\Builder $instance */
+            return $instance->forceIndex($index);
+        }
+
+        /**
+         * Add an index hint to ignore a query index.
+         *
+         * @param  string  $index
+         * @return \Illuminate\Database\Query\Builder
+         *
+         * @static
+         */
+        public static function ignoreIndex($index)
+        {
+            /** @var \Illuminate\Database\Query\Builder $instance */
+            return $instance->ignoreIndex($index);
         }
 
         /**

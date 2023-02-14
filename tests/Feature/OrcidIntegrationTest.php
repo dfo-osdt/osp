@@ -19,5 +19,5 @@ test('check OpenID redirect works', function () {
     $response = $this->actingAs($user)->get('api/user/orcid/verify');
 
     expect($response->status())->toBe(302);
-    expect($response->headers->get('Location'))->toBe("https://orcid.org/oauth/authorize?client_id=$client_id&response_type=token&scope=/authenticate&redirect_uri=$encoded");
+    expect($response->headers->get('Location'))->toBe("https://orcid.org/oauth/authorize?client_id=$client_id&response_type=token&scope=/authenticate&redirect_uri=$encoded&lang=en");
 });
