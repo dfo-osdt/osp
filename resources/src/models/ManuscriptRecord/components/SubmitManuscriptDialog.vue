@@ -1,7 +1,7 @@
 <template>
     <BaseDialog
         ref="dialog"
-        title="$t('submit-manuscript-dialog.title')"
+        :title="$t('submit-manuscript-dialog.title')"
         persistent
     >
         <q-form
@@ -64,7 +64,7 @@
                     </p>
                     <UserSelect
                         v-model="divisionManagerUserId"
-                        label="$t('common.division-manager')"
+                        :label="$t('common.division-manager')"
                         class="q-ma-md"
                         :disabled-emails="authorEmails"
                         :disabled-ids="[ownerId]"
