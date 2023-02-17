@@ -17,13 +17,12 @@ class GeneratePLSController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request)
     {
         $validated = $request->validate([
-            'abstract' => 'required|string|max:value:2000',
+            'abstract' => 'required|string|max:2000',
         ]);
 
         // clean up the abstract - it could have html tags we don't want
@@ -65,7 +64,6 @@ class GeneratePLSController extends Controller
      * Build the OpenAI query options.
      *
      * @param  string  $abstract
-     * @return array
      */
     private function buildOpenAiPrompt($abstract): array
     {
