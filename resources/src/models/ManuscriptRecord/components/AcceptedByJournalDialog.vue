@@ -31,13 +31,13 @@
                 <q-card-actions align="right">
                     <q-btn
                         v-close-popup
-                        label="$t('common.cancel')"
+                        :label="$t('common.cancel')"
                         color="secondary"
                         outline
                     />
                     <q-btn
                         color="primary"
-                        label="$t('common.update')"
+                        :label="$t('common.update')"
                         type="submit"
                         :loading="loading"
                     />
