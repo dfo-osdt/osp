@@ -1201,24 +1201,24 @@
         },
         {
             "name": "laracasts/cypress",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laracasts/cypress.git",
-                "reference": "9a9e5d25a51d2cbb410393e6a0d9883aa3304bf5"
+                "reference": "dd4e61188d4edaf65ffa18851a5df38d0fa0619a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laracasts/cypress/zipball/9a9e5d25a51d2cbb410393e6a0d9883aa3304bf5",
-                "reference": "9a9e5d25a51d2cbb410393e6a0d9883aa3304bf5",
+                "url": "https://api.github.com/repos/laracasts/cypress/zipball/dd4e61188d4edaf65ffa18851a5df38d0fa0619a",
+                "reference": "dd4e61188d4edaf65ffa18851a5df38d0fa0619a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
                 "php": "^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.0|^7.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0",
                 "phpunit/phpunit": "^8.0|^9.5.10",
                 "spatie/laravel-ray": "^1.29"
             },
@@ -1254,9 +1254,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laracasts/cypress/issues",
-                "source": "https://github.com/laracasts/cypress/tree/3.0.0"
+                "source": "https://github.com/laracasts/cypress/tree/3.0.1"
             },
-            "time": "2022-06-27T13:49:35+00:00"
+            "time": "2023-02-16T20:00:16+00:00"
         },
         {
             "name": "laravel/framework",
@@ -1583,16 +1583,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v4.13.1",
+            "version": "v4.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "f8afaccfb5b636aa20735e0a390ab312a6f57c65"
+                "reference": "34a259cf19a73cc3b9b31f49c3c85595afcfbb70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/f8afaccfb5b636aa20735e0a390ab312a6f57c65",
-                "reference": "f8afaccfb5b636aa20735e0a390ab312a6f57c65",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/34a259cf19a73cc3b9b31f49c3c85595afcfbb70",
+                "reference": "34a259cf19a73cc3b9b31f49c3c85595afcfbb70",
                 "shasum": ""
             },
             "require": {
@@ -1646,9 +1646,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/telescope/issues",
-                "source": "https://github.com/laravel/telescope/tree/v4.13.1"
+                "source": "https://github.com/laravel/telescope/tree/v4.13.2"
             },
-            "time": "2023-02-06T14:37:41+00:00"
+            "time": "2023-02-16T15:32:51+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1720,16 +1720,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.8",
+            "version": "2.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "c493585c130544c4e91d2e0e131e6d35cb0cbc47"
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c493585c130544c4e91d2e0e131e6d35cb0cbc47",
-                "reference": "c493585c130544c4e91d2e0e131e6d35cb0cbc47",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c1e114f74e518daca2729ea8c4bf1167038fa4b5",
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5",
                 "shasum": ""
             },
             "require": {
@@ -1822,7 +1822,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-10T16:02:17+00:00"
+            "time": "2023-02-15T14:07:24+00:00"
         },
         {
             "name": "league/config",
@@ -1908,16 +1908,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.12.2",
+            "version": "3.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "f6377c709d2275ed6feaf63e44be7a7162b0e77f"
+                "reference": "81e87e74dd5213795c7846d65089712d2dda90ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f6377c709d2275ed6feaf63e44be7a7162b0e77f",
-                "reference": "f6377c709d2275ed6feaf63e44be7a7162b0e77f",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/81e87e74dd5213795c7846d65089712d2dda90ce",
+                "reference": "81e87e74dd5213795c7846d65089712d2dda90ce",
                 "shasum": ""
             },
             "require": {
@@ -1979,7 +1979,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.12.2"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.12.3"
             },
             "funding": [
                 {
@@ -1995,7 +1995,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-19T12:02:19+00:00"
+            "time": "2023-02-18T15:32:41+00:00"
         },
         {
             "name": "league/glide",
@@ -4084,16 +4084,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "10.7.10",
+            "version": "10.7.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "5c9fb62f8d4019e7fc2741d9812849661d78ed15"
+                "reference": "a6d562d2226c2b339db8299a3a02bacd031edabf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/5c9fb62f8d4019e7fc2741d9812849661d78ed15",
-                "reference": "5c9fb62f8d4019e7fc2741d9812849661d78ed15",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/a6d562d2226c2b339db8299a3a02bacd031edabf",
+                "reference": "a6d562d2226c2b339db8299a3a02bacd031edabf",
                 "shasum": ""
             },
             "require": {
@@ -4176,7 +4176,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.7.10"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.7.11"
             },
             "funding": [
                 {
@@ -4188,7 +4188,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-19T07:58:23+00:00"
+            "time": "2023-02-17T08:44:20+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -7428,16 +7428,16 @@
         },
         {
             "name": "zbateson/mail-mime-parser",
-            "version": "2.3.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zbateson/mail-mime-parser.git",
-                "reference": "d59e0c5eeb1442fca94bcb3b9d3c6be66318a500"
+                "reference": "20b3e48eb799537683780bc8782fbbe9bc25934a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zbateson/mail-mime-parser/zipball/d59e0c5eeb1442fca94bcb3b9d3c6be66318a500",
-                "reference": "d59e0c5eeb1442fca94bcb3b9d3c6be66318a500",
+                "url": "https://api.github.com/repos/zbateson/mail-mime-parser/zipball/20b3e48eb799537683780bc8782fbbe9bc25934a",
+                "reference": "20b3e48eb799537683780bc8782fbbe9bc25934a",
                 "shasum": ""
             },
             "require": {
@@ -7499,7 +7499,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-30T19:04:55+00:00"
+            "time": "2023-02-14T22:58:03+00:00"
         },
         {
             "name": "zbateson/mb-wrapper",
