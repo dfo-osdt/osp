@@ -8,8 +8,6 @@ interface Fundable
 {
     /**
      * Get the FundingSources that fund this Fundable.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function fundingSources(): MorphMany;
 }

@@ -10,7 +10,6 @@ trait PaginationLimitTrait
      * Get the limit from the request
      *
      * @param Request request with "limit" value
-     * @return int
      */
     public function getLimitFromRequest(Request $request, int $default = null, int $max = null): int
     {

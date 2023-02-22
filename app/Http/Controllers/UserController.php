@@ -8,6 +8,8 @@ use App\Queries\UserListQuery;
 use App\Traits\PaginationLimitTrait;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserController extends Controller
 {
@@ -15,10 +17,8 @@ class UserController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): ResourceCollection
     {
         $limit = $this->getLimitFromRequest($request);
         $userListQuery = new UserListQuery($request);
@@ -27,22 +27,9 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }
-
-    /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(User $user): JsonResource
     {
         Gate::authorize('view', $user);
 
@@ -54,11 +41,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\Resources\Json\JsonResource
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): JsonResource
     {
         Gate::authorize('update', $user);
 
@@ -75,16 +60,5 @@ class UserController extends Controller
         $user->refresh();
 
         return new UserResource($user);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        //
     }
 }

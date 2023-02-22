@@ -7,6 +7,7 @@ use App\Models\Journal;
 use App\Queries\JournalListQuery;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class JournalController extends Controller
 {
@@ -14,10 +15,8 @@ class JournalController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResource
     {
         $limit = $this->getLimitFromRequest($request);
         $journalListQuery = new JournalListQuery($request);
@@ -26,47 +25,10 @@ class JournalController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Journal  $journal
-     * @return \Illuminate\Http\Response
      */
-    public function show(Journal $journal)
+    public function show(Journal $journal): JsonResource
     {
         return new JournalResource($journal);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Journal  $journal
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Journal $journal)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Journal  $journal
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Journal $journal)
-    {
-        //
     }
 }

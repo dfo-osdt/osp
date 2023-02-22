@@ -8,6 +8,7 @@ use App\Queries\ManagementReviewStepListQuery;
 use App\Traits\PaginationLimitTrait;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserManagementReviewStepsController extends Controller
 {
@@ -18,10 +19,12 @@ class UserManagementReviewStepsController extends Controller
      *
      * @return void
      */
-    public function index(Request $request)
+    public function index(Request $request): ResourceCollection
     {
+        $userId = Auth::id();
+
         $limit = $this->getLimitFromRequest($request);
-        $baseQuery = ManagementReviewStep::where('user_id', Auth::user()->id)->with('manuscriptRecord.user', 'previousStep.user');
+        $baseQuery = ManagementReviewStep::where('user_id', $userId)->with('manuscriptRecord.user', 'previousStep.user');
         $listQuery = new ManagementReviewStepListQuery($request, $baseQuery);
 
         return ManagementReviewStepResource::collection($listQuery->paginate($limit)->appends($request->query()));

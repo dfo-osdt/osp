@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class EmailVerificationRequest extends FormRequest
 {
@@ -31,40 +31,9 @@ class EmailVerificationRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
-     * Fulfill the email verification request.
-     *
-     * @return void
-     */
-    public function fulfill()
-    {
-        // $user = User::findOrFail('email', $this->email);
-
-        // if (! $user->hasVerifiedEmail()) {
-        //     $user->markEmailAsVerified();
-
-        //     event(new Verified($this->user()));
-        // }
-    }
-
-    /**
      * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
      */
-    public function withValidator($validator)
+    public function withValidator(Validator $validator): Validator
     {
         return $validator;
     }

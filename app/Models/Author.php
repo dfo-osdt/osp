@@ -38,8 +38,6 @@ class Author extends Model
 
     /**
      * Make sure that the email is always stored as lowercase to prevent duplicates.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function email(): Attribute
     {

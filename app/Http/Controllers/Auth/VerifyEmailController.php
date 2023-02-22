@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class VerifyEmailController extends Controller
 {
@@ -13,9 +14,8 @@ class VerifyEmailController extends Controller
      * Mark the authenticated user's email address as verified.
      *
      * @param  \Illuminate\Foundation\Auth\EmailVerificationRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): \Illuminate\Http\RedirectResponse
     {
         // if user does not exist redirect to invalid signature
         if (! User::exists('id', $request->route('id'))) {
@@ -40,7 +40,5 @@ class VerifyEmailController extends Controller
         return redirect()->intended(
             config('app.frontend_url').'#/auth/login?verified=1&email='.$user->email
         );
-
-        return response()->noContent();
     }
 }

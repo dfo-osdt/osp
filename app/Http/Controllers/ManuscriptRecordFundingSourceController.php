@@ -7,15 +7,16 @@ use App\Models\FundingSource;
 use App\Models\ManuscriptRecord;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
 class ManuscriptRecordFundingSourceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(ManuscriptRecord $manuscriptRecord)
+    public function index(ManuscriptRecord $manuscriptRecord): ResourceCollection
     {
         Gate::authorize('view', $manuscriptRecord);
 
@@ -26,11 +27,8 @@ class ManuscriptRecordFundingSourceController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(ManuscriptRecord $manuscriptRecord, Request $request)
+    public function store(ManuscriptRecord $manuscriptRecord, Request $request): JsonResource
     {
         Gate::authorize('update', $manuscriptRecord);
 
@@ -53,11 +51,8 @@ class ManuscriptRecordFundingSourceController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\FundingSource  $fundingSource
-     * @return \Illuminate\Http\Response
      */
-    public function show(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource)
+    public function show(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource): JsonResource
     {
         Gate::authorize('view', $manuscriptRecord);
 
@@ -66,12 +61,8 @@ class ManuscriptRecordFundingSourceController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\FundingSource  $fundingSource
-     * @return \Illuminate\Http\Response
      */
-    public function update(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource, Request $request)
+    public function update(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource, Request $request): JsonResource
     {
         Gate::authorize('update', $manuscriptRecord);
 
@@ -92,11 +83,8 @@ class ManuscriptRecordFundingSourceController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\FundingSource  $fundingSource
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource)
+    public function destroy(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource): Response
     {
         Gate::authorize('update', $manuscriptRecord);
 

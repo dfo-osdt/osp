@@ -79,8 +79,6 @@ class UpdateScopusJournals extends Command
             2404, // Microbiology
         ]);
 
-        // temporarily disable mass assignment protection for Journal
-        Journal::unguard();
         $start = now();
         // go through the rows, only import ones that have an ASJC code we want
         $rows->each(function ($row) use ($asjcCodes) {
@@ -109,19 +107,26 @@ class UpdateScopusJournals extends Command
 
                 $this->info($row['Source Title (Medline-sourced journals are indicated in Green)']);
 
-                Journal::updateOrCreate(
-                    [
-                        'scopus_source_record_id' => $id,
-                    ],
-                    [
+                $journal = Journal::where('scopus_source_record_id', $id)->first();
+
+                if ($journal) {
+                    // update the title and publisher if they have changed
+                    if ($journal->title_en != $title_en || $journal->publisher != $publisher) {
+                        $journal->title_en = $title_en;
+                        $journal->publisher = $publisher;
+                        $journal->save();
+                    }
+                } else {
+                    // create a new journal
+                    Journal::forceCreate([
                         'title_en' => $title_en,
                         'publisher' => $publisher,
-                    ]
-                );
+                        'scopus_source_record_id' => $id,
+                    ]);
+                }
             }
         });
 
-        Journal::unguard(false);
         $time = now()->diffInSeconds($start);
         $this->info("Completed in {$time} seconds.");
 

@@ -66,8 +66,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
 
     /**
      * Make sure that the email is always stored as lowercase to prevent duplicates.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function email(): Attribute
     {
@@ -79,8 +77,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
 
     /**
      * Get the full name of the user.
-     *
-     * @return string
      */
     public function getFullNameAttribute(): string
     {

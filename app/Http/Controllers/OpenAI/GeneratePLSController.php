@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OpenAI;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Orhanerday\OpenAi\OpenAi;
 
@@ -16,10 +17,8 @@ class GeneratePLSController extends Controller
 
     /**
      * Handle the incoming request.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'abstract' => 'required|string|max:2000',
@@ -80,7 +79,7 @@ class GeneratePLSController extends Controller
         ];
     }
 
-    private function error($message = 'Feature temporarily unavailable.')
+    private function error($message = 'Feature temporarily unavailable.'): JsonResponse
     {
         return response()->json([
             'message' => $message,

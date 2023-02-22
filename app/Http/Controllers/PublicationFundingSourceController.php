@@ -7,15 +7,16 @@ use App\Models\FundingSource;
 use App\Models\Publication;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
 class PublicationFundingSourceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Publication $publication)
+    public function index(Publication $publication): ResourceCollection
     {
         Gate::authorize('view', $publication);
 
@@ -26,11 +27,8 @@ class PublicationFundingSourceController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Publication $publication, Request $request)
+    public function store(Publication $publication, Request $request): JsonResource
     {
         Gate::authorize('update', $publication);
 
@@ -53,11 +51,8 @@ class PublicationFundingSourceController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\FundingSource  $fundingSource
-     * @return \Illuminate\Http\Response
      */
-    public function show(Publication $publication, FundingSource $fundingSource)
+    public function show(Publication $publication, FundingSource $fundingSource): JsonResource
     {
         Gate::authorize('view', $publication);
 
@@ -66,12 +61,8 @@ class PublicationFundingSourceController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\FundingSource  $fundingSource
-     * @return \Illuminate\Http\Response
      */
-    public function update(Publication $publication, Request $request, FundingSource $fundingSource)
+    public function update(Publication $publication, Request $request, FundingSource $fundingSource): JsonResource
     {
         Gate::authorize('update', $publication);
 
@@ -93,10 +84,9 @@ class PublicationFundingSourceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\FundingSource  $fundingSource
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\Resources\Json\JsonResource
      */
-    public function destroy(Publication $publication, FundingSource $fundingSource)
+    public function destroy(Publication $publication, FundingSource $fundingSource): Response
     {
         Gate::authorize('update', $publication);
 

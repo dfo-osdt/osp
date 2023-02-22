@@ -13,6 +13,7 @@ use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Validation\Rule;
 use Validator;
 
@@ -20,10 +21,8 @@ class ManagementReviewStepController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(ManuscriptRecord $manuscriptRecord)
+    public function index(ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('view', $manuscriptRecord);
 
@@ -33,33 +32,9 @@ class ManagementReviewStepController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, ManuscriptRecord $manuscriptRecord)
-    {
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ManagementReviewStep  $managementReviewStep
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
-    {
-    }
-
-    /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ManagementReviewStep  $managementReviewStep
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
+    public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
         Gate::authorize('update', $managementReviewStep);
 
@@ -72,18 +47,8 @@ class ManagementReviewStepController extends Controller
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ManagementReviewStep  $managementReviewStep
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
-    {
-    }
-
     // actions
-    public function approve(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
+    public function approve(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
         Gate::authorize('update', $managementReviewStep);
 
@@ -127,7 +92,7 @@ class ManagementReviewStepController extends Controller
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
-    public function withhold(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
+    public function withhold(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
         Gate::authorize('update', $managementReviewStep);
 
@@ -176,7 +141,7 @@ class ManagementReviewStepController extends Controller
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
-    public function reassign(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep)
+    public function reassign(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
         Gate::authorize('update', $managementReviewStep);
 

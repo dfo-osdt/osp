@@ -8,6 +8,7 @@ use App\Queries\ManuscriptRecordQuery;
 use App\Traits\PaginationLimitTrait;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserManuscriptRecordController extends Controller
 {
@@ -15,10 +16,8 @@ class UserManuscriptRecordController extends Controller
 
     /**
      * Display a listing of manuscripts a user can see.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): ResourceCollection
     {
         $limit = $this->getLimitFromRequest(request());
 
@@ -40,7 +39,6 @@ class UserManuscriptRecordController extends Controller
             ->orWhereHas('managementReviewSteps', function ($q) use ($userId) {
                 $q->where('user_id', $userId);
             })
-            ->get()
             ->pluck('id');
 
         $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)

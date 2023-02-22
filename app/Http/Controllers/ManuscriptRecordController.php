@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Rules\UserNotAManuscriptAuthor;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,22 +25,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ManuscriptRecordController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResource
     {
         Gate::authorize('create', ManuscriptRecord::class);
 
@@ -61,11 +49,8 @@ class ManuscriptRecordController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\ManuscriptRecord  $manuscriptRecord
-     * @return \Illuminate\Http\Response
      */
-    public function show(ManuscriptRecord $manuscriptRecord)
+    public function show(ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('view', $manuscriptRecord);
 
@@ -74,12 +59,8 @@ class ManuscriptRecordController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ManuscriptRecord  $manuscriptRecord
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ManuscriptRecord $manuscriptRecord)
+    public function update(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('update', $manuscriptRecord);
 
@@ -100,19 +81,8 @@ class ManuscriptRecordController extends Controller
         return $this->defaultResource($manuscriptRecord);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ManuscriptRecord  $manuscriptRecord
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ManuscriptRecord $manuscriptRecord)
-    {
-        //
-    }
-
     /** Attach a PDF file to this record */
-    public function attachPDF(Request $request, ManuscriptRecord $manuscriptRecord)
+    public function attachPDF(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('attachManuscript', $manuscriptRecord);
 
@@ -126,7 +96,7 @@ class ManuscriptRecordController extends Controller
     }
 
     /** Download PDF attached to this record - return NoContent if empty */
-    public function downloadPDF(ManuscriptRecord $manuscriptRecord)
+    public function downloadPDF(ManuscriptRecord $manuscriptRecord): mixed
     {
         Gate::authorize('view', $manuscriptRecord);
 
@@ -140,7 +110,7 @@ class ManuscriptRecordController extends Controller
     }
 
     /** Submit the manuscript record for review */
-    public function submitForReview(Request $request, ManuscriptRecord $manuscriptRecord)
+    public function submitForReview(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('submitForReview', $manuscriptRecord);
 
@@ -174,7 +144,7 @@ class ManuscriptRecordController extends Controller
     }
 
     /** Withdraw this manuscript - it will not be published */
-    public function withdraw(ManuscriptRecord $manuscriptRecord)
+    public function withdraw(ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('withdraw', $manuscriptRecord);
 
@@ -188,7 +158,7 @@ class ManuscriptRecordController extends Controller
     }
 
     /** Mark the manuscript as submitted */
-    public function submitted(Request $request, ManuscriptRecord $manuscriptRecord)
+    public function submitted(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('markSubmitted', $manuscriptRecord);
 
@@ -207,7 +177,7 @@ class ManuscriptRecordController extends Controller
     }
 
     /** Mark the manuscript as accepted */
-    public function accepted(Request $request, ManuscriptRecord $manuscriptRecord)
+    public function accepted(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('markAccepted', $manuscriptRecord);
 
@@ -236,7 +206,7 @@ class ManuscriptRecordController extends Controller
     }
 
     /** Default Resource with eager loaded properties */
-    private function defaultResource(ManuscriptRecord $manuscriptRecord)
+    private function defaultResource(ManuscriptRecord $manuscriptRecord): JsonResource
     {
         $relationships = collect('user');
         if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {

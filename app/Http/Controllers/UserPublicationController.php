@@ -8,6 +8,7 @@ use App\Queries\PublicationListQuery;
 use App\Traits\PaginationLimitTrait;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserPublicationController extends Controller
 {
@@ -18,7 +19,7 @@ class UserPublicationController extends Controller
      *
      * @return void
      */
-    public function index(Request $request)
+    public function index(Request $request): ResourceCollection
     {
         $limit = $this->getLimitFromRequest($request);
 
@@ -37,7 +38,7 @@ class UserPublicationController extends Controller
                     $q->where('user_id', $userId);
                 });
             })
-            ->get()->pluck('id');
+            ->pluck('id');
 
         $baseQuery = Publication::whereIn('id', $publicationIds)
             ->with('manuscriptRecord',

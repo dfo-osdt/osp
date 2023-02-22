@@ -8,16 +8,16 @@ use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
 class ManuscriptAuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(ManuscriptRecord $manuscriptRecord)
+    public function index(ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('view', $manuscriptRecord);
         $manuscriptAuthors = $manuscriptRecord->manuscriptAuthors()->with('author', 'organization')->orderBy('id')->get();
@@ -27,11 +27,8 @@ class ManuscriptAuthorController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, ManuscriptRecord $manuscriptRecord)
+    public function store(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('update', $manuscriptRecord);
 
@@ -58,11 +55,8 @@ class ManuscriptAuthorController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
-     * @return \Illuminate\Http\Response
      */
-    public function show(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
+    public function show(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor): JsonResource
     {
         Gate::authorize('view', $manuscriptRecord);
 
@@ -73,12 +67,8 @@ class ManuscriptAuthorController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
+    public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor): JsonResource
     {
         Gate::authorize('update', $manuscriptRecord);
 
@@ -102,11 +92,8 @@ class ManuscriptAuthorController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor)
+    public function destroy(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor): Response
     {
         Gate::authorize('delete', $manuscriptAuthor);
 

@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ChangePasswordRequest;
+use Illuminate\Http\JsonResponse;
 
 class ChangePasswordController extends Controller
 {
     /**
      * Change the password of the user
      */
-    public function changePassword(ChangePasswordRequest $request)
+    public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
         $request->updatePassword();
 
-        return ['status' => __('passwords.changed')];
+        return response()->json(['status' => __('passwords.changed')]);
     }
 }

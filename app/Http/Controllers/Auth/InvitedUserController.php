@@ -14,13 +14,13 @@ use Str;
 
 class InvitedUserController extends Controller
 {
-    public function invite(Request $request)
+    public function invite(Request $request): UserResource
     {
         // validate the request
         $validated = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'bail|required|email|unique:users,email',
             'locale' => 'string|in:en,fr',
         ]);
 
@@ -53,7 +53,7 @@ class InvitedUserController extends Controller
         return UserResource::make($user);
     }
 
-    public function accept($id, $hash)
+    public function accept($id, $hash): \Illuminate\Http\RedirectResponse
     {
         $user = User::find($id);
         if (! $user) {

@@ -22,7 +22,6 @@ class SendManuscriptManagementReviewCompleteNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\ManuscriptManagementReviewComplete  $event
      * @return void
      */
     public function handle(ManuscriptManagementReviewComplete $event)

@@ -22,7 +22,6 @@ class SendManagementReviewNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\ManagementReviewStepCreated  $event
      * @return void
      */
     public function handle(ManagementReviewStepCreated $event)

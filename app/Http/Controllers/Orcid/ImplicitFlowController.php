@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Orcid;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthorResource;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 
@@ -15,11 +17,8 @@ class ImplicitFlowController extends Controller
      * an access token. The access token is then used to retrieve the ORCID iD of the user
      * directly from ORCID. With the implicit flow, the token is short-lived and is only
      * valid for 10 minutes.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResource
     {
         // validate the request
         $request->validate([
@@ -56,10 +55,9 @@ class ImplicitFlowController extends Controller
      * Documentation: https://info.orcid.org/documentation/api-tutorials/api-tutorial-get-and-authenticated-orcid-id/
      *
      *
-     * @param  string  $accessToken
-     * @return string
+     * @throws \Illuminate\Validation\ValidationException
      */
-    protected function getOrcidId(string $accessToken)
+    protected function getOrcidId(string $accessToken): string
     {
         $response = Http::withToken($accessToken)->get('https://orcid.org/oauth/userinfo');
 
@@ -75,7 +73,7 @@ class ImplicitFlowController extends Controller
      *
      * @return void
      */
-    public function redirect()
+    public function redirect(): RedirectResponse
     {
         // get current locale
         $locale = app()->getLocale();

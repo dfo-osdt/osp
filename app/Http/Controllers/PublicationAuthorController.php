@@ -8,16 +8,17 @@ use App\Models\Publication;
 use App\Models\PublicationAuthor;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
 class PublicationAuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Publication $publication)
+    public function index(Publication $publication): ResourceCollection
     {
         Gate::authorize('view', $publication);
         $publicationAuthors = $publication->publicationAuthors()->with('author', 'organization')->orderBy('id')->get();
@@ -27,11 +28,8 @@ class PublicationAuthorController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Publication $publication)
+    public function store(Request $request, Publication $publication): JsonResource
     {
         Gate::authorize('update', $publication);
 
@@ -58,11 +56,8 @@ class PublicationAuthorController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\ManuscriptAuthor  $manuscriptAuthor
-     * @return \Illuminate\Http\Response
      */
-    public function show(Publication $publication, PublicationAuthor $publicationAuthor)
+    public function show(Publication $publication, PublicationAuthor $publicationAuthor): JsonResource
     {
         Gate::authorize('view', $publication);
 
@@ -74,11 +69,9 @@ class PublicationAuthorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PublicationAuthor  $publicationAuthor
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\Resources\Json\JsonResource
      */
-    public function update(Request $request, Publication $publication, PublicationAuthor $publicationAuthor)
+    public function update(Request $request, Publication $publication, PublicationAuthor $publicationAuthor): JsonResource
     {
         Gate::authorize('update', $publication);
 
@@ -102,11 +95,8 @@ class PublicationAuthorController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PublicationAuthor  $publicationAuthor
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Publication $publication, PublicationAuthor $publicationAuthor)
+    public function destroy(Publication $publication, PublicationAuthor $publicationAuthor): Response
     {
         Gate::authorize('delete', $publicationAuthor);
 

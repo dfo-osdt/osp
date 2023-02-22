@@ -22,7 +22,6 @@ class SendManuscriptRecordToReviewNotifications implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\ManuscriptRecordToReviewEvent  $event
      * @return void
      */
     public function handle(ManuscriptRecordToReviewEvent $event)

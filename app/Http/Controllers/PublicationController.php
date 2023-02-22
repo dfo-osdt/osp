@@ -11,6 +11,8 @@ use App\Rules\Doi;
 use App\Traits\PaginationLimitTrait;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
@@ -22,10 +24,8 @@ class PublicationController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): ResourceCollection
     {
         $limit = $this->getLimitFromRequest($request);
 
@@ -40,11 +40,8 @@ class PublicationController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResource
     {
         // can this user create a publication?
         $this->authorize('create', Publication::class);
@@ -71,11 +68,8 @@ class PublicationController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Publication  $publication
-     * @return \Illuminate\Http\Response
      */
-    public function show(Publication $publication)
+    public function show(Publication $publication): JsonResource
     {
         Gate::authorize('view', $publication);
 
@@ -84,12 +78,8 @@ class PublicationController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Publication  $publication
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Publication $publication)
+    public function update(Request $request, Publication $publication): JsonResource
     {
         Gate::authorize('update', $publication);
 
@@ -128,7 +118,7 @@ class PublicationController extends Controller
     }
 
     /** Attach a PDF file to this publication */
-    public function attachPDF(Request $request, Publication $publication)
+    public function attachPDF(Request $request, Publication $publication): JsonResource
     {
         Gate::authorize('update', $publication);
 
@@ -142,7 +132,7 @@ class PublicationController extends Controller
     }
 
     /** return pdf media resource if it exists null response otherwise */
-    public function getPDFInfo(Request $request, Publication $publication)
+    public function getPDFInfo(Request $request, Publication $publication): mixed
     {
         Gate::authorize('view', $publication);
 
@@ -156,7 +146,7 @@ class PublicationController extends Controller
     }
 
     /** Download PDF attached to this publication - return NoContent if empty */
-    public function downloadPDF(Publication $publication)
+    public function downloadPDF(Publication $publication): mixed
     {
         Gate::authorize('viewPdf', $publication);
 
@@ -170,20 +160,9 @@ class PublicationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Publication  $publication
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Publication $publication)
-    {
-        //
-    }
-
-    /**
      * Default Resource with eager loaded relationships
      */
-    private function defaultResource(Publication $publication)
+    private function defaultResource(Publication $publication): JsonResource
     {
         $relationship = collect([
             'journal',
