@@ -32,6 +32,7 @@
         "laravel/sail": "^1.18.1",
         "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^6.4.0",
+        "nunomaduro/larastan": "^2.0",
         "orangehill/iseed": "^3.0.2",
         "pestphp/pest": "^1.22.3",
         "pestphp/pest-plugin-laravel": "^1.4",

@@ -59,7 +59,7 @@ class PublicationController extends Controller
         ]);
 
         // create the publication
-        $publication = Publication::make($validated);
+        $publication = new Publication($validated);
         $publication->user_id = $request->user()->id;
         $publication->save();
 

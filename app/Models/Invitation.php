@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Str;
 use URL;
 
@@ -30,7 +31,7 @@ class Invitation extends Model
     /**
      * Get the user that owns the invitation.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -38,7 +39,7 @@ class Invitation extends Model
     /**
      * Get the user that invited the user.
      */
-    public function invitedByUser()
+    public function invitedByUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'invited_by');
     }

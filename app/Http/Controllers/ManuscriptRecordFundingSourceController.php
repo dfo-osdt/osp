@@ -38,7 +38,7 @@ class ManuscriptRecordFundingSourceController extends Controller
             'description' => 'nullable|string|max:1500',
         ]);
 
-        $fundingSource = FundingSource::make([
+        $fundingSource = new FundingSource([
             'funder_id' => $validated['funder_id'],
             'title' => $validated['title'],
             'description' => $validated['description'],

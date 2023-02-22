@@ -19,19 +19,19 @@ namespace App\Models{
      * @property string $first_name
      * @property string $last_name
      * @property string|null $orcid
+     * @property bool|null $orcid_verified
+     * @property string|null $orcid_access_token
      * @property string $email
      * @property int $organization_id
      * @property int|null $user_id
-     * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
-     * @property-read int|null $audits_count
      * @property-read string $apa_name
      * @property-read string $full_name
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ManuscriptAuthor[] $manuscriptAuthors
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptAuthor> $manuscriptAuthors
      * @property-read int|null $manuscript_authors_count
      * @property-read \App\Models\Organization $organization
      * @property-read \App\Models\User|null $user
      *
-     * @method static \Database\Factories\AuthorFactory factory(...$parameters)
+     * @method static \Database\Factories\AuthorFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Author newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Author newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Author query()
@@ -41,11 +41,76 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|Author whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Author whereLastName($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Author whereOrcid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Author whereOrcidAccessToken($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Author whereOrcidVerified($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Author whereOrganizationId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Author whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Author whereUserId($value)
      */
-    class Author extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable
+    class Author extends \Eloquent
+    {
+    }
+}
+
+namespace App\Models{
+    /**
+     * App\Models\Funder
+     *
+     * @property int $id
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property string $name_en
+     * @property string $name_fr
+     * @property int|null $organization_id
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FundingSource> $fundingSources
+     * @property-read int|null $funding_sources_count
+     * @property-read \App\Models\Organization|null $organization
+     *
+     * @method static \Database\Factories\FunderFactory factory($count = null, $state = [])
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder newModelQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder newQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder query()
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder whereNameEn($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder whereNameFr($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder whereOrganizationId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Funder whereUpdatedAt($value)
+     */
+    class Funder extends \Eloquent
+    {
+    }
+}
+
+namespace App\Models{
+    /**
+     * App\Models\FundingSource
+     *
+     * @property int $id
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property string $title
+     * @property string|null $description
+     * @property int $funder_id
+     * @property string $fundable_type
+     * @property int $fundable_id
+     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $fundable
+     * @property-read \App\Models\Funder $funder
+     *
+     * @method static \Database\Factories\FundingSourceFactory factory($count = null, $state = [])
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource newModelQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource newQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource query()
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource whereFundableId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource whereFundableType($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource whereFunderId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource whereTitle($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|FundingSource whereUpdatedAt($value)
+     */
+    class FundingSource extends \Eloquent
     {
     }
 }
@@ -60,9 +125,11 @@ namespace App\Models{
      * @property string $invitation_token
      * @property int $user_id
      * @property int|null $invited_by
-     * @property string|null $registered_at
+     * @property \Illuminate\Support\Carbon|null $registered_at
+     * @property-read \App\Models\User|null $invitedByUser
+     * @property-read \App\Models\User $user
      *
-     * @method static \Database\Factories\InvitationFactory factory(...$parameters)
+     * @method static \Database\Factories\InvitationFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Invitation newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Invitation newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Invitation query()
@@ -92,7 +159,7 @@ namespace App\Models{
      * @property string $publisher
      *
      * @method static \Illuminate\Database\Eloquent\Builder|Journal dfoSeries()
-     * @method static \Database\Factories\JournalFactory factory(...$parameters)
+     * @method static \Database\Factories\JournalFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Journal newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Journal newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Journal query()
@@ -123,13 +190,11 @@ namespace App\Models{
      * @property string|null $comments
      * @property \App\Enums\ManagementReviewStepStatus $status
      * @property \App\Enums\ManagementReviewStepDecision|null $decision
-     * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
-     * @property-read int|null $audits_count
      * @property-read \App\Models\ManuscriptRecord $manuscriptRecord
      * @property-read ManagementReviewStep|null $previousStep
      * @property-read \App\Models\User $user
      *
-     * @method static \Database\Factories\ManagementReviewStepFactory factory(...$parameters)
+     * @method static \Database\Factories\ManagementReviewStepFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|ManagementReviewStep newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|ManagementReviewStep newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|ManagementReviewStep query()
@@ -144,7 +209,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|ManagementReviewStep whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|ManagementReviewStep whereUserId($value)
      */
-    class ManagementReviewStep extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable
+    class ManagementReviewStep extends \Eloquent
     {
     }
 }
@@ -160,13 +225,11 @@ namespace App\Models{
      * @property int $author_id
      * @property int $organization_id
      * @property bool $is_corresponding_author
-     * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
-     * @property-read int|null $audits_count
      * @property-read \App\Models\Author $author
      * @property-read \App\Models\ManuscriptRecord $manuscriptRecord
      * @property-read \App\Models\Organization $organization
      *
-     * @method static \Database\Factories\ManuscriptAuthorFactory factory(...$parameters)
+     * @method static \Database\Factories\ManuscriptAuthorFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptAuthor newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptAuthor newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptAuthor query()
@@ -178,7 +241,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptAuthor whereOrganizationId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptAuthor whereUpdatedAt($value)
      */
-    class ManuscriptAuthor extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable
+    class ManuscriptAuthor extends \Eloquent
     {
     }
 }
@@ -207,21 +270,22 @@ namespace App\Models{
      * @property string|null $submitted_to_journal_on
      * @property string|null $accepted_on
      * @property string|null $withdrawn_on
-     * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
-     * @property-read int|null $audits_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ManagementReviewStep[] $managementReviewSteps
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FundingSource> $fundingSources
+     * @property-read int|null $funding_sources_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagementReviewStep> $managementReviewSteps
      * @property-read int|null $management_review_steps_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ManuscriptAuthor[] $manuscriptAuthors
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptAuthor> $manuscriptAuthors
      * @property-read int|null $manuscript_authors_count
-     * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+     * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
      * @property-read int|null $media_count
+     * @property-read \App\Models\Publication|null $publication
      * @property-read \App\Models\Region $region
      * @property-read \App\Models\User $user
      *
-     * @method static \Database\Factories\ManuscriptRecordFactory factory(...$parameters)
+     * @method static \Database\Factories\ManuscriptRecordFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord newQuery()
-     * @method static \Illuminate\Database\Query\Builder|ManuscriptRecord onlyTrashed()
+     * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord onlyTrashed()
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord query()
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord whereAbstract($value)
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord whereAcceptedOn($value)
@@ -243,10 +307,10 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord whereWithdrawnOn($value)
-     * @method static \Illuminate\Database\Query\Builder|ManuscriptRecord withTrashed()
-     * @method static \Illuminate\Database\Query\Builder|ManuscriptRecord withoutTrashed()
+     * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord withTrashed()
+     * @method static \Illuminate\Database\Eloquent\Builder|ManuscriptRecord withoutTrashed()
      */
-    class ManuscriptRecord extends \Eloquent implements \Spatie\MediaLibrary\HasMedia, \OwenIt\Auditing\Contracts\Auditable
+    class ManuscriptRecord extends \Eloquent implements \Spatie\MediaLibrary\HasMedia, \App\Contracts\Fundable
     {
     }
 }
@@ -263,14 +327,12 @@ namespace App\Models{
      * @property string $name_fr
      * @property string|null $abbr_en
      * @property string|null $abbr_fr
-     * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
-     * @property-read int|null $audits_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Author[] $authors
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Author> $authors
      * @property-read int|null $authors_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ManuscriptAuthor[] $manuscriptAuthors
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptAuthor> $manuscriptAuthors
      * @property-read int|null $manuscript_authors_count
      *
-     * @method static \Database\Factories\OrganizationFactory factory(...$parameters)
+     * @method static \Database\Factories\OrganizationFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Organization newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Organization newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Organization query()
@@ -283,7 +345,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|Organization whereNameFr($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Organization whereUpdatedAt($value)
      */
-    class Organization extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable
+    class Organization extends \Eloquent
     {
     }
 }
@@ -296,6 +358,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $deleted_at
+     * @property \App\Enums\PublicationStatus $status accepted, published, etc.
      * @property string $title
      * @property string|null $doi
      * @property \Illuminate\Support\Carbon|null $accepted_on
@@ -305,19 +368,24 @@ namespace App\Models{
      * @property int|null $manuscript_record_id
      * @property int $journal_id
      * @property int $user_id
-     * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
-     * @property-read int|null $audits_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FundingSource> $fundingSources
+     * @property-read int|null $funding_sources_count
      * @property-read \App\Models\Journal $journal
      * @property-read \App\Models\ManuscriptRecord|null $manuscriptRecord
+     * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+     * @property-read int|null $media_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PublicationAuthor> $publicationAuthors
+     * @property-read int|null $publication_authors_count
      * @property-read \App\Models\User $user
      *
-     * @method static \Database\Factories\PublicationFactory factory(...$parameters)
+     * @method static \Database\Factories\PublicationFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|Publication newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Publication newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|Publication notUnderEmbargo()
-     * @method static \Illuminate\Database\Query\Builder|Publication onlyTrashed()
+     * @method static \Illuminate\Database\Eloquent\Builder|Publication onlyTrashed()
      * @method static \Illuminate\Database\Eloquent\Builder|Publication openAccess()
      * @method static \Illuminate\Database\Eloquent\Builder|Publication query()
+     * @method static \Illuminate\Database\Eloquent\Builder|Publication secondaryPublication()
      * @method static \Illuminate\Database\Eloquent\Builder|Publication underEmbargo()
      * @method static \Illuminate\Database\Eloquent\Builder|Publication whereAcceptedOn($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Publication whereCreatedAt($value)
@@ -329,13 +397,46 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|Publication whereJournalId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Publication whereManuscriptRecordId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Publication wherePublishedOn($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|Publication whereStatus($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Publication whereTitle($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Publication whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|Publication whereUserId($value)
-     * @method static \Illuminate\Database\Query\Builder|Publication withTrashed()
-     * @method static \Illuminate\Database\Query\Builder|Publication withoutTrashed()
+     * @method static \Illuminate\Database\Eloquent\Builder|Publication withTrashed()
+     * @method static \Illuminate\Database\Eloquent\Builder|Publication withoutTrashed()
      */
-    class Publication extends \Eloquent implements \OwenIt\Auditing\Contracts\Auditable
+    class Publication extends \Eloquent implements \Spatie\MediaLibrary\HasMedia, \App\Contracts\Fundable
+    {
+    }
+}
+
+namespace App\Models{
+    /**
+     * App\Models\PublicationAuthor
+     *
+     * @property int $id
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property int $publication_id
+     * @property int $author_id
+     * @property int $organization_id
+     * @property bool $is_corresponding_author
+     * @property-read \App\Models\Author $author
+     * @property-read \App\Models\Organization $organization
+     * @property-read \App\Models\Publication $publication
+     *
+     * @method static \Database\Factories\PublicationAuthorFactory factory($count = null, $state = [])
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor newModelQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor newQuery()
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor query()
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor whereAuthorId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor whereIsCorrespondingAuthor($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor whereOrganizationId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor wherePublicationId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|PublicationAuthor whereUpdatedAt($value)
+     */
+    class PublicationAuthor extends \Eloquent
     {
     }
 }
@@ -373,26 +474,32 @@ namespace App\Models{
      * @property string $last_name
      * @property string $email
      * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property string $password
+     * @property string|null $email_verification_token
+     * @property string|null $password
+     * @property string $locale
      * @property string|null $remember_token
-     * @property int $active
+     * @property bool $active
+     * @property bool $new_password_required
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
-     * @property-read int|null $audits_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog> $authentications
+     * @property-read int|null $authentications_count
      * @property-read \App\Models\Author|null $author
      * @property-read string $full_name
      * @property-read \App\Models\Invitation|null $invitation
-     * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+     * @property-read \Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog|null $latestAuthentication
+     * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
      * @property-read int|null $permissions_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
      * @property-read int|null $roles_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invitation> $sentInvitations
+     * @property-read int|null $sent_invitations_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
      * @property-read int|null $tokens_count
      *
-     * @method static \Database\Factories\UserFactory factory(...$parameters)
+     * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
      * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
@@ -401,15 +508,18 @@ namespace App\Models{
      * @method static \Illuminate\Database\Eloquent\Builder|User whereActive($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerificationToken($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstName($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|User whereLocale($value)
+     * @method static \Illuminate\Database\Eloquent\Builder|User whereNewPasswordRequired($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
      * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
      */
-    class User extends \Eloquent implements \Illuminate\Contracts\Auth\MustVerifyEmail, \OwenIt\Auditing\Contracts\Auditable
+    class User extends \Eloquent implements \Illuminate\Contracts\Auth\MustVerifyEmail, \Illuminate\Contracts\Translation\HasLocalePreference
     {
     }
 }
