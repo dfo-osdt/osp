@@ -5,15 +5,17 @@ namespace App\Http\Resources;
 use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/*
+* Resource for Author model
+
+* @extends JsonResource<\App\Models\Author>
+*/
 class AuthorResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'data' => [
