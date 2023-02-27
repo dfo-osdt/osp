@@ -5,11 +5,11 @@ namespace App\Http\Resources;
 use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/*
-* Resource for Author model
-
-* @extends JsonResource<\App\Models\Author>
-*/
+/**
+ * Resource for Author model.
+ *
+ * @extends JsonResource<\App\Models\Author>
+ */
 class AuthorResource extends JsonResource
 {
     /**

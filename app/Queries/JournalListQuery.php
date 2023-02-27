@@ -2,7 +2,7 @@
 
 namespace App\Queries;
 
-use App\Filters\FuzzyFilter;
+use App\Filters\MultiColumnFilter;
 use App\Models\Journal;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -20,7 +20,7 @@ class JournalListQuery extends QueryBuilder
             AllowedFilter::exact('id'),
             AllowedFilter::partial('title_en'),
             AllowedFilter::partial('title_fr'),
-            AllowedFilter::custom('search', new FuzzyFilter('title_en', 'title_fr')),
+            AllowedFilter::custom('search', new MultiColumnFilter('title_en', 'title_fr')),
             AllowedFilter::scope('dfo_series'),
         ]);
     }

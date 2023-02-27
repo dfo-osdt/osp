@@ -87,7 +87,10 @@ onMounted(async () => {
     }
 });
 
-const filterJournals = async (val: string, update, abort) => {
+const filterJournals = async (
+    val: string,
+    update: (arg: () => Promise<void>) => void
+) => {
     lastSearchTerm.value = val;
     update(async () => {
         if (val !== '') {
