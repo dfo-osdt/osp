@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.1.5.
+ * Generated for Laravel 10.2.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -3434,6 +3434,7 @@ namespace Illuminate\Support\Facades {
      * @method static array|null resolveAuthenticatedUser(\Illuminate\Http\Request $request)
      * @method static void resolveAuthenticatedUserUsing(\Closure $callback)
      * @method static \Illuminate\Broadcasting\Broadcasters\Broadcaster channel(\Illuminate\Contracts\Broadcasting\HasBroadcastChannel|string $channel, callable|string $callback, array $options = [])
+     * @method static \Illuminate\Support\Collection getChannels()
      *
      * @see \Illuminate\Broadcasting\BroadcastManager
      * @see \Illuminate\Broadcasting\Broadcasters\Broadcaster
@@ -9751,6 +9752,8 @@ namespace Illuminate\Support\Facades {
      * @method static \Psr\Log\LoggerInterface getLogger()
      * @method static \Illuminate\Contracts\Events\Dispatcher getEventDispatcher()
      * @method static void setEventDispatcher(\Illuminate\Contracts\Events\Dispatcher $dispatcher)
+     * @method static \Illuminate\Log\Logger|mixed when(\Closure|mixed|null $value = null, callable|null $callback = null, callable|null $default = null)
+     * @method static \Illuminate\Log\Logger|mixed unless(\Closure|mixed|null $value = null, callable|null $callback = null, callable|null $default = null)
      *
      * @see \Illuminate\Log\LogManager
      */

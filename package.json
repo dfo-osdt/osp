@@ -34,7 +34,7 @@
         "@quasar/extras": "^1.15.11",
         "@vitejs/plugin-vue": "^4.0.0",
         "@vueuse/core": "^9.13.0",
-        "dompurify": "^3.0.0",
+        "dompurify": "^3.0.1",
         "eslint-plugin-quasar": "^1.1.0",
         "pinia": "^2.0.32",
         "plugin-vue@latest": "link:@@vitejs/plugin-vue@latest",
