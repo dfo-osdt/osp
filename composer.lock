@@ -1261,16 +1261,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.2.0",
+            "version": "v10.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "3799f7f3118d57dc5d3dfaabde69a912fff65a7e"
+                "reference": "90f24d9e2860ecf6b5492e966956270ceb98c03d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/3799f7f3118d57dc5d3dfaabde69a912fff65a7e",
-                "reference": "3799f7f3118d57dc5d3dfaabde69a912fff65a7e",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/90f24d9e2860ecf6b5492e966956270ceb98c03d",
+                "reference": "90f24d9e2860ecf6b5492e966956270ceb98c03d",
                 "shasum": ""
             },
             "require": {
@@ -1457,7 +1457,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-03-02T14:55:50+00:00"
+            "time": "2023-03-09T14:00:53+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -2814,16 +2814,16 @@
         },
         {
             "name": "openspout/openspout",
-            "version": "v4.12.2",
+            "version": "v4.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openspout/openspout.git",
-                "reference": "90ceeefef3750dd2afab95689ed2107dd576905e"
+                "reference": "e01cab951c04ef184c567a880290997e94386f94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openspout/openspout/zipball/90ceeefef3750dd2afab95689ed2107dd576905e",
-                "reference": "90ceeefef3750dd2afab95689ed2107dd576905e",
+                "url": "https://api.github.com/repos/openspout/openspout/zipball/e01cab951c04ef184c567a880290997e94386f94",
+                "reference": "e01cab951c04ef184c567a880290997e94386f94",
                 "shasum": ""
             },
             "require": {
@@ -2891,7 +2891,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openspout/openspout/issues",
-                "source": "https://github.com/openspout/openspout/tree/v4.12.2"
+                "source": "https://github.com/openspout/openspout/tree/v4.13.0"
             },
             "funding": [
                 {
@@ -2903,7 +2903,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-03T07:45:00+00:00"
+            "time": "2023-03-13T14:32:53+00:00"
         },
         {
             "name": "orhanerday/open-ai",
@@ -4608,16 +4608,16 @@
         },
         {
             "name": "spatie/simple-excel",
-            "version": "3.1.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/simple-excel.git",
-                "reference": "bbef9873a0182f7d2ec2add7fd7436c9e78318c5"
+                "reference": "f9afb9deb6973bbe96f30685580dca25207e54ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/simple-excel/zipball/bbef9873a0182f7d2ec2add7fd7436c9e78318c5",
-                "reference": "bbef9873a0182f7d2ec2add7fd7436c9e78318c5",
+                "url": "https://api.github.com/repos/spatie/simple-excel/zipball/f9afb9deb6973bbe96f30685580dca25207e54ce",
+                "reference": "f9afb9deb6973bbe96f30685580dca25207e54ce",
                 "shasum": ""
             },
             "require": {
@@ -4657,7 +4657,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/simple-excel/tree/3.1.0"
+                "source": "https://github.com/spatie/simple-excel/tree/3.2.0"
             },
             "funding": [
                 {
@@ -4665,7 +4665,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-20T16:52:54+00:00"
+            "time": "2023-03-13T16:33:17+00:00"
         },
         {
             "name": "spatie/temporary-directory",
