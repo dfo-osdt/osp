@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.2.0.
+ * Generated for Laravel 10.4.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1866,6 +1866,21 @@ namespace Illuminate\Support\Facades {
      */
     class Artisan
     {
+        /**
+         * Re-route the Symfony command events to their Laravel counterparts.
+         *
+         * @internal
+         *
+         * @return \App\Console\Kernel
+         *
+         * @static
+         */
+        public static function rerouteSymfonyCommandEvents()
+        {            //Method inherited from \Illuminate\Foundation\Console\Kernel
+            /** @var \App\Console\Kernel $instance */
+            return $instance->rerouteSymfonyCommandEvents();
+        }
+
         /**
          * Run the console application.
          *
@@ -7694,6 +7709,23 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Filesystem\Filesystem $instance */
             return $instance->get($path, $lock);
+        }
+
+        /**
+         * Get the contents of a file as decoded JSON.
+         *
+         * @param  string  $path
+         * @param  bool  $lock
+         * @return array
+         *
+         * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+         *
+         * @static
+         */
+        public static function json($path, $lock = false)
+        {
+            /** @var \Illuminate\Filesystem\Filesystem $instance */
+            return $instance->json($path, $lock);
         }
 
         /**
@@ -15525,7 +15557,7 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Register a new Fallback route with the router.
+         * Register a new fallback route with the router.
          *
          * @param  array|string|callable|null  $action
          * @return \Illuminate\Routing\Route
