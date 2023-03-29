@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.4.1.
+ * Generated for Laravel 10.5.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -4385,6 +4385,20 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Set the application instance used by the manager.
+         *
+         * @param  \Illuminate\Contracts\Foundation\Application  $app
+         * @return \Illuminate\Cache\CacheManager
+         *
+         * @static
+         */
+        public static function setApplication($app)
+        {
+            /** @var \Illuminate\Cache\CacheManager $instance */
+            return $instance->setApplication($app);
+        }
+
+        /**
          * Determine if an item exists in the cache.
          *
          * @param  array|string  $key
@@ -7715,6 +7729,7 @@ namespace Illuminate\Support\Facades {
          * Get the contents of a file as decoded JSON.
          *
          * @param  string  $path
+         * @param  int  $flags
          * @param  bool  $lock
          * @return array
          *
@@ -7722,10 +7737,10 @@ namespace Illuminate\Support\Facades {
          *
          * @static
          */
-        public static function json($path, $lock = false)
+        public static function json($path, $flags = 0, $lock = false)
         {
             /** @var \Illuminate\Filesystem\Filesystem $instance */
-            return $instance->json($path, $lock);
+            return $instance->json($path, $flags, $lock);
         }
 
         /**
@@ -18224,6 +18239,21 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Get the contents of a file as decoded JSON.
+         *
+         * @param  string  $path
+         * @param  int  $flags
+         * @return array|null
+         *
+         * @static
+         */
+        public static function json($path, $flags = 0)
+        {
+            /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+            return $instance->json($path, $flags);
+        }
+
+        /**
          * Create a streamed response for a given file.
          *
          * @param  string  $path
@@ -22908,6 +22938,7 @@ namespace  {
          * @param  array|string  $columns
          * @param  string  $pageName
          * @param  int|null  $page
+         * @param  \Closure|int|null  $total
          * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
          *
          * @throws \InvalidArgumentException
