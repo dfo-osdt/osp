@@ -100,8 +100,8 @@ jobs:
             php artisan config:clear
             php artisan config:cache
             php artisan migrate --force
-            ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo systemctl reload php8.1-fpm.service
+            ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo chmod -R 771 $STORAGE_PATH
 
   prepare-release-on-production:
@@ -162,7 +162,7 @@ jobs:
             php artisan optimize:clear
             php artisan config:clear
             php artisan config:cache
-            php artisan migrate:fresh --seed --force
+            php artisan migrate --force
             sudo chmod -R 771 $STORAGE_PATH
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo systemctl reload php8.1-fpm.service
