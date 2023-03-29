@@ -102,14 +102,14 @@ jobs:
             php artisan optimize:clear
             php artisan config:clear
             php artisan config:cache
-            php artisan migrate:fresh --seed --force
+            php artisan migrate --force
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo systemctl reload php8.1-fpm.service
             sudo chmod -R 771 $STORAGE_PATH
 
   prepare-release-on-production:
     runs-on: ubuntu-22.04
-    needs: prepare-release-on-staging
+    needs: run-deploy-hooks-on-staging
     environment: production
     steps:
     - name: Get artifact from previous step
