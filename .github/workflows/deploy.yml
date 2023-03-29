@@ -4,9 +4,6 @@ name: Deployment
 
 # only run this workflow if a PR or merge on master and run-test completed successfully
 on:
-  push:
-    branches:
-      - main
   workflow_run:
     workflows: [run-tests]
     types: [completed]
