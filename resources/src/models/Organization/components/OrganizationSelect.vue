@@ -5,33 +5,33 @@
         :options="organizations.data"
         :option-value="optionValue"
         :option-label="optionLabel"
-        label="Organization"
+        :label="$t('common.organization')"
         :loading="organizationsLoading"
         use-input
         stack-label
         outlined
-        hint="Start typing to search for an Organization (name or abbreviation)"
+        :hint="$t('organization-select.hint')"
         @filter="filterOrganizations"
     >
         <template #no-option>
             <template v-if="lastSearchTerm === ''">
                 <q-item>
                     <q-item-section class="text-grey">
-                        Start typing to search for an organization
+                        {{ $t('organization-select.hint') }}
                     </q-item-section>
                 </q-item>
             </template>
             <template v-else>
                 <q-item>
                     <q-item-section class="text-grey">
-                        No results found for
+                        {{ $t('common.no-results-found-for') }}
                         <strong>{{ lastSearchTerm }}</strong>
                     </q-item-section>
                 </q-item>
                 <q-separator />
                 <q-item clickable @click="showCreateOrganizationDialog = true">
                     <q-item-section>
-                        Can't find the organization you're looking for?
+                        {{ $t('organization-select.cant-find') }}
                     </q-item-section>
                     <q-item-section side>
                         <q-btn
@@ -41,19 +41,19 @@
                             round
                             @click="showCreateOrganizationDialog = true"
                         >
-                            <q-tooltip class="text-body2"
-                                >Add a new author</q-tooltip
-                            >
+                            <q-tooltip class="text-body2">{{
+                                $t('organization-select.add-a-new-organization')
+                            }}</q-tooltip>
                         </q-btn>
-                        <CreateOrganizationDialog
-                            v-if="showCreateOrganizationDialog"
-                            v-model="showCreateOrganizationDialog"
-                            @created="createdOrganization"
-                        />
                     </q-item-section>
                 </q-item>
             </template>
         </template>
+        <CreateOrganizationDialog
+            v-if="showCreateOrganizationDialog"
+            v-model="showCreateOrganizationDialog"
+            @created="createdOrganization"
+        />
     </q-select>
 </template>
 
@@ -71,6 +71,8 @@ const props = defineProps<{
     initialSearchTerm?: string;
 }>();
 
+const localeStore = useLocaleStore();
+
 const organizationSelect = ref<QSelect | null>(null);
 
 const organizations = ref<OrganizationResourceList>({ data: [] });
@@ -86,7 +88,12 @@ watch(selectedOrganization, (organization) => {
     }
 });
 
-onMounted(() => {
+onMounted(async () => {
+    if (props.modelValue) {
+        selectedOrganization.value = await OrganizationService.find(
+            props.modelValue
+        );
+    }
     if (props.initialSearchTerm) {
         organizationSelect.value?.filter(props.initialSearchTerm);
     }
@@ -112,14 +119,30 @@ function createdOrganization(item: OrganizationResource) {
     organizationSelect.value?.updateInputValue('', true);
     organizations.value.data.push(item);
     selectedOrganization.value = item;
+    showCreateOrganizationDialog.value = false;
 }
 
 function optionValue(item: OrganizationResource) {
     return item.data.id;
 }
 function optionLabel(item: OrganizationResource) {
+    let label: string;
+
+    if (localeStore.locale === 'fr') {
+        label = item.data.name_fr;
+        if (item.data.abbr_fr) {
+            label += ` (${item.data.abbr_fr})`;
+        }
+        return label;
+    }
+
+    // Default to English
     const { name_en, abbr_en } = item.data;
-    return `${name_en} (${abbr_en})`;
+    label = name_en;
+    if (abbr_en) {
+        label += ` (${abbr_en})`;
+    }
+    return label;
 }
 </script>
 

@@ -1,6 +1,5 @@
 import { http } from '@/api/http';
-import { AxiosResponse } from 'axios';
-import { AuthorResource } from '../Authors/Author';
+import { AuthorResource } from '../Author/Author';
 import { OrganizationResource } from '../Organization/Organization';
 import { Resource, ResourceList } from '../Resource';
 
@@ -17,8 +16,8 @@ export interface ManuscriptAuthor {
 export type ManuscriptAuthorResource = Resource<ManuscriptAuthor>;
 export type ManuscriptAuthorResourceList = ResourceList<ManuscriptAuthor>;
 
-type R = AxiosResponse<ManuscriptAuthorResource>;
-type RList = AxiosResponse<ManuscriptAuthorResourceList>;
+type R = ManuscriptAuthorResource;
+type RList = ManuscriptAuthorResourceList;
 
 /**
  * Manuscript Author Service
@@ -26,7 +25,6 @@ type RList = AxiosResponse<ManuscriptAuthorResourceList>;
 export class ManuscriptAuthorService {
     /** Get a list of manuscript authors
      * @param manuscriptRecordId
-     * @returns {Promise<RList>}
      */
     public static async list(manuscriptRecordId: number) {
         const response = await http.get<RList>(
@@ -38,7 +36,6 @@ export class ManuscriptAuthorService {
     /**
      * Delete a manuscript author
      * @param manuscriptAuthor
-     * @returns boolean
      */
     public static async delete(manuscriptAuthor: ManuscriptAuthor) {
         const { manuscript_record_id, id } = manuscriptAuthor;
@@ -53,7 +50,6 @@ export class ManuscriptAuthorService {
      * @param manuscriptRecordId - manuscript to add this author to
      * @param authorId - author to associate with this manuscript
      * @param isCorrespondingAuthor - is this author the corresponding author
-     * @returns {Promise<R>} the new manuscript author resource
      */
     public static async create(
         manuscriptRecordId: number,
@@ -64,6 +60,16 @@ export class ManuscriptAuthorService {
         const response = await http.post<any, R>(url, {
             author_id: authorId,
             is_corresponding_author: isCorrespondingAuthor,
+        });
+        return response.data;
+    }
+
+    /** Update manuscript author */
+    public static async update(manuscriptAuthor: ManuscriptAuthor) {
+        const { manuscript_record_id, id } = manuscriptAuthor;
+        const url = `api/manuscript-records/${manuscript_record_id}/manuscript-authors/${id}`;
+        const response = await http.put<any, R>(url, {
+            is_corresponding_author: manuscriptAuthor.is_corresponding_author,
         });
         return response.data;
     }

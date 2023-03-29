@@ -9,55 +9,58 @@
             /></template>
             <div>{{ errorMessage.message }}</div>
         </q-banner>
+        <q-banner v-if="showVerified" dark class="bg-secondary">
+            <template #avatar
+                ><q-icon name="mdi-email-seal-outline"
+            /></template>
+            <div>{{ $t('login-card.email-verified-text') }}</div>
+        </q-banner>
         <q-card-section class="q-mt-md">
             <q-form class="q-gutter-md" autofocus @submit="login">
                 <q-input
                     v-model="email"
                     type="email"
                     filled
-                    label="Your email"
+                    :label="$t('common.your-email')"
                     lazy-rules
-                    :rules="[
-                        (val) => !!val || 'Email is required',
-                        // must be valid email
-                        (val) =>
-                            /^\S+@\S+\.\S+$/.test(val) || 'Email is invalid',
-                    ]"
+                    :rules="emailRules"
+                    data-cy="email"
                     @focus="errorMessage = null"
                 />
-                <q-input
+                <PasswordWithToggleInput
                     v-model="password"
-                    type="password"
                     filled
-                    label="Your password"
-                    :rules="[(val) => !!val || 'Password is required']"
+                    :label="$t('common.your-password')"
+                    :rules="passwordRules"
+                    data-cy="password"
                     @focus="errorMessage = null"
                 />
-
-                <q-toggle v-model="remember" label="Remember me" />
-
                 <div class="flex justify-end">
                     <q-btn
-                        label="Login"
+                        :label="$t('common.login')"
                         type="submit"
                         color="primary"
+                        data-cy="login"
                         :loading="loading"
                     />
-                    <q-btn
-                        label="Reset"
-                        type="reset"
-                        color="primary"
-                        flat
-                        class="q-ml-sm"
-                    />
                 </div>
-                <div
-                    v-if="props.showFooter"
-                    class="flex row justify-center q-pt-md"
-                >
-                    <div>Forgot your password?</div>
+                <q-separator class="q-mt-lg" />
+                <div class="flex row justify-center">
+                    <router-link
+                        :to="{ name: 'forgotPassword' }"
+                        class="text-grey-8"
+                        >{{
+                            $t('login-card.forgot-your-password')
+                        }}</router-link
+                    >
                     <div class="q-px-sm">|</div>
-                    <div>Don't have an account?</div>
+                    <router-link
+                        :to="{ name: 'register' }"
+                        class="text-grey-8"
+                        >{{
+                            $t('login-card.dont-have-an-account')
+                        }}</router-link
+                    >
                 </div>
             </q-form>
         </q-card-section>
@@ -67,17 +70,16 @@
 <script setup lang="ts">
 import { ErrorResponse, extractErrorMessages } from '@/api/errors';
 import { Ref } from 'vue';
+import { useQuasar } from 'quasar';
+import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue';
 
-const props = defineProps<{
-    showFooter?: boolean;
-}>();
-
-const { login: authLogin } = useAuthStore();
+const authStore = useAuthStore();
 const router = useRouter();
 const { t } = useI18n();
+const $q = useQuasar();
 
 //user related data
-const email = ref('');
+const email = ref((router.currentRoute.value.query?.email as string) || '');
 const password = ref('');
 const remember = ref(false);
 
@@ -87,15 +89,80 @@ const errorMessage: Ref<ErrorResponse | null> = ref(null);
 
 async function login() {
     loading.value = true;
-    await authLogin(email.value, password.value, remember.value)
+    await authStore
+        .login(email.value, password.value, remember.value)
         .then(() => {
-            router.push({ name: 'dashboard' });
+            if (authStore.user?.new_password_required) {
+                router.push({ name: 'settings.security' });
+                setTimeout(() => {
+                    $q.notify({
+                        message: t('login-card.new-password-required'),
+                        type: 'info',
+                        icon: 'mdi-information-outline',
+                    });
+                }, 500);
+                return;
+            }
+            router.currentRoute.value.query?.redirect
+                ? router.push(
+                      router.currentRoute.value.query.redirect as string
+                  )
+                : router.push({ name: 'dashboard' });
         })
         .catch((err) => {
             errorMessage.value = extractErrorMessages(err);
+            setTimeout(() => {
+                errorMessage.value = null;
+            }, 10000);
         });
     loading.value = false;
 }
+
+onMounted(async () => {
+    /** Redirect if user is authenticated, likely got here following an email link */
+    if (authStore.isAuthenticated) {
+        // is there a redirect query param?
+        if (router.currentRoute.value.query?.redirect) {
+            router.push(router.currentRoute.value.query.redirect as string);
+        } else {
+            $q.notify({
+                message: t('auth.redirected'),
+                type: 'info',
+                icon: 'mdi-information-outline',
+            });
+            router.push({ name: 'dashboard' });
+        }
+    }
+    // show verified email message as a banner
+    if (verified.value === '1') {
+        $q.notify({
+            message: t('login-card.email-verified-text'),
+            type: 'info',
+            icon: 'mdi-information-outline',
+        });
+    }
+});
+
+// verified email section
+const verified = ref(
+    (router.currentRoute.value.query?.verified as string) || ''
+);
+
+const showVerified = computed(() => {
+    return verified.value === '1';
+});
+
+// rules
+const emailRules = computed(() => [
+    (val: string) => !!val || t('common.validation.email-required'),
+    // must be valid email
+    (val: string) =>
+        /^\S+@\S+\.\S+$/.test(val) || t('common.validation.email-invalid'),
+]);
+
+const passwordRules = computed(() => [
+    (val: string) => !!val || t('common.validation.password-required'),
+]);
 </script>
 
 <style scoped></style>

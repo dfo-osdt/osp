@@ -1,50 +1,29 @@
 import { useSanctum } from '@/api/sanctum';
-import { Router } from '@/plugins/router';
+import { Locale } from '@/stores/LocaleStore';
 import { i18n } from '@/plugins/i18n';
 import type { SanctumUser } from '@/api/sanctum';
 import type { Ref } from 'vue';
 import { Notify } from 'quasar';
-
-class User {
-    id: number;
-    email: string;
-    first_name: string;
-    last_name: string;
-
-    constructor(
-        id: number,
-        email: string,
-        first_name: string,
-        last_name: string
-    ) {
-        this.id = id;
-        this.email = email;
-        this.first_name = first_name;
-        this.last_name = last_name;
-    }
-
-    get fullName(): string {
-        return `${this.first_name} ${this.last_name}`;
-    }
-
-    get initials(): string {
-        return `${this.first_name.charAt(0)}${this.last_name.charAt(0)}`;
-    }
-}
+import {
+    AuthenticatedUser,
+    AuthenticatedUserService,
+    UserAuthenticationRecord,
+} from '../models/User/AuthenticatedUser';
 
 export const useAuthStore = defineStore('AuthStore', () => {
-    const {
-        getUser,
-        login: sanctumLogin,
-        logout: sanctumLogout,
-    } = useSanctum();
+    const { login: sanctumLogin, logout: sanctumLogout } = useSanctum();
     const localeStore = useLocaleStore();
+    const idleTimerMin: number = import.meta.env.VITE_IDLE_TIMER_MIN || 30;
     const { t } = i18n.global;
 
     // initial state
-    const user: Ref<User | null> = useStorage('user', null);
+    //const user: Ref<AuthenticatedUser | null> = useStorage('authUser', null);
+    const user: Ref<AuthenticatedUser | null> = ref(null);
+    const userAuthentications: Ref<UserAuthenticationRecord[] | null> =
+        ref(null);
     const loading = ref(true);
-    isLoggedIn(); // check with backend - is our session still valid?
+    const authenticationsLoading = ref(false);
+    refreshUser(); // check with backend - is our session still valid?
 
     // computed
     const isAuthenticated = computed(() => user.value !== null);
@@ -56,24 +35,46 @@ export const useAuthStore = defineStore('AuthStore', () => {
      *
      * @returns void
      */
-    async function isLoggedIn() {
-        loading.value = true;
-        return await getUser()
-            .then((resp) => {
-                user.value = new User(
-                    resp.data.id,
-                    resp.data.email,
-                    resp.data.first_name,
-                    resp.data.last_name
-                );
-                return true;
-            })
-            .catch((err) => {
-                console.log(err);
-                user.value = null;
-                return false;
-            });
-        loading.value = false;
+    async function refreshUser(silent = false) {
+        if (!silent) loading.value = true;
+        try {
+            user.value = await getAuthenticatedUser();
+        } catch (err) {
+            user.value = null;
+            console.log(err);
+        } finally {
+            loading.value = false;
+        }
+    }
+
+    /**
+     * Get authenticated user from backend
+     * @returns AuthenticatedUser | null (if not authenticated)
+     */
+    async function getAuthenticatedUser(): Promise<AuthenticatedUser | null> {
+        try {
+            const response = await AuthenticatedUserService.getUser();
+            const authUser = new AuthenticatedUser(response.data);
+            return authUser;
+        } catch (err) {
+            return null;
+        }
+    }
+
+    async function getAuthentications(force = false): Promise<boolean> {
+        if (userAuthentications.value && !force) return true;
+        authenticationsLoading.value = true;
+        try {
+            const response =
+                await AuthenticatedUserService.getUserAuthentications();
+            userAuthentications.value = response.data;
+            return true;
+        } catch (err) {
+            console.log(err);
+            return false;
+        } finally {
+            authenticationsLoading.value = false;
+        }
     }
 
     /**
@@ -93,17 +94,16 @@ export const useAuthStore = defineStore('AuthStore', () => {
             email,
             password,
             remember,
-            locale: localeStore.locale,
+            locale: localeStore.locale as Locale,
         };
 
         // login user and get user data
         await sanctumLogin(sanctumUser)
             .then(async () => {
-                await isLoggedIn();
+                await refreshUser();
             })
             .catch((err) => {
                 user.value = null;
-                console.log(err);
                 return Promise.reject(err);
             });
 
@@ -115,31 +115,42 @@ export const useAuthStore = defineStore('AuthStore', () => {
      */
     async function logout() {
         loading.value = true;
+        await sanctumLogout().then(() => {
+            user.value = null;
 
-        await sanctumLogout()
-            .then(() => {
-                user.value = null;
-                Router.push({ name: 'login' });
-                const msg = t('auth.logged-out-successfully');
+            const msg = t('auth.logged-out-successfully');
 
-                setTimeout(() => {
-                    Notify.create({
-                        message: msg,
-                        color: 'green',
-                    });
-                }, 500);
-            })
-            .catch((err) => console.log(err));
-
+            setTimeout(() => {
+                Notify.create({
+                    message: msg,
+                    color: 'green',
+                });
+            }, 500);
+        });
         loading.value = false;
     }
+
+    /**
+     * general application state - we can eventually move this to a separate store
+     * should it grow too large
+     */
+    const isDrawerMini = useStorage('isDrawerMini', true);
+    const leftDrawerOpen = useStorage('leftDrawerOpen', true);
 
     return {
         user,
         isAuthenticated,
         login,
         logout,
+        refreshUser,
         loading,
+        idleTimerMin,
+        getAuthentications,
+        userAuthentications,
+        authenticationsLoading,
+        // general application state
+        isDrawerMini,
+        leftDrawerOpen,
     };
 });
 

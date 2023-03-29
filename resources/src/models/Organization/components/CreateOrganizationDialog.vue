@@ -1,16 +1,11 @@
 <template>
-    <BaseDialog persistent title="Create new Organization">
+    <BaseDialog persistent :title="$t('create-organization-dialog.title')">
         <q-card-section>
             <p>
-                Once created, this organization will be available to all users.
-                Please make sure to use the official name and abbreviation for
-                the organization. (E.g.: do not include departments, branches or
-                regions.)
+                {{ $t('create-organization-dialog.p1') }}
             </p>
             <p>
-                If the name of the organization does not have an official French
-                or English equivalent, please copy the official name in both
-                fields.
+                {{ $t('create-organization-dialog.p2') }}
             </p>
             <q-separator />
         </q-card-section>
@@ -18,37 +13,40 @@
             <q-input
                 v-model="name_en"
                 outlined
-                label="Organization Name
-            (English)"
+                :label="
+                    $t('create-organization-dialog.organization-name-english')
+                "
                 class="q-ma-md"
                 :rules="[(val: string) => val !== '' ||
-            'Required']"
+            $t('common.required')]"
             />
             <q-input
                 v-model="name_fr"
                 outlined
-                label="Organization Name (French)"
+                :label="
+                    $t('create-organization-dialog.organization-name-french')
+                "
                 class="q-ma-md"
-                :rules="[(val: string) => val !== '' || 'Required']"
+                :rules="[(val: string) => val !== '' || $t('common.required')]"
             />
             <q-input
                 v-model="abbr_en"
                 outlined
-                label="Abbreviation (English)"
+                :label="$t('create-organization-dialog.abbreviation-english')"
                 class="q-ma-md"
                 hint="Optional"
             />
             <q-input
                 v-model="abbr_fr"
                 outlined
-                label="Abbreviation (French)"
+                :label="$t('create-organization-dialog.abbreviation-french')"
                 class="q-ma-md"
                 hint="Optional"
             />
             <div class="flex justify-end">
                 <q-btn
                     color="primary"
-                    label="Create"
+                    :label="$t('common.create')"
                     type="submit"
                     class="q-ma-md"
                 />
@@ -75,8 +73,6 @@ const abbr_en = ref('');
 const abbr_fr = ref('');
 
 async function createOrganization() {
-    console.log('creating organization..');
-
     const org: Organization = {
         id: 0,
         name_en: name_en.value,

@@ -1,12 +1,23 @@
 <template>
     <ContentCard>
-        <template #title>Authors</template>
+        <template #title>{{
+            $t('manage-manuscript-author-card.title')
+        }}</template>
+        <template #title-right
+            ><FormSectionStatusIcon :status="sectionStatus"
+        /></template>
+        <p>
+            {{ $t('manage-manuscript-author-card.instructions') }}
+        </p>
         <q-field
-            label="Authors"
+            :label="$t('common.author', 2)"
             outlined
             stack-label
             bg-color="white"
             :loading="loading"
+            :readonly="readonly"
+            bottom-slots
+            :error="!hasNoAuthors && hasNoCorrespondingAuthor"
         >
             <template #control>
                 <div class="self-center full-width no-outline" tabindex="0">
@@ -15,18 +26,21 @@
                             v-for="item in manuscriptAuthors.data"
                             :key="item.data.id"
                             :manuscript-author="item"
+                            :readonly="readonly"
                             @delete:manuscript-author="
                                 deleteManuscriptAuthor(item)
                             "
-                            @edit:manuscript-author="editManuscriptAuthor(item)"
+                            @edit:toggle-corresponding-author="
+                                toggleCorrespondingAuthor(item, $event)
+                            "
                         />
                     </template>
                     <template v-else>
-                        <span>No authors, please add at least one author.</span>
+                        <span>{{ $t('common.validation.no-authors') }}</span>
                     </template>
                 </div>
             </template>
-            <template #append>
+            <template v-if="!readonly" #append>
                 <q-btn
                     icon="mdi-plus"
                     color="primary"
@@ -35,6 +49,9 @@
                     :class="hasNoAuthors ? '' : 'q-mt-auto'"
                     @click="addManuscriptAuthor"
                 />
+            </template>
+            <template #error>
+                <div>{{ $t('common.validation.at-least-one-author') }}</div>
             </template>
             <AddManuscriptAuthorDialog
                 v-if="showAddDialog"
@@ -58,17 +75,46 @@ import {
 import ManuscriptAuthorChip from './ManuscriptAuthorChip.vue';
 import { useQuasar } from 'quasar';
 import AddManuscriptAuthorDialog from './AddManuscriptAuthorDialog.vue';
-
+import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
+const { t } = useI18n();
 const $q = useQuasar();
-const props = defineProps<{
-    manuscriptRecordId: number;
-}>();
+const props = withDefaults(
+    defineProps<{
+        manuscriptRecordId: number;
+        readonly?: boolean;
+    }>(),
+    {
+        readonly: false,
+    }
+);
 
 const loading = ref(true);
 const manuscriptAuthors: Ref<ManuscriptAuthorResourceList> = ref({ data: [] });
 
 const hasNoAuthors = computed(() => {
     return manuscriptAuthors.value.data.length === 0;
+});
+
+const hasNoCorrespondingAuthor = computed(() => {
+    return (
+        manuscriptAuthors.value.data.filter(
+            (item) => item.data.is_corresponding_author
+        ).length === 0
+    );
+});
+
+const sectionStatus = computed(() => {
+    if (hasNoAuthors.value) {
+        return 'incomplete';
+    }
+    if (hasNoCorrespondingAuthor.value) {
+        return 'error';
+    }
+    return 'complete';
+});
+
+defineExpose({
+    sectionStatus,
 });
 
 // on mounted get the manuscript authors
@@ -98,16 +144,35 @@ const addedManuscriptAuthor = (manuscriptAuthor: ManuscriptAuthorResource) => {
         type: 'positive',
         color: 'primary',
         message: `${
-            manuscriptAuthor.data.author?.data.first_name ?? 'Author'
-        } added successfully.`,
+            manuscriptAuthor.data.author?.data.first_name ?? t('common.author')
+        } ${t('common.added-successfully')}`,
     });
     showAddDialog.value = false;
     loadManuscriptAuthors();
 };
 
-const editManuscriptAuthor = () => {
-    console.log('edit author');
-};
+async function toggleCorrespondingAuthor(
+    item: ManuscriptAuthorResource,
+    isCorresponding: boolean
+) {
+    const manuscriptAuthor = item.data;
+    manuscriptAuthor.is_corresponding_author = isCorresponding;
+    await ManuscriptAuthorService.update(manuscriptAuthor)
+        .then(() => {
+            $q.notify({
+                type: 'positive',
+                color: 'primary',
+                message: `${
+                    manuscriptAuthor.author?.data.first_name ??
+                    t('common.author')
+                } ${t('common.updated-successfully')}`,
+            });
+            loadManuscriptAuthors();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 // delete manuscript author
 const deleteManuscriptAuthor = async (
@@ -115,8 +180,8 @@ const deleteManuscriptAuthor = async (
 ) => {
     // confirm with the user first
     $q.dialog({
-        title: 'Delete author',
-        message: 'Are you sure you want to delete this author?',
+        title: t('manage-manuscript-author-card.delete-author'),
+        message: t('manage-manuscript-author-card.delete-author-msg'),
         cancel: true,
     }).onOk(async () => {
         await ManuscriptAuthorService.delete(manuscriptAuthor.data)

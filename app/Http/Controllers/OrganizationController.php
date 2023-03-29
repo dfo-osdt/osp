@@ -7,6 +7,8 @@ use App\Models\Organization;
 use App\Queries\OrganizationListQuery;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class OrganizationController extends Controller
 {
@@ -14,10 +16,8 @@ class OrganizationController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): ResourceCollection
     {
         $limit = $this->getLimitFromRequest($request);
         $organizationListQuery = new OrganizationListQuery($request);
@@ -27,17 +27,14 @@ class OrganizationController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResource
     {
         $validated = $request->validate([
-            'name_en' => 'required|string|max:100',
-            'name_fr' => 'required|string|max:100',
-            'abbr_en' => 'required|string|max:10',
-            'abbr_fr' => 'required|string|max:10',
+            'name_en' => 'required|string|max:100|unique:organizations,name_en',
+            'name_fr' => 'required|string|max:100|unique:organizations,name_fr',
+            'abbr_en' => 'nullable|string|max:10',
+            'abbr_fr' => 'nullable|string|max:10',
         ]);
 
         $organization = Organization::create($validated);
@@ -47,35 +44,9 @@ class OrganizationController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization)
+    public function show(Organization $organization): JsonResource
     {
         return new OrganizationResource($organization);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Organization $organization)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Organization $organization)
-    {
-        //
     }
 }

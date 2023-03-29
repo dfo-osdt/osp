@@ -2,7 +2,7 @@
     <q-dialog persistent>
         <q-card style="width: 700px; max-width: 80vw" outlined>
             <q-card-section class="bg-teal-1 text-h6 text-accent">
-                Create a new manuscript record
+                {{ $t('create-manuscript-record-dialog.title') }}
             </q-card-section>
             <q-separator />
             <q-card-section class="bg-grey-1 q-pa-none text-body1">
@@ -17,15 +17,15 @@
                     <q-separator />
                     <q-step
                         :name="1"
-                        title="Type of publication"
+                        :title="$t('common.type-of-publication')"
                         icon="mdi-call-split"
                         :done="step > 1"
                         style="min-height: 275px"
                     >
                         <div>
-                            Please select the type of manuscript record you want
-                            to create. Do you intend to submit this manuscript
-                            to a primary or secondary journal?
+                            {{
+                                $t('create-manuscript-record-dialog.step1.text')
+                            }}
                         </div>
                         <div class="q-pa-md">
                             <q-list>
@@ -34,16 +34,16 @@
                                         <q-radio v-model="type" val="primary" />
                                     </q-item-section>
                                     <q-item-section>
-                                        <q-item-label class="text-body1"
-                                            >Primary Publication</q-item-label
-                                        >
+                                        <q-item-label class="text-body1">{{
+                                            $t('common.primary-publication')
+                                        }}</q-item-label>
                                         <q-item-label
                                             class="text-body2 text-grey-8"
-                                            >A publication in a primary
-                                            peer-reviewed publications
-                                            (scientific journals, special
-                                            issues, book chapters, books and
-                                            conference proceedings.)
+                                            >{{
+                                                $t(
+                                                    'create-manuscript-record-dialog.primary-pub-desc'
+                                                )
+                                            }}
                                         </q-item-label>
                                     </q-item-section>
                                 </q-item>
@@ -56,19 +56,16 @@
                                         />
                                     </q-item-section>
                                     <q-item-section>
-                                        <q-item-label class="text-body1"
-                                            >Secondary Publication</q-item-label
-                                        >
+                                        <q-item-label class="text-body1">{{
+                                            $t('common.secondary-publication')
+                                        }}</q-item-label>
                                         <q-item-label
                                             class="text-body2 text-grey-8"
-                                            >A publication in a Fisheries and
-                                            Oceans Canada’s (DFO’s) secondary
-                                            science publications such as the DFO
-                                            series “Canadian Technical Report of
-                                            Fisheries and Aquatic Sciences,”
-                                            “Canadian Data Report of Fisheries
-                                            and Aquatic Sciences,” and other
-                                            series.</q-item-label
+                                            >{{
+                                                $t(
+                                                    'create-manuscript-record-dialog.secondary-pub-desc'
+                                                )
+                                            }}</q-item-label
                                         >
                                     </q-item-section>
                                 </q-item>
@@ -77,7 +74,9 @@
                     </q-step>
                     <q-step
                         :name="2"
-                        title="Manuscript Details"
+                        :title="
+                            $t('create-manuscript-record-dialog.step2.title')
+                        "
                         icon="mdi-file-document-edit-outline"
                         :done="step > 2"
                         :error="!manuscriptDetailFormValid"
@@ -85,53 +84,72 @@
                     >
                         <q-form ref="manuscriptDetailForm">
                             <div class="q-mb-md">
-                                What is the working title of your manuscript?
+                                {{
+                                    $t(
+                                        'create-manuscript-record-dialog.what-is-the-working-title-of-your-manuscript'
+                                    )
+                                }}
                             </div>
                             <q-input
                                 v-model="title"
                                 outlined
-                                label="Title"
-                                placeholder="Enter the title of your manuscript"
+                                :label="$t('common.title')"
+                                :placeholder="
+                                    $t(
+                                        'create-manuscript-record-dialog.enter-the-title-of-your-manuscript'
+                                    )
+                                "
                                 :rules="[
                                     (val) =>
-                                        val.length > 0 || 'Title is required',
+                                        val.length > 0 || $t('common.required'),
                                 ]"
                             />
                             <div class="q-my-md">
-                                Please select the lead DFO region responsible
-                                for the review of this manuscript.
+                                {{
+                                    $t(
+                                        'create-manuscript-record-dialog.select-region-text'
+                                    )
+                                }}
                             </div>
                             <region-select
                                 v-model="regionId"
                                 outlined
-                                placeholder="Please select the lead region"
+                                :placeholder="
+                                    $t(
+                                        'manuscript.please-select-the-lead-region'
+                                    )
+                                "
                                 :rules="[
                                 (val: number) =>
-                                    val !== null || 'Lead region is required',
+                                    val !== null || $t('common.required'),
                             ]"
                             />
                         </q-form>
                     </q-step>
                     <q-step
                         :name="3"
-                        title="Create"
+                        :title="$t('common.create')"
                         icon="mdi-file-document-check"
                         :done="step > 3"
                         style="min-height: 275px"
                     >
                         <div class="q-pa-md">
-                            Once created, you will be taken to the manuscript
-                            record form. The manuscript record form will be
-                            marked as a draft and only be visible to you an the
-                            people you invite as observers. Once the form is
-                            complete you will be able to submit it for review.
+                            {{
+                                $t(
+                                    'create-manuscript-record-dialog.create-text'
+                                )
+                            }}
                         </div>
                     </q-step>
                     <template #navigation
-                        ><q-stepper-navigation>
+                        ><q-stepper-navigation class="flex justify-end">
                             <q-btn
                                 color="primary"
-                                :label="step === 3 ? 'Create' : 'Continue'"
+                                :label="
+                                    step === 3
+                                        ? $t('common.create')
+                                        : $t('common.contiue')
+                                "
                                 class="q-mr-sm"
                                 @click="next()"
                             />
@@ -139,13 +157,13 @@
                                 v-if="step > 1"
                                 flat
                                 color="primary"
-                                label="Back"
+                                :label="$t('common.back')"
                                 @click="stepper?.previous()"
                             />
                             <q-btn
                                 v-close-popup
                                 flat
-                                label="Cancel"
+                                :label="$t('common.cancel')"
                             /> </q-stepper-navigation
                     ></template>
                 </q-stepper>
@@ -194,15 +212,11 @@ const title = ref('');
 const regionId: Ref<number | null> = ref(null);
 
 async function create() {
-    console.log('creating the record');
-
     const record: BaseManuscriptRecord = {
         type: type.value,
         title: title.value,
         region_id: regionId.value ?? 1,
     };
-
-    console.log(record);
 
     // create the manuscript record
     await ManuscriptRecordService.create(record)

@@ -1,4 +1,4 @@
-import { Quasar, Notify, Dialog } from 'quasar';
+import { Quasar, Notify, Dialog, LoadingBar } from 'quasar';
 import { App } from 'vue';
 
 // Import icon libraries
@@ -18,10 +18,14 @@ export const installQuasar = (app: App<Element>) => {
         plugins: {
             Notify,
             Dialog,
+            LoadingBar,
         },
         config: {
             notify: {
                 position: 'top',
+            },
+            loadingBar: {
+                color: 'primary',
             },
         },
     });

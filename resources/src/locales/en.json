@@ -1,12 +1,616 @@
 {
   "common": {
     "login": "Login",
-    "app-name": "Open Science Portal",
+    "app-name": "EOS Open Science Portal",
     "register": "Register",
     "dfo-region": "DFO Region",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "pending": "Pending",
+    "deferred": "Deferred",
+    "completed": "Completed",
+    "approved": "Approved",
+    "none": "None",
+    "withheld": "Withheld",
+    "unknown": "Unknown",
+    "saved": "Saved",
+    "warnings": {
+      "unsaved-changes": {}
+    },
+    "logout": "Logout",
+    "logged-out": "Logged Out",
+    "your-email": "Your email",
+    "validation": {
+      "email-required": "Email is required",
+      "email-invalid": "Email is invalid",
+      "password-required": "Password is required",
+      "name-required": "Name is required",
+      "name-invalid": "Name is invalid",
+      "passwords-match": "Passwords do not match",
+      "password-length": "Password must be at least 12 characters",
+      "passwords-different": "Your current and new password should be different",
+      "invalid-date": "Invalid date",
+      "date-is-too-early": "Date is too early",
+      "date-is-too-late": "Date is too late",
+      "orcid-invalid": "ORCID is invalid",
+      "orcid-is-invalid-checksum": "ORCID is invalid (checksum)",
+      "must-be-less-than-x-characters": "Must be less than {0} characters",
+      "no-authors": "No authors, please add at least one author prior to submission.",
+      "at-least-one-author": "At least one corresponding author is required.",
+      "invalid-doi": "Invalid DOI",
+      "file-size-is-too-large": "File size is too large",
+      "file-type-is-not-accepted": "File type is not accepted"
+    },
+    "your-password": "Your password",
+    "reset": "Reset",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "your-first-name": "Your first name",
+    "your-last-name": "Your last name",
+    "confirm-password": "Confirm password",
+    "registered": "Registered",
+    "show": "Show",
+    "hide": "Hide",
+    "current-password": "Current Password",
+    "timeAgo": {
+      "just-now": "just now",
+      "ago": "{0} ago",
+      "in": "in {0}",
+      "last-month": "last month",
+      "next-month": "next month",
+      "month": "month | months",
+      "last-year": "last year",
+      "next-year": "next year",
+      "year": "year | years",
+      "yesterday": "yesterday",
+      "tomorrow": "tomorrow",
+      "day": "day | days",
+      "last-week": "last week",
+      "next-week": "next week",
+      "week": "week | weeks",
+      "hour": "hour | hours",
+      "minute": "minute | minutes",
+      "second": "second | seconds"
+    },
+    "english": "English",
+    "french": "French",
+    "status": "Status",
+    "user": "User",
+    "email": "Email",
+    "close": "Close",
+    "required": "Required",
+    "my-manuscripts": "My Manuscripts",
+    "my-publications": "My Publications",
+    "my-reviews": "My Reviews",
+    "publications": "Publications",
+    "sensitive-issues": "Sensitive Issues",
+    "no-results-found": "No Results Found",
+    "no-results-found-hint": "Try adjusting your search criteria or filters to find what you're looking for.",
+    "showing": "Showing",
+    "of": "of",
+    "inactive-msg": "You have been inactive for {0} minutes. You will be logged out in 2 minutes.",
+    "stay-logged-in": "Stay logged in",
+    "author": "Author | Authors",
+    "no-results-found-for": "No results found for",
+    "first-name": "First Name",
+    "last-name": "Last Name",
+    "affiliation": "Affiliation",
+    "create": "Create",
+    "current-affiliation": "Current Affiliation",
+    "save": "Save",
+    "funder": "Funder",
+    "description": "Description",
+    "title": "Title",
+    "cancel": "Cancel",
+    "funding-sources": "Funding Sources",
+    "created": "Created",
+    "deleted": "Deleted",
+    "journal": "Journal",
+    "no-title": "No title",
+    "on": "on",
+    "manuscript": "Manuscript",
+    "comments": "Comments",
+    "back": "Back",
+    "submit": "Submit",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "in-progress": "In Progress",
+    "complete": "Complete",
+    "submitted-on": "Submitted on",
+    "completed-on": "Completed on",
+    "reviews": "Reviews",
+    "filter": "Filter",
+    "i-need-to-take-action": "I need to take action",
+    "no-actions-required": "No actions required",
+    "corresponding-author": "Corresponding Author",
+    "corresponding-author-desc": "The corresponding author communicates with the journal(s) and is responsible for managing editorial issues and the manuscript's final format and content. This person is not necessarily the \"first\" author, which could have different meanings in different fields. For example, it could be a first or the last author or the person overseeing the publication process and, often, responsible for conceiving, supporting, and managing the project.",
+    "is-a-corresponding-author": "Is a corresponding author?",
+    "add": "Add",
+    "added-successfully": "added successfully",
+    "updated-successfully": "updated successfully",
+    "copy-to-clipboard": "Copy to clipboard",
+    "copied": "Copied",
+    "corresponding-author-toggle": "Toggles whether this is a corresponding author",
+    "congratulations": "Congratulations!",
+    "submitted-to-journal-on": "Submitted to Journal On",
+    "accepted-for-publication-on": "Accepted for Publication On",
+    "update": "Update",
+    "type-of-publication": "Type of publication",
+    "primary-publication": "Primary Publication",
+    "secondary-publication": "Secondary Publication",
+    "contiue": "Continue",
+    "no-authors": "No authors",
+    "manuscript-type": "Manuscript Type",
+    "primary-manuscript": "Primary Manuscript",
+    "secondary-manuscript": "Secondary Manuscript",
+    "division-manager": "Division Manager",
+    "withdraw": "Withdraw",
+    "organization": "Organization",
+    "published-as-open-access": "Published as Open Access",
+    "embargoed-until": "Embargoed Until",
+    "pending-publication": "Pending Publication",
+    "manuscript-record-form": "Manuscript Record Form",
+    "applicant": "Applicant",
+    "lead-region": "Lead Region",
+    "abstract": "Abstract",
+    "plain-language-summary": "Plain Language Summary",
+    "kb-uploaded-on": "KB uploaded on",
+    "upload": "Upload",
+    "file-uploaded-successfully": "File uploaded successfully",
+    "created-on": "Created on",
+    "accepted-on": "Accepted on",
+    "withdrawn-on": "Withdrawn on",
+    "manuscripts": "Manuscripts",
+    "contact": "Contact",
+    "manuscript-record": "Manuscript Record",
+    "not-available": "Not Available",
+    "published-on": "Published on",
+    "filters": "Filters",
+    "open-access": "Open Access",
+    "no-filters-applied": "No filters applied",
+    "recent": "Recent",
+    "page-not-found": "Page Not Found",
+    "form": "Form",
+    "progress": "Progress"
   },
   "auth": {
-    "logged-out-successfully": "Logged out successfully"
+    "logged-out-successfully": "Logged out successfully",
+    "redirected": "You've been automatically redirected."
+  },
+  "manuscript": {
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "draft": "Draft",
+    "in_review": "In Review",
+    "reviewed": "Reviewed",
+    "submitted": "Submitted",
+    "accepted": "Accepted",
+    "withdrawn": "Withdrawn",
+    "withheld": "Withheld",
+    "please-select-the-lead-region": "Please select the lead region"
+  },
+  "dialog": {
+    "unsaved-changes": {
+      "message": "You have unsaved changes. Are you sure you want to leave?",
+      "title": "Unsaved Changes"
+    }
+  },
+  "publication": {
+    "accepted": "Accepted",
+    "publsihed": "Published"
+  },
+  "error-invalid-signature": {
+    "invalid-signature": "Invalid Signature",
+    "link-expired-text": "The signed link you're using has likely expired."
+  },
+  "logout-card": {
+    "text": "Thank you for using the Open Science Portal.",
+    "text-inactive": "You've been logged out due to inactivity."
+  },
+  "login-card": {
+    "email-verified-text": "Email verified. You may now login.",
+    "remember-me": "Remember me",
+    "forgot-your-password": "Forgot your password?",
+    "dont-have-an-account": "Don't have an account?",
+    "new-password-required": "You've been redirected because your account requires a new password."
+  },
+  "main-header": {},
+  "register-card": {
+    "registered-subtitle": "Just one last step...",
+    "registered": {
+      "text": "Please check your email ({0}) for a confirmation link. To protect your account, you will not be able to login until you've confirmed your email address."
+    }
+  },
+  "forgot-password-card": {
+    "cancel": "Return to Login",
+    "title": "Reset Your Password",
+    "text": "Don't fret, we've all been there before. Simply click the password reset button and we'll send you some instructions to get you back on track."
+  },
+  "reset-password": {
+    "invalid-request-title": "Invalid Password Reset Request",
+    "text": "Enter a new password for {0}.",
+    "title": "Enter new password"
+  },
+  "change-password-card": {
+    "title": "Change Your Password",
+    "subtitle": "Ensure your account is using a long (12 characters or more), random password to stay secure.",
+    "new-password": "New Password",
+    "confirm-new-password": "Confirm New Password",
+    "change-password": "Change Password",
+    "new-password-required": "Your account security is important to us. You're using a temporary or expired password, please change it now."
+  },
+  "authentication-history-card": {
+    "title": "Authentication History",
+    "subtitle": "Suspicious activity? Change your password and immediately report it to us.",
+    "ip_address": "IP Address",
+    "browser": "Browser",
+    "location": "Location",
+    "login-at": "Login At",
+    "successful": "Successful",
+    "logout-at": "Logout At"
+  },
+  "LocaleSelect": {
+    "label": "Language Preference"
+  },
+  "SentInvitationsCard": {
+    "title": "Sent Invitations",
+    "subtitle": "List of the invitations you have sent.",
+    "invited-at": "Invited At",
+    "registered-at": "Registered At"
+  },
+  "SettingsPage": {
+    "user-profile": "User Profile",
+    "author-profile": "Author Profile",
+    "account-security": "Account Security"
+  },
+  "osp": {
+    "slogan": {
+      "p1": "Share your work",
+      "p2": "Help us",
+      "p3": "grow"
+    },
+    "description": "The Open Science Portal is an intuitive web-based application to promote open science and track science publications within Fisheries and Oceans Canada."
+  },
+  "date-input": {
+    "hint": "ISO Date Format (YYYY-MM-DD)"
+  },
+  "form-section-status": {
+    "section-complete": "Section complete",
+    "section-incomplete": "Section incomplete",
+    "section-error": "Section error"
+  },
+  "required-span": {
+    "definition": "Fields marked with an * are required.",
+    "tooltip": "This field is required"
+  },
+  "author-select": {
+    "hint": "Start typing to search for an author (first name, last name, or email)",
+    "empty-search-hint": "Start typing to search for an author",
+    "cant-find-text": "Can't find the author you're looking for?",
+    "add-a-new-author": "Add a new author",
+    "not-the-author-youre-looking-for": "Not the author you're looking for?"
+  },
+  "create-author-dialog": {
+    "title": "Create a new Author"
+  },
+  "manage-author-profile-card": {
+    "synced-to-your-user-profile": "Synced to your user profile.",
+    "current-affiliation-hint": "This will not affect the affiliation of any of your past publications.",
+    "orcid-verified": "This is a verified ORCID. Use the Manage ORCID to change it.",
+    "orcid-not-verified": "You can also verify or register with ORCID using \"Manage ORCID\" "
+  },
+  "manage-author-profile-view": {
+    "title": "Disciplines, Skills and Expertise",
+    "authorize-orcid": "Manage ORCID"
+  },
+  "funding-source": {
+    "create-funding-source": "Create Funding Source"
+  },
+  "funding-source-list": {
+    "no-funding-source-given": "No funding source given."
+  },
+  "manage-funding-source-card": {
+    "subtitle": "If applicable, please enter the funding source(s) that have helped generate this work.",
+    "add-funding-source": "Add Funding Source"
+  },
+  "journal-select": {
+    "search-hint": "Start typing to search for a journal",
+    "not-found-msg": "Can't find the journal you're looking for? Please contact us so we can add it."
+  },
+  "management-review-step-list": {
+    "review-request-received-from": "Review request received from"
+  },
+  "management-review-guidelines": {
+    "title": "Management Review Guidelines",
+    "subtitle": "Please refer to the National Policy for Science Publications for more details.",
+    "tip-one": "Reviews the manuscript for compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs) and the Values and Ethics Code for DFO.",
+    "tip-two": "Review the manuscript to identify sensitive issues, solely for the purpose of briefing senior management and the Communications Branch prior to publication of the science paper. Identified sensitive issues must be added to the form's \"Sensitive Issues\" section.",
+    "tip-three": "At no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers."
+  },
+  "reviewer-comments": {
+    "title": "Reviewer Comments",
+    "description": "Comments are required unless you approve and complete the management review without sending it to another reviewer. Comments entered here should support your decision and, if applicable, provide feedback to the subsequent reviewers. Your comments will be visible to anyone with access to this manuscript record."
+  },
+  "review-step": {
+    "your-review": "Your Review : {0}",
+    "review-by": "Review by {0}",
+    "save-comments": "Save Comments",
+    "submit-decision": "Submit Decision"
+  },
+  "no-management-review": {
+    "title": "You have nothing to review",
+    "subtitle": "Manuscripts you've recently been asked to review will appear here."
+  },
+  "submit-decision-dialog": {
+    "your-decision": "Your Decision",
+    "select-decision": "Select your decision",
+    "select-next-reviewer": "Select Next Reviewer",
+    "next-reviewer": "Next Reviewer",
+    "next-reviewer-hint": "Search for the appropriate reviewer within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
+    "subsequent-reviewer-is-required": "Given your decision, a subsequent reviewer is required",
+    "confirm-decision": "Confirm Decision",
+    "certify-text": "I certify that, to the best of my knowledge, my decision is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous reviewer and have considered them in my decision.",
+    "no-comments-warning": "Your review has no comments. Therefore, you can only approve and complete this review. Please add comments to support your decision if you want to select from the other options."
+  },
+  "decision": {
+    "approve-and-complete": "Approve and Complete",
+    "approve-and-complete-desc": "You approve this manuscript for publication and are ending the management review process.",
+    "approve-and-forward": "Approve and Forward",
+    "approve-and-forward-desc": "You recommend approval of this manuscript for publication and are forwarding it to the next reviewer.",
+    "withhold-and-complete": "Withhold and Complete",
+    "withhold-and-complete-desc": "You withhold this manuscript for publication and are ending the management review process. Only a RDS or DG can make this decision.",
+    "withhold-and-forward": "Withhold and Forward",
+    "withhold-and-forward-desc": "You recommend this manuscript be withheld for publication and are forwarding it to the next reviewer.",
+    "reassign": "Reassign",
+    "reassign-desc": "You are not the correct reviewer for this manuscript and reassign this review to the proper reviewer without making a recommendation."
+  },
+  "management-review-step-view": {
+    "title": "Management Review",
+    "submission-for-review": "Submission for Review",
+    "completion-of-management-review": "Completion of Management Review",
+    "not-started-submit-your-form-to-begin": "Not Started - Submit your form to begin"
+  },
+  "policy": {
+    "message": {
+      "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {valueAndEthicsCode}. It will also identify potential sensitive issues, solely for the purpose of briefing senior management and the Communications Branch prior to publication of the science paper. At no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers."
+    },
+    "intellectual-property-policy-copyright-act": "Intellectual Property Policy/Copyright Act",
+    "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/copyright-droits-eng.htm",
+    "privacy-act": "Privacy Act",
+    "privacy-act-link": "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-privacy-act/pa_brief/",
+    "values-and-ethics-code-for-dfo": "Values and Ethics Code for DFO",
+    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-eng.htm",
+    "p2": "Science management commits to a 10 working-day turnaround for sign-off of manuscripts for publication. If managers do not respond with an approval within 10 working days, authors may submit their manuscripts to the publisher.",
+    "for-more-info": "For more information please refer to the {policy}.",
+    "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
+    "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html"
+  },
+  "review-step-view": {
+    "all-my-reviews": "All My Reviews",
+    "list-of-all-my-reviews": "List of all my reviews"
+  },
+  "manuscript-author-dialog": {
+    "title": "Add an author to this manuscript",
+    "instructions": "Search for the author you'd want to add using their name or professional email. If you cannot find the author you are looking for, or their affiliation or email has changed, you can create a new author record."
+  },
+  "manage-manuscript-author-card": {
+    "title": "Author(s) and Affiliation(s)",
+    "instructions": "Enter all authors, their affiliations and at least one corresponding author. Authors will appears in the list in the order they are entered.",
+    "delete-author": "Delete Author",
+    "delete-author-msg": "Are you sure you want to delete this author?"
+  },
+  "accepted-by-journal-dialog": {
+    "text": "You can now mark this manuscript as having been accepted for publication by a journal. This step will create a new publication to your profile allowing you to update the publication details. Once you know the publication details, please remember to update publication record and mark it as published so that we can help share it within the DFO community."
+  },
+  "create-manuscript-record-dialog": {
+    "title": "Create a new manuscript record",
+    "step1": {
+      "text": "Please select the type of manuscript record you want to create. Do you intend to submit this manuscript to a primary or secondary journal?"
+    },
+    "primary-pub-desc": "A publication in a primary peer-reviewed publications (scientific journals, special issues, book chapters, books and conference proceedings.)",
+    "secondary-pub-desc": "A publication in a Fisheries and Oceans Canada’s (DFO’s) secondary science publications such as the DFO series “Canadian Technical Report of Fisheries and Aquatic Sciences,” “Canadian Data Report of Fisheries and Aquatic Sciences,” and other series.",
+    "step2": {
+      "title": "Manuscript Details"
+    },
+    "what-is-the-working-title-of-your-manuscript": "What is the working title of your manuscript?",
+    "enter-the-title-of-your-manuscript": "Enter the title of your manuscript",
+    "select-region-text": "Please select the lead DFO region responsible for the review of this manuscript.",
+    "create-text": "Once created, you will be taken to the manuscript record form. The manuscript record form will be marked as a draft and only be visible to you an the people you invite as observers. Once the form is complete you will be able to submit it for review."
+  },
+  "no-manuscript-exists-div": {
+    "p1": "Need to publish a primary or secondary publication? You've come to the right place. Create a manuscript record and start the process of publishing your manuscript following the national policy for science publications.",
+    "p2": "The national policy ensures a consistent treatment of scientific publications across DFO regions, recognition of the scientific impact of the Department through the use of a standard affiliation, and effective tracking of our publications to better integrate science into departmental processes."
+  },
+  "submit-manuscript-dialog": {
+    "title": "Submit Manuscript for Management Review",
+    "step1": {
+      "title": "Confirm Submission",
+      "subtitle": "Submission for Management Review",
+      "confirmation-text": "I certify that, to the best of my knowledge, this manuscript is in compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs), and the Values and Ethics Code for DFO."
+    },
+    "step2": {
+      "title": "Select Reviewer",
+      "subtitle": "Division Manager/Director",
+      "p1": "To submit the manuscript for management review, search for the appropriate division manager/director within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
+      "p2": "Note; you will not be able to select someone that is an author on this manuscript or the owner of this manuscript record."
+    }
+  },
+  "submitted-to-journal-dialog": {
+    "title": "Update the manuscript status as submitted",
+    "text": "Mark this manuscript as having been submitted to a journal. This step is optional and allows you to let all users involved in the management review that you submitted your manuscript."
+  },
+  "withdraw-manuscript-dialog": {
+    "title": "Withdraw this manuscript",
+    "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record."
+  },
+  "create-organization-dialog": {
+    "title": "Create new Organization",
+    "p1": "Once created, this organization will be available to all users. Please make sure to use the official name and abbreviation for the organization. (E.g.: do not include departments, branches or regions.)",
+    "p2": "If the name of the organization does not have an official French or English equivalent, please copy the official name in both fields.",
+    "organization-name-english": "Organization Name (English)",
+    "organization-name-french": "Organization Name (French)",
+    "abbreviation-english": "Abbreviation (English)",
+    "abbreviation-french": "Abbreviation (French)"
+  },
+  "organization-select": {
+    "hint": "Start typing to search for an organization",
+    "cant-find": "Can't find the organization you're looking for?",
+    "add-a-new-organization": "Add a new organiztion"
+  },
+  "create-publication-dialog": {
+    "title": "Create a Publication",
+    "before-your-start": "Before your start",
+    "before-continuing": "Before Continuing...",
+    "step1": {
+      "p1": "This wizard lets you add published publications to the portal; allowing you to share past publications or to add publications where the manuscript record form (MRF) was done through other means.",
+      "warning": "If you are here to get your manuscript reviewed prior to submission to a journal, do not continue, create a new manuscript record instead."
+    },
+    "publication-details": "Publication Details",
+    "dates-and-access": "Dates and Access",
+    "publication-dates": "Publication Dates",
+    "accepted-on-optional": "Accepted On (Optional)",
+    "published-on": "Published On",
+    "publication-access": "Publication Access"
+  },
+  "no-publication-exist-div": {
+    "p1": "Manuscripts that have been reviewed will appear here. Once published, you can update the publication details. You can also add any past publication here so that it is part of our database and available for all to see."
+  },
+  "my-publication-view": {
+    "create-publication": "Create Publication",
+    "no-publications-found": "No publications found",
+    "all-publications": "All Publications",
+    "includes-ones-shared-with-me": "Includes ones shared with me",
+    "my-publications": "My Publications",
+    "i-am-responsible-for-this-publication-record": "I am responsible for this publication record",
+    "actions-still-required": "Actions still required"
+  },
+  "mrf": {
+    "ready-to-marked-published": "This manuscript has been reviewed but still needs to be marked as published by the applicant.",
+    "manuscripts-working-title": "Manuscript's Working Title",
+    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
+    "lead-region-text": "Select the DFO region responsible for the review of this manuscript. If more than one region is responsible, select the region that will lead the review.",
+    "copy-your-manuscripts-abstract-here": "Copy your manuscript's abstract here.",
+    "pls-text": "Plain Language Summary (PLS) of the manuscript to explain the relevance of the science to the Department and to promote the value of science through outreach and communication. It is intended for internal use to identify linkages to programs, policies and stakeholders and for use in the plain language promotion of science.",
+    "pls-help-ai-text": "Need some help? Using your manuscript's abstract, we can generate a draft PLS.",
+    "generate-pls": "Generate PLS",
+    "scientific-implications": "Scientific Implications",
+    "scientific-implication-text": "Describe the scientific implications of the paper. (i.e. field, importance, focus, purpose, benefits, etc.)",
+    "relevant-title": "Relevant to programs, projects, etc.",
+    "geographical-title": "Geographical Scope and Species",
+    "additional-information-of-importance": "Additional Information of Importance",
+    "additional-text": "Provide any additional information of importance to the manuscript.",
+    "attach-manuscript": "Attach Manuscript",
+    "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
+    "replace-manuscript": "Upload a new version of the manuscript",
+    "upload-manuscript": "Upload manuscript",
+    "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
+    "submit-tooltip": "Submit for review",
+    "submit-tooltip-disabled": "Please complete all sections and save to submit",
+    "not-authorized-text": "You do not have permission to view this manuscript record",
+    "manuscript-saved-successfully": "Manuscript saved successfully",
+    "pls-already-generated-erase-it-to-generate-a-new-one": "PLS already generated - erase it to generate a new one",
+    "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
+    "generating-pls-please-be-patient": "Generating PLS... please be patient",
+    "pls-generated-successfully": "PLS generated successfully"
+  },
+  "mfr": {
+    "general-information": "General Information",
+    "relevant-text": "Describe how the paper is relevant to programs, projects, acts, initiatives, etc. (i.e. how it supports the department's mandate, how it supports the department's strategic plan, how it supports regional priorities, etc.)",
+    "geographical-text": "Describe the geographical scope/region and (if applicable) species (to include common names) of the paper."
+  },
+  "orcid": {
+    "verifying": "Verifying with ORCID.org",
+    "verified-with": "Successfully verified with ORCID.org",
+    "error-verifying": "Error verifying with ORCID.org",
+    "already-verified-text": "Your ORCID has been successfully verified with ORCID.org. If you'd like to change it or verify it again, click below."
+  },
+  "ocrid": {
+    "verify-btn-text": "Verify Your ORCID iD"
+  },
+  "manuscript-progress-view": {
+    "title": "Manuscript Progress",
+    "manuscript-record-created": "Manuscript Record Created",
+    "created-details": "At this stage, only the applicant and authors can see and edit the manuscript record.",
+    "submit-management": "Submit for Management Review",
+    "submit-management-details": "The manuscript is initially submitted to a division manager or director (NCR) for management review.",
+    "completed-title": "Completion of Management Review",
+    "completed-withheld-details": "The manuscript does not comply with Fisheries and Oceans Canada National Policy for Science Publications and is withheld by DFO management.",
+    "completed-details": "The manuscript complies with Fisheries and Oceans Canada National Policy for Science Publications and is approved by DFO management. At this stage, you may now submit the manuscript to your target journal.",
+    "submit-pub-title": "Initial Submission to Target Publication",
+    "submit-pub-details": "The manuscript was submitted to the target journal for peer-review. We track this stage to gather statistics on the time it takes to get manuscript accepted and published.",
+    "mark-as-submitted": "Mark as Submitted",
+    "accepted-title": "Accepted for Publication",
+    "accepted-details": "The manuscript was accepted for publication by the target journal and is entering the production process. Confirming this step will create a new publication record where you can upload the final manuscript and update the publication details.",
+    "withdraw-manuscript": "Withdraw Manuscript",
+    "go-to-the-publication": "Go to the Publication",
+    "withdrawn-by-applicant": "Withdrawn by Applicant",
+    "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days.",
+    "manuscript-status-updated": "Manuscript status updated"
+  },
+  "my-manuscript-records": {
+    "create-manuscript": "Create Manuscript",
+    "no-manuscript": "No manuscripts exists or are shared with you",
+    "all-manuscripts": "All Manuscripts",
+    "all-manuscripts-caption": "Includes ones shared with me",
+    "my-manuscripts-caption": "I am the applicant",
+    "actions-still-required": "Actions still required"
+  },
+  "publication-page": {
+    "title": "Publication",
+    "publication-status": "Publication Status",
+    "go-to-manuscript-record": "Go to Manuscript Record",
+    "attach-publication": "Attach Manuscript",
+    "attach-pub-details": "Upload the most recent copy of your publication as a PDF. We will not allow portal users to see this file until the end of its embargo period.",
+    "mark-as-published": "Mark as Published",
+    "publication-date-pending": "Publication Date Pending",
+    "publication-updated-successfully": "Publication updated successfully"
+  },
+  "pub": {
+    "general-information": "General Information"
+  },
+  "publications-view": {
+    "all-published-publications-details": "All published publications",
+    "open-access-filter-details": "Publications published as open access",
+    "under-embargo": "Under Embargo",
+    "under-embargo-caption": "Publications under embargo",
+    "secondary-publications": "Secondary Publications",
+    "published-in-dfo-journals": "Published in DFO journals"
+  },
+  "add-pub-author-dialog": {
+    "title": "Add an author to this publication",
+    "dialog-help": "Search for the author you'd want to add using their name or professional email. If you cannot find the author you are looking for, or their affiliation or email has changed, you can create a new author record."
+  },
+  "manage-pub-authors": {
+    "no-authors": "No authors identified, please add the publication authors here."
+  },
+  "pub-author-dialog": {
+    "delete-author": "Delete author",
+    "are-you-sure-you-want-to-delete-this-author": "Are you sure you want to delete this author?"
+  },
+  "invite-user-dialog": {
+    "invite-a-user": "Invite a User",
+    "help": "Invite a new user to the portal. The invite email will be sent to the user's email address and you will be able to whether they have accepted the invitation under the \"Sent Invitation\" tab in the \"Settings\" menu.",
+    "locale-hint": "The invitation email will be sent using the chosen language.",
+    "invite": "Invite"
+  },
+  "user-profile": {
+    "email-hint": "Your verified email address cannot be changed manually."
+  },
+  "user-select": {
+    "start-typing-to-search-for-a-user": "Start typing to search for a user",
+    "cant-find-the-user-youre-looking-for": "Can't find the user you're looking for?",
+    "invite-a-new-user": "Invite a new user",
+    "not-the-user-youre-looking-for": "Not the user you're looking for?"
+  },
+  "dashboard": {
+    "create-your-first-manuscript-record": "Create your first manuscript record",
+    "add-your-first-publication": "Add your first publication",
+    "add-publication": "Add Publication",
+    "in-progress": "In progress",
+    "awaiting-publication": "Awaiting Publication"
+  },
+  "under-construction": {
+    "title": "Under Construction",
+    "subtitle": "Working on it..."
   }
 }

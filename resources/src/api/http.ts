@@ -66,34 +66,34 @@ class Http {
         return this.http.request(config);
     }
 
-    get<R = AxiosResponse>(
+    get<R, AR = AxiosResponse<R>>(
         url: string,
         config?: AxiosRequestConfig
-    ): Promise<R> {
+    ): Promise<AR> {
         return this.http.get(url, config);
     }
 
-    post<T = any, R = AxiosResponse<T>>(
+    post<T, R, AR = AxiosResponse<R>>(
         url: string,
         data?: T,
         config?: AxiosRequestConfig
-    ): Promise<R> {
-        return this.http.post<T, R>(url, data, config);
+    ): Promise<AR> {
+        return this.http.post<T, AR>(url, data, config);
     }
 
-    put<T = any, R = AxiosResponse<T>>(
+    put<T, R, AR = AxiosResponse<R>>(
         url: string,
         data?: T,
         config?: AxiosRequestConfig
-    ): Promise<R> {
-        return this.http.put<T, R>(url, data, config);
+    ): Promise<AR> {
+        return this.http.put<T, AR>(url, data, config);
     }
 
-    delete<T = any, R = AxiosResponse<T>>(
+    delete<T, R, AR = AxiosResponse<R>>(
         url: string,
         config?: AxiosRequestConfig
-    ): Promise<R> {
-        return this.http.delete<T, R>(url, config);
+    ): Promise<AR> {
+        return this.http.delete<T, AR>(url, config);
     }
 
     // Handle global app errors
@@ -117,11 +117,13 @@ class Http {
                 // Handle Unauthorized - likely an expired session
                 // should we be authenticated on this route?
                 if (Router.currentRoute.value.meta.requiresAuth) {
-                    this.notifyError(errorMessage, 'Unauthorized');
-                    authStore.user = null;
+                    setTimeout(() => {
+                        this.notifyError(errorMessage, 'Unauthorized');
+                    }, 500);
+                    authStore.refreshUser();
                     Router.push({ name: 'login' });
                 }
-                console.log('Router: ', Router.currentRoute.value);
+                //console.log('Router: ', Router.currentRoute.value);
                 break;
             }
             case StatusCode.TooManyRequests: {
@@ -139,9 +141,14 @@ class Http {
                 this.notifyError(errorMessage, 'Resource Not Found');
                 break;
             }
+            default: {
+                this.notifyError(errorMessage, 'Unknown Error');
+                break;
+            }
         }
 
-        console.log('HTTP.TS Handling error: ' + error.statusText);
+        if (status !== StatusCode.Unauthorized)
+            console.log('HTTP.TS Handling error: ' + error.statusText);
 
         return Promise.reject(error);
     }

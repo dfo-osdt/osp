@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\ManuscriptRecordStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,8 +27,7 @@ class ManuscriptRecordResource extends JsonResource
 
                 // text fields / send empty string if null.
                 'abstract' => $this->abstract ?? '',
-                'pls_en' => $this->pls_en ?? '',
-                'pls_fr' => $this->pls_fr ?? '',
+                'pls' => $this->pls ?? '',
                 'scientific_implications' => $this->scientific_implications ?? '',
                 'regions_and_species' => $this->regions_and_species ?? '',
                 'relevant_to' => $this->relevant_to ?? '',
@@ -42,11 +42,17 @@ class ManuscriptRecordResource extends JsonResource
                 'accepted_on' => $this->accepted_on,
                 'withdrawn_on' => $this->withdrawn_on,
                 //relationships - if loaded
+                'manuscript_pdf' => MediaResource::make($this->getManuscriptFile()),
                 'region' => RegionResource::make($this->whenLoaded('region')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
+                'user' => UserResource::make($this->whenLoaded('user')),
+                'publication' => $this->when($this->status === ManuscriptRecordStatus::ACCEPTED, PublicationResource::make($this->whenLoaded('publication'))),
+                'funding_sources' => FundingSourceResource::collection($this->whenLoaded('fundingSources')),
+                // if this manuscript is accepted, include the publication id
+                // special model permissions
+                'can_attach_manuscript' => Auth::user()->can('attachManuscript', $this->resource),
             ],
             'can' => [
-
                 'update' => Auth::user()->can('update', $this->resource),
                 'delete' => Auth::user()->can('delete', $this->resource),
             ],

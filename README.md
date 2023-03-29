@@ -1,5 +1,5 @@
 # DFO Open Science Portal
-A web-based application to promote open science and track science publications within Fisheries and Oceans.
+A web-based application to promote open science and track science publications within Fisheries and Oceans Canada.
 ## Contribution Guidelines
 For now, we'll use spatie.be's excellent [guidelines](https://spatie.be/guidelines).
 Additional guidelines will be added here as we progress.

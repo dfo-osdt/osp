@@ -3,7 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { quasar } from '@quasar/vite-plugin';
-import VueI18n from '@intlify/vite-plugin-vue-i18n';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import { homedir } from 'os';
 import { resolve } from 'path';
@@ -23,7 +23,7 @@ export default defineConfig({
         quasar({ sassVariables: 'resources/src/styles/variables.scss' }),
 
         // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
-        VueI18n({
+        VueI18nPlugin({
             runtimeOnly: true,
             compositionOnly: true,
             include: [path.resolve(__dirname, 'resources/src/locales/**')],

@@ -9,7 +9,7 @@
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
     </testsuites>
-    <coverage processUncoveredFiles="true">
+    <coverage>
         <include>
             <directory suffix=".php">./app</directory>
         </include>
@@ -24,5 +24,7 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="ORCID_CLIENT_ID" value="APP-XXXXXXXXXXXXXXXX"/>
+        <env name="ORCID_REDIRECT_URI" value="https://example.test/orcid/callback?"/>
     </php>
 </phpunit>

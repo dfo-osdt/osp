@@ -16,12 +16,28 @@ class Author extends Model
         'id',
         'created_at',
         'updated_at',
+        'orcid_verified',
+        'orcid_access_token',
     ];
+
+    protected $casts = [
+        'orcid_verified' => 'boolean',
+    ];
+
+    // author fullname
+    public function getFullNameAttribute(): string
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
+
+    // author name for APA citation
+    public function getApaNameAttribute(): string
+    {
+        return $this->last_name.', '.$this->first_name;
+    }
 
     /**
      * Make sure that the email is always stored as lowercase to prevent duplicates.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function email(): Attribute
     {
@@ -43,5 +59,10 @@ class Author extends Model
     public function organization(): BelongsTo
     {
         return $this->belongsTo('App\Models\Organization');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\User');
     }
 }

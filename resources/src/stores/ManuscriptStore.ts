@@ -1,17 +1,17 @@
 import {
-    ManuscriptRecordResource,
+    ManuscriptQuery,
+    ManuscriptRecordSummaryResource,
     ManuscriptRecordService,
 } from '@/models/ManuscriptRecord/ManuscriptRecord';
 import { Ref } from 'vue';
 
 /**
- * This store will be used to store the application's regions, as
- * they nearly never change, it will be cached here.
+ * This store will be used to store the applicants recent manuscript record
  */
 export const useManuscriptStore = defineStore('ManuscriptStore', () => {
     // initial state
     const loading: Ref<boolean> = ref(false);
-    const manuscripts: Ref<ManuscriptRecordResource[] | undefined> =
+    const manuscripts: Ref<ManuscriptRecordSummaryResource[] | undefined> =
         ref(undefined);
 
     /** get values if they're not already loaded.
@@ -20,10 +20,17 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
      * @returns void
      */
     async function getMyManuscripts(force = false) {
+        if (loading.value) return; // don't load if we're already loading
         if (manuscripts.value === undefined || force) {
             loading.value = true;
-            manuscripts.value =
-                await ManuscriptRecordService.getMyManuscripts();
+
+            const query = new ManuscriptQuery();
+            query.sort('updated_at', 'desc').paginate(1, 10);
+
+            const response = await ManuscriptRecordService.getMyManuscripts(
+                query
+            );
+            manuscripts.value = response.data;
             loading.value = false;
         }
     }
@@ -44,11 +51,23 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
             .slice(0, 5);
     });
 
+    // Manuscript in progress - where status is 'in_review', 'reviewed, or 'submitted'
+    const inProgressManuscripts = computed(() => {
+        if (manuscripts.value === undefined) return [];
+        return manuscripts.value.filter(
+            (m) =>
+                m.data.status === 'in_review' ||
+                m.data.status === 'reviewed' ||
+                m.data.status === 'submitted'
+        );
+    });
+
     return {
         loading,
         empty,
         recentManuscripts,
         manuscripts,
+        inProgressManuscripts,
         getMyManuscripts,
     };
 });

@@ -29,7 +29,6 @@ class ManuscriptAuthorResource extends JsonResource
                 'update' => Auth::user()->can('update', $this->resource),
                 'delete' => Auth::user()->can('delete', $this->resource),
             ],
-
         ];
     }
 }

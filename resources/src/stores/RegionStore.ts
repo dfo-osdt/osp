@@ -21,11 +21,10 @@ export const useRegionStore = defineStore('RegionStore', () => {
             await fetch('/api/regions')
                 .then((res) => res.json())
                 .then(({ data }) => {
-                    console.log(data);
                     regions.value = data;
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err);
                     regions.value = undefined;
                 })
                 .finally(() => {

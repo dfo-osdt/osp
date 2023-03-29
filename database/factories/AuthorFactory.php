@@ -16,12 +16,30 @@ class AuthorFactory extends Factory
      */
     public function definition()
     {
+        $fistName = $this->faker->firstName();
+        $lastName = $this->faker->lastName();
+        $email = $fistName.'.'.$lastName.'@'.$this->faker->safeEmailDomain();
+
         return [
-            'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName(),
-            'email' => $this->faker->safeEmail(),
-            'orcid' => $this->faker->unique()->optional()->numerify('####-####-####-####'),
+            'first_name' => $fistName,
+            'last_name' => $lastName,
+            'email' => $email,
+            'orcid' => $this->faker->optional()->numerify('####-####-####-####'),
             'organization_id' => \App\Models\Organization::factory(),
         ];
+    }
+
+    /**
+     * A factory for an author with a user account
+     */
+    public function isFromDFO()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'user_id' => \App\Models\User::factory(),
+                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
+                'organization_id' => 1,
+            ];
+        });
     }
 }

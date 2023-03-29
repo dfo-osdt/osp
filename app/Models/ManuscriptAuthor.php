@@ -10,6 +10,9 @@ class ManuscriptAuthor extends Model
 {
     use HasFactory;
 
+    // Audit Thresholds
+    protected $auditThreshold = 100;
+
     public $guarded = [
         'id',
         'created_at',

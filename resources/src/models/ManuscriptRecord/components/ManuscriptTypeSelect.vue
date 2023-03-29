@@ -2,24 +2,26 @@
     <q-select
         v-model="value"
         :options="options"
-        label="Manuscript Type"
+        label="$t('common.manuscript-type')"
         emit-value
         map-options
     />
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n();
+
 const props = defineProps<{
     modelValue: string;
 }>();
 
 const options = ref([
     {
-        label: 'Primary Manuscript',
+        label: t('common.primary-manuscript'),
         value: 'primary',
     },
     {
-        label: 'Secondary Manuscript',
+        label: t('common.secondary-manuscript'),
         value: 'secondary',
     },
 ]);

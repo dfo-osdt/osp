@@ -1,5 +1,4 @@
 import { http } from '@/api/http';
-import { AxiosResponse } from 'axios';
 import { Resource, ResourceList } from '../Resource';
 
 export interface Organization {
@@ -14,9 +13,6 @@ export interface Organization {
 export type OrganizationResource = Resource<Organization>;
 export type OrganizationResourceList = ResourceList<Organization>;
 
-type R = AxiosResponse<OrganizationResource>;
-type RList = AxiosResponse<OrganizationResourceList>;
-
 export class OrganizationService {
     /** Get a list of organizations
      * @returns organization list
@@ -26,13 +22,21 @@ export class OrganizationService {
         if (query) {
             url += `?${query}`;
         }
-        const response = await http.get<RList>(url);
+        const response = await http.get<OrganizationResourceList>(url);
+        return response.data;
+    }
+
+    /** Get an organization */
+    public static async find(id: number) {
+        const response = await http.get<OrganizationResource>(
+            `api/organizations/${id}`
+        );
         return response.data;
     }
 
     /** Create a new organization */
     public static async create(organization: Organization) {
-        const response = await http.post<Organization, R>(
+        const response = await http.post<Organization, OrganizationResource>(
             'api/organizations',
             organization
         );

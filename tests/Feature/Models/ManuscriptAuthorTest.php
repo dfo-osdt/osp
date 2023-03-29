@@ -3,18 +3,16 @@
 use App\Models\ManuscriptAuthor;
 
 test('a user can get the manuscript authors associated with a manuscript record', function () {
-    $this->seed();
-
     $user = \App\Models\User::factory()->create();
     $manuscript = \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->create([
         'user_id' => $user->id,
     ]);
-    ray()->showQueries();
+
     $response = $this->actingAs($user)->getJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors');
 
     $response->assertOk()->assertJsonCount(5, 'data');
 
-    expect($response->json('data.0'))->toHaveKeys([
+    expect($response->json('data.0.data'))->toHaveKeys([
         'id',
         'manuscript_record_id',
         'author_id',
@@ -26,8 +24,6 @@ test('a user can get the manuscript authors associated with a manuscript record'
 });
 
 test('a user can add a new manuscript author to their manuscript record', function () {
-    $this->seed();
-
     $user = \App\Models\User::factory()->create();
     $manuscript = \App\Models\ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
@@ -54,12 +50,17 @@ test('a user can add a new manuscript author to their manuscript record', functi
         'author',
     ]);
 
+    // this is there as if it doesn't exist we can't tell the frontend
+    // if the user can update or delete the record (e.g. AuthorChip)
+    expect($response->json('can'))->toBeArray([
+        'update' => true,
+        'delete' => true,
+    ]);
+
     expect($manuscript->manuscriptAuthors()->count())->toBe(1);
 });
 
 test('a user cannot add the same author twice to a manuscript record', function () {
-    $this->seed();
-
     $user = \App\Models\User::factory()->create();
     $manuscript = \App\Models\ManuscriptRecord::factory()->create([
         'user_id' => $user->id,

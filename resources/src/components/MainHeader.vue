@@ -7,8 +7,7 @@
                 flat
                 dense
                 round
-                icon="menu"
-                aria-label="Menu"
+                :icon="authStore.leftDrawerOpen ? 'mdi-menu-open' : 'mdi-menu'"
                 @click="toggleLeftDrawer"
             />
             <router-link to="/">
@@ -23,8 +22,7 @@
                 outline
                 dense
                 icon="mdi-login"
-                label="Login"
-                aria-label="Login"
+                :label="$t('common.login')"
                 padding="xs md"
                 @click="$router.push({ name: 'login' })"
             ></q-btn>
@@ -41,25 +39,27 @@
                             authStore.user?.fullName
                         }}</q-item-label>
                         <q-separator></q-separator>
-                        <q-item v-ripple to="/profile" clickable>
+                        <q-item v-ripple to="/settings" clickable>
                             <q-item-section>
-                                <q-item-label>Profile</q-item-label>
+                                <q-item-label>{{
+                                    $t('common.settings')
+                                }}</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
-                                <q-icon name="mdi-account-details-outline" />
+                                <q-icon name="mdi-account-cog-outline" />
                             </q-item-section>
                         </q-item>
                         <q-item v-ripple to="/dashboard" clickable>
                             <q-item-section>
-                                <q-item-label>Dashboard</q-item-label>
+                                <q-item-label>{{ $t('common.dashboard') }}</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
                                 <q-icon name="mdi-view-dashboard-outline" />
                             </q-item-section>
                         </q-item>
-                        <q-item v-ripple clickable @click="authStore.logout">
+                        <q-item v-ripple to="/auth/logout" clickable>
                             <q-item-section>
-                                <q-item-label>Logout</q-item-label>
+                                <q-item-label>{{ $t('common.logout') }}</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
                                 <q-icon name="mdi-logout" />
@@ -84,8 +84,9 @@
 const authStore = useAuthStore();
 const localeStore = useLocaleStore();
 
-// toggle the left drawer
 const emit = defineEmits(['toggleLeftDrawer']);
+
+// toggle the left drawer
 function toggleLeftDrawer() {
     emit('toggleLeftDrawer');
 }

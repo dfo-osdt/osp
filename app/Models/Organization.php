@@ -33,4 +33,12 @@ class Organization extends Model
     {
         return $this->hasMany('App\Models\ManuscriptAuthor');
     }
+
+    /** Get default organization */
+    public static function getDefaultOrganization(): Organization
+    {
+        $org = config('osp.default_organization');
+
+        return Organization::where('name_en', $org)->first();
+    }
 }

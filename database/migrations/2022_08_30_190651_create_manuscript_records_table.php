@@ -17,18 +17,18 @@ return new class extends Migration
             // automatic fields
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
 
             // required fields
             $table->string('type', 20)->comment('primary, secondary, etc.');
             $table->string('status', 20)->comment('draft, submitted, etc.');
-            $table->string('title', 255);
+            $table->string('title', 500);
             $table->foreignId('region_id')->constrained()->comment('lead region id');
             $table->foreignId('user_id')->constrained()->comment('owner of this record');
 
-            // optional (default to empty string) fields
+            // optional (default to empty string via model) fields
             $table->text('abstract')->nullable();
-            $table->text('pls_en')->nullable()->comment('Plain Language Summary (English)');
-            $table->text('pls_fr')->nullable()->comment('Plain Language Summary (French)');
+            $table->text('pls')->nullable()->comment('Plain Language Summary');
             $table->text('scientific_implications')->nullable();
             $table->text('regions_and_species')->nullable();
             $table->text('relevant_to')->nullable();

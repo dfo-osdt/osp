@@ -16,22 +16,24 @@ installRouter(myApp);
 
 // Global navigation guard
 const authStore = useAuthStore();
-Router.beforeEach((to, from, next) => {
+
+Router.beforeEach((to, from) => {
     // check if pages requires auth
+    if (authStore.loading) {
+        return;
+    }
+
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (authStore.isAuthenticated) {
-            next();
             return;
         } else {
             // redirect to login page
-            next({
+            return {
                 name: 'login',
                 query: { redirect: to.fullPath },
-            });
-            return;
+            };
         }
     }
-    next();
 });
 
 myApp.mount('#app');

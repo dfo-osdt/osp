@@ -1,54 +1,121 @@
 <?php
 
+use App\Models\Invitation;
 use App\Models\User;
 
-test('new users can register', function () {
+test('new users cannot register with poor password', function () {
     $response = $this->post('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => 'test@example.com',
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'passwordpassword',
+        'password_confirmation' => 'passwordpassword',
     ]);
-    $response->assertNoContent();
+
+    $response->assertStatus(422);
+});
+
+test('new users can register', function () {
+    // generate random 16 character long string
+    $password = Str::random(12);
+
+    $response = $this->post('/register', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => 'test@example.com',
+        'password' => $password,
+        'password_confirmation' => $password,
+    ]);
+    $response->assertJson([
+        'message' => 'registered',
+        'email' => 'test@example.com',
+    ]);
 });
 
 test('an email is always stored in lowercase', function () {
     $email = 'John.Doe@jel.com';
 
+    // generate random 16 character long string
+    $password = Str::random(12);
+
     $response = $this->post('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => $email,
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => $password,
+        'password_confirmation' => $password,
     ]);
 
     $user = User::latest()->first();
     expect($user->email)->toBe('john.doe@jel.com');
+    // check that author profile is created
+    expect($user->author->email)->toBe('john.doe@jel.com');
+    // check that user is assigned author role
+    expect($user->hasRole('author'))->toBeTrue();
 });
 
-test('a user cannot register twice with same email', function () {
+test('a user cannot register twice with the same email', function () {
     $email = 'John.Doe@jel.com';
 
+    // generate random 16 character long string
+    $password = Str::random(12);
+
     $response = $this->postJson('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => $email,
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => $password,
+        'password_confirmation' => $password,
     ]);
 
-    $response->assertNoContent();
+    $response->assertOk();
+
+    // try to register again with the same email before verification, should work.
+    // scenario: user registers, but does not verify email and forgets..., then tries to register again.
 
     $response = $this->postJson('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => $email,
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => $password,
+        'password_confirmation' => $password,
+    ]);
+
+    $response->assertOk();
+
+    // try to register again with the same email after verification, should fail.
+    $user = User::latest()->first();
+    $user->email_verification_token = null;
+    $user->email_verified_at = now();
+    $user->active = true;
+    $user->save();
+
+    $response = $this->postJson('/register', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => $email,
+        'password' => $password,
+        'password_confirmation' => $password,
     ]);
 
     expect($response->status())->toBe(422);
     expect($response->json('errors.email.0'))->toBe('The email has already been taken.');
+});
+
+test('a user that was invited can register without following the link', function () {
+    $invitation = Invitation::factory()->create();
+    $invitedUser = $invitation->user;
+
+    // generate random 16 character long string
+    $password = Str::random(12);
+
+    $response = $this->postJson('/register', [
+        'first_name' => $invitedUser->first_name,
+        'last_name' => $invitedUser->last_name,
+        'email' => $invitedUser->email,
+        'password' => $password,
+        'password_confirmation' => $password,
+    ]);
+
+    $response->assertOk();
 });

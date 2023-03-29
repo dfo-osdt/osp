@@ -17,11 +17,11 @@
     "types": [
       "vite/client",
       "vue/ref-macros",
-      "@intlify/vite-plugin-vue-i18n/client"
+      "cypress"
     ],
     "paths": {
       "@/*": ["resources/src/*"]
     }
   },
-  "exclude": ["dist", "node_modules", "cypress", "vendor", "vite.config.js", "public/build"]
+  "exclude": ["dist", "node_modules", "vendor", "vite.config.js", "public/build", "public/vendor", "tests/cypress/support"]
 }

@@ -9,44 +9,48 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-20.04
-  
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: pnpm
-      uses: pnpm/action-setup@v2.2.2
-      with:
-        version: 7
-    - name: Use Node.js 18.x
-      uses: actions/setup-node@v2
-      with:
-        node-version: "18.x"
-        cache: 'pnpm'
-    
-    - name: Install dependencies
-      run: pnpm install
-
-    - name: Build
-      run: pnpm run build
 
     - uses: shivammathur/setup-php@v2
       with:
         php-version: '8.1'
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
+    - name: Create Database
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
-    - name: Create Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
     - name: Execute tests (Unit and Feature tests) via PEST
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
       run: vendor/bin/pest --ci
+    - name: pnpm
+      uses: pnpm/action-setup@v2.2.4
+      with:
+        version: latest
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18"
+        cache: 'pnpm'
+    - name: Execute Cypress tests
+      uses: cypress-io/github-action@v5
+      with:
+        start: php artisan serve
+        wait-on-timeout: 60
+        browser: chrome
+        command: pnpm run cy:run --record
+        build: pnpm run build
+        install-command: pnpm install --no-frozen-lockfile
+        record: true
+      env:
+        CYPRESS_baseUrl: http://127.0.0.1:8000
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
