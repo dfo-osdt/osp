@@ -27,8 +27,7 @@ class DatabaseSeeder extends Seeder
 
         // here to test the system / demo - remove later
         // do not use in testing
-
-        if (config('app.env') != 'testing') {
+        if (config('app.env') == 'local') {
             $this->call([
                 JournalsTableSeeder::class,
             ]);

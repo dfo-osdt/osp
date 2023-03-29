@@ -2,16 +2,17 @@
 # Inspiration: https://philo.dev/how-to-use-github-actions-build-matrix-to-deploy-artifacts-to-multiple-servers/
 name: Deployment
 
-# run this workflow when workflow run is completed or if manually triggered
+# With bran
 on:
-  workflow_run:
-    workflows: [run-tests]
-    types: [completed]
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '*.md'
 
 jobs:
   build-release:
     runs-on: ubuntu-22.04
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
