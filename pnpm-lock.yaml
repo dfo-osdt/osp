@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@intlify/unplugin-vue-i18n':
-    specifier: ^0.9.3
-    version: 0.9.3(vue-i18n@9.2.2)
+    specifier: ^0.10.0
+    version: 0.10.0(vue-i18n@9.2.2)
   '@quasar/extras':
     specifier: ^1.16.1
     version: 1.16.1
@@ -469,8 +469,8 @@ packages:
     engines: {node: '>= 14'}
     dev: false
 
-  /@intlify/unplugin-vue-i18n@0.9.3(vue-i18n@9.2.2):
-    resolution: {integrity: sha512-23DMh2r0qA7UZfaQhF09ZHhifgTyKcbmVsCo+qHvu9q1EU8OF18VlhxMHMksDR5NBDvRXj3Lmu8lT84XDrUlSw==}
+  /@intlify/unplugin-vue-i18n@0.10.0(vue-i18n@9.2.2):
+    resolution: {integrity: sha512-Sf8fe26/d8rBNcg+zBSb7RA1uyhrG9zhIM+CRX6lqcznMDjLRr/1tuVaJ9E6xqJkzjfPgRzNcCqwMt6rpNkL7Q==}
     engines: {node: '>= 14.16'}
     peerDependencies:
       petite-vue-i18n: '*'
