@@ -79,7 +79,9 @@
                         "
                     >
                         <NoPublicationsExistDiv
-                            title="$t('my-publication-view.no-publications-found')"
+                            :title="
+                                $t('my-publication-view.no-publications-found')
+                            "
                         />
                     </template>
                     <template

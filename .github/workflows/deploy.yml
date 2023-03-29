@@ -65,7 +65,7 @@ jobs:
       with:
         host: ${{secrets.SERVER}}
         port: 22
-        username: ${{ secrets.USER }}
+        username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
           mkdir -p /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
@@ -128,7 +128,7 @@ jobs:
       with:
         host: ${{secrets.SERVER}}
         port: 22
-        username: ${{ secrets.USER }}
+        username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
           mkdir -p /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
