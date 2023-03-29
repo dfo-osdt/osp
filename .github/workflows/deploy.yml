@@ -2,14 +2,18 @@
 # Inspiration: https://philo.dev/how-to-use-github-actions-build-matrix-to-deploy-artifacts-to-multiple-servers/
 name: Deployment
 
-# run this workflow when workflow run is completed or if manually triggered
+# With bran
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '*.md'
   workflow_run:
     workflows: [run-tests]
     types: [completed]
+    branches:
+      - main
 
 jobs:
   build-release:
