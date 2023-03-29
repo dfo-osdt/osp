@@ -30,7 +30,7 @@
         "vue-tsc": "^1.2.0"
     },
     "dependencies": {
-        "@intlify/unplugin-vue-i18n": "^0.9.3",
+        "@intlify/unplugin-vue-i18n": "^0.10.0",
         "@quasar/extras": "^1.16.1",
         "@vitejs/plugin-vue": "^4.1.0",
         "@vueuse/core": "^9.13.0",
