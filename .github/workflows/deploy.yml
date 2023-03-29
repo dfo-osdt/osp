@@ -4,6 +4,9 @@ name: Deployment
 
 # run this workflow when workflow run is completed or if manually triggered
 on:
+  push:
+    branches:
+      - main
   workflow_run:
     workflows: [run-tests]
     types: [completed]
