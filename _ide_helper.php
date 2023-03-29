@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.5.0.
+ * Generated for Laravel 10.5.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6313,6 +6313,22 @@ namespace Illuminate\Support\Facades {
         {            //Method inherited from \Illuminate\Database\Connection
             /** @var \Illuminate\Database\MySqlConnection $instance */
             return $instance->select($query, $bindings, $useReadPdo);
+        }
+
+        /**
+         * Run a select statement against the database and returns all of the result sets.
+         *
+         * @param  string  $query
+         * @param  array  $bindings
+         * @param  bool  $useReadPdo
+         * @return array
+         *
+         * @static
+         */
+        public static function selectResultSets($query, $bindings = [], $useReadPdo = true)
+        {            //Method inherited from \Illuminate\Database\Connection
+            /** @var \Illuminate\Database\MySqlConnection $instance */
+            return $instance->selectResultSets($query, $bindings, $useReadPdo);
         }
 
         /**
