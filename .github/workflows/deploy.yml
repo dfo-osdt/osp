@@ -2,7 +2,7 @@
 # Inspiration: https://philo.dev/how-to-use-github-actions-build-matrix-to-deploy-artifacts-to-multiple-servers/
 name: Deployment
 
-# only run this workflow if a PR or merge on master and run-test completed successfully
+# run this workflow when workflow run is completed or if manually triggered
 on:
   workflow_run:
     workflows: [run-tests]
