@@ -9,16 +9,10 @@ on:
       - main
     paths-ignore:
       - '*.md'
-  workflow_run:
-    workflows: [run-tests]
-    types: [completed]
-    branches:
-      - main
 
 jobs:
   build-release:
     runs-on: ubuntu-22.04
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
