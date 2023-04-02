@@ -4,12 +4,12 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "develop"
+    target-branch: "main"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "develop"
+    target-branch: "main"
     ignore:
       # until Quasar supports Sass 2.0 (avoids deprecation warnings)
       - dependency-name: "sass"
@@ -19,4 +19,4 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "develop"
+    target-branch: "main"
