@@ -22,5 +22,3 @@ Some helper libraries of note here:
 - [PHP 8.1](https://www.php.net/)
 - [Laravel](https://laravel.com/) (framework)
 - [Laravel Sanctum](https://laravel.com/docs/9.x/sanctum) (auth)
-
-test - branch protection - shouldn't be able to push to main.
