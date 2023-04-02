@@ -47,7 +47,7 @@ jobs:
         browser: chrome
         command: pnpm run cy:run --record
         build: pnpm run build
-        install-command: cypress install
+        install-command: pnpm cypress install
         record: true
       env:
         CYPRESS_baseUrl: http://127.0.0.1:8000
