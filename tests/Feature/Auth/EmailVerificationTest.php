@@ -33,8 +33,13 @@ class EmailVerificationTest extends TestCase
         $user->refresh();
 
         $this->assertTrue($user->hasVerifiedEmail());
-        $this->assertNull($user->email_verification_token);
+        // $this->assertNull($user->email_verification_token); // disabled because of MS SafeLink
         $this->assertTrue($user->active);
+        $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
+
+        // because of MS SafeLink - the link may already be visited once. Check that we can visit it again.
+        // since we used signed and temporary routes, the link will be invalid after given time
+        $response = $this->get($verificationUrl);
         $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
     }
 
@@ -61,8 +66,13 @@ class EmailVerificationTest extends TestCase
 
         $this->assertNotNull($user->invitation->registered_at);
         $this->assertTrue($user->hasVerifiedEmail());
-        $this->assertNull($user->email_verification_token);
+        //$this->assertNull($user->email_verification_token); //disabled because of MS SafeLink
         $this->assertTrue($user->active);
+        $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
+
+        // because of MS SafeLink - the link may already be visited once. Check that we can visit it again.
+        // since we used signed and temporary routes, the link will be invalid after given time.
+        $response = $this->get($verificationUrl);
         $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
     }
 
