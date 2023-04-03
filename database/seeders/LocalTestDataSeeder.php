@@ -8,7 +8,7 @@ use App\Models\ManuscriptAuthor;
 use App\Models\PublicationAuthor;
 use Illuminate\Database\Seeder;
 
-class LocalTestDataSeedeer extends Seeder
+class LocalTestDataSeeder extends Seeder
 {
     /**
      * Run the database seeds.
