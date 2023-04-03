@@ -45,6 +45,9 @@ jobs:
   prepare-release-on-staging:
     runs-on: ubuntu-22.04
     needs: build-release
+    strategy:
+      matrix:
+        max-parallel: [1]
     environment: staging
     steps:
     - name: Get artifact from previous step
@@ -76,6 +79,9 @@ jobs:
   run-deploy-hooks-on-staging:
     runs-on: ubuntu-22.04
     needs: prepare-release-on-staging
+    strategy:
+      matrix:
+        max-parallel: [1]
     environment: staging
     steps:
       - name: Run deploy hooks
@@ -108,6 +114,9 @@ jobs:
   prepare-release-on-production:
     runs-on: ubuntu-22.04
     needs: run-deploy-hooks-on-staging
+    strategy:
+      matrix:
+        max-parallel: [1]
     environment: production
     steps:
     - name: Get artifact from previous step
@@ -139,6 +148,9 @@ jobs:
   run-deploy-hooks-on-production:
     runs-on: ubuntu-22.04
     needs: prepare-release-on-production
+    strategy:
+      matrix:
+        max-parallel: [1]
     environment: production
     steps:
       - name: Run deploy hooks
