@@ -17,7 +17,11 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         // prune the telescope database
-        $schedule->command('telescope:prune --hours=48')->daily();
+        $schedule->command('telescope:prune --hours=48')->daily('00:30');
+
+        // backup the database
+        $schedule->command('backup:clean')->daily()->at('01:00');
+        $schedule->command('backup:run --only-db')->daily()->at('02:00');
     }
 
     /**
