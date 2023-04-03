@@ -26,5 +26,15 @@ class DatabaseSeeder extends Seeder
                 JournalsTableSeeder::class,
             ]);
         }
+
+        if (config('app.env') === 'local') {
+            // ask user if they want to seed the database with test data
+            if ($this->command->confirm('Do you want to seed the database with test data?')) {
+                $this->command->info('Seeding the database with test data...');
+                $this->call([
+                    LocalTestDataSeeder::class,
+                ]);
+            }
+        }
     }
 }

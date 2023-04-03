@@ -25,7 +25,7 @@ class InvitedUserController extends Controller
         ]);
 
         // generate random 20 char password string
-        $password = Str::random(20);
+        $password = Str::password(20);
 
         // create a new user
         $user = User::create([
