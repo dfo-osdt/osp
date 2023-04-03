@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.2.1",
         "laravel/telescope": "^4.12.0",
         "laravel/tinker": "^2.8.0",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "orhanerday/open-ai": "^3.4",
         "predis/predis": "^2.1.1",
         "rappasoft/laravel-authentication-log": "^3.0",

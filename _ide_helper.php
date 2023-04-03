@@ -22316,10 +22316,6 @@ namespace Illuminate\Http {
 }
 
 namespace Illuminate\Testing {
-
-    class LoggedExceptionCollection
-    {
-    }
     /**
      * @mixin \Illuminate\Http\Response
      */
