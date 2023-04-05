@@ -18,7 +18,7 @@
                     :label="$t('common.your-first-name')"
                     lazy-rules
                     :rules="nameRules"
-                    data-cy="name"
+                    data-cy="first_name"
                     @focus="errorMessage = null"
                 />
                 <q-input
@@ -28,7 +28,7 @@
                     :label="$t('common.your-last-name')"
                     lazy-rules
                     :rules="nameRules"
-                    data-cy="name"
+                    data-cy="last_name"
                     @focus="errorMessage = null"
                 />
                 <q-input
@@ -64,7 +64,7 @@
                     filled
                     :label="$t('common.confirm-password')"
                     :rules="passwordConfirmationRules"
-                    data-cy="password"
+                    data-cy="password-confirm"
                     @focus="errorMessage = null"
                 />
                 <div class="flex justify-end">
@@ -72,7 +72,7 @@
                         :label="$t('common.register')"
                         type="submit"
                         color="primary"
-                        data-cy="login"
+                        data-cy="register-btn"
                         :loading="loading"
                     />
                 </div>
