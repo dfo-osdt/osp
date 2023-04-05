@@ -94,7 +94,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 60,
+            'expire' => 1440, // a day
             'throttle' => 60,
         ],
     ],
@@ -120,4 +120,12 @@ return [
     */
     'password_min_length' => 12,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Email Verification
+    |--------------------------------------------------------------------------
+    */
+    'verification' => [
+        'expire' => 1440, // a day
+    ],
 ];
