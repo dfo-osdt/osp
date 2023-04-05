@@ -172,7 +172,7 @@ return [
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
-            'to' => env('BACKUP_MAIL_TO_ADDRESS'),
+            'to' => [env('BACKUP_MAIL_TO_ADDRESS')],
 
             'from' => [
                 'address' => env('MAIL_FROM_ADDRESS'),

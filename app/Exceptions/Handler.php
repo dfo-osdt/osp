@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (InvalidSignatureException $e) {
             // redirect
-            return redirect(config('app.frontend_url').'#/auth/invalid-signature');
+            return redirect(config('app.frontend_url').'#/invalid-signature');
         });
     }
 }

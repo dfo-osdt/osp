@@ -20,8 +20,8 @@ test('new users can register', function () {
     $password = Str::random(12);
 
     $response = $this->post('/register', [
-        'first_name' => 'John',
-        'last_name' => 'Doe',
+        'first_name' => 'John-Super',
+        'last_name' => 'Doe-Andreé',
         'email' => 'test@example.com',
         'password' => $password,
         'password_confirmation' => $password,

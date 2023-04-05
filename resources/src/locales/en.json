@@ -38,7 +38,8 @@
       "at-least-one-author": "At least one corresponding author is required.",
       "invalid-doi": "Invalid DOI",
       "file-size-is-too-large": "File size is too large",
-      "file-type-is-not-accepted": "File type is not accepted"
+      "file-type-is-not-accepted": "File type is not accepted",
+      "emails-match": "The given emails do not match"
     },
     "your-password": "Your password",
     "reset": "Reset",
@@ -171,7 +172,8 @@
     "recent": "Recent",
     "page-not-found": "Page Not Found",
     "form": "Form",
-    "progress": "Progress"
+    "progress": "Progress",
+    "confirm-email": "Confirm email"
   },
   "auth": {
     "logged-out-successfully": "Logged out successfully",

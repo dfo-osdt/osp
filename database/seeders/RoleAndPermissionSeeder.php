@@ -21,23 +21,33 @@ class RoleAndPermissionSeeder extends Seeder
 
         // create author permissions
         $authorPermissions = collect([
-            Permission::create(['name' => 'create_manuscript_records']),
-            Permission::create(['name' => 'create_publications']),
-            Permission::create(['name' => 'create_authors']),
-            Permission::create(['name' => 'update_authors']),
-            Permission::create(['name' => 'create_organizations']),
+            Permission::findOrCreate('create_manuscript_records'),
+            Permission::findOrCreate('create_publications'),
+            Permission::findOrCreate('create_authors'),
+            Permission::findOrCreate('update_authors'),
+            Permission::findOrCreate('create_organizations'),
         ]);
 
-        $authorRole = Role::create(['name' => 'author']);
+        $authorRole = Role::findOrCreate('author');
         $authorRole->syncPermissions($authorPermissions);
 
         // what permission does have RDS or DG have, add them here
         // We also merge all author permissions so do not duplicate.
         $directorPermissions = collect([
-            Permission::create(['name' => 'withhold_and_complete_management_review']),
+            Permission::findOrCreate('withhold_and_complete_management_review'),
         ])->merge($authorPermissions);
 
-        $directorRole = Role::create(['name' => 'director']);
+        $directorRole = Role::findOrCreate('director');
         $directorRole->syncPermissions($directorPermissions);
+
+        // create initial admin user
+        $adminPermissions = collect([
+            Permission::findOrCreate('view_admin_dashboard'),
+            Permission::findOrCreate('view_telescope'),
+            Permission::findOrCreate('view_horizon'),
+        ]);
+
+        $adminRole = Role::findOrCreate('admin');
+        $adminRole->syncPermissions($adminPermissions);
     }
 }
