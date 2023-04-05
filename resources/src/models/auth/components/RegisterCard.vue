@@ -41,7 +41,7 @@
                     data-cy="email"
                     @focus="errorMessage = null"
                 />
-                <q-input
+                <!-- <q-input
                     v-model="email_confirmation"
                     type="email"
                     filled
@@ -50,7 +50,7 @@
                     :rules="emailConfirmationRules"
                     data-cy="email"
                     @focus="errorMessage = null"
-                />
+                /> -->
                 <PasswordWithToggleInput
                     v-model="password"
                     filled
@@ -172,10 +172,10 @@ const emailRules = computed(() => [
     (val: string) => isValidEmail(val) || t('common.validation.email-invalid'),
 ]);
 
-const emailConfirmationRules = computed(() => [
-    (val: string) => !!val || t('common.validation.email-required'),
-    (val: string) => val === email.value || t('common.validation.emails-match'),
-]);
+// const emailConfirmationRules = computed(() => [
+//     (val: string) => !!val || t('common.validation.email-required'),
+//     (val: string) => val === email.value || t('common.validation.emails-match'),
+// ]);
 
 const passwordRules = computed(() => [
     (val: string) => !!val || t('common.validation.password-required'),
