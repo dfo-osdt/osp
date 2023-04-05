@@ -114,5 +114,12 @@ class LocalTestDataSeeder extends Seeder
             'manuscript_record_id' => $marksManuscript->id,
             'organization_id' => $markAuthor->organization_id,
         ]));
+
+        $adminUser = \App\Models\User::factory()->create([
+            'first_name' => 'Admin',
+            'last_name' => 'User',
+            'email' => 'admin@vinnet.dev',
+        ]);
+        $adminUser->assignRole('admin');
     }
 }

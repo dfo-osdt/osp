@@ -38,7 +38,8 @@
       "at-least-one-author": "Au moins un auteur correspondant est requis.",
       "invalid-doi": "DOI invalide",
       "file-size-is-too-large": "La taille du fichier est trop grande",
-      "file-type-is-not-accepted": "Le type de fichier n'est pas accepté"
+      "file-type-is-not-accepted": "Le type de fichier n'est pas accepté",
+      "emails-match": "Les e-mails donnés ne correspondent pas"
     },
     "your-password": "Votre mot de passe",
     "reset": "Réinitialiser",
@@ -171,7 +172,8 @@
     "recent": "Récent",
     "form": "Former",
     "page-not-found": "Page non trouvée",
-    "progress": "Progrès"
+    "progress": "Progrès",
+    "confirm-email": "Confirmez votre courriel"
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",

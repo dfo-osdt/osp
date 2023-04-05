@@ -18,7 +18,7 @@
                     :label="$t('common.your-first-name')"
                     lazy-rules
                     :rules="nameRules"
-                    data-cy="name"
+                    data-cy="first_name"
                     @focus="errorMessage = null"
                 />
                 <q-input
@@ -28,7 +28,7 @@
                     :label="$t('common.your-last-name')"
                     lazy-rules
                     :rules="nameRules"
-                    data-cy="name"
+                    data-cy="last_name"
                     @focus="errorMessage = null"
                 />
                 <q-input
@@ -41,6 +41,16 @@
                     data-cy="email"
                     @focus="errorMessage = null"
                 />
+                <!-- <q-input
+                    v-model="email_confirmation"
+                    type="email"
+                    filled
+                    :label="$t('common.confirm-email')"
+                    lazy-rules
+                    :rules="emailConfirmationRules"
+                    data-cy="email"
+                    @focus="errorMessage = null"
+                /> -->
                 <PasswordWithToggleInput
                     v-model="password"
                     filled
@@ -54,7 +64,7 @@
                     filled
                     :label="$t('common.confirm-password')"
                     :rules="passwordConfirmationRules"
-                    data-cy="password"
+                    data-cy="password-confirm"
                     @focus="errorMessage = null"
                 />
                 <div class="flex justify-end">
@@ -62,7 +72,7 @@
                         :label="$t('common.register')"
                         type="submit"
                         color="primary"
-                        data-cy="login"
+                        data-cy="register-btn"
                         :loading="loading"
                     />
                 </div>
@@ -98,6 +108,7 @@ import {
     useSanctum,
 } from '@/api/sanctum';
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue';
+import { isValidName, isValidEmail } from '@/utils/validators';
 
 const sanctum = useSanctum();
 const router = useRouter();
@@ -106,6 +117,7 @@ const { t } = useI18n();
 
 //user related data
 const email = ref((router.currentRoute.value.query?.email as string) || '');
+const email_confirmation = ref('');
 const password = ref('');
 const password_confirmation = ref('');
 const first_name = ref('');
@@ -152,17 +164,18 @@ async function register() {
 // rules
 const nameRules = computed(() => [
     (val: string) => !!val || t('common.validation.name-required'),
-    // must be valid name
-    (val: string) =>
-        /^[a-zA-Z ]+$/.test(val) || t('common.validation.name-invalid'),
+    (val: string) => isValidName(val) || t('common.validation.name-invalid'),
 ]);
 
 const emailRules = computed(() => [
     (val: string) => !!val || t('common.validation.email-required'),
-    // must be valid email
-    (val: string) =>
-        /^\S+@\S+\.\S+$/.test(val) || t('common.validation.email-invalid'),
+    (val: string) => isValidEmail(val) || t('common.validation.email-invalid'),
 ]);
+
+// const emailConfirmationRules = computed(() => [
+//     (val: string) => !!val || t('common.validation.email-required'),
+//     (val: string) => val === email.value || t('common.validation.emails-match'),
+// ]);
 
 const passwordRules = computed(() => [
     (val: string) => !!val || t('common.validation.password-required'),

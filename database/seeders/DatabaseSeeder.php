@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
         if (config('app.env') !== 'testing') {
             $this->call([
-                DfoSeriesJournalSeeder::class, // enable this seeder when we go live
+                DfoSeriesJournalSeeder::class,
                 JournalsTableSeeder::class,
             ]);
         }
