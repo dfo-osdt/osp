@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.5.1.
+ * Generated for Laravel 10.9.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -2056,7 +2056,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Set the Artisan application instance.
          *
-         * @param  \Illuminate\Console\Application  $artisan
+         * @param  \Illuminate\Console\Application|null  $artisan
          * @return void
          *
          * @static
@@ -9093,7 +9093,7 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Http\Client\PendingRequest sink(string|resource $to)
      * @method static \Illuminate\Http\Client\PendingRequest timeout(int $seconds)
      * @method static \Illuminate\Http\Client\PendingRequest connectTimeout(int $seconds)
-     * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, int $sleepMilliseconds = 0, callable|null $when = null, bool $throw = true)
+     * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, Closure|int $sleepMilliseconds = 0, callable|null $when = null, bool $throw = true)
      * @method static \Illuminate\Http\Client\PendingRequest withOptions(array $options)
      * @method static \Illuminate\Http\Client\PendingRequest withMiddleware(callable $middleware)
      * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
@@ -11075,6 +11075,8 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Contracts\Process\ProcessResult run(array|string|null $command = null, callable|null $output = null)
      * @method static \Illuminate\Process\InvokedProcess start(array|string|null $command = null, callable $output = null)
      * @method static \Illuminate\Process\PendingProcess withFakeHandlers(array $fakeHandlers)
+     * @method static \Illuminate\Process\PendingProcess|mixed when(\Closure|mixed|null $value = null, callable|null $callback = null, callable|null $default = null)
+     * @method static \Illuminate\Process\PendingProcess|mixed unless(\Closure|mixed|null $value = null, callable|null $callback = null, callable|null $default = null)
      *
      * @see \Illuminate\Process\PendingProcess
      * @see \Illuminate\Process\Factory
@@ -11290,6 +11292,20 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Process\Factory $instance */
             return $instance->pool($callback);
+        }
+
+        /**
+         * Start defining a series of piped processes.
+         *
+         * @param  callable|array  $callback
+         * @return \Illuminate\Contracts\Process\ProcessResult
+         *
+         * @static
+         */
+        public static function pipe($callback, $output = null)
+        {
+            /** @var \Illuminate\Process\Factory $instance */
+            return $instance->pipe($callback, $output);
         }
 
         /**
@@ -12156,7 +12172,7 @@ namespace Illuminate\Support\Facades {
          * Get the given named rate limiter.
          *
          * @param  string  $name
-         * @return \Closure
+         * @return \Closure|null
          *
          * @static
          */
@@ -21098,6 +21114,7 @@ namespace Illuminate\Support\Facades {
             \Illuminate\Foundation\Vite::flushMacros();
         }
     }
+
 }
 
 namespace Illuminate\Support {
@@ -21115,7 +21132,8 @@ namespace Illuminate\Support {
     }
     /**
      * @template TKey of array-key
-     * @template TValue
+     *
+     * @template-covariant TValue
      *
      * @implements \ArrayAccess<TKey, TValue>
      * @implements \Illuminate\Support\Enumerable<TKey, TValue>
@@ -21149,74 +21167,76 @@ namespace Illuminate\Support {
             return \Illuminate\Support\Stringable::ray($description);
         }
     }
+
 }
 
 namespace Intervention\Image\Facades {
 
-        class Image
+    class Image
+    {
+        /**
+         * Overrides configuration settings
+         *
+         * @param  array  $config
+         * @return self
+         *
+         * @static
+         */
+        public static function configure($config = [])
         {
-            /**
-             * Overrides configuration settings
-             *
-             * @param  array  $config
-             * @return self
-             *
-             * @static
-             */
-            public static function configure($config = [])
-            {
-                /** @var \Intervention\Image\ImageManager $instance */
-                return $instance->configure($config);
-            }
+            /** @var \Intervention\Image\ImageManager $instance */
+            return $instance->configure($config);
+        }
 
-            /**
-             * Initiates an Image instance from different input types
-             *
-             * @param  mixed  $data
-             * @return \Intervention\Image\Image
-             *
-             * @static
-             */
-            public static function make($data)
-            {
-                /** @var \Intervention\Image\ImageManager $instance */
-                return $instance->make($data);
-            }
+        /**
+         * Initiates an Image instance from different input types
+         *
+         * @param  mixed  $data
+         * @return \Intervention\Image\Image
+         *
+         * @static
+         */
+        public static function make($data)
+        {
+            /** @var \Intervention\Image\ImageManager $instance */
+            return $instance->make($data);
+        }
 
-            /**
-             * Creates an empty image canvas
-             *
-             * @param  int  $width
-             * @param  int  $height
-             * @param  mixed  $background
-             * @return \Intervention\Image\Image
-             *
-             * @static
-             */
-            public static function canvas($width, $height, $background = null)
-            {
-                /** @var \Intervention\Image\ImageManager $instance */
-                return $instance->canvas($width, $height, $background);
-            }
+        /**
+         * Creates an empty image canvas
+         *
+         * @param  int  $width
+         * @param  int  $height
+         * @param  mixed  $background
+         * @return \Intervention\Image\Image
+         *
+         * @static
+         */
+        public static function canvas($width, $height, $background = null)
+        {
+            /** @var \Intervention\Image\ImageManager $instance */
+            return $instance->canvas($width, $height, $background);
+        }
 
-            /**
-             * Create new cached image and run callback
-             * (requires additional package intervention/imagecache)
-             *
-             * @param  \Closure  $callback
-             * @param  int  $lifetime
-             * @param  bool  $returnObj
-             * @return \Image
-             *
-             * @static
-             */
-            public static function cache($callback, $lifetime = null, $returnObj = false)
-            {
-                /** @var \Intervention\Image\ImageManager $instance */
-                return $instance->cache($callback, $lifetime, $returnObj);
-            }
+        /**
+         * Create new cached image and run callback
+         * (requires additional package intervention/imagecache)
+         *
+         * @param  \Closure  $callback
+         * @param  int  $lifetime
+         * @param  bool  $returnObj
+         * @return \Image
+         *
+         * @static
+         */
+        public static function cache($callback, $lifetime = null, $returnObj = false)
+        {
+            /** @var \Intervention\Image\ImageManager $instance */
+            return $instance->cache($callback, $lifetime, $returnObj);
         }
     }
+
+}
 
 namespace Jenssegers\Agent\Facades {
 
@@ -21810,6 +21830,7 @@ namespace Jenssegers\Agent\Facades {
             return $instance->mobileGrade();
         }
     }
+
 }
 
 namespace Laravel\Horizon {
@@ -21817,6 +21838,7 @@ namespace Laravel\Horizon {
     class Horizon
     {
     }
+
 }
 
 namespace Spatie\LaravelIgnition\Facades {
@@ -21980,7 +22002,7 @@ namespace Spatie\LaravelIgnition\Facades {
         }
 
         /**
-         * @param  \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware>  $middleware
+         * @param  \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware>|callable  $middleware
          * @return \Spatie\FlareClient\Flare
          *
          * @static
@@ -22173,6 +22195,7 @@ namespace Spatie\LaravelIgnition\Facades {
             return $instance->group($groupName, $properties);
         }
     }
+
 }
 
 namespace Spatie\SignalAwareCommand\Facades {
@@ -22208,6 +22231,7 @@ namespace Spatie\SignalAwareCommand\Facades {
             return $instance->clearHandlers($signal);
         }
     }
+
 }
 
 namespace Torann\GeoIP\Facades {
@@ -22300,6 +22324,7 @@ namespace Torann\GeoIP\Facades {
             return $instance->config($key, $default);
         }
     }
+
 }
 
 namespace Illuminate\Http {
@@ -22368,6 +22393,7 @@ namespace Illuminate\Http {
             return \Illuminate\Http\Request::hasValidSignatureWhileIgnoring($ignoreQuery, $absolute);
         }
     }
+
 }
 
 namespace Illuminate\Testing {
@@ -22386,6 +22412,7 @@ namespace Illuminate\Testing {
             return \Illuminate\Testing\TestResponse::ray();
         }
     }
+
 }
 
 namespace Illuminate\Database\Query {
@@ -22402,6 +22429,7 @@ namespace Illuminate\Database\Query {
             return \Illuminate\Database\Query\Builder::ray();
         }
     }
+
 }
 
 namespace Illuminate\Routing {
@@ -22432,9 +22460,10 @@ namespace Illuminate\Routing {
             return \Illuminate\Routing\Route::permission($permissions);
         }
     }
+
 }
 
-namespace  {
+namespace {
     class App extends \Illuminate\Support\Facades\App
     {
     }
@@ -23960,7 +23989,7 @@ namespace  {
          * Add a morph-to relationship condition to the query.
          *
          * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
-         * @param  \Illuminate\Database\Eloquent\Model|string  $model
+         * @param  \Illuminate\Database\Eloquent\Model|string|null  $model
          * @return \Illuminate\Database\Eloquent\Builder|static
          *
          * @static
@@ -23990,7 +24019,7 @@ namespace  {
          * Add a morph-to relationship condition to the query with an "or where" clause.
          *
          * @param  \Illuminate\Database\Eloquent\Relations\MorphTo|string  $relation
-         * @param  \Illuminate\Database\Eloquent\Model|string  $model
+         * @param  \Illuminate\Database\Eloquent\Model|string|null  $model
          * @return \Illuminate\Database\Eloquent\Builder|static
          *
          * @static
@@ -26686,4 +26715,5 @@ namespace  {
     class GeoIP extends \Torann\GeoIP\Facades\GeoIP
     {
     }
+
 }
