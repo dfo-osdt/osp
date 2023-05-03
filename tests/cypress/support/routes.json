@@ -72,6 +72,222 @@
       "POST"
     ]
   },
+  "horizon.stats.index": {
+    "name": "horizon.stats.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\DashboardStatsController@index",
+    "uri": "horizon/api/stats",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.workload.index": {
+    "name": "horizon.workload.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\WorkloadController@index",
+    "uri": "horizon/api/workload",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.masters.index": {
+    "name": "horizon.masters.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\MasterSupervisorController@index",
+    "uri": "horizon/api/masters",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.monitoring.index": {
+    "name": "horizon.monitoring.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\MonitoringController@index",
+    "uri": "horizon/api/monitoring",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.monitoring.store": {
+    "name": "horizon.monitoring.store",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\MonitoringController@store",
+    "uri": "horizon/api/monitoring",
+    "method": [
+      "POST"
+    ]
+  },
+  "horizon.monitoring-tag.paginate": {
+    "name": "horizon.monitoring-tag.paginate",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\MonitoringController@paginate",
+    "uri": "horizon/api/monitoring/{tag}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.monitoring-tag.destroy": {
+    "name": "horizon.monitoring-tag.destroy",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\MonitoringController@destroy",
+    "uri": "horizon/api/monitoring/{tag}",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "horizon.jobs-metrics.index": {
+    "name": "horizon.jobs-metrics.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\JobMetricsController@index",
+    "uri": "horizon/api/metrics/jobs",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.jobs-metrics.show": {
+    "name": "horizon.jobs-metrics.show",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\JobMetricsController@show",
+    "uri": "horizon/api/metrics/jobs/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.queues-metrics.index": {
+    "name": "horizon.queues-metrics.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\QueueMetricsController@index",
+    "uri": "horizon/api/metrics/queues",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.queues-metrics.show": {
+    "name": "horizon.queues-metrics.show",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\QueueMetricsController@show",
+    "uri": "horizon/api/metrics/queues/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.jobs-batches.index": {
+    "name": "horizon.jobs-batches.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\BatchesController@index",
+    "uri": "horizon/api/batches",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.jobs-batches.show": {
+    "name": "horizon.jobs-batches.show",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\BatchesController@show",
+    "uri": "horizon/api/batches/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.jobs-batches.retry": {
+    "name": "horizon.jobs-batches.retry",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\BatchesController@retry",
+    "uri": "horizon/api/batches/retry/{id}",
+    "method": [
+      "POST"
+    ]
+  },
+  "horizon.pending-jobs.index": {
+    "name": "horizon.pending-jobs.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\PendingJobsController@index",
+    "uri": "horizon/api/jobs/pending",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.completed-jobs.index": {
+    "name": "horizon.completed-jobs.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\CompletedJobsController@index",
+    "uri": "horizon/api/jobs/completed",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.silenced-jobs.index": {
+    "name": "horizon.silenced-jobs.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\SilencedJobsController@index",
+    "uri": "horizon/api/jobs/silenced",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.failed-jobs.index": {
+    "name": "horizon.failed-jobs.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\FailedJobsController@index",
+    "uri": "horizon/api/jobs/failed",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.failed-jobs.show": {
+    "name": "horizon.failed-jobs.show",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\FailedJobsController@show",
+    "uri": "horizon/api/jobs/failed/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.retry-jobs.show": {
+    "name": "horizon.retry-jobs.show",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\RetryController@store",
+    "uri": "horizon/api/jobs/retry/{id}",
+    "method": [
+      "POST"
+    ]
+  },
+  "horizon.jobs.show": {
+    "name": "horizon.jobs.show",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\JobsController@show",
+    "uri": "horizon/api/jobs/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "horizon.index": {
+    "name": "horizon.index",
+    "domain": null,
+    "action": "Laravel\\Horizon\\Http\\Controllers\\HomeController@index",
+    "uri": "horizon/{view?}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
   "sanctum.csrf-cookie": {
     "name": "sanctum.csrf-cookie",
     "domain": null,
