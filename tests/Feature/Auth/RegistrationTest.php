@@ -32,6 +32,23 @@ test('new users can register', function () {
     ]);
 });
 
+test('new user cannot logging until they have verified their email address', function () {
+
+    $user = User::factory()->unverified()->create([
+        'email_verified_at' => null,
+    ]);
+
+    $response = $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $response->assertStatus(422);
+    $response->assertJson([
+        'message' => 'Your email address has not been verified.',
+    ]);
+});
+
 test('an email is always stored in lowercase', function () {
     $email = 'John.Doe@jel.com';
 

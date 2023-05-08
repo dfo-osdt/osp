@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,14 @@ class LoginRequest extends FormRequest
 
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
+
+            // check if this user has verified their email address
+            $user = User::where('email', $this->email)->first();
+            if ($user && ! $user->hasVerifiedEmail()) {
+                throw ValidationException::withMessages([
+                    'email' => __('auth.failed_email_not_verified'),
+                ]);
+            }
 
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
