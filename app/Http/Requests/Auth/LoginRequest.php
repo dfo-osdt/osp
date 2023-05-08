@@ -57,7 +57,7 @@ class LoginRequest extends FormRequest
             $user = User::where('email', $this->email)->first();
             if ($user && ! $user->hasVerifiedEmail()) {
                 throw ValidationException::withMessages([
-                    'password' => __('auth.failed_email_not_verified'),
+                    'email' => __('auth.failed_email_not_verified'),
                 ]);
             }
 
