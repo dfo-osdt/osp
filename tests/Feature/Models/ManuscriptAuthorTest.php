@@ -35,7 +35,7 @@ test('a user can add a new manuscript author to their manuscript record', functi
         'is_corresponding_author' => true,
     ])->assertCreated();
 
-    expect($response->json('data'))->toBeArray([
+    expect($response->json('data'))->toMatchArray([
         'manuscript_record_id' => $manuscript->id,
         'author_id' => $author->id,
         'is_corresponding_author' => true,
@@ -52,7 +52,7 @@ test('a user can add a new manuscript author to their manuscript record', functi
 
     // this is there as if it doesn't exist we can't tell the frontend
     // if the user can update or delete the record (e.g. AuthorChip)
-    expect($response->json('can'))->toBeArray([
+    expect($response->json('can'))->toMatchArray([
         'update' => true,
         'delete' => true,
     ]);
