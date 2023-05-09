@@ -35,7 +35,7 @@ test('a user can add a new publication author to their publication', function ()
         'is_corresponding_author' => true,
     ])->assertCreated();
 
-    expect($response->json('data'))->toBeArray([
+    expect($response->json('data'))->toMatchArray([
         'publication_id' => $publication->id,
         'author_id' => $author->id,
         'is_corresponding_author' => true,

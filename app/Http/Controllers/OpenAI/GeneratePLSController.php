@@ -35,8 +35,6 @@ class GeneratePLSController extends Controller
         $openAi = new OpenAi(config('osp.openai_api_key'));
         $result = $openAi->completion($this->buildOpenAiPrompt($validated['abstract']));
 
-        ray($result);
-
         // does result contain an error?
         if (isset($result['error'])) {
             return $this->error();
