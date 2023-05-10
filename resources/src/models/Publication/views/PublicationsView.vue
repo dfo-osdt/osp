@@ -221,15 +221,17 @@ watchThrottled(
 
 // filters
 const showFilters = ref(false);
+
 const journalId = ref<number | null>(null);
 const journalSelect = ref<InstanceType<typeof JournalSelect> | null>(null);
-const authorId = ref<number | null>(null);
-const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null);
-
+        
 watch(journalId, () => {
     currentPage.value = 1;
     getPublications();
 });
+    
+const authorId = ref<number | null>(null);
+const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null);
 
 watch(authorId, () => {
     currentPage.value = 1;
