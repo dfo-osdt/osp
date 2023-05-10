@@ -152,6 +152,7 @@ async function getManuscripts() {
 
     query.sort('title', 'asc');
     query.paginate(currentPage.value, 5);
+    query.includeManagementReview();
 
     loading.value = true;
     manuscripts.value = await ManuscriptRecordService.getMyManuscripts(query);

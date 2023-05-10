@@ -6,6 +6,7 @@ export class SpatieQuery {
     filters: SpatieFilter[];
     sorts: SpatieSort[];
     includes: SpatieInclude[];
+    customs: Custom[];
     trashed?: SpatieTrashedFilter;
     pagination?: Pagination;
 
@@ -16,6 +17,7 @@ export class SpatieQuery {
         this.filters = [];
         this.sorts = [];
         this.includes = [];
+        this.customs = [];
     }
 
     /** Add a filter to the query */
@@ -60,6 +62,12 @@ export class SpatieQuery {
     /** Add an include to the query */
     public include(name: string): this {
         this.includes.push({ name });
+        return this;
+    }
+
+    /** Add a custom query parameter to the query */
+    public custom(name: string, value: string): this {
+        this.customs.push({name, value});
         return this;
     }
 
@@ -110,6 +118,12 @@ export class SpatieQuery {
             params.append('trashed', this.trashed.value);
         }
 
+        if (this.customs) {
+            this.customs.forEach((custom) => {
+                params.append(custom.name, custom.value);
+            });
+        }
+
         return params.toString();
     }
 }
@@ -130,6 +144,11 @@ type SpatieInclude = {
 type Pagination = {
     limit?: number;
     page?: number;
+};
+
+type Custom = {
+    name: string;
+    value: string;
 };
 
 /**
