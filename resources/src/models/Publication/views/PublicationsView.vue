@@ -226,16 +226,26 @@ const journalSelect = ref<InstanceType<typeof JournalSelect> | null>(null);
 const authorId = ref<number | null>(null);
 const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null);
 
+watch(journalId, () => {
+    currentPage.value = 1;
+    getPublications();
+});
+
+watch(authorId, () => {
+    currentPage.value = 1;
+    getPublications();
+});
+
 const filterCaption = computed(() => {
     let caption = '';
     if (journalId.value) {
         const { title_en } = journalSelect?.value?.selectedJournal?.data || {};
-        caption += `in ${title_en} `;
+        caption += `${t('common.in')} ${title_en} `;
     }
     if (authorId.value) {
         const { first_name, last_name } =
             authorSelect?.value?.selectedAuthor?.data || {};
-        caption += `by ${first_name} ${last_name} `;
+        caption += `${t('common.by')} ${first_name} ${last_name} `;
     }
     if (caption.length > 0)
         caption = t('common.publications') + ' ' + caption.slice(0, -1);
