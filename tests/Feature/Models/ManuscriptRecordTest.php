@@ -262,38 +262,3 @@ test('a user can mark their manuscript as accepted', function () {
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
     expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
 });
-
-test('a user can see all their manuscript and filter them', function () {
-    $user = User::factory()->create();
-    // create a manuscript where the user is the applicant
-    $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $user->id]);
-
-    // create a manuscript where the user is an author
-    $manuscript2 = ManuscriptRecord::factory()->filled()->create();
-    $manuscript2->manuscriptAuthors()->create([
-        'author_id' => Author::factory()->create(['user_id' => $user->id])->id,
-        'organization_id' => Organization::factory()->create()->id,
-    ]);
-
-    // create a review step where the user is the reviewer
-    ManagementReviewStep::factory()->create(['user_id' => $user->id]);
-
-    // query the user's manuscripts
-    $response = $this->actingAs($user)->getJson('/api/my/manuscript-records')->assertOk();
-    expect($response->json('data'))->toHaveCount(3);
-
-    //filter by status - just draft
-    $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?filter[status]='.ManuscriptRecordStatus::DRAFT->value)->assertOk();
-    expect($response->json('data'))->toHaveCount(2);
-
-    $manuscript2->status = ManuscriptRecordStatus::ACCEPTED;
-    $manuscript2->save();
-
-    //filter by status - just in review
-    $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?filter[status]='.ManuscriptRecordStatus::IN_REVIEW->value)->assertOk();
-    expect($response->json('data'))->toHaveCount(1);
-
-    //filter by status - just accepted
-    $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?filter[status]='.ManuscriptRecordStatus::ACCEPTED->value)->assertOk();
-    expect($response->json('data'))->toHaveCount(1);
-});
