@@ -103,7 +103,7 @@
                 </ContentCard>
             </div>
         </div>
-        <CreatePublicationDialog v-model="showCreatePublicationDialog" />
+        <CreatePublicationDialog v-model="showCreatePublicationDialog" @created="publicationCreated" />
     </MainPageLayout>
 </template>
 
@@ -157,6 +157,11 @@ async function getPublications() {
 
 // create publication dialog
 const showCreatePublicationDialog = ref(false);
+
+const publicationCreated = () => {
+    showCreatePublicationDialog.value = false;
+    getPublications();
+};
 
 // user store
 const authorStore = useAuthStore();
