@@ -137,7 +137,7 @@ test('a reviewer that has director permission can withhold and complete the revi
     Mail::fake();
     $reviewer = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->in_review()->
-    has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required here'))->create();
+        has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required here'))->create();
 
     // user does not have director permission, should be forbidden
     $response = $this->actingAs($reviewer)

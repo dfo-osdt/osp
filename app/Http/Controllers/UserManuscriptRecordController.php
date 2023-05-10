@@ -35,11 +35,14 @@ class UserManuscriptRecordController extends Controller
                 $q->whereHas('author', function ($q) use ($userId) {
                     $q->where('user_id', $userId);
                 });
-            })
-            ->orWhereHas('managementReviewSteps', function ($q) use ($userId) {
+            });
+        
+        if ($request->get('include-reviews') === 'true') {
+            $manuscriptIds->orWhereHas('managementReviewSteps', function ($q) use ($userId) {
                 $q->where('user_id', $userId);
-            })
-            ->pluck('id');
+            });
+        }
+        $manuscriptIds = $manuscriptIds->pluck('id');
 
         $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)
             ->with('manuscriptAuthors.organization', 'manuscriptAuthors.author');

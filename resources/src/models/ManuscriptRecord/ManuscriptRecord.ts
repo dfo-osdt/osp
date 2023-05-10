@@ -222,6 +222,11 @@ export class ManuscriptQuery extends SpatieQuery {
         return this;
     }
 
+    public includeManagementReview(): this {
+        this.custom('include-reviews','true');
+        return this;
+    }
+
     public sort(name: ManuscriptQuerySort, direction: 'asc' | 'desc'): this {
         super.sort(name, direction);
         return this;
