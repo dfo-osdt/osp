@@ -91,7 +91,7 @@
             secondary
         />
         <ContentCard class="q-mb-lg" secondary>
-            <template #title>{{ $t('mfr.general-information') }}</template>
+            <template #title>{{ $t('mrf.general-information') }}</template>
             <template #title-right>
                 <FormSectionStatusIcon :status="generalSectionStatus" />
             </template>
@@ -229,7 +229,7 @@
                         class="q-mb-md"
                     >
                         <p>
-                            {{ $t('mfr.relevant-text') }}
+                            {{ $t('mrf.relevant-text') }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
@@ -240,7 +240,7 @@
                         class="q-mb-md"
                     >
                         <p>
-                            {{ $t('mfr.geographical-text') }}
+                            {{ $t('mrf.geographical-text') }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
