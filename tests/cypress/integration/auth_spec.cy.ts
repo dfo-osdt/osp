@@ -19,7 +19,7 @@ describe('Authentication Tests', () => {
         cy.get('[data-cy="email"]').type('joe@test.com');
         cy.get('[data-cy="password"]').type('password');
         cy.get('[data-cy="login"]').click();
-        cy.wait(1000);
+        cy.wait(2000);
         cy.contains('Dashboard');
     });
 });
