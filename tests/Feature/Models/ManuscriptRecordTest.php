@@ -8,10 +8,8 @@ use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptRecordToReviewMail;
 use App\Models\Author;
 use App\Models\Journal;
-use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
-use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
@@ -261,4 +259,41 @@ test('a user can mark their manuscript as accepted', function () {
 
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
     expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
+});
+
+test('a user can delete their manuscript record if it is a draft', function () {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $user->id]);
+
+    // check that the resource returned allows the user to delete the manuscript
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}")->assertOk();
+    expect($response->json('can.delete'))->toBe(true);
+
+    // check that user cannot delete the manuscript if it is not a draft
+    $manuscript->status = ManuscriptRecordStatus::SUBMITTED;
+    $manuscript->save();
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}")->assertOk();
+    expect($response->json('can.delete'))->toBe(false);
+
+    $manuscript->status = ManuscriptRecordStatus::DRAFT;
+    $manuscript->save();
+
+    // delete the manuscript
+    $response = $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}")->assertNoContent();
+
+    // check that the manuscript has been deleted
+    expect(ManuscriptRecord::find($manuscript->id))->toBeNull();
+
+    // try again with submitted manuscript
+    $manuscript = ManuscriptRecord::factory()->in_review()->create(['user_id' => $user->id]);
+
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}")->assertOk();
+    expect($response->json('can.delete'))->toBe(false);
+
+    // delete the manuscript
+    $response = $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}")->assertForbidden();
+
+    // check that the manuscript has not been deleted
+    expect(ManuscriptRecord::find($manuscript->id))->not->toBeNull();
+
 });

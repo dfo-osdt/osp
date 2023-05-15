@@ -83,6 +83,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(ManuscriptRecordController::class)->group(function () {
         Route::get('/manuscript-records/{manuscriptRecord}', 'show');
         Route::put('manuscript-records/{manuscriptRecord}', 'update');
+        Route::delete('manuscript-records/{manuscriptRecord}', 'destroy');
         Route::post('/manuscript-records', 'store');
         // upload/download attached manuscript pdf
         Route::get('manuscript-records/{manuscriptRecord}/pdf', 'downloadPdf');

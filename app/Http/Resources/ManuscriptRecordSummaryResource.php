@@ -36,6 +36,9 @@ class ManuscriptRecordSummaryResource extends JsonResource
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
                 'user' => UserResource::make($this->whenLoaded('user')),
             ],
+            'can' => [
+                'delete' => $request->user()->can('delete', $this->resource),
+            ],
         ];
     }
 }

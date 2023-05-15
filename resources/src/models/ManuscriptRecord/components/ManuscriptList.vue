@@ -54,10 +54,9 @@
                         :type="manuscript.data.type"
                         class="q-mr-xs"
                     />
-                    <manuscript-status-badge
-                        :status="manuscript.data.status"
-                    /> </span
-            ></q-item-section>
+                    <manuscript-status-badge :status="manuscript.data.status" />
+                </span>
+            </q-item-section>
         </q-item>
     </q-list>
 </template>
