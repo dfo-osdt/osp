@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.10.0.
+ * Generated for Laravel 10.10.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6225,7 +6225,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Begin a fluent query against a database table.
          *
-         * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Query\Expression|string  $table
+         * @param  \Closure|\Illuminate\Database\Query\Builder|\Illuminate\Database\Illuminate\Contracts\Database\Query\Expression|string  $table
          * @param  string|null  $as
          * @return \Illuminate\Database\Query\Builder
          *
