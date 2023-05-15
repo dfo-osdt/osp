@@ -8,10 +8,12 @@ import AutoImport from 'unplugin-auto-import/vite';
 import { homedir } from 'os';
 import { resolve } from 'path';
 import fs from 'fs';
+import manifestSRI from 'vite-plugin-manifest-sri';
 
 export default defineConfig({
     plugins: [
         laravel(['resources/src/main.ts']),
+        manifestSRI(),
         vue({
             template: {
                 transformAssetUrls: {
