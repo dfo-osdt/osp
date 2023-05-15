@@ -96,9 +96,6 @@ devDependencies:
   vite:
     specifier: ^4.3.5
     version: 4.3.5(@types/node@20.1.4)(sass@1.32.13)
-  vite-plugin-manifest-sri:
-    specifier: ^0.1.0
-    version: 0.1.0
   vue-tsc:
     specifier: ^1.6.5
     version: 1.6.5(typescript@5.0.4)
@@ -2997,10 +2994,6 @@ packages:
       picocolors: 1.0.0
       picomatch: 2.3.1
       vite: 4.3.5(@types/node@20.1.4)(sass@1.32.13)
-    dev: true
-
-  /vite-plugin-manifest-sri@0.1.0:
-    resolution: {integrity: sha512-m4gcEXwcA1MfCVYTLVHYsB03Xsc6L4VYfhxXmcYcS+rN3kTjuWkXMaA8OuOV1gFdi1bMJFkLTJCPciYApvCm/g==}
     dev: true
 
   /vite@4.3.5(@types/node@20.1.4)(sass@1.32.13):
