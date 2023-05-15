@@ -36,4 +36,12 @@ Router.beforeEach((to, from) => {
     }
 });
 
+// Attempt to handle dynamic imports failing
+// https://github.com/vitejs/vite/issues/11804#issuecomment-1406182566
+Router.onError((error, to) => {
+    if (error.message.includes('Failed to fetch dynamically imported module')) {
+        window.location.href = to.fullPath;
+    }
+});
+
 myApp.mount('#app');
