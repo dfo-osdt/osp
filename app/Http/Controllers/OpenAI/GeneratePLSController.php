@@ -5,7 +5,7 @@ namespace App\Http\Controllers\OpenAI;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Orhanerday\OpenAi\OpenAi;
+use OpenAI\Laravel\Facades\OpenAI;
 
 /**
  * This controller will use the the OpenAI API to summarize scientific
@@ -13,7 +13,10 @@ use Orhanerday\OpenAi\OpenAi;
  */
 class GeneratePLSController extends Controller
 {
-    private static $basePrompt = "This is a scientific abstract. It is written in a way that is difficult for most people to understand. Summarize it so that an 8th grader can understand. Here is the abstract: \n\n";
+    // When working on this prompt refer to this article:
+    // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-openai-api
+
+    private static string $basePrompt = 'The text below is a scientific paper abstract. It is written in a way that is difficult for most people to understand. Summarize it so that an 8th grader can understand. If the abstract is in french, summarize it in french. If it is in english, summarize it in english.';
 
     /**
      * Handle the incoming request.
@@ -21,27 +24,18 @@ class GeneratePLSController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'abstract' => 'required|string|max:2000',
+            'abstract' => 'required|string|max:3000',
         ]);
 
         // clean up the abstract - it could have html tags we don't want
         $validated['abstract'] = strip_tags($validated['abstract']);
 
-        // if API key is not set, return an error
-        if (config('osp.openai_api_key') === null) {
-            return $this->error();
-        }
-
-        $openAi = new OpenAi(config('osp.openai_api_key'));
-        $result = $openAi->completion($this->buildOpenAiPrompt($validated['abstract']));
+        $result = OpenAI::completions()->create($this->buildOpenAiPrompt($validated['abstract']));
 
         // does result contain an error?
         if (isset($result['error'])) {
             return $this->error();
         }
-
-        // take results, from json to an array
-        $result = json_decode($result, true);
 
         $pls = $result['choices'][0]['text'];
         // clean up the PLS - remove newlines and extra spaces
@@ -64,16 +58,12 @@ class GeneratePLSController extends Controller
      */
     private function buildOpenAiPrompt($abstract): array
     {
-        $prompt = self::$basePrompt.$abstract;
+        $prompt = self::$basePrompt."\n\n Text: ###\n".$abstract."\n###";
 
         return [
             'model' => 'text-davinci-003',
             'prompt' => $prompt,
-            'temperature' => 0.7,
-            'max_tokens' => 256,
-            'top_p' => 1,
-            'frequency_penalty' => 0,
-            'presence_penalty' => 0,
+            'max_tokens' => 500,
         ];
     }
 

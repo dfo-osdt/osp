@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\User;
+use OpenAI\Responses\Completions\CreateResponse;
+use OpenAI\Laravel\Facades\OpenAI;
+use OpenAI\Testing\ClientFake;
 
 test('we can get a PLS from an abstract', function () {
     // commented out because it's a slow test and actually hits the OpenAI API
