@@ -80,6 +80,7 @@
                                 v-if="!manuscripts.empty"
                                 class="q-mb-lg"
                                 :manuscripts="manuscripts.recentManuscripts"
+                                @deleted="manuscripts.getMyManuscripts(true)"
                             />
                             <div class="text-center">
                                 <q-btn

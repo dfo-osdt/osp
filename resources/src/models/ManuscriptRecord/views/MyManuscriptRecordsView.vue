@@ -93,7 +93,10 @@
                     >
                         <NoResultFoundDiv />
                     </template>
-                    <ManuscriptList :manuscripts="manuscripts?.data ?? []" />
+                    <ManuscriptList
+                        :manuscripts="manuscripts?.data ?? []"
+                        @deleted="getManuscripts()"
+                    />
                     <q-card-section>
                         <PaginationDiv
                             v-model="currentPage"
