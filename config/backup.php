@@ -174,7 +174,6 @@ return [
         'mail' => [
             'to' => [env('BACKUP_MAIL_TO_ADDRESS')],
 
-
             'from' => [
                 'address' => env('MAIL_FROM_ADDRESS'),
                 'name' => env('MAIL_FROM_NAME'),

@@ -20,11 +20,11 @@ test('an authenticated users can get a list of their manuscripts', function () {
     expect($response->json('data.0.data.manuscript_authors'))->toHaveCount(2);
 });
 
-test('an authenticated user can get a list of manuscript without the ones they reviewed', function(){
+test('an authenticated user can get a list of manuscript without the ones they reviewed', function () {
     $reviewer = User::factory()->create();
     ManuscriptRecord::factory()->count(2)->create(['user_id' => $reviewer->id]);
     ManagementReviewStep::factory()->count(2)->create(['user_id' => $reviewer->id]);
-    
+
     $response = $this->actingAs($reviewer)->getJson('/api/my/manuscript-records?include-reviews=true&sort=-title')->assertOk();
     expect($response->json('data'))->toHaveCount(4);
 
