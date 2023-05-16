@@ -1,7 +1,8 @@
 <template>
-    <q-btn @click.stop="confirmDeletion()">
-        <slot />
-        <q-tooltip>{{ $t('common.delete') }}</q-tooltip>
+    <q-btn v-bind="props" @click.stop="confirmDeletion()">
+        <slot>
+            <q-tooltip>{{ $t('common.delete') }}</q-tooltip>
+        </slot>
     </q-btn>
 </template>
 
@@ -11,7 +12,7 @@
     generic="M extends ManuscriptRecordResource | ManuscriptRecordSummaryResource"
 >
 import { useI18n } from 'vue-i18n';
-import { useQuasar } from 'quasar';
+import { QBtnProps, useQuasar } from 'quasar';
 import {
     ManuscriptRecordService,
     ManuscriptRecordSummaryResource,
@@ -21,9 +22,11 @@ import {
 const { t } = useI18n();
 const $q = useQuasar();
 
-const props = defineProps<{
-    manuscript: M;
-}>();
+const props = defineProps<
+    QBtnProps & {
+        manuscript: M;
+    }
+>();
 
 const emit = defineEmits<{
     (e: 'deleted', manuscript: M): void;

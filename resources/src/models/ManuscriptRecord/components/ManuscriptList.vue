@@ -54,7 +54,6 @@
                     <manuscript-status-badge :status="manuscript.data.status" />
                     <delete-manuscript-button
                         v-if="manuscript.can?.delete"
-                        round
                         flat
                         size="sm"
                         color="red"
@@ -62,10 +61,8 @@
                         icon="mdi-delete"
                         class="q-ml-sm"
                         :manuscript="manuscript"
-                        @deleted="manuscriptStore.getMyManuscripts(true)"
-                    >
-                        <q-tooltip>{{ $t('common.delete') }}</q-tooltip>
-                    </delete-manuscript-button>
+                        @deleted="$emit('deleted', manuscript)"
+                    />
                 </span>
             </q-item-section>
         </q-item>
@@ -78,10 +75,13 @@ import ManuscriptTypeBadge from './ManuscriptTypeBadge.vue';
 import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue';
 import DeleteManuscriptButton from './DeleteManuscriptButton.vue';
 const router = useRouter();
-const manuscriptStore = useManuscriptStore();
 
 defineProps<{
     manuscripts: ManuscriptRecordSummaryResource[];
+}>();
+
+defineEmits<{
+    (e: 'deleted', manuscript: ManuscriptRecordSummaryResource): void;
 }>();
 
 function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
