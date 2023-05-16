@@ -278,7 +278,7 @@
             fundable-type="manuscript-records"
         />
         <ContentCard class="q-mb-md" secondary>
-            <template #title>{{ $t('mrf.attach-manuscript') }}</template>
+            <template #title>{{ $t('common.manuscript') }}</template>
             <template #title-right
                 ><FormSectionStatusIcon
                     :status="
