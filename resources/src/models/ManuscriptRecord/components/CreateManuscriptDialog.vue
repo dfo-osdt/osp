@@ -221,7 +221,6 @@ async function create() {
     // create the manuscript record
     await ManuscriptRecordService.create(record)
         .then((response) => {
-            console.log(response);
             router.push({
                 name: 'manuscript',
                 params: { id: response.data.id },

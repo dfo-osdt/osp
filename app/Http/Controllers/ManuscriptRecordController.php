@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\CreatePublicationFromManuscript;
+use App\Actions\DeleteManuscriptRecord;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Events\ManuscriptRecordAccepted;
@@ -79,6 +80,16 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->update($validated);
 
         return $this->defaultResource($manuscriptRecord);
+    }
+
+    /** Delete a manuscript */
+    public function destroy(Request $request, ManuscriptRecord $manuscriptRecord)
+    {
+        Gate::authorize('delete', $manuscriptRecord);
+
+        DeleteManuscriptRecord::handle($manuscriptRecord);
+
+        return response()->noContent();
     }
 
     /** Attach a PDF file to this record */

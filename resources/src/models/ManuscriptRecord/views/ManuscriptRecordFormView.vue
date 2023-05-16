@@ -58,11 +58,22 @@
                         >
                             {{ $t('common.status') }}
                         </div>
-                        <ManuscriptStatusBadge
-                            :status="manuscriptResource.data.status"
-                            outline
-                            class="text-body2"
-                        />
+                        <span>
+                            <ManuscriptStatusBadge
+                                :status="manuscriptResource.data.status"
+                                outline
+                                class="text-body2"
+                            />
+                            <DeleteManuscriptButton
+                                v-if="manuscriptResource.can?.delete"
+                                :manuscript="manuscriptResource"
+                                flat
+                                size="sm"
+                                color="red"
+                                icon="mdi-delete"
+                                @deleted="$router.push({ name: 'dashboard' })"
+                            />
+                        </span>
                     </div>
                     <q-separator class="q-my-sm" />
                     <div class="row justify-between">
@@ -350,6 +361,15 @@
             align="right"
             class="q-mb-lg"
         >
+            <DeleteManuscriptButton
+                class="q-mt-md"
+                :manuscript="manuscriptResource"
+                :label="$t('common.delete')"
+                outline
+                color="red"
+                icon="mdi-delete"
+                @deleted="$router.push({ name: 'dashboard' })"
+            />
             <q-btn
                 class="q-mt-md"
                 color="primary"
@@ -422,6 +442,7 @@ import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue';
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
 import { UtilityService } from '@/api/utils';
 import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue';
+import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue';
 
 const $q = useQuasar();
 const router = useRouter();

@@ -116,6 +116,14 @@ export class ManuscriptRecordService {
         return response.data;
     }
 
+    /** Delete a manuscript record
+     * @returns true if the manuscript record was deleted.
+     */
+    public static async delete(id: number) {
+        const response = await http.delete(`${this.baseURL}/${id}`);
+        return response.status === 204;
+    }
+
     /** Attach a PDF file to the manuscript record */
     public static async attachPDF(file: File, id: number) {
         const formData = new FormData();
@@ -223,7 +231,7 @@ export class ManuscriptQuery extends SpatieQuery {
     }
 
     public includeManagementReview(): this {
-        this.custom('include-reviews','true');
+        this.custom('include-reviews', 'true');
         return this;
     }
 

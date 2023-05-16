@@ -4,10 +4,7 @@
             v-for="manuscript in manuscripts"
             :key="manuscript.data.id"
             clickable
-            :to="{
-                name: 'manuscript.form',
-                params: { id: manuscript.data.id },
-            }"
+            @click="goToManuscript(manuscript)"
         >
             <q-item-section>
                 <q-item-label
@@ -54,10 +51,20 @@
                         :type="manuscript.data.type"
                         class="q-mr-xs"
                     />
-                    <manuscript-status-badge
-                        :status="manuscript.data.status"
-                    /> </span
-            ></q-item-section>
+                    <manuscript-status-badge :status="manuscript.data.status" />
+                    <delete-manuscript-button
+                        v-if="manuscript.can?.delete"
+                        flat
+                        size="sm"
+                        color="red"
+                        dense
+                        icon="mdi-delete"
+                        class="q-ml-sm"
+                        :manuscript="manuscript"
+                        @deleted="$emit('deleted', manuscript)"
+                    />
+                </span>
+            </q-item-section>
         </q-item>
     </q-list>
 </template>
@@ -66,10 +73,23 @@
 import { ManuscriptRecordSummaryResource } from '../ManuscriptRecord';
 import ManuscriptTypeBadge from './ManuscriptTypeBadge.vue';
 import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue';
+import DeleteManuscriptButton from './DeleteManuscriptButton.vue';
+const router = useRouter();
 
 defineProps<{
     manuscripts: ManuscriptRecordSummaryResource[];
 }>();
+
+defineEmits<{
+    (e: 'deleted', manuscript: ManuscriptRecordSummaryResource): void;
+}>();
+
+function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
+    router.push({
+        name: 'manuscript.form',
+        params: { id: manuscript.data.id },
+    });
+}
 </script>
 
 <style scoped></style>
