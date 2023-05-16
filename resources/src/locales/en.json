@@ -223,7 +223,8 @@
     "your-password": "Your password",
     "by": "by",
     "in": "in",
-    "delete": "Delete"
+    "delete": "Delete",
+    "explore": "Explore"
   },
   "create-author-dialog": {
     "title": "Create a new Author"

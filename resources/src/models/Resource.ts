@@ -38,6 +38,7 @@ export interface ResourceList<T> {
 }
 
 export interface Media {
+    uuid: string;
     file_name: string;
     size_bytes: number;
     created_at: string;

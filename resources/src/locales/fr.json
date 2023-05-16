@@ -223,7 +223,8 @@
     "your-password": "Votre mot de passe",
     "by": "par",
     "in": "dans",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "explore": "Explorer"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"

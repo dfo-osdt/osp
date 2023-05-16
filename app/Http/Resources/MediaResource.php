@@ -15,6 +15,7 @@ class MediaResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'uuid' => $this->uuid,
             'file_name' => $this->file_name,
             'size_bytes' => $this->size,
             'created_at' => $this->created_at,
