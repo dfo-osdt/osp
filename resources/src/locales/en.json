@@ -222,7 +222,8 @@
     "your-last-name": "Your last name",
     "your-password": "Your password",
     "by": "by",
-    "in": "in"
+    "in": "in",
+    "delete": "Delete"
   },
   "create-author-dialog": {
     "title": "Create a new Author"
@@ -292,6 +293,11 @@
     "unsaved-changes": {
       "message": "You have unsaved changes. Are you sure you want to leave?",
       "title": "Unsaved Changes"
+    },
+    "delete-manuscript": {
+      "manuscript-deleted": "Manuscript Deleted",
+      "title": "Delete a Manuscript",
+      "message": "Are you sure you want to delete the manuscript titled \"{title}\"?"
     }
   },
   "error-invalid-signature": {

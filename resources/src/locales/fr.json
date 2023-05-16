@@ -222,7 +222,8 @@
     "your-last-name": "Votre nom de famille",
     "your-password": "Votre mot de passe",
     "by": "par",
-    "in": "dans"
+    "in": "dans",
+    "delete": "Supprimer"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -292,6 +293,11 @@
     "unsaved-changes": {
       "message": "Vous avez des changements non enregistrés. \nÊtes-vous sûr de vouloir quitter?",
       "title": "Modifications non enregistrées"
+    },
+    "delete-manuscript": {
+      "manuscript-deleted": "Manuscrit supprimé",
+      "title": "Supprimer un manuscrit",
+      "message": "Voulez-vous vraiment supprimer le manuscrit intitulé \"{title}\" ?"
     }
   },
   "error-invalid-signature": {
