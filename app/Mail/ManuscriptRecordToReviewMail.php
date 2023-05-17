@@ -37,7 +37,7 @@ class ManuscriptRecordToReviewMail extends Mailable
         $this->to($this->user->email, $this->user->fullName);
         $this->cc($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->fullName);
         $this->cc($this->manuscriptRecord->manuscriptAuthors->pluck('author.email')->toArray());
-        $this->attach($this->manuscriptRecord->getManuscriptFile());
+        $this->attach($this->manuscriptRecord->getLastManuscriptFile());
 
         return $this->markdown('mail.manuscriptRecord.manuscriptRecordSubmitted');
     }

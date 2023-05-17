@@ -126,7 +126,7 @@ PDF;
     $uuid = $response->json('data.uuid');
 
     // check that the pdf has been uploaded
-    expect($manuscript->getManuscriptFile()->file_name)->toBe('test.pdf');
+    expect($manuscript->getLastManuscriptFile()->file_name)->toBe('test.pdf');
 
     // download the pdf check file in response
     $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files/{$uuid}?download=true")->assertOk();
@@ -148,10 +148,6 @@ PDF;
     // get list of files - we should have two files
     $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files")->assertOk();
     expect($response->json('data'))->toHaveCount(2);
-
-    // get manuscript record - it should have the new file attached
-    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}")->assertOk();
-    expect($response->json('data.manuscript_pdf.file_name'))->toBe('test2.pdf');
 
 });
 
@@ -210,6 +206,9 @@ test('a user can submit a filled manuscript record', function () {
     Mail::assertQueued(ManuscriptRecordToReviewMail::class);
 
     expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::IN_REVIEW->value);
+
+    // check that the manuscript files has been locked
+    expect($manuscript->getLastManuscriptFile()->getCustomProperty('locked'))->toBe(true);
 
     // check that a management review step has been created and for it belongs to the reviewer
     expect($manuscript->managementReviewSteps()->count())->toBe(1);

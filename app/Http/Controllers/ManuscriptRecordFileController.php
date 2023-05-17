@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MediaResource;
 use App\Models\ManuscriptRecord;
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ManuscriptRecordFileController extends Controller
@@ -17,7 +20,7 @@ class ManuscriptRecordFileController extends Controller
     {
         Gate::authorize('view', $manuscriptRecord);
 
-        $media = $manuscriptRecord->getMedia('manuscript');
+        $media = $manuscriptRecord->getManuscriptFiles();
 
         return MediaResource::collection($media);
     }
@@ -33,7 +36,7 @@ class ManuscriptRecordFileController extends Controller
             'pdf' => 'required|file|mimes:pdf',
         ]);
 
-        $media = $manuscriptRecord->addMedia($validated['pdf'])->toMediaCollection('manuscript');
+        $media = $manuscriptRecord->addManuscriptFile($validated['pdf']);
 
         return MediaResource::make($media);
     }
@@ -46,7 +49,7 @@ class ManuscriptRecordFileController extends Controller
 
         Gate::authorize('view', $manuscriptRecord);
 
-        $media = $manuscriptRecord->getMedia('manuscript')->where('uuid', $uuid)->first();
+        $media = $manuscriptRecord->getManuscriptFile($uuid);
 
         if (! $media) {
             throw new NotFoundHttpException('File not found.');
@@ -69,13 +72,13 @@ class ManuscriptRecordFileController extends Controller
     {
         Gate::authorize('attachManuscript', $manuscriptRecord);
 
-        $media = $manuscriptRecord->getMedia('manuscript')->where('uuid', $uuid)->first();
-
-        if (! $media) {
+        try {
+            $manuscriptRecord->deleteManuscriptFile($uuid);
+        } catch (FileNotFoundException $e) {
             throw new NotFoundHttpException('File not found.');
+        } catch (Exception $e) {
+            throw new BadRequestHttpException('Cannot delete locked file.');
         }
-
-        $media->delete();
 
         return response()->noContent();
     }

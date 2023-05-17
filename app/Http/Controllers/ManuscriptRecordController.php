@@ -21,7 +21,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ManuscriptRecordController extends Controller
 {
@@ -92,34 +91,6 @@ class ManuscriptRecordController extends Controller
         return response()->noContent();
     }
 
-    /** Attach a PDF file to this record */
-    public function attachPDF(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
-    {
-        Gate::authorize('attachManuscript', $manuscriptRecord);
-
-        $validated = $request->validate([
-            'pdf' => 'required|file|mimes:pdf',
-        ]);
-
-        $manuscriptRecord->addMedia($validated['pdf'])->toMediaCollection('manuscript');
-
-        return $this->defaultResource($manuscriptRecord);
-    }
-
-    /** Download PDF attached to this record - return NoContent if empty */
-    public function downloadPDF(ManuscriptRecord $manuscriptRecord): mixed
-    {
-        Gate::authorize('view', $manuscriptRecord);
-
-        $pdf = $manuscriptRecord->getManuscriptFile();
-
-        if ($pdf) {
-            return $pdf;
-        } else {
-            throw new NotFoundHttpException('No PDF attached to this record');
-        }
-    }
-
     /** Submit the manuscript record for review */
     public function submitForReview(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
@@ -149,6 +120,7 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord->status = ManuscriptRecordStatus::IN_REVIEW;
         $manuscriptRecord->sent_for_review_at = now();
+        $manuscriptRecord->lockManuscriptFiles();
         $manuscriptRecord->save();
 
         return $this->defaultResource($manuscriptRecord);

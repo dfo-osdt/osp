@@ -277,94 +277,14 @@
             :readonly="isManuscriptReadOnly"
             fundable-type="manuscript-records"
         />
-        <ContentCard class="q-mb-md" secondary>
-            <template #title>{{ $t('common.manuscript') }}</template>
-            <template #title-right
-                ><FormSectionStatusIcon
-                    :status="
-                        manuscriptResource?.data.manuscript_pdf
-                            ? 'complete'
-                            : 'incomplete'
-                    "
-            /></template>
-            <p>
-                {{ $t('mrf.upload-text') }}
-            </p>
-            <template v-if="manuscriptResource?.data.manuscript_pdf">
-                <q-card outlined class="q-mb-md">
-                    <q-list>
-                        <q-item>
-                            <q-item-section>
-                                <q-item-label>{{
-                                    manuscriptResource.data.manuscript_pdf
-                                        .file_name
-                                }}</q-item-label>
-                                <q-item-label caption>
-                                    {{
-                                        manuscriptResource.data.manuscript_pdf
-                                            .size_bytes / 1000
-                                    }}
-                                    {{ $t('common.kb-uploaded-on') }}
-                                    {{
-                                        new Date(
-                                            manuscriptResource.data.manuscript_pdf.created_at
-                                        ).toLocaleString()
-                                    }}
-                                </q-item-label>
-                            </q-item-section>
-                            <q-item-section side>
-                                <span>
-                                    <q-btn
-                                        v-if="manuscriptResource.can?.delete"
-                                        icon="mdi-delete-outline"
-                                        color="negative"
-                                        class="q-mr-sm"
-                                        outline
-                                        @click="confirmDeleteManuscriptPDF"
-                                    />
-                                    <q-btn
-                                        icon="mdi-file-download-outline"
-                                        color="primary"
-                                        :loading="loading"
-                                        :href="`api/manuscript-records/${id}/files/${manuscriptResource.data.manuscript_pdf.uuid}?download=true`"
-                                    />
-                                </span>
-                            </q-item-section>
-                        </q-item>
-                    </q-list>
-                </q-card>
-            </template>
-            <q-file
-                v-if="displayFileUpload"
-                v-model="manuscriptFile"
-                outlined
-                use-chips
-                :label="
-                    manuscriptResource?.data.manuscript_pdf
-                        ? $t('mrf.replace-manuscript')
-                        : $t('mrf.upload-manuscript')
-                "
-                :hint="$t('mrf.upload-hint', { max: 10 })"
-                accept="application/pdf"
-                max-file-size="10000000"
-                counter
-                :loading="uploadingFile"
-                @rejected="onFileRejected"
-            >
-                <template #prepend>
-                    <q-icon name="mdi-file-pdf-box" />
-                </template>
-                <template #append>
-                    <q-btn
-                        color="primary"
-                        :loading="uploadingFile"
-                        :disable="!manuscriptFile"
-                        :label="$t('common.upload')"
-                        @click="upload"
-                    />
-                </template>
-            </q-file>
-        </ContentCard>
+        <ManuscriptFileManagementCard
+            v-if="manuscriptResource"
+            ref="manuscriptFileManagementCard"
+            :manuscript="manuscriptResource"
+            :readonly="isManuscriptReadOnly"
+            class="q-mb-lg"
+            secondary
+        />
         <q-card-actions
             v-if="manuscriptResource?.can?.update"
             ref="actionsSection"
@@ -435,7 +355,7 @@
 
 <script setup lang="ts">
 import { Ref } from 'vue';
-import { QForm, QRejectedEntry, useQuasar } from 'quasar';
+import { QForm, useQuasar } from 'quasar';
 import {
     ManuscriptRecordResource,
     ManuscriptRecordService,
@@ -453,6 +373,7 @@ import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
 import { UtilityService } from '@/api/utils';
 import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue';
 import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue';
+import ManuscriptFileManagementCard from '../components/ManuscriptFileManagementCard.vue';
 
 const $q = useQuasar();
 const router = useRouter();
@@ -466,15 +387,17 @@ const props = defineProps<{
 
 const loading = ref(true);
 const manuscriptResource: Ref<ManuscriptRecordResource | null> = ref(null);
-const manuscriptFile: Ref<File | null> = ref(null);
-const uploadingFile = ref(false);
 const manuscriptAuthorsCard = ref<InstanceType<
     typeof ManageManuscriptAuthorsCard
+> | null>(null);
+const manuscriptFileManagementCard = ref<InstanceType<
+    typeof ManuscriptFileManagementCard
 > | null>(null);
 
 // watch if there is a change
 const isDirty = ref(false);
 const disableDirtyWatcher = ref(false);
+
 watch(
     manuscriptResource,
     (newVal, oldValue) => {
@@ -563,91 +486,6 @@ const save = async () => {
         });
 };
 
-function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
-    console.log(rejectedEntries);
-    rejectedEntries.forEach((rejectedEntry) => {
-        if (rejectedEntry.failedPropValidation === 'max-file-size') {
-            $q.notify({
-                type: 'negative',
-                color: 'negative',
-                message: t('common.validation.file-size-is-too-large'),
-            });
-        } else if (rejectedEntry.failedPropValidation === 'accept') {
-            $q.notify({
-                type: 'negative',
-                color: 'negative',
-                message: t('common.validation.file-type-is-not-accepted'),
-            });
-        }
-    });
-}
-
-const displayFileUpload = computed(() => {
-    const m = manuscriptResource.value?.data;
-    if (!m) return false;
-    return (
-        (m.can_attach_manuscript && m.manuscript_pdf === null) ||
-        (m.status !== 'draft' && m.can_attach_manuscript)
-    );
-});
-
-async function upload() {
-    // if there is no manuscript file, return
-    if (manuscriptFile.value === null) return;
-
-    disableDirtyWatcher.value = true;
-    uploadingFile.value = true;
-
-    const response = await ManuscriptRecordService.attachPDF(
-        manuscriptFile.value,
-        props.id
-    );
-
-    if (manuscriptResource.value?.data) {
-        manuscriptResource.value.data['manuscript_pdf'] = response.data;
-    }
-
-    uploadingFile.value = false;
-    // clear file
-    manuscriptFile.value = null;
-
-    $q.notify({
-        type: 'positive',
-        color: 'primary',
-        message: t('common.file-uploaded-successfully'),
-    });
-
-    // re-enable dirty watcher in 500 ms
-    setTimeout(() => {
-        disableDirtyWatcher.value = false;
-    }, 500);
-}
-
-async function confirmDeleteManuscriptPDF() {
-    $q.dialog({
-        title: t('dialog.delete-manuscript-pdf.title'),
-        message: t('dialog.delete-manuscript-pdf.message'),
-        cancel: true,
-        persistent: false,
-    }).onOk(async () => {
-        deleteManuscriptPDF();
-    });
-}
-
-async function deleteManuscriptPDF() {
-    const m = manuscriptResource.value?.data;
-    if (!m) return;
-    const deleted = await ManuscriptRecordService.deletePDF(m);
-    if (deleted) {
-        $q.notify({
-            message: t('dialog.delete-manuscript-pdf.manuscript-pdf-deleted'),
-            type: 'positive',
-            icon: 'mdi-check',
-        });
-    }
-    m.manuscript_pdf = null;
-}
-
 // submit the manuscript
 const showSubmitDialog = ref(false);
 // check if the manuscript be sent for review?
@@ -672,7 +510,8 @@ const canSubmit = computed(() => {
     if (manuscriptAuthorsCard.value?.sectionStatus !== 'complete') return false;
 
     // you can't submit the manuscript if there is no manuscript pdf
-    if (!manuscript.manuscript_pdf) return false;
+    if (manuscriptFileManagementCard.value?.sectionStatus !== 'complete')
+        return false;
 
     return true;
 });
@@ -684,6 +523,7 @@ async function submit() {
 
 function onSubmitted(manuscript: ManuscriptRecordResource) {
     manuscriptResource.value = manuscript;
+    manuscriptFileManagementCard.value?.getFiles();
     showSubmitDialog.value = false;
 }
 

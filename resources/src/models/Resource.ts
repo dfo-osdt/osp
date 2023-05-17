@@ -44,7 +44,8 @@ export interface Media {
     created_at: string;
     collection_name: string;
     mime_type: string;
+    locked: boolean;
 }
 
 export type MediaResource = Resource<Media>;
-export type MediaResourceList = ResourceList<Media>;
+export type MediaResourceList = Resource<Media[]>;

@@ -6,6 +6,8 @@ use App\Contracts\Fundable;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Traits\FundableTrait;
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -105,9 +107,61 @@ class ManuscriptRecord extends Model implements HasMedia, Fundable
     /**
      * Get manuscript file media model.
      */
-    public function getManuscriptFile()
+    public function getLastManuscriptFile()
     {
         return $this->getMedia('manuscript')->last();
+    }
+
+    /**
+     * Get manuscript files media model.
+     */
+    public function getManuscriptFiles()
+    {
+        return $this->getMedia('manuscript');
+    }
+
+    /**
+     * Add a manuscript file to the manuscript record.
+     */
+    public function addManuscriptFile($file)
+    {
+        return $this->addMedia($file)->withCustomProperties(['locked' => false])->toMediaCollection('manuscript');
+    }
+
+    public function getManuscriptFile($uuid)
+    {
+        return $this->getMedia('manuscript')->where('uuid', $uuid)->first();
+    }
+
+    /**
+     * Delete a manuscript file
+     */
+    public function deleteManuscriptFile($uuid, $force = false)
+    {
+        $media = $this->getMedia('manuscript')->where('uuid', $uuid)->first();
+        if (! $media) {
+            throw new FileNotFoundException('File not found.');
+        }
+        if ($force) {
+            $media->delete();
+
+            return;
+        }
+        if ($media->getCustomProperty('locked', false)) {
+            throw new Exception('Cannot delete locked file.');
+        }
+        $media->delete();
+    }
+
+    /**
+     * Lock all manuscript files.
+     */
+    public function lockManuscriptFiles()
+    {
+        $this->getManuscriptFiles()->each(function ($media) {
+            $media->setCustomProperty('locked', true);
+            $media->save();
+        });
     }
 
     /**

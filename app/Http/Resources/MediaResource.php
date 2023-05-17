@@ -21,6 +21,7 @@ class MediaResource extends JsonResource
             'created_at' => $this->created_at,
             'collection_name' => $this->collection_name,
             'mime_type' => $this->mime_type,
+            'locked' => $this->getCustomProperty('locked', false),
         ];
     }
 }

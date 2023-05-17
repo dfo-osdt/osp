@@ -42,7 +42,6 @@ class ManuscriptRecordResource extends JsonResource
                 'accepted_on' => $this->accepted_on,
                 'withdrawn_on' => $this->withdrawn_on,
                 //relationships - if loaded
-                'manuscript_pdf' => MediaResource::make($this->getManuscriptFile()),
                 'region' => RegionResource::make($this->whenLoaded('region')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
                 'user' => UserResource::make($this->whenLoaded('user')),

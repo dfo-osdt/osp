@@ -60,7 +60,9 @@ class ManuscriptRecordFactory extends Factory
             'title' => 'A manuscript record that has been submitted for internal review',
             'status' => ManuscriptRecordStatus::IN_REVIEW,
             'sent_for_review_at' => now(),
-        ]);
+        ])->afterCreating(function ($manuscript) {
+            $manuscript->lockManuscriptFiles();
+        });
     }
 
     /**

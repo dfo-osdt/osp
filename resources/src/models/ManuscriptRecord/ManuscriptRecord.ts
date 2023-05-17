@@ -52,7 +52,6 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     submitted_to_journal_on: string | null;
     accepted_on: string | null;
     withdrawn_on: string | null;
-    manuscript_pdf: Media | null;
     // relationships
     region?: Region;
     manuscript_authors?: ManuscriptAuthorResource[];
@@ -158,11 +157,9 @@ export class ManuscriptRecordService {
      * Delete a PDF file associated with this manuscript
      * If no uuid is provided, the manuscript's manuscript_pdf will be used.
      */
-    public static async deletePDF(manuscript: ManuscriptRecord, uuid?: string) {
-        uuid = uuid || manuscript.manuscript_pdf?.uuid;
-        if (!uuid) return false;
+    public static async deletePDF(id: number, uuid: string) {
         const response = await http.delete(
-            `${this.baseURL}/${manuscript.id}/files/${uuid}`
+            `${this.baseURL}/${id}/files/${uuid}`
         );
         return response.status === 204;
     }
