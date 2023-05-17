@@ -95,7 +95,7 @@
     "embargoed-until": "Sous embargo jusqu'à",
     "english": "Anglais",
     "explore": "Explorer",
-    "file-uploaded-successfully": "Fichier téléchargé avec succès",
+    "file-uploaded-successfully": "Fichier téléchargé avec succès: {file}",
     "filter": "Filtre",
     "filters": "Filtres",
     "first-name": "Prénom",
