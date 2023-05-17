@@ -13,7 +13,7 @@
             ></DrawerMenuItem>
 
             <q-separator></q-separator>
-            <q-item-label header>Explore</q-item-label>
+            <q-item-label header>{{ $t('common.explore') }}</q-item-label>
 
             <DrawerMenuItem
                 v-for="item in exploreMenuItems"

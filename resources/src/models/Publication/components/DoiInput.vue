@@ -2,7 +2,7 @@
     <q-input
         ref="doiInput"
         v-model="doi"
-        label="DOI"
+        :label="$t('common.doi')"
         outlined
         :rules="rules"
         hint="Format: 10.1038/xyz123"

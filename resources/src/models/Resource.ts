@@ -38,11 +38,14 @@ export interface ResourceList<T> {
 }
 
 export interface Media {
+    uuid: string;
     file_name: string;
     size_bytes: number;
     created_at: string;
     collection_name: string;
     mime_type: string;
+    locked: boolean;
 }
 
 export type MediaResource = Resource<Media>;
+export type MediaResourceList = Resource<Media[]>;

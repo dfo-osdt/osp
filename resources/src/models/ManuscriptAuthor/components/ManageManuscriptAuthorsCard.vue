@@ -75,7 +75,9 @@ import {
 import ManuscriptAuthorChip from './ManuscriptAuthorChip.vue';
 import { useQuasar } from 'quasar';
 import AddManuscriptAuthorDialog from './AddManuscriptAuthorDialog.vue';
-import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
+import FormSectionStatusIcon, {
+    FormSectionStatus,
+} from '@/components/FormSectionStatusIcon.vue';
 const { t } = useI18n();
 const $q = useQuasar();
 const props = withDefaults(
@@ -103,7 +105,7 @@ const hasNoCorrespondingAuthor = computed(() => {
     );
 });
 
-const sectionStatus = computed(() => {
+const sectionStatus: ComputedRef<FormSectionStatus> = computed(() => {
     if (hasNoAuthors.value) {
         return 'incomplete';
     }

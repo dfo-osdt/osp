@@ -89,7 +89,7 @@ class PublicationController extends Controller
                 'status' => new Enum(PublicationStatus::class),
             ]);
             if ($validatedStatus['status'] !== $publication->status->value) {
-                switch($validatedStatus['status']) {
+                switch ($validatedStatus['status']) {
                     case PublicationStatus::PUBLISHED->value:
                         $publication->status = PublicationStatus::PUBLISHED;
                         break;

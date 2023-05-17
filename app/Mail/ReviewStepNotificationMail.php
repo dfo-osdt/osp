@@ -38,7 +38,7 @@ class ReviewStepNotificationMail extends Mailable
         $this->to($this->managementReviewStep->user->email, $this->managementReviewStep->user->fullName);
         $this->cc($this->previousStep->user->email, $this->previousStep->user->fullName);
         $this->cc($this->managementReviewStep->manuscriptRecord->user->email, $this->managementReviewStep->manuscriptRecord->user->fullName);
-        $this->attach($this->managementReviewStep->manuscriptRecord->getManuscriptFile());
+        $this->attach($this->managementReviewStep->manuscriptRecord->getLastManuscriptFile());
 
         return $this->markdown('mail.review-step-notification-mail');
     }

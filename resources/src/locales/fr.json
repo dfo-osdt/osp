@@ -61,6 +61,7 @@
     "approved": "Approuvé",
     "author": "Auteur | Auteurs",
     "back": "Retour",
+    "by": "par",
     "cancel": "Annuler",
     "close": "Fermer",
     "comments": "commentaires",
@@ -84,13 +85,16 @@
     "current-password": "Mot de passe actuel",
     "dashboard": "Tableau de bord",
     "deferred": "Différé",
+    "delete": "Supprimer",
     "deleted": "Supprimé",
     "description": "La description",
     "dfo-region": "Région MPO",
     "division-manager": "Chef de division",
+    "doi": "DOI",
     "email": "Courriel",
     "embargoed-until": "Sous embargo jusqu'à",
     "english": "Anglais",
+    "explore": "Explorer",
     "file-uploaded-successfully": "Fichier téléchargé avec succès",
     "filter": "Filtre",
     "filters": "Filtres",
@@ -101,6 +105,7 @@
     "funding-sources": "Sources de financement",
     "hide": "Cacher",
     "i-need-to-take-action": "Je dois agir",
+    "in": "dans",
     "in-progress": "En cours",
     "inactive-msg": "Vous avez été inactif pendant {0} minutes. \nVous serez déconnecté dans 2 minutes.",
     "is-a-corresponding-author": "Est-ce un auteur correspondant ?",
@@ -220,10 +225,7 @@
     "your-email": "Votre courriel",
     "your-first-name": "Ton prénom",
     "your-last-name": "Votre nom de famille",
-    "your-password": "Votre mot de passe",
-    "by": "par",
-    "in": "dans",
-    "delete": "Supprimer"
+    "your-password": "Votre mot de passe"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -290,14 +292,19 @@
     "withhold-and-forward-desc": "Vous recommandez que ce manuscrit ne soit pas publié et vous le transmettez au prochain examinateur."
   },
   "dialog": {
+    "delete-manuscript": {
+      "manuscript-deleted": "Manuscrit supprimé",
+      "message": "Voulez-vous vraiment supprimer le manuscrit intitulé \"{title}\" ?",
+      "title": "Supprimer un manuscrit"
+    },
+    "delete-manuscript-pdf": {
+      "manuscript-pdf-deleted": "Le fichier manuscrit a été supprimé avec succès",
+      "message": "Cela supprimera le fichier manuscrit joint suivant : {file}",
+      "title": "Veuillez confirmer"
+    },
     "unsaved-changes": {
       "message": "Vous avez des changements non enregistrés. \nÊtes-vous sûr de vouloir quitter?",
       "title": "Modifications non enregistrées"
-    },
-    "delete-manuscript": {
-      "manuscript-deleted": "Manuscrit supprimé",
-      "title": "Supprimer un manuscrit",
-      "message": "Voulez-vous vraiment supprimer le manuscrit intitulé \"{title}\" ?"
     }
   },
   "error-invalid-signature": {

@@ -15,11 +15,13 @@ class MediaResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'uuid' => $this->uuid,
             'file_name' => $this->file_name,
             'size_bytes' => $this->size,
             'created_at' => $this->created_at,
             'collection_name' => $this->collection_name,
             'mime_type' => $this->mime_type,
+            'locked' => $this->getCustomProperty('locked', false),
         ];
     }
 }

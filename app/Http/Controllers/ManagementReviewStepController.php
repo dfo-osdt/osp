@@ -78,6 +78,7 @@ class ManagementReviewStepController extends Controller
             // this is the final step of the review.
             $manuscriptRecord->status = ManuscriptRecordStatus::REVIEWED;
             $manuscriptRecord->reviewed_at = now();
+            $manuscriptRecord->lockManuscriptFiles();
             $manuscriptRecord->saveOrFail();
 
             // send event that a manuscript record review is complete.
@@ -127,6 +128,7 @@ class ManagementReviewStepController extends Controller
             // this is the final step of the review - the manuscript was withheld!
             $manuscriptRecord->status = ManuscriptRecordStatus::WITHHELD;
             $manuscriptRecord->reviewed_at = now();
+            $manuscriptRecord->lockManuscriptFiles();
             $manuscriptRecord->saveOrFail();
 
             // send event that a manuscript record is withheld by management.

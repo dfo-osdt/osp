@@ -58,7 +58,7 @@
                         size="sm"
                         color="red"
                         dense
-                        icon="mdi-delete"
+                        icon="mdi-delete-outline"
                         class="q-ml-sm"
                         :manuscript="manuscript"
                         @deleted="$emit('deleted', manuscript)"

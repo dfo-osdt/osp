@@ -61,6 +61,7 @@
     "approved": "Approved",
     "author": "Author | Authors",
     "back": "Back",
+    "by": "by",
     "cancel": "Cancel",
     "close": "Close",
     "comments": "Comments",
@@ -84,13 +85,16 @@
     "current-password": "Current Password",
     "dashboard": "Dashboard",
     "deferred": "Deferred",
+    "delete": "Delete",
     "deleted": "Deleted",
     "description": "Description",
     "dfo-region": "DFO Region",
     "division-manager": "Division Manager",
+    "doi": "DOI",
     "email": "Email",
     "embargoed-until": "Embargoed Until",
     "english": "English",
+    "explore": "Explore",
     "file-uploaded-successfully": "File uploaded successfully",
     "filter": "Filter",
     "filters": "Filters",
@@ -101,6 +105,7 @@
     "funding-sources": "Funding Sources",
     "hide": "Hide",
     "i-need-to-take-action": "I need to take action",
+    "in": "in",
     "in-progress": "In Progress",
     "inactive-msg": "You have been inactive for {0} minutes. You will be logged out in 2 minutes.",
     "is-a-corresponding-author": "Is a corresponding author?",
@@ -220,10 +225,7 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password",
-    "by": "by",
-    "in": "in",
-    "delete": "Delete"
+    "your-password": "Your password"
   },
   "create-author-dialog": {
     "title": "Create a new Author"
@@ -290,14 +292,19 @@
     "withhold-and-forward-desc": "You recommend this manuscript be withheld for publication and are forwarding it to the next reviewer."
   },
   "dialog": {
+    "delete-manuscript": {
+      "manuscript-deleted": "Manuscript Deleted",
+      "message": "Are you sure you want to delete the manuscript titled \"{title}\"?",
+      "title": "Delete a Manuscript"
+    },
+    "delete-manuscript-pdf": {
+      "manuscript-pdf-deleted": "The manuscript file was sucessfully deleted",
+      "message": "This will delete the following attached manuscript file: {file}",
+      "title": "Please confirm"
+    },
     "unsaved-changes": {
       "message": "You have unsaved changes. Are you sure you want to leave?",
       "title": "Unsaved Changes"
-    },
-    "delete-manuscript": {
-      "manuscript-deleted": "Manuscript Deleted",
-      "title": "Delete a Manuscript",
-      "message": "Are you sure you want to delete the manuscript titled \"{title}\"?"
     }
   },
   "error-invalid-signature": {
