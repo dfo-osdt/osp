@@ -168,7 +168,9 @@ async function upload() {
     $q.notify({
         type: 'positive',
         color: 'primary',
-        message: t('common.file-uploaded-successfully'),
+        message: t('common.file-uploaded-successfully', {
+            file: response.data.file_name,
+        }),
     });
 
     await getFiles();

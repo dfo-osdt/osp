@@ -95,7 +95,7 @@
     "embargoed-until": "Embargoed Until",
     "english": "English",
     "explore": "Explore",
-    "file-uploaded-successfully": "File uploaded successfully",
+    "file-uploaded-successfully": "File uploaded successfully: {file}",
     "filter": "Filter",
     "filters": "Filters",
     "first-name": "First Name",
