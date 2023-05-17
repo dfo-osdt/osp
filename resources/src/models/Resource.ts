@@ -47,3 +47,4 @@ export interface Media {
 }
 
 export type MediaResource = Resource<Media>;
+export type MediaResourceList = ResourceList<Media>;

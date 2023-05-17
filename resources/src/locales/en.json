@@ -224,7 +224,8 @@
     "by": "by",
     "in": "in",
     "delete": "Delete",
-    "explore": "Explore"
+    "explore": "Explore",
+    "doi": "DOI"
   },
   "create-author-dialog": {
     "title": "Create a new Author"

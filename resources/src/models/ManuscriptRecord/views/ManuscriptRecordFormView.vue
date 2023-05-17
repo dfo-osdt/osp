@@ -70,7 +70,7 @@
                                 flat
                                 size="sm"
                                 color="red"
-                                icon="mdi-delete"
+                                icon="mdi-delete-outline"
                                 @deleted="$router.push({ name: 'dashboard' })"
                             />
                         </span>
@@ -313,19 +313,29 @@
                                 </q-item-label>
                             </q-item-section>
                             <q-item-section side>
-                                <q-btn
-                                    icon="mdi-file-download-outline"
-                                    color="primary"
-                                    :loading="loading"
-                                    :href="`api/manuscript-records/${id}/pdf`"
-                                />
+                                <span>
+                                    <q-btn
+                                        v-if="manuscriptResource.can?.delete"
+                                        icon="mdi-delete-outline"
+                                        color="negative"
+                                        class="q-mr-sm"
+                                        outline
+                                        @click="confirmDeleteManuscriptPDF"
+                                    />
+                                    <q-btn
+                                        icon="mdi-file-download-outline"
+                                        color="primary"
+                                        :loading="loading"
+                                        :href="`api/manuscript-records/${id}/files/${manuscriptResource.data.manuscript_pdf.uuid}?download=true`"
+                                    />
+                                </span>
                             </q-item-section>
                         </q-item>
                     </q-list>
                 </q-card>
             </template>
             <q-file
-                v-if="manuscriptResource?.data.can_attach_manuscript"
+                v-if="displayFileUpload"
                 v-model="manuscriptFile"
                 outlined
                 use-chips
@@ -367,7 +377,7 @@
                 :label="$t('common.delete')"
                 outline
                 color="red"
-                icon="mdi-delete"
+                icon="mdi-delete-outline"
                 @deleted="$router.push({ name: 'dashboard' })"
             />
             <q-btn
@@ -572,6 +582,15 @@ function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
     });
 }
 
+const displayFileUpload = computed(() => {
+    const m = manuscriptResource.value?.data;
+    if (!m) return false;
+    return (
+        (m.can_attach_manuscript && m.manuscript_pdf === null) ||
+        (m.status !== 'draft' && m.can_attach_manuscript)
+    );
+});
+
 async function upload() {
     // if there is no manuscript file, return
     if (manuscriptFile.value === null) return;
@@ -585,8 +604,7 @@ async function upload() {
     );
 
     if (manuscriptResource.value?.data) {
-        manuscriptResource.value.data['manuscript_pdf'] =
-            response.data.manuscript_pdf;
+        manuscriptResource.value.data['manuscript_pdf'] = response.data;
     }
 
     uploadingFile.value = false;
@@ -603,6 +621,31 @@ async function upload() {
     setTimeout(() => {
         disableDirtyWatcher.value = false;
     }, 500);
+}
+
+async function confirmDeleteManuscriptPDF() {
+    $q.dialog({
+        title: t('dialog.delete-manuscript-pdf.title'),
+        message: t('dialog.delete-manuscript-pdf.message'),
+        cancel: true,
+        persistent: false,
+    }).onOk(async () => {
+        deleteManuscriptPDF();
+    });
+}
+
+async function deleteManuscriptPDF() {
+    const m = manuscriptResource.value?.data;
+    if (!m) return;
+    const deleted = await ManuscriptRecordService.deletePDF(m);
+    if (deleted) {
+        $q.notify({
+            message: t('dialog.delete-manuscript-pdf.manuscript-pdf-deleted'),
+            type: 'positive',
+            icon: 'mdi-check',
+        });
+    }
+    m.manuscript_pdf = null;
 }
 
 // submit the manuscript

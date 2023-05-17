@@ -47,6 +47,7 @@ test('an authenticator user can see the manuscript for which they are an author'
     ]);
 
     $response = $this->actingAs($author)->getJson('/api/manuscript-records/'.$manuscript->id)->assertOk();
+    expect($response->json('data.id'))->toBe($manuscript->id);
 });
 
 test('a user can save a draft manuscript', function () {

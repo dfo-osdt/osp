@@ -3,7 +3,13 @@ import { SpatieQuery } from '@/api/SpatieQuery';
 import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
 import { PublicationResource } from '../Publication/Publication';
 import { Region } from '../Region/Region';
-import { Resource, ResourceList, Media } from '../Resource';
+import {
+    Resource,
+    ResourceList,
+    Media,
+    MediaResource,
+    MediaResourceList,
+} from '../Resource';
 import { UserResource } from '../User/User';
 
 export type ManuscriptRecordType = 'primary' | 'secondary';
@@ -128,8 +134,8 @@ export class ManuscriptRecordService {
     public static async attachPDF(file: File, id: number) {
         const formData = new FormData();
         formData.append('pdf', file);
-        const response = await http.post<FormData, ManuscriptRecordResource>(
-            `${this.baseURL}/${id}/pdf`,
+        const response = await http.post<FormData, MediaResource>(
+            `${this.baseURL}/${id}/files`,
             formData,
             {
                 headers: {
@@ -138,6 +144,27 @@ export class ManuscriptRecordService {
             }
         );
         return response.data;
+    }
+
+    /** List all PDF files associated with this manuscript */
+    public static async listPDFs(id: number) {
+        const response = await http.get<MediaResourceList>(
+            `${this.baseURL}/${id}/files`
+        );
+        return response.data;
+    }
+
+    /**
+     * Delete a PDF file associated with this manuscript
+     * If no uuid is provided, the manuscript's manuscript_pdf will be used.
+     */
+    public static async deletePDF(manuscript: ManuscriptRecord, uuid?: string) {
+        uuid = uuid || manuscript.manuscript_pdf?.uuid;
+        if (!uuid) return false;
+        const response = await http.delete(
+            `${this.baseURL}/${manuscript.id}/files/${uuid}`
+        );
+        return response.status === 204;
     }
 
     /** Submit this manuscript for managemment review */
