@@ -89,8 +89,9 @@ test('a user can attach and download a pdf version of their manuscript to a manu
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
 
-    // try to download a pdf without uploading one
-    $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/pdf")->assertNotFound();
+    // try to list the pdfs without uploading one - list should be empty
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files")->assertOk();
+    expect($response->json('data'))->toBeEmpty();
 
     // fake pdf
     $fakePdfContent = <<<'PDF'
@@ -113,24 +114,44 @@ PDF;
     // upload pdf
     $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
 
-    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/pdf", [
+    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
         'pdf' => $file,
-    ])->assertOk();
+    ])->assertCreated();
+
+    expect($response->json('data.file_name'))->toBe('test.pdf');
+    expect($response->json('data.uuid'))->toBeString();
+
+    // save uuid
+    $uuid = $response->json('data.uuid');
 
     // check that the pdf has been uploaded
     expect($manuscript->getManuscriptFile()->file_name)->toBe('test.pdf');
 
     // download the pdf check file in response
-    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/pdf")->assertOk();
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files/{$uuid}?download=true")->assertOk();
     $response->assertDownload('test.pdf');
+    // check if we can just get the resource
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files/{$uuid}")->assertOk();
+    expect($response->json('data.file_name'))->toBe('test.pdf');
 
     // upload a new pdf - it should replace the old one
     $file = UploadedFile::fake()->createWithContent('test2.pdf', $fakePdfContent)->size(1000);
-    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/pdf", [
+    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
         'pdf' => $file,
-    ])->assertOk();
-    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/pdf")->assertOk();
+    ])->assertCreated();
+    expect($response->json('data.file_name'))->toBe('test2.pdf');
+    $uuid2 = $response->json('data.uuid');
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files/{$uuid2}?download=true")->assertOk();
     $response->assertDownload('test2.pdf');
+
+    // get list of files - we should have two files
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files")->assertOk();
+    expect($response->json('data'))->toHaveCount(2);
+
+    // get manuscript record - it should have the new file attached
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}")->assertOk();
+    expect($response->json('data.manuscript_pdf.file_name'))->toBe('test2.pdf');
+
 });
 
 test('a user cannot submit a manuscript record that does not have all mandatory fields for internal review', function () {

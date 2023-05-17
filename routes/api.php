@@ -8,6 +8,7 @@ use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
+use App\Http\Controllers\ManuscriptRecordFileController;
 use App\Http\Controllers\ManuscriptRecordFundingSourceController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\ImplicitFlowController;
@@ -86,13 +87,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('manuscript-records/{manuscriptRecord}', 'destroy');
         Route::post('/manuscript-records', 'store');
         // upload/download attached manuscript pdf
-        Route::get('manuscript-records/{manuscriptRecord}/pdf', 'downloadPdf');
-        Route::post('manuscript-records/{manuscriptRecord}/pdf', 'attachPdf');
+        //Route::get('manuscript-records/{manuscriptRecord}/pdf', 'downloadPdf');
+        //Route::post('manuscript-records/{manuscriptRecord}/pdf', 'attachPdf');
         // actions
         Route::put('manuscript-records/{manuscriptRecord}/submit-for-review', 'submitForReview');
         Route::put('manuscript-records/{manuscriptRecord}/withdraw', 'withdraw');
         Route::put('manuscript-records/{manuscriptRecord}/submitted', 'submitted');
         Route::put('manuscript-records/{manuscriptRecord}/accepted', 'accepted');
+    });
+
+    Route::controller(ManuscriptRecordFileController::class)->group(function () {
+        Route::get('/manuscript-records/{manuscriptRecord}/files', 'index');
+        Route::post('/manuscript-records/{manuscriptRecord}/files', 'store');
+        Route::get('/manuscript-records/{manuscriptRecord}/files/{uuid}', 'show');
+        Route::delete('/manuscript-records/{manuscriptRecord}/files/{uuid}', 'destroy');
     });
 
     Route::controller(ManuscriptRecordFundingSourceController::class)->group(function () {

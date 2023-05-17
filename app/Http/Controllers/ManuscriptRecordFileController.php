@@ -35,7 +35,7 @@ class ManuscriptRecordFileController extends Controller
 
         $media = $manuscriptRecord->addMedia($validated['pdf'])->toMediaCollection('manuscript');
 
-        return MediaResource::create($media);
+        return MediaResource::make($media);
     }
 
     /**
@@ -52,19 +52,31 @@ class ManuscriptRecordFileController extends Controller
             throw new NotFoundHttpException('File not found.');
         }
 
-        // if request has download query param, download the file
-        if ($request->has('download')) {
+        // does the user want to download the file?
+        $download = $request->boolean('download', false);
+        if ($download) {
             return $media;
-        } else {
-            return MediaResource::make($media);
         }
+
+        return MediaResource::make($media);
+
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified file.
      */
     public function destroy(Request $request, ManuscriptRecord $manuscriptRecord, string $uuid)
     {
+        Gate::authorize('attachManuscript', $manuscriptRecord);
 
+        $media = $manuscriptRecord->getMedia('manuscript')->where('uuid', $uuid)->first();
+
+        if (! $media) {
+            throw new NotFoundHttpException('File not found.');
+        }
+
+        $media->delete();
+
+        return response()->noContent();
     }
 }
