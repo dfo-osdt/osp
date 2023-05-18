@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ManuscriptRecordFileController extends Controller
@@ -77,7 +76,9 @@ class ManuscriptRecordFileController extends Controller
         } catch (FileNotFoundException $e) {
             throw new NotFoundHttpException('File not found.');
         } catch (Exception $e) {
-            throw new BadRequestHttpException('Cannot delete locked file.');
+            return response()->json([
+                'message' => 'This file is locked.',
+            ], 403);
         }
 
         return response()->noContent();

@@ -209,6 +209,8 @@ test('a user can submit a filled manuscript record', function () {
 
     // check that the manuscript files has been locked
     expect($manuscript->getLastManuscriptFile()->getCustomProperty('locked'))->toBe(true);
+    // try to delete the manuscript file
+    $response = $this->actingAs($manuscript->user)->deleteJson("/api/manuscript-records/{$manuscript->id}/files/{$manuscript->getLastManuscriptFile()->uuid}")->assertForbidden();
 
     // check that a management review step has been created and for it belongs to the reviewer
     expect($manuscript->managementReviewSteps()->count())->toBe(1);
