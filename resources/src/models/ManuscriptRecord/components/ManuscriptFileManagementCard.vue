@@ -29,7 +29,7 @@
                         <q-item-section side>
                             <span>
                                 <q-btn
-                                    v-if="!m.locked"
+                                    v-if="!m.locked && canDelete"
                                     icon="mdi-delete-outline"
                                     color="negative"
                                     class="q-mr-sm"
@@ -94,6 +94,10 @@ const props = defineProps<{
 const manuscriptFiles: Ref<MediaResourceList | null> = ref(null);
 const manuscriptFile: Ref<File | null> = ref(null);
 const uploadingFile = ref(false);
+
+const canDelete = computed(() => {
+    return props.manuscript.data?.can_attach_manuscript;
+});
 
 onMounted(() => {
     getFiles();
