@@ -1,5 +1,7 @@
 {
     "exclude": [
+        "lang/en/",
+        "lang/fr/",
         "lang"
     ]
 }
