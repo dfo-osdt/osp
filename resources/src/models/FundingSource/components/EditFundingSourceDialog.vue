@@ -1,45 +1,45 @@
 <template>
-    <BaseDialog title="Edit Funding Source">
+    <BaseDialog :title="$t('funding-source.edit-funding-source')">
         <q-form @submit="editFundingSource">
             <q-card-section>
                 <q-select
                     v-model="funder"
-                    label="Funder"
+                    :label="$t('common.funder')"
                     :options="funders"
                     option-value="id"
                     option-label="name_en"
                     outlined
-                    :rules="[(val) => !!val || 'Funder is required']"
+                    :rules="[(val) => !!val || $t('common.required')]"
                     class="q-mb-md"
                 />
                 <q-input
                     v-model="title"
-                    label="Title"
+                    :label="$t('common.title')"
                     outlined
                     :rules="[
-                        (val) => !!val || 'Title is required',
+                        (val) => !!val || $t('common.required'),
                         (val) =>
                             val.length <= 255 ||
-                            'Title must be less than 255 characters',
+                            $t('common.validation.must-be-less-than-x-characters', [255]),
                     ]"
                     class="q-mb-md"
                 />
                 <q-input
                     v-model="description"
                     type="textarea"
-                    label="Description"
+                    :label="$t('common.description')"
                     outlined
                     :rules="[
                         (val) =>
                             val.length <= 1500 ||
-                            'Description must be less than 1500 characters',
+                            $t('common.validation.must-be-less-than-x-characters', [1500]),
                     ]"
                     class="q-mb-md"
                 />
             </q-card-section>
             <q-card-actions class="justify-end">
-                <q-btn v-close-popup label="Cancel" color="primary" outline />
-                <q-btn label="Save" type="submit" color="primary" />
+                <q-btn v-close-popup :label="$t('common.cancel')" color="primary" outline />
+                <q-btn :label="$t('common.save')" type="submit" color="primary" />
             </q-card-actions>
         </q-form>
     </BaseDialog>
