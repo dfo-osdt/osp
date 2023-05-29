@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.11.0.
+ * Generated for Laravel 10.12.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -23111,6 +23111,20 @@ namespace {
         {
             /** @var \Illuminate\Database\Eloquent\Builder $instance */
             return $instance->forceCreate($attributes);
+        }
+
+        /**
+         * Save a new model instance with mass assignment without raising model events.
+         *
+         * @param  array  $attributes
+         * @return \Illuminate\Database\Eloquent\Model|$this
+         *
+         * @static
+         */
+        public static function forceCreateQuietly($attributes = [])
+        {
+            /** @var \Illuminate\Database\Eloquent\Builder $instance */
+            return $instance->forceCreateQuietly($attributes);
         }
 
         /**
