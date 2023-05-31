@@ -70,4 +70,8 @@ export class OhDearStatus {
         const time = new Date(secondsSinceEpoch * 1000);
         return time;
     }
+
+    public getPinnedUpdateId(): number | null {
+        return this.OhDearStatusPage?.pinnedUpdate?.id ?? null;
+    }
 }
