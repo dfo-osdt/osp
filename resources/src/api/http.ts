@@ -10,6 +10,7 @@ enum StatusCode {
     TooManyRequests = 429,
     ValidationError = 422,
     InternalServerError = 500,
+    ServiceUnavailable = 503,
 }
 
 const headers: Readonly<Record<string, string | boolean>> = {
@@ -141,14 +142,15 @@ class Http {
                 this.notifyError(errorMessage, 'Resource Not Found');
                 break;
             }
+            case StatusCode.ServiceUnavailable: {
+                // do not notify the user
+                break;
+            }
             default: {
                 this.notifyError(errorMessage, 'Unknown Error');
                 break;
             }
         }
-
-        if (status !== StatusCode.Unauthorized)
-            console.log('HTTP.TS Handling error: ' + error.statusText);
 
         return Promise.reject(error);
     }

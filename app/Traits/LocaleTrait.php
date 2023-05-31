@@ -26,4 +26,16 @@ trait LocaleTrait
             app()->setLocale($validated['locale']);
         }
     }
+
+    /**
+     * Get Locale from request or defaults to 'en' if missing
+     */
+    public function getLocaleFromRequest(Request $request): string
+    {
+        $locale = $request->validate([
+            'locale' => ['string', 'max:2', 'in:en,fr'],
+        ]);
+
+        return $locale['locale'] ?? 'en';
+    }
 }
