@@ -48,8 +48,6 @@ function notify() {
             ohDearStatus.OhDearStatusPage?.pinnedUpdate?.text
         }</div>`;
 
-    muted.value = ohDearStatus.getPinnedUpdateId();
-
     $q.notify({
         multiLine: true,
         html: true,
@@ -63,6 +61,9 @@ function notify() {
             {
                 label: t('common.dismiss'),
                 color: 'white',
+                handler() {
+                    muted.value = ohDearStatus.getPinnedUpdateId();
+                },
             },
         ],
     });
