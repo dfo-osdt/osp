@@ -1,5 +1,6 @@
 <template>
     <q-layout view="hHh Lpr lFf">
+        <OhDearStatusMonitor />
         <MainHeader @toggle-left-drawer="toggleLeftDrawer"></MainHeader>
         <MainDrawer
             v-if="authStore.isAuthenticated"
@@ -17,6 +18,7 @@
 import MainHeader from '@/components/MainHeader.vue';
 import MainDrawer from '@/components/MainDrawer.vue';
 import { useQuasar } from 'quasar';
+import OhDearStatusMonitor from '@/components/OhDearStatusMonitor.vue';
 
 const { t } = useI18n();
 const router = useRouter();

@@ -10,6 +10,7 @@ use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\ManuscriptRecordFileController;
 use App\Http\Controllers\ManuscriptRecordFundingSourceController;
+use App\Http\Controllers\OhDear\CheckStatusPageController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\ImplicitFlowController;
 use App\Http\Controllers\OrganizationController;
@@ -33,6 +34,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/status', CheckStatusPageController::class);
 
 // Need to ben authenticated to access these routes
 Route::middleware(['auth:sanctum'])->group(function () {
