@@ -46,8 +46,8 @@ devDependencies:
     specifier: ^3.0.2
     version: 3.0.2
   '@types/node':
-    specifier: ^20.2.5
-    version: 20.2.5
+    specifier: ^20.3.0
+    version: 20.3.0
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.59.8
     version: 5.59.8(@typescript-eslint/parser@5.59.8)(eslint@8.41.0)(typescript@5.0.4)
@@ -95,7 +95,7 @@ devDependencies:
     version: 0.24.1(vue@3.3.4)
   vite:
     specifier: ^4.3.9
-    version: 4.3.9(@types/node@20.2.5)(sass@1.32.13)
+    version: 4.3.9(@types/node@20.3.0)(sass@1.32.13)
   vue-tsc:
     specifier: ^1.6.5
     version: 1.6.5(typescript@5.0.4)
@@ -547,7 +547,7 @@ packages:
     dependencies:
       '@vitejs/plugin-vue': 4.2.3(vite@4.3.9)(vue@3.3.4)
       quasar: 2.12.0
-      vite: 4.3.9(@types/node@20.2.5)(sass@1.32.13)
+      vite: 4.3.9(@types/node@20.3.0)(sass@1.32.13)
       vue: 3.3.4
     dev: true
 
@@ -581,8 +581,8 @@ packages:
     resolution: {integrity: sha512-iL0PIMwejpmuVHgfibHpfDwOdsbmB50wr21X71VnF5d7SsBF7WK+ZvP/SCcFm7Iwb9iiYSap9rlrdhToNAWdxg==}
     dev: true
 
-  /@types/node@20.2.5:
-    resolution: {integrity: sha512-JJulVEQXmiY9Px5axXHeYGLSjhkZEnD+MDPDGbCbIAbMslkKwmygtZFy1X6s/075Yo94sf8GuSlFfPzysQrWZQ==}
+  /@types/node@20.3.0:
+    resolution: {integrity: sha512-cumHmIAf6On83X7yP+LrsEyUOf/YlociZelmpRYaGFydoaPdxdt80MAbu6vWerQT2COCp2nPvHdsbD7tHn/YlQ==}
 
   /@types/semver@7.5.0:
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
@@ -607,7 +607,7 @@ packages:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.2.5
+      '@types/node': 20.3.0
     dev: true
     optional: true
 
@@ -748,7 +748,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.3.9(@types/node@20.2.5)(sass@1.32.13)
+      vite: 4.3.9(@types/node@20.3.0)(sass@1.32.13)
       vue: 3.3.4
 
   /@volar/language-core@1.4.1:
@@ -2111,7 +2111,7 @@ packages:
       vite: ^3.0.0 || ^4.0.0
     dependencies:
       picocolors: 1.0.0
-      vite: 4.3.9(@types/node@20.2.5)(sass@1.32.13)
+      vite: 4.3.9(@types/node@20.3.0)(sass@1.32.13)
       vite-plugin-full-reload: 1.0.5(vite@4.3.9)
     dev: true
 
@@ -2989,10 +2989,10 @@ packages:
     dependencies:
       picocolors: 1.0.0
       picomatch: 2.3.1
-      vite: 4.3.9(@types/node@20.2.5)(sass@1.32.13)
+      vite: 4.3.9(@types/node@20.3.0)(sass@1.32.13)
     dev: true
 
-  /vite@4.3.9(@types/node@20.2.5)(sass@1.32.13):
+  /vite@4.3.9(@types/node@20.3.0)(sass@1.32.13):
     resolution: {integrity: sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -3017,7 +3017,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.2.5
+      '@types/node': 20.3.0
       esbuild: 0.17.19
       postcss: 8.4.24
       rollup: 3.23.0
