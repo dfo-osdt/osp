@@ -61,13 +61,14 @@ class ManuscriptRecordPolicy
      */
     public function update(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        // is the manuscript record in draft state?
-        if ($manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
-            return false;
+        switch ($manuscriptRecord->status) {
+            case ManuscriptRecordStatus::DRAFT:
+                return $user->id === $manuscriptRecord->user_id;
+            case ManuscriptRecordStatus::IN_REVIEW:
+                return $manuscriptRecord->managementReviewSteps->contains('user_id', $user->id);
+            default:
+                return false;
         }
-
-        // is the user the owner of the manuscript?
-        return $user->id === $manuscriptRecord->user_id;
     }
 
     /**

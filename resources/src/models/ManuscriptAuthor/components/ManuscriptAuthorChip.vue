@@ -56,11 +56,11 @@
                             "
                         >
                             <q-tooltip>{{
-                                $t('common.copy-to-clipboard')
+                                $t("common.copy-to-clipboard")
                             }}</q-tooltip>
                         </q-btn>
                         <div v-else class="text-caption">
-                            {{ $t('common.copied') }}
+                            {{ $t("common.copied") }}
                         </div>
                     </q-item-section>
                 </q-item>
@@ -89,7 +89,7 @@
                             :class="correspondingAuthor ? '' : 'text-grey-5'"
                         >
                             {{
-                                $t('common.corresponding-author')
+                                $t("common.corresponding-author")
                             }}</q-item-label
                         >
                     </q-item-section>
@@ -103,7 +103,7 @@
                                 )
                             "
                             ><q-tooltip>{{
-                                $t('common.corresponding-author-toggle')
+                                $t("common.corresponding-author-toggle")
                             }}</q-tooltip></q-toggle
                         ></q-item-section
                     >
@@ -114,8 +114,8 @@
 </template>
 
 <script setup lang="ts">
-import { ManuscriptAuthorResource } from '../ManuscriptAuthor';
-import OrcidAvatar from '../../../components/OrcidAvatar.vue';
+import { ManuscriptAuthorResource } from "../ManuscriptAuthor";
+import OrcidAvatar from "../../../components/OrcidAvatar.vue";
 
 const { copy, copied, isSupported } = useClipboard();
 
@@ -145,8 +145,8 @@ const removable = computed(() => {
 });
 
 const emit = defineEmits([
-    'delete:manuscriptAuthor',
-    'edit:toggleCorrespondingAuthor',
+    "delete:manuscriptAuthor",
+    "edit:toggleCorrespondingAuthor",
 ]);
 </script>
 

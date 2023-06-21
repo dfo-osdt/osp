@@ -310,6 +310,7 @@
             class="q-mb-lg"
         >
             <DeleteManuscriptButton
+                v-if="manuscriptResource.can?.delete"
                 class="q-mt-md"
                 :manuscript="manuscriptResource"
                 :label="$t('common.delete')"
@@ -334,6 +335,7 @@
                     }}
                 </q-tooltip>
                 <q-btn
+                    v-if="manuscriptResource.data.status === 'draft'"
                     class="q-mt-md"
                     color="primary"
                     :loading="loading"
@@ -415,18 +417,11 @@ const manuscriptFileManagementCard = ref<InstanceType<
 
 // watch if there is a change
 const isDirty = ref(false);
-const disableDirtyWatcher = ref(false);
 
 watch(
     manuscriptResource,
     (newVal, oldValue) => {
-        if (disableDirtyWatcher.value) return;
-        if (
-            oldValue === null ||
-            manuscriptResource.value?.data.status !== "draft"
-        ) {
-            return;
-        }
+        if (oldValue === null) return;
         isDirty.value = true;
     },
     { deep: true }
@@ -536,7 +531,6 @@ const canSubmit = computed(() => {
 });
 
 async function submit() {
-    console.log("submit");
     showSubmitDialog.value = true;
 }
 

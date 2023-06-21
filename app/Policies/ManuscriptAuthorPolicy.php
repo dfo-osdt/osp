@@ -48,14 +48,17 @@ class ManuscriptAuthorPolicy
      */
     public function update(User $user, ManuscriptAuthor $manuscriptAuthor)
     {
-        $manuscriptAuthor->load('manuscriptRecord');
 
-        // can update if the manuscript is in draft and the user is the manuscript owner
-        if ($manuscriptAuthor->manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
-            return false;
+        $manuscriptAuthor->load('manuscriptRecord.managementReviewSteps.user');
+
+        switch ($manuscriptAuthor->manuscriptRecord->status) {
+            case ManuscriptRecordStatus::DRAFT:
+                return $manuscriptAuthor->manuscriptRecord->user_id == $user->id;
+            case ManuscriptRecordStatus::IN_REVIEW:
+                return $manuscriptAuthor->manuscriptRecord->managementReviewSteps->contains('user_id', $user->id);
+            default:
+                return false;
         }
-
-        return $manuscriptAuthor->manuscriptRecord->user_id === $user->id;
     }
 
     /**
@@ -65,14 +68,7 @@ class ManuscriptAuthorPolicy
      */
     public function delete(User $user, ManuscriptAuthor $manuscriptAuthor)
     {
-        $manuscriptAuthor->load('manuscriptRecord');
-
-        // can update if the manuscript is in draft and the user is the manuscript owner
-        if ($manuscriptAuthor->manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
-            return false;
-        }
-
-        return $manuscriptAuthor->manuscriptRecord->user_id === $user->id;
+        return $this->update($user, $manuscriptAuthor);
     }
 
     /**
