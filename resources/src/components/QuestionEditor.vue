@@ -31,9 +31,9 @@
 </template>
 
 <script setup lang="ts">
-import { QEditor } from 'quasar';
-import RequiredSpan from './RequiredSpan.vue';
-import DOMPurify from 'dompurify';
+import { QEditor } from "quasar";
+import RequiredSpan from "./RequiredSpan.vue";
+import DOMPurify from "dompurify";
 
 const props = withDefaults(
     defineProps<{
@@ -50,7 +50,7 @@ const props = withDefaults(
     }
 );
 
-const value = useVModel(props, 'modelValue');
+const value = useVModel(props, "modelValue");
 
 const editor = ref<QEditor | null>(null);
 
@@ -61,26 +61,26 @@ const onPaste = (e: ClipboardEvent) => {
 
     // make sure clipboard has data
     if (!e.clipboardData) return;
-    let text = e.clipboardData.getData('text/html');
-    if (text === '') text = e.clipboardData.getData('text/plain');
+    let text = e.clipboardData.getData("text/html");
+    if (text === "") text = e.clipboardData.getData("text/plain");
     // clean all formatting except for allowed tags and attributes
     const cleanText = DOMPurify.sanitize(text, {
         ALLOWED_TAGS: [
-            'b',
-            'i',
-            'u',
-            'sup',
-            'sub',
-            'a',
-            'code',
-            'ul',
-            'ol',
-            'li',
-            'blockquote',
+            "b",
+            "i",
+            "u",
+            "sup",
+            "sub",
+            "a",
+            "code",
+            "ul",
+            "ol",
+            "li",
+            "blockquote",
         ],
-        ALLOWED_ATTR: ['href'],
+        ALLOWED_ATTR: ["href"],
     });
-    editor.value?.runCmd('insertHTML', cleanText);
+    editor.value?.runCmd("insertHTML", cleanText);
 };
 </script>
 

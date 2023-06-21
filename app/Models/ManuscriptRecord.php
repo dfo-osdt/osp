@@ -41,6 +41,7 @@ class ManuscriptRecord extends Model implements HasMedia, Fundable
         'submitted_at' => 'datetime',
         'type' => ManuscriptRecordType::class,
         'status' => ManuscriptRecordStatus::class,
+        'potential_public_interest' => 'boolean',
     ];
 
     // default values for optional fields

@@ -6,7 +6,6 @@ use App\Enums\ManuscriptRecordType;
 use App\Events\ManuscriptRecordSubmitted;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptRecordToReviewMail;
-use App\Models\Author;
 use App\Models\Journal;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
@@ -73,6 +72,7 @@ test('a user can save a draft manuscript', function () {
         'regions_and_species' => 'My new regions_and_species',
         'relevant_to' => 'My new relevant_to',
         'additional_information' => 'My new additional_information',
+        'potential_public_interest' => true,
     ];
 
     // update all the fields
@@ -148,7 +148,6 @@ PDF;
     // get list of files - we should have two files
     $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files")->assertOk();
     expect($response->json('data'))->toHaveCount(2);
-
 });
 
 test('a user cannot submit a manuscript record that does not have all mandatory fields for internal review', function () {
@@ -318,5 +317,4 @@ test('a user can delete their manuscript record if it is a draft', function () {
 
     // check that the manuscript has not been deleted
     expect(ManuscriptRecord::find($manuscript->id))->not->toBeNull();
-
 });

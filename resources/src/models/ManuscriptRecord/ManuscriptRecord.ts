@@ -1,27 +1,26 @@
-import { http } from '@/api/http';
-import { SpatieQuery } from '@/api/SpatieQuery';
-import { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
-import { PublicationResource } from '../Publication/Publication';
-import { Region } from '../Region/Region';
+import { http } from "@/api/http";
+import { SpatieQuery } from "@/api/SpatieQuery";
+import { ManuscriptAuthorResource } from "@/models/ManuscriptAuthor/ManuscriptAuthor";
+import { PublicationResource } from "../Publication/Publication";
+import { Region } from "../Region/Region";
 import {
     Resource,
     ResourceList,
-    Media,
     MediaResource,
     MediaResourceList,
-} from '../Resource';
-import { UserResource } from '../User/User';
+} from "../Resource";
+import { UserResource } from "../User/User";
 
-export type ManuscriptRecordType = 'primary' | 'secondary';
+export type ManuscriptRecordType = "primary" | "secondary";
 
 export type ManuscriptRecordStatus =
-    | 'draft'
-    | 'in_review'
-    | 'reviewed'
-    | 'submitted'
-    | 'accepted'
-    | 'withdrawn'
-    | 'withheld';
+    | "draft"
+    | "in_review"
+    | "reviewed"
+    | "submitted"
+    | "accepted"
+    | "withdrawn"
+    | "withheld";
 
 /**
  * The minimum set of data required to create a new manuscript record.
@@ -47,6 +46,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     regions_and_species: string;
     relevant_to: string;
     additional_information: string;
+    potential_public_interest: boolean;
     readonly sent_for_review_at: string | null;
     readonly reviewed_at: string | null;
     submitted_to_journal_on: string | null;
@@ -63,15 +63,15 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
 
 export type ManuscriptRecordSummary = Omit<
     ManuscriptRecord,
-    | 'abstract'
-    | 'pls'
-    | 'scientific_implications'
-    | 'regions_and_species'
-    | 'relevant_to'
-    | 'additional_information'
-    | 'manuscript_pdf'
-    | 'publication'
-    | 'can_attach_manuscript'
+    | "abstract"
+    | "pls"
+    | "scientific_implications"
+    | "regions_and_species"
+    | "relevant_to"
+    | "additional_information"
+    | "manuscript_pdf"
+    | "publication"
+    | "can_attach_manuscript"
 >;
 
 export type ManuscriptRecordResource = Resource<ManuscriptRecord>;
@@ -81,7 +81,7 @@ export type ManuscriptRecordSummaryResourceList =
     ResourceList<ManuscriptRecordSummary>;
 
 export class ManuscriptRecordService {
-    private static baseURL = 'api/manuscript-records';
+    private static baseURL = "api/manuscript-records";
     /**
      * Get a manuscript record.
      *
@@ -132,13 +132,13 @@ export class ManuscriptRecordService {
     /** Attach a PDF file to the manuscript record */
     public static async attachPDF(file: File, id: number) {
         const formData = new FormData();
-        formData.append('pdf', file);
+        formData.append("pdf", file);
         const response = await http.post<FormData, MediaResource>(
             `${this.baseURL}/${id}/files`,
             formData,
             {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    "Content-Type": "multipart/form-data",
                 },
             }
         );
@@ -217,7 +217,7 @@ export class ManuscriptRecordService {
 
     /** Get the logged in users' manuscripts */
     public static async getMyManuscripts(query?: ManuscriptQuery) {
-        let url = 'api/my/manuscript-records';
+        let url = "api/my/manuscript-records";
         if (query) {
             url += `?${query.toQueryString()}`;
         }
@@ -230,44 +230,44 @@ export class ManuscriptRecordService {
 
 export class ManuscriptQuery extends SpatieQuery {
     public filterUserId(userId: number[]): this {
-        this.filter('user_id', userId);
+        this.filter("user_id", userId);
         return this;
     }
 
     public filterTitle(title: string[]): this {
-        this.filter('title', title);
+        this.filter("title", title);
         return this;
     }
 
     public filterRegionId(regionId: number[]): this {
-        this.filter('region_id', regionId);
+        this.filter("region_id", regionId);
         return this;
     }
 
     public filterType(type: ManuscriptRecordType[]): this {
-        this.filter('type', type);
+        this.filter("type", type);
         return this;
     }
 
     public filterStatus(status: ManuscriptRecordStatus[]): this {
-        this.filter('status', status);
+        this.filter("status", status);
         return this;
     }
 
     public includeManagementReview(): this {
-        this.custom('include-reviews', 'true');
+        this.custom("include-reviews", "true");
         return this;
     }
 
-    public sort(name: ManuscriptQuerySort, direction: 'asc' | 'desc'): this {
+    public sort(name: ManuscriptQuerySort, direction: "asc" | "desc"): this {
         super.sort(name, direction);
         return this;
     }
 }
 
 type ManuscriptQuerySort =
-    | 'created_at'
-    | 'updated_at'
-    | 'title'
-    | 'status'
-    | 'type';
+    | "created_at"
+    | "updated_at"
+    | "title"
+    | "status"
+    | "type";

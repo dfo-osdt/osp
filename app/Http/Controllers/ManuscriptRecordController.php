@@ -74,6 +74,7 @@ class ManuscriptRecordController extends Controller
             'regions_and_species' => 'nullable|string',
             'relevant_to' => 'nullable|string',
             'additional_information' => 'nullable|string',
+            'potential_public_interest' => 'boolean',
         ]);
 
         $manuscriptRecord->update($validated);
@@ -100,7 +101,8 @@ class ManuscriptRecordController extends Controller
             'reviewer_user_id' => [
                 new UserNotAManuscriptAuthor($manuscriptRecord),
                 'required',
-                'exists:users,id', ],
+                'exists:users,id',
+            ],
         ]);
 
         // validate that the record has all the required fields

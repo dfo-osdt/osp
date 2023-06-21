@@ -11,7 +11,7 @@
                     class="q-mr-sm"
                 />
                 <span>
-                    {{ $t('mrf.ready-to-marked-published') }}
+                    {{ $t("mrf.ready-to-marked-published") }}
                 </span>
             </div>
             <div>
@@ -28,7 +28,7 @@
         <div class="q-mt-md q-mb-lg row justify-between">
             <div class="col-8">
                 <div class="text-h4 text-primary">
-                    {{ $t('common.manuscript-record-form') }}
+                    {{ $t("common.manuscript-record-form") }}
                 </div>
                 <div
                     v-if="manuscriptResource"
@@ -43,7 +43,7 @@
                         <div
                             class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                         >
-                            {{ $t('common.manuscript-type') }}
+                            {{ $t("common.manuscript-type") }}
                         </div>
                         <ManuscriptTypeBadge
                             :type="manuscriptResource.data.type"
@@ -56,7 +56,7 @@
                         <div
                             class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                         >
-                            {{ $t('common.status') }}
+                            {{ $t("common.status") }}
                         </div>
                         <span>
                             <ManuscriptStatusBadge
@@ -80,12 +80,12 @@
                         <div
                             class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
                         >
-                            {{ $t('common.applicant') }}
+                            {{ $t("common.applicant") }}
                         </div>
                         <div class="text-body2 text-grey-7 q-py-xs">
                             {{
                                 manuscriptResource.data.user?.data.first_name +
-                                ' ' +
+                                " " +
                                 manuscriptResource.data.user?.data.last_name
                             }}
                             ({{ manuscriptResource.data.user?.data.email }})
@@ -102,7 +102,7 @@
             secondary
         />
         <ContentCard class="q-mb-lg" secondary>
-            <template #title>{{ $t('mrf.general-information') }}</template>
+            <template #title>{{ $t("mrf.general-information") }}</template>
             <template #title-right>
                 <FormSectionStatusIcon :status="generalSectionStatus" />
             </template>
@@ -119,12 +119,12 @@
                             <div
                                 class="text-body1 text-primary text-weight-medium"
                             >
-                                {{ $t('mrf.manuscripts-working-title')
+                                {{ $t("mrf.manuscripts-working-title")
                                 }}<RequiredSpan />
                             </div>
                             <div class="q-my-xs">
                                 <p>
-                                    {{ $t('mrf.working-title-text') }}
+                                    {{ $t("mrf.working-title-text") }}
                                 </p>
                             </div>
                         </div>
@@ -148,11 +148,11 @@
                             <div
                                 class="text-body1 text-primary text-weight-medium"
                             >
-                                {{ $t('common.lead-region') }}<RequiredSpan />
+                                {{ $t("common.lead-region") }}<RequiredSpan />
                             </div>
                             <div class="q-my-xs">
                                 <p>
-                                    {{ $t('mrf.lead-region-text') }}
+                                    {{ $t("mrf.lead-region-text") }}
                                 </p>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                         class="q-mb-lg"
                     >
                         <p>
-                            {{ $t('mrf.copy-your-manuscripts-abstract-here') }}
+                            {{ $t("mrf.copy-your-manuscripts-abstract-here") }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
@@ -187,13 +187,13 @@
                         class="q-mb-md"
                     >
                         <p>
-                            {{ $t('mrf.pls-text') }}
+                            {{ $t("mrf.pls-text") }}
                         </p>
                         <div class="row justify-end q-mr-sm">
                             <div
                                 class="text-body1 text-primary q-pt-sm q-pr-md"
                             >
-                                {{ $t('mrf.pls-help-ai-text') }}
+                                {{ $t("mrf.pls-help-ai-text") }}
                             </div>
                             <div>
                                 <q-btn
@@ -228,7 +228,7 @@
                         class="q-mb-md"
                     >
                         <p>
-                            {{ $t('mrf.scientific-implication-text') }}
+                            {{ $t("mrf.scientific-implication-text") }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
@@ -240,7 +240,7 @@
                         class="q-mb-md"
                     >
                         <p>
-                            {{ $t('mrf.relevant-text') }}
+                            {{ $t("mrf.relevant-text") }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
@@ -251,7 +251,7 @@
                         class="q-mb-md"
                     >
                         <p>
-                            {{ $t('mrf.geographical-text') }}
+                            {{ $t("mrf.geographical-text") }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
@@ -262,7 +262,25 @@
                         class="q-mb-md"
                     >
                         <p>
-                            {{ $t('mrf.additional-text') }}
+                            {{ $t("mrf.additional-text") }}
+                        </p>
+
+                        <div class="text-body2 text-primary text-weight-medium">
+                            {{ $t("mrf.potential-media-interest-question") }}
+                        </div>
+                        <YesNoBooleanOptionGroup
+                            v-model="
+                                manuscriptResource.data
+                                    .potential_public_interest
+                            "
+                            class="q-mb-md"
+                        />
+                        <p>
+                            {{
+                                $t(
+                                    "mrf.potential-media-interest-text-field-text"
+                                )
+                            }}
                         </p>
                     </QuestionEditor>
                 </q-form>
@@ -311,8 +329,8 @@
                 <q-tooltip>
                     {{
                         canSubmit
-                            ? $t('mrf.submit-tooltip')
-                            : $t('mrf.submit-tooltip-disabled')
+                            ? $t("mrf.submit-tooltip")
+                            : $t("mrf.submit-tooltip-disabled")
                     }}
                 </q-tooltip>
                 <q-btn
@@ -354,26 +372,27 @@
 </template>
 
 <script setup lang="ts">
-import { Ref } from 'vue';
-import { QForm, useQuasar } from 'quasar';
+import { Ref } from "vue";
+import { QForm, useQuasar } from "quasar";
 import {
     ManuscriptRecordResource,
     ManuscriptRecordService,
-} from '../ManuscriptRecord';
-import QuestionEditor from '@/components/QuestionEditor.vue';
-import ContentCard from '@/components/ContentCard.vue';
-import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue';
-import RegionSelect from '@/models/Region/components/RegionSelect.vue';
-import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue';
-import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue';
-import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue';
-import RequiredSpan from '@/components/RequiredSpan.vue';
-import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue';
-import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
-import { UtilityService } from '@/api/utils';
-import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue';
-import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue';
-import ManuscriptFileManagementCard from '../components/ManuscriptFileManagementCard.vue';
+} from "../ManuscriptRecord";
+import QuestionEditor from "@/components/QuestionEditor.vue";
+import ContentCard from "@/components/ContentCard.vue";
+import ManageManuscriptAuthorsCard from "@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue";
+import RegionSelect from "@/models/Region/components/RegionSelect.vue";
+import ManuscriptTypeBadge from "../components/ManuscriptTypeBadge.vue";
+import ManuscriptStatusBadge from "../components/ManuscriptStatusBadge.vue";
+import FormSectionStatusIcon from "@/components/FormSectionStatusIcon.vue";
+import RequiredSpan from "@/components/RequiredSpan.vue";
+import SubmitManuscriptDialog from "../components/SubmitManuscriptDialog.vue";
+import WarnOnUnsavedChanges from "@/components/WarnOnUnsavedChanges.vue";
+import { UtilityService } from "@/api/utils";
+import ManageFundingSourcesCard from "@/models/FundingSource/components/ManageFundingSourcesCard.vue";
+import DeleteManuscriptButton from "../components/DeleteManuscriptButton.vue";
+import ManuscriptFileManagementCard from "../components/ManuscriptFileManagementCard.vue";
+import YesNoBooleanOptionGroup from "../components/YesNoBooleanOptionGroup.vue";
 
 const $q = useQuasar();
 const router = useRouter();
@@ -404,7 +423,7 @@ watch(
         if (disableDirtyWatcher.value) return;
         if (
             oldValue === null ||
-            manuscriptResource.value?.data.status !== 'draft'
+            manuscriptResource.value?.data.status !== "draft"
         ) {
             return;
         }
@@ -422,20 +441,20 @@ const generalSectionStatus = computed(() => {
     const manuscript = manuscriptResource.value?.data;
 
     if (!manuscript) {
-        return 'error';
+        return "error";
     }
 
     // you can't save the manuscript if the title is empty
-    if (manuscript.title === '') return 'error';
+    if (manuscript.title === "") return "error";
 
     const complete =
-        manuscript.title !== '' &&
-        manuscript.abstract !== '' &&
-        manuscript.pls !== '' &&
-        manuscript.scientific_implications !== '' &&
+        manuscript.title !== "" &&
+        manuscript.abstract !== "" &&
+        manuscript.pls !== "" &&
+        manuscript.scientific_implications !== "" &&
         manuscript.relevant_to;
 
-    return complete ? 'complete' : 'incomplete';
+    return complete ? "complete" : "incomplete";
 });
 
 onMounted(async () => {
@@ -446,10 +465,10 @@ onMounted(async () => {
         .catch((error) => {
             if (error.status == 403) {
                 $q.notify({
-                    type: 'negative',
-                    message: t('mrf.not-authorized-text'),
+                    type: "negative",
+                    message: t("mrf.not-authorized-text"),
                 });
-                router.push({ name: 'notFound' });
+                router.push({ name: "notFound" });
             }
             console.log(error);
         })
@@ -472,9 +491,9 @@ const save = async () => {
         .then((response) => {
             manuscriptResource.value = response;
             $q.notify({
-                type: 'positive',
-                color: 'primary',
-                message: t('mrf.manuscript-saved-successfully'),
+                type: "positive",
+                color: "primary",
+                message: t("mrf.manuscript-saved-successfully"),
             });
         })
         .catch((error) => {
@@ -501,23 +520,23 @@ const canSubmit = computed(() => {
     }
 
     // you can't submit the manuscript if the title is empty
-    if (manuscript.title === '') return false;
+    if (manuscript.title === "") return false;
 
     // you can't submit the manuscript if the general section is incomplete
-    if (generalSectionStatus.value !== 'complete') return false;
+    if (generalSectionStatus.value !== "complete") return false;
 
     // you can't submit the manuscript if there are no authors
-    if (manuscriptAuthorsCard.value?.sectionStatus !== 'complete') return false;
+    if (manuscriptAuthorsCard.value?.sectionStatus !== "complete") return false;
 
     // you can't submit the manuscript if there is no manuscript pdf
-    if (manuscriptFileManagementCard.value?.sectionStatus !== 'complete')
+    if (manuscriptFileManagementCard.value?.sectionStatus !== "complete")
         return false;
 
     return true;
 });
 
 async function submit() {
-    console.log('submit');
+    console.log("submit");
     showSubmitDialog.value = true;
 }
 
@@ -536,7 +555,7 @@ const showPublishBanner = computed(() => {
     }
 
     return (
-        manuscript.status === 'reviewed' || manuscript.status === 'submitted'
+        manuscript.status === "reviewed" || manuscript.status === "submitted"
     );
 });
 
@@ -550,42 +569,42 @@ const enablePLSPrompt = computed(() => {
 
     return (
         !isManuscriptReadOnly.value &&
-        (manuscriptResource.value.data.pls === '' || PLSLoading) &&
+        (manuscriptResource.value.data.pls === "" || PLSLoading) &&
         manuscriptResource.value.data.abstract.length > 250
     );
 });
 
 const plsDisabledTooltip = computed(() => {
     if (!manuscriptResource.value?.data) {
-        return '';
+        return "";
     }
 
-    if (manuscriptResource.value.data.pls !== '') {
-        return t('mrf.pls-already-generated-erase-it-to-generate-a-new-one');
+    if (manuscriptResource.value.data.pls !== "") {
+        return t("mrf.pls-already-generated-erase-it-to-generate-a-new-one");
     }
 
     if (manuscriptResource.value.data.abstract.length < 250) {
-        return t('mrf.abstract-must-be-at-least-250-characters');
+        return t("mrf.abstract-must-be-at-least-250-characters");
     }
 
-    return '';
+    return "";
 });
 
 async function generatePLS() {
     PLSLoading.value = true;
     if (!manuscriptResource.value?.data.abstract) return;
-    if (manuscriptResource.value?.data.abstract === '') return;
+    if (manuscriptResource.value?.data.abstract === "") return;
     manuscriptResource.value.data.pls = t(
-        'mrf.generating-pls-please-be-patient'
+        "mrf.generating-pls-please-be-patient"
     );
     await UtilityService.generatePls(manuscriptResource.value.data.abstract)
         .then((response) => {
             if (!manuscriptResource.value) return;
             manuscriptResource.value.data.pls = response.data.pls;
             $q.notify({
-                type: 'positive',
-                color: 'primary',
-                message: t('mrf.pls-generated-successfully'),
+                type: "positive",
+                color: "primary",
+                message: t("mrf.pls-generated-successfully"),
             });
         })
         .catch((error) => {
