@@ -94,7 +94,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 1440, // a day
+            'expire' => 90, // minutes
             'throttle' => 60,
         ],
     ],
@@ -126,6 +126,6 @@ return [
     |--------------------------------------------------------------------------
     */
     'verification' => [
-        'expire' => 1440, // a day
+        'expire' => 90, // minutes
     ],
 ];
