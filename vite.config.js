@@ -19,6 +19,9 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+            script: {
+                defineModel: true,
+            },
         }),
         quasar({ sassVariables: 'resources/src/styles/variables.scss' }),
 

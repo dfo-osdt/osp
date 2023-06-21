@@ -27,12 +27,12 @@
                     <div
                         class="q-mx-md text-body1 text-primary text-weight-medium"
                     >
-                        {{ $t('submit-manuscript-dialog.step1.subtitle') }}
+                        {{ $t("submit-manuscript-dialog.step1.subtitle") }}
                     </div>
                     <p class="q-ma-md">
                         {{
                             $t(
-                                'submit-manuscript-dialog.step1.confirmation-text'
+                                "submit-manuscript-dialog.step1.confirmation-text"
                             )
                         }}
                     </p>
@@ -54,13 +54,13 @@
                     <div
                         class="q-mx-md text-body1 text-primary text-weight-medium"
                     >
-                        {{ $t('submit-manuscript-dialog.step2.subtitle') }}
+                        {{ $t("submit-manuscript-dialog.step2.subtitle") }}
                     </div>
                     <p class="q-ma-md">
-                        {{ $t('submit-manuscript-dialog.step2.p1') }}
+                        {{ $t("submit-manuscript-dialog.step2.p1") }}
                     </p>
                     <p class="q-ma-md">
-                        {{ $t('submit-manuscript-dialog.step2.p2') }}
+                        {{ $t("submit-manuscript-dialog.step2.p2") }}
                     </p>
                     <UserSelect
                         v-model="divisionManagerUserId"
@@ -97,15 +97,15 @@
 </template>
 
 <script setup lang="ts">
-import BaseDialog from '@/components/BaseDialog.vue';
-import { ManuscriptAuthorService } from '@/models/ManuscriptAuthor/ManuscriptAuthor';
-import UserSelect from '@/models/User/components/UserSelect.vue';
-import { QDialog, QForm, QStepper } from 'quasar';
-import { Ref } from 'vue';
+import BaseDialog from "@/components/BaseDialog.vue";
+import { ManuscriptAuthorService } from "@/models/ManuscriptAuthor/ManuscriptAuthor";
+import UserSelect from "@/models/User/components/UserSelect.vue";
+import { QDialog, QForm, QStepper } from "quasar";
+import { Ref } from "vue";
 import {
     ManuscriptRecordResource,
     ManuscriptRecordService,
-} from '../ManuscriptRecord';
+} from "../ManuscriptRecord";
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -113,7 +113,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (event: 'submitted', arg: ManuscriptRecordResource): void;
+    (event: "submitted", arg: ManuscriptRecordResource): void;
 }>();
 
 const dialog: Ref<QDialog | null> = ref(null);
@@ -129,11 +129,11 @@ const divisionManagerUserId = ref<number | null>(null);
 const agreeToTerms = ref(false);
 const agreeToTermsOptions = ref([
     {
-        label: t('common.yes'),
+        label: t("common.yes"),
         value: true,
     },
     {
-        label: t('common.no'),
+        label: t("common.no"),
         value: false,
     },
 ]);
@@ -148,7 +148,7 @@ async function getAllManuscriptAuthorsEmails(): Promise<string[]> {
         props.manuscriptRecordId
     );
     return manuscriptAuthors.data.map(
-        (author) => author.data.author?.data.email ?? ''
+        (author) => author.data.author?.data.email ?? ""
     );
 }
 
@@ -172,7 +172,7 @@ async function submit() {
         );
 
         loading.value = false;
-        emit('submitted', manuscriptRecord);
+        emit("submitted", manuscriptRecord);
     }
 }
 </script>

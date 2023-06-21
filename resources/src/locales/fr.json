@@ -427,8 +427,8 @@
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",
-    "additional-information-of-importance": "Informations supplémentaires importantes",
-    "additional-text": "Fournissez toute information supplémentaire importante pour le manuscrit.",
+    "additional-information-of-importance": "Informations sur l'intérêt public potentiel",
+    "additional-text": "Des exemples de sujets susceptibles d'intéresser le public, peut inclure des sujets liés à l'actualité ou d'intérêt pour les parties prenantes. Il peut s'agir de sujets intéressants pour illustrer les travaux scientifiques du MPO ou d'études plus controversées. Bien que cela ne restreigne en aucun cas les publications, cela permettra d'engager et d'informer nos collègues de la communication. Si l'on estime qu'un manuscrit présente un intérêt potentiel pour le public, les Communications en sera informée suivant la révision des gestionnaires, ainsi que lorsque le manuscrit sera marqué comme publié par le demandeur.",
     "copy-your-manuscripts-abstract-here": "Copiez le résumé de votre manuscrit ici.",
     "general-information": "Informations générales",
     "generate-pls": "Générer le résumé",
@@ -454,7 +454,9 @@
     "upload-hint": "Seuls les fichiers PDF sont acceptés. \nLa taille maximale du fichier est de {max} Mo.",
     "upload-manuscript": "Télécharger le manuscrit",
     "upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
-    "working-title-text": "Entrez le titre de travail du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit en publié."
+    "working-title-text": "Entrez le titre de travail du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit en publié.",
+    "potential-media-interest-question": "Ce manuscrit présente-t-il un intérêt public potentiel ?",
+    "potential-media-interest-text-field-text": "Facultativement, veuillez fournir toute information pertinente concernant l'intérêt public potentiel."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",

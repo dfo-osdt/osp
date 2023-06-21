@@ -32,6 +32,7 @@ class ManuscriptRecordResource extends JsonResource
                 'regions_and_species' => $this->regions_and_species ?? '',
                 'relevant_to' => $this->relevant_to ?? '',
                 'additional_information' => $this->additional_information ?? '',
+                'potential_public_interest' => $this->potential_public_interest,
 
                 // dates and times
                 'created_at' => $this->created_at,
@@ -41,6 +42,7 @@ class ManuscriptRecordResource extends JsonResource
                 'submitted_to_journal_on' => $this->submitted_to_journal_on,
                 'accepted_on' => $this->accepted_on,
                 'withdrawn_on' => $this->withdrawn_on,
+
                 //relationships - if loaded
                 'region' => RegionResource::make($this->whenLoaded('region')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),

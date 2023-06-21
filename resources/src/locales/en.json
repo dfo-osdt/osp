@@ -427,8 +427,8 @@
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
-    "additional-information-of-importance": "Additional Information of Importance",
-    "additional-text": "Provide any additional information of importance to the manuscript.",
+    "additional-information-of-importance": "Information on Potential Public Interest",
+    "additional-text": "Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to show case DFO research or studies that are more controversial. While this will never restrict publications in any way, this will serve to engage with, and inform our Communications colleagues. If it is deemed that a manuscript could be of public interest, the Communications team will be notified after the management review process, and again when the manuscript is marked as published by the applicant.",
     "copy-your-manuscripts-abstract-here": "Copy your manuscript's abstract here.",
     "general-information": "General Information",
     "generate-pls": "Generate PLS",
@@ -454,7 +454,9 @@
     "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
     "upload-manuscript": "Upload manuscript",
     "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
-    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published."
+    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
+    "potential-media-interest-question": "Is this manuscript of potential public interest?",
+    "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",
