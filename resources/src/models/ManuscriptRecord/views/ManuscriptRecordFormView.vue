@@ -417,11 +417,13 @@ const manuscriptFileManagementCard = ref<InstanceType<
 
 // watch if there is a change
 const isDirty = ref(false);
+const dirtyWatcherDisabled = ref(false);
 
 watch(
     manuscriptResource,
     (newVal, oldValue) => {
         if (oldValue === null) return;
+        if (dirtyWatcherDisabled.value) return;
         isDirty.value = true;
     },
     { deep: true }
@@ -535,9 +537,14 @@ async function submit() {
 }
 
 function onSubmitted(manuscript: ManuscriptRecordResource) {
+    dirtyWatcherDisabled.value = true;
     manuscriptResource.value = manuscript;
     manuscriptFileManagementCard.value?.getFiles();
     showSubmitDialog.value = false;
+    // wait 2 seconds and then re-enable the dirty watcher
+    setTimeout(() => {
+        dirtyWatcherDisabled.value = false;
+    }, 2000);
 }
 
 // display banner if the manuscript is reviewed but still needs to be published
