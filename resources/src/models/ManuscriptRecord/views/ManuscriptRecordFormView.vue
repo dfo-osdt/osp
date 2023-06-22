@@ -541,6 +541,12 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
     manuscriptResource.value = manuscript;
     manuscriptFileManagementCard.value?.getFiles();
     showSubmitDialog.value = false;
+    $q.notify({
+        type: "positive",
+        color: "primary",
+        message: t("mrf.manuscript-submitted-successfully"),
+    });
+
     // wait 2 seconds and then re-enable the dirty watcher
     setTimeout(() => {
         dirtyWatcherDisabled.value = false;

@@ -21,13 +21,13 @@ class LocalTestDataSeeder extends Seeder
 
         // create a blank slate user
         \App\Models\User::factory()->create([
-            'email' => 'new@vinnet.dev',
+            'email' => 'new@test.local',
         ]);
 
         $user = \App\Models\User::factory()->create([
             'first_name' => 'John',
             'last_name' => 'Doe',
-            'email' => 'author@vinnet.dev',
+            'email' => 'author@test.local',
         ]);
 
         // create 5 invitations for the test user
@@ -46,7 +46,7 @@ class LocalTestDataSeeder extends Seeder
         ]);
 
         // create 1 filled out manuscript record for the test user
-        \App\Models\ManuscriptRecord::factory()->filled()->create([
+        \App\Models\ManuscriptRecord::factory()->filled()->count(5)->create([
             'user_id' => $user->id,
         ]);
 
@@ -71,7 +71,7 @@ class LocalTestDataSeeder extends Seeder
         $dmUser = \App\Models\User::factory()->create([
             'first_name' => 'Division',
             'last_name' => 'Manager',
-            'email' => 'dm@vinnet.dev',
+            'email' => 'dm@test.local',
         ]);
 
         // give the division manager a management review step
@@ -84,7 +84,7 @@ class LocalTestDataSeeder extends Seeder
         $rdsUser = \App\Models\User::factory()->create([
             'first_name' => 'RDS',
             'last_name' => 'User',
-            'email' => 'rds@vinnet.dev',
+            'email' => 'rds@test.local',
         ]);
         $rdsUser->assignRole('director');
 
@@ -118,7 +118,7 @@ class LocalTestDataSeeder extends Seeder
         $adminUser = \App\Models\User::factory()->create([
             'first_name' => 'Admin',
             'last_name' => 'User',
-            'email' => 'admin@vinnet.dev',
+            'email' => 'admin@test.local',
         ]);
         $adminUser->assignRole('admin');
     }

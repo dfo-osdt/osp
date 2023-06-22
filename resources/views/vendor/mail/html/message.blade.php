@@ -22,7 +22,10 @@
 {{-- Footer --}}
 @slot('footer')
 @component('mail::footer')
-© {{ date('Y') }} Open Science Portal - Portail de la science ouverte. @lang('All rights reserved.')
+<p>This is an automated message. Please do not reply to this email. If you believe you have received this email in error, please contact the Open Science Portal team by visiting the <a href="{{config('app.frontend_url')}}">Open Science Portal</a></p>
+<p>Ceci est un message automatisé. Veuillez ne pas répondre à ce courriel. Si vous croyez avoir reçu ce courriel par erreur, veuillez contacter l'équipe du Portail de la science ouverte en visitant le <a href="{{config('app.frontend_url')}}">Portail de la science ouverte</a></p>
+<p>---</p>
+<p>© {{ date('Y') }} Open Science Portal - Portail de la science ouverte.</p>
 @endcomponent
 @endslot
 @endcomponent
