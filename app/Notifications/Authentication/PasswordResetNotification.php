@@ -3,11 +3,10 @@
 namespace App\Notifications\Authentication;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ResetPasswordNotification extends Notification implements ShouldQueue
+class PasswordResetNotification extends Notification
 {
     use Queueable;
 
@@ -16,7 +15,6 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      */
     public function __construct(public string $url)
     {
-        //
     }
 
     /**
@@ -34,10 +32,9 @@ class ResetPasswordNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return (new MailMessage)->
+            subject(__('email.auth.reset.title'))->
+            markdown('authentication.reset_password', ['url' => $this->url, 'user' => $notifiable->first_name]);
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Jenssegers\Agent\Agent;
 
 class UserAuthenticationResource extends JsonResource
 {

@@ -117,7 +117,6 @@ const { t } = useI18n();
 
 //user related data
 const email = ref((router.currentRoute.value.query?.email as string) || '');
-const email_confirmation = ref('');
 const password = ref('');
 const password_confirmation = ref('');
 const first_name = ref('');
