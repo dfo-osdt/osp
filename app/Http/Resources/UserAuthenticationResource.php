@@ -15,9 +15,9 @@ class UserAuthenticationResource extends JsonResource
      */
     public function toArray($request)
     {
-        $agent = new Agent();
-        $agent->setUserAgent($this->user_agent);
-        $agentForHumans = ($agent->platform() ?: $this->user_agent).' - '.($agent->browser() ?: '??');
+        // example user agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
+        $agentArray = preg_split("/[\(\)]/", $this->user_agent);
+        $agentForHumans = $agentArray[1] ?? $this->user_agent;
 
         return [
             'ip_address' => $this->ip_address,

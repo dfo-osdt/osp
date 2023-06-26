@@ -25,7 +25,7 @@
     "redirected": "Vous avez été automatiquement redirigé."
   },
   "authentication-history-card": {
-    "browser": "Navigateur",
+    "browser": "Agent",
     "ip_address": "Adresse IP",
     "location": "Emplacement",
     "login-at": "Connexion à",
@@ -437,12 +437,15 @@
     "geographical-title": "Portée géographique et espèces",
     "lead-region-text": "Sélectionnez la région du MPO responsable de l'examen par la direction de ce manuscrit. \nSi plus d'une région est responsable, sélectionnez la région qui dirigera l'examen.",
     "manuscript-saved-successfully": "Manuscrit enregistré avec succès",
+    "manuscript-submitted-successfully": "Le registre du manuscrit a été soumis avec succès.",
     "manuscripts-working-title": "Titre provisoire du manuscrit",
     "not-authorized-text": "Vous n'êtes pas autorisé à consulter ce registre de manuscrit",
     "pls-already-generated-erase-it-to-generate-a-new-one": "Résumé déjà généré - effacez-le pour en générer un nouveau",
     "pls-generated-successfully": "Résumé généré avec succès",
     "pls-help-ai-text": "Besoin d'aide? \nEn utilisant le résumé de votre manuscrit, nous pouvons générer un brouillon de résumé en langage clair",
     "pls-text": "Résumé en langage clair du manuscrit pour expliquer la pertinence de la science pour le Département et promouvoir la valeur de la science par la sensibilisation et la communication. \nIl est destiné à un usage interne pour identifier les liens avec les programmes, les politiques et les intervenants et à être utilisé dans la promotion de la science en langage clair.",
+    "potential-media-interest-question": "Ce manuscrit présente-t-il un intérêt public potentiel ?",
+    "potential-media-interest-text-field-text": "Facultativement, veuillez fournir toute information pertinente concernant l'intérêt public potentiel.",
     "ready-to-marked-published": "Ce manuscrit a été révisé mais doit encore être marqué comme publié par le candidat.",
     "relevant-text": "Décrivez comment le document est pertinent pour les programmes, projets, actes, initiatives, etc. (c.-à-d. comment il appuie le mandat du ministère, comment il appuie le plan stratégique du ministère, comment il appuie les priorités régionales, etc.)",
     "relevant-title": "Pertinent pour les programmes, projets, etc.",
@@ -454,10 +457,7 @@
     "upload-hint": "Seuls les fichiers PDF sont acceptés. \nLa taille maximale du fichier est de {max} Mo.",
     "upload-manuscript": "Télécharger le manuscrit",
     "upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
-    "working-title-text": "Entrez le titre de travail du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit en publié.",
-    "potential-media-interest-question": "Ce manuscrit présente-t-il un intérêt public potentiel ?",
-    "potential-media-interest-text-field-text": "Facultativement, veuillez fournir toute information pertinente concernant l'intérêt public potentiel.",
-    "manuscript-submitted-successfully": "Le registre du manuscrit a été soumis avec succès."
+    "working-title-text": "Entrez le titre de travail du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit en publié."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",
