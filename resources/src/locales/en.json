@@ -25,7 +25,7 @@
     "redirected": "You've been automatically redirected."
   },
   "authentication-history-card": {
-    "browser": "Browser",
+    "browser": "Agent",
     "ip_address": "IP Address",
     "location": "Location",
     "login-at": "Login At",
@@ -427,8 +427,8 @@
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
-    "additional-information-of-importance": "Information on Potential Public Interest",
-    "additional-text": "Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to show case DFO research or studies that are more controversial. While this will never restrict publications in any way, this will serve to engage with, and inform our Communications colleagues. If it is deemed that a manuscript could be of public interest, the Communications team will be notified after the management review process, and again when the manuscript is marked as published by the applicant.",
+    "additional-information-of-importance": "Potential Public Interest",
+    "additional-text": "Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to showcase DFO research or studies that are more controversial. While this will never restrict publications in any way, this will serve to engage with, and inform our Communications colleagues. If it is deemed that a manuscript could be of public interest, the Communications team will be notified after the management review process, and again when the manuscript is marked as published by the applicant.",
     "copy-your-manuscripts-abstract-here": "Copy your manuscript's abstract here.",
     "general-information": "General Information",
     "generate-pls": "Generate PLS",
@@ -437,12 +437,15 @@
     "geographical-title": "Geographical Scope and Species",
     "lead-region-text": "Select the DFO region responsible for the management review of this manuscript. If more than one region is responsible, select the region that will lead the review.",
     "manuscript-saved-successfully": "Manuscript saved successfully",
+    "manuscript-submitted-successfully": "The manuscript record was sucessfully submitted.",
     "manuscripts-working-title": "Manuscript's Working Title",
     "not-authorized-text": "You do not have permission to view this manuscript record",
     "pls-already-generated-erase-it-to-generate-a-new-one": "PLS already generated - erase it to generate a new one",
     "pls-generated-successfully": "PLS generated successfully",
     "pls-help-ai-text": "Need some help? Using your manuscript's abstract, we can generate a draft PLS.",
     "pls-text": "Plain Language Summary (PLS) of the manuscript to explain the relevance of the science to the Department and to promote the value of science through outreach and communication. It is intended for internal use to identify linkages to programs, policies and stakeholders and for use in the plain language promotion of science.",
+    "potential-media-interest-question": "Is this manuscript of potential public interest?",
+    "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest.",
     "ready-to-marked-published": "This manuscript has been reviewed but still needs to be marked as published by the applicant.",
     "relevant-text": "Describe how the paper is relevant to programs, projects, acts, initiatives, etc. (i.e. how it supports the department's mandate, how it supports the department's strategic plan, how it supports regional priorities, etc.)",
     "relevant-title": "Relevant to programs, projects, etc.",
@@ -454,9 +457,7 @@
     "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
     "upload-manuscript": "Upload manuscript",
     "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
-    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
-    "potential-media-interest-question": "Is this manuscript of potential public interest?",
-    "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest."
+    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",

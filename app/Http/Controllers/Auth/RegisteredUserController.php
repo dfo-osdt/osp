@@ -27,15 +27,16 @@ class RegisteredUserController extends Controller
         // request email to lowercase - ensure no duplicate emails
         $request->merge(['email' => strtolower($request->email)]);
 
-        $request->validate([
+        $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'confirmed', Password::min(config('auth.password_min_length'))->uncompromised()],
+            'locale' => ['string', 'max:2', 'in:en,fr'],
         ]);
 
         // check if the user already exists
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $validated['email'])->first();
         if ($user) {
             // User exits and does not have an invitation or is active (has registered)
             if ($user->active) {
@@ -47,15 +48,16 @@ class RegisteredUserController extends Controller
 
             // User exists but is not active (has not registered), so update the user
             // with the new password.
-            $user->password = Hash::make($request->password);
+            $user->password = Hash::make($validated['password']);
             $user->active = true;
             $user->save();
         } else {
             $user = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'locale' => $validated['locale'] ?? 'en',
             ]);
         }
 

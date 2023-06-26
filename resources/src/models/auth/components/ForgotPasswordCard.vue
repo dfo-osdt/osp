@@ -34,7 +34,12 @@
                 /></template>
                 <div>{{ statusMessage }}</div>
             </q-banner>
-            <q-form class="q-gutter-md" autofocus @submit="reset">
+            <q-form
+                v-if="!hideForm"
+                class="q-gutter-md"
+                autofocus
+                @submit="reset"
+            >
                 <q-input
                     v-model="email"
                     type="email"
@@ -81,6 +86,7 @@ const email = ref((router.currentRoute.value.query?.email as string) || '');
 
 // UI related data
 const loading = ref(false);
+const hideForm = ref(false);
 const errorMessage: Ref<ErrorResponse | null> = ref(null);
 const statusMessage = ref('');
 
@@ -91,9 +97,11 @@ async function reset() {
         .then((resp) => {
             console.log(resp);
             statusMessage.value = resp.data.status;
+            hideForm.value = true;
             setTimeout(() => {
                 statusMessage.value = '';
                 email.value = '';
+                hideForm.value = false;
             }, 30000);
         })
         .catch((err) => {

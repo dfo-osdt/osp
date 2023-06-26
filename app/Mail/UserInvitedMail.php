@@ -43,7 +43,7 @@ class UserInvitedMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: __('Invitation to join the Open Science Portal'),
+            subject: __('email.auth.invitation.title'),
             to: []
         );
     }
@@ -56,7 +56,7 @@ class UserInvitedMail extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'mail.user-invited-mail',
+            markdown: 'mail.auth.user-invited-mail',
         );
     }
 

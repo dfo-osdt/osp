@@ -49,7 +49,7 @@ class Invitation extends Model
     {
         return URL::temporarySignedRoute(
             'invitation.verify',
-            now()->addDays(5),
+            now()->addDays(config('auth.invitation.expire_days', 5)),
             [
                 'id' => $this->user->id,
                 'hash' => sha1($this->invitation_token),

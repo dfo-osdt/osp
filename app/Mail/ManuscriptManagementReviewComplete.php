@@ -28,7 +28,7 @@ class ManuscriptManagementReviewComplete extends Mailable
      */
     public function build()
     {
-        $this->subject('Manuscript Record Management Review Complete: '.$this->manuscriptRecord->title);
+        $this->subject('Management Review Complete - Révision de gestion complétée : '.$this->manuscriptRecord->title);
         $this->to($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->fullName);
         // all reviewers get confirmation
         $this->cc($this->manuscriptRecord->managementReviewSteps()->with('user')->get()->pluck('user.email')->toArray());

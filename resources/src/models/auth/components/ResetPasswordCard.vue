@@ -34,7 +34,12 @@
                 /></template>
                 <div>{{ statusMessage }}</div>
             </q-banner>
-            <q-form class="q-gutter-md" autofocus @submit="reset">
+            <q-form
+                v-if="!hideForm"
+                class="q-gutter-md"
+                autofocus
+                @submit="reset"
+            >
                 <PasswordWithToggleInput
                     v-model="password"
                     outlined
@@ -95,6 +100,7 @@ const canReset = computed(() => {
 
 // UI related data
 const loading = ref(false);
+const hideForm = ref(false);
 const errorMessage: Ref<ErrorResponse | null> = ref(null);
 const statusMessage = ref('');
 const password = ref('');
@@ -116,9 +122,10 @@ async function reset() {
         .then((resp) => {
             console.log(resp);
             statusMessage.value = resp.data.status;
+            hideForm.value = true;
             setTimeout(() => {
                 router.push({ name: 'login', query: { email: email.value } });
-            }, 5000);
+            }, 2000);
         })
         .catch((err) => {
             errorMessage.value = extractErrorMessages(err);

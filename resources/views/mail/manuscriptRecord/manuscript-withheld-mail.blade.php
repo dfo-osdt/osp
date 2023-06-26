@@ -1,12 +1,14 @@
 <x-mail::message>
 # Hello {{ $user->first_name }},
 
+*(le français suit)*
+
 We regret to inform you that the manuscript record titled, *{{ $manuscriptRecord->title }}*, has been withheld for publication.
 
 For more information, please review the management review tab of your manuscript record in the Open Science Portal or contact your Division Manager.
 
 <x-mail::button :url="config('app.frontend_url').'#/auth/login?redirect=/manuscript/'.$manuscriptRecord->id.'/reviews'">
-See Manuscript Record
+    See Manuscript Record
 </x-mail::button>
 
 ## Relevant Information from the Publication Policy
@@ -22,7 +24,34 @@ permission to publish but only in cases where the publication is not in complian
 > DFO policies on Intellectual Property and Collaborative Agreements, the SP and RE Collective Agreements, and the Career Progression Management Framework for
 > Federal Researchers.
 
+<x-email.regards locale="en">
 
-Thank you,<br>
-{{ config('app.name') }}
+---
+
+# Bonjour {{ $user->first_name }},
+
+Nous regrettons de vous informer que le registre de manuscrit intitulé *{{ $manuscriptRecord->title }}* a été retenu pour publication.
+
+Pour plus d'informations, veuillez consulter l'onglet de révision de gestion de votre registre de manuscrit dans le portail de la science ou contacter votre gestionnaire de division.
+
+<x-mail::button :url="config('app.frontend_url').'#/auth/login?redirect=/manuscript/'.$manuscriptRecord->id.'/reviews'">
+    Voir le registre de manuscrit
+</x-mail::button>
+
+## Informations pertinentes de la politique de publication
+À aucun moment, l'inclusion de matériel sensible (par exemple, des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.
+
+Dans le cas rare où un manuscrit n'adhère pas pleinement aux politiques et à la législation relatives aux publications scientifiques, le gestionnaire de division
+discute des révisions potentielles avec l'auteur(s). Si après cette discussion, le gestionnaire de division a encore des préoccupations, il/elle identifiera
+ces préoccupations au directeur régional des sciences qui prend la décision finale. Le directeur régional des sciences se réserve le droit de refuser
+l'autorisation de publier, mais uniquement dans les cas où la publication n'est pas conforme à la législation ou à la politique suivante:
+
+> La Loi sur les inventions des fonctionnaires, la Loi sur la gestion des finances publiques (article 34), la Loi sur les biens excédentaires de la Couronne et,
+> en ce qui concerne les auteurs collaborateurs, la Loi sur l'accès à l'information, la Loi sur le droit d'auteur et la Loi sur la protection des renseignements
+> personnels, ainsi que la politique du Secrétariat du Conseil du Trésor sur les communications et l'identité fédérale, les politiques du MPO sur la propriété
+> intellectuelle et les accords de collaboration, les conventions collectives SP et RE et le cadre de gestion de la progression de carrière pour les chercheurs
+> fédéraux.
+
+<x-email.regards locale="fr">
+
 </x-mail::message>

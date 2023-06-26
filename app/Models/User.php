@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\Authentication\PasswordResetNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -194,5 +195,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     public function preferredLocale(): string
     {
         return $this->locale;
+    }
+
+    /**
+     * Override the default reset email
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+
+        $this->notify(new PasswordResetNotification($this, $token));
     }
 }
