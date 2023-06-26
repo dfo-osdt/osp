@@ -569,7 +569,7 @@
     "title": "Entrez un nouveau mot de passe"
   },
   "review-step": {
-    "review-by": "Révisé par par {0}",
+    "review-by": "Révision par {0}",
     "save-comments": "Enregistrer les commentaires",
     "submit-decision": "Soumettre la décision",
     "your-review": "Votre révision : {0}"
