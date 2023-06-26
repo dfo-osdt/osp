@@ -1,9 +1,11 @@
 <x-mail::message>
 # Hello {{ $manuscriptRecord->user->first_name }},
 
+*(le français suit)*
+
 Your manuscripts' management review is complete.
 
-You may proceed with the publication process for the manuscript titled "{{ $manuscriptRecord->title }}". 
+You may proceed with the publication process for the manuscript titled "{{ $manuscriptRecord->title }}".
 
 Please ensure that the text “Fisheries and Oceans Canada” appears as an author's affiliation in order to ensure that publications by DFO authors are retrievable in online searches and discovered for bibliometric analysis.
 
@@ -14,8 +16,7 @@ If you decide to no longer publish this manuscript, update the manuscript record
 Update Manuscript Status
 </x-mail::button>
 
-Thank you,<br>
-The Open Science Team
+<x-email.regards locale="en" />
 
 ---
 
@@ -34,7 +35,6 @@ Si vous décidez de ne plus publier ce manuscrit, mettez à jour le statut du re
 Mise à jour du statut du manuscrit
 </x-mail::button>
 
-Merci,<br>
-L'équipe Science Ouverte
+<x-email.regards locale="fr" />
 
 </x-mail::message>

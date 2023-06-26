@@ -20,8 +20,7 @@ Review Manuscript
 **Abstract:** <br />{!! $manuscriptRecord->abstract !!}
 </x-mail::panel>
 
-Regards,<br />
-The Open Science Team
+<x-email.regards locale="en" />
 
 ---
 <br />
@@ -45,9 +44,7 @@ Réviser le manuscrit
 **Résumé:** <br />{!! $manuscriptRecord->abstract !!}
 </x-mail::panel>
 
-Cordialement,<br>
-L'équipe Science Ouverte
-
+<x-email.regards locale="fr" />
 
 
 @if($manuscriptRecord->type === App\Enums\ManuscriptRecordType::PRIMARY)
