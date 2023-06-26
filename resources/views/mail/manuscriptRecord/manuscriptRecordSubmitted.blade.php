@@ -29,7 +29,7 @@ Review Manuscript
 
 En tant que chef de division, vous avez reçu une nouvelle soumission de registre de manuscrit de la part de {{ $manuscriptRecord->user->fullname }}.
 
-Veuillez cliquer sur le bouton ci-dessous ou vous connecter à votre compte sur le [Portail de la science ouverte]({{config('app.frontend_url')}}#/auth/login?email={{$user->email}}) pour compléter la révision par le gestionaire.
+Veuillez cliquer sur le bouton ci-dessous ou vous connecter à votre compte sur le [Portail Science Ouverte]({{config('app.frontend_url')}}#/auth/login?email={{$user->email}}) pour compléter la révision par le gestionaire.
 
 <x-mail::button :url="config('app.frontend_url').'#/auth/login?email='.$user->email.'&redirect=/manuscript/'.$manuscriptRecord->id">
 Réviser le manuscrit
