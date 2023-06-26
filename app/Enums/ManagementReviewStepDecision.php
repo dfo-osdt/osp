@@ -19,7 +19,9 @@ enum ManagementReviewStepDecision: string
     {
 
         collect(['en', 'fr'])->contains($locale) ?: $locale = null;
-        if($locale == null) $locale = app()->getLocale();
+        if ($locale == null) {
+            $locale = app()->getLocale();
+        }
 
         return match ($locale) {
             'en' => match ($this->value) {
@@ -37,5 +39,3 @@ enum ManagementReviewStepDecision: string
 
     }
 }
-
-

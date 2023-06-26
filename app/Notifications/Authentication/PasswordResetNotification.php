@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Authentication;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -10,11 +11,14 @@ class PasswordResetNotification extends Notification
 {
     use Queueable;
 
+    private string $url;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct(public string $url)
+    public function __construct(public User $user, public string $token)
     {
+        $this->url = config('app.frontend_url')."/#/auth/password-reset?token=$token&email=$user->email";
     }
 
     /**
@@ -34,7 +38,7 @@ class PasswordResetNotification extends Notification
     {
         return (new MailMessage)->
             subject(__('email.auth.reset.title'))->
-            markdown('authentication.reset_password', ['url' => $this->url, 'user' => $notifiable->first_name]);
+            markdown('authentication.reset_password', ['url' => $this->url, 'user' => $this->user]);
     }
 
     /**

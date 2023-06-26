@@ -202,7 +202,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      */
     public function sendPasswordResetNotification($token): void
     {
-        $url = config('app.frontend_url')."/#/auth/password-reset?token=$token&email=$this->email";
-        $this->notify(new PasswordResetNotification($url, $this));
+
+        $this->notify(new PasswordResetNotification($this, $token));
     }
 }

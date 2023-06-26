@@ -1,5 +1,5 @@
 <x-mail::message>
-{{ __('Hello') }} {{ $user }},
+{{ __('Hello') }} {{ $user->first_name }},
 
 {{__('email.auth.reset.p1')}}
 

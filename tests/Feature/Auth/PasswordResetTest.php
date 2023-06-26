@@ -3,7 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\Authentication\PasswordResetNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -21,7 +21,7 @@ class PasswordResetTest extends TestCase
 
         $this->postJson('/forgot-password', ['email' => $user->email]);
 
-        Notification::assertSentTo($user, ResetPassword::class);
+        Notification::assertSentTo($user, PasswordResetNotification::class);
     }
 
     public function test_password_can_be_reset_with_valid_token()
@@ -32,7 +32,7 @@ class PasswordResetTest extends TestCase
 
         $this->postJson('/forgot-password', ['email' => $user->email]);
 
-        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+        Notification::assertSentTo($user, PasswordResetNotification::class, function ($notification) use ($user) {
             $password = Str::random(16);
 
             $response = $this->postJson('/reset-password', [
@@ -59,7 +59,7 @@ class PasswordResetTest extends TestCase
 
         $this->postJson('/forgot-password', ['email' => $user->email]);
 
-        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+        Notification::assertSentTo($user, PasswordResetNotification::class, function ($notification) use ($user) {
             $response = $this->postJson('/reset-password', [
                 'token' => $notification->token,
                 'email' => $user->email,
