@@ -40,10 +40,10 @@ class ManuscriptRecordToReviewMail extends Mailable
         // cc all authors that are registered (have a user account)
         $this->cc(
             $this->manuscriptRecord->manuscriptAuthors
-            ->pluck('author.user.email')
-            ->filter(fn ($email) => $email !== null)
-            ->forget($this->user->email) // don't send to the user twice
-            ->toArray());
+                ->pluck('author.user.email')
+                ->filter(fn ($email) => $email !== null)
+                ->forget($this->user->email) // don't send to the user twice
+                ->toArray());
 
         $this->attach($this->manuscriptRecord->getLastManuscriptFile());
 
