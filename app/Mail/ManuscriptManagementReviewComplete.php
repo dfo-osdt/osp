@@ -30,10 +30,14 @@ class ManuscriptManagementReviewComplete extends Mailable
     {
         $this->subject('Management Review Complete - Révision de gestion complétée : '.$this->manuscriptRecord->title);
         $this->to($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->fullName);
-        // all reviewers get confirmation
-        $this->cc($this->manuscriptRecord->managementReviewSteps()->with('user')->get()->pluck('user.email')->toArray());
-        // all authors get confirmation, make sure not to duplicate the user if an author.
-        $this->cc($this->manuscriptRecord->manuscriptAuthors->pluck('author.email')->forget($this->manuscriptRecord->user->email)->toArray());
+
+        $reviewers = $this->manuscriptRecord->managementReviewSteps()->with('user')->get()->pluck('user.email');
+        $authors = $this->manuscriptRecord->manuscriptAuthors->pluck('author.email');
+
+        $cc = $reviewers->merge($authors)->unique()->
+            filter(fn ($email) => $email !== $this->manuscriptRecord->user->email)->
+            toArray();
+        $this->cc($cc);
 
         return $this->markdown('mail.manuscriptRecord.manuscript-management-review-complete');
     }

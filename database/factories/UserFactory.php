@@ -36,6 +36,18 @@ class UserFactory extends Factory
     }
 
     /**
+     * A factory for a user with a DFO email address
+     */
+    public function isFromDFO()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
+            ];
+        });
+    }
+
+    /**
      * Every user has an author record
      */
     public function configure()

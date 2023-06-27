@@ -23,7 +23,7 @@ class ManuscriptRecordToReviewMail extends Mailable
      */
     public function __construct(public ManuscriptRecord $manuscriptRecord, public User $user)
     {
-        $manuscriptRecord->load('user', 'manuscriptAuthors.author');
+        $manuscriptRecord->load('user', 'manuscriptAuthors.author.user');
     }
 
     /**
@@ -36,7 +36,15 @@ class ManuscriptRecordToReviewMail extends Mailable
         $this->subject('Manuscript Record Submitted - Registre du manuscrit Soumis : '.$this->manuscriptRecord->title);
         $this->to($this->user->email, $this->user->fullName);
         $this->cc($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->fullName);
-        $this->cc($this->manuscriptRecord->manuscriptAuthors->pluck('author.email')->toArray());
+
+        // cc all authors that are registered (have a user account)
+        $this->cc(
+            $this->manuscriptRecord->manuscriptAuthors
+            ->pluck('author.user.email')
+            ->filter(fn ($email) => $email !== null)
+            ->forget($this->user->email) // don't send to the user twice
+            ->toArray());
+
         $this->attach($this->manuscriptRecord->getLastManuscriptFile());
 
         return $this->markdown('mail.manuscriptRecord.manuscriptRecordSubmitted');
