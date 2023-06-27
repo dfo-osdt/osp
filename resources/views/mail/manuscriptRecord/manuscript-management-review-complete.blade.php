@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-Your manuscripts' management review is complete.
+Your manuscripts' management review is complete..
 
 You may proceed with the publication process for the manuscript titled "{{ $manuscriptRecord->title }}".
 
