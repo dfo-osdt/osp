@@ -1,631 +1,631 @@
 {
-	"LocaleSelect": {
-		"label": "Préférence linguistique"
-	},
-	"SentInvitationsCard": {
-		"invited-at": "Invité à",
-		"registered-at": "Inscrit à",
-		"subtitle": "Liste des invitations que vous avez envoyées.",
-		"title": "Invitations envoyées"
-	},
-	"SettingsPage": {
-		"account-security": "Sécurité du compte",
-		"author-profile": "Profil de l'auteur",
-		"user-profile": "Profil de l'utilisateur"
-	},
-	"accepted-by-journal-dialog": {
-		"text": "Vous pouvez maintenant marquer ce manuscrit comme ayant été accepté pour publication par une revue. \nCette étape créera une nouvelle publication sur votre profil vous permettant de mettre à jour les détails de la publication. \nUne fois que vous connaissez les détails de la publication, n'oubliez pas de mettre à jour le dossier de publication et de le marquer comme publié afin que nous puissions aider à le partager au sein de la communauté du MPO."
-	},
-	"add-pub-author-dialog": {
-		"dialog-help": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse e-mail a changé, vous pouvez créer une nouvelle fiche d'auteur.",
-		"title": "Ajouter un auteur à cette publication"
-	},
-	"auth": {
-		"logged-out-successfully": "Déconnecté avec succès",
-		"redirected": "Vous avez été automatiquement redirigé."
-	},
-	"authentication-history-card": {
-		"browser": "Agent",
-		"ip_address": "Adresse IP",
-		"location": "Emplacement",
-		"login-at": "Connexion à",
-		"logout-at": "Déconnexion à",
-		"subtitle": "Activité suspecte? \nModifiez votre mot de passe et signalez-le nous immédiatement.",
-		"successful": "Réussie",
-		"title": "Historique d'authentification"
-	},
-	"author-select": {
-		"add-a-new-author": "Ajouter un nouvel auteur",
-		"cant-find-text": "Vous ne trouvez pas l'auteur que vous recherchez ?",
-		"empty-search-hint": "Commencez à taper pour rechercher un auteur",
-		"hint": "Commencez à taper pour rechercher un auteur (prénom, nom ou courriel)",
-		"not-the-author-youre-looking-for": "Ce n'est pas l'auteur que vous recherchez ?"
-	},
-	"change-password-card": {
-		"change-password": "Changer le mot de passe",
-		"confirm-new-password": "Confirmer le nouveau mot de passe",
-		"new-password": "Nouveau mot de passe",
-		"new-password-required": "La sécurité de votre compte est importante pour nous. \nVous utilisez un mot de passe temporaire ou expiré, veuillez le changer maintenant.",
-		"subtitle": "Assurez-vous que votre compte utilise un mot de passe long (12 caractères ou plus) et aléatoire pour rester en sécurité.",
-		"title": "Changez votre mot de passe"
-	},
-	"common": {
-		"abstract": "Résumé",
-		"accepted-for-publication-on": "Accepté pour publication le",
-		"accepted-on": "Accepté le",
-		"add": "Ajouter",
-		"added-successfully": "ajouté avec succès",
-		"affiliation": "Affiliation",
-		"app-name": "SEO Portail Science Ouverte",
-		"applicant": "Demandeur",
-		"approved": "Approuvé",
-		"author": "Auteur | Auteurs",
-		"back": "Retour",
-		"by": "par",
-		"cancel": "Annuler",
-		"close": "Fermer",
-		"comments": "Commentaires",
-		"complete": "Compléter",
-		"completed": "Complété",
-		"completed-on": "Terminé le",
-		"confirm-email": "Confirmez votre courriel",
-		"confirm-password": "Confirmez le mot de passe",
-		"congratulations": "Toutes nos félicitations!",
-		"contact": "Contact",
-		"contiue": "Continuez",
-		"copied": "Copié",
-		"copy-to-clipboard": "Copier dans le presse-papier",
-		"corresponding-author": "Auteur correspondant",
-		"corresponding-author-desc": "L'auteur correspondant communique avec la ou les revues et est responsable de la gestion des questions éditoriales ainsi que du format et du contenu finaux du manuscrit. \nCette personne n'est pas nécessairement le \"premier\" auteur, ce qui peut avoir des significations différentes selon les domaines. \nPar exemple, il peut s'agir du premier ou du dernier auteur ou de la personne qui supervise le processus de publication et, souvent, responsable de la conception, du soutien et de la gestion du projet.",
-		"corresponding-author-toggle": "Bascule s'il s'agit d'un auteur correspondant",
-		"create": "Créer",
-		"created": "Créé",
-		"created-on": "Créé le",
-		"current-affiliation": "Affiliation actuelle",
-		"current-password": "Mot de passe actuel",
-		"dashboard": "Tableau de bord",
-		"deferred": "Différé",
-		"delete": "Supprimer",
-		"deleted": "Supprimé",
-		"description": "La description",
-		"dfo-region": "Région MPO",
-		"dismiss": "Fermer",
-		"division-manager": "Chef de division",
-		"doi": "DOI",
-		"email": "Courriel",
-		"embargoed-until": "Sous embargo jusqu'à",
-		"english": "Anglais",
-		"explore": "Explorer",
-		"file-uploaded-successfully": "Fichier téléchargé avec succès",
-		"filter": "Filtre",
-		"filters": "Filtres",
-		"first-name": "Prénom",
-		"form": "Formulaire",
-		"french": "Français",
-		"funder": "Bailleur de fonds",
-		"funding-sources": "Sources de financement",
-		"hide": "Cacher",
-		"i-need-to-take-action": "Je dois agir",
-		"in": "dans",
-		"in-progress": "En cours",
-		"inactive-msg": "Vous avez été inactif pendant {0} minutes. \nVous serez déconnecté dans 2 minutes.",
-		"is-a-corresponding-author": "Est-ce un auteur correspondant ?",
-		"journal": "Revue scientifique",
-		"kb-uploaded-on": "Ko téléchargé le",
-		"last-name": "Nom de famille",
-		"lead-region": "Région responsable",
-		"loading": "Chargement...",
-		"logged-out": "Déconnecté",
-		"login": "Connexion",
-		"logout": "Se déconnecter",
-		"manuscript": "Manuscrit",
-		"manuscript-record": "Registre du manuscrit",
-		"manuscript-record-form": "Formulaire de registre des manuscrits",
-		"manuscript-type": "Type de manuscrit",
-		"manuscripts": "Manuscrits",
-		"my-manuscripts": "Mes manuscrits",
-		"my-publications": "Mes publications",
-		"my-reviews": "Mes révisions",
-		"next": "Suivant",
-		"no": "Non",
-		"no-actions-required": "Aucune action requise",
-		"no-authors": "Aucun auteur",
-		"no-filters-applied": "Aucun filtre appliqué",
-		"no-results-found": "Aucun résultat trouvé",
-		"no-results-found-for": "Aucun résultat trouvé pour",
-		"no-results-found-hint": "Essayez d'ajuster vos critères de recherche ou vos filtres pour trouver ce que vous cherchez.",
-		"no-title": "Pas de titre",
-		"none": "Aucune",
-		"not-available": "Pas disponible",
-		"of": "de",
-		"on": "le",
-		"open-access": "Libre accès",
-		"organization": "Organisme",
-		"page-not-found": "Page non trouvée",
-		"pending": "En attente",
-		"pending-publication": "En attente de publication",
-		"plain-language-summary": "Résumé en langage clair",
-		"primary-manuscript": "Manuscrit principal",
-		"primary-publication": "Publication primaire",
-		"progress": "Progrès",
-		"publications": "Publications",
-		"published-as-open-access": "Publié en libre accès",
-		"published-on": "Publié le",
-		"recent": "Récent",
-		"register": "S'inscrire",
-		"registered": "Inscrit",
-		"required": "Obligatoire",
-		"reset": "Réinitialiser",
-		"reviews": "Révisions",
-		"save": "Sauver",
-		"saved": "Enregistré",
-		"secondary-manuscript": "Manuscrit secondaire",
-		"secondary-publication": "Publication secondaire",
-		"sensitive-issues": "questions sensibles",
-		"settings": "Paramètres",
-		"show": "Voir",
-		"showing": "Montrant",
-		"status": "Statut",
-		"stay-logged-in": "Rester connecté",
-		"submit": "Soumettre",
-		"submitted-on": "Soumis le",
-		"submitted-to-journal-on": "Soumis au journal le",
-		"timeAgo": {
-			"ago": "il y a {0}",
-			"day": "jour | jours",
-			"hour": "heure | heures",
-			"in": "dans {0}",
-			"just-now": "tout de suite",
-			"last-month": "le mois dernier",
-			"last-week": "La semaine dernière",
-			"last-year": "l'année dernière",
-			"minute": "minutes | minutes",
-			"month": "mois | mois",
-			"next-month": "le mois prochain",
-			"next-week": "la semaine prochaine",
-			"next-year": "L'année prochaine",
-			"second": "seconde | secondes",
-			"tomorrow": "demain",
-			"week": "semaine | semaines",
-			"year": "année | ans",
-			"yesterday": "hier"
-		},
-		"title": "Titre",
-		"type-of-publication": "Type de publication",
-		"unknown": "Inconnue",
-		"update": "Mettre à jour",
-		"updated-successfully": "Mis à jour réussie ",
-		"upload": "Télécharger",
-		"user": "Utilisateur",
-		"validation": {
-			"at-least-one-author": "Au moins un auteur correspondant est requis.",
-			"date-is-too-early": "La date est trop tôt",
-			"date-is-too-late": "La date est trop tard",
-			"email-invalid": "Le courriel est invalide",
-			"email-required": "Le courriel est requis",
-			"emails-match": "Les courriels indiqués ne correspondent pas",
-			"file-size-is-too-large": "La taille du fichier est trop grande",
-			"file-type-is-not-accepted": "Le type de fichier n'est pas accepté",
-			"invalid-date": "Date invalide",
-			"invalid-doi": "DOI invalide",
-			"must-be-less-than-x-characters": "Doit contenir moins de {0} caractères",
-			"name-invalid": "Le nom n'est pas valide",
-			"name-required": "Le nom est requis",
-			"no-authors": "Aucun auteur, veuillez ajouter au moins un auteur avant la soumission.",
-			"orcid-invalid": "ORCID n'est pas valide",
-			"orcid-is-invalid-checksum": "ORCID n'est pas valide (somme de contrôle)",
-			"password-length": "Le mot de passe doit comporter au moins 12 caractères",
-			"password-required": "Mot de passe requis",
-			"passwords-different": "Votre mot de passe actuel et votre nouveau mot de passe doivent être différents",
-			"passwords-match": "Les mots de passe ne correspondent pas"
-		},
-		"withdraw": "Retirer",
-		"withdrawn-on": "Retiré le",
-		"withheld": "Refusé",
-		"yes": "Oui",
-		"your-email": "Votre courriel",
-		"your-first-name": "Ton prénom",
-		"your-last-name": "Votre nom de famille",
-		"your-password": "Votre mot de passe"
-	},
-	"create-author-dialog": {
-		"title": "Créer un nouvel auteur"
-	},
-	"create-manuscript-record-dialog": {
-		"create-text": "Une fois créé, vous serez redirigé vers le formulaire du registre des manuscrits. \nLe formulaire du registre des manuscrits sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour révision.",
-		"enter-the-title-of-your-manuscript": "Entrez le titre de votre manuscrit",
-		"primary-pub-desc": "Une publication dans une publication primaire, revuée par les pairs  (revues scientifiques, numéros spéciaux, chapitres de livre, livres et comptes-rendus de congrès)",
-		"secondary-pub-desc": "Une publication dans les revues scientifiques secondaires de Pêches et Océans Canada (MPO) telles que la série « Rapport technique canadien sur les sciences halieutiques et aquatiques » du MPO, « Rapport de données canadien sur les sciences halieutiques et aquatiques », et d'autres séries.",
-		"select-region-text": "Veuillez sélectionner la région principale du MPO responsable de la révision par la gestion de ce manuscrit.",
-		"step1": {
-			"text": "Veuillez sélectionner le type de registre de manuscrit que vous souhaitez créer. \nAvez-vous l'intention de soumettre ce manuscrit à une revue primaire ou secondaire ?"
-		},
-		"step2": {
-			"title": "Détails du manuscrit"
-		},
-		"title": "Créer un nouveau registre de manuscrit",
-		"what-is-the-working-title-of-your-manuscript": "Quel est le titre provisoire de votre manuscrit ?"
-	},
-	"create-organization-dialog": {
-		"abbreviation-english": "Abréviation (anglais)",
-		"abbreviation-french": "Abréviation (français)",
-		"organization-name-english": "Nom de l'organisation (anglais)",
-		"organization-name-french": "Nom de l'organisation (français)",
-		"p1": "Une fois créée, cette organisation sera accessible à tous les utilisateurs. \nVeuillez vous assurer d'utiliser le nom et l'abréviation officiels de l'organisation. \n(Ex. : n'incluez pas les départements, les succursales ou les régions.)",
-		"p2": "Si le nom de l'organisme n'a pas d'équivalent officiel français ou anglais, veuillez recopier le nom officiel dans les deux champs.",
-		"title": "Créer une nouvelle organisation"
-	},
-	"create-publication-dialog": {
-		"accepted-on-optional": "Accepté le (facultatif)",
-		"before-continuing": "Avant de continuer...",
-		"before-your-start": "Avant de commencer",
-		"dates-and-access": "Dates et accès",
-		"publication-access": "Accès aux publications",
-		"publication-dates": "Dates de publication",
-		"publication-details": "Détails de publication",
-		"published-on": "Publié le",
-		"step1": {
-			"p1": "Cet assistant vous permet d'ajouter au portail des manuscrits publiées ; \nvous permettant de partager des publications passées ou d'ajouter des publications où le Formulaire du Registre des Manuscrits (FRM) a été fait par d'autres moyens.",
-			"warning": "Si vous êtes ici pour faire réviser votre manuscrit par la gestion avant de le soumettre à une revue, ne continuez pas, créez plutôt un nouveau registre de manuscrit."
-		},
-		"title": "Créer une publication"
-	},
-	"dashboard": {
-		"add-publication": "Ajouter une publication",
-		"add-your-first-publication": "Ajoutez votre première publication",
-		"awaiting-publication": "En attente de publication",
-		"create-your-first-manuscript-record": "Créez votre premier registre de manuscrit",
-		"in-progress": "En cours"
-	},
-	"date-input": {
-		"hint": "Format de date ISO (AAAA-MM-JJ)"
-	},
-	"decision": {
-		"approve-and-complete": "Approuver et compléter",
-		"approve-and-complete-desc": "Vous approuvez la publication de ce manuscrit et vous mettez fin au processus de revue par la gestion.",
-		"approve-and-forward": "Approuver et transmettre",
-		"approve-and-forward-desc": "Vous recommandez l'approbation de ce manuscrit pour publication et vous le transmettez au prochain examinateur.",
-		"reassign": "Réassigner",
-		"reassign-desc": "Vous n'êtes pas le gestionnaire approprié pour examiner ce manuscrit et vous réassignez cet examen au gestionnaire approprié sans faire de recommandation.",
-		"withhold-and-complete": "Retenir et compléter le processus de révision",
-		"withhold-and-complete-desc": "Vous retenez ce manuscrit pour publication et vous mettez fin au processus de revue par la gestion. \nSeul un RDS ou un DG peut prendre cette décision.",
-		"withhold-and-forward": "Retenir et transférer",
-		"withhold-and-forward-desc": "Vous recommandez que ce manuscrit ne soit pas publié et vous le transmettez a un gestionnaire de niveau supérieur"
-	},
-	"dialog": {
-		"delete-manuscript": {
-			"manuscript-deleted": "Manuscrit supprimé",
-			"message": "Voulez-vous vraiment supprimer le manuscrit intitulé \"{title}\" ?",
-			"title": "Supprimer un manuscrit"
-		},
-		"delete-manuscript-pdf": {
-			"manuscript-pdf-deleted": "Le fichier manuscrit a été supprimé avec succès",
-			"message": "Cela supprimera le fichier manuscrit joint suivant : {file}",
-			"title": "Veuillez confirmer"
-		},
-		"unsaved-changes": {
-			"message": "Vous avez des changements non enregistrés. \nÊtes-vous sûr de vouloir quitter?",
-			"title": "Modifications non enregistrées"
-		}
-	},
-	"error-invalid-signature": {
-		"invalid-signature": "Signature non valide",
-		"link-expired-text": "Le lien signé que vous utilisez a probablement expiré."
-	},
-	"forgot-password-card": {
-		"cancel": "Revenir à la connexion",
-		"text": "Ne vous inquiétez pas, nous sommes tous déjà passés par là. \nCliquez simplement sur le bouton de réinitialisation du mot de passe et nous vous enverrons des instructions pour vous remettre sur la bonne voie.",
-		"title": "Réinitialisez votre mot de passe"
-	},
-	"form-section-status": {
-		"section-complete": "Section terminée",
-		"section-error": "Erreur dans la section",
-		"section-incomplete": "Section incomplète"
-	},
-	"funding-source": {
-		"create-funding-source": "Créer une source de financement",
-		"edit-funding-source": "Modifier la source de financement"
-	},
-	"funding-source-list": {
-		"no-funding-source-given": "Aucune source de financement indiquée."
-	},
-	"invite-user-dialog": {
-		"help": "Invitez un nouvel utilisateur sur le portail. \nLe courriel d'invitation sera envoyé à l'adresse courriel de l'utilisateur et vous pourrez savoir s'il a accepté l'invitation sous l'onglet \"Invitation envoyée\" dans le menu \"Paramètres\".",
-		"invite": "Inviter",
-		"invite-a-user": "Inviter un utilisateur",
-		"locale-hint": "Le courriel d'invitation sera envoyé dans la langue choisie."
-	},
-	"journal-select": {
-		"not-found-msg": "Vous ne trouvez pas le journal que vous cherchez ? \nVeuillez nous contacter afin que nous puissions l'ajouter.",
-		"search-hint": "Commencez à taper pour rechercher un journal"
-	},
-	"login-card": {
-		"dont-have-an-account": "Vous n'avez pas de compte?",
-		"email-verified-text": "Courriel verifié. \nVous pouvez maintenant vous connecter.",
-		"forgot-your-password": "Mot de passe oublié?",
-		"new-password-required": "Vous avez été redirigé car votre compte nécessite un nouveau mot de passe.",
-		"remember-me": "Se souvenir de moi"
-	},
-	"logout-card": {
-		"text": "Merci d'utiliser le portail science ouverte.",
-		"text-inactive": "Vous avez été déconnecté pour cause d'inactivité."
-	},
-	"manage-author-profile-card": {
-		"current-affiliation-hint": "Cela n'affectera pas l'affiliation de vos publications passées.",
-		"orcid-not-verified": "Vous pouvez également vérifier ou vous inscrire auprès d'ORCID en utilisant \"Gérer ORCID\"",
-		"orcid-verified": "Ceci est un ORCID vérifié. \nUtilisez \"Gérer ORCID\" pour le modifier.",
-		"synced-to-your-user-profile": "Synchronisé avec votre profil utilisateur."
-	},
-	"manage-author-profile-view": {
-		"authorize-orcid": "Gérer ORCID",
-		"title": "Disciplines, Compétences et Expertises"
-	},
-	"manage-funding-source-card": {
-		"add-funding-source": "Ajouter une source de financement",
-		"subtitle": "Le cas échéant, veuillez saisir la ou les sources de financement qui ont aidé à générer ce travail."
-	},
-	"manage-manuscript-author-card": {
-		"delete-author": "Supprimer l'auteur",
-		"delete-author-msg": "Voulez-vous vraiment supprimer cet auteur ?",
-		"instructions": "Entrez tous les auteurs, leurs affiliations et au moins un auteur correspondant. \nLes auteurs apparaîtront dans la liste dans l'ordre dans lequel ils sont entrés.",
-		"title": "Auteur(s) et Affiliation(s)"
-	},
-	"manage-pub-authors": {
-		"no-authors": "Aucun auteur identifié, veuillez ajouter ici les auteurs de la publication."
-	},
-	"management-review-guidelines": {
-		"subtitle": "Veuillez consulter la Politique nationale des publications scientifiques pour plus de détails.",
-		"tip-one": "Examiner le manuscrit pour s'assurer qu'il est conforme à la Politique sur la propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique du MPO.",
-		"tip-three": "À aucun moment, l'inclusion de matériel sensible (par exemple, des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
-		"tip-two": "Examinez le manuscrit pour identifier les questions sensibles, uniquement dans le but d'informer la haute direction et la Direction des communications avant la publication de l'article scientifique. \nLes questions sensibles identifiés doivent être ajoutés à la section \"matériel sensibles\" du formulaire.",
-		"title": "Lignes directrices sur la révision par la gestion"
-	},
-	"management-review-step-list": {
-		"review-request-received-from": "Demande de révision reçue de"
-	},
-	"management-review-step-view": {
-		"completion-of-management-review": "Fin de la révision par la gestion",
-		"not-started-submit-your-form-to-begin": "Pas commencé - Soumettez votre formulaire pour commencer",
-		"submission-for-review": "Soumission pour révision par la gestion",
-		"title": "Révision par la gestion"
-	},
-	"manuscript": {
-		"accepted": "Accepté",
-		"draft": "Brouillon",
-		"in_review": "En revue",
-		"please-select-the-lead-region": "Veuillez sélectionner la région principale",
-		"primary": "Primaire",
-		"reviewed": "Révisé",
-		"secondary": "Secondaire",
-		"submitted": "Soumis",
-		"withdrawn": "Retiré",
-		"withheld": "Retenu"
-	},
-	"manuscript-author-dialog": {
-		"instructions": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse courriel a changé, vous pouvez créer une nouvelle fiche d'auteur.",
-		"title": "Ajouter un auteur à ce manuscrit"
-	},
-	"manuscript-progress-view": {
-		"accepted-details": "Le manuscrit a été accepté pour publication par la revue ciblée et entre dans le processus de production. \nLa confirmation de cette étape créera un nouvel registre de publication dans lequel vous pourrez télécharger le manuscrit final et mettre à jour les détails de la publication.",
-		"accepted-title": "Accepté pour publication",
-		"completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est approuvé par la gestion du MPO. \nÀ ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
-		"completed-title": "Fin de la révision par la gestion",
-		"completed-withheld-details": "Le manuscrit n'est pas conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est retenu par la gestion du MPO.",
-		"created-details": "À ce stade, seuls le demandeur et les auteurs peuvent voir et modifier le registre du manuscrit.",
-		"go-to-the-publication": "Aller à la publication",
-		"manuscript-record-created": "Registre de manuscrit créé",
-		"manuscript-status-updated": "Statut du manuscrit mis à jour",
-		"mark-as-submitted": "Marquer comme soumis",
-		"submit-management": "Soumettre pour la révision par la gestion",
-		"submit-management-details": "Le manuscrit est initialement soumis à un chef de division ou directeur (NCR) pour examen par la gestion.",
-		"submit-pub-details": "Le manuscrit a été soumis à la revue cible pour la révision par les pairs. \nNous suivons cette étape pour recueillir des statistiques sur le temps nécessaire pour que les manuscrits soientt acceptés et publiés.",
-		"submit-pub-title": "Soumission initiale à la revue cible",
-		"title": "Progrès du manuscrit",
-		"withdraw-manuscript": "Retirer le manuscrit",
-		"withdrawn-by-applicant": "Retiré par le demandeur",
-		"withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe régistre du manuscrit sera archivé après 30 jours."
-	},
-	"mrf": {
-		"abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",
-		"additional-information-of-importance": "Intérêt public potentiel",
-		"additional-text": "Des exemples de sujets susceptibles d'intéresser le public, peut inclure des sujets liés à l'actualité ou d'intérêt pour les parties prenantes. Il peut s'agir de sujets intéressants pour illustrer les travaux scientifiques du MPO ou d'études plus controversées. Bien que cela ne restreigne en aucun cas les publications, cela permettra d'engager et d'informer nos collègues de la communication. Si l'on estime qu'un manuscrit présente un intérêt potentiel pour le public, les Communications en sera informée suivant la révision des gestionnaires, ainsi que lorsque le manuscrit sera marqué comme publié par le demandeur.",
-		"copy-your-manuscripts-abstract-here": "Copiez le résumé de votre manuscrit ici.",
-		"general-information": "Informations générales",
-		"generate-pls": "Générer le résumé",
-		"generating-pls-please-be-patient": "Génération de résumé... veuillez patienter",
-		"geographical-text": "Décrivez la portée géographique/région et (le cas échéant) les espèces (y compris les noms communs) de l'article.",
-		"geographical-title": "Portée géographique et espèces",
-		"lead-region-text": "Sélectionnez la région du MPO responsable de la révision par la gestion de ce manuscrit. \nSi plus d'une région est responsable, sélectionnez la région qui dirigera la révision.",
-		"manuscript-saved-successfully": "Manuscrit enregistré avec succès",
-		"manuscript-submitted-successfully": "Le registre du manuscrit a été soumis avec succès.",
-		"manuscripts-working-title": "Titre provisoire du manuscrit",
-		"not-authorized-text": "Vous n'êtes pas autorisé à consulter ce registre de manuscrit",
-		"pls-already-generated-erase-it-to-generate-a-new-one": "Résumé déjà généré - effacez-le pour en générer un nouveau",
-		"pls-generated-successfully": "Résumé généré avec succès",
-		"pls-help-ai-text": "Besoin d'aide? \nEn utilisant le résumé de votre manuscrit, nous pouvons générer un brouillon de résumé en langage clair",
-		"pls-text": "Résumé en langage clair du manuscrit pour expliquer la pertinence de la science pour le Département et promouvoir la valeur de la science par la sensibilisation et la communication. \nIl est destiné à un usage interne pour identifier les liens avec les programmes, les politiques et les intervenants et à être utilisé dans la promotion de la science en langage clair.",
-		"potential-media-interest-question": "Ce manuscrit présente-t-il un intérêt public potentiel ?",
-		"potential-media-interest-text-field-text": "Facultativement, veuillez fournir toute information pertinente concernant l'intérêt public potentiel.",
-		"ready-to-marked-published": "Ce manuscrit a été révisé mais doit encore être marqué comme publié par le candidat.",
-		"relevant-text": "Décrivez comment ce manuscrit est pertinent pour le programme qui l'a financé, comment il supporte le mandat du ministère, le plan stratégique du département et/ou les priorités régionales. ",
-		"relevant-title": "Pertinent pour les programmes, projets, etc.",
-		"replace-manuscript": "Télécharger une nouvelle version du manuscrit",
-		"scientific-implication-text": "Décrivez les implications scientifiques de l'article. \n(c'est-à-dire le domaine, l'importance, point focal, le but, les avantages, etc.)",
-		"scientific-implications": "Implications scientifiques",
-		"submit-tooltip": "Soumettre pour révision par la gestion",
-		"submit-tooltip-disabled": "Veuillez remplir toutes les sections et enregistrer pour soumettre",
-		"upload-hint": "Seuls les fichiers PDF sont acceptés. \nLa taille maximale du fichier est de {max} Mo.",
-		"upload-manuscript": "Télécharger le manuscrit",
-		"upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
-		"working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié."
-	},
-	"my-manuscript-records": {
-		"actions-still-required": "Actions encore nécessaires",
-		"all-manuscripts": "Tous les manuscrits",
-		"all-manuscripts-caption": "Inclut ceux partagés avec moi",
-		"create-manuscript": "Créer un manuscrit",
-		"my-manuscripts-caption": "je suis le demandeur",
-		"no-manuscript": "Aucun manuscrit n'existe ou n'est partagé avec vous"
-	},
-	"my-publication-view": {
-		"actions-still-required": "Actions encore nécessaires",
-		"all-publications": "Toutes les publications",
-		"create-publication": "Créer une publication",
-		"i-am-responsible-for-this-publication-record": "Je suis responsable de ce registre de publication",
-		"includes-ones-shared-with-me": "Inclut celles partagées avec moi",
-		"my-publications": "Mes Publications",
-		"no-publications-found": "Aucune publication trouvée"
-	},
-	"no-management-review": {
-		"subtitle": "Les manuscrits que vous avez récemment été invités à réviser apparaîtront ici.",
-		"title": "Vous n'avez rien à réviser"
-	},
-	"no-manuscript-exists-div": {
-		"p1": "Besoin de publier une publication primaire ou secondaire ? \nVous êtes arrivé au bon endroit. \nCréez un dossier de manuscrit et lancez le processus de publication de votre manuscrit conformément à la politique nationale pour les publications scientifiques.",
-		"p2": "La politique nationale assure un traitement uniforme des publications scientifiques dans toutes les régions du MPO, la reconnaissance de l'impact scientifique du Ministère grâce à l'utilisation d'une affiliation standard et un suivi efficace de nos publications afin de mieux intégrer la science dans les processus ministériels."
-	},
-	"no-publication-exist-div": {
-		"p1": "Les manuscrits qui ont été révisés apparaîtront ici. \nUne fois publié, vous pouvez mettre à jour les détails de la publication. \nVous pouvez également ajouter ici toutes publications passées afin qu'elles fassent partie de notre base de données et soient accessibles à tous."
-	},
-	"ocrid": {
-		"verify-btn-text": "Vérifiez votre identifiant ORCID"
-	},
-	"orcid": {
-		"already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le modifier ou le vérifier à nouveau, cliquez ci-dessous.",
-		"error-verifying": "Erreur lors de la vérification avec ORCID.org",
-		"verified-with": "Vérifié avec succès avec ORCID.org",
-		"verifying": "Vérification avec ORCID.org"
-	},
-	"organization-select": {
-		"add-a-new-organization": "Ajouter une nouvelle organisation",
-		"cant-find": "Vous ne trouvez pas l'organisation que vous recherchez ?",
-		"hint": "Commencez à taper pour rechercher une organisation"
-	},
-	"osp": {
-		"description": "Le Portail de la science ouverte est une application Web intuitive pour promouvoir la science ouverte et suivre les publications scientifiques au sein de Pêches et Océans Canada.",
-		"slogan": {
-			"p1": "Partagez votre travail",
-			"p2": "Aidez nous à",
-			"p3": "grandir"
-		}
-	},
-	"policy": {
-		"for-more-info": "Pour plus d'informations, veuillez consulter la {policy}.",
-		"intellectual-property-policy-copyright-act": "Politique de propriété intellectuelle/ la loi sur le droit d'auteur",
-		"intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/copyright-droits-fra.htm",
-		"message": {
-			"p1": "Réviser le manuscrit pour vérifier qu'il respecte le {copyrightsAct}, la {privacyAct}, la loi sur la gestion financière (en ce qui concerne les approbations des coûts de publication) et le {valueAndEthicsCode}.\n\n Il identifiera également les cas où un manuscrit présente un intérêt potentiel pour le public, dans le seul but d'informer les Communications et le RDS. Des exemples de sujets d'intérêt public potentiel, inclus des sujets liés à l'actualité ou à l'intérêt des parties prenantes. Il peut s'agir d'histoires intéressantes pour illustrer les projets de recherches menés au MPO ou des sujets d'études qui sont plus controversées. L'inclusion de matériel potentiellement sensible n'empêchera jamais la publication d'un manuscrit."
-		},
-		"national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
-		"national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html",
-		"p2": "Le Secteur des sciences s’engage à approuver les manuscrits en vue de leur publication dans un délai de dix jours ouvrables. Si les directeurs ne donnent pas leur approbation dans un délai de dix jours ouvrables, les auteurs peuvent soumettre leur manuscrit à l’éditeur.",
-		"privacy-act": "Loi sur la protection des renseignements personnels",
-		"privacy-act-link": "https://www.priv.gc.ca/fr/sujets-lies-a-la-protection-de-la-vie-privee/lois-sur-la-protection-des-renseignements-personnels-au-canada/la-loi-sur-la-protection-des-renseignements-personnels/lprp_survol/",
-		"values-and-ethics-code-for-dfo": "Code de valeurs et d'éthique du MPO",
-		"values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-fra.htm"
-	},
-	"pub": {
-		"general-information": "Informations générales"
-	},
-	"pub-author-dialog": {
-		"are-you-sure-you-want-to-delete-this-author": "Voulez-vous vraiment supprimer cet auteur ?",
-		"delete-author": "Supprimer l'auteur"
-	},
-	"publication": {
-		"accepted": "Acceptée",
-		"publsihed": "Publiée"
-	},
-	"publication-page": {
-		"attach-pub-details": "Téléchargez la copie la plus récente de votre publication en format PDF. \nNous n'autoriserons pas les utilisateurs du portail à voir ce fichier avant la fin de sa période d'embargo.",
-		"attach-publication": "Joindre le manuscrit",
-		"go-to-manuscript-record": "Aller au registre du manuscrit",
-		"mark-as-published": "Marquer comme publié",
-		"publication-date-pending": "Date de publication en attente",
-		"publication-status": "Statut de publication",
-		"publication-updated-successfully": "Publication mise à jour avec succès",
-		"title": "Publication"
-	},
-	"publications-view": {
-		"all-published-publications-details": "Toutes les publications publiées",
-		"open-access-filter-details": "Publications publiées en libre accès",
-		"published-in-dfo-journals": "Publié dans les revues du MPO",
-		"secondary-publications": "Publications secondaires",
-		"under-embargo": "Sous embargo",
-		"under-embargo-caption": "Publications sous embargo"
-	},
-	"register-card": {
-		"registered": {
-			"text": "Veuillez vérifier votre courriel ({0}) pour un lien de confirmation. \nPour protéger votre compte, vous ne pourrez pas vous connecter tant que vous n'aurez pas confirmé votre adresse courriel."
-		},
-		"registered-subtitle": "Juste une dernière étape..."
-	},
-	"required-span": {
-		"definition": "Les champs marqués d'un * sont obligatoires.",
-		"tooltip": "Ce champ est obligatoire"
-	},
-	"reset-password": {
-		"invalid-request-title": "Demande de réinitialisation de mot de passe invalide",
-		"text": "Entrez un nouveau mot de passe pour {0}.",
-		"title": "Entrez un nouveau mot de passe"
-	},
-	"review-step": {
-		"review-by": "Révision par {0}",
-		"save-comments": "Enregistrer les commentaires",
-		"submit-decision": "Soumettre la décision",
-		"your-review": "Votre révision : {0}"
-	},
-	"review-step-view": {
-		"all-my-reviews": "Toutes mes révisions",
-		"list-of-all-my-reviews": "Liste de toutes mes révisions"
-	},
-	"reviewer-comments": {
-		"description": "Les commentaires sont obligatoires, sauf si vous approuvez et terminez la revue par la gestion sans l'envoyer à un autre gestionnaire. \nLes commentaires saisis ici doivent appuyer votre décision et, le cas échéant, fournir des commentaires aux prochain gestionnaire. \nVos commentaires seront visibles par toute personne ayant accès à ce registre de manuscrit.",
-		"title": "Commentaires du gestionnaire"
-	},
-	"submit-decision-dialog": {
-		"certify-text": "Je certifie qu'à ma connaissance, ma décision est fondée sur les lignes directrices énoncées dans la Politique nationale pour les publications scientifiques du MPO. \nLe cas échéant, j'ai lu les commentaires fournis par le gestionnaire précédent et les ai pris en compte dans ma décision.",
-		"confirm-decision": "Confirmer la décision",
-		"next-reviewer": "Réviseur de gestion suivant",
-		"next-reviewer-hint": "Recherchez la personne appropriée pour mener la révision par la gestion dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
-		"no-comments-warning": "Votre avis n'a pas de commentaires. \nPar conséquent, vous ne pouvez qu'approuver et compléter cet examen de gestion. \nVeuillez ajouter des commentaires pour appuyer votre décision si vous souhaitez sélectionner parmi les autres options.",
-		"select-decision": "Sélectionnez votre décision",
-		"select-next-reviewer": "Prochain gestionnaire",
-		"subsequent-reviewer-is-required": "Compte tenu de votre décision, un gestionnaire ultérieur est requis pour compléter la révision ",
-		"your-decision": "Votre décision"
-	},
-	"submit-manuscript-dialog": {
-		"step1": {
-			"confirmation-text": "Je certifie que, à ma connaissance, ce manuscrit est conforme à la Politique de propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique des \nMPO.",
-			"subtitle": "Soumission pour la révision par la gestion",
-			"title": "Confirmer la soumission"
-		},
-		"step2": {
-			"p1": "Pour soumettre le manuscrit pour la révision par la gestion, recherchez le responsable/chef de division approprié dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
-			"p2": "Noter; \nvous ne pourrez pas sélectionner quelqu'un qui est l'auteur de ce manuscrit ou le propriétaire de ce registre de manuscrit.",
-			"subtitle": "Chef de division/Directeur",
-			"title": "Sélectionnez le réviseur de gestion"
-		},
-		"title": "Soumettre le manuscrit pour la révision par la gestion"
-	},
-	"submitted-to-journal-dialog": {
-		"text": "Marquez ce manuscrit comme ayant été soumis à une revue. \nCette étape permet de faire savoir à tous les utilisateurs impliqués dans la révision par la gestion que vous avez soumis votre manuscrit pour publication.",
-		"title": "Mettre à jour le statut du manuscrit tel qu'il a été soumis"
-	},
-	"under-construction": {
-		"subtitle": "J'y travaille...",
-		"title": "En  construction"
-	},
-	"user-profile": {
-		"email-hint": "Votre adresse courriel vérifiée ne peut pas être modifiée manuellement."
-	},
-	"user-select": {
-		"cant-find-the-user-youre-looking-for": "Vous ne trouvez pas l'utilisateur que vous recherchez ?",
-		"invite-a-new-user": "Inviter un nouvel utilisateur",
-		"not-the-user-youre-looking-for": "Ce n'est pas l'utilisateur que vous recherchez ?",
-		"start-typing-to-search-for-a-user": "Commencez à taper pour rechercher un utilisateur"
-	},
-	"withdraw-manuscript-dialog": {
-		"text": "Retirez ce manuscrit. \nCela nous permet de savoir que ce manuscrit ne sera pas publié et ferme ce registre de manuscrit.",
-		"title": "Retirer ce manuscrit"
-	}
+  "LocaleSelect": {
+    "label": "Préférence linguistique"
+  },
+  "SentInvitationsCard": {
+    "invited-at": "Invité à",
+    "registered-at": "Inscrit à",
+    "subtitle": "Liste des invitations que vous avez envoyées.",
+    "title": "Invitations envoyées"
+  },
+  "SettingsPage": {
+    "account-security": "Sécurité du compte",
+    "author-profile": "Profil de l'auteur",
+    "user-profile": "Profil de l'utilisateur"
+  },
+  "accepted-by-journal-dialog": {
+    "text": "Vous pouvez maintenant marquer ce manuscrit comme ayant été accepté pour publication par une revue. \nCette étape créera une nouvelle publication sur votre profil vous permettant de mettre à jour les détails de la publication. \nUne fois que vous connaissez les détails de la publication, n'oubliez pas de mettre à jour le dossier de publication et de le marquer comme publié afin que nous puissions aider à le partager au sein de la communauté du MPO."
+  },
+  "add-pub-author-dialog": {
+    "dialog-help": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse e-mail a changé, vous pouvez créer une nouvelle fiche d'auteur.",
+    "title": "Ajouter un auteur à cette publication"
+  },
+  "auth": {
+    "logged-out-successfully": "Déconnecté avec succès",
+    "redirected": "Vous avez été automatiquement redirigé."
+  },
+  "authentication-history-card": {
+    "browser": "Agent",
+    "ip_address": "Adresse IP",
+    "location": "Emplacement",
+    "login-at": "Connexion à",
+    "logout-at": "Déconnexion à",
+    "subtitle": "Activité suspecte? \nModifiez votre mot de passe et signalez-le nous immédiatement.",
+    "successful": "Réussie",
+    "title": "Historique d'authentification"
+  },
+  "author-select": {
+    "add-a-new-author": "Ajouter un nouvel auteur",
+    "cant-find-text": "Vous ne trouvez pas l'auteur que vous recherchez ?",
+    "empty-search-hint": "Commencez à taper pour rechercher un auteur",
+    "hint": "Commencez à taper pour rechercher un auteur (prénom, nom ou courriel)",
+    "not-the-author-youre-looking-for": "Ce n'est pas l'auteur que vous recherchez ?"
+  },
+  "change-password-card": {
+    "change-password": "Changer le mot de passe",
+    "confirm-new-password": "Confirmer le nouveau mot de passe",
+    "new-password": "Nouveau mot de passe",
+    "new-password-required": "La sécurité de votre compte est importante pour nous. \nVous utilisez un mot de passe temporaire ou expiré, veuillez le changer maintenant.",
+    "subtitle": "Assurez-vous que votre compte utilise un mot de passe long (12 caractères ou plus) et aléatoire pour rester en sécurité.",
+    "title": "Changez votre mot de passe"
+  },
+  "common": {
+    "abstract": "Résumé",
+    "accepted-for-publication-on": "Accepté pour publication le",
+    "accepted-on": "Accepté le",
+    "add": "Ajouter",
+    "added-successfully": "ajouté avec succès",
+    "affiliation": "Affiliation",
+    "app-name": "SEO Portail Science Ouverte",
+    "applicant": "Demandeur",
+    "approved": "Approuvé",
+    "author": "Auteur | Auteurs",
+    "back": "Retour",
+    "by": "par",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "comments": "Commentaires",
+    "complete": "Compléter",
+    "completed": "Complété",
+    "completed-on": "Terminé le",
+    "confirm-email": "Confirmez votre courriel",
+    "confirm-password": "Confirmez le mot de passe",
+    "congratulations": "Toutes nos félicitations!",
+    "contact": "Contact",
+    "contiue": "Continuez",
+    "copied": "Copié",
+    "copy-to-clipboard": "Copier dans le presse-papier",
+    "corresponding-author": "Auteur correspondant",
+    "corresponding-author-desc": "L'auteur correspondant communique avec la ou les revues et est responsable de la gestion des questions éditoriales ainsi que du format et du contenu finaux du manuscrit. \nCette personne n'est pas nécessairement le \"premier\" auteur, ce qui peut avoir des significations différentes selon les domaines. \nPar exemple, il peut s'agir du premier ou du dernier auteur ou de la personne qui supervise le processus de publication et, souvent, responsable de la conception, du soutien et de la gestion du projet.",
+    "corresponding-author-toggle": "Bascule s'il s'agit d'un auteur correspondant",
+    "create": "Créer",
+    "created": "Créé",
+    "created-on": "Créé le",
+    "current-affiliation": "Affiliation actuelle",
+    "current-password": "Mot de passe actuel",
+    "dashboard": "Tableau de bord",
+    "deferred": "Différé",
+    "delete": "Supprimer",
+    "deleted": "Supprimé",
+    "description": "La description",
+    "dfo-region": "Région MPO",
+    "dismiss": "Fermer",
+    "division-manager": "Chef de division",
+    "doi": "DOI",
+    "email": "Courriel",
+    "embargoed-until": "Sous embargo jusqu'à",
+    "english": "Anglais",
+    "explore": "Explorer",
+    "file-uploaded-successfully": "Fichier téléchargé avec succès",
+    "filter": "Filtre",
+    "filters": "Filtres",
+    "first-name": "Prénom",
+    "form": "Formulaire",
+    "french": "Français",
+    "funder": "Bailleur de fonds",
+    "funding-sources": "Sources de financement",
+    "hide": "Cacher",
+    "i-need-to-take-action": "Je dois agir",
+    "in": "dans",
+    "in-progress": "En cours",
+    "inactive-msg": "Vous avez été inactif pendant {0} minutes. \nVous serez déconnecté dans 2 minutes.",
+    "is-a-corresponding-author": "Est-ce un auteur correspondant ?",
+    "journal": "Revue scientifique",
+    "kb-uploaded-on": "Ko téléchargé le",
+    "last-name": "Nom de famille",
+    "lead-region": "Région responsable",
+    "loading": "Chargement...",
+    "logged-out": "Déconnecté",
+    "login": "Connexion",
+    "logout": "Se déconnecter",
+    "manuscript": "Manuscrit",
+    "manuscript-record": "Registre du manuscrit",
+    "manuscript-record-form": "Formulaire de registre des manuscrits",
+    "manuscript-type": "Type de manuscrit",
+    "manuscripts": "Manuscrits",
+    "my-manuscripts": "Mes manuscrits",
+    "my-publications": "Mes publications",
+    "my-reviews": "Mes révisions",
+    "next": "Suivant",
+    "no": "Non",
+    "no-actions-required": "Aucune action requise",
+    "no-authors": "Aucun auteur",
+    "no-filters-applied": "Aucun filtre appliqué",
+    "no-results-found": "Aucun résultat trouvé",
+    "no-results-found-for": "Aucun résultat trouvé pour",
+    "no-results-found-hint": "Essayez d'ajuster vos critères de recherche ou vos filtres pour trouver ce que vous cherchez.",
+    "no-title": "Pas de titre",
+    "none": "Aucune",
+    "not-available": "Pas disponible",
+    "of": "de",
+    "on": "le",
+    "open-access": "Libre accès",
+    "organization": "Organisme",
+    "page-not-found": "Page non trouvée",
+    "pending": "En attente",
+    "pending-publication": "En attente de publication",
+    "plain-language-summary": "Résumé en langage clair",
+    "primary-manuscript": "Manuscrit principal",
+    "primary-publication": "Publication primaire",
+    "progress": "Progrès",
+    "publications": "Publications",
+    "published-as-open-access": "Publié en libre accès",
+    "published-on": "Publié le",
+    "recent": "Récent",
+    "register": "S'inscrire",
+    "registered": "Inscrit",
+    "required": "Obligatoire",
+    "reset": "Réinitialiser",
+    "reviews": "Révisions",
+    "save": "Sauver",
+    "saved": "Enregistré",
+    "secondary-manuscript": "Manuscrit secondaire",
+    "secondary-publication": "Publication secondaire",
+    "sensitive-issues": "questions sensibles",
+    "settings": "Paramètres",
+    "show": "Voir",
+    "showing": "Montrant",
+    "status": "Statut",
+    "stay-logged-in": "Rester connecté",
+    "submit": "Soumettre",
+    "submitted-on": "Soumis le",
+    "submitted-to-journal-on": "Soumis au journal le",
+    "timeAgo": {
+      "ago": "il y a {0}",
+      "day": "jour | jours",
+      "hour": "heure | heures",
+      "in": "dans {0}",
+      "just-now": "tout de suite",
+      "last-month": "le mois dernier",
+      "last-week": "La semaine dernière",
+      "last-year": "l'année dernière",
+      "minute": "minutes | minutes",
+      "month": "mois | mois",
+      "next-month": "le mois prochain",
+      "next-week": "la semaine prochaine",
+      "next-year": "L'année prochaine",
+      "second": "seconde | secondes",
+      "tomorrow": "demain",
+      "week": "semaine | semaines",
+      "year": "année | ans",
+      "yesterday": "hier"
+    },
+    "title": "Titre",
+    "type-of-publication": "Type de publication",
+    "unknown": "Inconnue",
+    "update": "Mettre à jour",
+    "updated-successfully": "Mis à jour réussie ",
+    "upload": "Télécharger",
+    "user": "Utilisateur",
+    "validation": {
+      "at-least-one-author": "Au moins un auteur correspondant est requis.",
+      "date-is-too-early": "La date est trop tôt",
+      "date-is-too-late": "La date est trop tard",
+      "email-invalid": "Le courriel est invalide",
+      "email-required": "Le courriel est requis",
+      "emails-match": "Les courriels indiqués ne correspondent pas",
+      "file-size-is-too-large": "La taille du fichier est trop grande",
+      "file-type-is-not-accepted": "Le type de fichier n'est pas accepté",
+      "invalid-date": "Date invalide",
+      "invalid-doi": "DOI invalide",
+      "must-be-less-than-x-characters": "Doit contenir moins de {0} caractères",
+      "name-invalid": "Le nom n'est pas valide",
+      "name-required": "Le nom est requis",
+      "no-authors": "Aucun auteur, veuillez ajouter au moins un auteur avant la soumission.",
+      "orcid-invalid": "ORCID n'est pas valide",
+      "orcid-is-invalid-checksum": "ORCID n'est pas valide (somme de contrôle)",
+      "password-length": "Le mot de passe doit comporter au moins 12 caractères",
+      "password-required": "Mot de passe requis",
+      "passwords-different": "Votre mot de passe actuel et votre nouveau mot de passe doivent être différents",
+      "passwords-match": "Les mots de passe ne correspondent pas"
+    },
+    "withdraw": "Retirer",
+    "withdrawn-on": "Retiré le",
+    "withheld": "Refusé",
+    "yes": "Oui",
+    "your-email": "Votre courriel",
+    "your-first-name": "Ton prénom",
+    "your-last-name": "Votre nom de famille",
+    "your-password": "Votre mot de passe"
+  },
+  "create-author-dialog": {
+    "title": "Créer un nouvel auteur"
+  },
+  "create-manuscript-record-dialog": {
+    "create-text": "Une fois créé, vous serez redirigé vers le formulaire du registre des manuscrits. \nLe formulaire du registre des manuscrits sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour révision.",
+    "enter-the-title-of-your-manuscript": "Entrez le titre de votre manuscrit",
+    "primary-pub-desc": "Une publication dans une publication primaire, revuée par les pairs  (revues scientifiques, numéros spéciaux, chapitres de livre, livres et comptes-rendus de congrès)",
+    "secondary-pub-desc": "Une publication dans les revues scientifiques secondaires de Pêches et Océans Canada (MPO) telles que la série « Rapport technique canadien sur les sciences halieutiques et aquatiques » du MPO, « Rapport de données canadien sur les sciences halieutiques et aquatiques », et d'autres séries.",
+    "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de la révision par la gestion de ce manuscrit.",
+    "step1": {
+      "text": "Veuillez sélectionner le type de registre de manuscrit que vous souhaitez créer. \nAvez-vous l'intention de soumettre ce manuscrit à une revue primaire ou secondaire ?"
+    },
+    "step2": {
+      "title": "Détails du manuscrit"
+    },
+    "title": "Créer un nouveau registre de manuscrit",
+    "what-is-the-working-title-of-your-manuscript": "Quel est le titre provisoire de votre manuscrit ?"
+  },
+  "create-organization-dialog": {
+    "abbreviation-english": "Abréviation (anglais)",
+    "abbreviation-french": "Abréviation (français)",
+    "organization-name-english": "Nom de l'organisation (anglais)",
+    "organization-name-french": "Nom de l'organisation (français)",
+    "p1": "Une fois créée, cette organisation sera accessible à tous les utilisateurs. \nVeuillez vous assurer d'utiliser le nom et l'abréviation officiels de l'organisation. \n(Ex. : n'incluez pas les départements, les succursales ou les régions.)",
+    "p2": "Si le nom de l'organisme n'a pas d'équivalent officiel français ou anglais, veuillez recopier le nom officiel dans les deux champs.",
+    "title": "Créer une nouvelle organisation"
+  },
+  "create-publication-dialog": {
+    "accepted-on-optional": "Accepté le (facultatif)",
+    "before-continuing": "Avant de continuer...",
+    "before-your-start": "Avant de commencer",
+    "dates-and-access": "Dates et accès",
+    "publication-access": "Accès aux publications",
+    "publication-dates": "Dates de publication",
+    "publication-details": "Détails de publication",
+    "published-on": "Publié le",
+    "step1": {
+      "p1": "Cet assistant vous permet d'ajouter au portail des manuscrits publiées ; \nvous permettant de partager des publications passées ou d'ajouter des publications où le Formulaire du Registre des Manuscrits (FRM) a été fait par d'autres moyens.",
+      "warning": "Si vous êtes ici pour faire réviser votre manuscrit par la gestion avant de le soumettre à une revue, ne continuez pas, créez plutôt un nouveau registre de manuscrit."
+    },
+    "title": "Créer une publication"
+  },
+  "dashboard": {
+    "add-publication": "Ajouter une publication",
+    "add-your-first-publication": "Ajoutez votre première publication",
+    "awaiting-publication": "En attente de publication",
+    "create-your-first-manuscript-record": "Créez votre premier registre de manuscrit",
+    "in-progress": "En cours"
+  },
+  "date-input": {
+    "hint": "Format de date ISO (AAAA-MM-JJ)"
+  },
+  "decision": {
+    "approve-and-complete": "Approuver et compléter",
+    "approve-and-complete-desc": "Vous approuvez la publication de ce manuscrit et vous mettez fin au processus de revue par la gestion.",
+    "approve-and-forward": "Approuver et transmettre",
+    "approve-and-forward-desc": "Vous recommandez l'approbation de ce manuscrit pour publication et vous le transmettez au prochain examinateur.",
+    "reassign": "Réassigner",
+    "reassign-desc": "Vous n'êtes pas le gestionnaire approprié pour examiner ce manuscrit et vous réassignez cet examen au gestionnaire approprié sans faire de recommandation.",
+    "withhold-and-complete": "Retenir et compléter le processus de révision",
+    "withhold-and-complete-desc": "Vous retenez ce manuscrit pour publication et vous mettez fin au processus de revue par la gestion. \nSeul un RDS ou un DG peut prendre cette décision.",
+    "withhold-and-forward": "Retenir et transférer",
+    "withhold-and-forward-desc": "Vous recommandez que ce manuscrit ne soit pas publié et vous le transmettez a un gestionnaire de niveau supérieur"
+  },
+  "dialog": {
+    "delete-manuscript": {
+      "manuscript-deleted": "Manuscrit supprimé",
+      "message": "Voulez-vous vraiment supprimer le manuscrit intitulé \"{title}\" ?",
+      "title": "Supprimer un manuscrit"
+    },
+    "delete-manuscript-pdf": {
+      "manuscript-pdf-deleted": "Le fichier manuscrit a été supprimé avec succès",
+      "message": "Cela supprimera le fichier manuscrit joint suivant : {file}",
+      "title": "Veuillez confirmer"
+    },
+    "unsaved-changes": {
+      "message": "Vous avez des changements non enregistrés. \nÊtes-vous sûr de vouloir quitter?",
+      "title": "Modifications non enregistrées"
+    }
+  },
+  "error-invalid-signature": {
+    "invalid-signature": "Signature non valide",
+    "link-expired-text": "Le lien signé que vous utilisez a probablement expiré."
+  },
+  "forgot-password-card": {
+    "cancel": "Revenir à la connexion",
+    "text": "Ne vous inquiétez pas, nous sommes tous déjà passés par là. \nCliquez simplement sur le bouton de réinitialisation du mot de passe et nous vous enverrons des instructions pour vous remettre sur la bonne voie.",
+    "title": "Réinitialisez votre mot de passe"
+  },
+  "form-section-status": {
+    "section-complete": "Section terminée",
+    "section-error": "Erreur dans la section",
+    "section-incomplete": "Section incomplète"
+  },
+  "funding-source": {
+    "create-funding-source": "Créer une source de financement",
+    "edit-funding-source": "Modifier la source de financement"
+  },
+  "funding-source-list": {
+    "no-funding-source-given": "Aucune source de financement indiquée."
+  },
+  "invite-user-dialog": {
+    "help": "Invitez un nouvel utilisateur sur le portail. \nLe courriel d'invitation sera envoyé à l'adresse courriel de l'utilisateur et vous pourrez savoir s'il a accepté l'invitation sous l'onglet \"Invitation envoyée\" dans le menu \"Paramètres\".",
+    "invite": "Inviter",
+    "invite-a-user": "Inviter un utilisateur",
+    "locale-hint": "Le courriel d'invitation sera envoyé dans la langue choisie."
+  },
+  "journal-select": {
+    "not-found-msg": "Vous ne trouvez pas le journal que vous cherchez ? \nVeuillez nous contacter afin que nous puissions l'ajouter.",
+    "search-hint": "Commencez à taper pour rechercher un journal"
+  },
+  "login-card": {
+    "dont-have-an-account": "Vous n'avez pas de compte?",
+    "email-verified-text": "Courriel verifié. \nVous pouvez maintenant vous connecter.",
+    "forgot-your-password": "Mot de passe oublié?",
+    "new-password-required": "Vous avez été redirigé car votre compte nécessite un nouveau mot de passe.",
+    "remember-me": "Se souvenir de moi"
+  },
+  "logout-card": {
+    "text": "Merci d'utiliser le portail science ouverte.",
+    "text-inactive": "Vous avez été déconnecté pour cause d'inactivité."
+  },
+  "manage-author-profile-card": {
+    "current-affiliation-hint": "Cela n'affectera pas l'affiliation de vos publications passées.",
+    "orcid-not-verified": "Vous pouvez également vérifier ou vous inscrire auprès d'ORCID en utilisant \"Gérer ORCID\"",
+    "orcid-verified": "Ceci est un ORCID vérifié. \nUtilisez \"Gérer ORCID\" pour le modifier.",
+    "synced-to-your-user-profile": "Synchronisé avec votre profil utilisateur."
+  },
+  "manage-author-profile-view": {
+    "authorize-orcid": "Gérer ORCID",
+    "title": "Disciplines, Compétences et Expertises"
+  },
+  "manage-funding-source-card": {
+    "add-funding-source": "Ajouter une source de financement",
+    "subtitle": "Le cas échéant, veuillez saisir la ou les sources de financement qui ont aidé à générer ce travail."
+  },
+  "manage-manuscript-author-card": {
+    "delete-author": "Supprimer l'auteur",
+    "delete-author-msg": "Voulez-vous vraiment supprimer cet auteur ?",
+    "instructions": "Entrez tous les auteurs, leurs affiliations et au moins un auteur correspondant. \nLes auteurs apparaîtront dans la liste dans l'ordre dans lequel ils sont entrés.",
+    "title": "Auteur(s) et Affiliation(s)"
+  },
+  "manage-pub-authors": {
+    "no-authors": "Aucun auteur identifié, veuillez ajouter ici les auteurs de la publication."
+  },
+  "management-review-guidelines": {
+    "subtitle": "Veuillez consulter la Politique nationale des publications scientifiques pour plus de détails.",
+    "tip-one": "Examiner le manuscrit pour s'assurer qu'il est conforme à la Politique sur la propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique du MPO.",
+    "tip-three": "À aucun moment, l'inclusion de matériel sensible (par exemple, des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
+    "tip-two": "Examinez le manuscrit pour identifier les questions sensibles, uniquement dans le but d'informer la haute direction et la Direction des communications avant la publication de l'article scientifique. \nLes questions sensibles identifiés doivent être ajoutés à la section \"matériel sensibles\" du formulaire.",
+    "title": "Lignes directrices sur la révision par la gestion"
+  },
+  "management-review-step-list": {
+    "review-request-received-from": "Demande de révision reçue de"
+  },
+  "management-review-step-view": {
+    "completion-of-management-review": "Fin de la révision par la gestion",
+    "not-started-submit-your-form-to-begin": "Pas commencé - Soumettez votre formulaire pour commencer",
+    "submission-for-review": "Soumission pour révision par la gestion",
+    "title": "Révision par la gestion"
+  },
+  "manuscript": {
+    "accepted": "Accepté",
+    "draft": "Brouillon",
+    "in_review": "En revue",
+    "please-select-the-lead-region": "Veuillez sélectionner la région principale",
+    "primary": "Primaire",
+    "reviewed": "Révisé",
+    "secondary": "Secondaire",
+    "submitted": "Soumis",
+    "withdrawn": "Retiré",
+    "withheld": "Retenu"
+  },
+  "manuscript-author-dialog": {
+    "instructions": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse courriel a changé, vous pouvez créer une nouvelle fiche d'auteur.",
+    "title": "Ajouter un auteur à ce manuscrit"
+  },
+  "manuscript-progress-view": {
+    "accepted-details": "Le manuscrit a été accepté pour publication par la revue ciblée et entre dans le processus de production. \nLa confirmation de cette étape créera un nouvel registre de publication dans lequel vous pourrez télécharger le manuscrit final et mettre à jour les détails de la publication.",
+    "accepted-title": "Accepté pour publication",
+    "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est approuvé par la gestion du MPO. \nÀ ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
+    "completed-title": "Fin de la révision par la gestion",
+    "completed-withheld-details": "Le manuscrit n'est pas conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est retenu par la gestion du MPO.",
+    "created-details": "À ce stade, seuls le demandeur et les auteurs peuvent voir et modifier le registre du manuscrit.",
+    "go-to-the-publication": "Aller à la publication",
+    "manuscript-record-created": "Registre de manuscrit créé",
+    "manuscript-status-updated": "Statut du manuscrit mis à jour",
+    "mark-as-submitted": "Marquer comme soumis",
+    "submit-management": "Soumettre pour la révision par la gestion",
+    "submit-management-details": "Le manuscrit est initialement soumis à un chef de division ou directeur (NCR) pour examen par la gestion.",
+    "submit-pub-details": "Le manuscrit a été soumis à la revue cible pour la révision par les pairs. \nNous suivons cette étape pour recueillir des statistiques sur le temps nécessaire pour que les manuscrits soientt acceptés et publiés.",
+    "submit-pub-title": "Soumission initiale à la revue cible",
+    "title": "Progrès du manuscrit",
+    "withdraw-manuscript": "Retirer le manuscrit",
+    "withdrawn-by-applicant": "Retiré par le demandeur",
+    "withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe régistre du manuscrit sera archivé après 30 jours."
+  },
+  "mrf": {
+    "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",
+    "additional-information-of-importance": "Intérêt public potentiel",
+    "additional-text": "Des exemples de sujets susceptibles d'intéresser le public, peut inclure des sujets liés à l'actualité ou d'intérêt pour les parties prenantes. Il peut s'agir de sujets intéressants pour illustrer les travaux scientifiques du MPO ou d'études plus controversées. Bien que cela ne restreigne en aucun cas les publications, cela permettra d'engager et d'informer nos collègues de la communication. Si l'on estime qu'un manuscrit présente un intérêt potentiel pour le public, les Communications en sera informée suivant la révision des gestionnaires, ainsi que lorsque le manuscrit sera marqué comme publié par le demandeur.",
+    "copy-your-manuscripts-abstract-here": "Copiez le résumé de votre manuscrit ici.",
+    "general-information": "Informations générales",
+    "generate-pls": "Générer le résumé",
+    "generating-pls-please-be-patient": "Génération de résumé... veuillez patienter",
+    "geographical-text": "Décrivez la portée géographique/région et (le cas échéant) les espèces (y compris les noms communs) de l'article.",
+    "geographical-title": "Portée géographique et espèces",
+    "lead-region-text": "Sélectionnez la région du MPO responsable de la révision par la gestion de ce manuscrit. \nSi plus d'une région est responsable, sélectionnez la région qui dirigera la révision.",
+    "manuscript-saved-successfully": "Manuscrit enregistré avec succès",
+    "manuscript-submitted-successfully": "Le registre du manuscrit a été soumis avec succès.",
+    "manuscripts-working-title": "Titre provisoire du manuscrit",
+    "not-authorized-text": "Vous n'êtes pas autorisé à consulter ce registre de manuscrit",
+    "pls-already-generated-erase-it-to-generate-a-new-one": "Résumé déjà généré - effacez-le pour en générer un nouveau",
+    "pls-generated-successfully": "Résumé généré avec succès",
+    "pls-help-ai-text": "Besoin d'aide? \nEn utilisant le résumé de votre manuscrit, nous pouvons générer un brouillon de résumé en langage clair",
+    "pls-text": "Résumé en langage clair du manuscrit pour expliquer la pertinence de la science pour le Département et promouvoir la valeur de la science par la sensibilisation et la communication. \nIl est destiné à un usage interne pour identifier les liens avec les programmes, les politiques et les intervenants et à être utilisé dans la promotion de la science en langage clair.",
+    "potential-media-interest-question": "Ce manuscrit présente-t-il un intérêt public potentiel ?",
+    "potential-media-interest-text-field-text": "Facultativement, veuillez fournir toute information pertinente concernant l'intérêt public potentiel.",
+    "ready-to-marked-published": "Ce manuscrit a été révisé mais doit encore être marqué comme publié par le candidat.",
+    "relevant-text": "Décrivez comment ce manuscrit est pertinent pour le programme qui l'a financé, comment il supporte le mandat du ministère, le plan stratégique du département et/ou les priorités régionales. ",
+    "relevant-title": "Pertinent pour les programmes, projets, etc.",
+    "replace-manuscript": "Télécharger une nouvelle version du manuscrit",
+    "scientific-implication-text": "Décrivez les implications scientifiques de l'article. \n(c'est-à-dire le domaine, l'importance, point focal, le but, les avantages, etc.)",
+    "scientific-implications": "Implications scientifiques",
+    "submit-tooltip": "Soumettre pour révision par la gestion",
+    "submit-tooltip-disabled": "Veuillez remplir toutes les sections et enregistrer pour soumettre",
+    "upload-hint": "Seuls les fichiers PDF sont acceptés. \nLa taille maximale du fichier est de {max} Mo.",
+    "upload-manuscript": "Télécharger le manuscrit",
+    "upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
+    "working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié."
+  },
+  "my-manuscript-records": {
+    "actions-still-required": "Actions encore nécessaires",
+    "all-manuscripts": "Tous les manuscrits",
+    "all-manuscripts-caption": "Inclut ceux partagés avec moi",
+    "create-manuscript": "Créer un manuscrit",
+    "my-manuscripts-caption": "je suis le demandeur",
+    "no-manuscript": "Aucun manuscrit n'existe ou n'est partagé avec vous"
+  },
+  "my-publication-view": {
+    "actions-still-required": "Actions encore nécessaires",
+    "all-publications": "Toutes les publications",
+    "create-publication": "Créer une publication",
+    "i-am-responsible-for-this-publication-record": "Je suis responsable de ce registre de publication",
+    "includes-ones-shared-with-me": "Inclut celles partagées avec moi",
+    "my-publications": "Mes Publications",
+    "no-publications-found": "Aucune publication trouvée"
+  },
+  "no-management-review": {
+    "subtitle": "Les manuscrits que vous avez récemment été invités à réviser apparaîtront ici.",
+    "title": "Vous n'avez rien à réviser"
+  },
+  "no-manuscript-exists-div": {
+    "p1": "Besoin de publier une publication primaire ou secondaire ? \nVous êtes arrivé au bon endroit. \nCréez un dossier de manuscrit et lancez le processus de publication de votre manuscrit conformément à la politique nationale pour les publications scientifiques.",
+    "p2": "La politique nationale assure un traitement uniforme des publications scientifiques dans toutes les régions du MPO, la reconnaissance de l'impact scientifique du Ministère grâce à l'utilisation d'une affiliation standard et un suivi efficace de nos publications afin de mieux intégrer la science dans les processus ministériels."
+  },
+  "no-publication-exist-div": {
+    "p1": "Les manuscrits qui ont été révisés apparaîtront ici. \nUne fois publié, vous pouvez mettre à jour les détails de la publication. \nVous pouvez également ajouter ici toutes publications passées afin qu'elles fassent partie de notre base de données et soient accessibles à tous."
+  },
+  "ocrid": {
+    "verify-btn-text": "Vérifiez votre identifiant ORCID"
+  },
+  "orcid": {
+    "already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le modifier ou le vérifier à nouveau, cliquez ci-dessous.",
+    "error-verifying": "Erreur lors de la vérification avec ORCID.org",
+    "verified-with": "Vérifié avec succès avec ORCID.org",
+    "verifying": "Vérification avec ORCID.org"
+  },
+  "organization-select": {
+    "add-a-new-organization": "Ajouter une nouvelle organisation",
+    "cant-find": "Vous ne trouvez pas l'organisation que vous recherchez ?",
+    "hint": "Commencez à taper pour rechercher une organisation"
+  },
+  "osp": {
+    "description": "Le Portail de la science ouverte est une application Web intuitive pour promouvoir la science ouverte et suivre les publications scientifiques au sein de Pêches et Océans Canada.",
+    "slogan": {
+      "p1": "Partagez votre travail",
+      "p2": "Aidez nous à",
+      "p3": "grandir"
+    }
+  },
+  "policy": {
+    "for-more-info": "Pour plus d'informations, veuillez consulter la {policy}.",
+    "intellectual-property-policy-copyright-act": "Politique de propriété intellectuelle/ la loi sur le droit d'auteur",
+    "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/copyright-droits-fra.htm",
+    "message": {
+      "p1": "Réviser le manuscrit pour vérifier qu'il respecte le {copyrightsAct}, la {privacyAct}, la loi sur la gestion financière (en ce qui concerne les approbations des coûts de publication) et le {valueAndEthicsCode}.Il identifiera également les cas où un manuscrit présente un intérêt potentiel pour le public, dans le seul but d'informer les Communications et le RDS. Des exemples de sujets d'intérêt public potentiel, inclus des sujets liés à l'actualité ou à l'intérêt des parties prenantes. Il peut s'agir d'histoires intéressantes pour illustrer les projets de recherches menés au MPO ou des sujets d'études qui sont plus controversées. L'inclusion de matériel potentiellement sensible n'empêchera jamais la publication d'un manuscrit."
+    },
+    "national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
+    "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html",
+    "p2": "Le Secteur des sciences s’engage à approuver les manuscrits en vue de leur publication dans un délai de dix jours ouvrables. Si les directeurs ne donnent pas leur approbation dans un délai de dix jours ouvrables, les auteurs peuvent soumettre leur manuscrit à l’éditeur.",
+    "privacy-act": "Loi sur la protection des renseignements personnels",
+    "privacy-act-link": "https://www.priv.gc.ca/fr/sujets-lies-a-la-protection-de-la-vie-privee/lois-sur-la-protection-des-renseignements-personnels-au-canada/la-loi-sur-la-protection-des-renseignements-personnels/lprp_survol/",
+    "values-and-ethics-code-for-dfo": "Code de valeurs et d'éthique du MPO",
+    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-fra.htm"
+  },
+  "pub": {
+    "general-information": "Informations générales"
+  },
+  "pub-author-dialog": {
+    "are-you-sure-you-want-to-delete-this-author": "Voulez-vous vraiment supprimer cet auteur ?",
+    "delete-author": "Supprimer l'auteur"
+  },
+  "publication": {
+    "accepted": "Acceptée",
+    "publsihed": "Publiée"
+  },
+  "publication-page": {
+    "attach-pub-details": "Téléchargez la copie la plus récente de votre publication en format PDF. \nNous n'autoriserons pas les utilisateurs du portail à voir ce fichier avant la fin de sa période d'embargo.",
+    "attach-publication": "Joindre le manuscrit",
+    "go-to-manuscript-record": "Aller au registre du manuscrit",
+    "mark-as-published": "Marquer comme publié",
+    "publication-date-pending": "Date de publication en attente",
+    "publication-status": "Statut de publication",
+    "publication-updated-successfully": "Publication mise à jour avec succès",
+    "title": "Publication"
+  },
+  "publications-view": {
+    "all-published-publications-details": "Toutes les publications publiées",
+    "open-access-filter-details": "Publications publiées en libre accès",
+    "published-in-dfo-journals": "Publié dans les revues du MPO",
+    "secondary-publications": "Publications secondaires",
+    "under-embargo": "Sous embargo",
+    "under-embargo-caption": "Publications sous embargo"
+  },
+  "register-card": {
+    "registered": {
+      "text": "Veuillez vérifier votre courriel ({0}) pour un lien de confirmation. \nPour protéger votre compte, vous ne pourrez pas vous connecter tant que vous n'aurez pas confirmé votre adresse courriel."
+    },
+    "registered-subtitle": "Juste une dernière étape..."
+  },
+  "required-span": {
+    "definition": "Les champs marqués d'un * sont obligatoires.",
+    "tooltip": "Ce champ est obligatoire"
+  },
+  "reset-password": {
+    "invalid-request-title": "Demande de réinitialisation de mot de passe invalide",
+    "text": "Entrez un nouveau mot de passe pour {0}.",
+    "title": "Entrez un nouveau mot de passe"
+  },
+  "review-step": {
+    "review-by": "Révision par {0}",
+    "save-comments": "Enregistrer les commentaires",
+    "submit-decision": "Soumettre la décision",
+    "your-review": "Votre révision : {0}"
+  },
+  "review-step-view": {
+    "all-my-reviews": "Toutes mes révisions",
+    "list-of-all-my-reviews": "Liste de toutes mes révisions"
+  },
+  "reviewer-comments": {
+    "description": "Les commentaires sont obligatoires, sauf si vous approuvez et terminez la revue par la gestion sans l'envoyer à un autre gestionnaire. \nLes commentaires saisis ici doivent appuyer votre décision et, le cas échéant, fournir des commentaires aux prochain gestionnaire. \nVos commentaires seront visibles par toute personne ayant accès à ce registre de manuscrit.",
+    "title": "Commentaires du gestionnaire"
+  },
+  "submit-decision-dialog": {
+    "certify-text": "Je certifie qu'à ma connaissance, ma décision est fondée sur les lignes directrices énoncées dans la Politique nationale pour les publications scientifiques du MPO. \nLe cas échéant, j'ai lu les commentaires fournis par le gestionnaire précédent et les ai pris en compte dans ma décision.",
+    "confirm-decision": "Confirmer la décision",
+    "next-reviewer": "Réviseur de gestion suivant",
+    "next-reviewer-hint": "Recherchez la personne appropriée pour mener la révision par la gestion dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
+    "no-comments-warning": "Votre avis n'a pas de commentaires. \nPar conséquent, vous ne pouvez qu'approuver et compléter cet examen de gestion. \nVeuillez ajouter des commentaires pour appuyer votre décision si vous souhaitez sélectionner parmi les autres options.",
+    "select-decision": "Sélectionnez votre décision",
+    "select-next-reviewer": "Prochain gestionnaire",
+    "subsequent-reviewer-is-required": "Compte tenu de votre décision, un gestionnaire ultérieur est requis pour compléter la révision ",
+    "your-decision": "Votre décision"
+  },
+  "submit-manuscript-dialog": {
+    "step1": {
+      "confirmation-text": "Je certifie que, à ma connaissance, ce manuscrit est conforme à la Politique de propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique des \nMPO.",
+      "subtitle": "Soumission pour la révision par la gestion",
+      "title": "Confirmer la soumission"
+    },
+    "step2": {
+      "p1": "Pour soumettre le manuscrit pour la révision par la gestion, recherchez le responsable/chef de division approprié dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
+      "p2": "Noter; \nvous ne pourrez pas sélectionner quelqu'un qui est l'auteur de ce manuscrit ou le propriétaire de ce registre de manuscrit.",
+      "subtitle": "Chef de division/Directeur",
+      "title": "Sélectionnez le réviseur de gestion"
+    },
+    "title": "Soumettre le manuscrit pour la révision par la gestion"
+  },
+  "submitted-to-journal-dialog": {
+    "text": "Marquez ce manuscrit comme ayant été soumis à une revue. \nCette étape permet de faire savoir à tous les utilisateurs impliqués dans la révision par la gestion que vous avez soumis votre manuscrit pour publication.",
+    "title": "Mettre à jour le statut du manuscrit tel qu'il a été soumis"
+  },
+  "under-construction": {
+    "subtitle": "J'y travaille...",
+    "title": "En  construction"
+  },
+  "user-profile": {
+    "email-hint": "Votre adresse courriel vérifiée ne peut pas être modifiée manuellement."
+  },
+  "user-select": {
+    "cant-find-the-user-youre-looking-for": "Vous ne trouvez pas l'utilisateur que vous recherchez ?",
+    "invite-a-new-user": "Inviter un nouvel utilisateur",
+    "not-the-user-youre-looking-for": "Ce n'est pas l'utilisateur que vous recherchez ?",
+    "start-typing-to-search-for-a-user": "Commencez à taper pour rechercher un utilisateur"
+  },
+  "withdraw-manuscript-dialog": {
+    "text": "Retirez ce manuscrit. \nCela nous permet de savoir que ce manuscrit ne sera pas publié et ferme ce registre de manuscrit.",
+    "title": "Retirer ce manuscrit"
+  }
 }
