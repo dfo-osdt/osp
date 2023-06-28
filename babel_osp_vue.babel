@@ -763,11 +763,11 @@
 								<translations>
 									<translation>
 										<language>en-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 									<translation>
 										<language>fr-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 								</translations>
 							</concept_node>
@@ -1147,11 +1147,11 @@
 								<translations>
 									<translation>
 										<language>en-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 									<translation>
 										<language>fr-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 								</translations>
 							</concept_node>
@@ -1204,6 +1204,22 @@
 								</translations>
 							</concept_node>
 							<concept_node>
+								<name>dismiss</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
 								<name>division-manager</name>
 								<description/>
 								<comment/>
@@ -1227,11 +1243,11 @@
 								<translations>
 									<translation>
 										<language>en-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 									<translation>
 										<language>fr-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 								</translations>
 							</concept_node>
@@ -1291,11 +1307,11 @@
 								<translations>
 									<translation>
 										<language>en-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 									<translation>
 										<language>fr-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 								</translations>
 							</concept_node>
@@ -1467,11 +1483,11 @@
 								<translations>
 									<translation>
 										<language>en-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 									<translation>
 										<language>fr-CA</language>
-										<approved>false</approved>
+										<approved>true</approved>
 									</translation>
 								</translations>
 							</concept_node>
@@ -4111,11 +4127,11 @@
 										<translations>
 											<translation>
 												<language>en-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 											<translation>
 												<language>fr-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 										</translations>
 									</concept_node>
@@ -4127,11 +4143,11 @@
 										<translations>
 											<translation>
 												<language>en-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 											<translation>
 												<language>fr-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 										</translations>
 									</concept_node>
@@ -4143,11 +4159,11 @@
 										<translations>
 											<translation>
 												<language>en-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 											<translation>
 												<language>fr-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 										</translations>
 									</concept_node>
@@ -4164,11 +4180,11 @@
 										<translations>
 											<translation>
 												<language>en-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 											<translation>
 												<language>fr-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 										</translations>
 									</concept_node>
@@ -4180,11 +4196,11 @@
 										<translations>
 											<translation>
 												<language>en-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 											<translation>
 												<language>fr-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 										</translations>
 									</concept_node>
@@ -4196,11 +4212,11 @@
 										<translations>
 											<translation>
 												<language>en-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 											<translation>
 												<language>fr-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 										</translations>
 									</concept_node>
@@ -4393,6 +4409,22 @@
 						<children>
 							<concept_node>
 								<name>create-funding-source</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>edit-funding-source</name>
 								<description/>
 								<comment/>
 								<default_text/>
@@ -5613,22 +5645,6 @@
 								</translations>
 							</concept_node>
 							<concept_node>
-								<name>attach-manuscript</name>
-								<description/>
-								<comment/>
-								<default_text/>
-								<translations>
-									<translation>
-										<language>en-CA</language>
-										<approved>true</approved>
-									</translation>
-									<translation>
-										<language>fr-CA</language>
-										<approved>true</approved>
-									</translation>
-								</translations>
-							</concept_node>
-							<concept_node>
 								<name>copy-your-manuscripts-abstract-here</name>
 								<description/>
 								<comment/>
@@ -5757,6 +5773,22 @@
 								</translations>
 							</concept_node>
 							<concept_node>
+								<name>manuscript-submitted-successfully</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
 								<name>manuscripts-working-title</name>
 								<description/>
 								<comment/>
@@ -5838,6 +5870,38 @@
 							</concept_node>
 							<concept_node>
 								<name>pls-text</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>potential-media-interest-question</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>potential-media-interest-text-field-text</name>
 								<description/>
 								<comment/>
 								<default_text/>
