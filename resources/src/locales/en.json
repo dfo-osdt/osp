@@ -447,7 +447,7 @@
     "potential-media-interest-question": "Is this manuscript of potential public interest?",
     "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest.",
     "ready-to-marked-published": "This manuscript has been reviewed but still needs to be marked as published by the applicant.",
-    "relevant-text": "Describe how the paper is relevant to programs, projects, acts, initiatives, etc. (i.e. how it supports the department's mandate, how it supports the department's strategic plan, how it supports regional priorities, etc.)",
+    "relevant-text": "Describe how this manuscript is relevant to the program that funded it, how it supports the department's madate, strategic plan and or/regional priorities. ",
     "relevant-title": "Relevant to programs, projects, etc.",
     "replace-manuscript": "Upload a new version of the manuscript",
     "scientific-implication-text": "Describe the scientific implications of the paper. (i.e. field, importance, focus, purpose, benefits, etc.)",
@@ -514,7 +514,8 @@
     "intellectual-property-policy-copyright-act": "Intellectual Property Policy/Copyright Act",
     "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/copyright-droits-eng.htm",
     "message": {
-      "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {valueAndEthicsCode}. It will also identify potential sensitive issues, solely for the purpose of briefing senior management and the Communications Branch prior to publication of the science paper. At no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers."
+      "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {valueAndEthicsCode}.",
+      "p2": "Identifies when a manuscript is of potential public interest for the sole purpose of informing RDS and DFO regional Communications. Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to show case DFO research or studies that are more controversial. The inclusion of potentially sensitive material will never prevent the publication of a manuscript in any way."
     },
     "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html",
@@ -608,7 +609,7 @@
     "title": "Submit Manuscript for Management Review"
   },
   "submitted-to-journal-dialog": {
-    "text": "Mark this manuscript as having been submitted to a journal. This step lets all users involved in the management review know that you submitted your manuscript.",
+    "text": "Mark this manuscript as having been submitted to a journal. This step lets all users involved in the management review know that you submitted your manuscript for publication.",
     "title": "Update the manuscript status as submitted"
   },
   "under-construction": {

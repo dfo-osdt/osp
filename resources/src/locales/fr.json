@@ -236,7 +236,7 @@
     "enter-the-title-of-your-manuscript": "Entrez le titre de votre manuscrit",
     "primary-pub-desc": "Une publication dans une publication primaire, revuée par les pairs  (revues scientifiques, numéros spéciaux, chapitres de livre, livres et comptes-rendus de congrès)",
     "secondary-pub-desc": "Une publication dans les revues scientifiques secondaires de Pêches et Océans Canada (MPO) telles que la série « Rapport technique canadien sur les sciences halieutiques et aquatiques » du MPO, « Rapport de données canadien sur les sciences halieutiques et aquatiques », et d'autres séries.",
-    "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de l'examen par la direction de ce manuscrit.",
+    "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de la révision par la gestion de ce manuscrit.",
     "step1": {
       "text": "Veuillez sélectionner le type de registre de manuscrit que vous souhaitez créer. \nAvez-vous l'intention de soumettre ce manuscrit à une revue primaire ou secondaire ?"
     },
@@ -266,7 +266,7 @@
     "published-on": "Publié le",
     "step1": {
       "p1": "Cet assistant vous permet d'ajouter au portail des manuscrits publiées ; \nvous permettant de partager des publications passées ou d'ajouter des publications où le Formulaire du Registre des Manuscrits (FRM) a été fait par d'autres moyens.",
-      "warning": "Si vous êtes ici pour faire réviser votre manuscrit par la direction avant de le soumettre à une revue, ne continuez pas, créez plutôt un nouveau registre de manuscrit."
+      "warning": "Si vous êtes ici pour faire réviser votre manuscrit par la gestion avant de le soumettre à une revue, ne continuez pas, créez plutôt un nouveau registre de manuscrit."
     },
     "title": "Créer une publication"
   },
@@ -282,13 +282,13 @@
   },
   "decision": {
     "approve-and-complete": "Approuver et compléter",
-    "approve-and-complete-desc": "Vous approuvez la publication de ce manuscrit et vous mettez fin au processus de revue par la direction.",
+    "approve-and-complete-desc": "Vous approuvez la publication de ce manuscrit et vous mettez fin au processus de revue par la gestion.",
     "approve-and-forward": "Approuver et transmettre",
     "approve-and-forward-desc": "Vous recommandez l'approbation de ce manuscrit pour publication et vous le transmettez au prochain examinateur.",
     "reassign": "Réassigner",
     "reassign-desc": "Vous n'êtes pas le gestionnaire approprié pour examiner ce manuscrit et vous réassignez cet examen au gestionnaire approprié sans faire de recommandation.",
     "withhold-and-complete": "Retenir et compléter le processus de révision",
-    "withhold-and-complete-desc": "Vous retenez ce manuscrit pour publication et vous mettez fin au processus de revue de direction. \nSeul un RDS ou un DG peut prendre cette décision.",
+    "withhold-and-complete-desc": "Vous retenez ce manuscrit pour publication et vous mettez fin au processus de revue par la gestion. \nSeul un RDS ou un DG peut prendre cette décision.",
     "withhold-and-forward": "Retenir et transférer",
     "withhold-and-forward-desc": "Vous recommandez que ce manuscrit ne soit pas publié et vous le transmettez a un gestionnaire de niveau supérieur"
   },
@@ -378,16 +378,16 @@
     "tip-one": "Examiner le manuscrit pour s'assurer qu'il est conforme à la Politique sur la propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique du MPO.",
     "tip-three": "À aucun moment, l'inclusion de matériel sensible (par exemple, des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
     "tip-two": "Examinez le manuscrit pour identifier les questions sensibles, uniquement dans le but d'informer la haute direction et la Direction des communications avant la publication de l'article scientifique. \nLes questions sensibles identifiés doivent être ajoutés à la section \"matériel sensibles\" du formulaire.",
-    "title": "Lignes directrices sur la révision par la direction"
+    "title": "Lignes directrices sur la révision par la gestion"
   },
   "management-review-step-list": {
     "review-request-received-from": "Demande de révision reçue de"
   },
   "management-review-step-view": {
-    "completion-of-management-review": "Fin de la révision par la direction",
+    "completion-of-management-review": "Fin de la révision par la gestion",
     "not-started-submit-your-form-to-begin": "Pas commencé - Soumettez votre formulaire pour commencer",
-    "submission-for-review": "Soumission pour révision par la direction",
-    "title": "Révision par la direction"
+    "submission-for-review": "Soumission pour révision par la gestion",
+    "title": "Révision par la gestion"
   },
   "manuscript": {
     "accepted": "Accepté",
@@ -408,16 +408,16 @@
   "manuscript-progress-view": {
     "accepted-details": "Le manuscrit a été accepté pour publication par la revue ciblée et entre dans le processus de production. \nLa confirmation de cette étape créera un nouvel registre de publication dans lequel vous pourrez télécharger le manuscrit final et mettre à jour les détails de la publication.",
     "accepted-title": "Accepté pour publication",
-    "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est approuvé par la direction du MPO. \nÀ ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
-    "completed-title": "Fin de la révision par la direction",
-    "completed-withheld-details": "Le manuscrit n'est pas conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est retenu par la direction du MPO.",
+    "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est approuvé par la gestion du MPO. \nÀ ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
+    "completed-title": "Fin de la révision par la gestion",
+    "completed-withheld-details": "Le manuscrit n'est pas conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est retenu par la gestion du MPO.",
     "created-details": "À ce stade, seuls le demandeur et les auteurs peuvent voir et modifier le registre du manuscrit.",
     "go-to-the-publication": "Aller à la publication",
     "manuscript-record-created": "Registre de manuscrit créé",
     "manuscript-status-updated": "Statut du manuscrit mis à jour",
     "mark-as-submitted": "Marquer comme soumis",
-    "submit-management": "Soumettre pour la révsion par la direction",
-    "submit-management-details": "Le manuscrit est initialement soumis à un chef de division ou directeur (NCR) pour examen par la direction.",
+    "submit-management": "Soumettre pour la révision par la gestion",
+    "submit-management-details": "Le manuscrit est initialement soumis à un chef de division ou directeur (NCR) pour examen par la gestion.",
     "submit-pub-details": "Le manuscrit a été soumis à la revue cible pour la révision par les pairs. \nNous suivons cette étape pour recueillir des statistiques sur le temps nécessaire pour que les manuscrits soientt acceptés et publiés.",
     "submit-pub-title": "Soumission initiale à la revue cible",
     "title": "Progrès du manuscrit",
@@ -435,7 +435,7 @@
     "generating-pls-please-be-patient": "Génération de résumé... veuillez patienter",
     "geographical-text": "Décrivez la portée géographique/région et (le cas échéant) les espèces (y compris les noms communs) de l'article.",
     "geographical-title": "Portée géographique et espèces",
-    "lead-region-text": "Sélectionnez la région du MPO responsable de l'examen par la direction de ce manuscrit. \nSi plus d'une région est responsable, sélectionnez la région qui dirigera l'examen.",
+    "lead-region-text": "Sélectionnez la région du MPO responsable de la révision par la gestion de ce manuscrit. \nSi plus d'une région est responsable, sélectionnez la région qui dirigera la révision.",
     "manuscript-saved-successfully": "Manuscrit enregistré avec succès",
     "manuscript-submitted-successfully": "Le registre du manuscrit a été soumis avec succès.",
     "manuscripts-working-title": "Titre provisoire du manuscrit",
@@ -447,17 +447,17 @@
     "potential-media-interest-question": "Ce manuscrit présente-t-il un intérêt public potentiel ?",
     "potential-media-interest-text-field-text": "Facultativement, veuillez fournir toute information pertinente concernant l'intérêt public potentiel.",
     "ready-to-marked-published": "Ce manuscrit a été révisé mais doit encore être marqué comme publié par le candidat.",
-    "relevant-text": "Décrivez comment le document est pertinent pour les programmes, projets, actes, initiatives, etc. (c.-à-d. comment il appuie le mandat du ministère, comment il appuie le plan stratégique du ministère, comment il appuie les priorités régionales, etc.)",
+    "relevant-text": "Décrivez comment ce manuscrit est pertinent pour le programme qui l'a financé, comment il supporte le mandat du ministère, le plan stratégique du département et/ou les priorités régionales. ",
     "relevant-title": "Pertinent pour les programmes, projets, etc.",
     "replace-manuscript": "Télécharger une nouvelle version du manuscrit",
     "scientific-implication-text": "Décrivez les implications scientifiques de l'article. \n(c'est-à-dire le domaine, l'importance, point focal, le but, les avantages, etc.)",
     "scientific-implications": "Implications scientifiques",
-    "submit-tooltip": "Soumettre pour révision par la direction",
+    "submit-tooltip": "Soumettre pour révision par la gestion",
     "submit-tooltip-disabled": "Veuillez remplir toutes les sections et enregistrer pour soumettre",
     "upload-hint": "Seuls les fichiers PDF sont acceptés. \nLa taille maximale du fichier est de {max} Mo.",
     "upload-manuscript": "Télécharger le manuscrit",
     "upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
-    "working-title-text": "Entrez le titre de travail du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit en publié."
+    "working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",
@@ -514,7 +514,8 @@
     "intellectual-property-policy-copyright-act": "Politique de propriété intellectuelle/ la loi sur le droit d'auteur",
     "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/copyright-droits-fra.htm",
     "message": {
-      "p1": "Réviser le manuscrit pour vérifier qu'il respecte le {copyrightsAct}, la {privacyAct}, la loi sur la gestion financière (en ce qui concerne les approbations des coûts de publication) et le {valueAndEthicsCode}. Il identifiera également des questions potentiellement sensibles, uniquement dans le but de briefer la direction et la branche des communications avant la publication de l'article scientifique. En aucun cas, l'inclusion de matériel sensible (par exemple, données, conclusions scientifiques) n'empêchera la publication d'articles scientifiques."
+      "p1": "Réviser le manuscrit pour vérifier qu'il respecte le {copyrightsAct}, la {privacyAct}, la loi sur la gestion financière (en ce qui concerne les approbations des coûts de publication) et le {valueAndEthicsCode}.",
+      "p2": "Il identifiera également les cas où un manuscrit présente un intérêt potentiel pour le public, dans le seul but d'informer les Communications et le RDS. Des exemples de sujets d'intérêt public potentiel, inclus des sujets liés à l'actualité ou à l'intérêt des parties prenantes. Il peut s'agir d'histoires intéressantes pour illustrer les projets de recherches menés au MPO ou des sujets d'études qui sont plus controversées. L'inclusion de matériel potentiellement sensible n'empêchera jamais la publication d'un manuscrit."
     },
     "national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html",
@@ -579,7 +580,7 @@
     "list-of-all-my-reviews": "Liste de toutes mes révisions"
   },
   "reviewer-comments": {
-    "description": "Les commentaires sont obligatoires, sauf si vous approuvez et terminez la revue de direction sans l'envoyer à un autre gestionnaire. \nLes commentaires saisis ici doivent appuyer votre décision et, le cas échéant, fournir des commentaires aux prochain gestionnaire. \nVos commentaires seront visibles par toute personne ayant accès à ce registre de manuscrit.",
+    "description": "Les commentaires sont obligatoires, sauf si vous approuvez et terminez la revue par la gestion sans l'envoyer à un autre gestionnaire. \nLes commentaires saisis ici doivent appuyer votre décision et, le cas échéant, fournir des commentaires aux prochain gestionnaire. \nVos commentaires seront visibles par toute personne ayant accès à ce registre de manuscrit.",
     "title": "Commentaires du gestionnaire"
   },
   "submit-decision-dialog": {
@@ -596,19 +597,19 @@
   "submit-manuscript-dialog": {
     "step1": {
       "confirmation-text": "Je certifie que, à ma connaissance, ce manuscrit est conforme à la Politique de propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique des \nMPO.",
-      "subtitle": "Soumission à l'examen de la direction",
+      "subtitle": "Soumission pour la révision par la gestion",
       "title": "Confirmer la soumission"
     },
     "step2": {
-      "p1": "Pour soumettre le manuscrit pour examen par la direction, recherchez le responsable/directeur de division approprié dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
+      "p1": "Pour soumettre le manuscrit pour la révision par la gestion, recherchez le responsable/chef de division approprié dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
       "p2": "Noter; \nvous ne pourrez pas sélectionner quelqu'un qui est l'auteur de ce manuscrit ou le propriétaire de ce registre de manuscrit.",
       "subtitle": "Chef de division/Directeur",
       "title": "Sélectionnez le réviseur de gestion"
     },
-    "title": "Soumettre le manuscrit pour examen par la direction"
+    "title": "Soumettre le manuscrit pour la révision par la gestion"
   },
   "submitted-to-journal-dialog": {
-    "text": "Marquez ce manuscrit comme ayant été soumis à une revue. \nCette étape permet de faire savoir à tous les utilisateurs impliqués dans la directionque vous avez soumis votre manuscrit.",
+    "text": "Marquez ce manuscrit comme ayant été soumis à une revue. \nCette étape permet de faire savoir à tous les utilisateurs impliqués dans la révision par la gestion que vous avez soumis votre manuscrit pour publication.",
     "title": "Mettre à jour le statut du manuscrit tel qu'il a été soumis"
   },
   "under-construction": {
