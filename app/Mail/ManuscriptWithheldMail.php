@@ -39,7 +39,13 @@ class ManuscriptWithheldMail extends Mailable
     {
         $this->subject('Manuscript Withheld by Management Review: '.$this->manuscriptRecord->title);
         $this->to($this->user->email, $this->user->fullName);
-        $this->cc($this->authors->merge($this->reviewUsers)->unique()->filter(fn ($user) => Str::of($user->email)->contains('@dfo-mpo.gc.ca'))->pluck('email')->toArray());
+        $this->cc(
+            $this->authors->pluck('email')->
+            merge($this->reviewUsers->pluck('email'))->
+            unique()->
+            filter(fn ($email) => $email !== $this->user->email)-> // don't send to the user twice
+            filter(fn ($email) => Str::of($email)->contains('@dfo-mpo.gc.ca'))-> // only send to DFO emails
+            toArray());
 
         return $this->markdown('mail.manuscriptRecord.manuscript-withheld-mail');
     }

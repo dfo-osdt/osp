@@ -36,7 +36,6 @@ class AuthorFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'user_id' => \App\Models\User::factory(),
                 'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
                 'organization_id' => 1,
             ];
