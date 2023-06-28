@@ -514,7 +514,8 @@
     "intellectual-property-policy-copyright-act": "Intellectual Property Policy/Copyright Act",
     "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/copyright-droits-eng.htm",
     "message": {
-      "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {valueAndEthicsCode}. Identifies when a manuscript is of potential public interest for the sole purpose of informing RDS and DFO regional Communications. Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to show case DFO research or studies that are more controversial. The inclusion of potentially sensitive material will never prevent the publication of a manuscript in any way."
+      "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {valueAndEthicsCode}.",
+      "p2": "Identifies when a manuscript is of potential public interest for the sole purpose of informing RDS and DFO regional Communications. Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to show case DFO research or studies that are more controversial. The inclusion of potentially sensitive material will never prevent the publication of a manuscript in any way."
     },
     "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html",
