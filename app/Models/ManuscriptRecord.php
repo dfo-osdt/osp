@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\Fundable;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Models\Concerns\HasUlid;
 use App\Traits\FundableTrait;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -26,9 +27,11 @@ class ManuscriptRecord extends Model implements HasMedia, Fundable
     use InteractsWithMedia;
     use SoftDeletes;
     use FundableTrait;
+    use HasUlid;
 
     public $guarded = [
         'id',
+        'ulid',
         'created_at',
         'updated_at',
         'user_id',
