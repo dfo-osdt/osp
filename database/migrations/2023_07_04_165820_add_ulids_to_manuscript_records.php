@@ -15,7 +15,8 @@ return new class extends Migration
             $table->ulid('ulid')->after('id');
         });
 
-        $models = \App\Models\ManuscriptRecord::all();
+        // all models, including those that are soft deleted
+        $models = \App\Models\ManuscriptRecord::withTrashed()->get();
 
         foreach ($models as $model) {
             $model->ulid = \Illuminate\Support\Str::ulid(Carbon\Carbon::parse($model->created_at));
