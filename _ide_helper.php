@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.14.0.
+ * Generated for Laravel 10.14.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6379,7 +6379,7 @@
          *
          * @param string|object $event
          * @param mixed $payload
-         * @return array|null 
+         * @return mixed 
          * @static 
          */ 
         public static function until($event, $payload = [])
@@ -18599,6 +18599,27 @@
         {
                         /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->filterReportsUsing($filterReportsCallable);
+        }
+                    /**
+         * 
+         *
+         * @param array<class-string<ArgumentReducer>|ArgumentReducer>|\Spatie\Backtrace\Arguments\ArgumentReducers|null $argumentReducers
+         * @static 
+         */ 
+        public static function argumentReducers($argumentReducers)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->argumentReducers($argumentReducers);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function withStackFrameArguments($withStackFrameArguments = true)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->withStackFrameArguments($withStackFrameArguments);
         }
                     /**
          * 
