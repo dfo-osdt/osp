@@ -19,6 +19,7 @@ class ManuscriptRecordResource extends JsonResource
         return [
             'data' => [
                 'id' => $this->id,
+                'ulid' => $this->ulid,
                 'type' => $this->type,
                 'status' => $this->status,
                 'title' => $this->title,
