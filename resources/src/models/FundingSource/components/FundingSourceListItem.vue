@@ -18,7 +18,9 @@
                     icon="mdi-pencil"
                     color="primary"
                     @click="showEditDialog = true"
-                />
+                >
+                    <q-tooltip>{{ $t('common.edit') }}</q-tooltip>
+                </q-btn>
                 <q-btn
                     class="gt-xs"
                     size="12px"
@@ -28,7 +30,9 @@
                     icon="mdi-delete"
                     color="negative"
                     @click="deleteFundingSource"
-                />
+                >
+                    <q-tooltip>{{ $t('common.delete') }}</q-tooltip>
+                </q-btn>
             </div>
         </q-item-section>
         <EditFundingSourceDialog
@@ -43,6 +47,10 @@
 <script setup lang="ts">
 import { FundingSourceResource } from '../FundingSource';
 import EditFundingSourceDialog from './EditFundingSourceDialog.vue';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
+const { t } = useI18n();
 
 const props = defineProps<{
     readonly?: boolean;
@@ -61,7 +69,16 @@ const emit = defineEmits<{
 }>();
 
 async function deleteFundingSource() {
-    emit('delete:funding-source', props.fundingSource);
+    $q.dialog({
+        title: t('fundingSource.delete'),
+        message: t('fundingSource.deleteConfirmation', {
+            source: props.fundingSource.data.title,
+        }),
+        cancel: true,
+        persistent: true,
+    }).onOk(() => {
+        emit('delete:funding-source', props.fundingSource);
+    });
 }
 
 // edit dialog

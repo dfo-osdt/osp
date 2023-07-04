@@ -57,9 +57,9 @@
                     ? $t('mrf.replace-manuscript')
                     : $t('mrf.upload-manuscript')
             "
-            :hint="$t('mrf.upload-hint', { max: 10 })"
+            :hint="$t('mrf.upload-hint', { max: maxFileSizeMB })"
             accept="application/pdf"
-            max-file-size="10000000"
+            :max-file-size="maxFileSizeMB * 1e6"
             counter
             :loading="uploadingFile"
             @rejected="onFileRejected"
@@ -86,6 +86,8 @@ import { Ref } from 'vue';
 
 const { t } = useI18n();
 const $q = useQuasar();
+
+const maxFileSizeMB = 50;
 
 const props = defineProps<{
     manuscript: ManuscriptRecordResource;

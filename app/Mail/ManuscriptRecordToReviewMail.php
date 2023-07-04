@@ -45,8 +45,6 @@ class ManuscriptRecordToReviewMail extends Mailable
                 ->forget($this->user->email) // don't send to the user twice
                 ->toArray());
 
-        $this->attach($this->manuscriptRecord->getLastManuscriptFile());
-
         return $this->markdown('mail.manuscriptRecord.manuscriptRecordSubmitted');
     }
 }
