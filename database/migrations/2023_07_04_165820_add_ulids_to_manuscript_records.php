@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('manuscript_records', function (Blueprint $table) {
-            $table->ulid('ulid')->after('id')->unique()->index();
+            $table->ulid('ulid')->after('id');
         });
 
         $models = \App\Models\ManuscriptRecord::all();
@@ -21,5 +21,9 @@ return new class extends Migration
             $model->ulid = \Illuminate\Support\Str::ulid(Carbon\Carbon::parse($model->created_at)->timestamp);
             $model->save();
         }
+
+        Schema::table('manuscript_records', function (Blueprint $table) {
+            $table->unique('ulid')->index();
+        });
     }
 };
