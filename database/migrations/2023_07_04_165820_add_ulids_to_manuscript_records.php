@@ -18,7 +18,7 @@ return new class extends Migration
         $models = \App\Models\ManuscriptRecord::all();
 
         foreach ($models as $model) {
-            $model->ulid = \Illuminate\Support\Str::ulid(Carbon\Carbon::parse($model->created_at)->timestamp);
+            $model->ulid = \Illuminate\Support\Str::ulid(Carbon\Carbon::parse($model->created_at));
             $model->save();
         }
 
