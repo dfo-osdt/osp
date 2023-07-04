@@ -113,11 +113,21 @@ startxref
 PDF;
 
     // upload pdf
-    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
+    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(51000);
 
     $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
         'pdf' => $file,
-    ])->assertCreated();
+    ]);
+
+    // expect response to be 422, file too big
+    $response->assertStatus(422);
+    expect($response->json('errors.pdf'))->toContain('The pdf must not be greater than 50000 kilobytes.');
+
+    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(15000);
+
+    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
+        'pdf' => $file,
+    ]);
 
     expect($response->json('data.file_name'))->toBe('test.pdf');
     expect($response->json('data.uuid'))->toBeString();
