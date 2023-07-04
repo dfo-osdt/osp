@@ -8,6 +8,7 @@ use App\Models\FundingSource;
 use App\Models\ManuscriptAuthor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ManuscriptRecord>
@@ -22,6 +23,7 @@ class ManuscriptRecordFactory extends Factory
     public function definition()
     {
         return [
+            'ulid' => Str::ulid(),
             'type' => ManuscriptRecordType::PRIMARY,
             'status' => ManuscriptRecordStatus::DRAFT,
             'title' => $this->faker->sentence(),

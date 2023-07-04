@@ -21,7 +21,7 @@ class UserFactory extends Factory
     {
         $fistName = $this->faker->firstName();
         $lastName = $this->faker->lastName();
-        $email = $fistName.'.'.$lastName.'@vinnet.dev';
+        $email = $fistName.'.'.$lastName.'@test.local';
 
         return [
             'first_name' => $fistName,
