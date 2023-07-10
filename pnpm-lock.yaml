@@ -92,8 +92,8 @@ devDependencies:
     specifier: ^5.1.6
     version: 5.1.6
   unplugin-auto-import:
-    specifier: ^0.16.5
-    version: 0.16.5(@vueuse/core@10.2.1)
+    specifier: ^0.16.6
+    version: 0.16.6(@vueuse/core@10.2.1)
   unplugin-vue-components:
     specifier: ^0.25.1
     version: 0.25.1(vue@3.3.4)
@@ -2837,8 +2837,8 @@ packages:
   /ufo@1.1.2:
     resolution: {integrity: sha512-TrY6DsjTQQgyS3E3dBaOXf0TpPD8u9FVrVYmKVegJuFw51n/YB9XPt+U6ydzFG5ZIN7+DIjPbNmXoBj9esYhgQ==}
 
-  /unimport@3.0.12:
-    resolution: {integrity: sha512-wETYjro+wK0lGlate7JNDu4OI89m6hNt2bfqL8ysAGgStXyIplISZrktAqr2psfY9/ft/jU5HWatk7wZeUUPdQ==}
+  /unimport@3.0.14:
+    resolution: {integrity: sha512-67Rh/sGpEuVqdHWkXaZ6NOq+I7sKt86o+DUtKeGB6dh4Hk1A8AQrzyVGg2+LaVEYotStH7HwvV9YSaRjyT7Uqg==}
     dependencies:
       '@rollup/pluginutils': 5.0.2
       escape-string-regexp: 5.0.0
@@ -2860,8 +2860,8 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: true
 
-  /unplugin-auto-import@0.16.5(@vueuse/core@10.2.1):
-    resolution: {integrity: sha512-0qiJgi+eUNmmPqs2VJctVdH6i7NDdOYzcSJTCSFgiY5YLp9GtO2T+O4Ja7oLZzdeIzMO5uy/2oAsmLsfSrBJlA==}
+  /unplugin-auto-import@0.16.6(@vueuse/core@10.2.1):
+    resolution: {integrity: sha512-M+YIITkx3C/Hg38hp8HmswP5mShUUyJOzpifv7RTlAbeFlO2Tyw0pwrogSSxnipHDPTtI8VHFBpkYkNKzYSuyA==}
     engines: {node: '>=14'}
     peerDependencies:
       '@nuxt/kit': ^3.2.2
@@ -2875,10 +2875,11 @@ packages:
       '@antfu/utils': 0.7.5
       '@rollup/pluginutils': 5.0.2
       '@vueuse/core': 10.2.1(vue@3.3.4)
+      fast-glob: 3.3.0
       local-pkg: 0.4.3
       magic-string: 0.30.1
       minimatch: 9.0.2
-      unimport: 3.0.12
+      unimport: 3.0.14
       unplugin: 1.3.2
     transitivePeerDependencies:
       - rollup
