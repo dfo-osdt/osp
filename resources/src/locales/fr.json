@@ -500,7 +500,8 @@
     "already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le modifier ou le vérifier à nouveau, cliquez ci-dessous.",
     "error-verifying": "Erreur lors de la vérification avec ORCID.org",
     "verified-with": "Vérifié avec succès avec ORCID.org",
-    "verifying": "Vérification avec ORCID.org"
+    "verifying": "Vérification avec ORCID.org",
+    "verify-header-text": "Vérifiez votre identifiant ORCID (ou enregistrez-vous pour obtenir un identifiant)"
   },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",

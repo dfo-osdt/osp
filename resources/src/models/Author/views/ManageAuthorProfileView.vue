@@ -6,11 +6,11 @@
     />
     <ContentCard secondary class="q-mt-lg">
         <template #title>{{
-            $t('manage-author-profile-view.authorize-orcid')
+            $t("manage-author-profile-view.authorize-orcid")
         }}</template>
         <q-card-section v-if="authStore.user?.author.data.orcid_verified">
             <p>
-                {{ $t('orcid.already-verified-text') }}
+                {{ $t("orcid.already-verified-text") }}
             </p>
             <div class="text-subtitle1 q-mb-md">
                 <span class="text-primary text-weight-bold">ORCID: </span>
@@ -25,7 +25,7 @@
             <div class="flex justify-end">
                 <q-btn outline color="primary" :href="url">
                     <OrcidAvatar size="md" /><span class="q-ml-md text-grey-8"
-                        >{{ $t('ocrid.verify-btn-text') }}
+                        >{{ $t("ocrid.verify-btn-text") }}
                     </span></q-btn
                 >
             </div>
@@ -33,13 +33,13 @@
         <q-card-section v-else>
             <div class="column flex flex-center">
                 <div class="q-ma-md text-h5 text-grey-8">
-                    Verify your ORCID iD (or register for an iD)
+                    {{ $t("orcid.verify-header-text") }}
                 </div>
                 <div>
                     <q-btn outline color="primary" :href="url">
                         <OrcidAvatar size="md" /><span
                             class="q-ml-md text-grey-8"
-                            >{{ $t('ocrid.verify-btn-text') }}
+                            >{{ $t("ocrid.verify-btn-text") }}
                         </span></q-btn
                     >
                 </div>
@@ -47,17 +47,17 @@
         </q-card-section>
     </ContentCard>
     <ContentCard secondary class="q-mt-lg">
-        <template #title>{{ $t('manage-author-profile-view.title') }}</template>
+        <template #title>{{ $t("manage-author-profile-view.title") }}</template>
     </ContentCard>
 </template>
 
 <script setup lang="ts">
-import ManageAuthorProfileCard from '../components/ManageAuthorProfileCard.vue';
-import ContentCard from '@/components/ContentCard.vue';
-import OrcidAvatar from '@/components/OrcidAvatar.vue';
+import ManageAuthorProfileCard from "../components/ManageAuthorProfileCard.vue";
+import ContentCard from "@/components/ContentCard.vue";
+import OrcidAvatar from "@/components/OrcidAvatar.vue";
 const authStore = useAuthStore();
 
-const url = '/api/user/orcid/verify';
+const url = "/api/user/orcid/verify";
 </script>
 
 <style scoped></style>
