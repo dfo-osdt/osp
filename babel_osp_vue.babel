@@ -1252,6 +1252,22 @@
 								</translations>
 							</concept_node>
 							<concept_node>
+								<name>edit</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
 								<name>email</name>
 								<description/>
 								<comment/>
@@ -2810,6 +2826,22 @@
 							</concept_node>
 							<concept_node>
 								<name>type-of-publication</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>unique-id</name>
 								<description/>
 								<comment/>
 								<default_text/>
@@ -4446,6 +4478,43 @@
 						<children>
 							<concept_node>
 								<name>no-funding-source-given</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+						</children>
+					</folder_node>
+					<folder_node>
+						<name>fundingSource</name>
+						<children>
+							<concept_node>
+								<name>delete</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>deleteConfirmation</name>
 								<description/>
 								<comment/>
 								<default_text/>
@@ -6496,6 +6565,22 @@
 								</translations>
 							</concept_node>
 							<concept_node>
+								<name>verify-header-text</name>
+								<description/>
+								<comment/>
+								<default_text/>
+								<translations>
+									<translation>
+										<language>en-CA</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>fr-CA</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
 								<name>verifying</name>
 								<description/>
 								<comment/>
@@ -6718,11 +6803,11 @@
 										<translations>
 											<translation>
 												<language>en-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 											<translation>
 												<language>fr-CA</language>
-												<approved>false</approved>
+												<approved>true</approved>
 											</translation>
 										</translations>
 									</concept_node>
