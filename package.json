@@ -11,11 +11,11 @@
         "@quasar/vite-plugin": "^1.4.1",
         "@types/dompurify": "^3.0.2",
         "@types/node": "^20.4.2",
-        "@typescript-eslint/eslint-plugin": "^6.0.0",
-        "@typescript-eslint/parser": "^6.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.1.0",
+        "@typescript-eslint/parser": "^6.1.0",
         "axios": "^1.4.0",
         "cypress": "^12.17.1",
-        "eslint": "^8.44.0",
+        "eslint": "^8.45.0",
         "eslint-config-prettier": "^8.8.0",
         "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-vue": "^9.15.1",
@@ -26,8 +26,8 @@
         "typescript": "^5.1.6",
         "unplugin-auto-import": "^0.16.6",
         "unplugin-vue-components": "^0.25.1",
-        "vite": "^4.4.3",
-        "vue-tsc": "^1.8.4"
+        "vite": "^4.4.4",
+        "vue-tsc": "^1.8.5"
     },
     "dependencies": {
         "@intlify/unplugin-vue-i18n": "^0.12.2",
@@ -38,7 +38,7 @@
         "eslint-plugin-quasar": "^1.1.0",
         "pinia": "^2.1.4",
         "plugin-vue@latest": "link:@@vitejs/plugin-vue@latest",
-        "quasar": "^2.12.2",
+        "quasar": "^2.12.3",
         "vue": "^3.3.4",
         "vue-i18n": "^9.2.2",
         "vue-router": "^4.2.4"
