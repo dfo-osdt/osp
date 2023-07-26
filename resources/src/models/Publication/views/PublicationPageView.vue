@@ -77,7 +77,7 @@
                                         flat
                                         :label="
                                             $t(
-                                                'publication-page.go-to-manuscript-record'
+                                                'publication-page.go-to-manuscript-record',
                                             )
                                         "
                                         :to="`/manuscript/${publication.data.manuscript_record_id}/form`"
@@ -124,7 +124,10 @@
                         v-model="publication.data.journal_id"
                         :disable="loading"
                         :readonly="!canEdit"
-                        :rules="[(val: number | null) => !!val || $t('common.required')]"
+                        :rules="[
+                            (val: number | null) =>
+                                !!val || $t('common.required'),
+                        ]"
                         class="q-mb-md"
                     />
                     <DoiInput
@@ -167,7 +170,7 @@
                     <q-toggle
                         v-model="publication.data.is_open_access"
                         :label="$t('common.published-as-open-access')"
-                        :disable="loading"
+                        :disable="loading || !canEdit"
                         :readonly="!canEdit"
                     />
                     <DateInput
@@ -208,18 +211,34 @@
                                         KB uploaded on
                                         {{
                                             new Date(
-                                                publicationResource.data.created_at
+                                                publicationResource.data.created_at,
                                             ).toLocaleString()
                                         }}
                                     </q-item-label>
                                 </q-item-section>
                                 <q-item-section side>
                                     <q-btn
+                                        v-if="publication.data.can_view_pdf"
                                         icon="mdi-file-download-outline"
                                         color="primary"
                                         :loading="loading"
                                         :href="`api/publications/${id}/pdf/download`"
-                                    />
+                                    >
+                                        <q-tooltip>
+                                            {{ $t('common.download') }}
+                                        </q-tooltip>
+                                    </q-btn>
+                                    <div>
+                                        <span class="q-mr-sm">{{
+                                            $t(
+                                                'common.publication-under-embargo',
+                                            )
+                                        }}</span>
+                                        <q-icon
+                                            name="mdi-download-lock"
+                                            size="sm"
+                                        />
+                                    </div>
                                 </q-item-section>
                             </q-item>
                         </q-list>
@@ -258,7 +277,7 @@
             </ContentCard>
             <q-card-actions align="right">
                 <q-btn
-                    v-if="publication.data.status === 'accepted'"
+                    v-if="publication.data.status === 'accepted' && canEdit"
                     :label="$t('publication-page.mark-as-published')"
                     color="primary"
                     icon="mdi-flag-checkered"
@@ -338,7 +357,7 @@ watch(
         if (oldValue === null || !canEdit.value) return;
         isDirty.value = true;
     },
-    { deep: true }
+    { deep: true },
 );
 
 // permissions
@@ -368,7 +387,7 @@ const save = async () => {
     loading.value = true;
     await PublicationService.update(
         publication.value.data.id,
-        publication.value.data
+        publication.value.data,
     )
         .then((response) => {
             publication.value = response;
@@ -419,7 +438,7 @@ async function upload() {
 
     const response = await PublicationService.attachPDF(
         publicationFile.value,
-        props.id
+        props.id,
     );
 
     publicationResource.value = response;
