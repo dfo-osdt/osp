@@ -10,7 +10,7 @@ import '@quasar/extras/material-icons/material-icons.css';
 import 'quasar/src/css/index.sass';
 
 export const langs = import.meta.glob(
-    '../../../node_modules/quasar/lang/(fr|en-US).mjs'
+    '../../../node_modules/quasar/lang/(fr|en-US).mjs',
 );
 
 export const installQuasar = (app: App<Element>) => {
@@ -26,6 +26,11 @@ export const installQuasar = (app: App<Element>) => {
             },
             loadingBar: {
                 color: 'primary',
+                hijackFilter(url) {
+                    // status is check periodically - no need to display loading bar as
+                    // it could confuse user.
+                    return !url.includes('/api/status?locale=');
+                },
             },
         },
     });
