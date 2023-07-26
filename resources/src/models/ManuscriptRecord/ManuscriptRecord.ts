@@ -91,7 +91,7 @@ export class ManuscriptRecordService {
      */
     public static async find(id: number) {
         const response = await http.get<ManuscriptRecordResource>(
-            `${this.baseURL}/${id}`
+            `${this.baseURL}/${id}`,
         );
         return response.data;
     }
@@ -141,7 +141,7 @@ export class ManuscriptRecordService {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            }
+            },
         );
         return response.data;
     }
@@ -149,7 +149,7 @@ export class ManuscriptRecordService {
     /** List all PDF files associated with this manuscript */
     public static async listPDFs(id: number) {
         const response = await http.get<MediaResourceList>(
-            `${this.baseURL}/${id}/files`
+            `${this.baseURL}/${id}/files`,
         );
         return response.data;
     }
@@ -160,7 +160,7 @@ export class ManuscriptRecordService {
      */
     public static async deletePDF(id: number, uuid: string) {
         const response = await http.delete(
-            `${this.baseURL}/${id}/files/${uuid}`
+            `${this.baseURL}/${id}/files/${uuid}`,
         );
         return response.status === 204;
     }
@@ -172,7 +172,7 @@ export class ManuscriptRecordService {
         };
         const response = await http.put<any, ManuscriptRecordResource>(
             `${this.baseURL}/${id}/submit-for-review`,
-            data
+            data,
         );
         return response.data;
     }
@@ -184,7 +184,7 @@ export class ManuscriptRecordService {
         };
         const response = await http.put<any, ManuscriptRecordResource>(
             `${this.baseURL}/${id}/submitted`,
-            data
+            data,
         );
         return response.data;
     }
@@ -194,7 +194,7 @@ export class ManuscriptRecordService {
         id: number,
         submittedOn: string,
         acceptedOn: string,
-        journalId: number
+        journalId: number,
     ) {
         const data = {
             submitted_to_journal_on: submittedOn,
@@ -203,7 +203,7 @@ export class ManuscriptRecordService {
         };
         const response = await http.put<any, ManuscriptRecordResource>(
             `${this.baseURL}/${id}/accepted`,
-            data
+            data,
         );
         return response.data;
     }
@@ -211,7 +211,7 @@ export class ManuscriptRecordService {
     // Withdraw the manuscript
     public static async withdraw(id: number) {
         const response = await http.put<any, ManuscriptRecordResource>(
-            `${this.baseURL}/${id}/withdraw`
+            `${this.baseURL}/${id}/withdraw`,
         );
         return response.data;
     }
@@ -223,7 +223,7 @@ export class ManuscriptRecordService {
             url += `?${query.toQueryString()}`;
         }
         const response = await http.get<ManuscriptRecordSummaryResourceList>(
-            url
+            url,
         );
         return response.data;
     }

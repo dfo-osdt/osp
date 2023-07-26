@@ -1,30 +1,5 @@
 <template>
-    <q-banner
-        v-if="showPublishBanner"
-        class="bg-secondary text-white q-px-md q-pt-lg q-pb-md"
-    >
-        <div class="flex justify-between items-center">
-            <div class="text-subtitle1 flex items-center">
-                <q-icon
-                    name="mdi-information-outline"
-                    size="md"
-                    class="q-mr-sm"
-                />
-                <span>
-                    {{ $t('mrf.ready-to-marked-published') }}
-                </span>
-            </div>
-            <div>
-                <q-btn
-                    flat
-                    class="text-white"
-                    icon-right="mdi-arrow-right-thin-circle-outline"
-                    :to="`/manuscript/${id}/progress`"
-                />
-            </div>
-        </div>
-    </q-banner>
-    <div class="q-pa-lg">
+    <div class="q-px-md">
         <div class="q-mt-md q-mb-lg row justify-between">
             <div class="col-8">
                 <div class="text-h4 text-primary">
@@ -36,10 +11,10 @@
                 >
                     <div class="text-caption">
                         <span class="text-primary text-uppercase"
-                            >{{ $t('common.unique-id') }}:
+                            >{{ $t('common.title') }}:
                         </span>
-                        <span class="text-weight-medium">{{
-                            manuscriptResource.data.ulid
+                        <span class="text-weight-medium text-uppercase">{{
+                            manuscriptResource.data.title
                         }}</span>
                     </div>
                 </div>
@@ -285,7 +260,7 @@
                         <p>
                             {{
                                 $t(
-                                    'mrf.potential-media-interest-text-field-text'
+                                    'mrf.potential-media-interest-text-field-text',
                                 )
                             }}
                         </p>
@@ -433,7 +408,7 @@ watch(
         if (dirtyWatcherDisabled.value) return;
         isDirty.value = true;
     },
-    { deep: true }
+    { deep: true },
 );
 
 const isManuscriptReadOnly = computed(() => {
@@ -560,19 +535,6 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
     }, 2000);
 }
 
-// display banner if the manuscript is reviewed but still needs to be published
-const showPublishBanner = computed(() => {
-    const manuscript = manuscriptResource.value?.data;
-
-    if (!manuscript) {
-        return false;
-    }
-
-    return (
-        manuscript.status === 'reviewed' || manuscript.status === 'submitted'
-    );
-});
-
 // PLS generation
 const PLSLoading = ref(false);
 
@@ -609,7 +571,7 @@ async function generatePLS() {
     if (!manuscriptResource.value?.data.abstract) return;
     if (manuscriptResource.value?.data.abstract === '') return;
     manuscriptResource.value.data.pls = t(
-        'mrf.generating-pls-please-be-patient'
+        'mrf.generating-pls-please-be-patient',
     );
     await UtilityService.generatePls(manuscriptResource.value.data.abstract)
         .then((response) => {

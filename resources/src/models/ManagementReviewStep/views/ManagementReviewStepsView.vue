@@ -1,8 +1,8 @@
 <template>
-    <q-timeline color="primary" class="q-pa-lg">
+    <q-timeline color="primary" class="q-px-md">
         <q-timeline-entry heading
             ><div class="text-h4 text-primary">
-                {{ $t("management-review-step-view.title") }}
+                {{ $t('management-review-step-view.title') }}
             </div>
             <div
                 class="text-subtitle2 text-weight-bold text-grey-7 text-uppercase"
@@ -22,48 +22,48 @@
                     <a
                         :href="
                             $t(
-                                'policy.intellectual-property-policy-copyright-act-link'
+                                'policy.intellectual-property-policy-copyright-act-link',
                             )
                         "
                         target="_blank"
                         >{{
                             $t(
-                                "policy.intellectual-property-policy-copyright-act"
+                                'policy.intellectual-property-policy-copyright-act',
                             )
                         }}</a
                     >
                 </template>
                 <template #privacyAct>
                     <a :href="$t('policy.privacy-act-link')" target="_blank">{{
-                        $t("policy.privacy-act")
+                        $t('policy.privacy-act')
                     }}</a>
                 </template>
                 <template #valueAndEthicsCode>
                     <a
                         :href="$t('policy.values-and-ethics-code-for-dfo-link')"
                         target="_blank"
-                        >{{ $t("policy.values-and-ethics-code-for-dfo") }}</a
+                        >{{ $t('policy.values-and-ethics-code-for-dfo') }}</a
                     >
                 </template>
             </i18n-t>
             <p>
-                {{ $t("policy.message.p2") }}
+                {{ $t('policy.message.p2') }}
             </p>
             <p>
-                {{ $t("policy.p2") }}
+                {{ $t('policy.p2') }}
             </p>
             <i18n-t keypath="policy.for-more-info" tag="p" scope="global">
                 <template #policy>
                     <a
                         :href="
                             $t(
-                                'policy.national-policy-for-science-publications-link'
+                                'policy.national-policy-for-science-publications-link',
                             )
                         "
                         target="_blank"
                         >{{
                             $t(
-                                "policy.national-policy-for-science-publications"
+                                'policy.national-policy-for-science-publications',
                             )
                         }}</a
                     >
@@ -85,7 +85,7 @@
             icon="mdi-check-all"
             :title="
                 $t(
-                    'management-review-step-view.completion-of-management-review'
+                    'management-review-step-view.completion-of-management-review',
                 )
             "
             :color="completedColor"
@@ -98,13 +98,13 @@
 import {
     ManagementReviewStepResourceList,
     ManagementReviewStepService,
-} from "../ManagementReviewStep";
-import ManagementReviewStepTimelineEntry from "../components/ManagementReviewStepTimelineEntry.vue";
-import { Ref } from "vue";
+} from '../ManagementReviewStep';
+import ManagementReviewStepTimelineEntry from '../components/ManagementReviewStepTimelineEntry.vue';
+import { Ref } from 'vue';
 import {
     ManuscriptRecordResource,
     ManuscriptRecordService,
-} from "@/models/ManuscriptRecord/ManuscriptRecord";
+} from '@/models/ManuscriptRecord/ManuscriptRecord';
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -117,32 +117,32 @@ const manuscriptRecord: Ref<ManuscriptRecordResource | null> = ref(null);
 
 const processStatus = computed(() => {
     if (manuscriptRecord.value === null) {
-        return t("common.unknown");
+        return t('common.unknown');
     }
     switch (manuscriptRecord.value.data.status) {
-        case "draft":
+        case 'draft':
             return t(
-                "management-review-step-view.not-started-submit-your-form-to-begin"
+                'management-review-step-view.not-started-submit-your-form-to-begin',
             );
-        case "in_review":
-            return t("common.in-progress");
+        case 'in_review':
+            return t('common.in-progress');
         default:
-            return t("common.complete");
+            return t('common.complete');
     }
     return null;
 });
 
 const sentForReview = computed(() => {
     if (manuscriptRecord.value === null) {
-        return t("common.pending");
+        return t('common.pending');
     }
     switch (manuscriptRecord.value.data.status) {
-        case "draft":
-            return t("common.pending");
+        case 'draft':
+            return t('common.pending');
         default:
             return (
-                t("common.submitted-on") +
-                " " +
+                t('common.submitted-on') +
+                ' ' +
                 useLocaleDate(manuscriptRecord.value.data.sent_for_review_at)
                     .value
             );
@@ -151,28 +151,28 @@ const sentForReview = computed(() => {
 
 const submittedColor = computed(() => {
     if (manuscriptRecord.value === null) {
-        return "grey-7";
+        return 'grey-7';
     }
     switch (manuscriptRecord.value.data.status) {
-        case "draft":
-            return "yellow-8";
+        case 'draft':
+            return 'yellow-8';
         default:
-            return "primary";
+            return 'primary';
     }
 });
 
 const reviewCompletedOn = computed(() => {
     if (manuscriptRecord.value === null) {
-        return t("common.pending");
+        return t('common.pending');
     }
     switch (manuscriptRecord.value.data.status) {
-        case "draft":
-        case "in_review":
-            return t("common.pending");
+        case 'draft':
+        case 'in_review':
+            return t('common.pending');
         default:
             return (
-                t("common.completed-on") +
-                " " +
+                t('common.completed-on') +
+                ' ' +
                 useLocaleDate(manuscriptRecord.value.data.reviewed_at).value
             );
     }
@@ -180,14 +180,14 @@ const reviewCompletedOn = computed(() => {
 
 const completedColor = computed(() => {
     if (manuscriptRecord.value === null) {
-        return "grey-7";
+        return 'grey-7';
     }
     switch (manuscriptRecord.value.data.status) {
-        case "draft":
-        case "in_review":
-            return "yellow-8";
+        case 'draft':
+        case 'in_review':
+            return 'yellow-8';
         default:
-            return "primary";
+            return 'primary';
     }
 });
 

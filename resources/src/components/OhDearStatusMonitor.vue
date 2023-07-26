@@ -11,7 +11,7 @@ const { t } = useI18n();
 
 const muted = useLocalStorage('mutedOhDearStatusId', 0);
 const ohDearStatus = new OhDearStatus('api/status', localeStore.locale);
-const { resume, pause } = useTimeoutPoll(updateStatus, 60000); // 1 minute
+const { resume, pause } = useTimeoutPoll(updateStatus, 600000); // 10 minute in ms
 
 onMounted(async () => {
     resume();
@@ -19,9 +19,8 @@ onMounted(async () => {
 
 async function updateStatus() {
     try {
-        const response = await ohDearStatus.updateStatus();
+        await ohDearStatus.updateStatus();
         if (isNotificationRequired()) notify();
-        console.log(response);
     } catch (err) {
         pause();
     }
@@ -38,15 +37,13 @@ function isNotificationRequired() {
 
 function notify() {
     const htmlMessage = `
-        <div class="text-body1">${
-            ohDearStatus.OhDearStatusPage?.pinnedUpdate?.title
-        }</div>
+        <div class="text-body1">${ohDearStatus.OhDearStatusPage?.pinnedUpdate
+            ?.title}</div>
         <div class="text-caption">${
             useLocaleDate(ohDearStatus.getPinnedUpdateDate()).value
         }</div>
-        <div class="text-body2">${
-            ohDearStatus.OhDearStatusPage?.pinnedUpdate?.text
-        }</div>`;
+        <div class="text-body2">${ohDearStatus.OhDearStatusPage?.pinnedUpdate
+            ?.text}</div>`;
 
     $q.notify({
         multiLine: true,
