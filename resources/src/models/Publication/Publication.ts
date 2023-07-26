@@ -27,6 +27,8 @@ export interface Publication {
     manuscript_record?: ManuscriptRecordResource;
     user?: UserResource;
     publication_authors?: PublicationAuthorResource[];
+    // special permissions
+    can_view_pdf: boolean;
 }
 
 export type PublicationCreate = Omit<
@@ -69,7 +71,7 @@ export class PublicationService {
     public static async create(data: PublicationCreate) {
         const response = await http.post<PublicationCreate, R>(
             `api/publications`,
-            data
+            data,
         );
         return response.data;
     }
@@ -78,7 +80,7 @@ export class PublicationService {
     public static async update(id: number, data: Publication) {
         const response = await http.put<Publication, R>(
             `api/publications/${id}`,
-            data
+            data,
         );
         return response.data;
     }
@@ -102,7 +104,7 @@ export class PublicationService {
     /** Get PDF media resource - if it exits */
     public static async getPDF(id: number) {
         const response = await http.get<MediaResource>(
-            `api/publications/${id}/pdf`
+            `api/publications/${id}/pdf`,
         );
         return response.data;
     }
@@ -118,7 +120,7 @@ export class PublicationService {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            }
+            },
         );
         return response.data;
     }

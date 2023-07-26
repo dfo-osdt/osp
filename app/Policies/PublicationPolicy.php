@@ -39,8 +39,14 @@ class PublicationPolicy
         }
 
         // if the user is an author on the publication, then they can view it
-        if ($publication->publicationAuthors->contains('user_id', $user->id)) {
+        $users = $publication->publicationAuthors()->with('author')->get()->pluck('author.user_id');
+        if ($users->contains($user->id)) {
             return true;
+        }
+
+        // if the publication has a manuscript record, then the users that can view it, can view this publication
+        if ($publication->manuscript_record_id) {
+            return $user->can('view', $publication->manuscriptRecord);
         }
 
         return false;
@@ -54,9 +60,16 @@ class PublicationPolicy
         if ($publication->user_id == $user->id) {
             return true;
         }
+
         // if the user is an author on the publication, then they can view it
-        if ($publication->publicationAuthors->contains('user_id', $user->id)) {
+        $users = $publication->publicationAuthors()->with('author')->get()->pluck('author.user_id');
+        if ($users->contains($user->id)) {
             return true;
+        }
+
+        // if the publication has a manuscript record, then the users that can view it, can view this publication
+        if ($publication->manuscript_record_id) {
+            return $user->can('view', $publication->manuscriptRecord);
         }
 
         return ! $publication->isUnderEmbargo();

@@ -2,6 +2,7 @@
 
 use App\Enums\PublicationStatus;
 use App\Models\Journal;
+use App\Models\ManuscriptRecord;
 use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -209,4 +210,29 @@ test('a user can attach a new publication pdf to their publication', function ()
     // check that user can download the pdf
     $response = $this->actingAs($user)->get('/api/publications/'.$publication->id.'/pdf');
     $response->assertOk();
+});
+
+
+test('a regular user can only view a publication if it has been published', function () {
+
+    $user = User::factory()->create();
+    $publication = Publication::factory()->withManuscript()->create();
+    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
+    $response->assertForbidden();
+
+    $publication = Publication::factory()->published()->create();
+    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
+    $response->assertOk();
+
+});
+
+test('a user that can see the manuscript can see the publication', function() {
+
+    $publication = Publication::factory()->withManuscript()->create();
+    // get a user that did the review
+    $user = $publication->manuscriptRecord->managementReviewSteps->first()->user;
+    ray($user);
+    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
+    $response->assertOk();
+
 });

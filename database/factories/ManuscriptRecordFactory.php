@@ -73,7 +73,7 @@ class ManuscriptRecordFactory extends Factory
     public function reviewed()
     {
         return $this->in_review()->state([
-            'title' => 'A manuscript record that has been accepted for publication',
+            'title' => 'A manuscript record that has passed management review',
             'status' => ManuscriptRecordStatus::REVIEWED,
             'reviewed_at' => now(),
         ])->afterCreating(function ($manuscript) {
@@ -93,4 +93,18 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->withheld()->make());
         });
     }
+
+    /**
+     * A manuscript record that has been accepted for publication
+     */
+    public function accepted()
+    {
+        return $this->reviewed()->state([
+            'title' => 'A manuscript record that has been accepted for publication',
+            'status' => ManuscriptRecordStatus::ACCEPTED,
+            'submitted_to_journal_on' => now(),
+            'accepted_on' => now(),
+        ]);
+    }
+
 }

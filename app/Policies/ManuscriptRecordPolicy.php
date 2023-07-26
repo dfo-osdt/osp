@@ -28,6 +28,7 @@ class ManuscriptRecordPolicy
      */
     public function view(User $user, ManuscriptRecord $manuscriptRecord)
     {
+
         // owners can view their own manuscripts
         if ($user->id === $manuscriptRecord->user_id) {
             return true;

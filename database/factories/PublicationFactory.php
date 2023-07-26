@@ -53,6 +53,8 @@ class PublicationFactory extends Factory
                 'accepted_on' => $acceptedOn,
                 'published_on' => $publishedOn,
             ];
+        })->afterCreating(function($publication){
+            $publication->addMedia(getcwd().'/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('publication');
         });
     }
 
@@ -61,7 +63,7 @@ class PublicationFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'manuscript_record_id' => \App\Models\ManuscriptRecord::factory(),
+                'manuscript_record_id' => \App\Models\ManuscriptRecord::factory()->accepted(),
             ];
         });
     }
