@@ -1,13 +1,13 @@
 <template>
     <div class="q-px-md">
         <div class="q-mt-md q-mb-lg row justify-between">
-            <div class="col-8">
+            <div class="col-8 q-pr-lg">
                 <div class="text-h4 text-primary">
                     {{ $t('common.manuscript-record-form') }}
                 </div>
                 <div
                     v-if="manuscriptResource"
-                    class="text-grey-7 q-py-xs ellipsis"
+                    class="text-grey-7 q-py-xs ellipsis-2-lines"
                 >
                     <div class="text-caption">
                         <span class="text-primary text-uppercase"
