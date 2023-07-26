@@ -1,5 +1,5 @@
 <template>
-    <q-timeline v-if="manuscriptRecord" color="primary" class="q-pa-lg">
+    <q-timeline v-if="manuscriptRecord" color="primary" class="q-px-md">
         <q-timeline-entry heading
             ><div class="text-h4 text-primary">
                 {{ $t('manuscript-progress-view.title') }}

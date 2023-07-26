@@ -1,40 +1,120 @@
 <template>
     <MainPageLayout :title="$t('common.manuscript-record')">
         <template #toolbar>
-            <q-tabs
-                dense
-                narrow-indicator
-                inline-label
-                align="left"
-                indicator-color="primary"
-                active-color="primary"
-                class="text-grey-8"
-            >
-                <q-route-tab
-                    :label="$t('common.form')"
-                    :to="`/manuscript/${id}/form`"
-                />
-                <q-route-tab
-                    :label="$t('common.reviews')"
-                    :to="`/manuscript/${id}/reviews`"
-                />
-                <q-route-tab
-                    :label="$t('common.progress')"
-                    :to="`/manuscript/${id}/progress`"
-                />
-            </q-tabs>
+            <div class="text-subtitle2 text-grey-7 q-pl-md q-py-sm">
+                <span class="text-primary text-uppercase"
+                    >{{ $t('common.unique-id') }}:
+                </span>
+                <span class="text-weight-medium">{{
+                    manuscript?.data.ulid
+                }}</span>
+            </div>
             <q-separator />
         </template>
-        <RouterView />
+        <q-banner
+            v-if="showPublishBanner"
+            class="bg-secondary text-white q-pt-lg q-pb-md"
+        >
+            <div class="flex justify-between items-center">
+                <div class="text-subtitle1 flex items-center">
+                    <q-icon
+                        name="mdi-information-outline"
+                        size="md"
+                        class="q-mr-sm"
+                    />
+                    <span>
+                        {{ $t('mrf.ready-to-marked-published') }}
+                    </span>
+                </div>
+                <div>
+                    <q-btn
+                        flat
+                        class="text-white"
+                        icon-right="mdi-arrow-right-thin-circle-outline"
+                        :to="`/manuscript/${id}/progress`"
+                    />
+                </div>
+            </div>
+        </q-banner>
+        <div class="row q-gutter-lg q-col-gutter-lg flex">
+            <div class="cols=2">
+                <ContentCard secondary class="q-mt-md">
+                    <template #title>{{
+                        $t('common.manuscript-record')
+                    }}</template>
+                    <q-list>
+                        <q-item clickable :to="`/manuscript/${id}/form`">
+                            <q-item-section avatar>
+                                <q-icon name="mdi-file-document-outline" />
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label>{{
+                                    $t('common.form')
+                                }}</q-item-label>
+                            </q-item-section>
+                        </q-item>
+                        <q-item clickable :to="`/manuscript/${id}/reviews`">
+                            <q-item-section avatar>
+                                <q-icon name="mdi-account-eye-outline" />
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label>{{
+                                    $t('management-review-step-view.title')
+                                }}</q-item-label>
+                            </q-item-section>
+                        </q-item>
+                        <q-item clickable :to="`/manuscript/${id}/progress`">
+                            <q-item-section avatar>
+                                <q-icon name="mdi-calendar-start-outline" />
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label>{{
+                                    $t('manuscript-progress-view.title')
+                                }}</q-item-label>
+                            </q-item-section>
+                        </q-item>
+                    </q-list>
+                </ContentCard>
+            </div>
+            <div class="col q-pr-md">
+                <RouterView />
+            </div>
+        </div>
     </MainPageLayout>
 </template>
 
 <script setup lang="ts">
+import ContentCard from '@/components/ContentCard.vue';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
+import {
+    ManuscriptRecordResource,
+    ManuscriptRecordService,
+} from '@/models/ManuscriptRecord/ManuscriptRecord';
+const { t } = useI18n();
 
-defineProps<{
+const props = defineProps<{
     id: number;
 }>();
+
+const loading = ref(true);
+const manuscript = ref<ManuscriptRecordResource>();
+
+onMounted(async () => {
+    manuscript.value = await ManuscriptRecordService.find(props.id);
+    loading.value = false;
+});
+
+// display banner if the manuscript is reviewed but still needs to be published
+const showPublishBanner = computed(() => {
+    if (!manuscript.value) {
+        return false;
+    }
+
+    return (
+        manuscript.value.data.status === 'reviewed' ||
+        manuscript.value.data.status === 'submitted'
+    );
+});
 </script>
 
 <style scoped></style>
