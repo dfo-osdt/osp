@@ -229,7 +229,8 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password"
+    "your-password": "Your password",
+    "contact-us": "Contact Us"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -425,7 +426,7 @@
     "mark-as-submitted": "Mark as Submitted",
     "submit-management": "Submit for Management Review",
     "submit-management-details": "The manuscript is initially submitted to a division manager or director (NCR) for management review.",
-    "submit-pub-details": "The manuscript was submitted to the target journal for peer-review. We track this stage to gather statistics on the time it takes to get manuscripts accepted and published.",
+    "submit-pub-details": "The manuscript was submitted for peer-review. We track this stage to gather statistics on the time it takes to get manuscripts accepted and published.",
     "submit-pub-title": "Initial Submission for publication",
     "title": "Manuscript Progress",
     "withdraw-manuscript": "Withdraw Manuscript",
