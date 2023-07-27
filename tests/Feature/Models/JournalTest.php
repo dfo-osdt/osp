@@ -2,6 +2,7 @@
 
 use App\Models\Journal;
 use App\Models\User;
+use Database\Seeders\JournalsTableSeeder;
 
 test('a user can get a list of journals', function () {
     // create a user
@@ -46,3 +47,26 @@ test('a user can get a specific journal by id', function () {
     $response = $this->actingAs($user)->getJson('/api/journals/'.$journal->id)->assertOk();
     expect($response->json('data.id'))->toBe($journal->id);
 });
+
+
+test('a user can find these specific journals by title', function(string $title){
+
+    expect($title)->not->toBeEmpty();
+
+    // seed the journals table - we want to use our actual seed data here
+    $this->seed(JournalsTableSeeder::class);
+
+    // make sure that title is in the database
+    $this->assertDatabaseHas('journals', ['title_en' => $title]);
+
+    // create a user
+    $user = User::factory()->create();
+
+    // search for a journal by title
+    $response = $this->actingAs($user)->getJson('/api/journals?filter[search]='.$title.'&sort=title-length')->assertOk();
+
+    $returnedTitles = collect($response->json('data'))->pluck('data.title_en');
+
+    expect($returnedTitles)->toContain($title);
+
+})->with(['Science','Fisheries','Ecology','Nature']);
