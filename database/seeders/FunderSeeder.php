@@ -30,13 +30,8 @@ class FunderSeeder extends Seeder
             'organization_id' => 1,
         ]);
         Funder::create([
-            'name_en' => 'Directed Research Funds - A-Base',
-            'name_fr' => 'Fonds de recherche dirigée - A-Base',
-            'organization_id' => 1,
-        ]);
-        Funder::create([
-            'name_en' => 'Directed Research Funds - B-Base',
-            'name_fr' => 'Fonds de recherche dirigée - B-Base',
+            'name_en' => 'Directed Research Funds - A/B-Base',
+            'name_fr' => 'Fonds de recherche dirigée - A/B-Base',
             'organization_id' => 1,
         ]);
         Funder::create([
