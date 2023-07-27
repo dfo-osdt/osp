@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
 
         if (config('app.env') !== 'testing') {
             $this->call([
-                DfoSeriesJournalSeeder::class,
-                JournalsTableSeeder::class,
+                // DfoSeriesJournalSeeder::class,
+                JournalsTableSeeder::class, // this also seeds the dfo_series_journals table
             ]);
         }
 

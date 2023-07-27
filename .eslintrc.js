@@ -18,7 +18,6 @@ module.exports = {
             'warn',
             {
                 singleQuote: true,
-                doubleQuote: true,
             },
         ],
     },

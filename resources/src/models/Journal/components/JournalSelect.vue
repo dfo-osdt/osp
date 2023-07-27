@@ -68,7 +68,7 @@ const selectedJournal = ref<JournalResource | null>(null);
 const lastSearchTerm = ref('');
 const journalsLoading = ref(false);
 const isReadOnly = computed(
-    () => journalSelect.value?.$props.readonly ?? false
+    () => journalSelect.value?.$props.readonly ?? false,
 );
 
 const emit = defineEmits(['update:modelValue']);
@@ -89,7 +89,7 @@ onMounted(async () => {
 
 const filterJournals = async (
     val: string,
-    update: (arg: () => Promise<void>) => void
+    update: (arg: () => Promise<void>) => void,
 ) => {
     lastSearchTerm.value = val;
     update(async () => {
@@ -98,16 +98,13 @@ const filterJournals = async (
             journalsLoading.value = true;
 
             const query = new SpatieQuery();
-            query.filter('search', needle).paginate(1, 10);
+            query
+                .filter('search', needle)
+                .sort('title-length', 'asc')
+                .sort('title_en', 'asc')
+                .paginate(1, 10);
 
-            await JournalService.list(query).then((response) => {
-                // order response by length of title
-                response.data.sort((a, b) => {
-                    return a.data.title_en.length - b.data.title_en.length;
-                });
-
-                journals.value = response;
-            });
+            journals.value = await JournalService.list(query);
             journalsLoading.value = false;
         }
     });
