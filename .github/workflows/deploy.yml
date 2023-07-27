@@ -42,12 +42,9 @@ jobs:
         name: app-build
         path: osp_${{github.sha}}.tar.gz
 
-  prepare-release-on-staging:
+  deploy-on-staging:
     runs-on: self-hosted
     needs: build-release
-    strategy:
-      matrix:
-        max-parallel: [1]
     environment: staging
     steps:
     - name: Get artifact from previous step
@@ -55,6 +52,7 @@ jobs:
       with:
         name: app-build
         path: osp_${{github.sha}}.tar.gz
+
     - name: Upload to staging server
       uses: appleboy/scp-action@master
       with:
@@ -64,6 +62,7 @@ jobs:
         port: 22
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
+
     - name: Extract archive and create directories
       uses: appleboy/ssh-action@master
       with:
@@ -76,47 +75,36 @@ jobs:
           tar -xzf /var/www/${{secrets.SERVER}}/html/artifacts/osp_${{github.sha}}.tar.gz/osp_${{github.sha}}.tar.gz -C /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
           rm -rf /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}/storage
 
-  run-deploy-hooks-on-staging:
-    runs-on: self-hosted
-    needs: prepare-release-on-staging
-    strategy:
-      matrix:
-        max-parallel: [1]
-    environment: staging
-    steps:
-      - name: Run deploy hooks
-        uses: appleboy/ssh-action@master
-        env:
-          RELEASE_PATH: /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
-          ACTIVE_RELEASE_PATH: /var/www/${{secrets.SERVER}}/html/current
-          STORAGE_PATH: /var/www/${{secrets.SERVER}}/html/storage
-          BASE_PATH: /var/www/${{secrets.SERVER}}/html
-        with:
-          host: ${{secrets.SERVER}}
-          port: 22
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
-          script_stop: true
-          script: |
-            cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
-            ln -s -f $BASE_PATH/.env $RELEASE_PATH
-            ln -s -f $STORAGE_PATH $RELEASE_PATH
-            composer install --optimize-autoloader --no-interaction
-            php artisan optimize:clear
-            php artisan config:clear
-            php artisan config:cache
-            php artisan migrate --force
-            sudo systemctl reload php8.1-fpm.service
-            ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
-            sudo chmod -R 771 $STORAGE_PATH
+    - name: Run deploy hooks
+      uses: appleboy/ssh-action@master
+      env:
+        RELEASE_PATH: /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
+        ACTIVE_RELEASE_PATH: /var/www/${{secrets.SERVER}}/html/current
+        STORAGE_PATH: /var/www/${{secrets.SERVER}}/html/storage
+        BASE_PATH: /var/www/${{secrets.SERVER}}/html
+      with:
+        host: ${{secrets.SERVER}}
+        port: 22
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
+        script_stop: true
+        script: |
+          cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
+          ln -s -f $BASE_PATH/.env $RELEASE_PATH
+          ln -s -f $STORAGE_PATH $RELEASE_PATH
+          composer install --optimize-autoloader --no-interaction
+          php artisan optimize:clear
+          php artisan config:clear
+          php artisan config:cache
+          php artisan migrate --force
+          sudo systemctl reload php8.1-fpm.service
+          ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
+          sudo chmod -R 771 $STORAGE_PATH
 
-  prepare-release-on-production:
+  deploy-on-production:
     runs-on: self-hosted
-    needs: run-deploy-hooks-on-staging
-    strategy:
-      matrix:
-        max-parallel: [1]
+    needs: deploy-on-staging
     environment: production
     steps:
     - name: Get artifact from previous step
@@ -124,6 +112,7 @@ jobs:
       with:
         name: app-build
         path: osp_${{github.sha}}.tar.gz
+
     - name: Upload to staging server
       uses: appleboy/scp-action@master
       with:
@@ -133,6 +122,7 @@ jobs:
         port: 22
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
+
     - name: Extract archive and create directories
       uses: appleboy/ssh-action@master
       with:
@@ -145,40 +135,32 @@ jobs:
           tar -xzf /var/www/${{secrets.SERVER}}/html/artifacts/osp_${{github.sha}}.tar.gz/osp_${{github.sha}}.tar.gz -C /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
           rm -rf /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}/storage
 
-  run-deploy-hooks-on-production:
-    runs-on: self-hosted
-    needs: prepare-release-on-production
-    strategy:
-      matrix:
-        max-parallel: [1]
-    environment: production
-    steps:
-      - name: Run deploy hooks
-        uses: appleboy/ssh-action@master
-        env:
-          RELEASE_PATH: /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
-          ACTIVE_RELEASE_PATH: /var/www/${{secrets.SERVER}}/html/current
-          STORAGE_PATH: /var/www/${{secrets.SERVER}}/html/storage
-          BASE_PATH: /var/www/${{secrets.SERVER}}/html
-        with:
-          host: ${{secrets.SERVER}}
-          port: 22
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
-          script_stop: true
-          script: |
-            cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
-            ln -s -f $BASE_PATH/.env $RELEASE_PATH
-            ln -s -f $STORAGE_PATH $RELEASE_PATH
-            composer install --optimize-autoloader --no-interaction
-            php artisan optimize:clear
-            php artisan config:clear
-            php artisan config:cache
-            php artisan migrate --force
-            sudo chmod -R 771 $STORAGE_PATH
-            ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
-            sudo systemctl reload php8.1-fpm.service
+    - name: Run deploy hooks
+      uses: appleboy/ssh-action@master
+      env:
+        RELEASE_PATH: /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
+        ACTIVE_RELEASE_PATH: /var/www/${{secrets.SERVER}}/html/current
+        STORAGE_PATH: /var/www/${{secrets.SERVER}}/html/storage
+        BASE_PATH: /var/www/${{secrets.SERVER}}/html
+      with:
+        host: ${{secrets.SERVER}}
+        port: 22
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
+        script_stop: true
+        script: |
+          cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
+          ln -s -f $BASE_PATH/.env $RELEASE_PATH
+          ln -s -f $STORAGE_PATH $RELEASE_PATH
+          composer install --optimize-autoloader --no-interaction
+          php artisan optimize:clear
+          php artisan config:clear
+          php artisan config:cache
+          php artisan migrate --force
+          sudo chmod -R 771 $STORAGE_PATH
+          ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
+          sudo systemctl reload php8.1-fpm.service
 
 
 
