@@ -12,7 +12,7 @@ Please ensure that the text “Fisheries and Oceans Canada” appears as an auth
 Once published, please ensure that you update the manuscript record with your publication information in the Open Science Portal.
 If you decide to no longer publish this manuscript, update the manuscript record status to "withdrawn".
 
-<x-mail::button :url="config('app.frontend_url').'#/auth/login?email='.$manuscriptRecord->user->email.'&redirect=/manuscript/'.$manuscriptRecord->id">
+<x-mail::button :url="config('app.frontend_url').'#/auth/login?email='.$manuscriptRecord->user->email.'&redirect=/manuscript/'.$manuscriptRecord->id.'/reviews'">
 Update Manuscript Status
 </x-mail::button>
 
