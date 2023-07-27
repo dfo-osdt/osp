@@ -4,7 +4,7 @@
             <div>&nbsp;</div>
             <div>
                 <a
-                    class="text-caption text-primary"
+                    class="text-caption text-primary contact-link"
                     href="mailto:support@osp-pso.ca"
                     >{{ $t('common.contact-us') }}</a
                 >
@@ -18,4 +18,11 @@
 const year = new Date().getFullYear();
 </script>
 
-<style scoped></style>
+<style scoped>
+.contact-link {
+    text-decoration: none;
+}
+.contact-link:hover {
+    text-decoration: underline;
+}
+</style>
