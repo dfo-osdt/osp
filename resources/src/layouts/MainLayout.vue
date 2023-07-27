@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="hHh Lpr lFf">
+    <q-layout view="hHh Lpr lff">
         <OhDearStatusMonitor />
         <MainHeader @toggle-left-drawer="toggleLeftDrawer"></MainHeader>
         <MainDrawer
@@ -11,12 +11,14 @@
         <q-page-container>
             <router-view />
         </q-page-container>
+        <MainFooter />
     </q-layout>
 </template>
 
 <script setup lang="ts">
 import MainHeader from '@/components/MainHeader.vue';
 import MainDrawer from '@/components/MainDrawer.vue';
+import MainFooter from '@/components/MainFooter.vue';
 import { useQuasar } from 'quasar';
 import OhDearStatusMonitor from '@/components/OhDearStatusMonitor.vue';
 
