@@ -43,7 +43,8 @@ class UpdateScopusJournals extends Command
             return Command::FAILURE;
         }
 
-        $rows = SimpleExcelReader::create($this->argument('file'))->fromSheet(1)->getRows();
+        $reader = SimpleExcelReader::create($this->argument('file'))->fromSheet(1);
+        $rows = $reader->getRows();
 
         // list of ASJC codes we want to import
         $asjcCodes = collect([
@@ -79,16 +80,45 @@ class UpdateScopusJournals extends Command
             2404, // Microbiology
         ]);
 
+        $actionRegister = [
+            0 => [
+                'text' => 'No action',
+                'count' => 0
+                ],
+            1 => [
+                'text' => 'Updated',
+                'count' => 0
+                ],
+                
+            2 => [
+                'text' => 'Created',
+                'count' => 0
+            ],
+            3 => [
+                'text' => 'Deleted - Inactive',
+                'count' => 0
+            ],
+        ];
+
         $start = now();
         // go through the rows, only import ones that have an ASJC code we want
-        $rows->each(function ($row) use ($asjcCodes) {
+        $rows->each(function ($row) use ($asjcCodes, &$actionRegister) {
             // 'All Science Journal Classification Codes (ASJC)' column uses the following
             // format '1703; 2614; 1404; 1803;' so we need to split it into an array of
             // integers and then check if any of them are in the list of ASJC codes we
             // want to import.
 
+            $id = $row['Sourcerecord ID'];
+            $journal = Journal::where('scopus_source_record_id', $id)->first();
+
             // make sure journal is active
             if ($row['Active or Inactive'] == 'Inactive') {
+                if ($journal && $journal->publications()->count() == 0)
+                {
+                    $journal->delete();
+                    $actionRegister[3]['count']++;
+                    $this->info('['.$actionRegister[3]['text'].']: '.$row['Source Title (Medline-sourced journals are indicated in Green)']);
+                }
                 return;
             }
 
@@ -103,11 +133,8 @@ class UpdateScopusJournals extends Command
             if ($asjcCodes->intersect($asjcCodesInRow)->isNotEmpty()) {
                 $title_en = $row['Source Title (Medline-sourced journals are indicated in Green)'];
                 $publisher = $row['Publisher imprints grouped to main Publisher'];
-                $id = $row['Sourcerecord ID'];
 
-                $this->info($row['Source Title (Medline-sourced journals are indicated in Green)']);
-
-                $journal = Journal::where('scopus_source_record_id', $id)->first();
+                $action = 0;
 
                 if ($journal) {
                     // update the title and publisher if they have changed
@@ -115,6 +142,7 @@ class UpdateScopusJournals extends Command
                         $journal->title_en = $title_en;
                         $journal->publisher = $publisher;
                         $journal->save();
+                        $action = 1;
                     }
                 } else {
                     // create a new journal
@@ -123,12 +151,19 @@ class UpdateScopusJournals extends Command
                         'publisher' => $publisher,
                         'scopus_source_record_id' => $id,
                     ]);
+                    $action = 2;
                 }
+
+                $actionRegister[$action]['count']++;
+
+                $this->info('['.$actionRegister[$action]['text'].']: '.$row['Source Title (Medline-sourced journals are indicated in Green)']);
             }
         });
-
+        
         $time = now()->diffInSeconds($start);
+        $this->line('');
         $this->info("Completed in {$time} seconds.");
+        $this->table(['Action', 'Count'], $actionRegister);
 
         return Command::SUCCESS;
     }
