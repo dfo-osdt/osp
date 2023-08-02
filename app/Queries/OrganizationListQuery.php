@@ -3,8 +3,10 @@
 namespace App\Queries;
 
 use App\Filters\FuzzyFilter;
+use App\Filters\MultiColumnFilter;
 use App\Models\Organization;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrganizationListQuery extends QueryBuilder
@@ -15,12 +17,20 @@ class OrganizationListQuery extends QueryBuilder
 
         $this
             ->defaultSort('name_'.app()->getLocale())
-            ->allowedSorts('name_en', 'name_fr')
+            ->allowedSorts([
+                'name_en',
+                'name_fr',
+                'country_code',
+                AllowedSort::custom('name-fr-length', new StringLengthSort(),'name_fr'),
+                AllowedSort::custom('name-en-length', new StringLengthSort(),'name_en'),
+            ])
             ->allowedFilters([
                 AllowedFilter::exact('id'),
+                AllowedFilter::exact('country_code'),
+                AllowedFilter::partial('ror_identifier'),
                 AllowedFilter::partial('name_en'),
                 AllowedFilter::partial('name_fr'),
-                AllowedFilter::custom('search', new FuzzyFilter('name_en', 'name_fr', 'abbr_en', 'abbr_fr')),
+                AllowedFilter::custom('search', new MultiColumnFilter('abbr_en', 'abbr_fr','name_en', 'name_fr')),
             ]);
     }
 }

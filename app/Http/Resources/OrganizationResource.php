@@ -23,6 +23,8 @@ class OrganizationResource extends JsonResource
                 'name_fr' => $this->name_fr,
                 'abbr_en' => $this->abbr_en,
                 'abbr_fr' => $this->abbr_fr,
+                'country_code' => $this->country_code,
+                'ror_identifier' => $this->ror_identifier,
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

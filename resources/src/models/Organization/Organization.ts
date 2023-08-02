@@ -1,5 +1,6 @@
 import { http } from '@/api/http';
 import { Resource, ResourceList } from '../Resource';
+import { SpatieQuery } from '@/api/SpatieQuery';
 
 export interface Organization {
     id: number;
@@ -8,6 +9,8 @@ export interface Organization {
     name_fr: string;
     abbr_en: string | null;
     abbr_fr: string | null;
+    ror_identifier: string | null;
+    country_code: string | null;
 }
 
 export type OrganizationResource = Resource<Organization>;
@@ -17,10 +20,10 @@ export class OrganizationService {
     /** Get a list of organizations
      * @returns organization list
      */
-    public static async list(query?: string) {
+    public static async list(query?: SpatieQuery) {
         let url = 'api/organizations';
         if (query) {
-            url += `?${query}`;
+            url += `?${query.toQueryString()}`;
         }
         const response = await http.get<OrganizationResourceList>(url);
         return response.data;
@@ -29,7 +32,7 @@ export class OrganizationService {
     /** Get an organization */
     public static async find(id: number) {
         const response = await http.get<OrganizationResource>(
-            `api/organizations/${id}`
+            `api/organizations/${id}`,
         );
         return response.data;
     }
@@ -38,7 +41,7 @@ export class OrganizationService {
     public static async create(organization: Organization) {
         const response = await http.post<Organization, OrganizationResource>(
             'api/organizations',
-            organization
+            organization,
         );
         return response.data;
     }
