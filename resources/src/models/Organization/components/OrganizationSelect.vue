@@ -65,6 +65,7 @@ import {
     OrganizationService,
 } from '../Organization';
 import CreateOrganizationDialog from './CreateOrganizationDialog.vue';
+import { SpatieQuery } from '@/api/SpatieQuery';
 
 const props = defineProps<{
     modelValue: number | null;
@@ -91,7 +92,7 @@ watch(selectedOrganization, (organization) => {
 onMounted(async () => {
     if (props.modelValue) {
         selectedOrganization.value = await OrganizationService.find(
-            props.modelValue
+            props.modelValue,
         );
     }
     if (props.initialSearchTerm) {
@@ -99,15 +100,24 @@ onMounted(async () => {
     }
 });
 
-const filterOrganizations = async (val: string, update, abort) => {
+const filterOrganizations = async (
+    val: string,
+    update: (arg: () => Promise<void>) => void,
+) => {
     lastSearchTerm.value = val;
     update(async () => {
         if (val !== '') {
             const needle = val.toLowerCase();
             organizationsLoading.value = true;
-            await OrganizationService.list(
-                `limit=10&filter[search]=${needle}`
-            ).then((response) => {
+
+            const query = new SpatieQuery();
+            query
+                .filter('search', needle)
+                .sort('name-en-length', 'asc')
+                .sort(`name_${localeStore.locale}`, 'asc')
+                .paginate(1, 10);
+
+            await OrganizationService.list(query).then((response) => {
                 organizations.value = response;
             });
             organizationsLoading.value = false;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38e8960c0e3dd10109ec0c126b46ca92",
+    "content-hash": "0e9f4c8aa6465b07f4367c59be1c0172",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -209,6 +209,82 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "cerbero/json-parser",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cerbero90/json-parser.git",
+                "reference": "bf7dba4360e26ef5974490dc0fddfbf5874b859f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cerbero90/json-parser/zipball/bf7dba4360e26ef5974490dc0fddfbf5874b859f",
+                "reference": "bf7dba4360e26ef5974490dc0fddfbf5874b859f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.2",
+                "illuminate/http": ">=6.20",
+                "mockery/mockery": "^1.5",
+                "pestphp/pest": "^2.0",
+                "phpstan/phpstan": "^1.9",
+                "scrutinizer/ocular": "^1.8",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Required to load JSON from endpoints (^7.2)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "helpers.php"
+                ],
+                "psr-4": {
+                    "Cerbero\\JsonParser\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrea Marco Sartori",
+                    "email": "andrea.marco.sartori@gmail.com",
+                    "homepage": "https://github.com/cerbero90",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Zero-dependencies pull parser to read large JSON from any source in a memory-efficient way.",
+            "homepage": "https://github.com/cerbero90/json-parser",
+            "keywords": [
+                "json",
+                "json-parser",
+                "lexer",
+                "memory",
+                "parser"
+            ],
+            "support": {
+                "issues": "https://github.com/cerbero90/json-parser/issues",
+                "source": "https://github.com/cerbero90/json-parser/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/cerbero90",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-06-16T16:06:06+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

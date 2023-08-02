@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "cerbero/json-parser": "^1.0",
         "guzzlehttp/guzzle": "^7.5",
         "laracasts/cypress": "^3.0",
         "laravel/framework": "^10.0",

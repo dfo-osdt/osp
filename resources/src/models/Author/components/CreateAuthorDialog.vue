@@ -19,7 +19,10 @@
                 v-model="organizationId"
                 :label="$t('common.affiliation')"
                 class="q-ma-md"
-                :rules="[(val: number|null) => val !== null || t('common.required')]"
+                :rules="[
+                    (val: number | null) =>
+                        val !== null || t('common.required'),
+                ]"
             />
             <q-input
                 v-model="email"
@@ -27,10 +30,17 @@
                 :label="$t('common.email')"
                 class="q-ma-md"
                 :rules="[
-                        (val: string) => val !== '' || t('common.required'),
-                        (val: string) => /^\S+@\S+\.\S+$/.test(val) || t('common.validation.email-invalid')]"
+                    (val: string) => val !== '' || t('common.required'),
+                    (val: string) =>
+                        /^\S+@\S+\.\S+$/.test(val) ||
+                        t('common.validation.email-invalid'),
+                ]"
             />
-            <OrcidInput v-model="orcId" class="q-ma-md" />
+            <OrcidInput
+                v-model="orcId"
+                class="q-ma-md"
+                :hint="$t('common.validation.orcid-hint')"
+            />
             <div class="flex justify-end">
                 <q-btn
                     color="primary"
