@@ -26,6 +26,8 @@ class OrganizationSeeder extends Seeder
                 'name_fr' => $organization['name_fr'],
                 'abbr_en' => $organization['abbr_en'],
                 'abbr_fr' => $organization['abbr_fr'],
+                'ror_identifier' => $organization['ror_identifier'],
+                'country_code' => $organization['country_code'],
                 'is_validated' => true,
             ]);
         });

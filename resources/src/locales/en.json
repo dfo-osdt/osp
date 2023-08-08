@@ -72,6 +72,7 @@
     "confirm-password": "Confirm password",
     "congratulations": "Congratulations!",
     "contact": "Contact",
+    "contact-us": "Contact Us",
     "contiue": "Continue",
     "copied": "Copied",
     "copy-to-clipboard": "Copy to clipboard",
@@ -215,6 +216,7 @@
       "name-invalid": "Name is invalid",
       "name-required": "Name is required",
       "no-authors": "No authors, please add at least one author prior to submission.",
+      "orcid-hint": "Optional - Example format: 0000-0001-2345-6789",
       "orcid-invalid": "ORCID is invalid",
       "orcid-is-invalid-checksum": "ORCID is invalid (checksum)",
       "password-length": "Password must be at least 12 characters",
@@ -229,8 +231,7 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password",
-    "contact-us": "Contact Us"
+    "your-password": "Your password"
   },
   "create-author-dialog": {
     "title": "Create a new author"

@@ -72,6 +72,7 @@
     "confirm-password": "Confirmez le mot de passe",
     "congratulations": "Toutes nos félicitations!",
     "contact": "Contact",
+    "contact-us": "Contactez-nous",
     "contiue": "Continuez",
     "copied": "Copié",
     "copy-to-clipboard": "Copier dans le presse-papier",
@@ -215,6 +216,7 @@
       "name-invalid": "Le nom n'est pas valide",
       "name-required": "Le nom est requis",
       "no-authors": "Aucun auteur, veuillez ajouter au moins un auteur avant la soumission.",
+      "orcid-hint": "Facultatif - Exemple de format : 0000-0001-2345-6789",
       "orcid-invalid": "ORCID n'est pas valide",
       "orcid-is-invalid-checksum": "ORCID n'est pas valide (somme de contrôle)",
       "password-length": "Le mot de passe doit comporter au moins 12 caractères",
@@ -229,8 +231,7 @@
     "your-email": "Votre courriel",
     "your-first-name": "Ton prénom",
     "your-last-name": "Votre nom de famille",
-    "your-password": "Votre mot de passe",
-    "contact-us": "Contactez-nous"
+    "your-password": "Votre mot de passe"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"

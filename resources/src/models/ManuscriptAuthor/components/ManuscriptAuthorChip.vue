@@ -14,15 +14,24 @@
         {{ name }}
         <q-menu>
             <q-list dense separator>
-                <q-item>
+                <q-item class="q-mt-sm">
                     <q-item-section avatar>
                         <q-avatar icon="mdi-bank" text-color="primary" />
                     </q-item-section>
                     <q-item-section>
                         <q-item-label>
                             {{
-                                manuscriptAuthor.data.organization?.data.name_en
+                                manuscriptAuthor.data.organization?.data[
+                                    `name_${localeStore.locale}`
+                                ]
                             }}
+                        </q-item-label>
+                        <q-item-label caption>
+                            <RORLinkSpan
+                                :organization="
+                                    manuscriptAuthor.data.organization
+                                "
+                            />
                         </q-item-label>
                     </q-item-section>
                 </q-item>
@@ -51,23 +60,20 @@
                             @click="
                                 copy(
                                     manuscriptAuthor.data.author?.data.email ??
-                                        ''
+                                        '',
                                 )
                             "
                         >
                             <q-tooltip>{{
-                                $t("common.copy-to-clipboard")
+                                $t('common.copy-to-clipboard')
                             }}</q-tooltip>
                         </q-btn>
                         <div v-else class="text-caption">
-                            {{ $t("common.copied") }}
+                            {{ $t('common.copied') }}
                         </div>
                     </q-item-section>
                 </q-item>
-                <q-item
-                    v-if="manuscriptAuthor.data.author?.data.orcid"
-                    clickable
-                >
+                <q-item v-if="manuscriptAuthor.data.author?.data.orcid">
                     <q-item-section avatar>
                         <orcid-avatar />
                     </q-item-section>
@@ -89,7 +95,7 @@
                             :class="correspondingAuthor ? '' : 'text-grey-5'"
                         >
                             {{
-                                $t("common.corresponding-author")
+                                $t('common.corresponding-author')
                             }}</q-item-label
                         >
                     </q-item-section>
@@ -99,11 +105,11 @@
                             @update:model-value="
                                 $emit(
                                     'edit:toggleCorrespondingAuthor',
-                                    correspondingAuthor
+                                    !correspondingAuthor,
                                 )
                             "
                             ><q-tooltip>{{
-                                $t("common.corresponding-author-toggle")
+                                $t('common.corresponding-author-toggle')
                             }}</q-tooltip></q-toggle
                         ></q-item-section
                     >
@@ -114,8 +120,11 @@
 </template>
 
 <script setup lang="ts">
-import { ManuscriptAuthorResource } from "../ManuscriptAuthor";
-import OrcidAvatar from "../../../components/OrcidAvatar.vue";
+import { ManuscriptAuthorResource } from '../ManuscriptAuthor';
+import OrcidAvatar from '@/components/OrcidAvatar.vue';
+import RORLinkSpan from '@/models/Organization/components/RORLinkSpan.vue';
+
+const localeStore = useLocaleStore();
 
 const { copy, copied, isSupported } = useClipboard();
 
@@ -126,11 +135,11 @@ const props = withDefaults(
     }>(),
     {
         readonly: false,
-    }
+    },
 );
 
-const correspondingAuthor = ref(
-    props.manuscriptAuthor.data.is_corresponding_author
+const correspondingAuthor = computed(
+    () => props.manuscriptAuthor.data.is_corresponding_author,
 );
 
 const name = computed(() => {
@@ -145,8 +154,8 @@ const removable = computed(() => {
 });
 
 const emit = defineEmits([
-    "delete:manuscriptAuthor",
-    "edit:toggleCorrespondingAuthor",
+    'delete:manuscriptAuthor',
+    'edit:toggleCorrespondingAuthor',
 ]);
 </script>
 

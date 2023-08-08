@@ -1,2 +1,2 @@
-name_en,name_fr,abbr_en,abbr_fr
-"Fisheries and Oceans Canada","Pêches et Océans Canada","DFO","MPO"
+name_en,name_fr,abbr_en,abbr_fr,ror_identifier,country_code
+"Fisheries and Oceans Canada","Pêches et Océans Canada","DFO","MPO","https://ror.org/02qa1x782","CA"
