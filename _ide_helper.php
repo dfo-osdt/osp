@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.17.1.
+ * Generated for Laravel 10.20.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -4295,6 +4295,28 @@
                         return $instance->macroCall($method, $parameters);
         }
                     /**
+         * Remove all items from the cache.
+         *
+         * @return bool 
+         * @static 
+         */ 
+        public static function flush()
+        {
+                        /** @var \Illuminate\Cache\ArrayStore $instance */
+                        return $instance->flush();
+        }
+                    /**
+         * Get the cache key prefix.
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getPrefix()
+        {
+                        /** @var \Illuminate\Cache\ArrayStore $instance */
+                        return $instance->getPrefix();
+        }
+                    /**
          * Get a lock instance.
          *
          * @param string $name
@@ -4305,7 +4327,7 @@
          */ 
         public static function lock($name, $seconds = 0, $owner = null)
         {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
+                        /** @var \Illuminate\Cache\ArrayStore $instance */
                         return $instance->lock($name, $seconds, $owner);
         }
                     /**
@@ -4318,110 +4340,8 @@
          */ 
         public static function restoreLock($name, $owner)
         {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
+                        /** @var \Illuminate\Cache\ArrayStore $instance */
                         return $instance->restoreLock($name, $owner);
-        }
-                    /**
-         * Remove all items from the cache.
-         *
-         * @return bool 
-         * @static 
-         */ 
-        public static function flush()
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        return $instance->flush();
-        }
-                    /**
-         * Remove all expired tag set entries.
-         *
-         * @return void 
-         * @static 
-         */ 
-        public static function flushStaleTags()
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        $instance->flushStaleTags();
-        }
-                    /**
-         * Get the Redis connection instance.
-         *
-         * @return \Illuminate\Redis\Connections\Connection 
-         * @static 
-         */ 
-        public static function connection()
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        return $instance->connection();
-        }
-                    /**
-         * Get the Redis connection instance that should be used to manage locks.
-         *
-         * @return \Illuminate\Redis\Connections\Connection 
-         * @static 
-         */ 
-        public static function lockConnection()
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        return $instance->lockConnection();
-        }
-                    /**
-         * Specify the name of the connection that should be used to store data.
-         *
-         * @param string $connection
-         * @return void 
-         * @static 
-         */ 
-        public static function setConnection($connection)
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        $instance->setConnection($connection);
-        }
-                    /**
-         * Specify the name of the connection that should be used to manage locks.
-         *
-         * @param string $connection
-         * @return \Illuminate\Cache\RedisStore 
-         * @static 
-         */ 
-        public static function setLockConnection($connection)
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        return $instance->setLockConnection($connection);
-        }
-                    /**
-         * Get the Redis database instance.
-         *
-         * @return \Illuminate\Contracts\Redis\Factory 
-         * @static 
-         */ 
-        public static function getRedis()
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        return $instance->getRedis();
-        }
-                    /**
-         * Get the cache key prefix.
-         *
-         * @return string 
-         * @static 
-         */ 
-        public static function getPrefix()
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        return $instance->getPrefix();
-        }
-                    /**
-         * Set the cache key prefix.
-         *
-         * @param string $prefix
-         * @return void 
-         * @static 
-         */ 
-        public static function setPrefix($prefix)
-        {
-                        /** @var \Illuminate\Cache\RedisStore $instance */
-                        $instance->setPrefix($prefix);
         }
          
     }
@@ -10467,104 +10387,6 @@
                         return $instance->setConnectionName($name);
         }
                     /**
-         * Get the number of queue jobs that are ready to process.
-         *
-         * @param string|null $queue
-         * @return int 
-         * @static 
-         */ 
-        public static function readyNow($queue = null)
-        {
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
-                        return $instance->readyNow($queue);
-        }
-                    /**
-         * Migrate the delayed jobs that are ready to the regular queue.
-         *
-         * @param string $from
-         * @param string $to
-         * @return void 
-         * @static 
-         */ 
-        public static function migrateExpiredJobs($from, $to)
-        {
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
-                        $instance->migrateExpiredJobs($from, $to);
-        }
-                    /**
-         * Delete a reserved job from the queue.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\RedisJob $job
-         * @return void 
-         * @static 
-         */ 
-        public static function deleteReserved($queue, $job)
-        {
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
-                        $instance->deleteReserved($queue, $job);
-        }
-                    /**
-         * Delete a reserved job from the reserved queue and release it.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\RedisJob $job
-         * @param int $delay
-         * @return void 
-         * @static 
-         */ 
-        public static function deleteAndRelease($queue, $job, $delay)
-        {
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
-                        $instance->deleteAndRelease($queue, $job, $delay);
-        }
-                    /**
-         * Delete all of the jobs from the queue.
-         *
-         * @param string $queue
-         * @return int 
-         * @static 
-         */ 
-        public static function clear($queue)
-        {            //Method inherited from \Illuminate\Queue\RedisQueue         
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
-                        return $instance->clear($queue);
-        }
-                    /**
-         * Get the queue or return the default.
-         *
-         * @param string|null $queue
-         * @return string 
-         * @static 
-         */ 
-        public static function getQueue($queue)
-        {            //Method inherited from \Illuminate\Queue\RedisQueue         
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
-                        return $instance->getQueue($queue);
-        }
-                    /**
-         * Get the connection for the queue.
-         *
-         * @return \Illuminate\Redis\Connections\Connection 
-         * @static 
-         */ 
-        public static function getConnection()
-        {            //Method inherited from \Illuminate\Queue\RedisQueue         
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
-                        return $instance->getConnection();
-        }
-                    /**
-         * Get the underlying Redis instance.
-         *
-         * @return \Illuminate\Contracts\Redis\Factory 
-         * @static 
-         */ 
-        public static function getRedis()
-        {            //Method inherited from \Illuminate\Queue\RedisQueue         
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
-                        return $instance->getRedis();
-        }
-                    /**
          * Get the backoff for an object-based queue handler.
          *
          * @param mixed $job
@@ -10573,7 +10395,7 @@
          */ 
         public static function getJobBackoff($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getJobBackoff($job);
         }
                     /**
@@ -10585,7 +10407,7 @@
          */ 
         public static function getJobExpiration($job)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getJobExpiration($job);
         }
                     /**
@@ -10597,7 +10419,7 @@
          */ 
         public static function createPayloadUsing($callback)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        \Laravel\Horizon\RedisQueue::createPayloadUsing($callback);
+                        \Illuminate\Queue\SyncQueue::createPayloadUsing($callback);
         }
                     /**
          * Get the container instance being used by the connection.
@@ -10607,7 +10429,7 @@
          */ 
         public static function getContainer()
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         return $instance->getContainer();
         }
                     /**
@@ -10619,7 +10441,7 @@
          */ 
         public static function setContainer($container)
         {            //Method inherited from \Illuminate\Queue\Queue         
-                        /** @var \Laravel\Horizon\RedisQueue $instance */
+                        /** @var \Illuminate\Queue\SyncQueue $instance */
                         $instance->setContainer($container);
         }
          
@@ -11389,7 +11211,7 @@
          *
          * @param string|null $key
          * @param mixed $default
-         * @return \Symfony\Component\HttpFoundation\ParameterBag|mixed 
+         * @return \Symfony\Component\HttpFoundation\InputBag|mixed 
          * @static 
          */ 
         public static function json($key = null, $default = null)
@@ -11551,7 +11373,7 @@
                     /**
          * Set the JSON payload for the request.
          *
-         * @param \Symfony\Component\HttpFoundation\ParameterBag $json
+         * @param \Symfony\Component\HttpFoundation\InputBag $json
          * @return \Illuminate\Http\Request 
          * @static 
          */ 
@@ -16958,6 +16780,18 @@
                         return $instance->withKeyResolver($keyResolver);
         }
                     /**
+         * Set the callback that should be used to attempt to resolve missing named routes.
+         *
+         * @param callable $missingNamedRouteResolver
+         * @return \Illuminate\Routing\UrlGenerator 
+         * @static 
+         */ 
+        public static function resolveMissingNamedRoutesUsing($missingNamedRouteResolver)
+        {
+                        /** @var \Illuminate\Routing\UrlGenerator $instance */
+                        return $instance->resolveMissingNamedRoutesUsing($missingNamedRouteResolver);
+        }
+                    /**
          * Get the root controller namespace.
          *
          * @return string 
@@ -18329,6 +18163,20 @@
                         return $instance->asset($asset, $buildDirectory);
         }
                     /**
+         * Get the content of a given asset.
+         *
+         * @param string $asset
+         * @param string|null $buildDirectory
+         * @return string 
+         * @throws \Exception
+         * @static 
+         */ 
+        public static function content($asset, $buildDirectory = null)
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->content($asset, $buildDirectory);
+        }
+                    /**
          * Get a unique hash representing the current manifest, or null if there is no manifest.
          *
          * @param string|null $buildDirectory
@@ -19557,7 +19405,7 @@ namespace  {
             }
              
                 /**
-             * Get the first record matching the attributes or create it.
+             * Get the first record matching the attributes. If the record is not found, create it.
              *
              * @param array $attributes
              * @param array $values
@@ -19568,6 +19416,20 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Eloquent\Builder $instance */
                                 return $instance->firstOrCreate($attributes, $values);
+            }
+             
+                /**
+             * Attempt to create the record. If a unique constraint violation occurs, attempt to find the matching record.
+             *
+             * @param array $attributes
+             * @param array $values
+             * @return \Illuminate\Database\Eloquent\Model|static 
+             * @static 
+             */ 
+            public static function createOrFirst($attributes = [], $values = [])
+            {
+                                /** @var \Illuminate\Database\Eloquent\Builder $instance */
+                                return $instance->createOrFirst($attributes, $values);
             }
              
                 /**
