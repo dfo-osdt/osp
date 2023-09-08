@@ -55,7 +55,7 @@
                         :label="$t('common.reset')"
                         type="submit"
                         color="primary"
-                        data-cy="login"
+                        data-cy="reset-password"
                         :loading="loading"
                     />
                     <q-btn
