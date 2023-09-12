@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Log;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,14 +21,9 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
         ]);
 
-        if (config('app.env') !== 'testing') {
-            $this->call([
-                // DfoSeriesJournalSeeder::class,
-                JournalsTableSeeder::class, // this also seeds the dfo_series_journals table
-            ]);
-        }
 
         if (config('app.env') === 'local') {
+            Log::debug('Seeding env: '. config('app.env') . '..');
             // ask user if they want to seed the database with test data
             if ($this->command->confirm('Do you want to seed the database with test data?')) {
                 $this->command->info('Seeding the database with test data...');

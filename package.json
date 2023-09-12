@@ -8,14 +8,14 @@
         "cy:run": "cypress run"
     },
     "devDependencies": {
-        "@quasar/vite-plugin": "^1.4.1",
+        "@quasar/vite-plugin": "^1.5.0",
         "@types/dompurify": "^3.0.2",
-        "@types/node": "^20.5.7",
-        "@typescript-eslint/eslint-plugin": "^6.5.0",
-        "@typescript-eslint/parser": "^6.5.0",
+        "@types/node": "^20.6.0",
+        "@typescript-eslint/eslint-plugin": "^6.7.0",
+        "@typescript-eslint/parser": "^6.7.0",
         "axios": "^1.5.0",
-        "cypress": "^13.0.0",
-        "eslint": "^8.48.0",
+        "cypress": "^13.2.0",
+        "eslint": "^8.49.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-vue": "^9.17.0",
@@ -27,7 +27,7 @@
         "unplugin-auto-import": "^0.16.6",
         "unplugin-vue-components": "^0.25.2",
         "vite": "^4.4.9",
-        "vue-tsc": "^1.8.8"
+        "vue-tsc": "^1.8.10"
     },
     "dependencies": {
         "@intlify/unplugin-vue-i18n": "^0.13.0",
@@ -38,9 +38,9 @@
         "eslint-plugin-quasar": "^1.1.0",
         "pinia": "^2.1.6",
         "plugin-vue@latest": "link:@@vitejs/plugin-vue@latest",
-        "quasar": "^2.12.5",
+        "quasar": "^2.12.6",
         "vue": "^3.3.4",
-        "vue-i18n": "^9.2.2",
+        "vue-i18n": "^9.4.0",
         "vue-router": "^4.2.4"
     }
 }
