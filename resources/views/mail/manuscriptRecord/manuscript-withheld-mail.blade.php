@@ -24,7 +24,7 @@ permission to publish but only in cases where the publication is not in complian
 > DFO policies on Intellectual Property and Collaborative Agreements, the SP and RE Collective Agreements, and the Career Progression Management Framework for
 > Federal Researchers.
 
-<x-email.regards locale="en">
+<x-email.regards locale="en" />
 
 ---
 
@@ -52,6 +52,6 @@ l'autorisation de publier, mais uniquement dans les cas où la publication n'est
 > intellectuelle et les accords de collaboration, les conventions collectives SP et RE et le cadre de gestion de la progression de carrière pour les chercheurs
 > fédéraux.
 
-<x-email.regards locale="fr">
+<x-email.regards locale="fr" />
 
 </x-mail::message>
