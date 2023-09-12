@@ -228,7 +228,7 @@
                                             {{ $t('common.download') }}
                                         </q-tooltip>
                                     </q-btn>
-                                    <div>
+                                    <div v-else>
                                         <span class="q-mr-sm">{{
                                             $t(
                                                 'common.publication-under-embargo',
