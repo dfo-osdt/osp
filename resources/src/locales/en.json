@@ -559,8 +559,8 @@
   "publications-view": {
     "all-published-publications-details": "All published publications",
     "open-access-filter-details": "Publications published as open access",
-    "published-in-dfo-journals": "Published in DFO journals",
-    "secondary-publications": "Secondary Publications",
+    "published-in-dfo-journals": "DFO Scientific and Technical Reports",
+    "secondary-publications": "DFO Publications",
     "under-embargo": "Under Embargo",
     "under-embargo-caption": "Publications under embargo"
   },

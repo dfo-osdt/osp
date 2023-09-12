@@ -559,8 +559,8 @@
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",
     "open-access-filter-details": "Publications publiées en libre accès",
-    "published-in-dfo-journals": "Publié dans les revues du MPO",
-    "secondary-publications": "Publications secondaires",
+    "published-in-dfo-journals": "Rapports scientifiques et techniques du MPO",
+    "secondary-publications": "Publications du MPO",
     "under-embargo": "Sous embargo",
     "under-embargo-caption": "Publications sous embargo"
   },
