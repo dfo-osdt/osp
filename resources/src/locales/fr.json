@@ -148,7 +148,7 @@
     "pending-publication": "En attente de publication",
     "plain-language-summary": "Résumé en langage clair",
     "primary-manuscript": "Manuscrit principal",
-    "primary-publication": "Publication primaire",
+    "primary-publication": "Un manuscrit publié par un tiers",
     "progress": "Progrès",
     "publication-under-embargo": "Publication sous embargo",
     "publications": "Publications",
@@ -163,7 +163,7 @@
     "save": "Sauvegarder",
     "saved": "Enregistré",
     "secondary-manuscript": "Manuscrit secondaire",
-    "secondary-publication": "Publication secondaire",
+    "secondary-publication": "Un manuscrit dont le MPO est l'éditeur initial",
     "sensitive-issues": "questions sensibles",
     "settings": "Paramètres",
     "show": "Voir",
@@ -239,11 +239,11 @@
   "create-manuscript-record-dialog": {
     "create-text": "Une fois créé, vous serez redirigé vers le formulaire du registre des manuscrits. \nLe formulaire du registre des manuscrits sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour révision.",
     "enter-the-title-of-your-manuscript": "Entrez le titre de votre manuscrit",
-    "primary-pub-desc": "Un manuscrit qui sera publié par un éditeur externe au MPO  (par exemple: revues scientifiques, numéros spéciaux, chapitres de livre, livres et comptes-rendus de congrès)",
-    "secondary-pub-desc": "Un manuscrit dont le MPO sera l'éditeur initial (par example, une publication dans l'une des séries de rapport scientifique et technique du MPO, y compris le \"Rapport technique canadien des sciences halieutiques et aquatiques\", le \" Rapport statistique canadien des sciences halieutiques et aquatiques\" et d'autres séries)",
+    "primary-pub-desc": "Publier dans une revue scientifique, un numéro spécial, un chapitre de livre, un acte de livre ou de conférence",
+    "secondary-pub-desc": "Publier dans l'une des séries de rapports scientifiques et techniques du MPO (par exemple, Rapport technique canadien sur les sciences halieutiques et aquatiques, Rapport canadien sur les données des sciences halieutiques et aquatiques, etc.)",
     "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de la révision par la gestion de ce manuscrit.",
     "step1": {
-      "text": "Veuillez sélectionner le type de registre de manuscrit que vous souhaitez créer. \nAvez-vous l'intention de soumettre ce manuscrit à une revue primaire ou secondaire ?"
+      "text": "Veuillez sélectionner le type de manuscrit que vous souhaitez créer en fonction de l'éditeur prévu."
     },
     "step2": {
       "title": "Détails du manuscrit"

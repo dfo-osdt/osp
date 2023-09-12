@@ -148,7 +148,7 @@
     "pending-publication": "Pending Publication",
     "plain-language-summary": "Plain Language Summary",
     "primary-manuscript": "Primary Manuscript",
-    "primary-publication": "Primary Publication",
+    "primary-publication": "A manuscript published by a third party",
     "progress": "Progress",
     "publication-under-embargo": "Publication under embargo",
     "publications": "Publications",
@@ -163,7 +163,7 @@
     "save": "Save",
     "saved": "Saved",
     "secondary-manuscript": "Secondary Manuscript",
-    "secondary-publication": "Secondary Publication",
+    "secondary-publication": "A manuscript where DFO is the initial publisher",
     "sensitive-issues": "Sensitive Issues",
     "settings": "Settings",
     "show": "Show",
@@ -239,11 +239,11 @@
   "create-manuscript-record-dialog": {
     "create-text": "Once created, you will be taken to the manuscript record form. The manuscript record form will be marked as a draft and only be visible to you an the people you invite as observers. Once the form is complete you will be able to submit it for review.",
     "enter-the-title-of-your-manuscript": "Enter the title of your manuscript",
-    "primary-pub-desc": "A manuscript that will be published by a third party, where DFO is not the initial publisher (for example scientific journals, special issues, book chapters, books and conference proceedings)",
-    "secondary-pub-desc": "A manuscript where DFO will be the initial publisher (for example, publishing in one of DFO's scientific and technical report series, including the “Canadian Technical Report of Fisheries and Aquatic Sciences,” “Canadian Data Report of Fisheries and Aquatic Sciences,” and other series)",
+    "primary-pub-desc": "Publish in a scientific journal, special issue, book chapter, book or conference proceeding",
+    "secondary-pub-desc": "Publish in one of DFO's scientific and technical reports series (e.g. Canadian Technical Report of Fisheries and Aquatic Sciences, Canadian Data Report of Fisheries and Aquatic Sciences, etc.)",
     "select-region-text": "Please select the lead DFO region responsible for the management review of this manuscript.",
     "step1": {
-      "text": "Please select the type of manuscript record you want to create. Do you intend to submit this manuscript to a primary or secondary journal?"
+      "text": "Please select the type of manuscript you want to create based on the intended publisher."
     },
     "step2": {
       "title": "Manuscript Details"
