@@ -5,7 +5,7 @@
             <div>
                 <a
                     class="text-caption text-primary contact-link"
-                    href="mailto:support@osp-pso.ca"
+                    href="mailto:DFO.OpenScience-ScienceOuverte.MPO@dfo-mpo.gc.ca"
                     >{{ $t('common.contact-us') }}</a
                 >
             </div>
