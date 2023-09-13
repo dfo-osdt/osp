@@ -199,7 +199,7 @@
                             </div>
                         </div>
                     </QuestionEditor>
-                    <QuestionEditor
+                    <!-- <QuestionEditor
                         v-model="
                             manuscriptResource.data.scientific_implications
                         "
@@ -212,7 +212,7 @@
                         <p>
                             {{ $t('mrf.scientific-implication-text') }}
                         </p>
-                    </QuestionEditor>
+                    </QuestionEditor> -->
                     <QuestionEditor
                         v-model="manuscriptResource.data.relevant_to"
                         :title="$t('mrf.relevant-title')"
@@ -430,7 +430,7 @@ const generalSectionStatus = computed(() => {
         manuscript.title !== '' &&
         manuscript.abstract !== '' &&
         manuscript.pls !== '' &&
-        manuscript.scientific_implications !== '' &&
+        // manuscript.scientific_implications !== '' &&
         manuscript.relevant_to;
 
     return complete ? 'complete' : 'incomplete';
