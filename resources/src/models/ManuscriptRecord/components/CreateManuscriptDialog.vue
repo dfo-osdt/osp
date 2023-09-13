@@ -41,7 +41,7 @@
                                             class="text-body2 text-grey-8"
                                             >{{
                                                 $t(
-                                                    'create-manuscript-record-dialog.primary-pub-desc'
+                                                    'create-manuscript-record-dialog.primary-pub-desc',
                                                 )
                                             }}
                                         </q-item-label>
@@ -63,7 +63,7 @@
                                             class="text-body2 text-grey-8"
                                             >{{
                                                 $t(
-                                                    'create-manuscript-record-dialog.secondary-pub-desc'
+                                                    'create-manuscript-record-dialog.secondary-pub-desc',
                                                 )
                                             }}</q-item-label
                                         >
@@ -86,7 +86,7 @@
                             <div class="q-mb-md">
                                 {{
                                     $t(
-                                        'create-manuscript-record-dialog.what-is-the-working-title-of-your-manuscript'
+                                        'create-manuscript-record-dialog.what-is-the-working-title-of-your-manuscript',
                                     )
                                 }}
                             </div>
@@ -96,7 +96,7 @@
                                 :label="$t('common.title')"
                                 :placeholder="
                                     $t(
-                                        'create-manuscript-record-dialog.enter-the-title-of-your-manuscript'
+                                        'create-manuscript-record-dialog.enter-the-title-of-your-manuscript',
                                     )
                                 "
                                 :rules="[
@@ -107,7 +107,7 @@
                             <div class="q-my-md">
                                 {{
                                     $t(
-                                        'create-manuscript-record-dialog.select-region-text'
+                                        'create-manuscript-record-dialog.select-region-text',
                                     )
                                 }}
                             </div>
@@ -116,13 +116,13 @@
                                 outlined
                                 :placeholder="
                                     $t(
-                                        'manuscript.please-select-the-lead-region'
+                                        'manuscript.please-select-the-lead-region',
                                     )
                                 "
                                 :rules="[
-                                (val: number) =>
-                                    val !== null || $t('common.required'),
-                            ]"
+                                    (val: number) =>
+                                        val !== null || $t('common.required'),
+                                ]"
                             />
                         </q-form>
                     </q-step>
@@ -136,7 +136,7 @@
                         <div class="q-pa-md">
                             {{
                                 $t(
-                                    'create-manuscript-record-dialog.create-text'
+                                    'create-manuscript-record-dialog.create-text',
                                 )
                             }}
                         </div>
