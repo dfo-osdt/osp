@@ -182,7 +182,7 @@ class ManuscriptRecord extends Model implements HasMedia, Fundable
             'title' => 'required',
             'abstract' => 'required',
             'pls' => 'required',
-            'scientific_implications' => 'required',
+            // 'scientific_implications' => 'required',
             'relevant_to' => 'required',
         ]);
 
