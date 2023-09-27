@@ -87,6 +87,22 @@
                                 <q-item-label>{{
                                     $t('common.publication')
                                 }}</q-item-label>
+                                <q-item-label caption>
+                                    <span
+                                        v-if="
+                                            manuscript?.data.publication ==
+                                            undefined
+                                        "
+                                        >{{ $t('common.pending') }}
+                                    </span>
+                                    <PublicationStatusSpan
+                                        v-else
+                                        :status="
+                                            manuscript?.data.publication?.data
+                                                .status
+                                        "
+                                    />
+                                </q-item-label>
                             </q-item-section>
                         </q-item>
                     </q-list>
@@ -103,6 +119,7 @@
 import ContentCard from '@/components/ContentCard.vue';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
 import { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord';
+import PublicationStatusSpan from '@/models/Publication/components/PublicationStatusSpan.vue';
 
 const loading = ref(true);
 const manuscript = ref<ManuscriptRecordResource | undefined>(undefined);

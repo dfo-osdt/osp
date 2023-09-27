@@ -321,6 +321,7 @@ async function getManuscriptRecord() {
     await ManuscriptRecordService.find(props.id)
         .then((response) => {
             manuscriptRecord.value = response;
+            emit('update-manuscript', manuscriptRecord.value);
         })
         .catch((error) => {
             console.log(error);
