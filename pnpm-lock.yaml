@@ -100,9 +100,6 @@ devDependencies:
   vite:
     specifier: ^4.4.9
     version: 4.4.9(@types/node@20.7.0)(sass@1.32.13)
-  vue-eslint-parser:
-    specifier: ^9.3.1
-    version: 9.3.1(eslint@8.50.0)
   vue-tsc:
     specifier: ^1.8.15
     version: 1.8.15(typescript@5.2.2)
