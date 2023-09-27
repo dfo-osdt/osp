@@ -111,6 +111,10 @@ const props = defineProps<{
     id: number;
 }>();
 
+const emit = defineEmits<{
+    (e: 'update-manuscript', manuscript: ManuscriptRecordResource): void;
+}>();
+
 const managementReviewSteps: Ref<ManagementReviewStepResourceList | null> =
     ref(null);
 const manuscriptRecord: Ref<ManuscriptRecordResource | null> = ref(null);
@@ -206,6 +210,7 @@ async function getManuscriptRecord() {
     await ManuscriptRecordService.find(props.id)
         .then((response) => {
             manuscriptRecord.value = response;
+            emit('update-manuscript', manuscriptRecord.value);
         })
         .catch((error) => {
             console.log(error);

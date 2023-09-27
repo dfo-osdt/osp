@@ -388,6 +388,10 @@ const props = defineProps<{
     id: number;
 }>();
 
+const emit = defineEmits<{
+    (e: 'update-manuscript', manuscript: ManuscriptRecordResource): void;
+}>();
+
 const loading = ref(true);
 const manuscriptResource: Ref<ManuscriptRecordResource | null> = ref(null);
 const manuscriptAuthorsCard = ref<InstanceType<
@@ -440,6 +444,7 @@ onMounted(async () => {
     await ManuscriptRecordService.find(props.id)
         .then((response) => {
             manuscriptResource.value = response;
+            emit('update-manuscript', manuscriptResource.value);
         })
         .catch((error) => {
             if (error.status == 403) {
@@ -479,6 +484,10 @@ const save = async () => {
             console.log(error);
         })
         .finally(() => {
+            //emit the event to the parent
+            if (manuscriptResource.value) {
+                emit('update-manuscript', manuscriptResource.value);
+            }
             loading.value = false;
             isDirty.value = false;
         });

@@ -20,9 +20,6 @@ dependencies:
   dompurify:
     specifier: ^3.0.5
     version: 3.0.5
-  eslint-plugin-quasar:
-    specifier: ^1.1.0
-    version: 1.1.0
   pinia:
     specifier: ^2.1.6
     version: 2.1.6(typescript@5.2.2)(vue@3.3.4)
@@ -73,6 +70,9 @@ devDependencies:
   eslint-plugin-prettier:
     specifier: ^5.0.0
     version: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.50.0)(prettier@3.0.3)
+  eslint-plugin-quasar:
+    specifier: ^1.1.0
+    version: 1.1.0
   eslint-plugin-vue:
     specifier: ^9.17.0
     version: 9.17.0(eslint@8.50.0)
@@ -100,6 +100,9 @@ devDependencies:
   vite:
     specifier: ^4.4.9
     version: 4.4.9(@types/node@20.7.0)(sass@1.32.13)
+  vue-eslint-parser:
+    specifier: ^9.3.1
+    version: 9.3.1(eslint@8.50.0)
   vue-tsc:
     specifier: ^1.8.15
     version: 1.8.15(typescript@5.2.2)
@@ -1483,7 +1486,7 @@ packages:
     dependencies:
       requireindex: 1.2.0
       semver-compare: 1.0.0
-    dev: false
+    dev: true
 
   /eslint-plugin-vue@9.17.0(eslint@8.50.0):
     resolution: {integrity: sha512-r7Bp79pxQk9I5XDP0k2dpUC7Ots3OSWgvGZNu3BxmKK6Zg7NgVtcOB6OCna5Kb9oQwJPl5hq183WD0SY5tZtIQ==}
@@ -2635,7 +2638,7 @@ packages:
   /requireindex@1.2.0:
     resolution: {integrity: sha512-L9jEkOi3ASd9PYit2cwRfyppc9NoABujTP8/5gFcbERmo5jUoAKovIC3fsF17pkTnGsrByysqX+Kxd2OTNI1ww==}
     engines: {node: '>=0.10.5'}
-    dev: false
+    dev: true
 
   /requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
@@ -2724,7 +2727,7 @@ packages:
 
   /semver-compare@1.0.0:
     resolution: {integrity: sha512-YM3/ITh2MJ5MtzaM429anh+x2jiLVjqILF4m4oyQB18W7Ggea7BfqdH/wGMK7dDiMghv/6WG7znWMwUDzJiXow==}
-    dev: false
+    dev: true
 
   /semver@7.5.4:
     resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}

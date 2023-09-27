@@ -73,11 +73,27 @@
                                 }}</q-item-label>
                             </q-item-section>
                         </q-item>
+                        <q-item
+                            clickable
+                            :disable="
+                                manuscript?.data.publication === undefined
+                            "
+                            :to="`/publication/${manuscript?.data.publication?.data.id}`"
+                        >
+                            <q-item-section avatar>
+                                <q-icon name="mdi-newspaper-variant-outline" />
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label>{{
+                                    $t('common.publication')
+                                }}</q-item-label>
+                            </q-item-section>
+                        </q-item>
                     </q-list>
                 </ContentCard>
             </div>
             <div class="col q-pr-md">
-                <RouterView />
+                <RouterView @update-manuscript="updateManuscript" />
             </div>
         </div>
     </MainPageLayout>
@@ -86,23 +102,23 @@
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue';
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
-import {
-    ManuscriptRecordResource,
-    ManuscriptRecordService,
-} from '@/models/ManuscriptRecord/ManuscriptRecord';
-const { t } = useI18n();
+import { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord';
 
-const props = defineProps<{
+const loading = ref(true);
+const manuscript = ref<ManuscriptRecordResource | undefined>(undefined);
+
+defineProps<{
     id: number;
 }>();
 
-const loading = ref(true);
-const manuscript = ref<ManuscriptRecordResource>();
-
-onMounted(async () => {
-    manuscript.value = await ManuscriptRecordService.find(props.id);
+/**
+ * this page depends on its child routes to load the manuscript record by
+ * emitting an event called 'update-manuscript'
+ */
+function updateManuscript(updatedManuscript: ManuscriptRecordResource) {
+    manuscript.value = updatedManuscript;
     loading.value = false;
-});
+}
 
 // display banner if the manuscript is reviewed but still needs to be published
 const showPublishBanner = computed(() => {
