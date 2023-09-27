@@ -231,7 +231,8 @@
     "your-email": "Votre courriel",
     "your-first-name": "Ton prénom",
     "your-last-name": "Votre nom de famille",
-    "your-password": "Votre mot de passe"
+    "your-password": "Votre mot de passe",
+    "publication": "Publication"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"

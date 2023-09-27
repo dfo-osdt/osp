@@ -180,6 +180,11 @@ const { t } = useI18n();
 const props = defineProps<{
     id: number;
 }>();
+
+const emit = defineEmits<{
+    (e: 'update-manuscript', manuscript: ManuscriptRecordResource): void;
+}>();
+
 const manuscriptRecord: Ref<ManuscriptRecordResource | null> = ref(null);
 
 const createdSubtitle = computed(() => {
@@ -316,6 +321,7 @@ async function getManuscriptRecord() {
     await ManuscriptRecordService.find(props.id)
         .then((response) => {
             manuscriptRecord.value = response;
+            emit('update-manuscript', manuscriptRecord.value);
         })
         .catch((error) => {
             console.log(error);
@@ -330,7 +336,7 @@ const showSubmittedToJournalDialog = ref(false);
 function submittedToJournal(record: ManuscriptRecordResource) {
     manuscriptRecord.value = record;
     showSubmittedToJournalDialog.value = false;
-    showUpdatedNotification();
+    showUpdatedNotification(record);
 }
 
 // accept for publication
@@ -339,7 +345,7 @@ const showAcceptedByJournalDialog = ref(false);
 function acceptedToJournal(record: ManuscriptRecordResource) {
     manuscriptRecord.value = record;
     showAcceptedByJournalDialog.value = false;
-    showUpdatedNotification();
+    showUpdatedNotification(record);
 }
 // withdraw manuscript
 const showWithdrawManuscriptDialog = ref(false);
@@ -347,10 +353,11 @@ const showWithdrawManuscriptDialog = ref(false);
 function withdrawManuscript(record: ManuscriptRecordResource) {
     manuscriptRecord.value = record;
     showWithdrawManuscriptDialog.value = false;
-    showUpdatedNotification();
+    showUpdatedNotification(record);
 }
 
-function showUpdatedNotification() {
+function showUpdatedNotification(record: ManuscriptRecordResource) {
+    emit('update-manuscript', record);
     $q.notify({
         message: t('manuscript-progress-view.manuscript-status-updated'),
         color: 'positive',
