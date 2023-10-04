@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Process;
 
 class DownloadLatestRORData
 {
-    public static function handle(callable $progressCallable = null): string | null
+    public static function handle(callable $progressCallable = null): array | null
     {
         $url = 'https://zenodo.org/api/records';
 
@@ -21,6 +21,7 @@ class DownloadLatestRORData
         $data = $response->json();
 
         $url = $data['hits']['hits'][0]['files'][0]['links']['self'] ?? null;
+        $version = $data['hits']['hits'][0]['metadata']['version'] ?? null;
 
         // Download files to temporary storage
         if(!$url) return null;
@@ -58,7 +59,12 @@ class DownloadLatestRORData
         // is Json file already extracted?
         $jsonFile = $base_path . '/' . Str::beforeLast($fileName, '.') .'.json';
 
-        if(file_exists($jsonFile)) return $jsonFile;
+        if(file_exists($jsonFile)){
+            return [
+                'jsonFile' => $jsonFile,
+                'version' => $version,
+            ];
+        }
 
         $command = "unzip -o $fileName";
 
@@ -70,7 +76,12 @@ class DownloadLatestRORData
             }
         });
 
-        if($result->wait()->successful()) return $jsonFile;
+        if($result->wait()->successful()){
+            return [
+                'jsonFile' => $jsonFile,
+                'version' => $version,
+            ];
+        }
 
         return null;
     }
