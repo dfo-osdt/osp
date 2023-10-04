@@ -8,7 +8,7 @@ use Cerbero\JsonParser\JsonParser;
 class SyncRORData
 {
 
-    public static function handle(string $jsonFilePath, callable $progressCallback = null): void
+    public static function handle(string $jsonFilePath, string $version, callable $progressCallback = null): void
     {
         if(!file_exists($jsonFilePath)) {
             throw new \Exception('File not found: ' . $jsonFilePath);
@@ -35,7 +35,7 @@ class SyncRORData
             if(!$countryCodesToImport->contains($record['country']['country_code'])) continue;
 
             // update or create the organization
-            self::updateOrCreateOrganization($record);
+            self::updateOrCreateOrganization($record, $version);
 
             if($update) $progressCallback($json->progress()->percentage());
 
@@ -51,7 +51,7 @@ class SyncRORData
      * @param array $record
      * @return void
      */
-    private static function updateOrCreateOrganization(array $record)
+    private static function updateOrCreateOrganization(array $record, string $version)
     {
         $ror_identifier = $record['id'];
 
@@ -97,7 +97,8 @@ class SyncRORData
                 'abbr_fr' => $abbr_fr,
                 'ror_names' => $ror_names,
                 'country_code' => $country_code,
-                'is_validated' => true
+                'is_validated' => true,
+                'ror_version' => $version,
             ]
         );
 
