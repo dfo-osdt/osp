@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\Relations\BelongsToManyOfDescendants;
 
 class Expertise extends Model
 {
     use HasFactory;
+    use HasRecursiveRelationships;
 
     public $guarded = [
         'id',
@@ -18,29 +19,26 @@ class Expertise extends Model
         'updated_at',
     ];
 
-    public $with = [
-        'parent'
-    ];
+    // recursive relationship params
+    public function getParentKeyName()
+    {
+        return 'parent_tid';
+    }
 
-    // Relationships
+    public function getLocalKeyName()
+    {
+        return 'tid';
+    }
+
+    // non-recursive relationships
+
     public function authors(): BelongsToMany
     {
-        return $this->belongsToMany('App\Models\Author');
+        return $this->belongsToMany(Author::class);
     }
 
-    public function parent(): BelongsTo
+    public function recursiveAuthors()
     {
-        return $this->belongsTo('App\Models\Expertise', 'parent_tid', 'tid');
-    }
-
-    public function children(): HasMany
-    {
-        return $this->hasMany('App\Models\Expertise', 'parent_tid', 'tid');
-    }
-
-    // Main expertise scope - where there is no parent (tid == null)
-    public function scopeMainExpertise($query)
-    {
-        return $query->whereNull('parent_tid');
+        return $this->belongsToManyOfDescendantsAndSelf(Author::class);
     }
 }
