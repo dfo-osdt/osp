@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Author extends Model
@@ -27,13 +28,13 @@ class Author extends Model
     // author fullname
     public function getFullNameAttribute(): string
     {
-        return $this->first_name.' '.$this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     // author name for APA citation
     public function getApaNameAttribute(): string
     {
-        return $this->last_name.', '.$this->first_name;
+        return $this->last_name . ', ' . $this->first_name;
     }
 
     /**
@@ -64,5 +65,11 @@ class Author extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    /** AuthorExpertise */
+    public function expertises(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Models\Expertise');
     }
 }

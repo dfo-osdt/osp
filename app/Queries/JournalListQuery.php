@@ -5,6 +5,7 @@ namespace App\Queries;
 use App\Filters\MultiColumnFilter;
 use App\Models\Journal;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -20,8 +21,8 @@ class JournalListQuery extends QueryBuilder
                 'title_en',
                 'title_fr',
                 'publisher',
-                AllowedSort::custom('title-length', new StringLengthSort(),'title_en'),
-                ])
+                AllowedSort::custom('title-length', new StringLengthSort(), 'title_en'),
+            ])
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('title_en'),
