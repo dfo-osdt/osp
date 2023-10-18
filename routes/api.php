@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\InvitedUserController;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunderController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ManagementReviewStepController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManagementReviewStepsController;
 use App\Http\Controllers\UserManuscriptRecordController;
 use App\Http\Controllers\UserPublicationController;
+use App\Models\Expertise;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -134,6 +136,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(JournalController::class)->group(function () {
         Route::get('/journals', 'index');
         Route::get('/journals/{journal}', 'show');
+    });
+
+    Route::controller(ExpertiseController::class)->group(function () {
+        Route::get('/expertises', 'index');
+        Route::get('/expertises/{expertise}', 'show');
     });
 
     Route::controller(FunderController::class)->group(function () {

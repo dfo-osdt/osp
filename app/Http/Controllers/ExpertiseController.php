@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ExpertiseResource;
 use App\Models\Expertise;
-use Cerbero\JsonParser\Sources\JsonResource;
+use App\Queries\ExpertiseListQuery;
+use App\Traits\PaginationLimitTrait;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExpertiseController extends Controller
 {
+
+    use PaginationLimitTrait;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): JsonResource
     {
-        //
+        $limit = $this->getLimitFromRequest($request);
+        $expertiseListQuery = new ExpertiseListQuery($request);
+
+        return ExpertiseResource::collection($expertiseListQuery->paginate($limit));
     }
 
     /**

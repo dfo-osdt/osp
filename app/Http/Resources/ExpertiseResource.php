@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ExperienceResource extends JsonResource
+class ExpertiseResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,16 +20,20 @@ class ExperienceResource extends JsonResource
                 'name_en' => $this->name_en,
                 'name_fr' => $this->name_fr,
                 'tid' => $this->tid,
-                'uuid' => $this->uuid,
                 'parent_tid' => $this->parent_tid,
-                'parent_uuid' => $this->parent_uuid,
-                'parent' => new ExperienceResource($this->whenLoaded('parent')),
+                'taxonomy_path_en' => $this->whenLoaded('ancestors', function () {
+                    return $this->ancestors->pluck('name_en')->reverse()->implode(' > ');
+                }),
+                'taxonomy_path_fr' => $this->whenLoaded('ancestors', function () {
+                    return $this->ancestors->pluck('name_fr')->reverse()->implode(' > ');
+                }),
+                'ancestors' => ExpertiseResource::collection($this->whenLoaded('ancestors')),
+                'children' => ExpertiseResource::collection($this->whenLoaded('children')),
             ],
             'can' => [
                 'update' => false,
                 'delete' => false,
-            ]
-        ]
-
+            ],
+        ];
     }
 }
