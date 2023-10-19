@@ -27,16 +27,17 @@ class UpdateROROrganizations extends Command
      */
     public function handle()
     {
-        $this->info("Downloading or looking for ROR data dump...");
+        $this->info('Downloading or looking for ROR data dump...');
         $rorPath = DownloadLatestRORData::handle(function ($message) {
             $this->output->write($message);
         });
-        if(!$rorPath){
-            $this->error("Unable to download ROR data dump");
+        if (! $rorPath) {
+            $this->error('Unable to download ROR data dump');
+
             return;
         }
-        $this->info("Found and uncompressed here: " . $rorPath['jsonFile']);
-        $this->info("Synchronizing ROR data with Organizations...");
+        $this->info('Found and uncompressed here: '.$rorPath['jsonFile']);
+        $this->info('Synchronizing ROR data with Organizations...');
         $progressBar = $this->output->createProgressBar(100);
         SyncRORData::handle(
             $rorPath['jsonFile'],

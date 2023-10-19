@@ -8,8 +8,8 @@ test('a user can get a list of expertise', function () {
     Expertise::factory()->withChildren(5)->count(4)->create();
     $expertise = Expertise::factory()->create(
         [
-            'name_en' =>  'english',
-            'name_fr' =>  'french',
+            'name_en' => 'english',
+            'name_fr' => 'french',
         ]
     );
 

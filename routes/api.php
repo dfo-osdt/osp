@@ -23,7 +23,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManagementReviewStepsController;
 use App\Http\Controllers\UserManuscriptRecordController;
 use App\Http\Controllers\UserPublicationController;
-use App\Models\Expertise;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -28,13 +28,13 @@ class Author extends Model
     // author fullname
     public function getFullNameAttribute(): string
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->first_name.' '.$this->last_name;
     }
 
     // author name for APA citation
     public function getApaNameAttribute(): string
     {
-        return $this->last_name . ', ' . $this->first_name;
+        return $this->last_name.', '.$this->first_name;
     }
 
     /**

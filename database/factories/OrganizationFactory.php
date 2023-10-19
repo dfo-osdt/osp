@@ -24,7 +24,7 @@ class OrganizationFactory extends Factory
             'abbr_en' => Str::upper($this->faker->word()),
             'abbr_fr' => Str::upper($this->faker->word()),
             'ror_identifier' => $this->fakeRORIdentifier(),
-            'country_code' => $this->faker->randomElement(['CA','US','FR','UK']),
+            'country_code' => $this->faker->randomElement(['CA', 'US', 'FR', 'UK']),
         ];
     }
 
@@ -33,6 +33,7 @@ class OrganizationFactory extends Factory
         $base_url = 'https://ror.org/';
         $ror_regex = '0[0-9a-z]{6}[0-9]';
         $ror_id = $this->faker->regexify($ror_regex);
-        return $base_url . $ror_id;
+
+        return $base_url.$ror_id;
     }
 }

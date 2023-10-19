@@ -5,7 +5,6 @@ namespace App\Queries;
 use App\Filters\MultiColumnFilter;
 use App\Models\Expertise;
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 

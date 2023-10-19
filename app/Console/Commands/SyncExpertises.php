@@ -29,8 +29,9 @@ class SyncExpertises extends Command
 
         $result = \App\Actions\Expertise\SyncExpertiseWithScience::handle();
 
-        if (!$result) {
+        if (! $result) {
             $this->error('Failed to sync expertises!');
+
             return;
         }
 

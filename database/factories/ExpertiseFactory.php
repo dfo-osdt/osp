@@ -30,7 +30,7 @@ class ExpertiseFactory extends Factory
     // Create a parent and child expertise pair
     public function withChildren($n = 2): ExpertiseFactory
     {
-        return $this->afterCreating(function (Expertise $expertise) use ($n) {
+        return $this->afterCreating(function (Expertise $expertise) {
             Expertise::factory()->count(2)->create([
                 'parent_tid' => $expertise->tid,
                 'parent_uuid' => $expertise->uuid,

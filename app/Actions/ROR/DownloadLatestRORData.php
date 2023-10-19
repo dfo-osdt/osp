@@ -3,13 +3,13 @@
 namespace App\Actions\ROR;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Process;
 
 class DownloadLatestRORData
 {
-    public static function handle(callable $progressCallable = null): array | null
+    public static function handle(callable $progressCallable = null): ?array
     {
         $url = 'https://zenodo.org/api/records';
 
@@ -24,42 +24,51 @@ class DownloadLatestRORData
         $version = $data['hits']['hits'][0]['metadata']['version'] ?? null;
 
         // Download files to temporary storage
-        if(!$url) return null;
+        if (! $url) {
+            return null;
+        }
 
         // create a path to store the file
         $base_path = Storage::path('ror_data');
 
         // make sure the path exists
-        if(!file_exists($base_path)) mkdir($base_path);
+        if (! file_exists($base_path)) {
+            mkdir($base_path);
+        }
 
         $fileName = Str::afterLast($url, '/');
-        $zipFile = $base_path . '/' . $fileName;
+        $zipFile = $base_path.'/'.$fileName;
 
         // does the file already exist?
-        if(!file_exists($zipFile)){
+        if (! file_exists($zipFile)) {
             // use curl to download file
             $command = "curl -o $zipFile $url";
 
             $update = is_callable($progressCallable);
 
-            if($update) $progressCallable("Staring ROR download: ". $command . "...".PHP_EOL);
-            $process = Process::timeout(120)->start($command, function($type, $buffer) use ($progressCallable) {
-                if($type === 'stderr') {
-                    $progressCallable("ERROR: " . $buffer);
+            if ($update) {
+                $progressCallable('Staring ROR download: '.$command.'...'.PHP_EOL);
+            }
+            $process = Process::timeout(120)->start($command, function ($type, $buffer) use ($progressCallable) {
+                if ($type === 'stderr') {
+                    $progressCallable('ERROR: '.$buffer);
                 } else {
                     $progressCallable($buffer);
                 }
             });
 
-
-            if(!$process->wait()->successful()) return null;
-            if($update) $progressCallable("Finished download: ". $zipFile.PHP_EOL);
+            if (! $process->wait()->successful()) {
+                return null;
+            }
+            if ($update) {
+                $progressCallable('Finished download: '.$zipFile.PHP_EOL);
+            }
         }
 
         // is Json file already extracted?
-        $jsonFile = $base_path . '/' . Str::beforeLast($fileName, '.') .'.json';
+        $jsonFile = $base_path.'/'.Str::beforeLast($fileName, '.').'.json';
 
-        if(file_exists($jsonFile)){
+        if (file_exists($jsonFile)) {
             return [
                 'jsonFile' => $jsonFile,
                 'version' => $version,
@@ -68,15 +77,15 @@ class DownloadLatestRORData
 
         $command = "unzip -o $fileName";
 
-        $result = Process::path($base_path)->start($command, function($type, $buffer) use ($progressCallable) {
-            if($type === 'stderr') {
-                $progressCallable("ERROR: " . $buffer);
+        $result = Process::path($base_path)->start($command, function ($type, $buffer) use ($progressCallable) {
+            if ($type === 'stderr') {
+                $progressCallable('ERROR: '.$buffer);
             } else {
                 $progressCallable($buffer);
             }
         });
 
-        if($result->wait()->successful()){
+        if ($result->wait()->successful()) {
             return [
                 'jsonFile' => $jsonFile,
                 'version' => $version,

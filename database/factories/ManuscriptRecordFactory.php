@@ -106,5 +106,4 @@ class ManuscriptRecordFactory extends Factory
             'accepted_on' => now(),
         ]);
     }
-
 }

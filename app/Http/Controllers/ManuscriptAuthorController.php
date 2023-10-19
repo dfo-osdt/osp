@@ -98,6 +98,7 @@ class ManuscriptAuthorController extends Controller
         Gate::authorize('delete', $manuscriptAuthor);
 
         $manuscriptAuthor->delete();
+
         // response 204
         return response()->noContent();
     }

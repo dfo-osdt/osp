@@ -11,7 +11,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExpertiseController extends Controller
 {
-
     use PaginationLimitTrait;
 
     /**
