@@ -23,7 +23,7 @@ export class SpatieQuery {
     /** Add a filter to the query */
     public filter(
         name: string,
-        values?: boolean | string | string[] | number | number[]
+        values?: boolean | string | string[] | number | number[],
     ): this {
         let val: string[] = [];
 
@@ -67,7 +67,26 @@ export class SpatieQuery {
 
     /** Add a custom query parameter to the query */
     public custom(name: string, value: string): this {
-        this.customs.push({name, value});
+        this.customs.push({ name, value });
+        return this;
+    }
+
+    /** Add conditional when function that allows other queries to be called
+     * based on a condition
+     */
+    public when(
+        condition: boolean,
+        callback: (query: this) => this,
+        fallback?: (query: this) => this,
+    ): this {
+        if (condition) {
+            return callback(this);
+        }
+
+        if (fallback) {
+            return fallback(this);
+        }
+
         return this;
     }
 
@@ -84,7 +103,7 @@ export class SpatieQuery {
             this.filters.forEach((filter) => {
                 params.append(
                     'filter[' + filter.name + ']',
-                    filter.values.join(',')
+                    filter.values.join(','),
                 );
             });
         }
@@ -94,14 +113,14 @@ export class SpatieQuery {
                 'sort',
                 this.sorts
                     .map((s) => (s.direction == 'asc' ? s.name : '-' + s.name))
-                    .join(',')
+                    .join(','),
             );
         }
 
         if (this.includes.length) {
             params.append(
                 'include',
-                this.includes.map((i) => i.name).join(',')
+                this.includes.map((i) => i.name).join(','),
             );
         }
 

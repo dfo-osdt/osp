@@ -150,6 +150,7 @@
     "primary-manuscript": "Primary Manuscript",
     "primary-publication": "A manuscript published by a third party",
     "progress": "Progress",
+    "publication": "Publication",
     "publication-under-embargo": "Publication under embargo",
     "publications": "Publications",
     "published-as-open-access": "Published as Open Access",
@@ -231,8 +232,7 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password",
-    "publication": "Publication"
+    "your-password": "Your password"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -318,6 +318,12 @@
     "invalid-signature": "Invalid Signature",
     "link-expired-text": "The signed link you're using has likely expired."
   },
+  "expertise": {
+    "top-level-expertise": "Main Expertise Category"
+  },
+  "expertise-select": {
+    "hint": "Start typing to search for an expertise"
+  },
   "forgot-password-card": {
     "cancel": "Return to Login",
     "text": "Don't fret, we've all been there before. Simply click the password reset button and we'll send you some instructions to get you back on track.",
@@ -368,7 +374,7 @@
   },
   "manage-author-profile-view": {
     "authorize-orcid": "Manage ORCID",
-    "title": "Disciplines, Skills and Expertise"
+    "title": "Areas of Expertise"
   },
   "manage-funding-source-card": {
     "add-funding-source": "Add Funding Source",

@@ -13,7 +13,7 @@ class SyncExpertiseWithScience
         $url = 'https://profils-profiles.science.gc.ca/api/views/admin_taxonomy_term?display_id=services_1';
 
         $response = Http::get($url);
-        if (! $response->ok()) {
+        if (!$response->ok()) {
             return false;
         }
 
@@ -23,8 +23,8 @@ class SyncExpertiseWithScience
             Expertise::updateOrCreate([
                 'tid' => $record['tid'],
             ], [
-                'name_en' => $record['name_en'],
-                'name_fr' => $record['name_fr'],
+                'name_en' => htmlspecialchars_decode($record['name_en']),
+                'name_fr' => htmlspecialchars_decode($record['name_fr']),
                 'parent_tid' => $record['parent_tid'] === '' ? null : $record['parent_tid'],
                 'parent_uuid' => $record['parent_uuid'],
                 'uuid' => $record['uuid'],

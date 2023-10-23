@@ -150,6 +150,7 @@
     "primary-manuscript": "Manuscrit principal",
     "primary-publication": "Un manuscrit publié par un tiers",
     "progress": "Progrès",
+    "publication": "Publication",
     "publication-under-embargo": "Publication sous embargo",
     "publications": "Publications",
     "published-as-open-access": "Publié en libre accès",
@@ -231,8 +232,7 @@
     "your-email": "Votre courriel",
     "your-first-name": "Ton prénom",
     "your-last-name": "Votre nom de famille",
-    "your-password": "Votre mot de passe",
-    "publication": "Publication"
+    "your-password": "Votre mot de passe"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -318,6 +318,12 @@
     "invalid-signature": "Signature non valide",
     "link-expired-text": "Le lien signé que vous utilisez a probablement expiré."
   },
+  "expertise": {
+    "top-level-expertise": "Catégorie d'expertise principale"
+  },
+  "expertise-select": {
+    "hint": "Commencez à taper pour rechercher une expertise"
+  },
   "forgot-password-card": {
     "cancel": "Revenir à la connexion",
     "text": "Ne vous inquiétez pas, nous sommes tous déjà passés par là. \nCliquez simplement sur le bouton de réinitialisation du mot de passe et nous vous enverrons des instructions pour vous remettre sur la bonne voie.",
@@ -368,7 +374,7 @@
   },
   "manage-author-profile-view": {
     "authorize-orcid": "Gérer ORCID",
-    "title": "Disciplines, Compétences et Expertises"
+    "title": "Domaines d'expertise"
   },
   "manage-funding-source-card": {
     "add-funding-source": "Ajouter une source de financement",

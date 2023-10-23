@@ -1,6 +1,7 @@
 import { SpatieQuery } from '@/api/SpatieQuery';
 import { Resource } from '../Resource';
 import { http } from '@/api/http';
+import { Locale } from '@/stores/LocaleStore';
 
 export interface Expertise {
     id: number;
@@ -61,11 +62,15 @@ export class ExpertiseQuery extends SpatieQuery {
         return this.filter('main_expertises', 'true');
     }
 
-    public includAncestors() {
+    public includeAncestors() {
         return this.include('ancestors');
     }
 
     public includeChildren() {
         return this.include('children');
+    }
+
+    public sortByNameLength(locale: Locale = 'en') {
+        return this.sort(`name-${locale}-length`, 'asc');
     }
 }
