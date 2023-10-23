@@ -28,7 +28,7 @@
         "unplugin-auto-import": "^0.16.6",
         "unplugin-vue-components": "^0.25.2",
         "vite": "^4.4.11",
-        "vue-tsc": "^1.8.19"
+        "vue-tsc": "^1.8.20"
     },
     "dependencies": {
         "@intlify/unplugin-vue-i18n": "^1.4.0",
