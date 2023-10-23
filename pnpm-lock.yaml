@@ -27,8 +27,8 @@ dependencies:
     specifier: link:@@vitejs/plugin-vue@latest
     version: link:@@vitejs/plugin-vue@latest
   quasar:
-    specifier: ^2.12.7
-    version: 2.12.7
+    specifier: ^2.13.0
+    version: 2.13.0
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -42,7 +42,7 @@ dependencies:
 devDependencies:
   '@quasar/vite-plugin':
     specifier: ^1.5.0
-    version: 1.5.0(@vitejs/plugin-vue@4.4.0)(quasar@2.12.7)(vite@4.4.11)(vue@3.3.4)
+    version: 1.5.0(@vitejs/plugin-vue@4.4.0)(quasar@2.13.0)(vite@4.4.11)(vue@3.3.4)
   '@types/dompurify':
     specifier: ^3.0.3
     version: 3.0.3
@@ -527,7 +527,7 @@ packages:
     resolution: {integrity: sha512-nYF3gVE/si1YJ/D4qmAiHGwxoJIDCvTT8NI6ZmbTMPrur4J8xBKhfhfhyLoQ4k2jJZP6Rx0rUcB71FBNC2C8vQ==}
     dev: false
 
-  /@quasar/vite-plugin@1.5.0(@vitejs/plugin-vue@4.4.0)(quasar@2.12.7)(vite@4.4.11)(vue@3.3.4):
+  /@quasar/vite-plugin@1.5.0(@vitejs/plugin-vue@4.4.0)(quasar@2.13.0)(vite@4.4.11)(vue@3.3.4):
     resolution: {integrity: sha512-Kd4nFeWd0eAr7e+HMY8Wtmo86RjPZhCi6/bybTAyliFmS8AhZ2/oRTOGnBD9R1C6Ub3JPzC4eWFA20IlHa5A3w==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -537,7 +537,7 @@ packages:
       vue: ^3.0.0
     dependencies:
       '@vitejs/plugin-vue': 4.4.0(vite@4.4.11)(vue@3.3.4)
-      quasar: 2.12.7
+      quasar: 2.13.0
       vite: 4.4.11(@types/node@20.8.6)(sass@1.32.13)
       vue: 3.3.4
     dev: true
@@ -2609,8 +2609,8 @@ packages:
       side-channel: 1.0.4
     dev: true
 
-  /quasar@2.12.7:
-    resolution: {integrity: sha512-JF2rb8u1RcXPpiaDh/RnO/5rFx7kABDMov0WnRI3acJ5s4TD2FyPrCmS7VgleLubDYRSsSAontJ6EijGz4BHig==}
+  /quasar@2.13.0:
+    resolution: {integrity: sha512-VPxbDy4vsobROUqGfet415SAvthj03fbm06pHSOYH5TeixWKHiLBIbwV9/LmWsDqwEsmMpADkHNZhmBZ40ha2w==}
     engines: {node: '>= 10.18.1', npm: '>= 6.13.4', yarn: '>= 1.21.1'}
 
   /querystringify@2.2.0:
