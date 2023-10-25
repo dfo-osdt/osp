@@ -18,23 +18,8 @@ class ExpertiseFactory extends Factory
     public function definition(): array
     {
         return [
-            'name_en' => $this->faker->word(),
-            'name_fr' => $this->faker->word(),
-            'tid' => $this->faker->randomNumber(4),
-            'uuid' => $this->faker->uuid(),
-            'parent_tid' => null,
-            'parent_uuid' => null,
+            'name_en' => $this->faker->sentence(3),
+            'name_fr' => $this->faker->sentence(3),
         ];
-    }
-
-    // Create a parent and child expertise pair
-    public function withChildren($n = 2): ExpertiseFactory
-    {
-        return $this->afterCreating(function (Expertise $expertise) {
-            Expertise::factory()->count(2)->create([
-                'parent_tid' => $expertise->tid,
-                'parent_uuid' => $expertise->uuid,
-            ]);
-        });
     }
 }

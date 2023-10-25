@@ -71,7 +71,6 @@ const filterExpertises = async (
                     (query) => query.filterNameFr(needle),
                     (query) => query.filterNameEn(needle),
                 )
-                .includeAncestors()
                 .sortByNameLength(localeStore.locale)
                 .paginate(1, 100);
 

@@ -18,7 +18,7 @@ class AuthorFactory extends Factory
     {
         $fistName = $this->faker->firstName();
         $lastName = $this->faker->lastName();
-        $email = $fistName.'.'.$lastName.'@'.$this->faker->safeEmailDomain();
+        $email = $fistName . '.' . $lastName . '@' . $this->faker->safeEmailDomain();
 
         return [
             'first_name' => $fistName,
@@ -36,9 +36,20 @@ class AuthorFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
+                'email' => $attributes['first_name'] . '.' . $attributes['last_name'] . '@dfo-mpo.gc.ca',
                 'organization_id' => 1,
             ];
+        });
+    }
+
+    /**
+     * Has expertise
+     */
+    public function hasExpertises(int $qty = 1)
+    {
+        return $this->afterCreating(function (\App\Models\Author $author) use ($qty) {
+            $expertise = \App\Models\Expertise::factory()->count($qty)->create();
+            $author->expertises()->attach($expertise);
         });
     }
 }

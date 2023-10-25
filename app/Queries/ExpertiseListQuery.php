@@ -23,16 +23,9 @@ class ExpertiseListQuery extends QueryBuilder
                 AllowedSort::custom('name-fr-length', new StringLengthSort(), 'name_fr'),
             ])
             ->allowedFilters(([
-                AllowedFilter::exact('id'),
-                AllowedFilter::exact('tid'),
                 AllowedFilter::partial('name_en'),
                 AllowedFilter::partial('name_fr'),
                 AllowedFilter::custom('search', new MultiColumnFilter('name_en', 'name_fr')),
-                AllowedFilter::scope('main_expertise'),
-            ]))
-            ->allowedIncludes(([
-                'ancestors',
-                'children',
             ]));
     }
 }

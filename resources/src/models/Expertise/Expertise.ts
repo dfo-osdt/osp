@@ -4,15 +4,9 @@ import { http } from '@/api/http';
 import { Locale } from '@/stores/LocaleStore';
 
 export interface Expertise {
-    id: number;
+    id: string; // ulid
     name_en: string;
     name_fr: string;
-    tid: number;
-    parent_tid: number;
-    taxonomy_path_en?: string;
-    taxonomy_path_fr?: string;
-    ancestors?: ExpertiseResource[];
-    children?: ExpertiseResource[];
 }
 
 export type ExpertiseResource = Resource<Expertise>;
@@ -31,21 +25,13 @@ export class ExpertiseService {
         return response.data;
     }
 
-    public static async get(id: number) {
+    public static async get(id: string) {
         const response = await http.get<R>(`api/expertises/${id}`);
         return response.data;
     }
 }
 
 export class ExpertiseQuery extends SpatieQuery {
-    public filterId(id: number) {
-        return this.filter('id', id);
-    }
-
-    public filterTid(tid: number) {
-        return this.filter('tid', tid);
-    }
-
     public filterNameEn(name: string) {
         return this.filter('name_en', name);
     }
@@ -56,18 +42,6 @@ export class ExpertiseQuery extends SpatieQuery {
 
     public search(search: string) {
         return this.filter('search', search);
-    }
-
-    public onlyMainExpertises() {
-        return this.filter('main_expertises', 'true');
-    }
-
-    public includeAncestors() {
-        return this.include('ancestors');
-    }
-
-    public includeChildren() {
-        return this.include('children');
     }
 
     public sortByNameLength(locale: Locale = 'en') {

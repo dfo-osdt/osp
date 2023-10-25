@@ -17,18 +17,37 @@ class SyncExpertiseWithScience
             return false;
         }
 
-        $json = JsonParser::parse($response);
+        $expertises = collect($response->json());
 
-        foreach ($json as $key => $record) {
-            Expertise::updateOrCreate([
-                'tid' => $record['tid'],
-            ], [
-                'name_en' => htmlspecialchars_decode($record['name_en']),
-                'name_fr' => htmlspecialchars_decode($record['name_fr']),
-                'parent_tid' => $record['parent_tid'] === '' ? null : $record['parent_tid'],
-                'parent_uuid' => $record['parent_uuid'],
-                'uuid' => $record['uuid'],
-            ]);
+        // lower case array of keywords to remove in english
+        $termsToRemove = [
+            'bio-informatics',
+            'biological',
+        ];
+
+
+        $unique = $expertises
+            ->unique(function ($expertise) {
+                return strtolower($expertise['name_en']);
+            })
+            ->unique(function ($expertise) {
+                return strtolower($expertise['name_fr']);
+            })
+            ->filter(function ($expertise) use ($termsToRemove) {
+                $a = strtolower($expertise['name_en']);
+                return !in_array($a, $termsToRemove);
+            });
+
+
+        foreach ($unique as $expertise) {
+            Expertise::updateOrCreate(
+                [
+                    'name_en' => $expertise['name_en'],
+                ],
+                [
+                    'name_fr' => $expertise['name_fr'],
+                ]
+            );
         }
 
         return true;

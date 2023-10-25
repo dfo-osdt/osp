@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Author;
+use App\Models\Expertise;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -21,7 +22,7 @@ class UserFactory extends Factory
     {
         $fistName = $this->faker->firstName();
         $lastName = $this->faker->lastName();
-        $email = $fistName.'.'.$lastName.'@test.local';
+        $email = $fistName . '.' . $lastName . '@test.local';
 
         return [
             'first_name' => $fistName,
@@ -42,7 +43,7 @@ class UserFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
+                'email' => $attributes['first_name'] . '.' . $attributes['last_name'] . '@dfo-mpo.gc.ca',
             ];
         });
     }
@@ -54,7 +55,7 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) {
             // does an author record already exist for this user?
-            Author::updateOrCreate(
+            $author = Author::updateOrCreate(
                 [
                     'email' => $user->email,
                     'user_id' => null,
@@ -66,6 +67,8 @@ class UserFactory extends Factory
                     'user_id' => $user->id,
                 ]
             );
+
+            $author->expertises()->attach(Expertise::factory()->count(rand(1, 3))->create());
 
             // by default a new user is an author
             $user->assignRole('author');

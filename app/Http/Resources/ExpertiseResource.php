@@ -19,16 +19,6 @@ class ExpertiseResource extends JsonResource
                 'id' => $this->id,
                 'name_en' => $this->name_en,
                 'name_fr' => $this->name_fr,
-                'tid' => $this->tid,
-                'parent_tid' => $this->parent_tid,
-                'taxonomy_path_en' => $this->whenLoaded('ancestors', function () {
-                    return $this->ancestors->pluck('name_en')->reverse()->implode(' > ');
-                }),
-                'taxonomy_path_fr' => $this->whenLoaded('ancestors', function () {
-                    return $this->ancestors->pluck('name_fr')->reverse()->implode(' > ');
-                }),
-                'ancestors' => ExpertiseResource::collection($this->whenLoaded('ancestors')),
-                'children' => ExpertiseResource::collection($this->whenLoaded('children')),
             ],
             'can' => [
                 'update' => false,
