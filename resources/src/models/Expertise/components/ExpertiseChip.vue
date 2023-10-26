@@ -1,11 +1,7 @@
 <template>
-    <q-item>
-        <q-item-section>
-            <q-item-label>{{
-                modelValue.data[`name_${localeStore.locale}`]
-            }}</q-item-label>
-        </q-item-section>
-    </q-item>
+    <q-chip color="light-green-3" class="q-pa-md">{{
+        modelValue.data[`name_${localeStore.locale}`]
+    }}</q-chip>
 </template>
 
 <script setup lang="ts">

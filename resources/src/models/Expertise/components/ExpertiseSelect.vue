@@ -2,12 +2,12 @@
     <q-select
         v-model="selectedExpertise"
         :options="expertises.data"
-        :option-value="optionValue"
-        :option-label="optionLabel"
         use-input
         :hint="$t('expertise-select.hint')"
         stack-label
+        :option-label="optionLabel"
         outlined
+        multiple
         clearable
         :loading="expertiseLoading"
         @filter="filterExpertises"
@@ -29,11 +29,8 @@
                 </q-item>
             </template>
         </template>
-        <template #option="{ itemProps, opt }">
-            <expertise-item v-bind="itemProps" :model-value="opt" />
-        </template>
-        <template #selected-item="{ opt }">
-            <expertise-item :model-value="opt" />
+        <template #selected-item="scope">
+            <expertise-chip :model-value="scope.opt" removable />
         </template>
     </q-select>
 </template>
@@ -45,7 +42,7 @@ import {
     ExpertiseResourceList,
     ExpertiseService,
 } from '../Expertise';
-import ExpertiseItem from './ExpertiseItem.vue';
+import ExpertiseChip from './ExpertiseChip.vue';
 
 const localeStore = useLocaleStore();
 
