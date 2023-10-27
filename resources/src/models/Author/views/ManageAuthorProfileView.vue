@@ -5,6 +5,10 @@
             :author-id="authStore.user.author.data.id"
             secondary
         />
+        <ManageAuthorExpertise
+            v-if="authStore.user && !authStore.loading"
+            :author-id="authStore.user.author.data.id"
+        />
         <ContentCard secondary class="q-mt-lg">
             <template #title>{{
                 $t('manage-author-profile-view.authorize-orcid')
@@ -47,7 +51,6 @@
                 </div>
             </q-card-section>
         </ContentCard>
-        <ManageAuthorExpertise />
     </div>
 </template>
 

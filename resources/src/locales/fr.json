@@ -645,5 +645,9 @@
   "withdraw-manuscript-dialog": {
     "text": "Retirez ce manuscrit. \nCela nous permet de savoir que ce manuscrit ne sera pas publié et ferme ce registre de manuscrit.",
     "title": "Retirer ce manuscrit"
+  },
+  "author-expertise": {
+    "info-text": "L'identification des domaines d'expertise d'un auteur aide les utilisateurs à comprendre et à faire confiance au contenu et à trouver plus facilement les informations dont ils ont besoin. \nIl favorise également la collaboration entre chercheurs, ce qui en fait une ressource précieuse pour notre communauté scientifique.",
+    "saved": "Expertise de l'auteur enregistrée"
   }
 }

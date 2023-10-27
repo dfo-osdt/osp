@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\InvitedUserController;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\AuthorExpertiseController;
 use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunderController;
 use App\Http\Controllers\JournalController;
@@ -140,6 +141,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(ExpertiseController::class)->group(function () {
         Route::get('/expertises', 'index');
         Route::get('/expertises/{expertise}', 'show');
+    });
+
+    Route::controller(AuthorExpertiseController::class)->group(function () {
+        Route::get('/authors/{author}/expertises', 'index');
+        Route::post('/authors/{author}/expertises', 'store');
     });
 
     Route::controller(FunderController::class)->group(function () {

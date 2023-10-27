@@ -1,6 +1,10 @@
 import { http } from '@/api/http';
 import { OrganizationResource } from '../Organization/Organization';
 import { Resource, ResourceList } from '../Resource';
+import {
+    ExpertiseResource,
+    ExpertiseResourceList,
+} from '../Expertise/Expertise';
 
 export interface Author {
     readonly id: number;
@@ -14,6 +18,7 @@ export interface Author {
     organization_id: number;
     // relationships
     organization?: OrganizationResource;
+    expertises?: ExpertiseResource[];
 }
 
 export type AuthorResource = Resource<Author>;
@@ -52,7 +57,7 @@ export class AuthorService {
     public static async update(author: Author) {
         const response = await http.put<Author, AuthorResource>(
             `api/authors/${author.id}`,
-            author
+            author,
         );
         return response.data;
     }
@@ -63,7 +68,7 @@ export class AuthorService {
     public static async create(author: Partial<Author>) {
         const response = await http.post<Partial<Author>, AuthorResource>(
             'api/authors',
-            author
+            author,
         );
         return response.data;
     }
@@ -74,6 +79,19 @@ export class AuthorService {
             { access_token: string },
             AuthorResource
         >('api/user/orcid/verify', { access_token: access_token });
+        return response.data;
+    }
+
+    public static async syncExpertises(
+        authorId: number,
+        expertises: ExpertiseResource[],
+    ) {
+        const response = await http.post<
+            { expertises: string[] },
+            ExpertiseResourceList
+        >(`api/authors/${authorId}/expertises`, {
+            expertises: expertises.map((e) => e.data.id),
+        });
         return response.data;
     }
 }

@@ -1,5 +1,5 @@
 import { SpatieQuery } from '@/api/SpatieQuery';
-import { Resource } from '../Resource';
+import { Resource, ResourceList } from '../Resource';
 import { http } from '@/api/http';
 import { Locale } from '@/stores/LocaleStore';
 
@@ -10,7 +10,7 @@ export interface Expertise {
 }
 
 export type ExpertiseResource = Resource<Expertise>;
-export type ExpertiseResourceList = Resource<Expertise[]>;
+export type ExpertiseResourceList = ResourceList<Expertise>;
 
 type R = ExpertiseResource;
 type RList = ExpertiseResourceList;

@@ -645,5 +645,9 @@
   "withdraw-manuscript-dialog": {
     "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record.",
     "title": "Withdraw this manuscript"
+  },
+  "author-expertise": {
+    "info-text": "Identifying an author's areas of expertise helps users understand and trust the content and find the information they need more easily. It also fosters collaboration among researchers, making it a valuable resource for our scientific community.",
+    "saved": "Author Expertise Saved"
   }
 }

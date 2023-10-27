@@ -1,6 +1,7 @@
 <template>
     <q-select
-        v-model="selectedExpertise"
+        ref="expertiseSelect"
+        v-model="modelValue"
         :options="expertises.data"
         use-input
         :hint="$t('expertise-select.hint')"
@@ -8,7 +9,6 @@
         :option-label="optionLabel"
         outlined
         multiple
-        clearable
         :loading="expertiseLoading"
         @filter="filterExpertises"
     >
@@ -30,12 +30,17 @@
             </template>
         </template>
         <template #selected-item="scope">
-            <expertise-chip :model-value="scope.opt" removable />
+            <expertise-chip
+                :model-value="scope.opt"
+                removable
+                @remove="scope.removeAtIndex(scope.index)"
+            />
         </template>
     </q-select>
 </template>
 
 <script setup lang="ts">
+import { QSelect } from 'quasar';
 import {
     ExpertiseQuery,
     ExpertiseResource,
@@ -46,10 +51,13 @@ import ExpertiseChip from './ExpertiseChip.vue';
 
 const localeStore = useLocaleStore();
 
+const expertiseSelect = ref<QSelect | null>(null);
+
 const expertises = ref<ExpertiseResourceList>({ data: [] });
-const selectedExpertise = ref<ExpertiseResource | null>(null);
 const expertiseLoading = ref(false);
 const lastSearchTerm = ref('');
+
+const modelValue = defineModel<ExpertiseResource[] | undefined>();
 
 const filterExpertises = async (
     val: string,
@@ -76,10 +84,6 @@ const filterExpertises = async (
         }
     });
 };
-
-function optionValue(expertise: ExpertiseResource) {
-    return expertise.data.id;
-}
 
 function optionLabel(expertise: ExpertiseResource) {
     return localeStore.locale === 'fr'

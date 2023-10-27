@@ -29,6 +29,7 @@ class AuthorResource extends JsonResource
                 'user_id' => $this->user_id,
                 'organization_id' => $this->organization_id,
                 'organization' => OrganizationResource::make($this->whenLoaded('organization')),
+                'expertises' => ExpertiseResource::collection($this->whenLoaded('expertises')),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

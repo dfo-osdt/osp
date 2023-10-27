@@ -16,7 +16,7 @@ class AuthorListQuery extends QueryBuilder
         $this
             ->defaultSort('last_name')
             ->allowedSorts('first_name', 'last_name', 'email')
-            ->allowedIncludes('organization')
+            ->allowedIncludes(['organization', 'expertises'])
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('first_name'),
