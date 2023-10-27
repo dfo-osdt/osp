@@ -22,7 +22,7 @@ class UserFactory extends Factory
     {
         $fistName = $this->faker->firstName();
         $lastName = $this->faker->lastName();
-        $email = $fistName . '.' . $lastName . '@test.local';
+        $email = $fistName.'.'.$lastName.'@test.local';
 
         return [
             'first_name' => $fistName,
@@ -43,7 +43,7 @@ class UserFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'email' => $attributes['first_name'] . '.' . $attributes['last_name'] . '@dfo-mpo.gc.ca',
+                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
             ];
         });
     }

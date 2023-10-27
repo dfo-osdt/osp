@@ -37,11 +37,11 @@ test('a use can get a single expertise', function () {
         ]
     );
 
-    $response = $this->getJson('/api/expertises/' . $expertise->id);
+    $response = $this->getJson('/api/expertises/'.$expertise->id);
     $response->assertUnauthorized();
 
     $user = User::factory()->create();
-    $response = $this->actingAs($user)->getJson('/api/expertises/' . $expertise->id);
+    $response = $this->actingAs($user)->getJson('/api/expertises/'.$expertise->id);
 
     $response->assertOk();
 });
