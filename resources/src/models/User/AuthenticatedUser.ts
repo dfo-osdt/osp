@@ -55,8 +55,8 @@ export interface IAuthenticatedUser {
     locale: Locale;
     new_password_required: boolean;
     author: AuthorResource;
-    roles: string[];
-    permissions: string[];
+    roles: AuthenticatedUserRoles[];
+    permissions: AuthenticatedUserPermissions[];
 }
 
 /**
@@ -69,11 +69,11 @@ export type AuthenticatedUserPermissions =
     | 'update_authors'
     | 'create_organizations'
     | 'withhold_and_complete_management_review';
+
 /**
  * List of available roles
  */
-
-export type AuthenticatedUserRoles = 'author' | 'director';
+export type AuthenticatedUserRoles = 'author' | 'director' | 'admin';
 
 export class AuthenticatedUser implements IAuthenticatedUser {
     public id!: number;
@@ -83,8 +83,8 @@ export class AuthenticatedUser implements IAuthenticatedUser {
     public locale!: Locale;
     public new_password_required!: boolean;
     public author!: AuthorResource;
-    public roles!: string[];
-    public permissions!: string[];
+    public roles!: AuthenticatedUserRoles[];
+    public permissions!: AuthenticatedUserPermissions[];
 
     constructor(user: IAuthenticatedUser) {
         Object.assign(this, user);
@@ -130,6 +130,22 @@ export class AuthenticatedUser implements IAuthenticatedUser {
     hasRole(role: AuthenticatedUserRoles): boolean {
         return this.roles.includes(role);
     }
+
+    getRoleNameForDisplay(
+        role: AuthenticatedUserRoles,
+        locale: Locale = 'en',
+    ): string {
+        switch (role) {
+            case 'author':
+                return locale === 'en' ? 'Author' : 'Auteur';
+            case 'director':
+                return locale === 'en' ? 'Director' : 'Directeur';
+            case 'admin':
+                return locale === 'en' ? 'Admin' : 'Administrateur';
+            default:
+                return '';
+        }
+    }
 }
 
 // Authenticated User Service
@@ -142,14 +158,14 @@ export class AuthenticatedUserService {
 
     public static async getUserAuthentications() {
         const response = await http.get<UserAuthenticationResource>(
-            '/api/user/authentications'
+            '/api/user/authentications',
         );
         return response.data;
     }
 
     public static async getSentInvitations() {
         const response = await http.get<UserInvitationResourceList>(
-            '/api/user/invitations'
+            '/api/user/invitations',
         );
         return response.data;
     }

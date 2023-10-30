@@ -11,7 +11,9 @@
   "SettingsPage": {
     "account-security": "Sécurité du compte",
     "author-profile": "Profil de l'auteur",
-    "user-profile": "Profil de l'utilisateur"
+    "user-profile": "Profil de l'utilisateur",
+    "user-roles": "Rôles d'utilisateurs",
+    "user-roles-description": "Chaque rôle d'utilisateur accorde des autorisations différentes au sein du portail. \nSi vous pensez que vous devriez avoir des rôles supplémentaires, veuillez nous contacter."
   },
   "accepted-by-journal-dialog": {
     "text": "Vous pouvez maintenant marquer ce manuscrit comme ayant été accepté pour publication par une revue. \nCette étape créera une nouvelle publication sur votre profil vous permettant de mettre à jour les détails de la publication. \nUne fois que vous connaissez les détails de la publication, n'oubliez pas de mettre à jour le dossier de publication et de le marquer comme publié afin que nous puissions aider à le partager au sein de la communauté du MPO."

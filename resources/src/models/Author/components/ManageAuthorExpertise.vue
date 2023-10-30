@@ -41,17 +41,17 @@
             />
         </template>
         <template v-if="editMode">
-            <q-row>
+            <div>
                 <ExpertiseSelect v-model="expertises" />
-            </q-row>
-            <q-row class="flex justify-end">
+            </div>
+            <div class="flex justify-end">
                 <q-btn
                     right
                     :label="$t('common.save')"
                     color="primary"
                     @click="syncExpertises"
                 />
-            </q-row>
+            </div>
         </template>
     </ContentCard>
 </template>
