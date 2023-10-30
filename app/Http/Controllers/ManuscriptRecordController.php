@@ -70,8 +70,6 @@ class ManuscriptRecordController extends Controller
             'type' => [new Enum(ManuscriptRecordType::class)],
             'abstract' => 'nullable|string',
             'pls' => 'nullable|string',
-            'scientific_implications' => 'nullable|string',
-            'regions_and_species' => 'nullable|string',
             'relevant_to' => 'nullable|string',
             'additional_information' => 'nullable|string',
             'potential_public_interest' => 'boolean',

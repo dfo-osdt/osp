@@ -27,9 +27,8 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
             const query = new ManuscriptQuery();
             query.sort('updated_at', 'desc').paginate(1, 10);
 
-            const response = await ManuscriptRecordService.getMyManuscripts(
-                query
-            );
+            const response =
+                await ManuscriptRecordService.getMyManuscripts(query);
             manuscripts.value = response.data;
             loading.value = false;
         }
@@ -59,7 +58,7 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
                 m.data.status === 'draft' ||
                 m.data.status === 'in_review' ||
                 m.data.status === 'reviewed' ||
-                m.data.status === 'submitted'
+                m.data.status === 'submitted',
         );
     });
 
@@ -75,5 +74,5 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
 
 if (import.meta.hot)
     import.meta.hot.accept(
-        acceptHMRUpdate(useManuscriptStore, import.meta.hot)
+        acceptHMRUpdate(useManuscriptStore, import.meta.hot),
     );

@@ -29,8 +29,6 @@ return new class extends Migration
             // optional (default to empty string via model) fields
             $table->text('abstract')->nullable();
             $table->text('pls')->nullable()->comment('Plain Language Summary');
-            $table->text('scientific_implications')->nullable();
-            $table->text('regions_and_species')->nullable();
             $table->text('relevant_to')->nullable();
             $table->text('additional_information')->nullable();
 

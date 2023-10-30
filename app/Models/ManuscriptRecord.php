@@ -51,8 +51,6 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     protected $attributes = [
         'abstract' => '',
         'pls' => '',
-        'scientific_implications' => '',
-        'regions_and_species' => '',
         'relevant_to' => '',
         'additional_information' => '',
     ];
@@ -143,7 +141,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     public function deleteManuscriptFile($uuid, $force = false)
     {
         $media = $this->getMedia('manuscript')->where('uuid', $uuid)->first();
-        if (! $media) {
+        if (!$media) {
             throw new FileNotFoundException('File not found.');
         }
         if ($force) {
@@ -182,7 +180,6 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             'title' => 'required',
             'abstract' => 'required',
             'pls' => 'required',
-            // 'scientific_implications' => 'required',
             'relevant_to' => 'required',
         ]);
 
@@ -195,7 +192,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             }
         });
 
-        if (! $noExceptions) {
+        if (!$noExceptions) {
             $validator->validate();
         }
 

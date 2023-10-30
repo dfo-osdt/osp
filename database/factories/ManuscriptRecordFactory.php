@@ -41,15 +41,14 @@ class ManuscriptRecordFactory extends Factory
             'title' => 'A fully filled out manuscript record, ready to be submitted for internal review',
             'abstract' => $this->faker->paragraph(),
             'pls' => $this->faker->paragraph(),
-            'scientific_implications' => $this->faker->paragraph(),
-            'regions_and_species' => $this->faker->paragraph(),
             'relevant_to' => $this->faker->paragraph(),
+            'potential_public_interest' => $this->faker->boolean(),
             'additional_information' => $this->faker->paragraph(),
         ])->afterCreating(function ($manuscript) {
             $manuscript->manuscriptAuthors()->save(ManuscriptAuthor::factory()->make(['is_corresponding_author' => true])); // create a corresponding author
             $manuscript->manuscriptAuthors()->saveMany(ManuscriptAuthor::factory()->count(3)->make()); // create 3 other authors
             $manuscript->fundingSources()->saveMany(FundingSource::factory()->count(3)->make()); // create 3 funding sources
-            $manuscript->addMedia(getcwd().'/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('manuscript'); // add a manuscript file
+            $manuscript->addMedia(getcwd() . '/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('manuscript'); // add a manuscript file
         });
     }
 
