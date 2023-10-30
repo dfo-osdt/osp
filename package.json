@@ -11,7 +11,7 @@
         "@quasar/vite-plugin": "^1.6.0",
         "@types/dompurify": "^3.0.4",
         "@types/node": "^20.8.9",
-        "@typescript-eslint/eslint-plugin": "^6.9.0",
+        "@typescript-eslint/eslint-plugin": "^6.9.1",
         "@typescript-eslint/parser": "^6.9.0",
         "axios": "^1.6.0",
         "cypress": "^13.3.3",
