@@ -6,7 +6,7 @@
         </template>
         <template #title-right>
             <q-btn
-                v-if="!editMode"
+                v-if="!editMode && !readOnly"
                 outline
                 :label="$t('common.edit')"
                 icon="mdi-book-edit-outline"
@@ -17,6 +17,23 @@
             {{ $t('author-expertise.info-text') }}
         </p>
         <template v-if="!editMode">
+            <template v-if="expertises?.length === 0">
+                <p class="q-mt-md flex justify-between">
+                    <span class="text-grey-7">{{
+                        $t('author-expertise.no-expertise')
+                    }}</span>
+                    <q-btn
+                        v-if="!editMode && !readOnly"
+                        :label="$t('common.edit')"
+                        outline
+                        rounded
+                        icon="mdi-book-edit-outline"
+                        class="q-ml-sm"
+                        color="primary"
+                        @click="editMode = !editMode"
+                    />
+                </p>
+            </template>
             <ExpertiseChip
                 v-for="expertise in expertises"
                 :key="expertise.data.id"
@@ -61,6 +78,10 @@ const locale = computed(() => localeStore.locale);
 onMounted(async () => {
     author.value = await AuthorService.find(props.authorId);
     expertises.value = sortExpertise(author.value.data?.expertises);
+});
+
+const readOnly = computed(() => {
+    return author.value?.can?.update === false;
 });
 
 watch(locale, () => {
