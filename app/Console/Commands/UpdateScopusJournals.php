@@ -83,20 +83,20 @@ class UpdateScopusJournals extends Command
         $actionRegister = [
             0 => [
                 'text' => 'No action',
-                'count' => 0
-                ],
+                'count' => 0,
+            ],
             1 => [
                 'text' => 'Updated',
-                'count' => 0
-                ],
-                
+                'count' => 0,
+            ],
+
             2 => [
                 'text' => 'Created',
-                'count' => 0
+                'count' => 0,
             ],
             3 => [
                 'text' => 'Deleted - Inactive',
-                'count' => 0
+                'count' => 0,
             ],
         ];
 
@@ -113,12 +113,12 @@ class UpdateScopusJournals extends Command
 
             // make sure journal is active
             if ($row['Active or Inactive'] == 'Inactive') {
-                if ($journal && $journal->publications()->count() == 0)
-                {
+                if ($journal && $journal->publications()->count() == 0) {
                     $journal->delete();
                     $actionRegister[3]['count']++;
                     $this->info('['.$actionRegister[3]['text'].']: '.$row['Source Title (Medline-sourced journals are indicated in Green)']);
                 }
+
                 return;
             }
 
@@ -159,7 +159,7 @@ class UpdateScopusJournals extends Command
                 $this->info('['.$actionRegister[$action]['text'].']: '.$row['Source Title (Medline-sourced journals are indicated in Green)']);
             }
         });
-        
+
         $time = now()->diffInSeconds($start);
         $this->line('');
         $this->info("Completed in {$time} seconds.");

@@ -7,7 +7,6 @@ use Spatie\QueryBuilder\Sorts\Sort;
 
 class StringLengthSort implements Sort
 {
-    
     public function __invoke(Builder $query, bool $descending, string $property)
     {
         $direction = $descending ? 'DESC' : 'ASC';

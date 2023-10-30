@@ -17,6 +17,7 @@ class LocalTestDataSeeder extends Seeder
     {
         $this->call([
             JournalsTableSeeder::class,
+            ExpertisesTableSeeder::class,
         ]);
 
         // create a blank slate user

@@ -21,13 +21,13 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 /**
  * App\Models\ManuscriptRecord
  */
-class ManuscriptRecord extends Model implements HasMedia, Fundable
+class ManuscriptRecord extends Model implements Fundable, HasMedia
 {
+    use FundableTrait;
     use HasFactory;
+    use HasUlid;
     use InteractsWithMedia;
     use SoftDeletes;
-    use FundableTrait;
-    use HasUlid;
 
     public $guarded = [
         'id',

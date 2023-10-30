@@ -48,8 +48,7 @@ test('a user can get a specific journal by id', function () {
     expect($response->json('data.id'))->toBe($journal->id);
 });
 
-
-test('a user can find these specific journals by title', function(string $title){
+test('a user can find these specific journals by title', function (string $title) {
 
     expect($title)->not->toBeEmpty();
 
@@ -69,4 +68,4 @@ test('a user can find these specific journals by title', function(string $title)
 
     expect($returnedTitles)->toContain($title);
 
-})->with(['Science','Fisheries','Ecology','Nature']);
+})->with(['Science', 'Fisheries', 'Ecology', 'Nature']);

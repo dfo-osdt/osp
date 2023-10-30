@@ -2,7 +2,6 @@
 
 namespace App\Queries;
 
-use App\Filters\FuzzyFilter;
 use App\Filters\MultiColumnFilter;
 use App\Models\Organization;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -21,8 +20,8 @@ class OrganizationListQuery extends QueryBuilder
                 'name_en',
                 'name_fr',
                 'country_code',
-                AllowedSort::custom('name-fr-length', new StringLengthSort(),'name_fr'),
-                AllowedSort::custom('name-en-length', new StringLengthSort(),'name_en'),
+                AllowedSort::custom('name-fr-length', new StringLengthSort(), 'name_fr'),
+                AllowedSort::custom('name-en-length', new StringLengthSort(), 'name_en'),
             ])
             ->allowedFilters([
                 AllowedFilter::exact('id'),
@@ -30,7 +29,7 @@ class OrganizationListQuery extends QueryBuilder
                 AllowedFilter::partial('ror_identifier'),
                 AllowedFilter::partial('name_en'),
                 AllowedFilter::partial('name_fr'),
-                AllowedFilter::custom('search', new MultiColumnFilter('abbr_en', 'abbr_fr','name_en', 'name_fr')),
+                AllowedFilter::custom('search', new MultiColumnFilter('abbr_en', 'abbr_fr', 'name_en', 'name_fr')),
             ]);
     }
 }

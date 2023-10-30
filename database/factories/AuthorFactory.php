@@ -41,4 +41,15 @@ class AuthorFactory extends Factory
             ];
         });
     }
+
+    /**
+     * Has expertise
+     */
+    public function hasExpertises(int $qty = 1)
+    {
+        return $this->afterCreating(function (\App\Models\Author $author) use ($qty) {
+            $expertise = \App\Models\Expertise::factory()->count($qty)->create();
+            $author->expertises()->attach($expertise);
+        });
+    }
 }

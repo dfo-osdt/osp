@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('organizations', function (Blueprint $table) {
-            $table->string('ror_version')->nullable()->after('ror_identifier');
+        Schema::create('expertiseables', function (Blueprint $table) {
+            $table->foreignUlid('expertise_id')->constrained()->cascadeOnDelete();
+            $table->morphs('expertiseable');
         });
-
     }
 };

@@ -101,6 +101,7 @@ class PublicationAuthorController extends Controller
         Gate::authorize('delete', $publicationAuthor);
 
         $publicationAuthor->delete();
+
         // response 204
         return response()->noContent();
     }

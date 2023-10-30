@@ -16,13 +16,13 @@ use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
 use Str;
 
-class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
+class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
+    use AuthenticationLoggable;
     use HasApiTokens;
     use HasFactory;
-    use Notifiable;
     use HasRoles;
-    use AuthenticationLoggable;
+    use Notifiable;
 
     // Audit Thresholds - amount of audit records to keep
     protected $auditThreshold = 50;
@@ -155,7 +155,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      *
      * @override MustVerifyEmail
      */
-    public function getEmailForVerification(): string|null
+    public function getEmailForVerification(): ?string
     {
         return $this->email_verification_token;
     }

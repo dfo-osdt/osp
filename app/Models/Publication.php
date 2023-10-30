@@ -13,12 +13,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Publication extends Model implements HasMedia, Fundable
+class Publication extends Model implements Fundable, HasMedia
 {
-    use HasFactory;
-    use SoftDeletes;
-    use InteractsWithMedia;
     use FundableTrait;
+    use HasFactory;
+    use InteractsWithMedia;
+    use SoftDeletes;
 
     public $guarded = [
         'id',
