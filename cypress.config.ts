@@ -18,7 +18,7 @@ export default defineConfig({
         setupNodeEvents(on, config) {
             on('task', { activateCypressEnvFile, activateLocalEnvFile });
         },
-        baseUrl: 'https://osp.test',
+        baseUrl: 'http://osp.test',
         specPattern: 'tests/cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
         supportFile: 'tests/cypress/support/index.ts',
     },
