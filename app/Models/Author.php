@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasExpertises;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Author extends Model
 {
+    use HasExpertises;
     use HasFactory;
 
     public $guarded = [
@@ -24,7 +26,7 @@ class Author extends Model
         'orcid_verified' => 'boolean',
     ];
 
-    // author fullname
+    // author full name
     public function getFullNameAttribute(): string
     {
         return $this->first_name.' '.$this->last_name;

@@ -7,11 +7,10 @@ use Cerbero\JsonParser\JsonParser;
 
 class SyncRORData
 {
-
     public static function handle(string $jsonFilePath, string $version, callable $progressCallback = null): void
     {
-        if(!file_exists($jsonFilePath)) {
-            throw new \Exception('File not found: ' . $jsonFilePath);
+        if (! file_exists($jsonFilePath)) {
+            throw new \Exception('File not found: '.$jsonFilePath);
         }
 
         $json = JsonParser::parse($jsonFilePath);
@@ -27,17 +26,23 @@ class SyncRORData
 
         $update = is_callable($progressCallback);
 
-        foreach($json as $key => $record){
+        foreach ($json as $key => $record) {
 
             // we only want to import "active" records
-            if($record['status'] !== 'active') continue;
+            if ($record['status'] !== 'active') {
+                continue;
+            }
             // only import records with a country code we want
-            if(!$countryCodesToImport->contains($record['country']['country_code'])) continue;
+            if (! $countryCodesToImport->contains($record['country']['country_code'])) {
+                continue;
+            }
 
             // update or create the organization
             self::updateOrCreateOrganization($record, $version);
 
-            if($update) $progressCallback($json->progress()->percentage());
+            if ($update) {
+                $progressCallback($json->progress()->percentage());
+            }
 
         }
     }
@@ -48,7 +53,6 @@ class SyncRORData
      *
      * We will update this routine when ROR updates their schema to 2.0 in late 2023.
      *
-     * @param array $record
      * @return void
      */
     private static function updateOrCreateOrganization(array $record, string $version)
@@ -59,20 +63,26 @@ class SyncRORData
         $name_fr = null;
         $name_en = null;
 
-        collect($record['labels'])->each(function($label) use (&$name_fr, &$name_en){
+        collect($record['labels'])->each(function ($label) use (&$name_fr, &$name_en) {
             $iso639 = $label['iso639'] ?? null;
-            if(!$iso639) return;
+            if (! $iso639) {
+                return;
+            }
 
-            if($iso639 === 'fr') {
+            if ($iso639 === 'fr') {
                 $name_fr = $label['label'];
             }
-            if($iso639 === 'en') {
+            if ($iso639 === 'en') {
                 $name_en = $label['label'];
             }
         });
 
-        if(!$name_en) $name_en = $record['name'];
-        if(!$name_fr) $name_fr = $record['name'];
+        if (! $name_en) {
+            $name_en = $record['name'];
+        }
+        if (! $name_fr) {
+            $name_fr = $record['name'];
+        }
 
         // acronyms - no i18n available at this time. Assume EN first.
         $abbr_en = $record['acronyms'][0] ?? null;

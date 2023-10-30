@@ -50,7 +50,12 @@ class AuthorController extends Controller
      */
     public function show(Author $author): JsonResource
     {
-        $author->load('organization');
+        $author->load([
+            'organization',
+            'expertises' => function ($query) {
+                $query->orderBy('name_en');
+            },
+        ]);
 
         return new AuthorResource($author);
     }

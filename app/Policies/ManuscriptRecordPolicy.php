@@ -165,6 +165,7 @@ class ManuscriptRecordPolicy
         if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED])) {
             return false;
         }
+
         // can only mark as accepted if the user is the owner of the manuscript
         return $user->id === $manuscriptRecord->user_id;
     }

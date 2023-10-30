@@ -55,7 +55,7 @@ export class ManagementReviewStepService {
      */
     public static async list(manuscriptRecordId: number) {
         const response = await http.get<RList>(
-            `api/manuscript-records/${manuscriptRecordId}/management-review-steps`
+            `api/manuscript-records/${manuscriptRecordId}/management-review-steps`,
         );
         return response.data;
     }
@@ -67,7 +67,7 @@ export class ManagementReviewStepService {
     public static async update(step: ManagementReviewStep) {
         const response = await http.put<UpdateStep, R>(
             `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}`,
-            { comments: step.comments }
+            { comments: step.comments },
         );
         return response.data;
     }
@@ -80,7 +80,7 @@ export class ManagementReviewStepService {
      */
     public static async approve(
         step: ManagementReviewStep,
-        nextUserId?: number
+        nextUserId?: number,
     ) {
         // if user exists, add it to the data object
         const data: DecisionStep = {
@@ -90,7 +90,7 @@ export class ManagementReviewStepService {
 
         const response = await http.put<DecisionStep, R>(
             `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/approve`,
-            data
+            data,
         );
         return response.data;
     }
@@ -103,7 +103,7 @@ export class ManagementReviewStepService {
      */
     public static async withhold(
         step: ManagementReviewStep,
-        nextUserId?: number
+        nextUserId?: number,
     ) {
         // if user exists, add it to the data object
         const data: DecisionStep = {
@@ -113,7 +113,7 @@ export class ManagementReviewStepService {
 
         const response = await http.put<DecisionStep, R>(
             `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/withhold`,
-            data
+            data,
         );
         return response.data;
     }
@@ -126,7 +126,7 @@ export class ManagementReviewStepService {
      */
     public static async reassign(
         step: ManagementReviewStep,
-        nextUserId: number
+        nextUserId: number,
     ) {
         const data: DecisionStep = {
             comments: step.comments,
@@ -135,7 +135,7 @@ export class ManagementReviewStepService {
 
         const response = await http.put<DecisionStep, R>(
             `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/reassign`,
-            data
+            data,
         );
         return response.data;
     }
@@ -143,33 +143,26 @@ export class ManagementReviewStepService {
 
 export class ManagementReviewQuery extends SpatieQuery {
     public filterUserId(userId: number) {
-        this.filter('user_id', userId);
-        return this;
+        return this.filter('user_id', userId);
     }
     public filterStatus(status: ManagementReviewStepStatus[]) {
-        this.filter('status', status);
-        return this;
+        return this.filter('status', status);
     }
     public filterDecision(decision: ManagementReviewStepDecision[]) {
-        this.filter('decision', decision);
-        return this;
+        return this.filter('decision', decision);
     }
     public filterManuscriptRecordTitle(title: string[]) {
-        this.filter('manuscriptRecord.title', title);
-        return this;
+        return this.filter('manuscriptRecord.title', title);
     }
 
     public includeManuscriptRecord() {
-        this.include('manuscriptRecord');
-        return this;
+        return this.include('manuscriptRecord');
     }
     public includeUser() {
-        this.include('user');
-        return this;
+        return this.include('user');
     }
     public sort(sort: ManagementReviewQuerySort, direction: 'asc' | 'desc') {
-        super.sort(sort, direction);
-        return this;
+        return super.sort(sort, direction);
     }
 }
 

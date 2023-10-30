@@ -20,8 +20,8 @@ class JournalListQuery extends QueryBuilder
                 'title_en',
                 'title_fr',
                 'publisher',
-                AllowedSort::custom('title-length', new StringLengthSort(),'title_en'),
-                ])
+                AllowedSort::custom('title-length', new StringLengthSort(), 'title_en'),
+            ])
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('title_en'),

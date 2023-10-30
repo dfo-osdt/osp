@@ -7,7 +7,7 @@ Additional guidelines will be added here as we progress.
 ## Built With
 This repo has both the front end and backend code. The front end is a SPA that consumes the API backend.
 ### Front-end Stack (Single Page Application)
-- [TypeScript](https://www.typescriptlang.org/) (main framework)
+- [TypeScript](https://www.typescriptlang.org/)
 - [Vue.js](https://vuejs.org/) (TS with Composition API `script setup`)
 - [Vue-i18n](https://vue-i18n.intlify.dev/) (app supports en-CA and fr-CA, with vite-plugin-vue-i18n, `globalInjection: true`)
 - [Vue-Router](https://router.vuejs.org/) (SPA routing)

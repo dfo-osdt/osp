@@ -27,11 +27,12 @@ return new class extends Migration
         });
 
         // update Fisheries and Oceans Canada
-        $dfo = Organization::where('name_en','Fisheries and Oceans Canada')->first();
-        if(!$dfo) return; // brand new database
+        $dfo = Organization::where('name_en', 'Fisheries and Oceans Canada')->first();
+        if (! $dfo) {
+            return;
+        } // brand new database
         $dfo->ror_identifier = 'https://ror.org/02qa1x782';
         $dfo->save();
 
     }
-
 };

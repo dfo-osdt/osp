@@ -53,7 +53,7 @@ class PublicationFactory extends Factory
                 'accepted_on' => $acceptedOn,
                 'published_on' => $publishedOn,
             ];
-        })->afterCreating(function($publication){
+        })->afterCreating(function ($publication) {
             $publication->addMedia(getcwd().'/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('publication');
         });
     }
