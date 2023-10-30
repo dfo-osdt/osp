@@ -43,8 +43,6 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     user_id: number;
     abstract: string;
     pls: string;
-    scientific_implications: string;
-    regions_and_species: string;
     relevant_to: string;
     additional_information: string;
     potential_public_interest: boolean;
@@ -66,8 +64,6 @@ export type ManuscriptRecordSummary = Omit<
     ManuscriptRecord,
     | 'abstract'
     | 'pls'
-    | 'scientific_implications'
-    | 'regions_and_species'
     | 'relevant_to'
     | 'additional_information'
     | 'manuscript_pdf'
@@ -222,9 +218,8 @@ export class ManuscriptRecordService {
         if (query) {
             url += `?${query.toQueryString()}`;
         }
-        const response = await http.get<ManuscriptRecordSummaryResourceList>(
-            url,
-        );
+        const response =
+            await http.get<ManuscriptRecordSummaryResourceList>(url);
         return response.data;
     }
 }

@@ -199,20 +199,6 @@
                             </div>
                         </div>
                     </QuestionEditor>
-                    <!-- <QuestionEditor
-                        v-model="
-                            manuscriptResource.data.scientific_implications
-                        "
-                        :title="$t('mrf.scientific-implications')"
-                        :disable="loading"
-                        required
-                        :readonly="isManuscriptReadOnly"
-                        class="q-mb-md"
-                    >
-                        <p>
-                            {{ $t('mrf.scientific-implication-text') }}
-                        </p>
-                    </QuestionEditor> -->
                     <QuestionEditor
                         v-model="manuscriptResource.data.relevant_to"
                         :title="$t('mrf.relevant-title')"
@@ -223,17 +209,6 @@
                     >
                         <p>
                             {{ $t('mrf.relevant-text') }}
-                        </p>
-                    </QuestionEditor>
-                    <QuestionEditor
-                        v-model="manuscriptResource.data.regions_and_species"
-                        :title="$t('mrf.geographical-title')"
-                        :disable="loading"
-                        :readonly="isManuscriptReadOnly"
-                        class="q-mb-md"
-                    >
-                        <p>
-                            {{ $t('mrf.geographical-text') }}
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
@@ -434,7 +409,6 @@ const generalSectionStatus = computed(() => {
         manuscript.title !== '' &&
         manuscript.abstract !== '' &&
         manuscript.pls !== '' &&
-        // manuscript.scientific_implications !== '' &&
         manuscript.relevant_to;
 
     return complete ? 'complete' : 'incomplete';

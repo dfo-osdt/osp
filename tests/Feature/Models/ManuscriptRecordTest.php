@@ -45,7 +45,7 @@ test('an authenticator user can see the manuscript for which they are an author'
         'organization_id' => $author->author->organization_id,
     ]);
 
-    $response = $this->actingAs($author)->getJson('/api/manuscript-records/'.$manuscript->id)->assertOk();
+    $response = $this->actingAs($author)->getJson('/api/manuscript-records/' . $manuscript->id)->assertOk();
     expect($response->json('data.id'))->toBe($manuscript->id);
 });
 
@@ -68,10 +68,7 @@ test('a user can save a draft manuscript', function () {
         'type' => ManuscriptRecordType::SECONDARY->value,
         'abstract' => 'My new abstract',
         'pls' => 'My new pls',
-        'scientific_implications' => 'My new scientific_implications',
-        'regions_and_species' => 'My new regions_and_species',
         'relevant_to' => 'My new relevant_to',
-        'additional_information' => 'My new additional_information',
         'potential_public_interest' => true,
     ];
 
