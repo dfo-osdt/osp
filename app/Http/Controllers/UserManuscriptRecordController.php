@@ -45,7 +45,7 @@ class UserManuscriptRecordController extends Controller
         $manuscriptIds = $manuscriptIds->pluck('id');
 
         $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)
-            ->with('manuscriptAuthors.organization', 'manuscriptAuthors.author');
+            ->with('manuscriptAuthors.organization', 'manuscriptAuthors.author', 'shareables');
 
         $listQuery = new ManuscriptRecordQuery($request, $baseQuery);
 

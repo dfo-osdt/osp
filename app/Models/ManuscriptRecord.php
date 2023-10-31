@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -79,6 +81,20 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    /**
+     * Sharing relationships.
+     */
+    public function shareables(): MorphMany
+    {
+        return $this->morphMany('App\Models\Shareable', 'shareable');
+    }
+
+    public function sharedWithUsers(): MorphToMany
+    {
+        return $this->morphToMany('App\Models\User', 'shareable', 'shareables')
+            ->withPivot('expires_at', 'can_edit', 'can_delete');
     }
 
     /**

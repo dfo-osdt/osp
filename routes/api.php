@@ -12,6 +12,7 @@ use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\ManuscriptRecordFileController;
 use App\Http\Controllers\ManuscriptRecordFundingSourceController;
+use App\Http\Controllers\ManuscriptRecordSharingController;
 use App\Http\Controllers\OhDear\CheckStatusPageController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\ImplicitFlowController;
@@ -96,6 +97,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('manuscript-records/{manuscriptRecord}/withdraw', 'withdraw');
         Route::put('manuscript-records/{manuscriptRecord}/submitted', 'submitted');
         Route::put('manuscript-records/{manuscriptRecord}/accepted', 'accepted');
+    });
+
+    Route::controller(ManuscriptRecordSharingController::class)->group(function () {
+        Route::get('/manuscript-records/{manuscriptRecord}/sharing', 'index');
+        Route::post('/manuscript-records/{manuscriptRecord}/sharing', 'store');
     });
 
     Route::controller(ManuscriptRecordFileController::class)->group(function () {
