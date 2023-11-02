@@ -254,8 +254,15 @@ test('the share email is properly formatted', function () {
 
     $mailable = new ManuscriptRecordSharedMail($shareable);
 
-    ray($mailable);
 
     $mailable->assertTo($shareable->user->email);
     $mailable->assertSeeInHtml($shareable->shareable->title);
+    $mailable->assertSeeInHtml(now()->addDays(5)->format('Y-m-d'));
+
+    //check with null expires_at
+    $shareable->update(['expires_at' => null]);
+
+    ray($mailable);
+    $mailable = new ManuscriptRecordSharedMail($shareable);
+    $mailable->assertSeeInHtml('Never');
 });

@@ -59,7 +59,7 @@ class ManuscriptRecordSharedMail extends Mailable
                 'user' => $this->user,
                 'sharedBy' => $this->sharedBy,
                 'can_edit' => $this->shareable->can_edit,
-                'expires_at' => $this->shareable->expires_at,
+                'expires_at' => $this->shareable->expires_at?->format('Y-m-d'),
             ],
         );
     }
