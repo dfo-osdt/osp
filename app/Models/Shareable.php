@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Shareable extends Model
 {
-
-    use HasUlids;
     use HasFactory;
+    use HasUlids;
 
     public $casts = [
         'expires_at' => 'datetime',
@@ -20,25 +19,14 @@ class Shareable extends Model
         'can_delete' => 'boolean',
     ];
 
-    public $protected = [
+    public $guarded = [
         'id',
         'created_at',
         'updated_at',
-        'user_id',
-        'shared_by',
-        'shareable_type',
-        'shareable_id',
-    ];
-
-    protected $fillable = [
-        'expires_at',
-        'can_edit',
-        'can_delete',
     ];
 
     /**
      * User with whom the shareable is shared.
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -47,7 +35,6 @@ class Shareable extends Model
 
     /**
      * User who shared the shareable.
-     * @return BelongsTo
      */
     public function sharingUser(): BelongsTo
     {
@@ -67,16 +54,16 @@ class Shareable extends Model
 
     public function isViewable(): bool
     {
-        return !$this->isExpired();
+        return ! $this->isExpired();
     }
 
     public function isEditable(): bool
     {
-        return $this->can_edit && !$this->isExpired();
+        return $this->can_edit && ! $this->isExpired();
     }
 
     public function isDeletable(): bool
     {
-        return $this->can_delete && !$this->isExpired();
+        return $this->can_delete && ! $this->isExpired();
     }
 }

@@ -94,6 +94,10 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     public function sharedWithUsers(): MorphToMany
     {
         return $this->morphToMany('App\Models\User', 'shareable', 'shareables')
+            ->whereHas('sharedWith', function ($query) {
+                $query->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now());
+            })
             ->withPivot('expires_at', 'can_edit', 'can_delete');
     }
 
@@ -157,7 +161,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     public function deleteManuscriptFile($uuid, $force = false)
     {
         $media = $this->getMedia('manuscript')->where('uuid', $uuid)->first();
-        if (!$media) {
+        if (! $media) {
             throw new FileNotFoundException('File not found.');
         }
         if ($force) {
@@ -208,7 +212,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             }
         });
 
-        if (!$noExceptions) {
+        if (! $noExceptions) {
             $validator->validate();
         }
 

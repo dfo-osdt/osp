@@ -45,7 +45,7 @@ test('an authenticator user can see the manuscript for which they are an author'
         'organization_id' => $author->author->organization_id,
     ]);
 
-    $response = $this->actingAs($author)->getJson('/api/manuscript-records/' . $manuscript->id)->assertOk();
+    $response = $this->actingAs($author)->getJson('/api/manuscript-records/'.$manuscript->id)->assertOk();
     expect($response->json('data.id'))->toBe($manuscript->id);
 });
 

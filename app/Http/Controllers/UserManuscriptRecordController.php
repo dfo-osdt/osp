@@ -35,6 +35,9 @@ class UserManuscriptRecordController extends Controller
                 $q->whereHas('author', function ($q) use ($userId) {
                     $q->where('user_id', $userId);
                 });
+            })
+            ->orWhereHas('sharedWithUsers', function ($q) use ($userId) {
+                $q->where('user_id', $userId);
             });
 
         if ($request->get('include-reviews') === 'true') {

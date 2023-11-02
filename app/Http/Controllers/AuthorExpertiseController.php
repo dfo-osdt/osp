@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ExpertiseResource;
 use App\Models\Author;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class AuthorExpertiseController extends Controller
 {

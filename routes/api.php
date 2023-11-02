@@ -102,6 +102,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(ManuscriptRecordSharingController::class)->group(function () {
         Route::get('/manuscript-records/{manuscriptRecord}/sharing', 'index');
         Route::post('/manuscript-records/{manuscriptRecord}/sharing', 'store');
+        Route::get('/manuscript-records/{manuscriptRecord}/sharing/{shareable}', 'show');
+        Route::put('/manuscript-records/{manuscriptRecord}/sharing/{shareable}', 'update');
+        Route::delete('/manuscript-records/{manuscriptRecord}/sharing/{shareable}', 'destroy');
     });
 
     Route::controller(ManuscriptRecordFileController::class)->group(function () {

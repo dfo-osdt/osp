@@ -96,6 +96,11 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         return $this->hasOne(Invitation::class);
     }
 
+    public function sharedWith(): HasMany
+    {
+        return $this->hasMany(Shareable::class, 'user_id');
+    }
+
     /**
      * Get the invitations sent by the user.
      */
