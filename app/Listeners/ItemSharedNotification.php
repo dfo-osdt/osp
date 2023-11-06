@@ -7,7 +7,6 @@ use App\Mail\ManuscriptRecordSharedMail;
 use App\Models\ManuscriptRecord;
 use App\Models\Shareable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
 class ItemSharedNotification implements ShouldQueue

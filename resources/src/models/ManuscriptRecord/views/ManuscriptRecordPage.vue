@@ -73,6 +73,17 @@
                                 }}</q-item-label>
                             </q-item-section>
                         </q-item>
+                        <q-item clickable :to="`/manuscript/${id}/sharing`">
+                            <q-item-section avatar>
+                                <q-icon name="mdi-share-variant-outline" />
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label>{{
+                                    $t('common.sharing')
+                                }}</q-item-label>
+                            </q-item-section>
+                        </q-item>
+                        <q-separator inset class="q-my-md" />
                         <q-item
                             clickable
                             :disable="

@@ -174,6 +174,7 @@
     "secondary-publication": "A manuscript where DFO is the initial publisher",
     "sensitive-issues": "Sensitive Issues",
     "settings": "Settings",
+    "sharing": "Sharing",
     "show": "Show",
     "showing": "Showing",
     "status": "Status",
@@ -447,6 +448,9 @@
     "withdraw-manuscript": "Withdraw Manuscript",
     "withdrawn-by-applicant": "Withdrawn by Applicant",
     "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days."
+  },
+  "manuscript-record": {
+    "sharing": "Manuscript Record Sharing"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",

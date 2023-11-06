@@ -174,6 +174,7 @@
     "secondary-publication": "Un manuscrit dont le MPO est l'éditeur initial",
     "sensitive-issues": "questions sensibles",
     "settings": "Paramètres",
+    "sharing": "Partage",
     "show": "Voir",
     "showing": "Montrant",
     "status": "Statut",
@@ -447,6 +448,9 @@
     "withdraw-manuscript": "Retirer le manuscrit",
     "withdrawn-by-applicant": "Retiré par le demandeur",
     "withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe régistre du manuscrit sera archivé après 30 jours."
+  },
+  "manuscript-record": {
+    "sharing": "Partage d’enregistrements manuscrits"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",

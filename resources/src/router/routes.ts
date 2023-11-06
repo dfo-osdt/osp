@@ -1,7 +1,7 @@
-import { RouteRecordRaw } from "vue-router";
-import UnderConstruction from "@/pages/UnderConstructionPage.vue";
+import { RouteRecordRaw } from 'vue-router';
+import UnderConstruction from '@/pages/UnderConstructionPage.vue';
 
-declare module "vue-router" {
+declare module 'vue-router' {
     interface RouteMeta {
         requiresAuth?: boolean;
     }
@@ -9,208 +9,220 @@ declare module "vue-router" {
 
 const routes: RouteRecordRaw[] = [
     {
-        path: "/",
-        component: () => import("@/layouts/MainLayout.vue"),
+        path: '/',
+        component: () => import('@/layouts/MainLayout.vue'),
         children: [
-            { path: "", component: () => import("@/pages/IndexPage.vue") },
+            { path: '', component: () => import('@/pages/IndexPage.vue') },
             {
-                path: "auth",
-                component: () => import("@/layouts/AuthPageLayout.vue"),
+                path: 'auth',
+                component: () => import('@/layouts/AuthPageLayout.vue'),
                 children: [
-                    { path: "", redirect: { name: "login" } },
+                    { path: '', redirect: { name: 'login' } },
                     {
-                        path: "login",
+                        path: 'login',
                         component: () =>
-                            import("@/models/auth/components/LoginCard.vue"),
-                        name: "login",
+                            import('@/models/auth/components/LoginCard.vue'),
+                        name: 'login',
                         meta: { requiresAuth: false },
                     },
                     {
-                        path: "logout",
+                        path: 'logout',
                         component: () =>
-                            import("@/models/auth/components/LogoutCard.vue"),
-                        name: "logout",
+                            import('@/models/auth/components/LogoutCard.vue'),
+                        name: 'logout',
                         meta: { requiresAuth: false },
                     },
                     {
-                        path: "register",
+                        path: 'register',
                         component: () =>
-                            import("@/models/auth/components/RegisterCard.vue"),
-                        name: "register",
+                            import('@/models/auth/components/RegisterCard.vue'),
+                        name: 'register',
                         meta: { requiresAuth: false },
                     },
                     {
-                        path: "forgot-password",
+                        path: 'forgot-password',
                         component: () =>
                             import(
-                                "@/models/auth/components/ForgotPasswordCard.vue"
+                                '@/models/auth/components/ForgotPasswordCard.vue'
                             ),
-                        name: "forgotPassword",
+                        name: 'forgotPassword',
                         meta: { requiresAuth: false },
                     },
                     {
-                        path: "password-reset",
+                        path: 'password-reset',
                         component: () =>
                             import(
-                                "@/models/auth/components/ResetPasswordCard.vue"
+                                '@/models/auth/components/ResetPasswordCard.vue'
                             ),
-                        name: "resetPassword",
+                        name: 'resetPassword',
                         meta: { requiresAuth: false },
                     },
                     {
-                        path: "orcid-callback",
+                        path: 'orcid-callback',
                         component: () =>
                             import(
-                                "@/models/auth/components/OrcidCallbackCard.vue"
+                                '@/models/auth/components/OrcidCallbackCard.vue'
                             ),
-                        name: "orcidCallback",
+                        name: 'orcidCallback',
                         meta: { requiresAuth: true },
                     },
                 ],
             },
             {
-                path: "/dashboard",
-                component: () => import("@/pages/DashboardPage.vue"),
-                name: "dashboard",
+                path: '/dashboard',
+                component: () => import('@/pages/DashboardPage.vue'),
+                name: 'dashboard',
                 meta: { requiresAuth: true },
             },
             {
-                path: "/settings",
-                component: () => import("@/pages/SettingsPage.vue"),
+                path: '/settings',
+                component: () => import('@/pages/SettingsPage.vue'),
                 meta: { requiresAuth: true },
                 children: [
-                    { path: "", redirect: { name: "settings.profile" } },
+                    { path: '', redirect: { name: 'settings.profile' } },
                     {
-                        path: "profile",
+                        path: 'profile',
                         component: () =>
-                            import("@/models/User/views/UserProfileView.vue"),
-                        name: "settings.profile",
+                            import('@/models/User/views/UserProfileView.vue'),
+                        name: 'settings.profile',
                     },
                     {
-                        path: "author",
+                        path: 'author',
                         component: () =>
                             import(
-                                "@/models/Author/views/ManageAuthorProfileView.vue"
+                                '@/models/Author/views/ManageAuthorProfileView.vue'
                             ),
-                        name: "settings.author",
+                        name: 'settings.author',
                     },
                     {
-                        path: "security",
+                        path: 'security',
                         component: () =>
                             import(
-                                "@/models/User/views/UserAccountSecurityView.vue"
+                                '@/models/User/views/UserAccountSecurityView.vue'
                             ),
-                        name: "settings.security",
+                        name: 'settings.security',
                     },
                     {
-                        path: "invitations",
+                        path: 'invitations',
                         component: () =>
                             import(
-                                "@/models/User/views/UserInvitationsView.vue"
+                                '@/models/User/views/UserInvitationsView.vue'
                             ),
-                        name: "settings.invitations",
+                        name: 'settings.invitations',
                     },
                 ],
             },
             {
-                path: "/my-manuscripts",
+                path: '/my-manuscripts',
                 component: () =>
                     import(
-                        "@/models/ManuscriptRecord/views/MyManuscriptRecordsView.vue"
+                        '@/models/ManuscriptRecord/views/MyManuscriptRecordsView.vue'
                     ),
                 meta: { requiresAuth: true },
             },
             {
-                path: "/my-publications",
+                path: '/my-publications',
                 component: () =>
-                    import("@/models/Publication/views/MyPublicationsView.vue"),
+                    import('@/models/Publication/views/MyPublicationsView.vue'),
                 meta: { requiresAuth: true },
             },
             {
-                path: "/my-reviews",
+                path: '/my-reviews',
                 component: () =>
                     import(
-                        "@/models/ManagementReviewStep/views/MyManagementReviewStepsView.vue"
+                        '@/models/ManagementReviewStep/views/MyManagementReviewStepsView.vue'
                     ),
                 meta: { requiresAuth: true },
             },
             {
-                path: "/publications",
+                path: '/publications',
                 component: () =>
-                    import("@/models/Publication/views/PublicationsView.vue"),
+                    import('@/models/Publication/views/PublicationsView.vue'),
                 meta: { requiresAuth: true },
             },
             {
-                path: "/authors",
+                path: '/authors',
                 component: UnderConstruction,
                 meta: { requiresAuth: true },
             },
             {
-                path: "/sensitive-issues",
+                path: '/sensitive-issues',
                 component: UnderConstruction,
                 meta: { requiresAuth: true },
             },
             {
-                path: "/manuscript/:id",
-                component: () => import("@/pages/ManuscriptRecordPage.vue"),
+                path: '/manuscript/:id',
+                component: () =>
+                    import(
+                        '@/models/ManuscriptRecord/views/ManuscriptRecordPage.vue'
+                    ),
                 meta: { requiresAuth: true },
                 props: (route) => ({ id: Number(route.params.id) }),
                 children: [
                     {
-                        path: "",
-                        redirect: { name: "manuscript.form" },
-                        name: "manuscript",
+                        path: '',
+                        redirect: { name: 'manuscript.form' },
+                        name: 'manuscript',
                     },
                     {
-                        path: "form",
+                        path: 'form',
                         component: () =>
                             import(
-                                "@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue"
+                                '@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue'
                             ),
                         props: (route) => ({ id: Number(route.params.id) }),
-                        name: "manuscript.form",
+                        name: 'manuscript.form',
                     },
                     {
-                        path: "reviews",
+                        path: 'reviews',
                         component: () =>
                             import(
-                                "@/models/ManagementReviewStep/views/ManagementReviewStepsView.vue"
+                                '@/models/ManagementReviewStep/views/ManagementReviewStepsView.vue'
                             ),
                         props: (route) => ({ id: Number(route.params.id) }),
-                        name: "manuscript.reviews",
+                        name: 'manuscript.reviews',
                     },
                     {
-                        path: "progress",
+                        path: 'progress',
                         component: () =>
                             import(
-                                "@/models/ManuscriptRecord/views/ManuscriptRecordProgressView.vue"
+                                '@/models/ManuscriptRecord/views/ManuscriptRecordProgressView.vue'
                             ),
                         props: (route) => ({ id: Number(route.params.id) }),
-                        name: "manuscript.progress",
+                        name: 'manuscript.progress',
+                    },
+                    {
+                        path: 'sharing',
+                        component: () =>
+                            import(
+                                '@/models/ManuscriptRecord/views/ManuscriptRecordSharingView.vue'
+                            ),
+                        props: (route) => ({ id: Number(route.params.id) }),
+                        name: 'manuscript.sharing',
                     },
                 ],
             },
             {
-                path: "/publication/:id",
+                path: '/publication/:id',
                 component: () =>
                     import(
-                        "@/models/Publication/views/PublicationPageView.vue"
+                        '@/models/Publication/views/PublicationPageView.vue'
                     ),
                 meta: { requiresAuth: true },
                 props: (route) => ({ id: Number(route.params.id) }),
-                name: "publication",
+                name: 'publication',
             },
         ],
     },
     {
-        path: "/:catchAll(.*)*",
-        component: () => import("@/pages/ErrorNotFound.vue"),
-        name: "notFound",
+        path: '/:catchAll(.*)*',
+        component: () => import('@/pages/ErrorNotFound.vue'),
+        name: 'notFound',
     },
     {
-        path: "/invalid-signature",
-        component: () => import("@/pages/ErrorInvalidSignature.vue"),
-        name: "invalidSignature",
+        path: '/invalid-signature',
+        component: () => import('@/pages/ErrorInvalidSignature.vue'),
+        name: 'invalidSignature',
     },
 ];
 

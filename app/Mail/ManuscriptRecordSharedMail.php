@@ -6,7 +6,6 @@ use App\Models\ManuscriptRecord;
 use App\Models\Shareable;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -17,7 +16,9 @@ class ManuscriptRecordSharedMail extends Mailable
     use Queueable, SerializesModels;
 
     public ManuscriptRecord $manuscriptRecord;
+
     public User $user;
+
     public User $sharedBy;
 
     /**
@@ -26,7 +27,7 @@ class ManuscriptRecordSharedMail extends Mailable
     public function __construct(public Shareable $shareable)
     {
         // ensure that this is for a manuscript record
-        if (!$shareable->shareable instanceof ManuscriptRecord) {
+        if (! $shareable->shareable instanceof ManuscriptRecord) {
             throw new \Exception('Shareable is not a manuscript record.');
         }
 
