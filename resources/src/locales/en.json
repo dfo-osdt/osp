@@ -240,7 +240,9 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password"
+    "your-password": "Your password",
+    "never": "Never",
+    "actions": "Actions"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -449,9 +451,7 @@
     "withdrawn-by-applicant": "Withdrawn by Applicant",
     "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days."
   },
-  "manuscript-record": {
-    "sharing": "Record Sharing"
-  },
+  "manuscript-record": {},
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
     "additional-information-of-importance": "Potential Public Interest",
@@ -484,7 +484,9 @@
     "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
     "upload-manuscript": "Upload manuscript",
     "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
-    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published."
+    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
+    "sharing-subtitle": "Share this manuscript with others users",
+    "sharing-title": "Record Sharing"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",
@@ -656,5 +658,10 @@
   "withdraw-manuscript-dialog": {
     "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record.",
     "title": "Withdraw this manuscript"
+  },
+  "shareable": {
+    "can-edit": "Can Edit",
+    "can-delete": "Can Delete",
+    "expires-at": "Expires At"
   }
 }

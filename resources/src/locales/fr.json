@@ -240,7 +240,9 @@
     "your-email": "Votre courriel",
     "your-first-name": "Ton prénom",
     "your-last-name": "Votre nom de famille",
-    "your-password": "Votre mot de passe"
+    "your-password": "Votre mot de passe",
+    "never": "Jamais",
+    "actions": "Actions"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -449,9 +451,7 @@
     "withdrawn-by-applicant": "Retiré par le demandeur",
     "withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe régistre du manuscrit sera archivé après 30 jours."
   },
-  "manuscript-record": {
-    "sharing": "Partage du registre"
-  },
+  "manuscript-record": {},
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",
     "additional-information-of-importance": "Intérêt public potentiel",
@@ -484,7 +484,9 @@
     "upload-hint": "Seuls les fichiers PDF sont acceptés. \nLa taille maximale du fichier est de {max} Mo.",
     "upload-manuscript": "Télécharger le manuscrit",
     "upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
-    "working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié."
+    "working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié.",
+    "sharing-title": "Partage du registre",
+    "sharing-subtitle": "Partager ce manuscrit avec d'autres utilisateurs"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",
@@ -656,5 +658,10 @@
   "withdraw-manuscript-dialog": {
     "text": "Retirez ce manuscrit. \nCela nous permet de savoir que ce manuscrit ne sera pas publié et ferme ce registre de manuscrit.",
     "title": "Retirer ce manuscrit"
+  },
+  "shareable": {
+    "can-edit": "Peut éditer",
+    "can-delete": "Peut supprimer",
+    "expires-at": "Expire à"
   }
 }

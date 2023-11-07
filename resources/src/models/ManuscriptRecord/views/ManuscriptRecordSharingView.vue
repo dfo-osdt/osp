@@ -1,10 +1,13 @@
 <template>
     <ContentCard secondary class="q-mt-md">
-        <template #title>{{ $t('manuscript-record.sharing') }}</template>
-        <template #subtitle
-            >Share this manuscript with other portal users</template
-        >
-        <ShareableTable v-if="shareables" :shareables="shareables" />
+        <template #title>{{ $t('mrf.sharing-title') }}</template>
+        <template #subtitle>{{ $t('mrf.sharing-subtitle') }}</template>
+        <ShareableTable
+            v-if="shareables"
+            :shareables="shareables"
+            :readonly="readonly"
+            :loading="loading"
+        />
     </ContentCard>
 </template>
 
@@ -15,6 +18,10 @@ import {
     ShareableService,
 } from '@/models/Shareable/Shareable';
 import ShareableTable from '@/models/Shareable/components/ShareableTable.vue';
+import {
+    ManuscriptRecordResource,
+    ManuscriptRecordService,
+} from '../ManuscriptRecord';
 
 const props = defineProps<{
     id: number;
@@ -22,9 +29,18 @@ const props = defineProps<{
 
 const shareableService = new ShareableService('manuscript-records', props.id);
 const shareables = ref<ShareableResourceList | undefined>(undefined);
+const manuscript = ref<ManuscriptRecordResource | undefined>(undefined);
+const loading = ref(false);
 
 onMounted(async () => {
+    loading.value = true;
     shareables.value = await shareableService.list();
+    manuscript.value = await ManuscriptRecordService.find(props.id);
+    loading.value = false;
+});
+
+const readonly = computed<boolean>(() => {
+    return manuscript.value?.can?.update === false;
 });
 </script>
 
