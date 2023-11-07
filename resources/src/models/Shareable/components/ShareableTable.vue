@@ -16,8 +16,29 @@ const columns = computed<QTableColumnProps>(() => {
         {
             name: 'user',
             label: 'User',
+            align: 'left',
             field: (row: ShareableResource) =>
                 `${row.data.user.data.first_name} ${row.data.user.data.last_name}`,
+        },
+        {
+            name: 'canEdit',
+            label: 'Can Edit',
+            align: 'left',
+            field: (row: ShareableResource) =>
+                row.data.can_edit ? 'Yes' : 'No',
+        },
+        {
+            name: 'canDelete',
+            label: 'Can Delete',
+            align: 'left',
+            field: (row: ShareableResource) =>
+                row.data.can_delete ? 'Yes' : 'No',
+        },
+        {
+            name: 'expiresAt',
+            label: 'Expires At',
+            align: 'left',
+            field: (row: ShareableResource) => row.data.expires_at ?? 'Never',
         },
     ];
 });
