@@ -9,12 +9,8 @@
                             ? 'mdi-check-circle-outline'
                             : 'mdi-close-circle-outline'
                     "
-                    :color="props.row.data.can_edit ? 'positive' : 'negative'"
-                    :aria-label="
-                        props.row.data.can_edit
-                            ? $t('common.yes')
-                            : $t('common.no')
-                    "
+                    :color="props.row.data.can_edit ? 'green-6' : 'negative'"
+                    :aria-label="props.value"
                 />
             </q-td>
         </template>
@@ -27,12 +23,8 @@
                             ? 'mdi-check-circle-outline'
                             : 'mdi-close-circle-outline'
                     "
-                    :color="props.row.data.can_delete ? 'positive' : 'negative'"
-                    :aria-label="
-                        props.row.data.can_delete
-                            ? $t('common.yes')
-                            : $t('common.no')
-                    "
+                    :color="props.row.data.can_delete ? 'green-6' : 'negative'"
+                    :aria-lable="props.value"
                 />
             </q-td>
         </template>
