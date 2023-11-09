@@ -486,7 +486,9 @@
     "upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
     "working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié.",
     "sharing-title": "Partage du registre",
-    "sharing-subtitle": "Partager ce manuscrit avec d'autres utilisateurs"
+    "sharing-subtitle": "Partager ce manuscrit avec d'autres utilisateurs",
+    "sharing-confirm-delete-title": "Confirmer la suppression",
+    "sharing-confirm-delete-message": "Veuillez confirmer la suppression de l'accès de {userName} à cet enregistrement."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",

@@ -486,7 +486,9 @@
     "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
     "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
     "sharing-subtitle": "Share this manuscript with others users",
-    "sharing-title": "Record Sharing"
+    "sharing-title": "Record Sharing",
+    "sharing-confirm-delete-title": "Confirm removal",
+    "sharing-confirm-delete-message": "Please confirm the removal of {userName}'s access to this record."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",
