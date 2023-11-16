@@ -18,7 +18,7 @@
             @click="createShareable"
         />
         <ShareItemDialog
-            v-if="manuscript"
+            v-if="manuscript && showShareDialog"
             :id="editShareableItem?.id || 0"
             v-model="showShareDialog"
             shareable-type="manuscript-records"
