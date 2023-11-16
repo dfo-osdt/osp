@@ -36,12 +36,19 @@
 <script setup lang="ts">
 const { t } = useI18n();
 
-const props = defineProps<{
-    modelValue: string | null;
-    required?: boolean;
-    minDate?: string | null;
-    maxDate?: string | null;
-}>();
+const props = withDefaults(
+    defineProps<{
+        modelValue: string | null;
+        required?: boolean;
+        minDate?: string | null;
+        maxDate?: string | null;
+    }>(),
+    {
+        required: false,
+        minDate: null,
+        maxDate: null,
+    },
+);
 
 const emit = defineEmits(['update:modelValue']);
 

@@ -58,7 +58,12 @@ export class ShareableService {
         return response.data;
     }
 
-    public async update(shareable: Shareable) {
+    public async update(
+        shareable: Pick<
+            Shareable,
+            'id' | 'can_edit' | 'can_delete' | 'expires_at'
+        >,
+    ) {
         const request = {
             can_edit: shareable.can_edit,
             can_delete: shareable.can_delete,

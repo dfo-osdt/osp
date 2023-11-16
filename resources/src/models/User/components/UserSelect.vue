@@ -12,6 +12,8 @@
         use-input
         stack-label
         outlined
+        :readonly="props.readonly"
+        :hide-hint="props.readonly"
         hint="Start typing to search for an user (first name, last name, or email)"
         @filter="filterUsers"
         @clear="selectedUser = null"
@@ -104,11 +106,13 @@ const props = withDefaults(
         modelValue: number | null;
         disabledEmails?: string[];
         disabledIds?: number[];
+        readonly?: boolean;
     }>(),
     {
         disabledEmails: () => [],
         disabledIds: () => [],
-    }
+        readonly: false,
+    },
 );
 
 const users = ref<UserResourceList>({ data: [] });
@@ -127,6 +131,7 @@ watch(selectedUser, (user) => {
 });
 
 onMounted(async () => {
+    console.log('here', props.modelValue);
     if (props.modelValue) {
         const user = await UserService.get(props.modelValue);
         selectedUser.value = user;
@@ -142,7 +147,7 @@ const filterUsers = async (val: string, update, abort) => {
             await UserService.list(`limit=10&filter[search]=${needle}`).then(
                 (response) => {
                     users.value = response;
-                }
+                },
             );
             usersLoading.value = false;
         }

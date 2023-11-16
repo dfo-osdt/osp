@@ -7,7 +7,7 @@
             :shareables="shareables"
             :readonly="readonly"
             :loading="loading"
-            @edit="updateShareables"
+            @edit="editShareable"
             @delete="deleteShareable"
         />
         <q-btn
@@ -15,12 +15,14 @@
             color="primary"
             label="Share"
             icon="share"
-            @click="showShareDialog = true"
+            @click="createShareable"
         />
         <ShareItemDialog
             v-if="manuscript"
+            :id="editShareableItem?.id || 0"
             v-model="showShareDialog"
             shareable-type="manuscript-records"
+            :shareable="editShareableItem"
             :shareable-model-id="manuscript?.data.id"
         />
     </ContentCard>
@@ -29,6 +31,7 @@
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue';
 import {
+    Shareable,
     ShareableResource,
     ShareableResourceList,
     ShareableService,
@@ -64,12 +67,6 @@ const readonly = computed<boolean>(() => {
 const $q = useQuasar();
 const { t } = useI18n();
 
-async function updateShareables(shareable: ShareableResource) {
-    loading.value = true;
-    console.log(shareable);
-    loading.value = false;
-}
-
 async function deleteShareable(shareable: ShareableResource) {
     loading.value = true;
     console.log(shareable);
@@ -88,10 +85,23 @@ async function deleteShareable(shareable: ShareableResource) {
 }
 
 /**
- * Create Shareable Section
+ * Create or Edit Shareable Section
  */
-
 const showShareDialog = ref(false);
+const editShareableItem = ref<Shareable | undefined>(undefined);
+
+function createShareable() {
+    editShareableItem.value = undefined;
+    showShareDialog.value = true;
+}
+
+function editShareable(shareable: ShareableResource) {
+    if (shareable.data == undefined) {
+        throw new Error('Shareable data is undefined');
+    }
+    editShareableItem.value = shareable.data;
+    showShareDialog.value = true;
+}
 </script>
 
 <style scoped></style>
