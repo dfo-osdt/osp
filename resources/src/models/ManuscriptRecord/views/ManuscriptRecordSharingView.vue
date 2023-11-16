@@ -7,7 +7,21 @@
             :shareables="shareables"
             :readonly="readonly"
             :loading="loading"
+            @edit="updateShareables"
             @delete="deleteShareable"
+        />
+        <q-btn
+            v-if="!readonly"
+            color="primary"
+            label="Share"
+            icon="share"
+            @click="showShareDialog = true"
+        />
+        <ShareItemDialog
+            v-if="manuscript"
+            v-model="showShareDialog"
+            shareable-type="manuscript-records"
+            :shareable-model-id="manuscript?.data.id"
         />
     </ContentCard>
 </template>
@@ -25,6 +39,7 @@ import {
     ManuscriptRecordService,
 } from '../ManuscriptRecord';
 import { useQuasar } from 'quasar';
+import ShareItemDialog from '@/models/Shareable/components/ShareItemDialog.vue';
 
 const props = defineProps<{
     id: number;
@@ -51,7 +66,7 @@ const { t } = useI18n();
 
 async function updateShareables(shareable: ShareableResource) {
     loading.value = true;
-    await shareableService.update(shareable.data);
+    console.log(shareable);
     loading.value = false;
 }
 
@@ -71,6 +86,12 @@ async function deleteShareable(shareable: ShareableResource) {
     });
     loading.value = false;
 }
+
+/**
+ * Create Shareable Section
+ */
+
+const showShareDialog = ref(false);
 </script>
 
 <style scoped></style>

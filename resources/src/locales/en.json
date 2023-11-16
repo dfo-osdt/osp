@@ -60,6 +60,7 @@
     "abstract": "Abstract",
     "accepted-for-publication-on": "Accepted for Publication On",
     "accepted-on": "Accepted on",
+    "actions": "Actions",
     "add": "Add",
     "added-successfully": "added successfully",
     "affiliation": "Affiliation",
@@ -135,6 +136,7 @@
     "my-manuscripts": "My Manuscripts",
     "my-publications": "My Publications",
     "my-reviews": "My Reviews",
+    "never": "Never",
     "next": "Next",
     "no": "No",
     "no-actions-required": "No actions required",
@@ -240,9 +242,7 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password",
-    "never": "Never",
-    "actions": "Actions"
+    "your-password": "Your password"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -451,7 +451,8 @@
     "withdrawn-by-applicant": "Withdrawn by Applicant",
     "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days."
   },
-  "manuscript-record": {},
+  "manuscript-record": {
+  },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
     "additional-information-of-importance": "Potential Public Interest",
@@ -479,16 +480,17 @@
     "replace-manuscript": "Upload a new version of the manuscript",
     "scientific-implication-text": "Describe the scientific implications of the paper. (i.e. field, importance, focus, purpose, benefits, etc.)",
     "scientific-implications": "Scientific Implications",
+    "share-dialog-title": "Share this manuscript",
+    "sharing-confirm-delete-message": "Please confirm the removal of {userName}'s access to this record.",
+    "sharing-confirm-delete-title": "Confirm removal",
+    "sharing-subtitle": "Share this manuscript with others users",
+    "sharing-title": "Record Sharing",
     "submit-tooltip": "Submit for management review",
     "submit-tooltip-disabled": "Please complete all sections and save to submit",
     "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
     "upload-manuscript": "Upload manuscript",
     "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
-    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
-    "sharing-subtitle": "Share this manuscript with others users",
-    "sharing-title": "Record Sharing",
-    "sharing-confirm-delete-title": "Confirm removal",
-    "sharing-confirm-delete-message": "Please confirm the removal of {userName}'s access to this record."
+    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",
@@ -615,6 +617,12 @@
     "description": "Comments are required unless you approve and complete the management review without sending it to another manager. Comments entered here should support your decision and, if applicable, provide feedback to the subsequent management reviewer. Your comments will be visible to anyone with access to this manuscript record.",
     "title": "Manger Comments"
   },
+  "shareable": {
+    "can-delete": "Can Delete",
+    "can-edit": "Can Edit",
+    "edit-dialog-title": "Modify Sharing Permissions",
+    "expires-at": "Expires At"
+  },
   "submit-decision-dialog": {
     "certify-text": "I certify that, to the best of my knowledge, my decision is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous manager and have considered them in my decision.",
     "confirm-decision": "Confirm Decision",
@@ -660,10 +668,5 @@
   "withdraw-manuscript-dialog": {
     "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record.",
     "title": "Withdraw this manuscript"
-  },
-  "shareable": {
-    "can-edit": "Can Edit",
-    "can-delete": "Can Delete",
-    "expires-at": "Expires At"
   }
 }
