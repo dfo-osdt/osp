@@ -13,7 +13,7 @@
         <q-btn
             v-if="!readonly"
             color="primary"
-            label="Share"
+            :label="$t('common.share')"
             icon="share"
             @click="createShareable"
         />
@@ -24,6 +24,9 @@
             shareable-type="manuscript-records"
             :shareable="editShareableItem"
             :shareable-model-id="manuscript?.data.id"
+            :disabled-user-ids="disabledUserIds"
+            @created="shareableCreated"
+            @updated="shareableUpdated"
         />
     </ContentCard>
 </template>
@@ -60,8 +63,9 @@ onMounted(async () => {
     loading.value = false;
 });
 
+const authStore = useAuthStore();
 const readonly = computed<boolean>(() => {
-    return manuscript.value?.can?.update === false;
+    return manuscript.value?.data.user_id !== authStore.user?.id;
 });
 
 const $q = useQuasar();
@@ -89,6 +93,13 @@ async function deleteShareable(shareable: ShareableResource) {
  */
 const showShareDialog = ref(false);
 const editShareableItem = ref<Shareable | undefined>(undefined);
+const disabledUserIds = computed<number[]>(() => {
+    const ids = shareables.value?.data.map((s) => s.data.user.data.id) || [];
+    if (manuscript.value?.data.user_id !== undefined) {
+        ids.push(manuscript.value.data.user_id);
+    }
+    return ids;
+});
 
 function createShareable() {
     editShareableItem.value = undefined;
@@ -101,6 +112,21 @@ function editShareable(shareable: ShareableResource) {
     }
     editShareableItem.value = shareable.data;
     showShareDialog.value = true;
+}
+
+function shareableCreated(shareable: ShareableResource) {
+    shareables.value?.data.push(shareable);
+    showShareDialog.value = false;
+}
+
+function shareableUpdated(shareable: ShareableResource) {
+    const index = shareables.value?.data.findIndex(
+        (s) => s.data.id === shareable.data.id,
+    );
+    if (index !== undefined && index !== -1) {
+        shareables.value?.data.splice(index, 1, shareable);
+    }
+    showShareDialog.value = false;
 }
 </script>
 

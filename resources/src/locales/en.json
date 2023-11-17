@@ -242,7 +242,8 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password"
+    "your-password": "Your password",
+    "share": "Share"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -451,8 +452,7 @@
     "withdrawn-by-applicant": "Withdrawn by Applicant",
     "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days."
   },
-  "manuscript-record": {
-  },
+  "manuscript-record": {},
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
     "additional-information-of-importance": "Potential Public Interest",
@@ -668,5 +668,10 @@
   "withdraw-manuscript-dialog": {
     "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record.",
     "title": "Withdraw this manuscript"
+  },
+  "shareable-dialog": {
+    "user-create-text": "User with whom you want to share. The user will receive an email notification once you share this resource.",
+    "abilities-text": "By default, the user has the ability to view the ressource. You can also allow th user to edit and delete this resource.",
+    "expiry-date-text": "By default, the resource is shared until you manually remove the ability. If you prefer, you can also set an expiration date at which time the user will no longer be able to access this resource."
   }
 }

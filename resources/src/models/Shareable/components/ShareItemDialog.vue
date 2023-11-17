@@ -1,20 +1,23 @@
 <template>
     <BaseDialog :title="title">
         <q-card-section class="q-mt-md">
-            <q-form class="q-gutter-md" autofocus @submit="save">
+            <q-form ref="form" class="q-gutter-md" autofocus @submit="save">
                 <p v-if="!isEditDialog">
-                    User with whom you want to share. The user will receive an
-                    email notification once you create this resource.
+                    {{ $t('shareable-dialog.user-create-text') }}
                 </p>
-                <UserSelect v-model="user_id" :readonly="isEditDialog" />
+                <UserSelect
+                    v-model="user_id"
+                    :readonly="isEditDialog"
+                    :required="!isEditDialog"
+                    :disabled-ids="disabledUserIds"
+                />
                 <div>
-                    By default, the user has the ability to view the ressource.
-                    You can also allow th user to edit and delete this resource.
+                    {{ $t('shareable-dialog.abilities-text') }}
                 </div>
                 <q-card bordered flat class="q-pa-sm">
                     <q-toggle
                         v-model="can_edit"
-                        label="Can Edit"
+                        :label="$t('shareable.can-edit')"
                         color="primary"
                         checked-icon="mdi-check"
                         unchecked-icon="mdi-close"
@@ -22,7 +25,7 @@
                     />
                     <q-toggle
                         v-model="can_delete"
-                        label="Can Delete"
+                        :label="$t('shareable.can-delete')"
                         color="primary"
                         checked-icon="mdi-check"
                         unchecked-icon="mdi-close"
@@ -30,12 +33,14 @@
                     />
                 </q-card>
                 <div>
-                    By default, the resource is shared until you manually remove
-                    the ability. If you prefer, you can also set an expiration
-                    date at which time the user will no longer be able to access
-                    this resource.
+                    {{ $t('shareable-dialog.expiry-date-text') }}
                 </div>
-                <DateInput v-model="expires_at" label="Expires At" clearable />
+                <DateInput
+                    v-model="expires_at"
+                    label="Expires On"
+                    :min-date="tomorrow"
+                    clearable
+                />
                 <div class="flex justify-end">
                     <q-btn
                         v-close-popup
@@ -45,6 +50,7 @@
                     <q-btn
                         :label="$t('common.save')"
                         type="submit"
+                        :loading="loading"
                         color="primary"
                         data-cy="save"
                     />
@@ -70,9 +76,11 @@ const props = withDefaults(
         shareableType: ShareableModel;
         shareableModelId: number | string;
         shareable: undefined | Shareable;
+        disabledUserIds?: number[];
     }>(),
     {
         shareable: undefined,
+        disabledUserIds: () => [],
     },
 );
 
@@ -85,6 +93,12 @@ const { t } = useI18n();
 
 const isEditDialog = computed(() => {
     return props.shareable != undefined;
+});
+
+const tomorrow = computed(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().substring(0, 10);
 });
 
 const title = computed(() => {
@@ -121,7 +135,17 @@ const shareableService = new ShareableService(
     props.shareableModelId,
 );
 
+const loading = ref(false);
 async function save() {
+    loading.value = true;
+
+    // date sent to server is in UTC, so we need to add the timezone offset
+    if (expires_at.value) {
+        const date = new Date(expires_at.value);
+        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+        expires_at.value = date.toISOString();
+    }
+
     if (props.shareable) {
         const updatedShareable = await shareableService.update({
             id: props.shareable.id,
@@ -130,7 +154,20 @@ async function save() {
             expires_at: expires_at.value,
         });
         emit('updated', updatedShareable);
+        return;
     }
+
+    if (!user_id.value) {
+        return;
+    }
+
+    const createShareable = await shareableService.create({
+        user_id: user_id.value,
+        can_edit: can_edit.value,
+        can_delete: can_delete.value,
+        expires_at: expires_at.value,
+    });
+    emit('created', createShareable);
 }
 </script>
 <style scoped></style>

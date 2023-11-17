@@ -74,7 +74,6 @@ class ManuscriptRecordPolicy
                 if ($user->id === $manuscriptRecord->user_id) {
                     return true;
                 }
-
                 return $manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable();
             case ManuscriptRecordStatus::IN_REVIEW:
                 return $manuscriptRecord->managementReviewSteps->contains('user_id', $user->id);
