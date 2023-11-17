@@ -48,7 +48,11 @@
                         class="q-mr-md"
                     />
                     <q-btn
-                        :label="$t('common.save')"
+                        :label="
+                            isEditDialog
+                                ? $t('common.save')
+                                : $t('common.share')
+                        "
                         type="submit"
                         :loading="loading"
                         color="primary"
