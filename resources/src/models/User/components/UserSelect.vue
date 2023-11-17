@@ -12,6 +12,9 @@
         use-input
         stack-label
         outlined
+        :readonly="props.readonly"
+        :rules="rules"
+        :hide-hint="props.readonly"
         hint="Start typing to search for an user (first name, last name, or email)"
         @filter="filterUsers"
         @clear="selectedUser = null"
@@ -104,11 +107,15 @@ const props = withDefaults(
         modelValue: number | null;
         disabledEmails?: string[];
         disabledIds?: number[];
+        readonly?: boolean;
+        required?: boolean;
     }>(),
     {
         disabledEmails: () => [],
         disabledIds: () => [],
-    }
+        readonly: false,
+        required: false,
+    },
 );
 
 const users = ref<UserResourceList>({ data: [] });
@@ -142,12 +149,27 @@ const filterUsers = async (val: string, update, abort) => {
             await UserService.list(`limit=10&filter[search]=${needle}`).then(
                 (response) => {
                     users.value = response;
-                }
+                },
             );
             usersLoading.value = false;
         }
     });
 };
+
+const { t } = useI18n();
+const rules = computed(() => {
+    const rules = [
+        // required
+        (val: string | null) => {
+            console.log('required', val);
+            if (!props.required) return true;
+            const msg = t('common.required');
+            if (val === null) return msg;
+            return true;
+        },
+    ];
+    return rules;
+});
 
 function createdUser(item: UserResource) {
     userSelect.value?.updateInputValue('', true);

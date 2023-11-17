@@ -100,14 +100,7 @@
                         >
                     </q-item-section>
                     <q-item-section v-if="!readonly" side
-                        ><q-toggle
-                            v-model="correspondingAuthor"
-                            @update:model-value="
-                                $emit(
-                                    'edit:toggleCorrespondingAuthor',
-                                    !correspondingAuthor,
-                                )
-                            "
+                        ><q-toggle v-model="correspondingAuthor"
                             ><q-tooltip>{{
                                 $t('common.corresponding-author-toggle')
                             }}</q-tooltip></q-toggle
@@ -138,9 +131,14 @@ const props = withDefaults(
     },
 );
 
-const correspondingAuthor = computed(
-    () => props.manuscriptAuthor.data.is_corresponding_author,
-);
+const correspondingAuthor = computed({
+    get() {
+        return props.manuscriptAuthor.data.is_corresponding_author;
+    },
+    set(value) {
+        emit('edit:toggleCorrespondingAuthor', value);
+    },
+});
 
 const name = computed(() => {
     return `${props.manuscriptAuthor.data.author?.data.last_name}, ${props.manuscriptAuthor.data.author?.data.first_name}`;

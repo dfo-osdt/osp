@@ -191,7 +191,7 @@ class ManuscriptRecordController extends Controller
     /** Default Resource with eager loaded properties */
     private function defaultResource(ManuscriptRecord $manuscriptRecord): JsonResource
     {
-        $relationships = collect('user');
+        $relationships = collect(['user', 'shareables']);
         if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
             $relationships->push('publication');
         }

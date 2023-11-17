@@ -6,6 +6,7 @@ use App\Enums\PublicationStatus;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
 use App\Models\PublicationAuthor;
+use App\Models\Shareable;
 use Illuminate\Database\Seeder;
 
 class LocalTestDataSeeder extends Seeder
@@ -37,9 +38,14 @@ class LocalTestDataSeeder extends Seeder
         ]);
 
         // create 1 manuscript records for the test user
-        \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->count(1)->create([
-            'user_id' => $user->id,
-        ]);
+        \App\Models\ManuscriptRecord::factory()
+            ->has(ManuscriptAuthor::factory()->count(5))
+            ->has(Shareable::factory()->state(['shared_by' => $user->id])->count(2))
+            ->count(1)
+            ->create([
+                'title' => 'Shared Manuscript',
+                'user_id' => $user->id,
+            ]);
 
         // create 1 manuscript records that is accepted for the test user
         \App\Models\ManuscriptRecord::factory()->reviewed()->create([

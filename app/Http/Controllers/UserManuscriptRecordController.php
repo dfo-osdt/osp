@@ -35,6 +35,9 @@ class UserManuscriptRecordController extends Controller
                 $q->whereHas('author', function ($q) use ($userId) {
                     $q->where('user_id', $userId);
                 });
+            })
+            ->orWhereHas('sharedWithUsers', function ($q) use ($userId) {
+                $q->where('user_id', $userId);
             });
 
         if ($request->get('include-reviews') === 'true') {
@@ -45,7 +48,7 @@ class UserManuscriptRecordController extends Controller
         $manuscriptIds = $manuscriptIds->pluck('id');
 
         $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)
-            ->with('manuscriptAuthors.organization', 'manuscriptAuthors.author');
+            ->with('manuscriptAuthors.organization', 'manuscriptAuthors.author', 'shareables');
 
         $listQuery = new ManuscriptRecordQuery($request, $baseQuery);
 

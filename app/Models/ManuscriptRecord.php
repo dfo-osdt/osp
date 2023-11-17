@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -82,6 +84,24 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     }
 
     /**
+     * Sharing relationships.
+     */
+    public function shareables(): MorphMany
+    {
+        return $this->morphMany('App\Models\Shareable', 'shareable');
+    }
+
+    public function sharedWithUsers(): MorphToMany
+    {
+        return $this->morphToMany('App\Models\User', 'shareable', 'shareables')
+            ->whereHas('sharedWith', function ($query) {
+                $query->whereNull('expires_at')
+                    ->orWhere('expires_at', '>', now());
+            })
+            ->withPivot('expires_at', 'can_edit', 'can_delete');
+    }
+
+    /**
      * A manuscript has many management review steps.
      */
     public function managementReviewSteps(): HasMany
@@ -141,7 +161,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     public function deleteManuscriptFile($uuid, $force = false)
     {
         $media = $this->getMedia('manuscript')->where('uuid', $uuid)->first();
-        if (!$media) {
+        if (! $media) {
             throw new FileNotFoundException('File not found.');
         }
         if ($force) {
@@ -192,7 +212,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             }
         });
 
-        if (!$noExceptions) {
+        if (! $noExceptions) {
             $validator->validate();
         }
 
