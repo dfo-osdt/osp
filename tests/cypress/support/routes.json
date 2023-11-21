@@ -298,26 +298,6 @@
       "HEAD"
     ]
   },
-  "": {
-    "name": null,
-    "domain": null,
-    "action": "Closure",
-    "uri": "/",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
-  "telescope": {
-    "name": "telescope",
-    "domain": null,
-    "action": "Laravel\\Telescope\\Http\\Controllers\\HomeController@index",
-    "uri": "telescope/{view?}",
-    "method": [
-      "GET",
-      "HEAD"
-    ]
-  },
   "ignition.healthCheck": {
     "name": "ignition.healthCheck",
     "domain": null,
@@ -344,6 +324,16 @@
     "uri": "_ignition/update-config",
     "method": [
       "POST"
+    ]
+  },
+  "": {
+    "name": null,
+    "domain": null,
+    "action": "Closure",
+    "uri": "/",
+    "method": [
+      "GET",
+      "HEAD"
     ]
   },
   "register": {

@@ -266,35 +266,35 @@ test('the share email is properly formatted', function () {
     $mailable->assertSeeInHtml('Never');
 });
 
-test('a user cannot share the same manuscript twice to the same user', function(){
+test('a user cannot share the same manuscript twice to the same user', function () {
 
-        $manuscript = ManuscriptRecord::factory()->create();
-        $user = $manuscript->user;
-        $sharedUser = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create();
+    $user = $manuscript->user;
+    $sharedUser = User::factory()->create();
 
-        $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/sharing', [
-            'user_id' => $sharedUser->id,
-            'can_edit' => true,
-            'can_delete' => true,
-            'expires_at' => '2023-11-17T18:22:52.080Z',
-        ])->assertCreated();
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/sharing', [
+        'user_id' => $sharedUser->id,
+        'can_edit' => true,
+        'can_delete' => true,
+        'expires_at' => '2023-11-17T18:22:52.080Z',
+    ])->assertCreated();
 
-        $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/sharing', [
-            'user_id' => $sharedUser->id,
-            'can_edit' => true,
-            'can_delete' => true,
-            'expires_at' => null,
-        ])->assertOk();
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/sharing', [
+        'user_id' => $sharedUser->id,
+        'can_edit' => true,
+        'can_delete' => true,
+        'expires_at' => null,
+    ])->assertOk();
 
-        // should only be one shareable, with updated expiry...
-        $this->assertDatabaseCount('shareables', 1);
-        $this->assertDatabaseHas('shareables', [
-            'shareable_type' => ManuscriptRecord::class,
-            'shareable_id' => $manuscript->id,
-            'user_id' => $sharedUser->id,
-            'shared_by' => $user->id,
-            'can_edit' => true,
-            'can_delete' => true,
-            'expires_at' => null,
-        ]);
-    });
+    // should only be one shareable, with updated expiry...
+    $this->assertDatabaseCount('shareables', 1);
+    $this->assertDatabaseHas('shareables', [
+        'shareable_type' => ManuscriptRecord::class,
+        'shareable_id' => $manuscript->id,
+        'user_id' => $sharedUser->id,
+        'shared_by' => $user->id,
+        'can_edit' => true,
+        'can_delete' => true,
+        'expires_at' => null,
+    ]);
+});
