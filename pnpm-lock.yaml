@@ -13,7 +13,7 @@ dependencies:
     version: 1.16.8
   '@vitejs/plugin-vue':
     specifier: ^4.5.0
-    version: 4.5.0(vite@4.5.0)(vue@3.3.8)
+    version: 4.5.0(vite@4.5.1)(vue@3.3.8)
   '@vueuse/core':
     specifier: ^10.6.1
     version: 10.6.1(vue@3.3.8)
@@ -42,7 +42,7 @@ dependencies:
 devDependencies:
   '@quasar/vite-plugin':
     specifier: ^1.6.0
-    version: 1.6.0(@vitejs/plugin-vue@4.5.0)(quasar@2.14.0)(vite@4.5.0)(vue@3.3.8)
+    version: 1.6.0(@vitejs/plugin-vue@4.5.0)(quasar@2.14.0)(vite@4.5.1)(vue@3.3.8)
   '@types/dompurify':
     specifier: ^3.0.5
     version: 3.0.5
@@ -78,7 +78,7 @@ devDependencies:
     version: 9.18.1(eslint@8.54.0)
   laravel-vite-plugin:
     specifier: ^0.8.1
-    version: 0.8.1(vite@4.5.0)
+    version: 0.8.1(vite@4.5.1)
   lodash:
     specifier: ^4.17.21
     version: 4.17.21
@@ -98,8 +98,8 @@ devDependencies:
     specifier: ^0.25.2
     version: 0.25.2(vue@3.3.8)
   vite:
-    specifier: ^4.5.0
-    version: 4.5.0(@types/node@20.9.3)(sass@1.69.5)
+    specifier: ^4.5.1
+    version: 4.5.1(@types/node@20.9.3)(sass@1.69.5)
   vue-tsc:
     specifier: ^1.8.22
     version: 1.8.22(typescript@5.3.2)
@@ -527,7 +527,7 @@ packages:
     resolution: {integrity: sha512-mNSwQ6wkIVoAemhYdLm9q/FVqLHmVONZgCYdLLeqpakKNsR0r/zHQnCngzdDaXI7veYEvE0uW1gJa1wdQsxXxA==}
     dev: false
 
-  /@quasar/vite-plugin@1.6.0(@vitejs/plugin-vue@4.5.0)(quasar@2.14.0)(vite@4.5.0)(vue@3.3.8):
+  /@quasar/vite-plugin@1.6.0(@vitejs/plugin-vue@4.5.0)(quasar@2.14.0)(vite@4.5.1)(vue@3.3.8):
     resolution: {integrity: sha512-LmbV76G1CwWZbrEQhqyZpkRQTJyO3xpW55aXY1zWN+JhyUeG77CcMCEWteBVnJ6I6ehUPFDC9ONd2+WlwH6rNQ==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -536,9 +536,9 @@ packages:
       vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0-beta.0
       vue: ^3.0.0
     dependencies:
-      '@vitejs/plugin-vue': 4.5.0(vite@4.5.0)(vue@3.3.8)
+      '@vitejs/plugin-vue': 4.5.0(vite@4.5.1)(vue@3.3.8)
       quasar: 2.14.0
-      vite: 4.5.0(@types/node@20.9.3)(sass@1.69.5)
+      vite: 4.5.1(@types/node@20.9.3)(sass@1.69.5)
       vue: 3.3.8(typescript@5.3.2)
     dev: true
 
@@ -741,14 +741,14 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@vitejs/plugin-vue@4.5.0(vite@4.5.0)(vue@3.3.8):
+  /@vitejs/plugin-vue@4.5.0(vite@4.5.1)(vue@3.3.8):
     resolution: {integrity: sha512-a2WSpP8X8HTEww/U00bU4mX1QpLINNuz/2KMNpLsdu3BzOpak3AGI1CJYBTXcc4SPhaD0eNRUp7IyQK405L5dQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.5.0(@types/node@20.9.3)(sass@1.69.5)
+      vite: 4.5.1(@types/node@20.9.3)(sass@1.69.5)
       vue: 3.3.8(typescript@5.3.2)
 
   /@volar/language-core@1.10.10:
@@ -2206,14 +2206,14 @@ packages:
       json-buffer: 3.0.1
     dev: true
 
-  /laravel-vite-plugin@0.8.1(vite@4.5.0):
+  /laravel-vite-plugin@0.8.1(vite@4.5.1):
     resolution: {integrity: sha512-fxzUDjOA37kOsYq8dP+3oPIlw8/kJVXwu0hOXLun82R1LpV02shGeWGYKx2lbpKffL5I0sfPPjfqbYxuqBluAA==}
     engines: {node: '>=14'}
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0
     dependencies:
       picocolors: 1.0.0
-      vite: 4.5.0(@types/node@20.9.3)(sass@1.69.5)
+      vite: 4.5.1(@types/node@20.9.3)(sass@1.69.5)
       vite-plugin-full-reload: 1.1.0
     dev: true
 
@@ -3152,8 +3152,8 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /vite@4.5.0(@types/node@20.9.3)(sass@1.69.5):
-    resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
+  /vite@4.5.1(@types/node@20.9.3)(sass@1.69.5):
+    resolution: {integrity: sha512-AXXFaAJ8yebyqzoNB9fu2pHoo/nWX+xZlaRwoeYUxEqBO+Zj4msE5G+BhGBll9lYEKv9Hfks52PAF2X7qDYXQA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
