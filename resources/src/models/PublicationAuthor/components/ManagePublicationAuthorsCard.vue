@@ -30,6 +30,7 @@
                             @edit:toggle-corresponding-author="
                                 toggleCorrespondingAuthor(item, $event)
                             "
+                            @click.prevent
                         />
                     </template>
                     <template v-else>
@@ -82,7 +83,7 @@ const props = withDefaults(
     }>(),
     {
         readonly: false,
-    }
+    },
 );
 
 const loading = ref(true);
@@ -97,7 +98,7 @@ const hasNoAuthors = computed(() => {
 const hasNoCorrespondingAuthor = computed(() => {
     return (
         publicationAuthors.value.data.filter(
-            (item) => item.data.is_corresponding_author
+            (item) => item.data.is_corresponding_author,
         ).length === 0
     );
 });
@@ -139,7 +140,7 @@ const addPublicationAuthor = async () => {
 };
 
 const addedPublicationAuthor = (
-    publicationAuthor: PublicationAuthorResource
+    publicationAuthor: PublicationAuthorResource,
 ) => {
     $q.notify({
         type: 'positive',
@@ -154,7 +155,7 @@ const addedPublicationAuthor = (
 
 async function toggleCorrespondingAuthor(
     item: PublicationAuthorResource,
-    isCorresponding: boolean
+    isCorresponding: boolean,
 ) {
     const publicationAuthor = item.data;
     publicationAuthor.is_corresponding_author = isCorresponding;
@@ -177,13 +178,13 @@ async function toggleCorrespondingAuthor(
 
 // delete manuscript author
 const deletePublicationAuthor = async (
-    publicationAuthor: PublicationAuthorResource
+    publicationAuthor: PublicationAuthorResource,
 ) => {
     // confirm with the user first
     $q.dialog({
         title: t('pub-author-dialog.delete-author'),
         message: t(
-            'pub-author-dialog.are-you-sure-you-want-to-delete-this-author'
+            'pub-author-dialog.are-you-sure-you-want-to-delete-this-author',
         ),
         cancel: true,
     }).onOk(async () => {
