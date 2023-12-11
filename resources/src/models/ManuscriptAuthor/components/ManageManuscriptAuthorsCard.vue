@@ -33,6 +33,7 @@
                             @edit:toggle-corresponding-author="
                                 toggleCorrespondingAuthor(item, $event)
                             "
+                            @click.prevent
                         />
                     </template>
                     <template v-else>
@@ -87,7 +88,7 @@ const props = withDefaults(
     }>(),
     {
         readonly: false,
-    }
+    },
 );
 
 const loading = ref(true);
@@ -100,7 +101,7 @@ const hasNoAuthors = computed(() => {
 const hasNoCorrespondingAuthor = computed(() => {
     return (
         manuscriptAuthors.value.data.filter(
-            (item) => item.data.is_corresponding_author
+            (item) => item.data.is_corresponding_author,
         ).length === 0
     );
 });
@@ -155,7 +156,7 @@ const addedManuscriptAuthor = (manuscriptAuthor: ManuscriptAuthorResource) => {
 
 async function toggleCorrespondingAuthor(
     item: ManuscriptAuthorResource,
-    isCorresponding: boolean
+    isCorresponding: boolean,
 ) {
     const manuscriptAuthor = item.data;
     manuscriptAuthor.is_corresponding_author = isCorresponding;
@@ -178,7 +179,7 @@ async function toggleCorrespondingAuthor(
 
 // delete manuscript author
 const deleteManuscriptAuthor = async (
-    manuscriptAuthor: ManuscriptAuthorResource
+    manuscriptAuthor: ManuscriptAuthorResource,
 ) => {
     // confirm with the user first
     $q.dialog({
