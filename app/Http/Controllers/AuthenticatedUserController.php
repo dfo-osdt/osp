@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\AuthenticatedUserResource;
 use App\Http\Resources\InvitationResource;
 use App\Http\Resources\UserAuthenticationResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -12,7 +13,8 @@ class AuthenticatedUserController extends Controller
 {
     public function user(Request $request): JsonResource
     {
-        return AuthenticatedUserResource::make($request->user()->load('author.organization'));
+        $user = User::find($request->user()->id)->load('author.organization');
+        return AuthenticatedUserResource::make($user);
     }
 
     public function authentications(Request $request)
