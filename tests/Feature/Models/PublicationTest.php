@@ -90,7 +90,7 @@ test('a user view a publication via its id', function () {
     $user = User::factory()->create();
     $publication = Publication::factory()->create(['user_id' => $user->id]);
 
-    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
+    $response = $this->actingAs($user)->getJson('/api/publications/' . $publication->id);
 
     $response->assertOk();
     $response->assertJsonPath('data.id', $publication->id);
@@ -103,7 +103,7 @@ test('a user can update their publication', function () {
         'status' => PublicationStatus::PUBLISHED,
     ]);
 
-    $response = $this->actingAs($user)->putJson('/api/publications/'.$publication->id, [
+    $response = $this->actingAs($user)->putJson('/api/publications/' . $publication->id, [
         'title' => 'Updated Publication',
         'doi' => '10.1234/1234',
         'is_open_access' => true,
@@ -123,9 +123,16 @@ test('a user can update their publication to be published from accepted', functi
         'status' => PublicationStatus::ACCEPTED,
     ]);
 
-    $response = $this->actingAs($user)->putJson('/api/publications/'.$publication->id, [
+    $response = $this->actingAs($user)->putJson('/api/publications/' . $publication->id, [
         'status' => PublicationStatus::PUBLISHED,
-        'published_on' => '2021-03-01',
+        'published_on' => $publication->accepted_on->subDay()->format('Y-m-d'),
+    ]);
+
+    expect($response->status())->toBe(422);
+
+    $response = $this->actingAs($user)->putJson('/api/publications/' . $publication->id, [
+        'status' => PublicationStatus::PUBLISHED,
+        'published_on' => $publication->accepted_on->addDays(15)->format('Y-m-d'),
     ]);
 
     $response->assertOk();
@@ -139,7 +146,7 @@ test('a user cannot update their publication from published to accepted', functi
         'status' => PublicationStatus::PUBLISHED,
     ]);
 
-    $response = $this->actingAs($user)->putJson('/api/publications/'.$publication->id, [
+    $response = $this->actingAs($user)->putJson('/api/publications/' . $publication->id, [
         'status' => PublicationStatus::ACCEPTED,
         'published_on' => '',
     ]);
@@ -155,7 +162,7 @@ test('a user cannot update their publication to be published without a published
         'status' => PublicationStatus::ACCEPTED,
     ]);
 
-    $response = $this->actingAs($user)->putJson('/api/publications/'.$publication->id, [
+    $response = $this->actingAs($user)->putJson('/api/publications/' . $publication->id, [
         'status' => PublicationStatus::PUBLISHED,
         'published_on' => '',
     ]);
@@ -193,7 +200,7 @@ test('a user can attach a new publication pdf to their publication', function ()
     // upload pdf
     $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
 
-    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/pdf', [
+    $response = $this->actingAs($user)->postJson('/api/publications/' . $publication->id . '/pdf', [
         'pdf' => $file,
     ]);
 
@@ -201,13 +208,13 @@ test('a user can attach a new publication pdf to their publication', function ()
     //expect($response->json('data.publication_pdf'))->not()->toBeNull();
 
     // check that user can see the pdf resrouce
-    $response = $this->actingAs($user)->get('/api/publications/'.$publication->id.'/pdf');
+    $response = $this->actingAs($user)->get('/api/publications/' . $publication->id . '/pdf');
     $response->assertOk();
     ray($response->json());
     expect($response->json('data.file_name'))->toBe('test.pdf');
 
     // check that user can download the pdf
-    $response = $this->actingAs($user)->get('/api/publications/'.$publication->id.'/pdf');
+    $response = $this->actingAs($user)->get('/api/publications/' . $publication->id . '/pdf');
     $response->assertOk();
 });
 
@@ -215,13 +222,12 @@ test('a regular user can only view a publication if it has been published', func
 
     $user = User::factory()->create();
     $publication = Publication::factory()->withManuscript()->create();
-    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
+    $response = $this->actingAs($user)->getJson('/api/publications/' . $publication->id);
     $response->assertForbidden();
 
     $publication = Publication::factory()->published()->create();
-    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
+    $response = $this->actingAs($user)->getJson('/api/publications/' . $publication->id);
     $response->assertOk();
-
 });
 
 test('a user that can see the manuscript can see the publication', function () {
@@ -230,7 +236,6 @@ test('a user that can see the manuscript can see the publication', function () {
     // get a user that did the review
     $user = $publication->manuscriptRecord->managementReviewSteps->first()->user;
     ray($user);
-    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
+    $response = $this->actingAs($user)->getJson('/api/publications/' . $publication->id);
     $response->assertOk();
-
 });
