@@ -32,7 +32,7 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PEST
         run: vendor/bin/pest --ci --parallel
       - name: pnpm
-        uses: pnpm/action-setup@v2.4.0
+        uses: pnpm/action-setup@v3.0.0
         with:
           version: latest
       - name: Use Node.js 21.x
