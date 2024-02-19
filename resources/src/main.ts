@@ -17,10 +17,10 @@ installRouter(myApp);
 // Global navigation guard
 const authStore = useAuthStore();
 
-Router.beforeEach((to, from) => {
+Router.beforeEach(async (to, from) => {
     // check if pages requires auth
     if (authStore.loading) {
-        return;
+        await authStore.waitForLoading();
     }
 
     if (to.matched.some((record) => record.meta.requiresAuth)) {

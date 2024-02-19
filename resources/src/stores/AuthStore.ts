@@ -47,6 +47,18 @@ export const useAuthStore = defineStore('AuthStore', () => {
         }
     }
 
+    /** Function that returns when loading is done */
+    async function waitForLoading() {
+        return new Promise((resolve) => {
+            const interval = setInterval(() => {
+                if (!loading.value) {
+                    clearInterval(interval);
+                    resolve(true);
+                }
+            }, 100);
+        });
+    }
+
     /**
      * Get authenticated user from backend
      * @returns AuthenticatedUser | null (if not authenticated)
@@ -144,6 +156,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
         logout,
         refreshUser,
         loading,
+        waitForLoading,
         idleTimerMin,
         getAuthentications,
         userAuthentications,
