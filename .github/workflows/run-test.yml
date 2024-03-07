@@ -15,7 +15,7 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.3'
           extensions: mbstring, sqlite3, pdo_sqlite, exif, bcmath, gd, zip, intl, fileinfo, xml
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
@@ -32,7 +32,7 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PEST
         run: vendor/bin/pest --ci --parallel
       - name: pnpm
-        uses: pnpm/action-setup@v2.4.0
+        uses: pnpm/action-setup@v3
         with:
           version: latest
       - name: Use Node.js 21.x
