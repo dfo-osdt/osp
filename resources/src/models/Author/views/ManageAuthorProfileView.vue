@@ -60,8 +60,11 @@ import ContentCard from '@/components/ContentCard.vue';
 import OrcidAvatar from '@/components/OrcidAvatar.vue';
 import ManageAuthorExpertise from '../components/ManageAuthorExpertise.vue';
 const authStore = useAuthStore();
+const localeStore = useLocaleStore();
 
-const url = '/api/user/orcid/verify';
+const url = computed(() => {
+    return `/api/user/orcid/verify?locale=${localeStore.locale}`;
+});
 </script>
 
 <style scoped></style>
