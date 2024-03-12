@@ -80,7 +80,7 @@
                     <q-item-section>
                         <a
                             class="text-primary"
-                            :href="`https://orcid.org/${manuscriptAuthor.data.author?.data.orcid}`"
+                            :href="manuscriptAuthor.data.author?.data.orcid"
                             target="_blank"
                             >{{ manuscriptAuthor.data.author?.data.orcid }}</a
                         >

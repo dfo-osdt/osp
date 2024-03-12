@@ -22,7 +22,7 @@
                     <a
                         target="_blank"
                         class="text-primary"
-                        :href="`https://orcid.org/${authStore.user.author.data.orcid}`"
+                        :href="authStore.user.author.data.orcid"
                         >{{ authStore.user.author.data.orcid }}</a
                     >
                 </div>

@@ -2,28 +2,34 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\InvokableRule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Str;
 
-class Ocrid implements InvokableRule
+class Ocrid implements ValidationRule
 {
     /**
      * Run the validation rule for an ORCID ID.
      * https://support.orcid.org/hc/en-us/articles/360006897674-Structure-of-the-ORCID-Identifier
-     *
-     * @param  string  $attribute
-     * @param  mixed  $orcid
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     * @return void
      */
-    public function __invoke($attribute, $value, $fail)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // check that values contains full uri prefix we support (https://orcid.org/) and the sandbox prefix (https://sandbox.orcid.org/)
+        if (!preg_match('/^https:\/\/(sandbox\.)?orcid\.org\//', $value)) {
+            $fail(__('validation.orcid.prefix', ['attribute' => $attribute]));
+        }
+
+        //check remainder against only the ORCID part
+        $orcid = Str::substr($value, -19);
+        ray($orcid);
+
         // check value against regex
-        if (! preg_match('/^0000-000[1-9]-[0-9]{4}-[0-9]{3}[0-9X]$/', $value)) {
+        if (!preg_match('/^0000-000[1-9]-[0-9]{4}-[0-9]{3}[0-9X]$/', $orcid)) {
             $fail(__('validation.orcid.format', ['attribute' => $attribute]));
         }
 
         // check value against checksum
-        if (! $this->isChecksumValid($value)) {
+        if (!$this->isChecksumValid($orcid)) {
             $fail(__('validation.orcid.checksum', ['attribute' => $attribute]));
         }
     }

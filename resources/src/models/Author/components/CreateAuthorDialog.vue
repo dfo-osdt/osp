@@ -1,5 +1,8 @@
 <template>
     <BaseDialog persistent :title="$t('create-author-dialog.title')">
+        <q-banner v-if="errorMessage" class="q-pa-md bg-red text-white">{{
+            errorMessage
+        }}</q-banner>
         <q-form @submit="createAuthor">
             <q-input
                 v-model="firstName"
@@ -37,7 +40,7 @@
                 ]"
             />
             <OrcidInput
-                v-model="orcId"
+                v-model.stripBaseUrl="orcId"
                 class="q-ma-md"
                 :hint="$t('common.validation.orcid-hint')"
             />
@@ -58,6 +61,8 @@ import { AuthorResource, AuthorService, Author } from '../Author';
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue';
 import BaseDialog from '@/components/BaseDialog.vue';
 import OrcidInput from '@/components/OrcidInput.vue';
+import { AxiosResponse } from 'axios';
+import { extractErrorMessages } from '@/api/errors';
 
 const { t } = useI18n();
 
@@ -70,6 +75,7 @@ const lastName = ref('');
 const email = ref('');
 const organizationId = ref<number | null>(null);
 const orcId = ref('');
+const errorMessage = ref('');
 
 const createAuthor = async () => {
     if (organizationId.value === null) {
@@ -84,8 +90,16 @@ const createAuthor = async () => {
         orcid: orcId.value,
     };
 
-    const author = await AuthorService.create(data);
-    emit('created', author);
+    try {
+        const author = await AuthorService.create(data);
+        emit('created', author);
+    } catch (error) {
+        if (error && typeof error === 'object' && 'data' in error) {
+            const response = error as AxiosResponse;
+            const errMsg = extractErrorMessages(response);
+            errorMessage.value = errMsg.message;
+        }
+    }
 };
 </script>
 

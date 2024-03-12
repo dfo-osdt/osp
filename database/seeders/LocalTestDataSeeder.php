@@ -101,7 +101,7 @@ class LocalTestDataSeeder extends Seeder
             'last_name' => 'LaFlamme',
             'email' => 'mark.laflamme@dfo-mpo.gc.ca',
             'organization_id' => 1,
-            'orcid' => '0000-0001-5955-7098',
+            'orcid' => 'https://orcid.org/0000-0001-5955-7098',
         ]);
 
         $markUser = \App\Models\User::factory()->create([

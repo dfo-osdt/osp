@@ -16,7 +16,7 @@
                         :show-hint="hasOwner"
                         :hint="
                             $t(
-                                'manage-author-profile-card.synced-to-your-user-profile'
+                                'manage-author-profile-card.synced-to-your-user-profile',
                             )
                         "
                     />
@@ -32,7 +32,7 @@
                         :show-hint="hasOwner"
                         :hint="
                             $t(
-                                'manage-author-profile-card.synced-to-your-user-profile'
+                                'manage-author-profile-card.synced-to-your-user-profile',
                             )
                         "
                     />
@@ -45,7 +45,7 @@
                         :show-hint="hasOwner"
                         :hint="
                             $t(
-                                'manage-author-profile-card.synced-to-your-user-profile'
+                                'manage-author-profile-card.synced-to-your-user-profile',
                             )
                         "
                     />
@@ -56,14 +56,17 @@
                         outlined
                         :hint="
                             $t(
-                                'manage-author-profile-card.current-affiliation-hint'
+                                'manage-author-profile-card.current-affiliation-hint',
                             )
                         "
                         clearable
-                        :rules="[(val) => val !== null || t('common.required')]"
+                        :rules="[
+                            (val: number | null) =>
+                                val !== null || t('common.required'),
+                        ]"
                     />
                     <OrcidInput
-                        v-model="author.data.orcid"
+                        v-model.stripBaseUrl="author.data.orcid"
                         :disable="author.data.orcid_verified"
                         :hint="orcidInputHint"
                         class="col-12 col-md-6"
