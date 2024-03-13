@@ -41,16 +41,14 @@ import { Author, AuthorService } from '@/models/Author/Author';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const accessToken = ref(
-    (router.currentRoute.value.query?.access_token as string) || ''
-);
+const code = ref((router.currentRoute.value.query?.code as string) || '');
 
 const loading = ref(true);
 const valid = ref(false);
 const author = ref<Author | null>(null);
 
 async function verifyWithBackend() {
-    AuthorService.verifyOrcid(accessToken.value)
+    AuthorService.verifyOrcid(code.value)
         .then((response) => {
             console.log(response);
             valid.value = true;

@@ -20,22 +20,26 @@ class Author extends Model
         'updated_at',
         'orcid_verified',
         'orcid_access_token',
+        'orcid_token_scope',
+        'orcid_refresh_token',
     ];
 
     protected $casts = [
         'orcid_verified' => 'boolean',
+        'orcid_access_token' => 'encrypted',
+        'orcid_refresh_token' => 'encrypted',
     ];
 
     // author full name
     public function getFullNameAttribute(): string
     {
-        return $this->first_name.' '.$this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     // author name for APA citation
     public function getApaNameAttribute(): string
     {
-        return $this->last_name.', '.$this->first_name;
+        return $this->last_name . ', ' . $this->first_name;
     }
 
     /**

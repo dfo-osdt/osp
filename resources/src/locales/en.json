@@ -176,6 +176,7 @@
     "secondary-publication": "A manuscript where DFO is the initial publisher",
     "sensitive-issues": "Sensitive Issues",
     "settings": "Settings",
+    "share": "Share",
     "sharing": "Sharing",
     "show": "Show",
     "showing": "Showing",
@@ -242,8 +243,7 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password",
-    "share": "Share"
+    "your-password": "Your password"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -452,7 +452,8 @@
     "withdrawn-by-applicant": "Withdrawn by Applicant",
     "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days."
   },
-  "manuscript-record": {},
+  "manuscript-record": {
+  },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
     "additional-information-of-importance": "Potential Public Interest",
@@ -521,13 +522,13 @@
     "p1": "Manuscripts that have been reviewed will appear here. Once published, you can update the publication details. You can also add any past publications here so that it is part of our database and available for all to see."
   },
   "ocrid": {
-    "verify-btn-text": "Verify Your ORCID iD"
+    "verify-btn-text": "Create or connect your ORCID iD"
   },
   "orcid": {
     "already-verified-text": "Your ORCID has been successfully verified with ORCID.org. If you'd like to change it or verify it again, click below.",
     "error-verifying": "Error verifying with ORCID.org",
     "verified-with": "Successfully verified with ORCID.org",
-    "verify-header-text": "Verify your ORCID iD (or register for an iD)",
+    "verify-header-text": "Connect your ORCID iD (or register for an iD)",
     "verifying": "Verifying with ORCID.org"
   },
   "organization-select": {
@@ -623,6 +624,11 @@
     "edit-dialog-title": "Modify Sharing Permissions",
     "expires-at": "Expires At"
   },
+  "shareable-dialog": {
+    "abilities-text": "By default, the user has the ability to view the ressource. You can also allow th user to edit and delete this resource.",
+    "expiry-date-text": "By default, the resource is shared until you manually remove the ability. If you prefer, you can also set an expiration date at which time the user will no longer be able to access this resource.",
+    "user-create-text": "User with whom you want to share. The user will receive an email notification once you share this resource."
+  },
   "submit-decision-dialog": {
     "certify-text": "I certify that, to the best of my knowledge, my decision is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous manager and have considered them in my decision.",
     "confirm-decision": "Confirm Decision",
@@ -668,10 +674,5 @@
   "withdraw-manuscript-dialog": {
     "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record.",
     "title": "Withdraw this manuscript"
-  },
-  "shareable-dialog": {
-    "user-create-text": "User with whom you want to share. The user will receive an email notification once you share this resource.",
-    "abilities-text": "By default, the user has the ability to view the ressource. You can also allow th user to edit and delete this resource.",
-    "expiry-date-text": "By default, the resource is shared until you manually remove the ability. If you prefer, you can also set an expiration date at which time the user will no longer be able to access this resource."
   }
 }

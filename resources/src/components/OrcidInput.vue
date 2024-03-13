@@ -5,6 +5,7 @@
         outlined
         label="ORCID"
         mask="####-####-####-###X"
+        prefix="https://orcid.org/"
         :rules="rules"
     ></q-input>
 </template>

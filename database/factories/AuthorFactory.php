@@ -20,7 +20,7 @@ class AuthorFactory extends Factory
         $lastName = $this->faker->lastName();
         $email = $fistName . '.' . $lastName . '@' . $this->faker->safeEmailDomain();
         $hasOrcid = $this->faker->boolean(70);
-        $orcid = $hasOrcid ? 'https://sanbox.orcid.org/' . $this->faker->numerify('####-####-####-####') : null;
+        $orcid = $hasOrcid ? 'https://sandbox.orcid.org/' . $this->faker->numerify('####-####-####-####') : null;
 
         return [
             'first_name' => $fistName,

@@ -42,8 +42,8 @@
                     </div>
                     <div>
                         <q-btn outline color="primary" :href="url">
-                            <OrcidAvatar size="md" /><span
-                                class="q-ml-md text-grey-8"
+                            <OrcidAvatar size="lg" /><span
+                                class="q-ml-md q-my-sm text-grey-8"
                                 >{{ $t('ocrid.verify-btn-text') }}
                             </span></q-btn
                         >

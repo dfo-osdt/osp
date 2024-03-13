@@ -21,7 +21,6 @@ class Ocrid implements ValidationRule
 
         //check remainder against only the ORCID part
         $orcid = Str::substr($value, -19);
-        ray($orcid);
 
         // check value against regex
         if (!preg_match('/^0000-000[1-9]-[0-9]{4}-[0-9]{3}[0-9X]$/', $orcid)) {

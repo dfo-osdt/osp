@@ -106,7 +106,7 @@ test('a user cannot create an author if orcid already exists', function () {
     $user = User::factory()->create();
 
     $author = Author::factory()->create([
-        'orcid' => '0000-0002-0868-2726',
+        'orcid' => 'https://orcid.org/0000-0002-0868-2726',
     ]);
 
     $minimumData = [
@@ -142,7 +142,7 @@ test('a user can update an author profile without an owner', function () {
         'last_name' => 'Doe',
         'organization_id' => Organization::factory()->create()->id,
         'email' => 'kewler.superw@dfo-mpo.gc.ca',
-        'orcid' => '0000-0002-0868-2726',
+        'orcid' => 'https://orcid.org/0000-0002-0868-2726',
     ];
 
     $response = $this->actingAs($user)->putJson('api/authors/' . $author->id, $data)->assertOk();
@@ -162,7 +162,7 @@ test('a user can update their own author profile', function () {
         'last_name' => 'Doe',
         'organization_id' => Organization::factory()->create()->id,
         'email' => 'kewler.superw@dfo-mpo.gc.ca',
-        'orcid' => '0000-0002-0868-2726',
+        'orcid' => 'https://orcid.org/0000-0002-0868-2726',
     ];
 
     $response = $this->actingAs($user)->putJson('api/authors/' . $author->id, $data)->assertOk();
@@ -187,7 +187,7 @@ test('a user cannot edit an author profile that is owned by another user', funct
         'last_name' => 'Doe',
         'organization_id' => Organization::factory()->create()->id,
         'email' => 'kewler.superw@dfo-mpo.gc.ca',
-        'orcid' => '0000-0002-0868-2726',
+        'orcid' => 'https://orcid.org/0000-0002-0868-2726',
     ];
 
     $response = $this->actingAs($user)->putJson('api/authors/' . $author->id, $data)->assertForbidden();
