@@ -2,6 +2,7 @@
     <q-drawer
         :width="225"
         :mini="authStore.isDrawerMini"
+        class="column justify-between"
         @mouseover="authStore.isDrawerMini = false"
         @mouseout="authStore.isDrawerMini = true"
     >
@@ -13,7 +14,9 @@
             ></DrawerMenuItem>
 
             <q-separator></q-separator>
-            <q-item-label header>{{ $t('common.explore') }}</q-item-label>
+            <q-item-label header class="q-mt-md">{{
+                $t('common.explore')
+            }}</q-item-label>
 
             <DrawerMenuItem
                 v-for="item in exploreMenuItems"
@@ -21,6 +24,14 @@
                 :item="item"
             >
             </DrawerMenuItem>
+        </q-list>
+        <q-list class="q-mb-sm">
+            <q-separator></q-separator>
+            <DrawerMenuItem
+                v-for="item in bottomMenuItems"
+                :key="item.label"
+                :item="item"
+            ></DrawerMenuItem>
         </q-list>
     </q-drawer>
 </template>
@@ -87,6 +98,25 @@ const exploreMenuItems = computed<MenuItem[]>(() => {
         //     visible: true,
         //     tooltipVisible: authStore.isDrawerMini,
         // },
+    ];
+});
+
+const bottomMenuItems = computed<MenuItem[]>(() => {
+    return [
+        {
+            icon: 'mdi-badge-account-outline',
+            label: t('SettingsPage.author-profile'),
+            to: '/settings/author',
+            visible: true,
+            tooltipVisible: authStore.isDrawerMini,
+        },
+        {
+            icon: 'mdi-logout',
+            label: t('common.logout'),
+            to: '/auth/logout',
+            visible: true,
+            tooltipVisible: authStore.isDrawerMini,
+        },
     ];
 });
 </script>
