@@ -19,6 +19,8 @@
         "openai-php/laravel": "^0.8.0",
         "predis/predis": "^2.1.1",
         "rappasoft/laravel-authentication-log": "^3.0",
+        "saloonphp/laravel-plugin": "^3.5",
+        "saloonphp/saloon": "^3.7",
         "spatie/laravel-backup": "^8.1",
         "spatie/laravel-medialibrary": "^10.7.10",
         "spatie/laravel-permission": "^6.0",

@@ -5,66 +5,21 @@
             :author-id="authStore.user.author.data.id"
             secondary
         />
+        <ManageAuthorOrcidCard
+            v-if="authStore.user && !authStore.loading"
+        ></ManageAuthorOrcidCard>
         <ManageAuthorExpertise
             v-if="authStore.user && !authStore.loading"
             :author-id="authStore.user.author.data.id"
         />
-        <ContentCard secondary class="q-mt-lg">
-            <template #title>{{
-                $t('manage-author-profile-view.authorize-orcid')
-            }}</template>
-            <q-card-section v-if="authStore.user?.author.data.orcid_verified">
-                <p>
-                    {{ $t('orcid.already-verified-text') }}
-                </p>
-                <div class="text-subtitle1 q-mb-md">
-                    <span class="text-primary text-weight-bold">ORCID: </span>
-                    <a
-                        target="_blank"
-                        class="text-primary"
-                        :href="authStore.user.author.data.orcid"
-                        >{{ authStore.user.author.data.orcid }}</a
-                    >
-                </div>
-                <div class="flex justify-end">
-                    <q-btn outline color="primary" :href="url">
-                        <OrcidAvatar size="md" /><span
-                            class="q-ml-md text-grey-8"
-                            >{{ $t('ocrid.verify-btn-text') }}
-                        </span></q-btn
-                    >
-                </div>
-            </q-card-section>
-            <q-card-section v-else>
-                <div class="column flex flex-center">
-                    <div class="q-ma-md text-h5 text-grey-8">
-                        {{ $t('orcid.verify-header-text') }}
-                    </div>
-                    <div>
-                        <q-btn outline color="primary" :href="url">
-                            <OrcidAvatar size="lg" /><span
-                                class="q-ml-md q-my-sm text-grey-8"
-                                >{{ $t('ocrid.verify-btn-text') }}
-                            </span></q-btn
-                        >
-                    </div>
-                </div>
-            </q-card-section>
-        </ContentCard>
     </div>
 </template>
 
 <script setup lang="ts">
 import ManageAuthorProfileCard from '../components/ManageAuthorProfileCard.vue';
-import ContentCard from '@/components/ContentCard.vue';
-import OrcidAvatar from '@/components/OrcidAvatar.vue';
 import ManageAuthorExpertise from '../components/ManageAuthorExpertise.vue';
+import ManageAuthorOrcidCard from '../components/ManageAuthorOrcidCard.vue';
 const authStore = useAuthStore();
-const localeStore = useLocaleStore();
-
-const url = computed(() => {
-    return `/api/user/orcid/verify?locale=${localeStore.locale}`;
-});
 </script>
 
 <style scoped></style>

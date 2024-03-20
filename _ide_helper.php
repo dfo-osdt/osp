@@ -17358,6 +17358,135 @@ namespace Intervention\Image\Facades {
             }
     }
 
+namespace Saloon\Laravel\Facades {
+            /**
+     * 
+     *
+     * @see \Saloon\Laravel\Saloon
+     * @mixin \Saloon\Laravel\Traits\HasDeprecatedFacadeMethods
+     */        class Saloon {
+                    /**
+         * Start mocking!
+         *
+         * @param array<\Saloon\Http\Faking\MockResponse|\Saloon\Http\Faking\Fixture|callable> $responses
+         * @static 
+         */        public static function fake($responses)
+        {
+                        return \Saloon\Laravel\Saloon::fake($responses);
+        }
+                    /**
+         * Retrieve the global mock client
+         *
+         * @static 
+         */        public static function mockClient()
+        {
+                        return \Saloon\Laravel\Saloon::mockClient();
+        }
+                    /**
+         * Assert that a given request was sent.
+         *
+         * @static 
+         */        public static function assertSent($value)
+        {
+                        return \Saloon\Laravel\Saloon::assertSent($value);
+        }
+                    /**
+         * Assert that a given request was not sent.
+         *
+         * @static 
+         */        public static function assertNotSent($value)
+        {
+                        return \Saloon\Laravel\Saloon::assertNotSent($value);
+        }
+                    /**
+         * Assert JSON data was sent
+         *
+         * @param array<string, mixed> $data
+         * @static 
+         */        public static function assertSentJson($request, $data)
+        {
+                        return \Saloon\Laravel\Saloon::assertSentJson($request, $data);
+        }
+                    /**
+         * Assert that nothing was sent.
+         *
+         * @static 
+         */        public static function assertNothingSent()
+        {
+                        return \Saloon\Laravel\Saloon::assertNothingSent();
+        }
+                    /**
+         * Assert a request count has been met.
+         *
+         * @static 
+         */        public static function assertSentCount($count)
+        {
+                        return \Saloon\Laravel\Saloon::assertSentCount($count);
+        }
+                    /**
+         * Start Saloon recording responses.
+         *
+         * @deprecated This method will be removed in Saloon v4.
+         * @static 
+         */        public static function record()
+        {
+                        /** @var \Saloon\Laravel\Saloon $instance */
+                        return $instance->record();
+        }
+                    /**
+         * Stop Saloon recording responses.
+         *
+         * @deprecated This method will be removed in Saloon v4.
+         * @static 
+         */        public static function stopRecording()
+        {
+                        /** @var \Saloon\Laravel\Saloon $instance */
+                        return $instance->stopRecording();
+        }
+                    /**
+         * Check if Saloon is recording
+         *
+         * @deprecated This method will be removed in Saloon v4.
+         * @static 
+         */        public static function isRecording()
+        {
+                        /** @var \Saloon\Laravel\Saloon $instance */
+                        return $instance->isRecording();
+        }
+                    /**
+         * Record a response.
+         *
+         * @deprecated This method will be removed in Saloon v4.
+         * @static 
+         */        public static function recordResponse($response)
+        {
+                        /** @var \Saloon\Laravel\Saloon $instance */
+                        return $instance->recordResponse($response);
+        }
+                    /**
+         * Get all the recorded responses.
+         *
+         * @deprecated This method will be removed in Saloon v4.
+         * @return array<\Saloon\Http\Response> 
+         * @static 
+         */        public static function getRecordedResponses()
+        {
+                        /** @var \Saloon\Laravel\Saloon $instance */
+                        return $instance->getRecordedResponses();
+        }
+                    /**
+         * Get the last response that Saloon recorded.
+         *
+         * @deprecated This method will be removed in Saloon v4.
+         * @static 
+         */        public static function getLastRecordedResponse()
+        {
+                        /** @var \Saloon\Laravel\Saloon $instance */
+                        return $instance->getLastRecordedResponse();
+        }
+            }
+    }
+
 namespace Spatie\LaravelIgnition\Facades {
             /**
      * 
@@ -21656,6 +21785,7 @@ namespace  {
             class Vite extends \Illuminate\Support\Facades\Vite {}
             class Image extends \Intervention\Image\Facades\Image {}
             class Horizon extends \Laravel\Horizon\Horizon {}
+            class Saloon extends \Saloon\Laravel\Facades\Saloon {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
             class Signal extends \Spatie\SignalAwareCommand\Facades\Signal {}
             class GeoIP extends \Torann\GeoIP\Facades\GeoIP {}

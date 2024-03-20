@@ -43,6 +43,18 @@ class Author extends Model
     }
 
     /**
+     * Get the ORCID number from the ORCID iD string as
+     * we store thee full ORCID iD with the URL prefix
+     * in the database.
+     *
+     */
+    public function getOrcidNumberAttribute(): string
+    {
+        if (!$this->orcid) return '';
+        return substr($this->orcid, -19);
+    }
+
+    /**
      * Make sure that the email is always stored as lowercase to prevent duplicates.
      */
     protected function email(): Attribute
