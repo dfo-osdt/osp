@@ -1,5 +1,5 @@
 <template>
-    <q-avatar icon="img:/assets/orcid/orcid.logo.icon.svg" />
+    <q-icon name="img:/assets/orcid/orcid.logo.icon.svg" />
 </template>
 
 <script setup lang="ts"></script>

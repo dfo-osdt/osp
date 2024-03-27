@@ -74,11 +74,11 @@ export class AuthorService {
     }
 
     /** verify a user orcid */
-    public static async verifyOrcid(access_token: string) {
-        const response = await http.post<
-            { access_token: string },
-            AuthorResource
-        >('api/user/orcid/verify', { access_token: access_token });
+    public static async verifyOrcid(code: string) {
+        const response = await http.post<{ code: string }, AuthorResource>(
+            'api/user/orcid/verify',
+            { code: code },
+        );
         return response.data;
     }
 

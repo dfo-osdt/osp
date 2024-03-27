@@ -18,13 +18,15 @@ class AuthorFactory extends Factory
     {
         $fistName = $this->faker->firstName();
         $lastName = $this->faker->lastName();
-        $email = $fistName.'.'.$lastName.'@'.$this->faker->safeEmailDomain();
+        $email = $fistName . '.' . $lastName . '@' . $this->faker->safeEmailDomain();
+        $hasOrcid = $this->faker->boolean(70);
+        $orcid = $hasOrcid ? 'https://sandbox.orcid.org/' . $this->faker->numerify('####-####-####-####') : null;
 
         return [
             'first_name' => $fistName,
             'last_name' => $lastName,
             'email' => $email,
-            'orcid' => $this->faker->optional()->numerify('####-####-####-####'),
+            'orcid' => $orcid,
             'organization_id' => \App\Models\Organization::factory(),
         ];
     }
@@ -36,7 +38,7 @@ class AuthorFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
+                'email' => $attributes['first_name'] . '.' . $attributes['last_name'] . '@dfo-mpo.gc.ca',
                 'organization_id' => 1,
             ];
         });

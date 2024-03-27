@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Orcid;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthorResource;
+use App\Traits\LocaleTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -12,6 +13,9 @@ use Illuminate\Validation\ValidationException;
 
 class ImplicitFlowController extends Controller
 {
+
+    use LocaleTrait;
+
     /**
      * Handles POST request from client that has used the ORCID Implicit Flow and received
      * an access token. The access token is then used to retrieve the ORCID iD of the user
@@ -59,12 +63,16 @@ class ImplicitFlowController extends Controller
      */
     protected function getOrcidId(string $accessToken): string
     {
-        $response = Http::withToken($accessToken)->get('https://orcid.org/oauth/userinfo');
+
+
+        $base_url = $this->getBaseUrl();
+
+        $response = Http::withToken($accessToken)->get("https://$base_url/oauth/userinfo");
 
         if ($response->failed()) {
             throw ValidationException::withMessages(['orcid' => __('Unable to retrieve ORCID iD from ORCID.')]);
         } else {
-            return $response->json()['sub'];
+            return $response->json()['id'];
         }
     }
 
@@ -73,25 +81,32 @@ class ImplicitFlowController extends Controller
      *
      * @return void
      */
-    public function redirect(): RedirectResponse
+    public function redirect(Request $request): RedirectResponse
     {
         // get current locale
-        $locale = app()->getLocale();
+        $locale = $this->getLocaleFromRequest($request);
 
         $clientID = config('osp.orcid.client_id');
         $redirectURI = config('osp.orcid.redirect_uri');
 
-        if (! $clientID || ! $redirectURI) {
+        if (!$clientID || !$redirectURI) {
             throw ValidationException::withMessages(['orcid' => __('Server side ORCID configuration is missing - please contact the administrator.')]);
         }
 
         // encode URI - if it's not encoded, ORCID will returns to base URL
         $encoded = urlencode($redirectURI);
 
+        $base_url = $this->getBaseUrl();
+
         // build the link
-        $link = "https://orcid.org/oauth/authorize?client_id=$clientID&response_type=token&scope=/authenticate&redirect_uri=$encoded&lang=$locale";
+        $link = "https://$base_url/oauth/authorize?client_id=$clientID&response_type=token&scope=/authenticate&redirect_uri=$encoded&lang=$locale";
 
         // redirect to ORCID
         return redirect($link);
+    }
+
+    public function getBaseUrl(): string
+    {
+        return config('osp.orcid.use_sandbox') ? 'sandbox.orcid.org' : 'orcid.org';
     }
 }

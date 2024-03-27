@@ -23,7 +23,7 @@
                             >
                                 <q-img
                                     v-if="item.data.author?.data.orcid"
-                                    src="/assets/orcid.logo.icon.svg"
+                                    src="/assets/orcid/orcid.logo.icon.svg"
                                     width="15px"
                                 />
                                 {{ item.data.author?.data.last_name }},

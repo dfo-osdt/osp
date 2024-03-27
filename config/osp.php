@@ -25,7 +25,9 @@ return [
      * The ORCID integration
      */
     'orcid' => [
+        'use_sandbox' => env('ORCID_USE_SANDBOX', false),
         'client_id' => env('ORCID_CLIENT_ID'),
+        'client_secret' => env('ORCID_CLIENT_SECRET'),
         'redirect_uri' => env('ORCID_REDIRECT_URI'),
     ],
 

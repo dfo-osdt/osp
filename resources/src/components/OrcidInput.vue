@@ -1,10 +1,11 @@
 <template>
     <q-input
         ref="input"
-        v-model="value"
+        v-model="modelValue"
         outlined
         label="ORCID"
         mask="####-####-####-###X"
+        prefix="https://orcid.org/"
         :rules="rules"
     ></q-input>
 </template>
@@ -14,9 +15,26 @@ import { QInput } from 'quasar';
 
 const { t } = useI18n();
 
-const props = defineProps<{
-    modelValue: string;
-}>();
+const [modelValue, modelModifiers] = defineModel<string, 'stripBaseUrl'>({
+    get(val) {
+        if (modelModifiers.stripBaseUrl) {
+            // return only the orcid number and save base url fo
+            // set method
+            return val.split('/').pop() || '';
+        }
+        return val;
+    },
+    set(val) {
+        if (modelModifiers.stripBaseUrl) {
+            // add base url to orcid number
+            if (val.length === 0) {
+                return '';
+            }
+            return `https://orcid.org/${val}`;
+        }
+        return val;
+    },
+});
 
 const rules = [
     (val: string) =>
@@ -47,8 +65,6 @@ const rules = [
         );
     },
 ];
-
-const value = useVModel(props, 'modelValue');
 </script>
 
 <style scoped></style>
