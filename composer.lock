@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "162c13c1ced61b1ee5f5b673cec5c616",
+    "content-hash": "fcd2913a8d8756511695a2d050b1e7a8",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5232,155 +5232,6 @@
             "time": "2024-03-20T23:14:31+00:00"
         },
         {
-            "name": "saloonphp/laravel-plugin",
-            "version": "v3.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/saloonphp/laravel-plugin.git",
-                "reference": "15be0d587e61f11076f93d6df30561b88ff837c1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/saloonphp/laravel-plugin/zipball/15be0d587e61f11076f93d6df30561b88ff837c1",
-                "reference": "15be0d587e61f11076f93d6df30561b88ff837c1",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/console": "^10.0 || ^11.0",
-                "illuminate/support": "^10.0 || ^11.0",
-                "php": "^8.1",
-                "saloonphp/saloon": "^3.5",
-                "symfony/finder": "^6.4 || ^7.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.48",
-                "orchestra/testbench": "^8.21 || ^9.0",
-                "pestphp/pest": "^2.32",
-                "phpstan/phpstan": "^1.10.56"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Saloon": "Saloon\\Laravel\\Facades\\Saloon"
-                    },
-                    "providers": [
-                        "Saloon\\Laravel\\SaloonServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Saloon\\Laravel\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sam Carré",
-                    "email": "29132017+Sammyjo20@users.noreply.github.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "The official Laravel plugin for Saloon",
-            "homepage": "https://github.com/saloonphp/laravel-plugin",
-            "keywords": [
-                "api",
-                "api-integrations",
-                "saloon",
-                "saloonphp",
-                "sdk"
-            ],
-            "support": {
-                "source": "https://github.com/saloonphp/laravel-plugin/tree/v3.5.0"
-            },
-            "time": "2024-03-13T18:48:03+00:00"
-        },
-        {
-            "name": "saloonphp/saloon",
-            "version": "v3.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/saloonphp/saloon.git",
-                "reference": "e669e8554f275c83aaa0b7d9d219b442e269f75f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/saloonphp/saloon/zipball/e669e8554f275c83aaa0b7d9d219b442e269f75f",
-                "reference": "e669e8554f275c83aaa0b7d9d219b442e269f75f",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.6",
-                "guzzlehttp/promises": "^1.5 || ^2.0",
-                "guzzlehttp/psr7": "^2.0",
-                "php": "^8.1",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.1 || ^2.0"
-            },
-            "conflict": {
-                "sammyjo20/saloon": "*"
-            },
-            "require-dev": {
-                "ext-simplexml": "*",
-                "friendsofphp/php-cs-fixer": "^3.5",
-                "illuminate/collections": "^9.39 || ^10.0",
-                "league/flysystem": "^3.0",
-                "pestphp/pest": "^2.6",
-                "phpstan/phpstan": "^1.9",
-                "saloonphp/xml-wrangler": "^1.1",
-                "spatie/ray": "^1.33",
-                "symfony/dom-crawler": "^6.0 || ^7.0",
-                "symfony/var-dumper": "^6.3 || ^7.0"
-            },
-            "suggest": {
-                "illuminate/collections": "Required for the response collect() method.",
-                "saloonphp/xml-wrangler": "Required for the response xmlReader() method.",
-                "symfony/dom-crawler": "Required for the response dom() method.",
-                "symfony/var-dumper": "Required for default debugging drivers."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Saloon\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sam Carré",
-                    "email": "29132017+Sammyjo20@users.noreply.github.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Build beautiful API integrations and SDKs with Saloon",
-            "homepage": "https://github.com/saloonphp/saloon",
-            "keywords": [
-                "api",
-                "api-integrations",
-                "saloon",
-                "sammyjo20",
-                "sdk"
-            ],
-            "support": {
-                "issues": "https://github.com/saloonphp/saloon/issues",
-                "source": "https://github.com/saloonphp/saloon/tree/v3.8.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/sammyjo20",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-03-20T23:14:31+00:00"
-        },
-        {
             "name": "spatie/backtrace",
             "version": "1.5.3",
             "source": {
@@ -8543,76 +8394,6 @@
             "time": "2024-01-29T20:11:03+00:00"
         },
         {
-            "name": "symfony/postmark-mailer",
-            "version": "v6.4.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/postmark-mailer.git",
-                "reference": "2e73040e6b5ccf35025e86692a2080ef176a0d8d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/postmark-mailer/zipball/2e73040e6b5ccf35025e86692a2080ef176a0d8d",
-                "reference": "2e73040e6b5ccf35025e86692a2080ef176a0d8d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "psr/event-dispatcher": "^1",
-                "symfony/mailer": "^5.4.21|^6.2.7|^7.0"
-            },
-            "conflict": {
-                "symfony/http-foundation": "<6.2"
-            },
-            "require-dev": {
-                "symfony/http-client": "^6.3|^7.0",
-                "symfony/webhook": "^6.3|^7.0"
-            },
-            "type": "symfony-mailer-bridge",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Mailer\\Bridge\\Postmark\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Postmark Mailer Bridge",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/postmark-mailer/tree/v6.4.4"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-02-09T11:00:58+00:00"
-        },
-        {
             "name": "symfony/process",
             "version": "v6.4.4",
             "source": {
@@ -8902,16 +8683,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v6.4.4",
+            "version": "v7.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "4e465a95bdc32f49cf4c7f07f751b843bbd6dcd9"
+                "reference": "f5832521b998b0bec40bee688ad5de98d4cf111b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/4e465a95bdc32f49cf4c7f07f751b843bbd6dcd9",
-                "reference": "4e465a95bdc32f49cf4c7f07f751b843bbd6dcd9",
+                "url": "https://api.github.com/repos/symfony/string/zipball/f5832521b998b0bec40bee688ad5de98d4cf111b",
+                "reference": "f5832521b998b0bec40bee688ad5de98d4cf111b",
                 "shasum": ""
             },
             "require": {
@@ -8968,7 +8749,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v6.4.4"
+                "source": "https://github.com/symfony/string/tree/v7.0.4"
             },
             "funding": [
                 {
@@ -8984,7 +8765,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-01T13:16:41+00:00"
+            "time": "2024-02-01T13:17:36+00:00"
         },
         {
             "name": "symfony/translation",
@@ -10259,53 +10040,6 @@
                 }
             ],
             "time": "2024-03-19T10:26:25+00:00"
-        },
-        {
-            "name": "doctrine/deprecations",
-            "version": "1.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab",
-                "reference": "dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1 || ^8.0"
-            },
-            "require-dev": {
-                "doctrine/coding-standard": "^9",
-                "phpstan/phpstan": "1.4.10 || 1.10.15",
-                "phpstan/phpstan-phpunit": "^1.0",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
-                "psalm/plugin-phpunit": "0.18.4",
-                "psr/log": "^1 || ^2 || ^3",
-                "vimeo/psalm": "4.30.0 || 5.12.0"
-            },
-            "suggest": {
-                "psr/log": "Allows logging deprecations via PSR-3 logger implementation"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Deprecations\\": "lib/Doctrine/Deprecations"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A small layer on top of trigger_error(E_USER_DEPRECATED) or PSR-3 logging with options to disable all deprecations or selectively for packages.",
-            "homepage": "https://www.doctrine-project.org/",
-            "support": {
-                "issues": "https://github.com/doctrine/deprecations/issues",
-                "source": "https://github.com/doctrine/deprecations/tree/1.1.3"
-            },
-            "time": "2024-01-30T19:34:25+00:00"
         },
         {
             "name": "fakerphp/faker",
