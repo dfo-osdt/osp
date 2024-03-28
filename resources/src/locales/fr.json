@@ -173,7 +173,7 @@
     "save": "Sauvegarder",
     "saved": "Enregistré",
     "secondary-manuscript": "Manuscrit secondaire",
-    "secondary-publication": "Un manuscrit dont le MPO est l'éditeur initial",
+    "secondary-publication": "Un manuscrit qui sera publié par le MPO",
     "sensitive-issues": "questions sensibles",
     "settings": "Paramètres",
     "share": "Partager",
@@ -251,8 +251,8 @@
   "create-manuscript-record-dialog": {
     "create-text": "Une fois créé, vous serez redirigé vers le formulaire du registre des manuscrits. \nLe formulaire du registre des manuscrits sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour révision.",
     "enter-the-title-of-your-manuscript": "Entrez le titre de votre manuscrit",
-    "primary-pub-desc": "Publier dans une revue scientifique, un numéro spécial, un chapitre de livre, un acte de livre ou de conférence",
-    "secondary-pub-desc": "Publier dans l'une des séries de rapports scientifiques et techniques du MPO (par exemple, Rapport technique canadien sur les sciences halieutiques et aquatiques, Rapport canadien sur les données des sciences halieutiques et aquatiques, etc.)",
+    "primary-pub-desc": "Document scientifique ou technique destiné à être publié dans une revue tierce, un numéro spécial, un chapitre de livre, un acte de livre ou de conférence",
+    "secondary-pub-desc": "Document scientifique ou technique à publier dans une série scientifique du MPO",
     "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de la révision par la gestion de ce manuscrit.",
     "step1": {
       "text": "Veuillez sélectionner le type de manuscrit que vous souhaitez créer en fonction de l'éditeur prévu."
@@ -260,7 +260,7 @@
     "step2": {
       "title": "Détails du manuscrit"
     },
-    "title": "Créer un nouveau registre de manuscrit",
+    "title": "Créer un nouveau formulaire du registre de manuscrit",
     "what-is-the-working-title-of-your-manuscript": "Quel est le titre provisoire de votre manuscrit ?"
   },
   "create-organization-dialog": {

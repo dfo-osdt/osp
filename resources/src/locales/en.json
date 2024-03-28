@@ -173,7 +173,7 @@
     "save": "Save",
     "saved": "Saved",
     "secondary-manuscript": "Secondary Manuscript",
-    "secondary-publication": "A manuscript where DFO is the initial publisher",
+    "secondary-publication": "A manuscript to be published by DFO",
     "sensitive-issues": "Sensitive Issues",
     "settings": "Settings",
     "share": "Share",
@@ -251,8 +251,8 @@
   "create-manuscript-record-dialog": {
     "create-text": "Once created, you will be taken to the manuscript record form. The manuscript record form will be marked as a draft and only be visible to you an the people you invite as observers. Once the form is complete you will be able to submit it for review.",
     "enter-the-title-of-your-manuscript": "Enter the title of your manuscript",
-    "primary-pub-desc": "Publish in a scientific journal, special issue, book chapter, book or conference proceeding",
-    "secondary-pub-desc": "Publish in one of DFO's scientific and technical reports series (e.g. Canadian Technical Report of Fisheries and Aquatic Sciences, Canadian Data Report of Fisheries and Aquatic Sciences, etc.)",
+    "primary-pub-desc": "Scientific or technical document to be published in a third party journal, special issue, book chapter, book or conference proceeding",
+    "secondary-pub-desc": "Scientific or technical document to be published in a DFO Science Series",
     "select-region-text": "Please select the lead DFO region responsible for the management review of this manuscript.",
     "step1": {
       "text": "Please select the type of manuscript you want to create based on the intended publisher."
@@ -260,7 +260,7 @@
     "step2": {
       "title": "Manuscript Details"
     },
-    "title": "Create a new manuscript record",
+    "title": "Create a New Manuscript Record Form",
     "what-is-the-working-title-of-your-manuscript": "What is the working title of your manuscript?"
   },
   "create-organization-dialog": {
