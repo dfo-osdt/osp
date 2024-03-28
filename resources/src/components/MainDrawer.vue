@@ -1,8 +1,9 @@
 <template>
     <q-drawer
-        :width="225"
+        :width="300"
         :mini="authStore.isDrawerMini"
         class="column justify-between"
+        mini-to-overlay
         @mouseover="authStore.isDrawerMini = false"
         @mouseout="authStore.isDrawerMini = true"
     >

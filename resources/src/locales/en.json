@@ -132,10 +132,10 @@
     "manuscript-record": "Manuscript Record",
     "manuscript-record-form": "Manuscript Record Form",
     "manuscript-type": "Manuscript Type",
-    "manuscripts": "Manuscripts",
-    "my-manuscripts": "My Manuscripts",
+    "manuscripts": "Manuscript Records",
+    "my-manuscripts": "My Manuscript Records",
     "my-publications": "My Publications",
-    "my-reviews": "My Reviews",
+    "my-reviews": "My Management Reviews",
     "never": "Never",
     "next": "Next",
     "no": "No",
@@ -169,7 +169,7 @@
     "registered": "Registered",
     "required": "Required",
     "reset": "Reset",
-    "reviews": "Reviews",
+    "reviews": "Management Reviews",
     "save": "Save",
     "saved": "Saved",
     "secondary-manuscript": "Secondary Manuscript",
@@ -291,7 +291,7 @@
     "add-publication": "Add Publication",
     "add-your-first-publication": "Add your first publication",
     "awaiting-publication": "Awaiting Publication",
-    "create-your-first-manuscript-record": "Create your first manuscript record",
+    "create-your-first-manuscript-record": "Create your first manuscript record form",
     "in-progress": "In progress"
   },
   "date-input": {
@@ -495,11 +495,11 @@
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",
-    "all-manuscripts": "All Manuscripts",
+    "all-manuscripts": "All Record Forms",
     "all-manuscripts-caption": "Includes ones shared with me",
-    "create-manuscript": "Create Manuscript",
+    "create-manuscript": "Create a record",
     "my-manuscripts-caption": "I am the applicant",
-    "no-manuscript": "No manuscripts exist or are shared with you"
+    "no-manuscript": "No manuscripts record form exist or are shared with you"
   },
   "my-publication-view": {
     "actions-still-required": "Actions still required",
