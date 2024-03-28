@@ -37,7 +37,7 @@
             </div>
         </q-banner>
         <div class="row q-gutter-lg q-col-gutter-lg flex">
-            <div class="col-2">
+            <div class="col-11 col-md-auto">
                 <ContentCard
                     secondary
                     class="q-mt-md"
