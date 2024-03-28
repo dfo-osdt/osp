@@ -24,7 +24,7 @@
             </div>
         </template>
         <div class="row q-gutter-lg q-col-gutter-lg flex">
-            <div class="cols-2">
+            <div class="col-3">
                 <ContentCard secondary no-padding>
                     <template #title>{{ $t('common.publications') }}</template>
                     <q-list class="text-body1">
@@ -103,7 +103,10 @@
                 </ContentCard>
             </div>
         </div>
-        <CreatePublicationDialog v-model="showCreatePublicationDialog" @created="publicationCreated" />
+        <CreatePublicationDialog
+            v-model="showCreatePublicationDialog"
+            @created="publicationCreated"
+        />
     </MainPageLayout>
 </template>
 
@@ -185,7 +188,7 @@ type MainFilterOption = {
 };
 
 // content filter - sidebar
-const activeFilterId = ref(1);
+const activeFilterId = ref(2);
 const mainFilterOptions = computed((): MainFilterOption[] => [
     {
         id: 1,
@@ -201,7 +204,7 @@ const mainFilterOptions = computed((): MainFilterOption[] => [
         id: 2,
         label: t('my-publication-view.my-publications'),
         caption: t(
-            'my-publication-view.i-am-responsible-for-this-publication-record'
+            'my-publication-view.i-am-responsible-for-this-publication-record',
         ),
         icon: 'mdi-account-arrow-left-outline',
         active: activeFilterId.value === 2,
@@ -259,7 +262,7 @@ watchThrottled(
         currentPage.value = 1;
         getPublications();
     },
-    { throttle: 750 }
+    { throttle: 750 },
 );
 </script>
 

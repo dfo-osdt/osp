@@ -71,7 +71,7 @@
                                 <NoManuscriptExistsDiv
                                     :title="
                                         $t(
-                                            'dashboard.create-your-first-manuscript-record'
+                                            'dashboard.create-your-first-manuscript-record',
                                         )
                                     "
                                 />
@@ -91,7 +91,7 @@
                                 >
                                     {{
                                         $t(
-                                            'my-manuscript-records.create-manuscript'
+                                            'my-manuscript-records.create-manuscript',
                                         )
                                     }}
                                 </q-btn>
@@ -109,7 +109,7 @@
                                 <NoPublicationExistDiv
                                     :title="
                                         $t(
-                                            'dashboard.add-your-first-publication'
+                                            'dashboard.add-your-first-publication',
                                         )
                                     "
                                 />

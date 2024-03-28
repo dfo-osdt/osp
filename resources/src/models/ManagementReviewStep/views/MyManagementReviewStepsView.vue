@@ -1,7 +1,7 @@
 <template>
     <MainPageLayout :title="$t('common.my-reviews')">
         <div class="row q-gutter-lg q-col-gutter-lg flex">
-            <div class="cols-2">
+            <div class="col-3">
                 <ContentCard secondary no-padding>
                     <template #title>{{ $t('common.reviews') }}</template>
                     <q-list class="text-body1">
@@ -134,7 +134,7 @@ type MainFilterOption = {
 };
 
 // content filter - sidebar
-const activeFilterId = ref(1);
+const activeFilterId = ref(2);
 const mainFilterOptions = computed<MainFilterOption[]>(() => {
     return [
         {
@@ -196,7 +196,7 @@ watchThrottled(
         currentPage.value = 1;
         getReviews();
     },
-    { throttle: 750 }
+    { throttle: 750 },
 );
 </script>
 

@@ -10,7 +10,7 @@
                 >{{ item.label }}</q-tooltip
             >
         </q-item-section>
-        <q-item-section>{{ item.label }}</q-item-section>
+        <q-item-section class="wrap-content">{{ item.label }}</q-item-section>
     </q-item>
 </template>
 
@@ -28,4 +28,9 @@ defineProps<{
 }>();
 </script>
 
-<style scoped></style>
+<style scoped>
+.wrap-content {
+    max-width: 255px;
+    white-space: normal;
+}
+</style>
