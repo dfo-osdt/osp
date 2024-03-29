@@ -37,8 +37,12 @@
             </div>
         </q-banner>
         <div class="row q-gutter-lg q-col-gutter-lg flex">
-            <div class="cols=2">
-                <ContentCard secondary class="q-mt-md">
+            <div class="col-11 col-md-auto">
+                <ContentCard
+                    secondary
+                    class="q-mt-md"
+                    style="position: sticky; top: 160px"
+                >
                     <template #title>{{
                         $t('common.manuscript-record')
                     }}</template>
