@@ -9,8 +9,8 @@ dependencies:
     specifier: ^4.0.0
     version: 4.0.0(vue-i18n@9.10.2)
   '@quasar/extras':
-    specifier: ^1.16.9
-    version: 1.16.9
+    specifier: ^1.16.11
+    version: 1.16.11
   '@vitejs/plugin-vue':
     specifier: ^5.0.4
     version: 5.0.4(vite@5.2.6)(vue@3.4.21)
@@ -523,8 +523,8 @@ packages:
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
     dev: true
 
-  /@quasar/extras@1.16.9:
-    resolution: {integrity: sha512-SlOhwzXyPQHWgQIS2ncyDdYdksCJvUYNtgsDQqzAKEG3r3d/ejOxvThle79HTK3Q6HB+gQWFG21Ux00Osr5XSw==}
+  /@quasar/extras@1.16.11:
+    resolution: {integrity: sha512-sbTBHOA+Hi7ah0P6qSm+xfRXqwJ94ct3NKA3Lkq3iNPYuHD7VXbSWtP2eA7Cu9Fd0WjVoPbngf6yFGg46U3IfQ==}
     dev: false
 
   /@quasar/vite-plugin@1.6.0(@vitejs/plugin-vue@5.0.4)(quasar@2.15.1)(vite@5.2.6)(vue@3.4.21):
