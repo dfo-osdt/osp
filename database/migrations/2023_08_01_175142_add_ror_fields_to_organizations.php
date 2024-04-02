@@ -21,18 +21,16 @@ return new class extends Migration
             $table->dropUnique('organizations_name_en_unique');
             $table->dropUnique('organizations_name_fr_unique');
 
-            $table->string('name_en', 255)->change();
-            $table->string('name_fr', 255)->change();
-
+            $table->string('name_en', 255)->unique()->change();
+            $table->string('name_fr', 255)->unique()->change();
         });
 
         // update Fisheries and Oceans Canada
         $dfo = Organization::where('name_en', 'Fisheries and Oceans Canada')->first();
-        if (! $dfo) {
+        if (!$dfo) {
             return;
         } // brand new database
         $dfo->ror_identifier = 'https://ror.org/02qa1x782';
         $dfo->save();
-
     }
 };
