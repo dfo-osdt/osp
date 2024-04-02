@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcd2913a8d8756511695a2d050b1e7a8",
+    "content-hash": "e905598a55d87e9d656e1ec938bbccc6",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -4958,20 +4958,20 @@
         },
         {
             "name": "rappasoft/laravel-authentication-log",
-            "version": "v3.0.0",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rappasoft/laravel-authentication-log.git",
-                "reference": "6ab94190c970deab60360ec17b79d06c2a4368cd"
+                "reference": "a916caaa979b1d18d679d8b063325fe547f691c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rappasoft/laravel-authentication-log/zipball/6ab94190c970deab60360ec17b79d06c2a4368cd",
-                "reference": "6ab94190c970deab60360ec17b79d06c2a4368cd",
+                "url": "https://api.github.com/repos/rappasoft/laravel-authentication-log/zipball/a916caaa979b1d18d679d8b063325fe547f691c6",
+                "reference": "a916caaa979b1d18d679d8b063325fe547f691c6",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^10.0",
+                "illuminate/contracts": "^10.0|^11.0",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.4.3"
             },
@@ -5017,7 +5017,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rappasoft/laravel-authentication-log/issues",
-                "source": "https://github.com/rappasoft/laravel-authentication-log/tree/v3.0.0"
+                "source": "https://github.com/rappasoft/laravel-authentication-log/tree/v4.0.0"
             },
             "funding": [
                 {
@@ -5025,7 +5025,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-23T18:45:01+00:00"
+            "time": "2024-03-30T01:12:44+00:00"
         },
         {
             "name": "rector/rector",
