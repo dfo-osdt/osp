@@ -16,6 +16,9 @@ test('check that all federal holidays are recongized', function () {
     // Victoria Day
     expect(Carbon::parse('2024-05-20')->isHoliday())->toBeTrue();
 
+    // St Jean Baptiste Day
+    expect(Carbon::parse('2024-06-24')->isHoliday())->toBeTrue();
+
     // Canada Day
     expect(Carbon::parse('2024-07-01')->isHoliday())->toBeTrue();
 
@@ -39,9 +42,10 @@ test('check that all federal holidays are recongized', function () {
 
 });
 
-test('system accurately calculates 10 buisness days', function(){
+test('system accurately calculates 10 buisness days forward', function(){
 
     expect(Carbon::parse('2024-03-28')->addBusinessDays(10)->format('Y-m-d'))->toBe('2024-04-15');
-    expect(Carbon::parse('2024-04-13')->addBusinessDays(10)->format('Y-m-d'))->toBe('2024-05-26');
+    expect(Carbon::parse('2024-04-13')->addBusinessDays(10)->format('Y-m-d'))->toBe('2024-04-26');
+    expect(Carbon::parse('2024-06-21')->addBusinessDays(10)->format('Y-m-d'))->toBe('2024-07-09');
 
 });
