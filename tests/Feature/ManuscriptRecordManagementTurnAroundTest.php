@@ -4,6 +4,9 @@ use Carbon\Carbon;
 
 test('check that all federal holidays are recongized', function () {
 
+    // New Year's Day if it falls on a Sunday
+    expect(Carbon::parse('2023-01-02')->isHoliday())->toBeTrue();
+
     // New Year's Day
     expect(Carbon::parse('2024-01-01')->isHoliday())->toBeTrue();
 
