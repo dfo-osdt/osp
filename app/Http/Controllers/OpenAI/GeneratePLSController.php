@@ -61,7 +61,7 @@ class GeneratePLSController extends Controller
         $prompt = self::$basePrompt."\n\n Text: ###\n".$abstract."\n###";
 
         return [
-            'model' => 'text-davinci-003',
+            'model' => 'gpt-3.5-turbo-instruct',
             'prompt' => $prompt,
             'max_tokens' => 500,
         ];
