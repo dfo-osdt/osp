@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Illuminate\Support\Facades\App;
+
 /**
  * Enums that describe the decision taken on a management review step.
  *
@@ -12,6 +14,7 @@ namespace App\Enums;
 enum ManagementReviewStepDecision: string
 {
     case NONE = 'none';
+    case FLAGGED = 'flagged';
     case APPROVED = 'approved';
     case WITHHELD = 'withheld';
 
@@ -20,17 +23,19 @@ enum ManagementReviewStepDecision: string
 
         collect(['en', 'fr'])->contains($locale) ?: $locale = null;
         if ($locale == null) {
-            $locale = app()->getLocale();
+            $locale = App::getLocale();
         }
 
         return match ($locale) {
             'en' => match ($this->value) {
                 'none' => 'No Decision',
+                'flagged' => 'Flagged',
                 'approved' => 'Approved',
                 'withheld' => 'Withheld',
             },
             'fr' => match ($this->value) {
                 'none' => 'Aucune Decision',
+                'flagged' => 'Signalé',
                 'approved' => 'Approuvé',
                 'withheld' => 'Retenu',
             },
