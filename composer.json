@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.3",
         "cerbero/json-parser": "^1.0",
+        "cmixin/business-day": "^1.18",
         "guzzlehttp/guzzle": "^7.5",
         "laracasts/cypress": "^3.0",
         "laravel/framework": "^11.0",
