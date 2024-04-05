@@ -36,6 +36,10 @@
     "successful": "Réussie",
     "title": "Historique d'authentification"
   },
+  "author-comments": {
+    "description": "Des commentaires sont nécessaires pour répondre et permettre la poursuite de la révision.",
+    "title": "Commentaires"
+  },
   "author-expertise": {
     "info-text": "L'identification des domaines d'expertise d'un auteur aide les utilisateurs à comprendre et à faire confiance au contenu et à trouver plus facilement les informations dont ils ont besoin. \nIl favorise également la collaboration entre chercheurs, ce qui en fait une ressource précieuse pour notre communauté scientifique.",
     "no-expertise": "Aucune expertise associée pour le moment.",
@@ -93,6 +97,7 @@
     "current-affiliation": "Affiliation actuelle",
     "current-password": "Mot de passe actuel",
     "dashboard": "Tableau de bord",
+    "decision": "Décision",
     "deferred": "Différé",
     "delete": "Supprimer",
     "deleted": "Supprimé",
@@ -110,6 +115,7 @@
     "filter": "Filtre",
     "filters": "Filtres",
     "first-name": "Prénom",
+    "flagged": "Préoccupations signalées",
     "form": "Formulaire",
     "french": "Français",
     "funder": "Bailleur de fonds",
@@ -150,6 +156,7 @@
     "not-available": "Pas disponible",
     "of": "de",
     "on": "le",
+    "on_hold": "En suspens",
     "open-access": "Libre accès",
     "organization": "Organisme",
     "page-not-found": "Page non trouvée",
@@ -237,6 +244,7 @@
       "passwords-match": "Les mots de passe ne correspondent pas"
     },
     "withdraw": "Retirer",
+    "withdrawn": "Retiré",
     "withdrawn-on": "Retiré le",
     "withheld": "Refusé",
     "yes": "Oui",
@@ -302,6 +310,8 @@
     "approve-and-complete-desc": "Vous approuvez la publication de ce manuscrit et vous mettez fin au processus de revue par la gestion.",
     "approve-and-forward": "Approuver et transmettre",
     "approve-and-forward-desc": "Vous recommandez l'approbation de ce manuscrit pour publication et vous le transmettez au prochain examinateur.",
+    "flag": "Signaler des préoccupations",
+    "flag-desc": "Signalez les problèmes liés à la revision par la gestion qui devraient être résolus par l’auteur avant de donner votre approbation.",
     "reassign": "Réassigner",
     "reassign-desc": "Vous n'êtes pas le gestionnaire approprié pour examiner ce manuscrit et vous réassignez cet examen au gestionnaire approprié sans faire de recommandation.",
     "withhold-and-complete": "Retenir et compléter le processus de révision",
@@ -406,6 +416,10 @@
     "tip-three": "À aucun moment, l'inclusion de matériel sensible (par exemple, des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
     "tip-two": "Examinez le manuscrit pour identifier les questions sensibles, uniquement dans le but d'informer la haute direction et la Direction des communications avant la publication de l'article scientifique. \nLes questions sensibles identifiés doivent être ajoutés à la section \"matériel sensibles\" du formulaire.",
     "title": "Lignes directrices sur la révision par la gestion"
+  },
+  "management-review-response": {
+    "subtitle": "Veuillez regarder et répondre aux préoccupations ou aux commentaires soulevés par la révision par la gestion. Si des modifications au manuscrit sont nécessaires, veuillez télécharger la copie révisée dans le formulaire avant de répondre. Notez que vous pouvez également apporter des modifications au formulaire du registre des manuscrits selon les besoins. Si vous n'êtes pas d'accord avec les préoccupations ou les commentaires soulevés, vous pouvez répondre et demander la poursuite de la révision par la gestion.",
+    "title": "Révision par la gestion – Réponse de l'auteur"
   },
   "management-review-step-list": {
     "review-request-received-from": "Demande de révision reçue de"
@@ -605,9 +619,11 @@
     "title": "Entrez un nouveau mot de passe"
   },
   "review-step": {
+    "response-by": "",
     "review-by": "Révision par {0}",
     "save-comments": "Enregistrer les commentaires",
     "submit-decision": "Soumettre la décision",
+    "your-response": "",
     "your-review": "Votre révision : {0}"
   },
   "review-step-view": {

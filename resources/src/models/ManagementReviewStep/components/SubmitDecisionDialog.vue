@@ -79,7 +79,13 @@
                         class="q-ma-md"
                         :disabled-emails="authorEmails"
                         :disabled-ids="[ownerId, managementReviewStep.user_id]"
-                        :rules="[(val: number|null) => val !== null || $t('submit-decision-dialog.subsequent-reviewer-is-required')]"
+                        :rules="[
+                            (val: number | null) =>
+                                val !== null ||
+                                $t(
+                                    'submit-decision-dialog.subsequent-reviewer-is-required',
+                                ),
+                        ]"
                     />
                 </q-step>
                 <q-step
@@ -181,6 +187,7 @@ type Decision =
     | 'approveAndForward'
     | 'withholdAndComplete'
     | 'withholdAndForward'
+    | 'flag'
     | 'reassign';
 
 type DecisionOption = {
@@ -209,7 +216,8 @@ const agreeToTermsOptions = ref([
 const nextReviewerStepDisabled = computed(() => {
     return (
         decision.value === 'approveAndComplete' ||
-        decision.value === 'withholdAndComplete'
+        decision.value === 'withholdAndComplete' ||
+        decision.value === 'flag'
     );
 });
 
@@ -256,6 +264,12 @@ const options = ref<DecisionOption[]>([
         disabled: stepHasNoComments.value,
     },
     {
+        label: t('decision.flag'),
+        value: 'flag',
+        description: t('decision.flag-desc'),
+        disabled: stepHasNoComments.value,
+    },
+    {
         label: t('decision.withhold-and-complete'),
         value: 'withholdAndComplete',
         description: t('decision.withhold-and-complete-desc'),
@@ -289,16 +303,16 @@ onMounted(async () => {
 
 async function getAllManuscriptAuthorsEmails(): Promise<string[]> {
     const manuscriptAuthors = await ManuscriptAuthorService.list(
-        props.managementReviewStep.manuscript_record_id
+        props.managementReviewStep.manuscript_record_id,
     );
     return manuscriptAuthors.data.map(
-        (manuscriptAuthor) => manuscriptAuthor.data.author?.data.email ?? ''
+        (manuscriptAuthor) => manuscriptAuthor.data.author?.data.email ?? '',
     );
 }
 
 async function getManuscriptOwnerId(): Promise<number> {
     const mansuscriptRecord = await ManuscriptRecordService.find(
-        props.managementReviewStep.manuscript_record_id
+        props.managementReviewStep.manuscript_record_id,
     );
     return mansuscriptRecord.data.user_id;
 }
@@ -312,7 +326,7 @@ async function submit() {
     switch (decision.value) {
         case 'approveAndComplete':
             response = await ManagementReviewStepService.approve(
-                props.managementReviewStep
+                props.managementReviewStep,
             );
             break;
         case 'approveAndForward':
@@ -321,7 +335,7 @@ async function submit() {
             }
             response = await ManagementReviewStepService.approve(
                 props.managementReviewStep,
-                nextUserId.value
+                nextUserId.value,
             );
             break;
         case 'withholdAndComplete':
@@ -329,7 +343,7 @@ async function submit() {
                 throw new Error('User cannot withhold and complete');
             }
             response = await ManagementReviewStepService.withhold(
-                props.managementReviewStep
+                props.managementReviewStep,
             );
             break;
         case 'withholdAndForward':
@@ -338,7 +352,7 @@ async function submit() {
             }
             response = await ManagementReviewStepService.withhold(
                 props.managementReviewStep,
-                nextUserId.value
+                nextUserId.value,
             );
             break;
         case 'reassign':
@@ -347,7 +361,12 @@ async function submit() {
             }
             response = await ManagementReviewStepService.reassign(
                 props.managementReviewStep,
-                nextUserId.value
+                nextUserId.value,
+            );
+            break;
+        case 'flag':
+            response = await ManagementReviewStepService.flag(
+                props.managementReviewStep,
             );
             break;
     }

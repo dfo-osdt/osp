@@ -18,6 +18,8 @@ const value = computed(() => {
             return t('common.deferred');
         case 'completed':
             return t('common.completed');
+        case 'on_hold':
+            return t('common.on_hold');
         default:
             return t('common.unknown');
     }

@@ -36,6 +36,10 @@
     "successful": "Successful",
     "title": "Authentication History"
   },
+  "author-comments": {
+    "description": "Comments are required in order to respond and to allow the review to continue.",
+    "title": "Comments"
+  },
   "author-expertise": {
     "info-text": "Identifying an author's areas of expertise helps users understand and trust the content and find the information they need more easily. It also fosters collaboration among researchers, making it a valuable resource for our scientific community.",
     "no-expertise": "No expertise associated at this time.",
@@ -93,6 +97,7 @@
     "current-affiliation": "Current Affiliation",
     "current-password": "Current Password",
     "dashboard": "Dashboard",
+    "decision": "Decision",
     "deferred": "Deferred",
     "delete": "Delete",
     "deleted": "Deleted",
@@ -110,6 +115,7 @@
     "filter": "Filter",
     "filters": "Filters",
     "first-name": "First Name",
+    "flagged": "Flagged Concerns",
     "form": "Form",
     "french": "French",
     "funder": "Funder",
@@ -150,6 +156,7 @@
     "not-available": "Not Available",
     "of": "of",
     "on": "on",
+    "on_hold": "On Hold",
     "open-access": "Open Access",
     "organization": "Organization",
     "page-not-found": "Page Not Found",
@@ -237,6 +244,7 @@
       "passwords-match": "Passwords do not match"
     },
     "withdraw": "Withdraw",
+    "withdrawn": "Withdrawn",
     "withdrawn-on": "Withdrawn on",
     "withheld": "Withheld",
     "yes": "Yes",
@@ -302,6 +310,8 @@
     "approve-and-complete-desc": "You approve this manuscript for publication and are ending the management review process.",
     "approve-and-forward": "Approve and Forward",
     "approve-and-forward-desc": "You recommend approval of this manuscript for publication and are forwarding it to the next reviewer.",
+    "flag": "Flag Concerns",
+    "flag-desc": "Flag management review concerns that should be addressed by the author prior to providing your approval.",
     "reassign": "Reassign",
     "reassign-desc": "You are not the correct manager to review this manuscript and reassign this review to the proper manager without making a recommendation.",
     "withhold-and-complete": "Withhold and Complete the review process",
@@ -406,6 +416,10 @@
     "tip-three": "At no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers.",
     "tip-two": "Review the manuscript to identify sensitive issues, solely for the purpose of briefing senior management and the Communications Branch prior to publication of the science paper. Identified sensitive issues must be added to the form's \"Sensitive Issues\" section.",
     "title": "Management Review Guidelines"
+  },
+  "management-review-response": {
+    "subtitle": "Please review and address the concerns or comments raised by the management review. If changes to the manuscript are required, please upload the revised copy to the form prior to responding. Note that you can also make changes to the manuscript review form as required. If you do not agree with the concerns or comments, you can respond and ask for the managment review to continue.",
+    "title": "Management Review - Author Response"
   },
   "management-review-step-list": {
     "review-request-received-from": "Review request received from"
@@ -605,9 +619,11 @@
     "title": "Enter new password"
   },
   "review-step": {
+    "response-by": "Response by {0}",
     "review-by": "Review by {0}",
     "save-comments": "Save Comments",
     "submit-decision": "Submit Decision",
+    "your-response": "Your Response : {0}",
     "your-review": "Your Review : {0}"
   },
   "review-step-view": {

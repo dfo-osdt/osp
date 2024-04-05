@@ -18,6 +18,10 @@ const value = computed(() => {
             return t('common.none');
         case 'withheld':
             return t('common.withheld');
+        case 'flagged':
+            return t('common.flagged');
+        case 'withdrawn':
+            return t('common.withdrawn');
         default:
             return t('common.unknown');
     }

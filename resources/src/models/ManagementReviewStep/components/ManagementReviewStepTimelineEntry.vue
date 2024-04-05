@@ -1,11 +1,17 @@
 <template>
     <q-timeline-entry class="q-mx-lg" :icon="icon" :color="color">
         <template v-if="canUpdate" #title>{{
-            $t('review-step.your-review', [userName])
+            managementStep.data.status === 'on_hold'
+                ? $t('review-step.your-response', [userName])
+                : $t('review-step.your-review', [userName])
         }}</template>
-        <template v-else #title>{{
-            $t('review-step.review-by', [userName])
-        }}</template>
+        <template v-else #title>
+            {{
+                managementStep.data.status == 'on_hold'
+                    ? $t('review-step.response-by', [userName])
+                    : $t('review-step.review-by', [userName])
+            }}</template
+        >
         <template #subtitle>
             <ManagementReviewStepStatusSpan
                 :status="managementStep.data.status"
@@ -13,7 +19,36 @@
             <span v-if="completedAtDate"> - {{ completedAtDate }}</span>
         </template>
         <template v-if="canUpdate">
-            <q-card class="q-pa-md" bordered flat>
+            <q-card
+                v-if="managementStep.data.status === 'on_hold'"
+                class="q-pa-md"
+                bordered
+                flat
+            >
+                <div class="text-body1 text-weight-medium text-accent">
+                    {{ $t('management-review-response.title') }}
+                </div>
+                <p>
+                    {{ $t('management-review-response.subtitle') }}
+                </p>
+                <question-editor
+                    v-model="managementStep.data.comments"
+                    :title="$t('author-comments.title')"
+                >
+                    <p>
+                        {{ $t('author-comments.description') }}
+                    </p>
+                </question-editor>
+                <q-card-actions align="right">
+                    <q-btn
+                        color="primary"
+                        outline
+                        :label="$t('review-step.save-comments')"
+                        @click="save"
+                    />
+                </q-card-actions>
+            </q-card>
+            <q-card v-else class="q-pa-md" bordered flat>
                 <div class="text-body1 text-weight-medium text-accent">
                     {{ $t('management-review-guidelines.title') }}
                 </div>
@@ -63,7 +98,10 @@
         </template>
         <template v-else>
             <q-card
-                v-if="managementStep.data.status !== 'pending'"
+                v-if="
+                    managementStep.data.status !== 'pending' &&
+                    managementStep.data.status !== 'on_hold'
+                "
                 bordered
                 flat
                 class="bg-white q-pa-md"
@@ -74,7 +112,7 @@
                 >
                     <span
                         class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
-                        >{{ $t('common.manuscript') }}</span
+                        >{{ $t('common.decision') }}</span
                     >
                     <ManagementReviewStepDecisionSpan
                         class="text-weight-bold text-uppercase text-accent"
@@ -112,6 +150,7 @@ import { useLocaleDate } from '@/composables/useLocaleDate';
 import { useQuasar } from 'quasar';
 import SubmitDecisionDialog from './SubmitDecisionDialog.vue';
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
+import { use } from 'chai';
 
 const { t } = useI18n();
 const $q = useQuasar();
@@ -145,6 +184,8 @@ const icon = computed(() => {
             return 'mdi-account-clock-outline';
         case 'deferred':
             return 'mdi-account-arrow-right-outline';
+        case 'on_hold':
+            return 'mdi-timer-pause-outline';
         default:
             return 'mdi-account-question-outline';
     }
@@ -153,10 +194,20 @@ const icon = computed(() => {
 const color = computed(() => {
     switch (managementStep.value.data.status) {
         case 'completed':
-            return managementStep.value.data.decision === 'approved'
-                ? 'primary'
-                : 'red';
+            switch (managementStep.value.data.decision) {
+                case 'approved':
+                    return 'primary';
+                case 'withheld':
+                    return 'red';
+                case 'flagged':
+                    return 'red';
+                case 'withdrawn':
+                    return 'red';
+                default:
+                    return 'primary';
+            }
         case 'pending':
+        case 'on_hold':
             return 'yellow-8';
         case 'deferred':
             return 'secondary';
@@ -177,7 +228,7 @@ watch(
     () => managementStep.value.data.comments,
     () => {
         isDirty.value = true;
-    }
+    },
 );
 
 async function save() {
