@@ -39,8 +39,35 @@ class ManagementReviewStepPolicy
      */
     public function update(User $user, ManagementReviewStep $managementReviewStep)
     {
+        // is the status pending or on hold?
+        $allowedStatuses = collect([
+            ManagementReviewStepStatus::PENDING,
+            ManagementReviewStepStatus::ON_HOLD,
+        ]);
+
+        if ($allowedStatuses->contains($managementReviewStep->status) === false) {
+            return false;
+        }
+
+        // is the user the owner of the manuscript step?
+        return $user->id === $managementReviewStep->user_id;
+    }
+
+    public function decide(User $user, ManagementReviewStep $managementReviewStep)
+    {
         // is the status pending?
         if ($managementReviewStep->status !== ManagementReviewStepStatus::PENDING) {
+            return false;
+        }
+
+        // is the user the owner of the manuscript step?
+        return $user->id === $managementReviewStep->user_id;
+    }
+
+    public function withdraw(User $user, ManagementReviewStep $managementReviewStep)
+    {
+        // is the status on hold?
+        if ($managementReviewStep->status !== ManagementReviewStepStatus::ON_HOLD) {
             return false;
         }
 

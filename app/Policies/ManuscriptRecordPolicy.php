@@ -157,8 +157,13 @@ class ManuscriptRecordPolicy
      */
     public function withdraw(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        // Can only be withdrawn if the manuscript is reviewed or submitted
-        if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::SUBMITTED, ManuscriptRecordStatus::REVIEWED])) {
+        $allowedStatus = collect([
+            ManuscriptRecordStatus::SUBMITTED,
+            ManuscriptRecordStatus::REVIEWED,
+        ]);
+
+
+        if ($allowedStatus->contains($manuscriptRecord->status) === false) {
             return false;
         }
 
@@ -191,7 +196,7 @@ class ManuscriptRecordPolicy
     public function markAccepted(User $user, ManuscriptRecord $manuscriptRecord)
     {
         // can only mark as accepted if the manuscript is reviewed or submitted
-        if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED])) {
+        if (!in_array($manuscriptRecord->status, [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED])) {
             return false;
         }
 

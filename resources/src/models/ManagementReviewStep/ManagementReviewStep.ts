@@ -4,8 +4,17 @@ import { ManuscriptRecordSummaryResource } from '../ManuscriptRecord/ManuscriptR
 import { Resource, ResourceList } from '../Resource';
 import { UserResource } from '../User/User';
 
-export type ManagementReviewStepDecision = 'none' | 'approved' | 'withheld';
-export type ManagementReviewStepStatus = 'pending' | 'deferred' | 'completed';
+export type ManagementReviewStepDecision =
+    | 'none'
+    | 'approved'
+    | 'withheld'
+    | 'flagged'
+    | 'withdrawn';
+export type ManagementReviewStepStatus =
+    | 'pending'
+    | 'deferred'
+    | 'completed'
+    | 'on_hold';
 export type UpdateStep = Pick<ManagementReviewStep, 'comments'>;
 export type DecisionStep = {
     comments?: string;
@@ -136,6 +145,52 @@ export class ManagementReviewStepService {
         const response = await http.put<DecisionStep, R>(
             `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/reassign`,
             data,
+        );
+        return response.data;
+    }
+
+    /**
+     * Flag the management review and send it back to the author.
+     *
+     * @param step the management review step to flag
+     */
+    public static async flag(step: ManagementReviewStep) {
+        const response = await http.put<DecisionStep, R>(
+            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flag`,
+            { comments: step.comments },
+        );
+        return response.data;
+    }
+
+    /**
+     * Response the management review flag
+     *
+     * @param step the management review step to response
+     * @param nextUserId the user id of the next user in the workflow
+     */
+    public static async response(
+        step: ManagementReviewStep,
+        nextUserId: number,
+    ) {
+        const response = await http.put<DecisionStep, R>(
+            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flagged-response`,
+            { comments: step.comments, next_user_id: nextUserId },
+        );
+        return response.data;
+    }
+
+    /**
+     * Withdraw the manuscript record from the management review. This is only possible when
+     * the manuscript is on_hold.
+     *
+     * @param step the management review step to withdraw
+     */
+    public static async withdraw(step: ManagementReviewStep) {
+        if (step.status !== 'on_hold')
+            throw new Error('Cannot withdraw a step that is not on hold');
+        const response = await http.put<DecisionStep, R>(
+            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/withdraw`,
+            { comments: step.comments },
         );
         return response.data;
     }
