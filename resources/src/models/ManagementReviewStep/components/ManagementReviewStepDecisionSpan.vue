@@ -11,6 +11,10 @@ const props = defineProps<{
 }>();
 
 const value = computed(() => {
+    return `${t('common.decision')}: ${decision.value}`;
+});
+
+const decision = computed(() => {
     switch (props.decision) {
         case 'approved':
             return t('common.approved');

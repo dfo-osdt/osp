@@ -52,8 +52,9 @@ export const useManagementReviewStepStore = defineStore(
 
         const pendingReviewCount = computed(() => {
             if (managementReviewSteps.value === undefined) return 0;
-            return managementReviewSteps.value.data.filter(
-                (mrs) => mrs.data.status === 'pending'
+            const statuses = ['pending', 'on_hold'];
+            return managementReviewSteps.value.data.filter((mrs) =>
+                statuses.includes(mrs.data.status),
             ).length;
         });
 
@@ -64,10 +65,10 @@ export const useManagementReviewStepStore = defineStore(
             pendingReviewCount,
             getMyManagementReviewSteps,
         };
-    }
+    },
 );
 
 if (import.meta.hot)
     import.meta.hot.accept(
-        acceptHMRUpdate(useManagementReviewStepStore, import.meta.hot)
+        acceptHMRUpdate(useManagementReviewStepStore, import.meta.hot),
     );

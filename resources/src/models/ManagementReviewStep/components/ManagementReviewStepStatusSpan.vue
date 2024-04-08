@@ -11,6 +11,10 @@ const props = defineProps<{
 }>();
 
 const value = computed(() => {
+    return `${t('common.status')}: ${status.value}`;
+});
+
+const status = computed(() => {
     switch (props.status) {
         case 'pending':
             return t('common.pending');
