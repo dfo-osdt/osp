@@ -121,6 +121,8 @@
     "french": "French",
     "funder": "Funder",
     "funding-sources": "Funding Sources",
+    "go-to-manuscript-form": "Go to Manuscript Form",
+    "go-to-potential-public-interest-section": "Go to Potential Public Interest Section",
     "hide": "Hide",
     "i-need-to-take-action": "I need to take action",
     "in": "in",
@@ -413,9 +415,9 @@
   },
   "management-review-guidelines": {
     "subtitle": "Please refer to the National Policy for Science Publications for more details.",
-    "tip-one": "Reviews the manuscript for compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs) and the Values and Ethics Code for DFO.",
+    "tip-one": "Review the manuscript for compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs) and the Values and Ethics Code for DFO.",
     "tip-three": "At no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers.",
-    "tip-two": "Review the manuscript to identify sensitive issues, solely for the purpose of briefing senior management and the Communications Branch prior to publication of the science paper. Identified sensitive issues must be added to the form's \"Sensitive Issues\" section.",
+    "tip-two": "Identify whether the manuscript is of potential public or media interest, solely for the purpose of briefing senior management and the Communications Branch. This information can be filled out in the Potential Public Interest section of the manuscript form. Note that at no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers.",
     "title": "Management Review Guidelines"
   },
   "management-review-response": {

@@ -220,6 +220,7 @@
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
+                        id="pi"
                         v-model="manuscriptResource.data.additional_information"
                         :title="$t('mrf.additional-information-of-importance')"
                         :disable="loading"

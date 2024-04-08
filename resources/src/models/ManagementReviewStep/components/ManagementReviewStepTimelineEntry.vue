@@ -87,12 +87,27 @@
                     <li>
                         {{ $t('management-review-guidelines.tip-one') }}
                     </li>
+                    <q-btn
+                        :label="$t('common.go-to-manuscript-form')"
+                        icon="mdi-arrow-left"
+                        outline
+                        color="primary"
+                        class="q-my-md"
+                        :to="`/manuscript/${managementStep.data.manuscript_record_id}/form`"
+                    />
                     <li>
                         {{ $t('management-review-guidelines.tip-two') }}
                     </li>
-                    <li>
-                        {{ $t('management-review-guidelines.tip-three') }}
-                    </li>
+                    <q-btn
+                        :label="
+                            $t('common.go-to-potential-public-interest-section')
+                        "
+                        icon="mdi-arrow-left"
+                        outline
+                        color="primary"
+                        class="q-my-md"
+                        :to="`/manuscript/${managementStep.data.manuscript_record_id}/form#pi`"
+                    />
                 </ul>
                 <question-editor
                     v-model="managementStep.data.comments"

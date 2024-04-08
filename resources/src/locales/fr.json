@@ -121,6 +121,8 @@
     "french": "Français",
     "funder": "Bailleur de fonds",
     "funding-sources": "Sources de financement",
+    "go-to-manuscript-form": "Aller au formulaire",
+    "go-to-potential-public-interest-section": "Accédez à la section Intérêt public potentiel",
     "hide": "Cacher",
     "i-need-to-take-action": "Je dois agir",
     "in": "dans",
@@ -415,7 +417,7 @@
     "subtitle": "Veuillez consulter la Politique nationale des publications scientifiques pour plus de détails.",
     "tip-one": "Examiner le manuscrit pour s'assurer qu'il est conforme à la Politique sur la propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique du MPO.",
     "tip-three": "À aucun moment, l'inclusion de matériel sensible (par exemple, des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
-    "tip-two": "Examinez le manuscrit pour identifier les questions sensibles, uniquement dans le but d'informer la haute direction et la Direction des communications avant la publication de l'article scientifique. \nLes questions sensibles identifiés doivent être ajoutés à la section \"matériel sensibles\" du formulaire.",
+    "tip-two": "Déterminez si le manuscrit présente un intérêt potentiel pour le public ou les médias, uniquement dans le but d'informer la haute direction et la Direction des communications. Ces informations peuvent être renseignées dans la section Intérêt public potentiel du formulaire de manuscrit. Notez qu'à aucun moment l'inclusion de documents sensibles (par exemple des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
     "title": "Lignes directrices sur la révision par la gestion"
   },
   "management-review-response": {
@@ -621,7 +623,7 @@
   },
   "review-step": {
     "reply": "Répondre",
-    "response-by": "",
+    "response-by": "Réponse par {0}",
     "review-by": "Révision par {0}",
     "save-comments": "Enregistrer les commentaires",
     "submit-decision": "Soumettre la décision",
