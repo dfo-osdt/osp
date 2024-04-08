@@ -27,6 +27,7 @@ class ManagementReviewStepFactory extends Factory
             'comments' => null,
             'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
             'decision' => \App\Enums\ManagementReviewStepDecision::NONE,
+            'decision_expected_by' => now()->addBusinessDay(config('osp.management_review.decision_expected_business_days')),
         ];
     }
 

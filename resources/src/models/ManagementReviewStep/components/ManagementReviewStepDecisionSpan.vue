@@ -8,9 +8,15 @@ const { t } = useI18n();
 
 const props = defineProps<{
     decision: ManagementReviewStepDecision;
+    showLabel?: boolean;
 }>();
 
 const value = computed(() => {
+    if (props.showLabel) return `${t('common.decision')}: ${decision.value}`;
+    return decision.value;
+});
+
+const decision = computed(() => {
     switch (props.decision) {
         case 'approved':
             return t('common.approved');
@@ -18,6 +24,10 @@ const value = computed(() => {
             return t('common.none');
         case 'withheld':
             return t('common.withheld');
+        case 'flagged':
+            return t('common.flagged');
+        case 'withdrawn':
+            return t('common.withdrawn');
         default:
             return t('common.unknown');
     }

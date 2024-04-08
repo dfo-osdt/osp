@@ -11,6 +11,11 @@ return [
         'max' => 100,
     ],
 
+    /* Management review variables */
+    'management_review' => [
+        'decision_expected_business_days' => 10,
+    ],
+
     /*
         The OpenAI API key.
     */

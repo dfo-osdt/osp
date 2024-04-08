@@ -92,6 +92,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/approve', 'approve');
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withhold', 'withhold');
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/reassign', 'reassign');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/flag', 'flag');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/flagged-response', 'flaggedResponse');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withdraw', 'withdraw');
     });
 
     Route::controller(ManuscriptRecordController::class)->group(function () {

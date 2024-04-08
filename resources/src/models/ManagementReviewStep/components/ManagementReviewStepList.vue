@@ -20,7 +20,7 @@
                 <q-item-label caption>
                     {{
                         $t(
-                            'management-review-step-list.review-request-received-from'
+                            'management-review-step-list.review-request-received-from',
                         )
                     }}
                     {{ userName(step) }} {{ $t('common.on') }}
@@ -32,11 +32,13 @@
                     <q-badge outline color="primary" class="text-body2 q-mr-sm">
                         <ManagementReviewStepStatusSpan
                             :status="step.data.status"
+                            show-label
                         />
                     </q-badge>
                     <q-badge outline color="primary" class="text-body2">
                         <ManagementReviewStepDecisionSpan
                             :decision="step.data.decision"
+                            show-label
                         />
                     </q-badge>
                 </q-item-label>

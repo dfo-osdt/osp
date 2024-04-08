@@ -8,9 +8,15 @@ const { t } = useI18n();
 
 const props = defineProps<{
     status: ManagementReviewStepStatus;
+    showLabel?: boolean;
 }>();
 
 const value = computed(() => {
+    if (props.showLabel) return `${t('common.status')}: ${status.value}`;
+    return status.value;
+});
+
+const status = computed(() => {
     switch (props.status) {
         case 'pending':
             return t('common.pending');
@@ -18,6 +24,8 @@ const value = computed(() => {
             return t('common.deferred');
         case 'completed':
             return t('common.completed');
+        case 'on_hold':
+            return t('common.on_hold');
         default:
             return t('common.unknown');
     }

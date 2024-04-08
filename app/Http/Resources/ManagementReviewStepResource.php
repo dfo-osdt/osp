@@ -24,6 +24,7 @@ class ManagementReviewStepResource extends JsonResource
                 'comments' => $this->comments ?? '',
                 'status' => $this->status,
                 'decision' => $this->decision,
+                'decision_expected_by' => $this->decision_expected_by,
                 'completed_at' => $this->completed_at,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,

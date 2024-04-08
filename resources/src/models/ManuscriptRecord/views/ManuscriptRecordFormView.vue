@@ -76,6 +76,14 @@
                 </q-card>
             </div>
         </div>
+        <ManuscriptFileManagementCard
+            v-if="manuscriptResource"
+            ref="manuscriptFileManagementCard"
+            :manuscript="manuscriptResource"
+            :readonly="isManuscriptReadOnly"
+            class="q-mb-lg"
+            secondary
+        />
         <ManageManuscriptAuthorsCard
             ref="manuscriptAuthorsCard"
             :manuscript-record-id="id"
@@ -212,6 +220,7 @@
                         </p>
                     </QuestionEditor>
                     <QuestionEditor
+                        id="pi"
                         v-model="manuscriptResource.data.additional_information"
                         :title="$t('mrf.additional-information-of-importance')"
                         :disable="loading"
@@ -251,14 +260,6 @@
             :fundable-id="manuscriptResource.data.id"
             :readonly="isManuscriptReadOnly"
             fundable-type="manuscript-records"
-        />
-        <ManuscriptFileManagementCard
-            v-if="manuscriptResource"
-            ref="manuscriptFileManagementCard"
-            :manuscript="manuscriptResource"
-            :readonly="isManuscriptReadOnly"
-            class="q-mb-lg"
-            secondary
         />
         <q-card-actions
             v-if="manuscriptResource?.can?.update"

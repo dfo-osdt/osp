@@ -112,6 +112,7 @@ class ManuscriptRecordController extends Controller
         // create the first management review step for this record
         $reviewStep = new ManagementReviewStep();
         $reviewStep->manuscript_record_id = $manuscriptRecord->id;
+        $reviewStep->decision_expected_by = now()->addBusinessDays(config('osp.management_review.decision_expected_business_days'));
         $reviewStep->user_id = $reviewUser->id;
         $reviewStep->save();
 

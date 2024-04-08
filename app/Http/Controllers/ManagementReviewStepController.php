@@ -7,6 +7,7 @@ use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Events\ManagementReviewStepCreated;
 use App\Events\ManuscriptManagementReviewComplete;
+use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\ManuscriptRecordWithheldByManagement;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
@@ -50,12 +51,16 @@ class ManagementReviewStepController extends Controller
     // actions
     public function approve(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
-        Gate::authorize('update', $managementReviewStep);
+        Gate::authorize('decide', $managementReviewStep);
 
         $validated = $request->validate([
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
+            'comments' => 'string|nullable',
         ]);
 
+        if (isset($validated['comments'])) {
+            $managementReviewStep->comments = $validated['comments'];
+        }
         // if the next user is not set, then the review is complete and the manuscript review is complete.
         if (isset($validated['next_user_id'])) {
             // a comment is required to send to the next user.
@@ -69,6 +74,7 @@ class ManagementReviewStepController extends Controller
             $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
             $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
             $nextReviewStep->previous_step_id = $managementReviewStep->id;
+            $nextReviewStep->decision_expected_by = $managementReviewStep->decision_expected_by;
 
             $nextReviewStep->saveOrFail();
 
@@ -95,14 +101,19 @@ class ManagementReviewStepController extends Controller
 
     public function withhold(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
-        Gate::authorize('update', $managementReviewStep);
+        Gate::authorize('decide', $managementReviewStep);
 
         $validated = $request->validate([
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
+            'comments' => 'string|nullable',
         ]);
 
+        if (isset($validated['comments'])) {
+            $managementReviewStep->comments = $validated['comments'];
+        }
+
         // if the next user is not set, only a user with permission can complete the review.
-        if (! isset($validated['next_user_id'])) {
+        if (!isset($validated['next_user_id'])) {
             Gate::authorize('withhold_and_complete_management_review');
         }
 
@@ -119,6 +130,8 @@ class ManagementReviewStepController extends Controller
             $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
             $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
             $nextReviewStep->previous_step_id = $managementReviewStep->id;
+            $nextReviewStep->decision_expected_by = $managementReviewStep->decision_expected_by;
+
 
             $nextReviewStep->saveOrFail();
 
@@ -145,12 +158,16 @@ class ManagementReviewStepController extends Controller
 
     public function reassign(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
-        Gate::authorize('update', $managementReviewStep);
+        Gate::authorize('decide', $managementReviewStep);
 
         $validated = $request->validate([
             'next_user_id' => ['required', 'exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
+            'comments' => 'string|nullable',
         ]);
 
+        if (isset($validated['comments'])) {
+            $managementReviewStep->comments = $validated['comments'];
+        }
         // validate that the review step has a comment
         Validator::make($managementReviewStep->toArray(), [
             'comments' => 'required|string',
@@ -162,6 +179,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
         $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
+        $nextReviewStep->decision_expected_by = now()->addBusinessDays(config('osp.management_review.decision_expected_business_days'));
         $nextReviewStep->saveOrFail();
 
         // send event that a management review step has been created.
@@ -170,6 +188,112 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->status = ManagementReviewStepStatus::REASSIGN;
         $managementReviewStep->completed_at = now();
         $managementReviewStep->saveOrFail();
+
+        return new ManagementReviewStepResource($managementReviewStep);
+    }
+
+    public function flag(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
+    {
+        Gate::authorize('decide', $managementReviewStep);
+
+        $validated = $request->validate([
+            'comments' => 'string|nullable',
+        ]);
+
+        if (isset($validated['comments'])) {
+            $managementReviewStep->comments = $validated['comments'];
+        }
+        // validate that the review step has a comment
+        Validator::make($managementReviewStep->toArray(), [
+            'comments' => 'required|string',
+        ])->validate();
+
+        $nextReviewStep = new ManagementReviewStep();
+        $nextReviewStep->user_id = $manuscriptRecord->user_id;
+        $nextReviewStep->status = ManagementReviewStepStatus::ON_HOLD;
+        $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
+        $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
+        $nextReviewStep->previous_step_id = $managementReviewStep->id;
+        $nextReviewStep->saveOrFail();
+
+        ManagementReviewStepCreated::dispatch($nextReviewStep);
+
+        $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->decision = ManagementReviewStepDecision::FLAGGED;
+        $managementReviewStep->completed_at = now();
+        $managementReviewStep->saveOrFail();
+
+        return new ManagementReviewStepResource($managementReviewStep);
+    }
+
+    public function flaggedResponse(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
+    {
+        Gate::authorize('update', $managementReviewStep);
+
+        $validated = $request->validate([
+            'comments' => 'string|nullable',
+        ]);
+
+        // return to the manager that sent the manuscript back to the author.
+        $previousStep = $managementReviewStep->previousStep;
+
+
+        if (isset($validated['comments'])) {
+            $managementReviewStep->comments = $validated['comments'];
+        }
+        // validate that the review step has a comment
+        Validator::make($managementReviewStep->toArray(), [
+            'comments' => 'required|string',
+        ])->validate();
+
+        $nextReviewStep = new ManagementReviewStep();
+        $nextReviewStep->user_id = $previousStep->user_id;
+        $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
+        $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
+        $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
+        $nextReviewStep->previous_step_id = $managementReviewStep->id;
+        $nextReviewStep->decision_expected_by = now()->addBusinessDays(config('osp.management_review.decision_expected_business_days'));
+        $nextReviewStep->saveOrFail();
+
+        ManagementReviewStepCreated::dispatch($nextReviewStep);
+
+        $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->decision = ManagementReviewStepDecision::NONE;
+        $managementReviewStep->completed_at = now();
+        $managementReviewStep->saveOrFail();
+
+        $manuscriptRecord->lockManuscriptFiles();
+
+        return new ManagementReviewStepResource($managementReviewStep);
+    }
+
+    public function withdraw(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
+    {
+        Gate::authorize('withdraw', $managementReviewStep);
+
+        $validated = $request->validate([
+            'comments' => 'string|nullable',
+        ]);
+
+        if (isset($validated['comments'])) {
+            $managementReviewStep->comments = $validated['comments'];
+        }
+
+        // validate that the review step has a comment
+        Validator::make($managementReviewStep->toArray(), [
+            'comments' => 'required|string',
+        ])->validate();
+
+        $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
+        $managementReviewStep->decision = ManagementReviewStepDecision::WITHDRAWN;
+        $managementReviewStep->completed_at = now();
+        $managementReviewStep->saveOrFail();
+
+        $manuscriptRecord->status = ManuscriptRecordStatus::WITHDRAWN;
+        $manuscriptRecord->withdrawn_on = now();
+        $manuscriptRecord->saveOrFail();
+
+        ManuscriptRecordWithdrawnByAuthor::dispatch($manuscriptRecord);
 
         return new ManagementReviewStepResource($managementReviewStep);
     }
