@@ -74,6 +74,7 @@ class ManagementReviewStepController extends Controller
             $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
             $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
             $nextReviewStep->previous_step_id = $managementReviewStep->id;
+            $nextReviewStep->decision_expected_by = $managementReviewStep->decision_expected_by;
 
             $nextReviewStep->saveOrFail();
 
@@ -129,6 +130,8 @@ class ManagementReviewStepController extends Controller
             $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
             $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
             $nextReviewStep->previous_step_id = $managementReviewStep->id;
+            $nextReviewStep->decision_expected_by = $managementReviewStep->decision_expected_by;
+
 
             $nextReviewStep->saveOrFail();
 
@@ -176,6 +179,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
         $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
+        $nextReviewStep->decision_expected_by = now()->addBusinessDays(config('osp.management_review.decision_expected_business_days'));
         $nextReviewStep->saveOrFail();
 
         // send event that a management review step has been created.
@@ -227,9 +231,12 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('update', $managementReviewStep);
 
         $validated = $request->validate([
-            'next_user_id' => ['required', 'exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
             'comments' => 'string|nullable',
         ]);
+
+        // return to the manager that sent the manuscript back to the author.
+        $previousStep = $managementReviewStep->previousStep;
+
 
         if (isset($validated['comments'])) {
             $managementReviewStep->comments = $validated['comments'];
@@ -240,11 +247,12 @@ class ManagementReviewStepController extends Controller
         ])->validate();
 
         $nextReviewStep = new ManagementReviewStep();
-        $nextReviewStep->user_id = $validated['next_user_id'];
+        $nextReviewStep->user_id = $previousStep->user_id;
         $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
         $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
+        $nextReviewStep->decision_expected_by = now()->addBusinessDays(config('osp.management_review.decision_expected_business_days'));
         $nextReviewStep->saveOrFail();
 
         ManagementReviewStepCreated::dispatch($nextReviewStep);
@@ -253,6 +261,8 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->decision = ManagementReviewStepDecision::NONE;
         $managementReviewStep->completed_at = now();
         $managementReviewStep->saveOrFail();
+
+        $manuscriptRecord->lockManuscriptFiles();
 
         return new ManagementReviewStepResource($managementReviewStep);
     }

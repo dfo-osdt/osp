@@ -8,10 +8,12 @@ const { t } = useI18n();
 
 const props = defineProps<{
     decision: ManagementReviewStepDecision;
+    showLabel?: boolean;
 }>();
 
 const value = computed(() => {
-    return `${t('common.decision')}: ${decision.value}`;
+    if (props.showLabel) return `${t('common.decision')}: ${decision.value}`;
+    return decision.value;
 });
 
 const decision = computed(() => {

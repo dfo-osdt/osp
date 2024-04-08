@@ -26,6 +26,7 @@ export interface ManagementReviewStep {
     readonly created_at: string;
     readonly updated_at: string;
     readonly completed_at: string | null;
+    readonly decision_expected_by: string;
     comments: string;
     decision: ManagementReviewStepDecision;
     status: ManagementReviewStepStatus;
@@ -168,13 +169,10 @@ export class ManagementReviewStepService {
      * @param step the management review step to response
      * @param nextUserId the user id of the next user in the workflow
      */
-    public static async response(
-        step: ManagementReviewStep,
-        nextUserId: number,
-    ) {
+    public static async response(step: ManagementReviewStep) {
         const response = await http.put<DecisionStep, R>(
             `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flagged-response`,
-            { comments: step.comments, next_user_id: nextUserId },
+            { comments: step.comments },
         );
         return response.data;
     }

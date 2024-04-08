@@ -98,6 +98,7 @@
     "current-password": "Mot de passe actuel",
     "dashboard": "Tableau de bord",
     "decision": "Décision",
+    "decision-expected-by": "Décision attendue par le",
     "deferred": "Différé",
     "delete": "Supprimer",
     "deleted": "Supprimé",
@@ -619,6 +620,7 @@
     "title": "Entrez un nouveau mot de passe"
   },
   "review-step": {
+    "reply": "Répondre",
     "response-by": "",
     "review-by": "Révision par {0}",
     "save-comments": "Enregistrer les commentaires",

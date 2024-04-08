@@ -17,6 +17,12 @@
                 :status="managementStep.data.status"
             />
             <span v-if="completedAtDate"> - {{ completedAtDate }}</span>
+            <span v-else-if="managementStep.data.status === 'pending'"
+                >-
+                {{
+                    `${$t('common.decision-expected-by')}: ${decisionExpectedByDate}`
+                }}</span
+            >
         </template>
         <template v-if="canUpdate">
             <q-card
@@ -46,7 +52,29 @@
                         :label="$t('review-step.save-comments')"
                         @click="save"
                     />
+                    <q-btn
+                        icon="mdi-arrow-decision"
+                        color="red"
+                        outline
+                        :label="
+                            $t('manuscript-progress-view.withdraw-manuscript')
+                        "
+                        @click="withdrawManuscript()"
+                    />
+                    <q-btn
+                        icon="mdi-reply"
+                        color="primary"
+                        :label="$t('review-step.reply')"
+                        :disable="managementStep.data.comments === ''"
+                        @click="submitDecision()"
+                    />
                 </q-card-actions>
+                <WithdrawManuscriptReplyDialog
+                    v-if="withdrawManuscriptDialog"
+                    v-model="withdrawManuscriptDialog"
+                    :management-review-step="managementStep"
+                    @updated="decisionSubmitted"
+                />
             </q-card>
             <q-card v-else class="q-pa-md" bordered flat>
                 <div class="text-body1 text-weight-medium text-accent">
@@ -150,7 +178,7 @@ import { useLocaleDate } from '@/composables/useLocaleDate';
 import { useQuasar } from 'quasar';
 import SubmitDecisionDialog from './SubmitDecisionDialog.vue';
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
-import { use } from 'chai';
+import WithdrawManuscriptReplyDialog from './WithdrawManuscriptReplyDialog.vue';
 
 const { t } = useI18n();
 const $q = useQuasar();
@@ -200,7 +228,7 @@ const color = computed(() => {
                 case 'withheld':
                     return 'red';
                 case 'flagged':
-                    return 'red';
+                    return 'orange-8';
                 case 'withdrawn':
                     return 'red';
                 default:
@@ -217,6 +245,9 @@ const color = computed(() => {
 });
 
 const completedAtDate = useLocaleDate(managementStep.value.data.completed_at);
+const decisionExpectedByDate = useLocaleDate(
+    managementStep.value.data.decision_expected_by,
+);
 
 // The comments from the user but sanitize the HTML
 const safeComments = computed(() => {
@@ -252,6 +283,26 @@ function decisionSubmitted(decision: ManagementReviewStepResource) {
     managementStep.value = decision;
     submitDecisionDialog.value = false;
     emit('decision', decision);
+}
+
+// Author Decision section
+async function submitDecision() {
+    if (managementStep.value.data.comments === '') {
+        $q.notify({
+            message: t('review-step.comments-required'),
+            type: 'negative',
+        });
+        return;
+    }
+    const resposne = await ManagementReviewStepService.response(
+        managementStep.value.data,
+    );
+    decisionSubmitted(resposne);
+}
+
+const withdrawManuscriptDialog = ref(false);
+function withdrawManuscript() {
+    withdrawManuscriptDialog.value = true;
 }
 </script>
 

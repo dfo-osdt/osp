@@ -98,6 +98,7 @@
     "current-password": "Current Password",
     "dashboard": "Dashboard",
     "decision": "Decision",
+    "decision-expected-by": "Decision Expected By",
     "deferred": "Deferred",
     "delete": "Delete",
     "deleted": "Deleted",
@@ -619,6 +620,7 @@
     "title": "Enter new password"
   },
   "review-step": {
+    "reply": "Reply",
     "response-by": "Response by {0}",
     "review-by": "Review by {0}",
     "save-comments": "Save Comments",

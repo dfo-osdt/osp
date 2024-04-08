@@ -8,10 +8,12 @@ const { t } = useI18n();
 
 const props = defineProps<{
     status: ManagementReviewStepStatus;
+    showLabel?: boolean;
 }>();
 
 const value = computed(() => {
-    return `${t('common.status')}: ${status.value}`;
+    if (props.showLabel) return `${t('common.status')}: ${status.value}`;
+    return status.value;
 });
 
 const status = computed(() => {

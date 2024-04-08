@@ -112,14 +112,9 @@ test('a reviwer can flag and send back to the author for clarifications and can 
         ->assertForbidden();
 
     $response = $this->actingAs($manuscript->user)->putJson('/api/manuscript-records/' . $manuscript->id . '/management-review-steps/' . $nextReviewSteps->id . '/flagged-response')
-        ->assertStatus(422);
+        ->assertOK();
 
-    $data = [
-        'next_user_id' => $reviewer->id,
-    ];
-
-    $response = $this->actingAs($manuscript->user)->putJson('/api/manuscript-records/' . $manuscript->id . '/management-review-steps/' . $nextReviewSteps->id . '/flagged-response', $data)
-        ->assertOk();
+    expect($manuscript->refresh()->managementReviewSteps->last()->user_id)->toBe($reviewer->id);
 
     Mail::assertQueued(ReviewStepNotificationMail::class);
 });
