@@ -23,7 +23,7 @@
         "laravel-vite-plugin": "^1.0.2",
         "lodash": "^4.17.21",
         "prettier": "^3.2.5",
-        "sass": "^1.72.0",
+        "sass": "^1.74.1",
         "typescript": "^5.4.3",
         "unplugin-auto-import": "^0.17.5",
         "unplugin-vue-components": "^0.26.0",
