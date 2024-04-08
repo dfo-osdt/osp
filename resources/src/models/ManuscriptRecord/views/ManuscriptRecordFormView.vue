@@ -76,6 +76,14 @@
                 </q-card>
             </div>
         </div>
+        <ManuscriptFileManagementCard
+            v-if="manuscriptResource"
+            ref="manuscriptFileManagementCard"
+            :manuscript="manuscriptResource"
+            :readonly="isManuscriptReadOnly"
+            class="q-mb-lg"
+            secondary
+        />
         <ManageManuscriptAuthorsCard
             ref="manuscriptAuthorsCard"
             :manuscript-record-id="id"
@@ -251,14 +259,6 @@
             :fundable-id="manuscriptResource.data.id"
             :readonly="isManuscriptReadOnly"
             fundable-type="manuscript-records"
-        />
-        <ManuscriptFileManagementCard
-            v-if="manuscriptResource"
-            ref="manuscriptFileManagementCard"
-            :manuscript="manuscriptResource"
-            :readonly="isManuscriptReadOnly"
-            class="q-mb-lg"
-            secondary
         />
         <q-card-actions
             v-if="manuscriptResource?.can?.update"

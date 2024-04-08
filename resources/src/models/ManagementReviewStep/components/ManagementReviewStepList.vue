@@ -20,7 +20,7 @@
                 <q-item-label caption>
                     {{
                         $t(
-                            'management-review-step-list.review-request-received-from'
+                            'management-review-step-list.review-request-received-from',
                         )
                     }}
                     {{ userName(step) }} {{ $t('common.on') }}
