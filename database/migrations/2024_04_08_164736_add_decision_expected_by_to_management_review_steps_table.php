@@ -16,9 +16,10 @@ return new class extends Migration
             $table->datetime('decision_expected_by')->nullable()->after('decision');
         });
 
-        // Update the existing records to have a decision_expected_by date
-        ManagementReviewStep::whereNull('decision_expected_by')->update([
-            'decision_expected_by' => now()->addBusinessDays(config('management_review.default_days_to_complete')),
-        ]);
+        // Update the existing records to have a decision_expected_by
+        ManagementReviewStep::whereNull('decision_expected_by')->get()
+            ->each(fn (ManagementReviewStep $step) => $step->update([
+                'decision_expected_by' => $step->created_at->addBusinessDays(config('osp.management_review.decision_expected_business_days'))
+            ]));
     }
 };
