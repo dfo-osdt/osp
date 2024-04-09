@@ -53,7 +53,7 @@
                         @click="save"
                     />
                     <q-btn
-                        icon="mdi-arrow-decision"
+                        icon="mdi-book-remove-outline"
                         color="red"
                         outline
                         :label="
@@ -62,7 +62,7 @@
                         @click="withdrawManuscript()"
                     />
                     <q-btn
-                        icon="mdi-reply"
+                        icon="mdi-message-reply-text-outline"
                         color="primary"
                         :label="$t('review-step.reply')"
                         :disable="managementStep.data.comments === ''"

@@ -116,7 +116,7 @@ test('a reviwer can flag and send back to the author for clarifications and can 
 
     expect($manuscript->refresh()->managementReviewSteps->last()->user_id)->toBe($reviewer->id);
 
-    Mail::assertQueued(ReviewStepNotificationMail::class);
+    Mail::assertQueued(ReviewStepNotificationMail::class, 2);
 });
 
 test('a author can withdraw their manuscript when their manuscript is flagged', function () {

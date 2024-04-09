@@ -10,7 +10,20 @@
         <template v-if="manuscriptFiles">
             <q-card outlined class="q-mb-md">
                 <q-list separator>
-                    <q-item v-for="m in manuscriptFiles.data" :key="m.uuid">
+                    <q-item
+                        v-for="(m, index) in manuscriptFiles.data"
+                        :key="m.uuid"
+                        :class="index === 0 ? '' : 'bg-grey-3'"
+                    >
+                        <q-item-section v-if="index !== 0" avatar>
+                            <q-icon name="mdi-history" color="secondary">
+                                <q-tooltip>
+                                    {{
+                                        $t('common.manuscript-previous-version')
+                                    }}
+                                </q-tooltip>
+                            </q-icon>
+                        </q-item-section>
                         <q-item-section>
                             <q-item-label
                                 ><q-icon
@@ -113,7 +126,7 @@ watch(manuscriptFile, () => {
 
 async function getFiles() {
     manuscriptFiles.value = await ManuscriptRecordService.listPDFs(
-        props.manuscript.data.id
+        props.manuscript.data.id,
     );
 }
 
@@ -164,7 +177,7 @@ async function upload() {
 
     const response = await ManuscriptRecordService.attachPDF(
         manuscriptFile.value,
-        props.manuscript.data.id
+        props.manuscript.data.id,
     );
 
     uploadingFile.value = false;
@@ -199,7 +212,7 @@ async function deleteFile(manuscriptFile: Media) {
     const m = props.manuscript.data;
     const deleted = await ManuscriptRecordService.deletePDF(
         m.id,
-        manuscriptFile.uuid
+        manuscriptFile.uuid,
     );
     if (deleted) {
         $q.notify({

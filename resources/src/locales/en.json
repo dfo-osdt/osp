@@ -138,6 +138,7 @@
     "login": "Login",
     "logout": "Logout",
     "manuscript": "Manuscript",
+    "manuscript-previous-version": "This is a previous version of the manuscript",
     "manuscript-record": "Manuscript Record",
     "manuscript-record-form": "Manuscript Record Form",
     "manuscript-type": "Manuscript Type",

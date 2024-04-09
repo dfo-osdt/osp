@@ -15,16 +15,17 @@ export const Router = createRouter({
                             behavior: 'smooth',
                         });
                     } else {
+                        console.warn(`Element with id ${to.hash} not found`);
                         resolve({ top: 0 });
                     }
-                }, 250);
+                }, 500);
             });
         }
         if (savedPosition) {
             return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve(savedPosition);
-                }, 250);
+                }, 500);
             });
         }
         return { top: 0 };

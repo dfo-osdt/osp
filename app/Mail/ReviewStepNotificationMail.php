@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Enums\ManagementReviewStepDecision;
+use App\Enums\ManagementReviewStepStatus;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use Illuminate\Bus\Queueable;
@@ -34,10 +36,14 @@ class ReviewStepNotificationMail extends Mailable
      */
     public function build()
     {
-        $this->subject('Manuscript management review [action required]: '.$this->managementReviewStep->manuscriptRecord->title);
+        $this->subject('Manuscript Management Review [action required] / Révision par la gestion [action requise]: ' . $this->managementReviewStep->manuscriptRecord->title);
         $this->to($this->managementReviewStep->user->email, $this->managementReviewStep->user->fullName);
         $this->cc($this->previousStep->user->email, $this->previousStep->user->fullName);
-        $this->cc($this->managementReviewStep->manuscriptRecord->user->email, $this->managementReviewStep->manuscriptRecord->user->fullName);
+        if ($this->previousStep->decision !== ManagementReviewStepDecision::FLAGGED) {
+            // This would be redundant if the previous step is on hold as this step is being sent back to the proponent.
+            ray('cc propoent');
+            $this->cc($this->managementReviewStep->manuscriptRecord->user->email, $this->managementReviewStep->manuscriptRecord->user->fullName);
+        }
         $this->attach($this->managementReviewStep->manuscriptRecord->getLastManuscriptFile());
 
         return $this->markdown('mail.review-step-notification-mail');
