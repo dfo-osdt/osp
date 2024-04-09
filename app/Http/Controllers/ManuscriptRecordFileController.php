@@ -21,7 +21,7 @@ class ManuscriptRecordFileController extends Controller
 
         $media = $manuscriptRecord->getManuscriptFiles();
 
-        return MediaResource::collection($media);
+        return MediaResource::collection($media->sortBy('created_at', SORT_REGULAR, true));
     }
 
     /**
@@ -50,7 +50,7 @@ class ManuscriptRecordFileController extends Controller
 
         $media = $manuscriptRecord->getManuscriptFile($uuid);
 
-        if (! $media) {
+        if (!$media) {
             throw new NotFoundHttpException('File not found.');
         }
 
@@ -61,7 +61,6 @@ class ManuscriptRecordFileController extends Controller
         }
 
         return MediaResource::make($media);
-
     }
 
     /**

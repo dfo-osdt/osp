@@ -5,6 +5,10 @@
 
 {{ $previousStep->user->fullName }} has identified you as the next management reviewer for the manuscript titled "{{ $manuscriptRecord->title }}".
 
+@if($managementReviewStep->status == App\Enums\ManagementReviewStepStatus::PENDING)
+A decision on this review is expected to be reached by {{ $managementReviewStep->decision_expected_by->locale('en_CA')->isoFormat('LL') }}.
+@endif
+
 <x-mail::panel>
 # Previous Review Summary
 **Decision:**<br />
@@ -37,6 +41,11 @@ Review Manuscript
 
 {{ $previousStep->user->fullName }} vous a identifié comme le prochain gestionnaire de la révision pour le manuscrit intitulé "{{ $manuscriptRecord->title }}".
 
+
+@if($managementReviewStep->status == App\Enums\ManagementReviewStepStatus::PENDING)
+Une décision sur cette révision est attendue d'ici le {{ $managementReviewStep->decision_expected_by->locale('fr_CA')->isoFormat('LL') }}.
+@endif
+
 <x-mail::panel>
 # Sommaire de la révision précédente
 **Décision:**<br />
@@ -64,7 +73,7 @@ Réviser le manuscrit
 
 <x-email.regards locale="fr" />
 
-@if($manuscriptRecord->type === App\Enums\ManuscriptRecordType::PRIMARY)
+@if($manuscriptRecord->type === App\Enums\ManuscriptRecordType::PRIMARY && $managementReviewStep->status == App\Enums\ManagementReviewStepStatus::PENDING)
 <x-mail::subcopy>
 Note that, as per section 1.5.3 of the [Fisheries and Oceans Canada National Policy for Science Publications](https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html#153), science management commits to a 10 working-day turnaround for signoff of manuscripts for publication. If managers do not respond with an approval within 10 working days, authors may submit their manuscripts to the publisher.
 <br/><br/>

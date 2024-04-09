@@ -24,6 +24,7 @@ class ManagementReviewStep extends Model
 
     protected $casts = [
         'completed_at' => 'datetime',
+        'decision_expected_by' => 'datetime',
         'status' => \App\Enums\ManagementReviewStepStatus::class,
         'decision' => \App\Enums\ManagementReviewStepDecision::class,
     ];
