@@ -12,7 +12,7 @@ export type ManagementReviewStepDecision =
     | 'withdrawn';
 export type ManagementReviewStepStatus =
     | 'pending'
-    | 'deferred'
+    | 'reassign'
     | 'completed'
     | 'on_hold';
 export type UpdateStep = Pick<ManagementReviewStep, 'comments'>;

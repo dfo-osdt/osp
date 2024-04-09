@@ -1,5 +1,5 @@
 <template>
-    <q-list bordered separator>
+    <q-list separator>
         <q-item
             v-for="step in managementReviewSteps"
             :key="step.data.id"
@@ -9,6 +9,17 @@
                 params: { id: step.data.manuscript_record_id },
             }"
         >
+            <q-item-section avatar>
+                <q-icon
+                    :name="
+                        step.data.status === 'completed'
+                            ? 'mdi-check-circle-outline'
+                            : 'mdi-progress-check'
+                    "
+                    class="text-accent"
+                    size="md"
+                ></q-icon>
+            </q-item-section>
             <q-item-section>
                 <q-item-label
                     class="text-body1 text-weight-medium text-accent"
@@ -29,12 +40,11 @@
             </q-item-section>
             <q-item-section side top>
                 <q-item-label class="q-mt-sm">
-                    <q-badge outline color="primary" class="text-body2 q-mr-sm">
-                        <ManagementReviewStepStatusSpan
-                            :status="step.data.status"
-                            show-label
-                        />
-                    </q-badge>
+                    <ManagementReviewStepStatusBadge
+                        outline
+                        :status="step.data.status"
+                        class="text-body2 q-mr-sm"
+                    />
                     <q-badge outline color="primary" class="text-body2">
                         <ManagementReviewStepDecisionSpan
                             :decision="step.data.decision"
@@ -49,9 +59,9 @@
 
 <script setup lang="ts">
 import { ManagementReviewStepResource } from '../ManagementReviewStep';
-import ManagementReviewStepStatusSpan from './ManagementReviewStepStatusSpan.vue';
 import ManagementReviewStepDecisionSpan from './ManagementReviewStepDecisionSpan.vue';
 import { useLocaleDate } from '@/composables/useLocaleDate';
+import ManagementReviewStepStatusBadge from './ManagementReviewStepStatusBadge.vue';
 const { t } = useI18n();
 
 defineProps<{
