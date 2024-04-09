@@ -41,7 +41,6 @@ class ReviewStepNotificationMail extends Mailable
         $this->cc($this->previousStep->user->email, $this->previousStep->user->fullName);
         if ($this->previousStep->decision !== ManagementReviewStepDecision::FLAGGED) {
             // This would be redundant if the previous step is on hold as this step is being sent back to the proponent.
-            ray('cc propoent');
             $this->cc($this->managementReviewStep->manuscriptRecord->user->email, $this->managementReviewStep->manuscriptRecord->user->fullName);
         }
         $this->attach($this->managementReviewStep->manuscriptRecord->getLastManuscriptFile());
