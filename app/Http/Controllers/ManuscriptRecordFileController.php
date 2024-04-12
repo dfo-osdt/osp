@@ -50,7 +50,7 @@ class ManuscriptRecordFileController extends Controller
 
         $media = $manuscriptRecord->getManuscriptFile($uuid);
 
-        if (!$media) {
+        if (! $media) {
             throw new NotFoundHttpException('File not found.');
         }
 

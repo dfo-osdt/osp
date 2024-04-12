@@ -21,7 +21,7 @@ enum ManagementReviewStepDecision: string
     case WITHHELD = 'withheld';
     case WITHDRAWN = 'withdrawn';
 
-    public function translate(string $locale = null): string
+    public function translate(?string $locale = null): string
     {
 
         collect(['en', 'fr'])->contains($locale) ?: $locale = null;

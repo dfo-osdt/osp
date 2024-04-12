@@ -12,6 +12,7 @@
         "laracasts/cypress": "^3.0",
         "laravel/framework": "^11.0",
         "laravel/horizon": "^5.15",
+        "laravel/pail": "^1.1",
         "laravel/prompts": "^0.1.11",
         "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.0.0",

@@ -126,7 +126,7 @@ test('a user can get an author profile', function () {
 
     $author = Author::factory()->create();
 
-    $response = $this->actingAs($user)->getJson('api/authors/' . $author->id);
+    $response = $this->actingAs($user)->getJson('api/authors/'.$author->id);
 
     $response->assertOk();
     expect($response->json('data'))->toHaveKey('id', $author->id);
@@ -145,7 +145,7 @@ test('a user can update an author profile without an owner', function () {
         'orcid' => 'https://orcid.org/0000-0002-0868-2726',
     ];
 
-    $response = $this->actingAs($user)->putJson('api/authors/' . $author->id, $data)->assertOk();
+    $response = $this->actingAs($user)->putJson('api/authors/'.$author->id, $data)->assertOk();
 
     $response->assertJson([
         'data' => $data,
@@ -165,7 +165,7 @@ test('a user can update their own author profile', function () {
         'orcid' => 'https://orcid.org/0000-0002-0868-2726',
     ];
 
-    $response = $this->actingAs($user)->putJson('api/authors/' . $author->id, $data)->assertOk();
+    $response = $this->actingAs($user)->putJson('api/authors/'.$author->id, $data)->assertOk();
 
     // check that first name, last name, and email are not updated here
     $data['first_name'] = $author->first_name;
@@ -190,5 +190,5 @@ test('a user cannot edit an author profile that is owned by another user', funct
         'orcid' => 'https://orcid.org/0000-0002-0868-2726',
     ];
 
-    $response = $this->actingAs($user)->putJson('api/authors/' . $author->id, $data)->assertForbidden();
+    $response = $this->actingAs($user)->putJson('api/authors/'.$author->id, $data)->assertForbidden();
 });

@@ -58,7 +58,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/user/orcid/verify', FullFlowController::class);
     Route::get('/user/orcid/verify', [FullFlowController::class, 'redirect']);
 
-
     Route::controller(AuthorController::class)->group(function () {
         Route::get('/authors', 'index');
         Route::get('/authors/{author}', 'show');

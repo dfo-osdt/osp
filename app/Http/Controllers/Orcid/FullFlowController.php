@@ -54,7 +54,7 @@ class FullFlowController
         $user = auth()->user();
         $author = $user->author;
 
-        $author->orcid = 'https://' . $baseUrl . '/' . $orcid;
+        $author->orcid = 'https://'.$baseUrl.'/'.$orcid;
         $author->orcid_access_token = $accessToken;
         $author->orcid_token_scope = $scope;
         $author->orcid_refresh_token = $refreshToken;
@@ -78,7 +78,7 @@ class FullFlowController
         $clientID = config('osp.orcid.client_id');
         $redirectURI = config('osp.orcid.redirect_uri');
 
-        if (!$clientID || !$redirectURI) {
+        if (! $clientID || ! $redirectURI) {
             throw ValidationException::withMessages(['orcid' => __('Server side ORCID configuration is missing - please contact the administrator.')]);
         }
 
@@ -95,13 +95,9 @@ class FullFlowController
         return redirect($link);
     }
 
-
     /**
      * Redirects to the frontend with the ORCID code. This is required as the OAuth server
      * will not accept an URL with a hash in the 3-legged flow.
-     *
-     * @param Request $request
-     * @return RedirectResponse
      */
     public function redirectToFrontend(Request $request): RedirectResponse
     {
@@ -110,7 +106,7 @@ class FullFlowController
         ]);
 
         $frontendUrl = config('app.frontend_url');
-        $url = $frontendUrl . "#/auth/orcid-callback?code=" . $validated['code'];
+        $url = $frontendUrl.'#/auth/orcid-callback?code='.$validated['code'];
 
         return redirect($url);
     }
