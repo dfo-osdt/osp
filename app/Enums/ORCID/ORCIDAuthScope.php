@@ -4,7 +4,6 @@ namespace App\Enums\ORCID;
 
 use InvalidArgumentException;
 
-
 /**
  * Describes the scope of access to an ORCID OAuth token.
  */
@@ -24,7 +23,7 @@ enum ORCIDAuthScope: string
         };
     }
 
-    public function translate(string $locale = null): string
+    public function translate(?string $locale = null): string
     {
         collect(['en', 'fr'])->contains($locale) ?: $locale = null;
         if ($locale == null) {
@@ -50,18 +49,18 @@ enum ORCIDAuthScope: string
      * Encode an array of ORCIDAuth for use in a query string for ORCID API,
      * note that is URL encoded with %20 instead of a space.
      *
-     * @param ORCIDAuthScope[] $scopes
+     * @param  ORCIDAuthScope[]  $scopes
      */
     public static function encode(array $scopes): string
     {
         $scopes = array_map(fn ($scope) => $scope->value, $scopes);
+
         return implode('%20', $scopes);
     }
 
     /**
      * Get a "complete access" scope for use in a query string for ORCID API,
      * note that this is a URL encoded string with %20 isntead of space.
-     *
      */
     public static function completeAccess(): string
     {
@@ -76,12 +75,12 @@ enum ORCIDAuthScope: string
      * Decode a string of scopes from a query string from ORCID API and return
      * an array of ORCIDAuthScope objects. Scopes are separated by a space.
      *
-     * @param string $scopes
      * @return ORCIDAuthScope[]
      */
     public static function decodeScopes(string $scopes): array
     {
         $scopes = explode(' ', $scopes);
+
         return array_map(fn ($scope) => self::fromString($scope), $scopes);
     }
 }

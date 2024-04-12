@@ -14,6 +14,6 @@ return [
             'Canada Day' => '= 07-01 if weekend then next monday',
             'Easter Monday' => '= easter 1',
             'St Jean Baptiste Day' => '= 06-24 if weekend then next monday',
-        ]
-    ]
+        ],
+    ],
 ];

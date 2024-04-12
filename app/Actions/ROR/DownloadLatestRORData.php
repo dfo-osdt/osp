@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class DownloadLatestRORData
 {
-    public static function handle(callable $progressCallable = null): ?array
+    public static function handle(?callable $progressCallable = null): ?array
     {
         $url = 'https://zenodo.org/api/records';
 

@@ -13,7 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 class ImplicitFlowController extends Controller
 {
-
     use LocaleTrait;
 
     /**
@@ -64,7 +63,6 @@ class ImplicitFlowController extends Controller
     protected function getOrcidId(string $accessToken): string
     {
 
-
         $base_url = $this->getBaseUrl();
 
         $response = Http::withToken($accessToken)->get("https://$base_url/oauth/userinfo");
@@ -89,7 +87,7 @@ class ImplicitFlowController extends Controller
         $clientID = config('osp.orcid.client_id');
         $redirectURI = config('osp.orcid.redirect_uri');
 
-        if (!$clientID || !$redirectURI) {
+        if (! $clientID || ! $redirectURI) {
             throw ValidationException::withMessages(['orcid' => __('Server side ORCID configuration is missing - please contact the administrator.')]);
         }
 

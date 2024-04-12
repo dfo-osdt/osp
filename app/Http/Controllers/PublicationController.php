@@ -92,7 +92,7 @@ class PublicationController extends Controller
                 switch ($validatedStatus['status']) {
                     case PublicationStatus::PUBLISHED->value:
                         $publication->status = PublicationStatus::PUBLISHED;
-                        !isset($request['accepted_on']) ? $request['accepted_on'] = $publication->accepted_on : null;
+                        ! isset($request['accepted_on']) ? $request['accepted_on'] = $publication->accepted_on : null;
                         break;
                     default:
                         // likely, only way we're here is someone is having a go at the API directly.

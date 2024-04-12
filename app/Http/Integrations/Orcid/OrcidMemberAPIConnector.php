@@ -7,14 +7,13 @@ use Saloon\Http\Connector;
 
 class OrcidMemberAPIConnector extends Connector
 {
-
     /**
      * OrcidMemberAPIConnector constructor.
      *
-     * @param string $bearerToken   The Bearer Token to use for the API. This token is the one returned by the
-     *                              ORICD API when the user authorizes the application to access their data
-     *                              and can only be used to access their profile.
-     * @param string $orcid         The ORCID iD of the user to access
+     * @param  string  $bearerToken  The Bearer Token to use for the API. This token is the one returned by the
+     *                               ORICD API when the user authorizes the application to access their data
+     *                               and can only be used to access their profile.
+     * @param  string  $orcid  The ORCID iD of the user to access
      */
     public function __construct(
         protected readonly string $bearerToken,
@@ -31,9 +30,10 @@ class OrcidMemberAPIConnector extends Connector
 
         // are we using the sandbox?
         if (config('osp.orcid.use_sandbox')) {
-            return 'https://api.sandbox.orcid.org/v3.0/' . $this->orcid;
+            return 'https://api.sandbox.orcid.org/v3.0/'.$this->orcid;
         }
-        return 'https://api.orcid.org/v3.0' . $this->orcid;
+
+        return 'https://api.orcid.org/v3.0'.$this->orcid;
     }
 
     /**

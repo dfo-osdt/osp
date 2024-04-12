@@ -113,7 +113,7 @@ class ManagementReviewStepController extends Controller
         }
 
         // if the next user is not set, only a user with permission can complete the review.
-        if (!isset($validated['next_user_id'])) {
+        if (! isset($validated['next_user_id'])) {
             Gate::authorize('withhold_and_complete_management_review');
         }
 
@@ -131,7 +131,6 @@ class ManagementReviewStepController extends Controller
             $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
             $nextReviewStep->previous_step_id = $managementReviewStep->id;
             $nextReviewStep->decision_expected_by = $managementReviewStep->decision_expected_by;
-
 
             $nextReviewStep->saveOrFail();
 
@@ -236,7 +235,6 @@ class ManagementReviewStepController extends Controller
 
         // return to the manager that sent the manuscript back to the author.
         $previousStep = $managementReviewStep->previousStep;
-
 
         if (isset($validated['comments'])) {
             $managementReviewStep->comments = $validated['comments'];

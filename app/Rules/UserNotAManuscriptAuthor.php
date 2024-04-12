@@ -26,7 +26,7 @@ class UserNotAManuscriptAuthor implements Rule
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
-     * @param  mixed  $value    a user id
+     * @param  mixed  $value  a user id
      * @return bool
      */
     public function passes($attribute, $value)

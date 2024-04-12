@@ -9,8 +9,6 @@ use Saloon\Http\Request;
 /**
  * ORCID Peroanl Info Request
  * https://github.com/ORCID/ORCID-Source/blob/development/orcid-api-web/tutorial/personal_info.md
- *
- * @package App\Http\Integrations\Orcid\Requests
  */
 class GetPersonalInfoRequest extends Request
 {
@@ -22,8 +20,8 @@ class GetPersonalInfoRequest extends Request
     /**
      * GetPersonalInfo constructor.
      *
-     * @param PersonalInfoEndpoints $endpoint   The endpoint to request. By default this is the person endpoint
-     *                                          which returns the full personal information of the user.
+     * @param  PersonalInfoEndpoints  $endpoint  The endpoint to request. By default this is the person endpoint
+     *                                           which returns the full personal information of the user.
      */
     public function __construct(
         protected PersonalInfoEndpoints $endpoint = PersonalInfoEndpoints::PERSON
