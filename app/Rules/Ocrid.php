@@ -15,7 +15,7 @@ class Ocrid implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // check that values contains full uri prefix we support (https://orcid.org/) and the sandbox prefix (https://sandbox.orcid.org/)
-        if (!preg_match('/^https:\/\/(sandbox\.)?orcid\.org\//', $value)) {
+        if (! preg_match('/^https:\/\/(sandbox\.)?orcid\.org\//', $value)) {
             $fail(__('validation.orcid.prefix', ['attribute' => $attribute]));
         }
 
@@ -23,12 +23,12 @@ class Ocrid implements ValidationRule
         $orcid = Str::substr($value, -19);
 
         // check value against regex
-        if (!preg_match('/^0000-000[1-9]-[0-9]{4}-[0-9]{3}[0-9X]$/', $orcid)) {
+        if (! preg_match('/^0000-000[1-9]-[0-9]{4}-[0-9]{3}[0-9X]$/', $orcid)) {
             $fail(__('validation.orcid.format', ['attribute' => $attribute]));
         }
 
         // check value against checksum
-        if (!$this->isChecksumValid($orcid)) {
+        if (! $this->isChecksumValid($orcid)) {
             $fail(__('validation.orcid.checksum', ['attribute' => $attribute]));
         }
     }

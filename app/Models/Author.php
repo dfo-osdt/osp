@@ -33,24 +33,26 @@ class Author extends Model
     // author full name
     public function getFullNameAttribute(): string
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->first_name.' '.$this->last_name;
     }
 
     // author name for APA citation
     public function getApaNameAttribute(): string
     {
-        return $this->last_name . ', ' . $this->first_name;
+        return $this->last_name.', '.$this->first_name;
     }
 
     /**
      * Get the ORCID number from the ORCID iD string as
      * we store thee full ORCID iD with the URL prefix
      * in the database.
-     *
      */
     public function getOrcidNumberAttribute(): string
     {
-        if (!$this->orcid) return '';
+        if (! $this->orcid) {
+            return '';
+        }
+
         return substr($this->orcid, -19);
     }
 

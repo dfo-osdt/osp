@@ -19,7 +19,7 @@ return new class extends Migration
         // Update the existing records to have a decision_expected_by
         ManagementReviewStep::whereNull('decision_expected_by')->get()
             ->each(fn (ManagementReviewStep $step) => $step->update([
-                'decision_expected_by' => $step->created_at->addBusinessDays(config('osp.management_review.decision_expected_business_days'))
+                'decision_expected_by' => $step->created_at->addBusinessDays(config('osp.management_review.decision_expected_business_days')),
             ]));
     }
 };

@@ -27,5 +27,5 @@ test('check OpenID redirect works', function () {
 test('check front end redirect rule', function () {
     $response = $this->get('/api/orcid/redirect?code=1234');
     expect($response->status())->toBe(302);
-    expect($response->headers->get('Location'))->toBe(config('app.frontend_url') . "#/auth/orcid-callback?code=1234");
+    expect($response->headers->get('Location'))->toBe(config('app.frontend_url').'#/auth/orcid-callback?code=1234');
 });

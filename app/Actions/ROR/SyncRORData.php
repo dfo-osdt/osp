@@ -7,7 +7,7 @@ use Cerbero\JsonParser\JsonParser;
 
 class SyncRORData
 {
-    public static function handle(string $jsonFilePath, string $version, callable $progressCallback = null): void
+    public static function handle(string $jsonFilePath, string $version, ?callable $progressCallback = null): void
     {
         if (! file_exists($jsonFilePath)) {
             throw new \Exception('File not found: '.$jsonFilePath);
