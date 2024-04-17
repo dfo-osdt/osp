@@ -20,7 +20,7 @@
                     <template #title>
                         <q-icon
                             name="mdi-history"
-                            color="accent"
+                            color="primary"
                             size="sm"
                             left
                         />

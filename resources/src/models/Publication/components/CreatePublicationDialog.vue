@@ -17,7 +17,7 @@
                 :done="step > 1"
                 style="min-height: 275px"
             >
-                <div class="text-body1 text-accent text-weight-medium q-mb-md">
+                <div class="text-body1 text-primary text-weight-medium q-mb-md">
                     {{ $t('create-publication-dialog.before-continuing') }}
                 </div>
                 <p>
@@ -43,7 +43,7 @@
                 style="min-height: 275px"
             >
                 <q-form ref="detailsForm" class="q-ma-md">
-                    <div class="text-body1 text-accent text-weight-medium">
+                    <div class="text-body1 text-primary text-weight-medium">
                         {{
                             $t('create-publication-dialog.publication-details')
                         }}
@@ -62,9 +62,9 @@
                         v-model="journalId"
                         class="q-mb-md"
                         :rules="[
-                    (val: number) =>
-                        val !== null || $t('common.required'),
-                ]"
+                            (val: number) =>
+                                val !== null || $t('common.required'),
+                        ]"
                     ></JournalSelect>
                     <DoiInput v-model="doi" class="q-mb-md" />
                 </q-form>
@@ -78,7 +78,7 @@
                 style="min-height: 275px"
             >
                 <q-form ref="datesForm">
-                    <div class="text-body1 text-accent text-weight-medium">
+                    <div class="text-body1 text-primary text-weight-medium">
                         {{ $t('create-publication-dialog.publication-dates') }}
                     </div>
                     <q-separator class="q-mb-md" />
@@ -96,7 +96,7 @@
                         required
                     />
                     <div
-                        class="text-body1 q-mt-lg text-accent text-weight-medium"
+                        class="text-body1 q-mt-lg text-primary text-weight-medium"
                     >
                         {{ $t('create-publication-dialog.publication-access') }}
                     </div>
@@ -181,7 +181,7 @@ watch(
             datesValid.value = true;
         }
     },
-    { immediate: true }
+    { immediate: true },
 );
 
 // stepper

@@ -1,7 +1,7 @@
 <template>
     <q-dialog>
         <q-card style="width: 700px; max-width: 80vw" outlined>
-            <q-card-section class="bg-teal-1 text-h6 text-accent">
+            <q-card-section class="bg-teal-1 text-h6 text-primary">
                 <div class="flex justify-between">
                     <div>{{ title }}</div>
                     <div>

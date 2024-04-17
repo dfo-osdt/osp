@@ -7,7 +7,7 @@
                     width="150px"
                 />
             </div>
-            <div class="text-h5 text-weight-light text-accent q-mb-sm">
+            <div class="text-h5 text-weight-light text-primary q-mb-sm">
                 {{ $t('common.no-results-found') }}
             </div>
             <div class="text-body1 text-grey-8">

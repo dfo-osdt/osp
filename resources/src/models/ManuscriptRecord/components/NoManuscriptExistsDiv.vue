@@ -7,7 +7,7 @@
                     width="250px"
                 />
             </div>
-            <div class="text-h5 text-weight-light text-accent q-mb-sm">
+            <div class="text-h5 text-weight-light text-primary q-mb-sm">
                 {{ title }}
             </div>
             <div class="text-body1 text-grey-8 text-left">

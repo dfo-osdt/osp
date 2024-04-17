@@ -9,9 +9,10 @@
                     icon="mdi-arrow-right"
                     color="primary"
                     :to="to"
+                    :aria-label="title"
                 />
             </div>
-            <div class="text-body1 text-weight-medium text-accent">
+            <div class="text-body1 text-weight-medium text-primary">
                 {{ title }}
             </div>
         </q-card-section>
