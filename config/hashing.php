@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'driver' => 'bcrypt',
+    'driver' => 'argon2id',
 
     /*
     |--------------------------------------------------------------------------
@@ -41,12 +41,15 @@ return [
     | passwords are hashed using the Argon algorithm. These will allow you
     | to control the amount of time it takes to hash the given password.
     |
+    | Seetings based on OSWAP recommendations for password storage:
+    | https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+    |
     */
 
     'argon' => [
-        'memory' => 65536,
+        'memory' => 1024 * 19,  // 1024 * 19 = 19MB
         'threads' => 1,
-        'time' => 4,
+        'time' => 2,
     ],
 
 ];
