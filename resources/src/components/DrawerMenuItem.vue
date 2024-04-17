@@ -1,5 +1,11 @@
 <template>
-    <q-item :key="item.label" v-ripple clickable :to="item.to">
+    <q-item
+        :key="item.label"
+        v-ripple
+        clickable
+        :to="item.to"
+        :aria-label="item.label"
+    >
         <q-item-section avatar>
             <q-icon :name="item.icon" />
             <q-tooltip

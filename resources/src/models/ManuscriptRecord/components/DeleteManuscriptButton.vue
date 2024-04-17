@@ -1,5 +1,9 @@
 <template>
-    <q-btn v-bind="props" @click.stop="confirmDeletion()">
+    <q-btn
+        v-bind="props"
+        aria-label="$t('common.delete')"
+        @click.stop="confirmDeletion()"
+    >
         <slot>
             <q-tooltip>{{ $t('common.delete') }}</q-tooltip>
         </slot>
@@ -9,7 +13,9 @@
 <script
     setup
     lang="ts"
-    generic="M extends ManuscriptRecordResource | ManuscriptRecordSummaryResource"
+    generic="
+        M extends ManuscriptRecordResource | ManuscriptRecordSummaryResource
+    "
 >
 import { useI18n } from 'vue-i18n';
 import { QBtnProps, useQuasar } from 'quasar';
@@ -47,7 +53,7 @@ function confirmDeletion(): void {
 
 async function deleteManuscript() {
     const deleted = await ManuscriptRecordService.delete(
-        props.manuscript.data.id
+        props.manuscript.data.id,
     );
     if (deleted) {
         $q.notify({

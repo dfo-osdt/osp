@@ -323,7 +323,7 @@
                         ? 'mdi-content-save-alert-outline'
                         : 'mdi-content-save-outline'
                 "
-                color="accent"
+                color="primary"
                 :loading="loading"
                 @click="save"
             />

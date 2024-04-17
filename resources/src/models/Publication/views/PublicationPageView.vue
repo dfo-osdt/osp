@@ -136,7 +136,7 @@
                         :readonly="!canEdit"
                         class="q-mb-md"
                     />
-                    <div class="text-body1 text-accent text-weight-medium">
+                    <div class="text-body1 text-primary text-weight-medium">
                         {{ $t('create-publication-dialog.publication-dates') }}
                     </div>
                     <q-separator class="q-mb-md" />
@@ -162,7 +162,7 @@
                         />
                     </div>
                     <div
-                        class="text-body1 q-mt-lg text-accent text-weight-medium"
+                        class="text-body1 q-mt-lg text-primary text-weight-medium"
                     >
                         {{ $t('create-publication-dialog.publication-access') }}
                     </div>

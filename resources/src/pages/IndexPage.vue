@@ -4,7 +4,11 @@
             <div class="col-11 col-lg-10">
                 <div class="row">
                     <div class="col-4 gt-sm">
-                        <q-img src="/assets/ideas_grow.png" width="100%" />
+                        <q-img
+                            src="/assets/ideas_grow.png"
+                            width="100%"
+                            :alt="$t('osp.alt.main-image')"
+                        />
                     </div>
                     <div
                         class="col-12 col-md-7 q-mt-xl"
@@ -13,7 +17,7 @@
                         <div class="text-h2">{{ $t('osp.slogan.p1') }},</div>
                         <div class="text-h1 text-weight-medium align-end">
                             {{ $t('osp.slogan.p2')
-                            }}<span class="text-teal-5"
+                            }}<span class="text-primary"
                                 >&nbsp;{{ $t('osp.slogan.p3') }}</span
                             >.
                         </div>
@@ -27,7 +31,7 @@
                         >
                             <q-btn
                                 size="lg"
-                                color="teal-5"
+                                color="primary"
                                 :label="$t('common.login')"
                                 :to="{ name: 'login' }"
                             />

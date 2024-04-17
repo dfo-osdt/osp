@@ -7,11 +7,12 @@
         @mouseover="authStore.isDrawerMini = false"
         @mouseout="authStore.isDrawerMini = true"
     >
-        <q-list padding class="menu-list">
+        <q-list padding class="menu-list" role="menubar">
             <DrawerMenuItem
                 v-for="item in userMenuItems"
                 :key="item.label"
                 :item="item"
+                role="menuitem"
             ></DrawerMenuItem>
 
             <q-separator></q-separator>
@@ -23,15 +24,17 @@
                 v-for="item in exploreMenuItems"
                 :key="item.label"
                 :item="item"
+                role="menuitem"
             >
             </DrawerMenuItem>
         </q-list>
-        <q-list class="q-mb-sm">
+        <q-list class="q-mb-sm" role="menubar">
             <q-separator></q-separator>
             <DrawerMenuItem
                 v-for="item in bottomMenuItems"
                 :key="item.label"
                 :item="item"
+                role="menuitem"
             ></DrawerMenuItem>
         </q-list>
     </q-drawer>

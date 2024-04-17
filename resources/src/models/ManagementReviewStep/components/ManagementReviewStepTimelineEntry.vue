@@ -31,7 +31,7 @@
                 bordered
                 flat
             >
-                <div class="text-body1 text-weight-medium text-accent">
+                <div class="text-body1 text-weight-medium text-primary">
                     {{ $t('management-review-response.title') }}
                 </div>
                 <p>
@@ -77,7 +77,7 @@
                 />
             </q-card>
             <q-card v-else class="q-pa-md" bordered flat>
-                <div class="text-body1 text-weight-medium text-accent">
+                <div class="text-body1 text-weight-medium text-primary">
                     {{ $t('management-review-guidelines.title') }}
                 </div>
                 <p>
@@ -158,7 +158,7 @@
                         >{{ $t('common.decision') }}</span
                     >
                     <ManagementReviewStepDecisionSpan
-                        class="text-weight-bold text-uppercase text-accent"
+                        class="text-weight-bold text-uppercase text-primary"
                         :class="`text-${color}`"
                         :decision="managementStep.data.decision"
                     />

@@ -1,5 +1,5 @@
 <template>
-    <q-list separator>
+    <q-list separator role="list">
         <q-item
             v-for="manuscript in manuscripts"
             :key="manuscript.data.id"
@@ -8,7 +8,7 @@
         >
             <q-item-section>
                 <q-item-label
-                    class="text-body1 text-weight-medium text-accent"
+                    class="text-body1 text-weight-medium text-primary"
                     >{{ manuscript.data.title }}</q-item-label
                 >
                 <q-item-label caption lines="2">

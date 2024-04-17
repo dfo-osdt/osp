@@ -1,5 +1,5 @@
 <template>
-    <q-list separator>
+    <q-list separator role="list">
         <q-item
             v-for="step in managementReviewSteps"
             :key="step.data.id"
@@ -16,13 +16,13 @@
                             ? 'mdi-check-circle-outline'
                             : 'mdi-progress-check'
                     "
-                    class="text-accent"
+                    class="text-primary"
                     size="md"
                 ></q-icon>
             </q-item-section>
             <q-item-section>
                 <q-item-label
-                    class="text-body1 text-weight-medium text-accent"
+                    class="text-body1 text-weight-medium text-primary"
                     >{{
                         step.data.manuscript_record?.data.title ??
                         $t('common.no-title')

@@ -1,5 +1,5 @@
 <template>
-    <q-header bordered class="q-py-sm bg-white text-accent">
+    <q-header bordered class="q-py-sm bg-white text-secondary">
         <q-toolbar>
             <q-btn
                 v-if="authStore.isAuthenticated"
@@ -8,10 +8,15 @@
                 dense
                 round
                 :icon="authStore.leftDrawerOpen ? 'mdi-menu-open' : 'mdi-menu'"
+                aria-label="$t('osp.alt.toggle-drawer')"
                 @click="toggleLeftDrawer"
             />
             <router-link to="/">
-                <q-img src="/assets/logo.svg" width="40px"></q-img>
+                <q-img
+                    src="/assets/logo.svg"
+                    width="40px"
+                    :alt="$t('osp.alt.logo')"
+                ></q-img>
             </router-link>
             <q-toolbar-title class="q-mt-sm text-black">{{
                 $t('common.app-name')
@@ -30,7 +35,7 @@
             <q-btn
                 v-if="authStore.isAuthenticated"
                 round
-                color="accent"
+                color="secondary"
                 :label="authStore.user?.initials"
             >
                 <q-menu :offset="[0, 10]">
@@ -51,7 +56,9 @@
                         </q-item>
                         <q-item v-ripple to="/dashboard" clickable>
                             <q-item-section>
-                                <q-item-label>{{ $t('common.dashboard') }}</q-item-label>
+                                <q-item-label>{{
+                                    $t('common.dashboard')
+                                }}</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
                                 <q-icon name="mdi-view-dashboard-outline" />
@@ -59,7 +66,9 @@
                         </q-item>
                         <q-item v-ripple to="/auth/logout" clickable>
                             <q-item-section>
-                                <q-item-label>{{ $t('common.logout') }}</q-item-label>
+                                <q-item-label>{{
+                                    $t('common.logout')
+                                }}</q-item-label>
                             </q-item-section>
                             <q-item-section avatar>
                                 <q-icon name="mdi-logout" />

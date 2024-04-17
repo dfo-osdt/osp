@@ -8,7 +8,7 @@
                     class="q-mb-sm"
                 />
             </div>
-            <div class="text-h5 text-weight-light text-accent q-mb-sm">
+            <div class="text-h5 text-weight-light text-primary q-mb-sm">
                 {{ $t('no-management-review.title') }}
             </div>
             <div class="text-body1 text-grey-8">
