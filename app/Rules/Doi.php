@@ -2,22 +2,19 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\InvokableRule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class Doi implements InvokableRule
+class Doi implements ValidationRule
 {
     /**
      * Check if the given value is a valid DOI.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     * @return void
      */
-    public function __invoke($attribute, $value, $fail)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // check the value against the DOI regex
-        if (! preg_match('/^10\.\d{4,9}\/[-._;()\/:A-Z0-9]+$/i', $value)) {
+        if (!preg_match('/^10\.\d{4,9}\/[-._;()\/:A-Z0-9]+$/i', $value)) {
             $fail('The :attribute is not a valid DOI.');
         }
     }
