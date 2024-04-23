@@ -31,6 +31,8 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
       - name: Execute tests (Unit and Feature tests) via PEST
         run: vendor/bin/pest --ci --parallel
+      - name: Run Enlightn Security Checks
+        run: php artisan enlightn --ci
       - name: pnpm
         uses: pnpm/action-setup@v3
         with:
