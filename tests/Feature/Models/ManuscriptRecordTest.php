@@ -45,7 +45,7 @@ test('an authenticator user can see the manuscript for which they are an author'
         'organization_id' => $author->author->organization_id,
     ]);
 
-    $response = $this->actingAs($author)->getJson('/api/manuscript-records/'.$manuscript->id)->assertOk();
+    $response = $this->actingAs($author)->getJson('/api/manuscript-records/' . $manuscript->id)->assertOk();
     expect($response->json('data.id'))->toBe($manuscript->id);
 });
 
@@ -197,7 +197,6 @@ test('a user can submit a filled manuscript record', function () {
 
     $radomUser = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->filled()->create();
-
     $reviewerUser = User::factory()->create();
 
     $data = [
@@ -207,7 +206,8 @@ test('a user can submit a filled manuscript record', function () {
     // random user cannot submit manuscript
     $this->actingAs($radomUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertForbidden();
 
-    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertOk();
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data);
+    $response->assertOk();
 
     Mail::assertQueued(ManuscriptRecordToReviewMail::class);
 

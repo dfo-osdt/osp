@@ -209,6 +209,9 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             'abstract' => 'required',
             'pls' => 'required',
             'relevant_to' => 'required',
+            'region_id' => 'required|exists:regions,id',
+            'functional_area_id' => 'required|exists:functional_areas,id',
+            'relevant_to' => 'required',
         ]);
 
         $validator->after(function ($validator) {
