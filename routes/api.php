@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\AuthorExpertiseController;
 use App\Http\Controllers\ExpertiseController;
+use App\Http\Controllers\FunctionalAreaController;
 use App\Http\Controllers\FunderController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ManagementReviewStepController;
@@ -190,6 +191,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('/regions', [RegionController::class, 'index']);
+    Route::get('/functional-areas', [FunctionalAreaController::class, 'index']);
 
     Route::prefix('utils')->group(function () {
         Route::post('/generate-pls', GeneratePLSController::class);

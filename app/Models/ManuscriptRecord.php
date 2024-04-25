@@ -68,6 +68,14 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     }
 
     /**
+     * A manuscript has a functional area.
+     */
+    public function functionalArea(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\FunctionalArea');
+    }
+
+    /**
      * A manuscripts has several ManuscriptAuthors
      */
     public function manuscriptAuthors(): HasMany
@@ -161,7 +169,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     public function deleteManuscriptFile($uuid, $force = false)
     {
         $media = $this->getMedia('manuscript')->where('uuid', $uuid)->first();
-        if (! $media) {
+        if (!$media) {
             throw new FileNotFoundException('File not found.');
         }
         if ($force) {
@@ -201,6 +209,9 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             'abstract' => 'required',
             'pls' => 'required',
             'relevant_to' => 'required',
+            'region_id' => 'required|exists:regions,id',
+            'functional_area_id' => 'required|exists:functional_areas,id',
+            'relevant_to' => 'required',
         ]);
 
         $validator->after(function ($validator) {
@@ -212,7 +223,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             }
         });
 
-        if (! $noExceptions) {
+        if (!$noExceptions) {
             $validator->validate();
         }
 

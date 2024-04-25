@@ -207,6 +207,27 @@
                             </div>
                         </div>
                     </QuestionEditor>
+                    <div class="q-mb-lg">
+                        <div class="q-ml-xs">
+                            <div
+                                class="text-body1 text-primary text-weight-medium"
+                            >
+                                {{ $t('common.functional-area')
+                                }}<RequiredSpan />
+                            </div>
+                            <div class="q-my-xs">
+                                <p>
+                                    {{ $t('mrf.functional-area-text') }}
+                                </p>
+                            </div>
+                        </div>
+                        <FunctionalAreaSelect
+                            v-model="manuscriptResource.data.functional_area_id"
+                            :readonly="isManuscriptReadOnly"
+                            :disable="loading"
+                            class="q-mb-md"
+                        />
+                    </div>
                     <QuestionEditor
                         v-model="manuscriptResource.data.relevant_to"
                         :title="$t('mrf.relevant-title')"
@@ -353,6 +374,7 @@ import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFu
 import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue';
 import ManuscriptFileManagementCard from '../components/ManuscriptFileManagementCard.vue';
 import YesNoBooleanOptionGroup from '../components/YesNoBooleanOptionGroup.vue';
+import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue';
 
 const $q = useQuasar();
 const router = useRouter();

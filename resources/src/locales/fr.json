@@ -255,7 +255,8 @@
     "your-email": "Votre courriel",
     "your-first-name": "Ton prénom",
     "your-last-name": "Votre nom de famille",
-    "your-password": "Votre mot de passe"
+    "your-password": "Votre mot de passe",
+    "functional-area": "Domaine fonctionnel"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -507,7 +508,8 @@
     "upload-hint": "Seuls les fichiers PDF sont acceptés. \nLa taille maximale du fichier est de {max} Mo.",
     "upload-manuscript": "Télécharger le manuscrit",
     "upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
-    "working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié."
+    "working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié.",
+    "functional-area-text": "Afin d'améliorer les rapports sur les résultats de la recherche, veuillez sélectionner le domaine fonctionnel pertinent pour ce manuscrit."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",

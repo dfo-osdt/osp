@@ -255,7 +255,8 @@
     "your-email": "Your email",
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
-    "your-password": "Your password"
+    "your-password": "Your password",
+    "functional-area": "Functional Area"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -507,7 +508,8 @@
     "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
     "upload-manuscript": "Upload manuscript",
     "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
-    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published."
+    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
+    "functional-area-text": "In order to improve reporting on research outputs, please select the relevant functional area for this manuscript."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",

@@ -10,6 +10,7 @@ import {
     MediaResourceList,
 } from '../Resource';
 import { UserResource } from '../User/User';
+import { FunctionalArea } from '../FunctionalArea/FunctionalArea';
 
 export type ManuscriptRecordType = 'primary' | 'secondary';
 
@@ -41,6 +42,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     readonly updated_at: string;
     status: ManuscriptRecordStatus;
     user_id: number;
+    functional_area_id: number | null;
     abstract: string;
     pls: string;
     relevant_to: string;
@@ -53,6 +55,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
     withdrawn_on: string | null;
     // relationships
     region?: Region;
+    functional_area?: FunctionalArea;
     manuscript_authors?: ManuscriptAuthorResource[];
     user?: UserResource;
     publication?: PublicationResource;
