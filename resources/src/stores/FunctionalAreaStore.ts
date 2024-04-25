@@ -1,5 +1,5 @@
 import {
-    FunctionaAreaResource,
+    FunctionalAreaResource,
     FunctionalAreaService,
 } from '@/models/FunctionalArea/FunctionalArea';
 import { Ref } from 'vue';
@@ -11,7 +11,7 @@ import { Ref } from 'vue';
 export const useFunctionalAreaStore = defineStore('FunctionalAreaStore', () => {
     // initial state
     const loading: Ref<boolean> = ref(false);
-    const functionalAreas: Ref<FunctionaAreaResource[] | undefined> =
+    const functionalAreas: Ref<FunctionalAreaResource[] | undefined> =
         ref(undefined);
 
     /** get values if they're not already loaded.

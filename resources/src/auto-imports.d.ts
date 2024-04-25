@@ -192,6 +192,7 @@ declare global {
   const useFocusWithin: typeof import('@vueuse/core')['useFocusWithin']
   const useFps: typeof import('@vueuse/core')['useFps']
   const useFullscreen: typeof import('@vueuse/core')['useFullscreen']
+  const useFunctionalAreaStore: typeof import('./stores/FunctionalAreaStore')['useFunctionalAreaStore']
   const useFunderStore: typeof import('./stores/FunderStore')['useFunderStore']
   const useGamepad: typeof import('@vueuse/core')['useGamepad']
   const useGeolocation: typeof import('@vueuse/core')['useGeolocation']
@@ -513,6 +514,7 @@ declare module 'vue' {
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>
     readonly useFps: UnwrapRef<typeof import('@vueuse/core')['useFps']>
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
+    readonly useFunctionalAreaStore: UnwrapRef<typeof import('./stores/FunctionalAreaStore')['useFunctionalAreaStore']>
     readonly useFunderStore: UnwrapRef<typeof import('./stores/FunderStore')['useFunderStore']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
@@ -827,6 +829,7 @@ declare module '@vue/runtime-core' {
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>
     readonly useFps: UnwrapRef<typeof import('@vueuse/core')['useFps']>
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
+    readonly useFunctionalAreaStore: UnwrapRef<typeof import('./stores/FunctionalAreaStore')['useFunctionalAreaStore']>
     readonly useFunderStore: UnwrapRef<typeof import('./stores/FunderStore')['useFunderStore']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>

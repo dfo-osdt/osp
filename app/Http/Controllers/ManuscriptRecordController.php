@@ -67,6 +67,7 @@ class ManuscriptRecordController extends Controller
         $validated = $request->validate([
             'title' => 'string|max:255',
             'region_id' => 'numeric|exists:regions,id',
+            'functional_area_id' => 'numeric|exists:functional_areas,id',
             'type' => [new Enum(ManuscriptRecordType::class)],
             'abstract' => 'nullable|string',
             'pls' => 'nullable|string',

@@ -7,7 +7,7 @@ export interface FunctionalArea {
     name_fr: string;
 }
 
-export type FunctionaAreaResource = Resource<FunctionalArea>;
+export type FunctionalAreaResource = Resource<FunctionalArea>;
 export type FunctionalAreaResourceList = ResourceList<FunctionalArea>;
 
 type RList = FunctionalAreaResourceList;

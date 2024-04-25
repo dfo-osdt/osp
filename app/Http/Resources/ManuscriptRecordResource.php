@@ -25,6 +25,7 @@ class ManuscriptRecordResource extends JsonResource
                 'title' => $this->title,
                 'region_id' => $this->region_id,
                 'user_id' => $this->user_id,
+                'functional_area_id' => $this->functional_area_id,
 
                 // text fields / send empty string if null.
                 'abstract' => $this->abstract ?? '',
@@ -44,6 +45,7 @@ class ManuscriptRecordResource extends JsonResource
 
                 //relationships - if loaded
                 'region' => RegionResource::make($this->whenLoaded('region')),
+                'functional_area' => FunctionalAreaResource::make($this->whenLoaded('functionalArea')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
                 'user' => UserResource::make($this->whenLoaded('user')),
                 'publication' => $this->when($this->status === ManuscriptRecordStatus::ACCEPTED, PublicationResource::make($this->whenLoaded('publication'))),
