@@ -4,6 +4,12 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
+/**
+ * Resource for ManuscriptRecord model.
+ * @extends JsonResource<\App\Models\ManuscriptRecord>
+ * @mixin \App\Models\ManuscriptRecord
+ */
 class ManuscriptRecordSummaryResource extends JsonResource
 {
     /**

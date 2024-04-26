@@ -4,6 +4,11 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Resource for Region model.
+ * @extends JsonResource<\App\Models\Region>
+ * @mixin \App\Models\Region
+ */
 class RegionResource extends JsonResource
 {
     /**

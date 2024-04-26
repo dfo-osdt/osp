@@ -6,6 +6,11 @@ use Auth;
 use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Resource for FundingSource model.
+ * @extends JsonResource<\App\Models\FundingSource>
+ * @mixin \App\Models\FundingSource
+ */
 class FundingSourceResource extends JsonResource
 {
     /**
@@ -41,7 +46,7 @@ class FundingSourceResource extends JsonResource
         return match ($type) {
             'App\Models\ManuscriptRecord' => 'manuscript-records',
             'App\Models\Publication' => 'publications',
-            default => throw new Exception('Unknown fundable type: '.$type),
+            default => throw new Exception('Unknown fundable type: ' . $type),
         };
     }
 }

@@ -4,6 +4,11 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Resource of User Authentication
+ *
+ * @mixin \Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog
+ */
 class UserAuthenticationResource extends JsonResource
 {
     /**

@@ -4,6 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Resource for Media model.
+ * @mixin \Spatie\MediaLibrary\MediaCollections\Models\Media
+ */
 class MediaResource extends JsonResource
 {
     /**

@@ -5,6 +5,11 @@ namespace App\Http\Resources;
 use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Resource for ManagementReviewStep model.
+ * @extends JsonResource<\App\Models\ManagementReviewStep>
+ * @mixin \App\Models\ManagementReviewStep
+ */
 class ManagementReviewStepResource extends JsonResource
 {
     /**

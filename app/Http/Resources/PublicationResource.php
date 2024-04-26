@@ -5,6 +5,11 @@ namespace App\Http\Resources;
 use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Resource for Publication model.
+ * @extends JsonResource<\App\Models\Publication>
+ * @mixin \App\Models\Publication
+ */
 class PublicationResource extends JsonResource
 {
     /**

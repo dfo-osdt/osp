@@ -1,11 +1,10 @@
 includes:
-    - ./vendor/nunomaduro/larastan/extension.neon
+    - vendor/larastan/larastan/extension.neon
 
 parameters:
 
     paths:
-        - app
-        - database
+        - app/
 
     # Level 9 is the highest level
     level: 1

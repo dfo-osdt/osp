@@ -4,6 +4,11 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Resource for Funder model.
+ * @extends JsonResource<\App\Models\Funder>
+ * @mixin \App\Models\Funder
+ */
 class FunderResource extends JsonResource
 {
     /**
