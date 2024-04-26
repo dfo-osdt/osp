@@ -6,7 +6,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Resource for Journal model.
+ *
  * @extends JsonResource<\App\Models\Journal>
+ *
  * @mixin \App\Models\Journal
  */
 class JournalResource extends JsonResource

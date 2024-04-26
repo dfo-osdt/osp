@@ -5,11 +5,11 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-
 /**
  * Resource for Shareable model.
  *
  * @extends JsonResource<\App\Models\Shareable>
+ *
  * @mixin \App\Models\Shareable
  */
 class ShareableResource extends JsonResource

@@ -9,6 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Resource for FunctionalArea model.
  *
  * @extends JsonResource<\App\Models\FunctionalArea>
+ *
  * @mixin \App\Models\FunctionalArea
  */
 class FunctionalAreaResource extends JsonResource

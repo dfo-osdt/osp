@@ -7,7 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Resource for PublicationAuthor model.
+ *
  * @extends JsonResource<\App\Models\PublicationAuthor>
+ *
  * @mixin \App\Models\PublicationAuthor
  */
 class PublicationAuthorResource extends JsonResource

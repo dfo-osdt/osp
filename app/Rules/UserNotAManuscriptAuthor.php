@@ -15,7 +15,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
  */
 class UserNotAManuscriptAuthor implements ValidationRule
 {
-
     /**
      * Create a new rule instance.
      *
@@ -24,7 +23,6 @@ class UserNotAManuscriptAuthor implements ValidationRule
     public function __construct(public ManuscriptRecord $manuscriptRecord)
     {
     }
-
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

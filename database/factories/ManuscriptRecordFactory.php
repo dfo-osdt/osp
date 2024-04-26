@@ -50,7 +50,7 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->manuscriptAuthors()->save(ManuscriptAuthor::factory()->make(['is_corresponding_author' => true])); // create a corresponding author
             $manuscript->manuscriptAuthors()->saveMany(ManuscriptAuthor::factory()->count(3)->make()); // create 3 other authors
             $manuscript->fundingSources()->saveMany(FundingSource::factory()->count(3)->make()); // create 3 funding sources
-            $manuscript->addMedia(getcwd() . '/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('manuscript'); // add a manuscript file
+            $manuscript->addMedia(getcwd().'/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('manuscript'); // add a manuscript file
         });
     }
 

@@ -6,7 +6,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Resource for Invitation model.
+ *
  * @extends JsonResource<\App\Models\Invitation>
+ *
  * @mixin \App\Models\Invitation
  */
 class InvitationResource extends JsonResource
