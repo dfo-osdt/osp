@@ -1,7 +1,6 @@
 // locale store is used to store the current locale
 import { i18n } from '@/plugins/i18n';
-import { Quasar } from 'quasar';
-import { langs } from '@/plugins/quasar';
+import { Lang } from 'quasar';
 
 export type Locale = 'en' | 'fr';
 
@@ -9,6 +8,10 @@ export const useLocaleStore = defineStore('LocaleStore', () => {
     const locale = ref<'en' | 'fr'>(i18n.global.locale as 'en' | 'fr');
     // this should already be set by the initializer or a previous visit to the site
     const persistentLocale = useStorage('locale', 'en', localStorage);
+
+    const langs = import.meta.glob(
+        '../../../node_modules/quasar/lang/(fr|en-US).js',
+    );
 
     // sync initial states i18n, quasar and persistent locale
     setQuasarLocale();
@@ -21,8 +24,8 @@ export const useLocaleStore = defineStore('LocaleStore', () => {
 
     function setQuasarLocale() {
         const l = locale.value === 'fr' ? 'fr' : 'en-US';
-        langs[`../../../node_modules/quasar/lang/${l}.mjs`]().then((lang) => {
-            Quasar.lang.set(lang.default);
+        langs[`../../../node_modules/quasar/lang/${l}.js`]().then((lang) => {
+            Lang.set(lang.default);
         });
     }
 
