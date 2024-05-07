@@ -8,9 +8,9 @@
         "cy:run": "cypress run"
     },
     "devDependencies": {
-        "@quasar/vite-plugin": "^1.6.0",
+        "@quasar/vite-plugin": "^1.7.0",
         "@types/dompurify": "^3.0.5",
-        "@types/node": "^20.12.8",
+        "@types/node": "^20.12.10",
         "@typescript-eslint/eslint-plugin": "^7.8.0",
         "@typescript-eslint/parser": "^7.8.0",
         "axios": "^1.6.8",
@@ -23,7 +23,7 @@
         "laravel-vite-plugin": "^1.0.2",
         "lodash": "^4.17.21",
         "prettier": "^3.2.5",
-        "sass": "^1.76.0",
+        "sass": "^1.77.0",
         "typescript": "^5.4.5",
         "unplugin-auto-import": "^0.17.5",
         "unplugin-vue-components": "^0.26.0",
@@ -37,9 +37,8 @@
         "@vueuse/core": "^10.9.0",
         "dompurify": "^3.1.2",
         "pinia": "^2.1.7",
-        "plugin-vue@latest": "link:@@vitejs/plugin-vue@latest",
-        "quasar": "^2.15.4",
-        "vue": "^3.4.26",
+        "quasar": "^2.16.0",
+        "vue": "^3.4.27",
         "vue-i18n": "^9.13.1",
         "vue-router": "^4.3.2"
     },
