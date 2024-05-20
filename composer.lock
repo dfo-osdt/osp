@@ -362,16 +362,16 @@
         },
         {
             "name": "cmixin/business-day",
-            "version": "1.18.2",
+            "version": "1.18.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kylekatarnls/business-day.git",
-                "reference": "9396a540ef6654336ca8eadc64f053bfbd5609e8"
+                "reference": "84fc3e8221eba0e5bba855d975b1bcc63a65beac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/9396a540ef6654336ca8eadc64f053bfbd5609e8",
-                "reference": "9396a540ef6654336ca8eadc64f053bfbd5609e8",
+                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/84fc3e8221eba0e5bba855d975b1bcc63a65beac",
+                "reference": "84fc3e8221eba0e5bba855d975b1bcc63a65beac",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
             "description": "Carbon mixin to handle business days",
             "support": {
                 "issues": "https://github.com/kylekatarnls/business-day/issues",
-                "source": "https://github.com/kylekatarnls/business-day/tree/1.18.2"
+                "source": "https://github.com/kylekatarnls/business-day/tree/1.18.3"
             },
             "funding": [
                 {
@@ -422,7 +422,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-11T19:56:25+00:00"
+            "time": "2024-05-20T10:29:12+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
