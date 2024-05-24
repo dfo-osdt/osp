@@ -103,7 +103,7 @@ jobs:
             sudo systemctl reload php8.3-fpm.service
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo chown -h osp.www-data $ACTIVE_RELEASE_PATH
-            shdo chown -R osp.www-data $ACTIVE_RELEASE_PATH
+            sudo chown -R osp.www-data $ACTIVE_RELEASE_PATH
             sudo chown -R osp.www-data $STORAGE_PATH
             sudo chmod -R 771 $STORAGE_PATH
 
@@ -168,6 +168,6 @@ jobs:
             sudo systemctl reload php8.3-fpm.service
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo chown -h osp.www-data $ACTIVE_RELEASE_PATH
-            shdo chown -R osp.www-data $ACTIVE_RELEASE_PATH
+            sudo chown -R osp.www-data $ACTIVE_RELEASE_PATH
             sudo chown -R osp.www-data $STORAGE_PATH
             sudo chmod -R 771 $STORAGE_PATH
