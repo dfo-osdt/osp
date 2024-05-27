@@ -34,7 +34,7 @@
         "@intlify/unplugin-vue-i18n": "^4.0.0",
         "@quasar/extras": "^1.16.11",
         "@vitejs/plugin-vue": "^5.0.4",
-        "@vueuse/core": "^10.9.0",
+        "@vueuse/core": "^10.10.0",
         "dompurify": "^3.1.4",
         "pinia": "^2.1.7",
         "quasar": "^2.16.4",
