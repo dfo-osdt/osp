@@ -2758,16 +2758,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.3.1",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "8ff64b92c1b1ec84fcde9f8bb9ff2ca34cb8a77a"
+                "reference": "8eab8983c83c30e0bacbef8d311e3f3b8172727f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/8ff64b92c1b1ec84fcde9f8bb9ff2ca34cb8a77a",
-                "reference": "8ff64b92c1b1ec84fcde9f8bb9ff2ca34cb8a77a",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/8eab8983c83c30e0bacbef8d311e3f3b8172727f",
+                "reference": "8eab8983c83c30e0bacbef8d311e3f3b8172727f",
                 "shasum": ""
             },
             "require": {
@@ -2860,7 +2860,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-01T06:54:22+00:00"
+            "time": "2024-05-24T14:26:34+00:00"
         },
         {
             "name": "nette/schema",
@@ -4935,16 +4935,16 @@
         },
         {
             "name": "spatie/image",
-            "version": "3.6.1",
+            "version": "3.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/image.git",
-                "reference": "e1423322494d5f5f00fa518756a87b6e7b19bd19"
+                "reference": "1d4e9c536f1bf7b88e55555d0a1ae9eee6b76a99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/image/zipball/e1423322494d5f5f00fa518756a87b6e7b19bd19",
-                "reference": "e1423322494d5f5f00fa518756a87b6e7b19bd19",
+                "url": "https://api.github.com/repos/spatie/image/zipball/1d4e9c536f1bf7b88e55555d0a1ae9eee6b76a99",
+                "reference": "1d4e9c536f1bf7b88e55555d0a1ae9eee6b76a99",
                 "shasum": ""
             },
             "require": {
@@ -4952,7 +4952,7 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "php": "^8.2",
-                "spatie/image-optimizer": "^1.7.2",
+                "spatie/image-optimizer": "^1.7.5",
                 "spatie/temporary-directory": "^2.2",
                 "symfony/process": "^6.4|^7.0"
             },
@@ -4991,7 +4991,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/image/tree/3.6.1"
+                "source": "https://github.com/spatie/image/tree/3.6.3"
             },
             "funding": [
                 {
@@ -5003,7 +5003,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-17T15:18:24+00:00"
+            "time": "2024-05-24T14:08:59+00:00"
         },
         {
             "name": "spatie/image-optimizer",
@@ -5161,16 +5161,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "11.5.0",
+            "version": "11.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "424afe6168b9aa49b2430d3f45f08eea904255b1"
+                "reference": "99760ad7865a418708474cf594e736a381b45c0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/424afe6168b9aa49b2430d3f45f08eea904255b1",
-                "reference": "424afe6168b9aa49b2430d3f45f08eea904255b1",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/99760ad7865a418708474cf594e736a381b45c0e",
+                "reference": "99760ad7865a418708474cf594e736a381b45c0e",
                 "shasum": ""
             },
             "require": {
@@ -5253,7 +5253,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.5.0"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.5.2"
             },
             "funding": [
                 {
@@ -5265,7 +5265,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-16T08:53:13+00:00"
+            "time": "2024-05-27T09:07:25+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
