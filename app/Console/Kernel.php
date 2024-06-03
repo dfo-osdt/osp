@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Spatie\Health\Commands\RunHealthChecksCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -22,6 +23,10 @@ class Kernel extends ConsoleKernel
         // backup the database
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run --only-db')->daily()->at('02:00');
+
+        // health checks
+        $schedule->command(RunHealthChecksCommand::class)->everyMinute();
+
     }
 
     /**

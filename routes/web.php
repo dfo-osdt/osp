@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Spatie\Health\Http\Controllers\HealthCheckResultsController;
+use Spatie\Health\Http\Controllers\SimpleHealthCheckController;
+use Spatie\LaravelIgnition\Http\Controllers\HealthCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('app');
 });
+
+// Spatie Health Check
+Route::get('health', HealthCheckResultsController::class);
 
 require __DIR__.'/auth.php';

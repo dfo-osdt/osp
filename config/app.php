@@ -216,4 +216,15 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    Health Check Configuration
+    |--------------------------------------------------------------------------
+    */
+
+    'health' => [
+        'enalbed' => env('HEALTH_CHECK_ENABLED', true),
+    ],
+
+
 ];
