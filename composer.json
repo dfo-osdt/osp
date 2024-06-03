@@ -19,7 +19,7 @@
         "laravel/telescope": "^5.0.4",
         "laravel/tinker": "^2.9.0",
         "league/flysystem-aws-s3-v3": "^3.27",
-        "openai-php/laravel": "^0.8.1",
+        "openai-php/laravel": "^0.9.1",
         "predis/predis": "^2.2.2",
         "rappasoft/laravel-authentication-log": "^4.0",
         "saloonphp/laravel-plugin": "^3.5",
