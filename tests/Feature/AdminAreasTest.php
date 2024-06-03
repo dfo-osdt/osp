@@ -2,17 +2,28 @@
 
 use App\Models\User;
 
+test('General health route is accessible', function () {
+    $response = $this->get('/health');
+    $response->assertOk();
+});
+
 test('An unauthenticated user cannot access the admin areas', function (string $path) {
     $response = $this->get($path);
     $response->assertForbidden();
-})->with(['/horizon']);
+})->with([
+    '/horizon',
+    '/pulse'
+]);
 
 test('An unauthorized user cannot access the admin areas', function (string $path) {
     // create regular user
     $user = User::factory()->create();
     $response = $this->actingAs($user)->get($path);
     $response->assertForbidden();
-})->with(['/horizon']);
+})->with([
+    '/horizon',
+    '/pulse'
+]);
 
 test('An admin user can access the admin areas', function (string $path) {
     // create admin user
@@ -20,4 +31,7 @@ test('An admin user can access the admin areas', function (string $path) {
     $user->assignRole('admin');
     $response = $this->actingAs($user)->get($path);
     $response->assertOk();
-})->with(['/horizon']);
+})->with([
+    '/horizon',
+    '/pulse'
+]);
