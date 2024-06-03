@@ -2,6 +2,11 @@
 
 use App\Models\User;
 
+test('General health route is accessible', function () {
+    $response = $this->get('/health');
+    $response->assertOk();
+});
+
 test('An unauthenticated user cannot access the admin areas', function (string $path) {
     $response = $this->get($path);
     $response->assertForbidden();
