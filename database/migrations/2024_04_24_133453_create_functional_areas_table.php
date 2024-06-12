@@ -17,9 +17,6 @@ return new class extends Migration
             $table->string('name_en');
             $table->string('name_fr');
         });
-
-        // seed the table
-        Artisan::call('db:seed', ['--class' => 'FunctionalAreaSeeder']);
     }
 
     /**

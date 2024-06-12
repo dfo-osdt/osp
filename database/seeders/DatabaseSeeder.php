@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\FunctionalArea;
 use Illuminate\Database\Seeder;
 use Log;
 
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
             OrganizationSeeder::class,
             FunderSeeder::class,
             RoleAndPermissionSeeder::class,
+            FunctionalAreaSeeder::class,
         ]);
 
         if (config('app.env') === 'local') {

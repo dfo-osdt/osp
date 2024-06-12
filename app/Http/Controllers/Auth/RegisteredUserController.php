@@ -63,6 +63,7 @@ class RegisteredUserController extends Controller
 
         $user->email_verification_token = User::generateEmailVerificationToken();
         $user->save();
+        //$user->refresh();
         $user->associateAuthor();
 
         // give the user the author role - this is the default role
