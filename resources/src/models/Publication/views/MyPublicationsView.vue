@@ -226,7 +226,7 @@ const mainFilterOptions = computed((): MainFilterOption[] => [
     },
     {
         id: 4,
-        label: t('publication.publsihed'),
+        label: t('publication.published'),
         caption: t('common.no-actions-required'),
         icon: 'mdi-check-circle',
         active: activeFilterId.value === 4,

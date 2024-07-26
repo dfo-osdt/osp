@@ -331,7 +331,7 @@
       "title": "Delete a Manuscript"
     },
     "delete-manuscript-pdf": {
-      "manuscript-pdf-deleted": "The manuscript file was sucessfully deleted",
+      "manuscript-pdf-deleted": "The manuscript file was successfully deleted",
       "message": "This will delete the following attached manuscript file: {file}",
       "title": "Please confirm"
     },
@@ -483,7 +483,7 @@
     "geographical-title": "Geographical Scope and Species",
     "lead-region-text": "Select the DFO region responsible for the management review of this manuscript. If more than one region is responsible, select the region that will lead the review.",
     "manuscript-saved-successfully": "Manuscript saved successfully",
-    "manuscript-submitted-successfully": "The manuscript record was sucessfully submitted.",
+    "manuscript-submitted-successfully": "The manuscript record was successfully submitted.",
     "manuscripts-working-title": "Manuscript's Working Title",
     "not-authorized-text": "You do not have permission to view this manuscript record",
     "pls-already-generated-erase-it-to-generate-a-new-one": "PLS already generated - erase it to generate a new one",
@@ -493,7 +493,7 @@
     "potential-media-interest-question": "Is this manuscript of potential public interest?",
     "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest.",
     "ready-to-marked-published": "This manuscript has been reviewed but still needs to be marked as published by the applicant.",
-    "relevant-text": "Describe how this manuscript is relevant to the program that funded it, how it supports the department's madate, strategic plan and or/regional priorities. ",
+    "relevant-text": "Describe how this manuscript is relevant to the program that funded it, how it supports the department's mandate, strategic plan and or/regional priorities. ",
     "relevant-title": "Relevance to programs/initiatives/client sector",
     "replace-manuscript": "Upload a new version of the manuscript",
     "scientific-implication-text": "Describe the scientific implications of the paper. (i.e. field, importance, focus, purpose, benefits, etc.)",
@@ -550,15 +550,15 @@
     "verifying": "Verifying with ORCID.org"
   },
   "organization-select": {
-    "add-a-new-organization": "Add a new organiztion",
+    "add-a-new-organization": "Add a new organization",
     "cant-find": "Can't find the organization you're looking for?",
     "hint": "Start typing to search for an organization"
   },
   "osp": {
     "alt": {
       "logo": "OSP logo - a prism dividing a single light stream into an array or colors.",
-      "main-image": "A person with a large lighbulb as a head. An old farmhouse tap is trickling water on a small tree sprout growing from the ground.",
-      "toggle-drawer": "toggle navitation drawer visibility"
+      "main-image": "A person with a large lightbulb as a head. An old farmhouse tap is trickling water on a small tree sprout growing from the ground.",
+      "toggle-drawer": "toggle navigation drawer visibility"
     },
     "description": "The Open Science Portal is an intuitive web-based application to promote open science and track science publications within Fisheries and Oceans Canada.",
     "slogan": {
@@ -592,7 +592,7 @@
   },
   "publication": {
     "accepted": "Accepted",
-    "publsihed": "Published"
+    "published": "Published"
   },
   "publication-page": {
     "attach-pub-details": "Upload the most recent copy of your publication as a PDF. We will not allow portal users to download this file until the end of its embargo period.",
@@ -642,7 +642,7 @@
   },
   "reviewer-comments": {
     "description": "Comments are required unless you approve and complete the management review without sending it to another manager. Comments entered here should support your decision and, if applicable, provide feedback to the subsequent management reviewer. Your comments will be visible to anyone with access to this manuscript record.",
-    "title": "Manger Comments"
+    "title": "Manager Comments"
   },
   "shareable": {
     "can-delete": "Can Delete",
@@ -651,16 +651,16 @@
     "expires-at": "Expires At"
   },
   "shareable-dialog": {
-    "abilities-text": "By default, the user has the ability to view the ressource. You can also allow th user to edit and delete this resource.",
+    "abilities-text": "By default, the user has the ability to view the resource. You can also allow the user to edit and delete this resource.",
     "expiry-date-text": "By default, the resource is shared until you manually remove the ability. If you prefer, you can also set an expiration date at which time the user will no longer be able to access this resource.",
     "user-create-text": "User with whom you want to share. The user will receive an email notification once you share this resource."
   },
   "submit-decision-dialog": {
     "certify-text": "I certify that, to the best of my knowledge, my decision is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous manager and have considered them in my decision.",
     "confirm-decision": "Confirm Decision",
-    "next-reviewer": "Next Mangement Reviewer",
+    "next-reviewer": "Next Management Reviewer",
     "next-reviewer-hint": "Search for the appropriate person to complete the management review within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
-    "no-comments-warning": "Your mangement review has no comments. Therefore, you can only approve and complete this review. Please add comments to support your decision if you want to select from the other options.",
+    "no-comments-warning": "Your management review has no comments. Therefore, you can only approve and complete this review. Please add comments to support your decision if you want to select from the other options.",
     "select-decision": "Select your decision",
     "select-next-reviewer": "Select Next Manger",
     "subsequent-reviewer-is-required": "Given your decision, a subsequent manager is required to complete the review",
