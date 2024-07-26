@@ -46,6 +46,7 @@ export default defineConfig({
             dts: 'resources/src/auto-imports.d.ts',
             dirs: ['resources/src/composables/**', 'resources/src/stores'],
             vueTemplate: true,
+            viteOptimizeDeps: false,
         }),
     ],
     resolve: {
