@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Str;
 use URL;
 
 class Invitation extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $fillable = [
         'invitation_token',
@@ -25,6 +28,14 @@ class Invitation extends Model
     protected $hidden = [
         'invitation_token',
     ];
+
+
+    // logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll();
+    }
 
     // relationships
 

@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Author extends Model
 {
     use HasExpertises;
     use HasFactory;
+    use LogsActivity;
 
     public $guarded = [
         'id',
@@ -29,6 +32,15 @@ class Author extends Model
         'orcid_access_token' => 'encrypted',
         'orcid_refresh_token' => 'encrypted',
     ];
+
+    // logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->logExcept(['orcid_access_token', 'orcid_refresh_token']);
+    }
 
     // author full name
     public function getFullNameAttribute(): string
