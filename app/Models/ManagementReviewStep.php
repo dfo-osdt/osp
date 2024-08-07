@@ -6,10 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ManagementReviewStep extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $guarded = [
         'id',
@@ -33,6 +36,14 @@ class ManagementReviewStep extends Model
         'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
         'decision' => \App\Enums\ManagementReviewStepDecision::NONE,
     ];
+
+    // logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
 
     public function manuscriptRecord(): BelongsTo
     {

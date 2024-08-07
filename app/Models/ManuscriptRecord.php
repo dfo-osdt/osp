@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -30,6 +32,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     use HasUlid;
     use InteractsWithMedia;
     use SoftDeletes;
+    use LogsActivity;
 
     public $guarded = [
         'id',
@@ -56,6 +59,14 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
         'relevant_to' => '',
         'additional_information' => '',
     ];
+
+    // logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
 
     // Relationships
 

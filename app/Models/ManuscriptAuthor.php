@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class ManuscriptAuthor extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
-    // Audit Thresholds
-    protected $auditThreshold = 100;
 
     public $guarded = [
         'id',
@@ -25,6 +26,14 @@ class ManuscriptAuthor extends Model
 
     // update the manuscript's updated_at timestamp when the author is updated
     protected $touches = ['manuscriptRecord'];
+
+    // logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
 
     // Relationships
 

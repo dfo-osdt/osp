@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -19,6 +21,7 @@ class Publication extends Model implements Fundable, HasMedia
     use HasFactory;
     use InteractsWithMedia;
     use SoftDeletes;
+    use LogsActivity;
 
     public $guarded = [
         'id',
@@ -40,6 +43,14 @@ class Publication extends Model implements Fundable, HasMedia
         // default is accepted
         'status' => PublicationStatus::ACCEPTED,
     ];
+
+    // logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
 
     // Relationships
     public function journal(): BelongsTo

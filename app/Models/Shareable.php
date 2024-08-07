@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Shareable extends Model
 {
     use HasFactory;
     use HasUlids;
+    use LogsActivity;
 
     public $casts = [
         'expires_at' => 'datetime',
@@ -24,6 +27,14 @@ class Shareable extends Model
         'created_at',
         'updated_at',
     ];
+
+   //logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
 
     /**
      * User with whom the shareable is shared.

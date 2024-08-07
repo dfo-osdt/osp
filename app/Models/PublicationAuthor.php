@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class PublicationAuthor extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     public $guarded = [
         'id',
@@ -22,6 +25,14 @@ class PublicationAuthor extends Model
 
     // update the publication's updated_at timestamp when the author is updated
     protected $touches = ['publication'];
+
+    // logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
 
     // Relationships
 
