@@ -19,6 +19,9 @@ class AuthenticationTest extends TestCase
             'password' => 'password',
         ]);
 
+        // assert attempt was logged:
+        expect($user->authentications()->first()->login_successful)->toBeTrue();
+
         $this->assertAuthenticated();
         $response->assertNoContent();
     }
@@ -31,6 +34,9 @@ class AuthenticationTest extends TestCase
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
+
+        // assert attempt was logged:
+        expect($user->authentications()->first()->login_successful)->toBeFalse();
 
         $this->assertGuest();
     }
@@ -47,6 +53,9 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response->assertStatus(422);
+
+        // assert empty password attempt was not logged:
+        expect($user->authentications()->first())->toBeNull();
 
         $this->assertGuest();
     }
