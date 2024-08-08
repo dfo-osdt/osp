@@ -1,9 +1,9 @@
-<template>
-    <SentInvitationsCard />
-</template>
-
 <script setup lang="ts">
-import SentInvitationsCard from '../components/SentInvitationsCard.vue';
+import SentInvitationsCard from '../components/SentInvitationsCard.vue'
 </script>
+
+<template>
+  <SentInvitationsCard />
+</template>
 
 <style scoped></style>

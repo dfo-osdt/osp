@@ -1,30 +1,31 @@
 // import fs
-import * as fs from 'fs';
+import * as fs from 'node:fs'
 
 function activateCypressEnvFile() {
-    if (fs.existsSync('.env.cypress')) {
-        fs.renameSync('.env', '.env.backup');
-        fs.renameSync('.env.cypress', '.env');
-    }
+  if (fs.existsSync('.env.cypress')) {
+    fs.renameSync('.env', '.env.backup')
+    fs.renameSync('.env.cypress', '.env')
+  }
 
-    return null;
+  return null
 }
 
 function activateLocalEnvFile() {
-    if (fs.existsSync('.env.backup')) {
-        fs.renameSync('.env', '.env.cypress');
-        fs.renameSync('.env.backup', '.env');
-    }
+  if (fs.existsSync('.env.backup')) {
+    fs.renameSync('.env', '.env.cypress')
+    fs.renameSync('.env.backup', '.env')
+  }
 
-    return null;
+  return null
 }
 
 function swapEnvFile() {
-    if (fs.existsSync('.env.cypress')) {
-        activateCypressEnvFile();
-    } else {
-        activateLocalEnvFile();
-    }
+  if (fs.existsSync('.env.cypress')) {
+    activateCypressEnvFile()
+  }
+  else {
+    activateLocalEnvFile()
+  }
 }
 
-export { activateCypressEnvFile, activateLocalEnvFile, swapEnvFile };
+export { activateCypressEnvFile, activateLocalEnvFile, swapEnvFile }

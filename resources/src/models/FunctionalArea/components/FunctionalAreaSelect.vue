@@ -1,44 +1,44 @@
-<template>
-    <q-select
-        v-model="model"
-        :options="options"
-        :option-label="optionLabel"
-        option-value="id"
-        emit-value
-        outlined
-        map-options
-    />
-</template>
-
 <script setup lang="ts">
-import { useFunctionalAreaStore } from '@/stores/FunctionalAreaStore';
-import { FunctionalArea } from '../FunctionalArea';
+import type { FunctionalArea } from '../FunctionalArea'
+import { useFunctionalAreaStore } from '@/stores/FunctionalAreaStore'
 
-const functionalAreaStore = useFunctionalAreaStore();
-const localeStore = useLocaleStore();
+const functionalAreaStore = useFunctionalAreaStore()
+const localeStore = useLocaleStore()
 
-const model = defineModel<number | null>();
+const model = defineModel<number | null>()
 
 onMounted(() => {
-    functionalAreaStore.getFunctionalAreas();
-});
+  functionalAreaStore.getFunctionalAreas()
+})
 
 const options = computed(() => {
-    const functionalAreas: FunctionalArea[] = [];
-    functionalAreaStore.functionalAreas?.forEach((functionalArea) => {
-        functionalAreas.push(functionalArea.data);
-    });
+  const functionalAreas: FunctionalArea[] = []
+  functionalAreaStore.functionalAreas?.forEach((functionalArea) => {
+    functionalAreas.push(functionalArea.data)
+  })
 
-    // sort
-    const locale = localeStore.locale;
-    functionalAreas.sort((a, b) => {
-        return a[`name_${locale}`].localeCompare(b[`name_${locale}`]);
-    });
+  // sort
+  const locale = localeStore.locale
+  functionalAreas.sort((a, b) => {
+    return a[`name_${locale}`].localeCompare(b[`name_${locale}`])
+  })
 
-    return functionalAreas;
-});
+  return functionalAreas
+})
 
 function optionLabel(option: FunctionalArea): string {
-    return localeStore.locale === 'fr' ? option.name_fr : option.name_en;
+  return localeStore.locale === 'fr' ? option.name_fr : option.name_en
 }
 </script>
+
+<template>
+  <q-select
+    v-model="model"
+    :options="options"
+    :option-label="optionLabel"
+    option-value="id"
+    emit-value
+    outlined
+    map-options
+  />
+</template>

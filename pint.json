@@ -1,9 +1,9 @@
 {
-    "exclude": [
-        "lang/en/",
-        "lang/fr/",
-        "lang",
-        ".phpstorm.meta.php",
-        "_ide_helper.php"
-    ]
+  "exclude": [
+    "lang/en/",
+    "lang/fr/",
+    "lang",
+    ".phpstorm.meta.php",
+    "_ide_helper.php"
+  ]
 }

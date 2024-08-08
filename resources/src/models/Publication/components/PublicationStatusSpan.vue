@@ -1,26 +1,26 @@
-<template>
-    <span>
-        {{ statusLabel }}
-    </span>
-</template>
-
 <script setup lang="ts">
-import { PublicationStatus } from '../Publication';
-
-const t = useI18n();
+import type { PublicationStatus } from '../Publication'
 
 const props = defineProps<{
-    status: PublicationStatus;
-}>();
+  status: PublicationStatus
+}>()
+
+const t = useI18n()
 
 const statusLabel = computed(() => {
-    switch (props.status) {
-        case 'accepted':
-            return t.t('publication.accepted');
-        case 'published':
-            return t.t('publication.published');
-    }
-});
+  switch (props.status) {
+    case 'accepted':
+      return t.t('publication.accepted')
+    case 'published':
+      return t.t('publication.published')
+  }
+})
 </script>
+
+<template>
+  <span>
+    {{ statusLabel }}
+  </span>
+</template>
 
 <style scoped></style>

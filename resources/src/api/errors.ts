@@ -1,33 +1,31 @@
-import { AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios'
 
 /**
  * Laravel JSON API error response.
  */
 
 interface ErrorMessage {
-    field: string;
-    messages: string[];
+  field: string
+  messages: string[]
 }
 
 export interface ErrorResponse {
-    code: number;
-    message: string;
-    errors: ErrorMessage[];
+  code: number
+  message: string
+  errors: ErrorMessage[]
 }
 
-export const extractErrorMessages = (
-    errorResponse: AxiosResponse
-): ErrorResponse => {
-    const errors: ErrorResponse = {
-        code: errorResponse.status,
-        message: errorResponse.data?.message,
-        errors: [],
-    };
+export function extractErrorMessages(errorResponse: AxiosResponse): ErrorResponse {
+  const errors: ErrorResponse = {
+    code: errorResponse.status,
+    message: errorResponse.data?.message,
+    errors: [],
+  }
 
-    if (errorResponse.data.errors) {
-        for (const [key, value] of Object.entries(errorResponse.data.errors)) {
-            errors.errors.push({ field: key, messages: value as string[] });
-        }
+  if (errorResponse.data.errors) {
+    for (const [key, value] of Object.entries(errorResponse.data.errors)) {
+      errors.errors.push({ field: key, messages: value as string[] })
     }
-    return errors;
-};
+  }
+  return errors
+}
