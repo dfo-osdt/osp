@@ -5,7 +5,7 @@
     "jsxImportSource": "vue",
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Node16",
     "paths": {
       "@/*": ["resources/src/*"]
     },
@@ -22,11 +22,9 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
+  "include": ["resources/src/**/*.ts", "resources/src/**/*.d.ts", "vite.config.ts"],
   "exclude": [
-    "dist",
-    "node_modules",
     "vendor",
-    "vite.config.ts",
     "public/build",
     "public/vendor",
     "tests/cypress/support"

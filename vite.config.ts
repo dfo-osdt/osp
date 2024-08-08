@@ -22,6 +22,7 @@ export default defineConfig({
         defineModel: true,
       },
     }),
+
     quasar({
       sassVariables: 'resources/src/styles/variables.scss',
     }),
