@@ -21,11 +21,6 @@ test('check OpenID redirect works', function () {
     $response = $this->actingAs($user)->get('api/user/orcid/verify?locale=fr');
 
     expect($response->status())->toBe(302);
-    expect($response->headers->get('Location'))->toBe("https://orcid.org/oauth/authorize?client_id=$client_id&response_type=code&scope=$scopes&redirect_uri=$encoded&lang=fr");
-});
+    expect($response->headers->get('Location'))->toStartWith("https://orcid.org/oauth/authorize?client_id=$client_id&response_type=code&scope=$scopes&redirect_uri=$encoded")->toEndWith('&lang=fr');
 
-test('check front end redirect rule', function () {
-    $response = $this->get('/api/orcid/redirect?code=1234');
-    expect($response->status())->toBe(302);
-    expect($response->headers->get('Location'))->toBe(config('app.frontend_url').'#/auth/orcid-callback?code=1234');
 });

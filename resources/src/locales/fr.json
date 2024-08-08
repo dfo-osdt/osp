@@ -547,7 +547,10 @@
     "error-verifying": "Erreur lors de la vérification avec ORCID.org",
     "verified-with": "Vérifié avec succès avec ORCID.org",
     "verify-header-text": "Connectez votre ORCID iD (ou inscrivez-vous pour un iD)",
-    "verifying": "Vérification avec ORCID.org"
+    "verifying": "Vérification avec ORCID.org",
+    "invalid-key": "Clé non valide - probablement en raison d'un délai d'attente - veuillez réessayer.",
+    "invalid-user": "Utilisateur introuvable – erreur interne – veuillez nous contacter.",
+    "failed": "Un problème est survenu lors de l'autorisation de votre compte avec ORCID.org"
   },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",

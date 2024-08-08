@@ -41,7 +41,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/status', CheckStatusPageController::class);
-Route::get('/orcid/redirect', [FullFlowController::class, 'redirectToFrontend']);
+Route::get('/orcid/callback', [FullFlowController::class, 'callback']);
 
 // Need to ben authenticated to access these routes
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -56,7 +56,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Route::post('/user/orcid/verify', ImplicitFlowController::class);
     // Route::get('/user/orcid/verify', [ImplicitFlowController::class, 'redirect']);
     // Routes for 3-legged OAuth flow
-    Route::post('/user/orcid/verify', FullFlowController::class);
     Route::get('/user/orcid/verify', [FullFlowController::class, 'redirect']);
 
     Route::controller(AuthorController::class)->group(function () {
