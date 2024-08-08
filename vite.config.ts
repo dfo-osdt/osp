@@ -23,7 +23,9 @@ export default defineConfig({
                 defineModel: true,
             },
         }),
-        quasar({ sassVariables: 'resources/src/styles/variables.scss' }),
+        quasar({
+            sassVariables: 'resources/src/styles/variables.scss'
+        }),
 
         // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
         VueI18nPlugin({
@@ -59,7 +61,7 @@ export default defineConfig({
 
 // see: Making Vite and Valet play nice together
 // https://freek.dev/2276-making-vite-and-valet-play-nice-together
-function detectServerConfig(host) {
+function detectServerConfig(host: string) {
     let keyPath = resolve(homedir(), `.config/valet/Certificates/${host}.key`);
     let certificatePath = resolve(
         homedir(),

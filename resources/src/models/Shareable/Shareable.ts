@@ -1,6 +1,6 @@
 import { http } from '@/api/http';
-import { Resource, ResourceList } from '../Resource';
-import { UserResource } from '../User/User';
+import type { Resource, ResourceList } from '../Resource';
+import type { UserResource } from '../User/User';
 
 export interface Shareable {
     readonly id: string; //ulid

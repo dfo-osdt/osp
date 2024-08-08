@@ -86,16 +86,15 @@
 
 <script setup lang="ts">
 import {
-    ManuscriptRecordResource,
+    type ManuscriptRecordResource,
     ManuscriptRecordService,
 } from '../ManuscriptRecord';
 import ContentCard from '@/components/ContentCard.vue';
 import FormSectionStatusIcon, {
-    FormSectionStatus,
+    type FormSectionStatus,
 } from '@/components/FormSectionStatusIcon.vue';
-import { MediaResourceList, Media } from '@/models/Resource';
-import { QRejectedEntry, useQuasar } from 'quasar';
-import { Ref } from 'vue';
+import type { MediaResourceList, Media } from '@/models/Resource';
+import { type QRejectedEntry, useQuasar } from 'quasar';
 
 const { t } = useI18n();
 const $q = useQuasar();

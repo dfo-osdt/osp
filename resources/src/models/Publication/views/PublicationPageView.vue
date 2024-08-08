@@ -298,8 +298,8 @@
 
 <script setup lang="ts">
 import MainPageLayout from '@/layouts/MainPageLayout.vue';
-import { PublicationResource, PublicationService } from '../Publication';
-import { QForm, QRejectedEntry, useQuasar } from 'quasar';
+import { type PublicationResource, PublicationService } from '../Publication';
+import { QForm, useQuasar, type QRejectedEntry } from 'quasar';
 import PublicationStatusBadge from '../components/PublicationStatusBadge.vue';
 import ContentCard from '@/components/ContentCard.vue';
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue';
@@ -308,7 +308,7 @@ import DateInput from '@/components/DateInput.vue';
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue';
 import DoiLink from '../components/DoiLink.vue';
 import ManagePublicationAuthorsCard from '@/models/PublicationAuthor/components/ManagePublicationAuthorsCard.vue';
-import { MediaResource } from '@/models/Resource';
+import type { MediaResource } from '@/models/Resource';
 
 const $q = useQuasar();
 const router = useRouter();

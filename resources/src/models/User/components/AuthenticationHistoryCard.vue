@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue';
-import { QTableProps } from 'quasar';
+import type { QTableProps } from 'quasar';
 import TimeStampTd from './Table/TimeStampTd.vue';
 
 const authStore = useAuthStore();

@@ -59,8 +59,8 @@
 </template>
 
 <script setup lang="ts">
-import { QTableProps } from 'quasar';
-import { ShareableResource, ShareableResourceList } from '../Shareable';
+import { type QTableProps } from 'quasar';
+import type { ShareableResource, ShareableResourceList } from '../Shareable';
 import TimeStampTd from '@/models/User/components/Table/TimeStampTd.vue';
 
 const { t } = useI18n();

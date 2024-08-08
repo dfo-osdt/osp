@@ -18,11 +18,11 @@
     "
 >
 import { useI18n } from 'vue-i18n';
-import { QBtnProps, useQuasar } from 'quasar';
+import { type QBtnProps, useQuasar } from 'quasar';
 import {
     ManuscriptRecordService,
-    ManuscriptRecordSummaryResource,
-    ManuscriptRecordResource,
+    type ManuscriptRecordSummaryResource,
+    type ManuscriptRecordResource,
 } from '../ManuscriptRecord';
 
 const { t } = useI18n();
