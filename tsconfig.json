@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "Node16",
+    "moduleResolution": "Bundler",
     "paths": {
       "@/*": ["resources/src/*"]
     },
@@ -22,11 +20,12 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
-  "include": ["resources/src/**/*.ts", "resources/src/**/*.d.ts", "vite.config.ts"],
+  "include": ["**/*.ts", "**/*.vue", "**/*.d.ts"],
   "exclude": [
     "vendor",
     "public/build",
     "public/vendor",
-    "tests/cypress/support"
+    "tests/cypress/support",
+    "node_modules"
   ]
 }
