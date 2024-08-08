@@ -1,72 +1,84 @@
-<template>
-    <q-card>
-        <q-card-section class="flex flex-center column">
-            <template v-if="loading">
-                <h5>{{ $t('orcid.verifying') }}</h5>
-                <q-spinner-dots size="50px" color="primary" />
-            </template>
-            <template v-else-if="valid">
-                <q-icon
-                    name="mdi-check-decagram-outline"
-                    size="50px"
-                    color="primary"
-                    class="q-mb-md"
-                />
-                <h5 class="q-my-none text-center">
-                    {{ $t('orcid.verified-with') }}
-                </h5>
-
-                <h6 class="q-mt-md">{{ author?.orcid }}</h6>
-                <q-btn
-                    label="Continue"
-                    color="primary"
-                    @click="
-                        $router.push({
-                            name: 'settings.author',
-                        })
-                    "
-                />
-            </template>
-            <template v-else>
-                <q-icon name="error" size="50px" color="red" />
-                <h5>{{ $t('orcid.error-verifying') }}</h5>
-            </template>
-        </q-card-section>
-    </q-card>
-</template>
-
 <script setup lang="ts">
-import { Author, AuthorService } from '@/models/Author/Author';
+import type { Author } from '@/models/Author/Author'
+import { AuthorService } from '@/models/Author/Author'
 
-const router = useRouter();
-const authStore = useAuthStore();
+const router = useRouter()
+const authStore = useAuthStore()
+const { t } = useI18n()
 
-const code = ref((router.currentRoute.value.query?.code as string) || '');
+type statuses = 'success' | 'invalid-key' | 'invalid-user' | 'failed' | undefined
+const status = ref((router.currentRoute.value.query?.status as statuses) || undefined)
 
-const loading = ref(true);
-const valid = ref(false);
-const author = ref<Author | null>(null);
+const loading = ref(true)
+const valid = computed(() => status.value === 'success')
 
-async function verifyWithBackend() {
-    AuthorService.verifyOrcid(code.value)
-        .then((response) => {
-            console.log(response);
-            valid.value = true;
-            author.value = response.data;
-            authStore.refreshUser(true);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        .finally(() => {
-            loading.value = false;
-        });
-}
+const errorMessage = computed(() => {
+  switch (status.value) {
+    case 'invalid-key':
+      return t('orcid.invalid-key')
+    case 'invalid-user':
+      return t('orcid.invalid-user')
+    case 'failed':
+    case undefined:
+      return t('orcid.failed')
+    default:
+      return ''
+  }
+})
 
-onMounted(() => {
-    console.log('mounted');
-    verifyWithBackend();
-});
+const author = ref<Author | null>(null)
+
+onMounted(async () => {
+  if (status.value === 'success') {
+    if (!authStore.user?.authorId) {
+      status.value = undefined
+      return
+    }
+    const { data } = await AuthorService.find(authStore.user.authorId)
+    author.value = data
+  }
+  loading.value = false
+})
 </script>
+
+<template>
+  <q-card bordered flat class="bg-teal-1">
+    <q-card-section class="flex flex-center column">
+      <template v-if="loading">
+        <h5>{{ $t('orcid.verifying') }}</h5>
+        <q-spinner-dots size="50px" color="primary" />
+      </template>
+      <template v-else-if="valid">
+        <q-icon
+          name="mdi-check-decagram-outline"
+          size="50px"
+          color="primary"
+          class="q-mb-md"
+        />
+        <h5 class="q-my-none text-center">
+          {{ $t('orcid.verified-with') }}
+        </h5>
+
+        <h6 class="q-mt-md">
+          {{ author?.orcid }}
+        </h6>
+        <q-btn
+          label="Continue"
+          color="primary"
+          @click="
+            router.push({
+              name: 'settings.author',
+            })
+          "
+        />
+      </template>
+      <template v-else>
+        <q-icon name="error" size="50px" color="red" />
+        <h5>{{ t('orcid.error-verifying') }}</h5>
+        <p>{{ errorMessage }}</p>
+      </template>
+    </q-card-section>
+  </q-card>
+</template>
 
 <style scoped></style>

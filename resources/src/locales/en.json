@@ -547,7 +547,10 @@
     "error-verifying": "Error verifying with ORCID.org",
     "verified-with": "Successfully verified with ORCID.org",
     "verify-header-text": "Connect your ORCID iD (or register for an iD)",
-    "verifying": "Verifying with ORCID.org"
+    "verifying": "Verifying with ORCID.org",
+    "invalid-key": "Invalid key - likely due to timeout - please try again.",
+    "invalid-user": "User not found - internal error - please contact us.",
+    "failed": "A probelm occured in authorizing your account with ORCID.org"
   },
   "organization-select": {
     "add-a-new-organization": "Add a new organization",
