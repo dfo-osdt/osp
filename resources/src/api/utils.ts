@@ -1,25 +1,25 @@
-import { http } from './http';
+import { http } from './http'
 
-export type PlsRequest = {
-    abstract: string;
-};
+export interface PlsRequest {
+  abstract: string
+}
 
-export type PlsResponse = {
-    data: {
-        pls: string;
-    };
-};
+export interface PlsResponse {
+  data: {
+    pls: string
+  }
+}
 
 export class UtilityService {
-    /**
-     * Get a plain language summary from the given abstract text.
-     */
-    public static async generatePls(abstract: string): Promise<PlsResponse> {
-        const response = await http.post<PlsRequest, PlsResponse>(
+  /**
+   * Get a plain language summary from the given abstract text.
+   */
+  public static async generatePls(abstract: string): Promise<PlsResponse> {
+    const response = await http.post<PlsRequest, PlsResponse>(
             `api/utils/generate-pls`,
-            { abstract }
-        );
+            { abstract },
+    )
 
-        return response.data;
-    }
+    return response.data
+  }
 }

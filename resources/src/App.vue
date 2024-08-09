@@ -1,9 +1,9 @@
 <script setup lang="ts">
-useAuthStore();
+useAuthStore()
 </script>
 
 <template>
-    <router-view />
+  <router-view />
 </template>
 
 <style></style>
