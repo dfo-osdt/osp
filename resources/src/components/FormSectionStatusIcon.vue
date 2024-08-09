@@ -15,6 +15,8 @@ const icon = computed(() => {
       return 'mdi-checkbox-blank-circle-outline'
     case 'error':
       return 'mdi-alert-circle-outline'
+    default:
+      return 'mdi-checkbox-blank-circle-outline'
   }
 })
 
@@ -26,6 +28,8 @@ const color = computed(() => {
       return 'primary'
     case 'error':
       return 'red'
+    default:
+      return 'primary'
   }
 })
 
@@ -37,6 +41,8 @@ const tooltip = computed(() => {
       return t('form-section-status.section-incomplete')
     case 'error':
       return t('form-section-status.section-error')
+    default:
+      return ''
   }
 })
 </script>
