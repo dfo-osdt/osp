@@ -30,3 +30,38 @@ Some helper libraries of note here:
 - [PHP 8.3](https://www.php.net/)
 - [Laravel](https://laravel.com/) (framework)
 - [Laravel Sanctum](https://laravel.com/docs/9.x/sanctum) (auth)
+
+## Contributions
+
+All changes must be done via a PR to the `main` branch. PR should be descriptive and provide
+reference to any issues as required.
+
+For commits, messages, use [Coventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+
+The commit message should be structured as follows:
+
+```text
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Commit Types
+
+```js
+[
+  'build',
+  'chore',
+  'ci',
+  'docs',
+  'feat',
+  'fix',
+  'perf',
+  'refactor',
+  'revert',
+  'style',
+  'test'
+]
+```
