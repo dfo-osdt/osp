@@ -80,8 +80,6 @@ class FullFlowController
         $scope = $response->json('scope');
         $orcid = $response->json('orcid');
 
-        // we shoudl be able to use the access token to get the user's ORCID iD
-        //$orcid = $this->getOrcidId($accessToken);
 
         CauserResolver::setCauser($user);
 

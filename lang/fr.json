@@ -27,5 +27,6 @@
   "There has been a failed login attempt to your :app account.": "Il y a eu une tentative de connexion échouée à votre compte :app.",
   "Unable to retrieve ORCID iD from ORCID.": "Impossible de récupérer l'identifiant ORCID depuis ORCID.",
   "Server side ORCID configuration is missing - please contact the administrator.": "La configuration côté serveur de ORCID est manquante - veuillez contacter l'administrateur.",
-  "Hello": "Bonjour"
+  "Hello": "Bonjour",
+  "Email domain not allowed": "Domaine de courriel non autorisé"
 }

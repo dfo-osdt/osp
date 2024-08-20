@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Spatie\Activitylog\Contracts\Activity;
+use Spatie\Activitylog\Models\Activity as ModelsActivity;
 
 class LoginRequest extends FormRequest
 {
@@ -51,7 +53,7 @@ class LoginRequest extends FormRequest
         $credentials['active'] = true;
 
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+            RateLimiter::hit($this->throttleKey(), 600);
 
             // check if this user has verified their email address
             $user = User::where('email', $this->email)->first();
@@ -83,6 +85,7 @@ class LoginRequest extends FormRequest
         }
 
         event(new Lockout($this));
+        $this->logLockout();
 
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
@@ -101,6 +104,27 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey()
     {
-        return Str::lower($this->input('email')).'|'.$this->ip();
+        return Str::lower($this->input('email')) . '|' . $this->ip();
+    }
+
+
+    /**
+     * Log lockout but rate limit to one entry per 2 minutes
+     * as we don't want to log all failed attempts in the
+     * log. This could be asbused to fill up the logs.
+     */
+    public function logLockout()
+    {
+        RateLimiter::attempt(
+            $this->throttleKey().'|lockout',
+            1,
+            function() {
+                activity()->withProperties([
+                    'ip' => $this->ip(),
+                    'email' => $this->email,
+                ])->log('auth.lockout');
+            },
+            120
+        );
     }
 }

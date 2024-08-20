@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Auth\Traits\AuthorizedDomainTrait;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\LocaleTrait;
@@ -10,10 +11,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
     use LocaleTrait;
+    use AuthorizedDomainTrait;
 
     /**
      * Handle an incoming registration request.
@@ -34,6 +37,9 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Password::min(config('auth.password_min_length'))->uncompromised()],
             'locale' => ['string', 'max:2', 'in:en,fr'],
         ]);
+
+        // check if the email domain is part of the allowed domains
+        $this->validateEmailDomain($validated['email']);
 
         // check if the user already exists
         $user = User::where('email', $validated['email'])->first();
@@ -63,7 +69,6 @@ class RegisteredUserController extends Controller
 
         $user->email_verification_token = User::generateEmailVerificationToken();
         $user->save();
-        //$user->refresh();
         $user->associateAuthor();
 
         // give the user the author role - this is the default role
