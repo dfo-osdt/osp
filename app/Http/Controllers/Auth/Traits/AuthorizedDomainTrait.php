@@ -34,7 +34,7 @@ trait  AuthorizedDomainTrait
     {
         if (! $this->isEmailDomainAllowed($email)) {
             throw ValidationException::withMessages([
-                'email' => __('Email domain not allowed').':'.config('osp.allowed_registration_email_domains')[0]
+                'email' => __('Email domain not allowed')
             ]);
         }
     }
