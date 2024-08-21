@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Spatie\Activitylog\Contracts\Activity;
-use Spatie\Activitylog\Models\Activity as ModelsActivity;
 
 class LoginRequest extends FormRequest
 {
@@ -104,9 +102,8 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey()
     {
-        return Str::lower($this->input('email')) . '|' . $this->ip();
+        return Str::lower($this->input('email')).'|'.$this->ip();
     }
-
 
     /**
      * Log lockout but rate limit to one entry per 2 minutes
@@ -118,7 +115,7 @@ class LoginRequest extends FormRequest
         RateLimiter::attempt(
             $this->throttleKey().'|lockout',
             1,
-            function() {
+            function () {
                 activity()->withProperties([
                     'ip' => $this->ip(),
                     'email' => $this->email,

@@ -17,9 +17,7 @@ class ManagementReviewStepCreated
      *
      * @return void
      */
-    public function __construct(public ManagementReviewStep $managementReviewStep)
-    {
-    }
+    public function __construct(public ManagementReviewStep $managementReviewStep) {}
 
     /**
      * Get the channels the event should broadcast on.

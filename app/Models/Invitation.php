@@ -29,7 +29,6 @@ class Invitation extends Model
         'invitation_token',
     ];
 
-
     // logging options
     public function getActivitylogOptions(): LogOptions
     {

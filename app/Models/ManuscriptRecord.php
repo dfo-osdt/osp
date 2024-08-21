@@ -32,8 +32,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     use HasFactory;
     use HasUlid;
     use InteractsWithMedia;
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     public $guarded = [
         'id',
@@ -173,7 +173,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             ->withCustomProperties([
                 'locked' => false,
                 'sensitivity_label' => SensitivityLabel::ProtectedA,
-                ])
+            ])
             ->preservingOriginal($preserveOriginal)
             ->toMediaCollection('manuscript');
 
@@ -190,7 +190,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     public function deleteManuscriptFile($uuid, $force = false)
     {
         $media = $this->getMedia('manuscript')->where('uuid', $uuid)->first();
-        if (!$media) {
+        if (! $media) {
             throw new FileNotFoundException('File not found.');
         }
         if ($force) {
@@ -244,7 +244,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             }
         });
 
-        if (!$noExceptions) {
+        if (! $noExceptions) {
             $validator->validate();
         }
 

@@ -15,9 +15,7 @@ class ItemShared
     /**
      * Create a new event instance.
      */
-    public function __construct(public Shareable $shareableItem)
-    {
-    }
+    public function __construct(public Shareable $shareableItem) {}
 
     /**
      * Get the channels the event should broadcast on.

@@ -32,7 +32,7 @@ const tooltip = computed(() => {
 
 <template>
   <q-chip :label="label" color="primary" dark>
-    <q-tooltip>
+    <q-tooltip class="text-body2">
       {{ tooltip }}
     </q-tooltip>
   </q-chip>

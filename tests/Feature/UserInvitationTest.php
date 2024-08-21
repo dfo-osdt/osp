@@ -44,7 +44,7 @@ test('a user cannot be invited with an invalid email domain', function () {
     $response = $this->actingAs($invitingUser)->postJson('/api/users/invite', [
         'first_name' => 'John',
         'last_name' => 'Doe',
-        'email' => 'john.doe@wrong.com'
+        'email' => 'john.doe@wrong.com',
     ]);
 
     $response->assertStatus(422);

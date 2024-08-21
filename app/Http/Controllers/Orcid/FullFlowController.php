@@ -25,7 +25,7 @@ class FullFlowController
 
     public function callback(Request $request): RedirectResponse
     {
-        Log::debug("Callback from ORCID");
+        Log::debug('Callback from ORCID');
         Log::debug($request->all());
 
         $frontendUrl = config('app.frontend_url');
@@ -37,7 +37,8 @@ class FullFlowController
 
         if (! Cache::has($validated['key'])) {
             Log::error('Invalid key for ORCID callback');
-            $url = $frontendUrl . '#/auth/orcid-callback?status=invalid-key';
+            $url = $frontendUrl.'#/auth/orcid-callback?status=invalid-key';
+
             return redirect($url);
         }
 
@@ -47,7 +48,8 @@ class FullFlowController
 
         if (! $user) {
             Log::error('Invalid user for ORCID callback');
-            $url = $frontendUrl . '#/auth/orcid-callback?status=invalid-user';
+            $url = $frontendUrl.'#/auth/orcid-callback?status=invalid-user';
+
             return redirect($url);
         }
 
@@ -70,7 +72,8 @@ class FullFlowController
         if ($response->failed()) {
             Log::error('Failed to get access token from ORCID');
             Log::debug($response->body());
-            return redirect($frontendUrl . '#/auth/orcid-callback?status=failed');
+
+            return redirect($frontendUrl.'#/auth/orcid-callback?status=failed');
         }
 
         Log::info('Access token received from ORCID');
@@ -80,12 +83,11 @@ class FullFlowController
         $scope = $response->json('scope');
         $orcid = $response->json('orcid');
 
-
         CauserResolver::setCauser($user);
 
         $author = $user->author;
 
-        $author->orcid = 'https://' . $baseUrl . '/' . $orcid;
+        $author->orcid = 'https://'.$baseUrl.'/'.$orcid;
         $author->orcid_access_token = $accessToken;
         $author->orcid_token_scope = $scope;
         $author->orcid_refresh_token = $refreshToken;
@@ -93,7 +95,7 @@ class FullFlowController
         $author->orcid_expires_at = now()->addSeconds($expiresIn);
         $author->save();
 
-        return redirect($frontendUrl . '#/auth/orcid-callback?status=success');
+        return redirect($frontendUrl.'#/auth/orcid-callback?status=success');
     }
 
     /**
@@ -118,7 +120,7 @@ class FullFlowController
         Cache::add($key, Auth::id(), now()->addMinutes(15));
 
         // add key to redirect URI
-        $redirectURI .= '?key=' . $key;
+        $redirectURI .= '?key='.$key;
 
         // encode URI - if it's not encoded, ORCID will returns to base URL
         $encoded = urlencode($redirectURI);
@@ -131,6 +133,7 @@ class FullFlowController
 
         Log::info('Redirecting to ORCID for authorization');
         Log::debug($link);
+
         // redirect to ORCID
         return redirect($link);
     }

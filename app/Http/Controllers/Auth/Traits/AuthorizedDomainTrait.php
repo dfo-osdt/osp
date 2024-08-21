@@ -1,16 +1,13 @@
 <?php
 
-namespace  App\Http\Controllers\Auth\Traits;
+namespace App\Http\Controllers\Auth\Traits;
 
 use Illuminate\Validation\ValidationException;
 
-trait  AuthorizedDomainTrait
+trait AuthorizedDomainTrait
 {
     /**
      * Check if the email domain is part of the allowed domains
-     *
-     * @param string $email
-     * @return bool
      */
     public function isEmailDomainAllowed(string $email): bool
     {
@@ -34,7 +31,7 @@ trait  AuthorizedDomainTrait
     {
         if (! $this->isEmailDomainAllowed($email)) {
             throw ValidationException::withMessages([
-                'email' => __('Email domain not allowed')
+                'email' => __('Email domain not allowed'),
             ]);
         }
     }

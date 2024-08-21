@@ -15,8 +15,8 @@ use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
-    use LocaleTrait;
     use AuthorizedDomainTrait;
+    use LocaleTrait;
 
     /**
      * Handle an incoming registration request.
@@ -47,8 +47,8 @@ class RegisteredUserController extends Controller
             // User exits and does not have an invitation or is active (has registered)
             if ($user->active) {
                 throw ValidationException::withMessages(
-                    ['account' => __('Problem with registration, please contact support')
-                ]);
+                    ['account' => __('Problem with registration, please contact support'),
+                    ]);
             }
 
             // User exists but is not active (has not registered), so update the user

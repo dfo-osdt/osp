@@ -226,5 +226,4 @@ return [
         'enalbed' => env('HEALTH_CHECK_ENABLED', true),
     ],
 
-
 ];

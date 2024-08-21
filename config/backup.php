@@ -147,7 +147,7 @@ return [
             /*
              * The filename prefix used for the backup zip file.
              */
-            'filename_prefix' => env('APP_NAME', '') . '_',
+            'filename_prefix' => env('APP_NAME', '').'_',
 
             /*
              * The disk names on which the backups will be stored.

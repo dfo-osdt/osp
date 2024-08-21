@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\FunctionalArea;
 use Illuminate\Database\Seeder;
 use Log;
 

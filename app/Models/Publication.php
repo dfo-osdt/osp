@@ -20,8 +20,8 @@ class Publication extends Model implements Fundable, HasMedia
     use FundableTrait;
     use HasFactory;
     use InteractsWithMedia;
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     public $guarded = [
         'id',

@@ -17,9 +17,7 @@ class ManuscriptManagementReviewComplete
      *
      * @return void
      */
-    public function __construct(public ManuscriptRecord $manuscriptRecord)
-    {
-    }
+    public function __construct(public ManuscriptRecord $manuscriptRecord) {}
 
     /**
      * Get the channels the event should broadcast on.

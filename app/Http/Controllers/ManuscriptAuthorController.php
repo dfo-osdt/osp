@@ -42,7 +42,7 @@ class ManuscriptAuthorController extends Controller
 
         $author = Author::find($validated['author_id']);
 
-        $manuscriptAuthor = new ManuscriptAuthor();
+        $manuscriptAuthor = new ManuscriptAuthor;
         $manuscriptAuthor->manuscript_record_id = $manuscriptRecord->id;
         $manuscriptAuthor->author_id = $validated['author_id'];
         $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;

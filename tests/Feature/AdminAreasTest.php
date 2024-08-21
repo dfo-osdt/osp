@@ -12,7 +12,7 @@ test('An unauthenticated user cannot access the admin areas', function (string $
     $response->assertForbidden();
 })->with([
     '/horizon',
-    '/pulse'
+    '/pulse',
 ]);
 
 test('An unauthorized user cannot access the admin areas', function (string $path) {
@@ -22,7 +22,7 @@ test('An unauthorized user cannot access the admin areas', function (string $pat
     $response->assertForbidden();
 })->with([
     '/horizon',
-    '/pulse'
+    '/pulse',
 ]);
 
 test('An admin user can access the admin areas', function (string $path) {
@@ -33,5 +33,5 @@ test('An admin user can access the admin areas', function (string $path) {
     $response->assertOk();
 })->with([
     '/horizon',
-    '/pulse'
+    '/pulse',
 ]);
