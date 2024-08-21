@@ -288,11 +288,69 @@
       "HEAD"
     ]
   },
+  "pulse": {
+    "name": "pulse",
+    "domain": null,
+    "action": "Closure",
+    "uri": "pulse",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
   "sanctum.csrf-cookie": {
     "name": "sanctum.csrf-cookie",
     "domain": null,
     "action": "Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController@show",
     "uri": "sanctum/csrf-cookie",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "": {
+    "name": null,
+    "domain": null,
+    "action": "Spatie\\Health\\Http\\Controllers\\HealthCheckResultsController",
+    "uri": "health",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "telescope": {
+    "name": "telescope",
+    "domain": null,
+    "action": "Laravel\\Telescope\\Http\\Controllers\\HomeController@index",
+    "uri": "telescope/{view?}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "livewire.update": {
+    "name": "livewire.update",
+    "domain": null,
+    "action": "Livewire\\Mechanisms\\HandleRequests\\HandleRequests@handleUpdate",
+    "uri": "livewire/update",
+    "method": [
+      "POST"
+    ]
+  },
+  "livewire.upload-file": {
+    "name": "livewire.upload-file",
+    "domain": null,
+    "action": "Livewire\\Features\\SupportFileUploads\\FileUploadController@handle",
+    "uri": "livewire/upload-file",
+    "method": [
+      "POST"
+    ]
+  },
+  "livewire.preview-file": {
+    "name": "livewire.preview-file",
+    "domain": null,
+    "action": "Livewire\\Features\\SupportFileUploads\\FilePreviewController@handle",
+    "uri": "livewire/preview-file/{filename}",
     "method": [
       "GET",
       "HEAD"
@@ -324,16 +382,6 @@
     "uri": "_ignition/update-config",
     "method": [
       "POST"
-    ]
-  },
-  "": {
-    "name": null,
-    "domain": null,
-    "action": "Closure",
-    "uri": "/",
-    "method": [
-      "GET",
-      "HEAD"
     ]
   },
   "register": {

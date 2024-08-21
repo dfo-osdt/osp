@@ -50,7 +50,7 @@ test('new user cannot logging until they have verified their email address', fun
 });
 
 test('an email is always stored in lowercase', function () {
-    $email = 'John.Doe@jel.com';
+    $email = 'John.Doe@example.com';
 
     // generate random 16 character long string
     $password = Str::random(12);
@@ -64,15 +64,15 @@ test('an email is always stored in lowercase', function () {
     ]);
 
     $user = User::latest()->first();
-    expect($user->email)->toBe('john.doe@jel.com');
+    expect($user->email)->toBe('john.doe@example.com');
     // check that author profile is created
-    expect($user->author->email)->toBe('john.doe@jel.com');
+    expect($user->author->email)->toBe('john.doe@example.com');
     // check that user is assigned author role
     expect($user->hasRole('author'))->toBeTrue();
 });
 
 test('a user cannot register twice with the same email', function () {
-    $email = 'John.Doe@jel.com';
+    $email = 'John.Doe@example.com';
 
     // generate random 16 character long string
     $password = Str::random(12);
@@ -116,7 +116,7 @@ test('a user cannot register twice with the same email', function () {
     ]);
 
     expect($response->status())->toBe(422);
-    expect($response->json('errors.email.0'))->toBe('The email has already been taken.');
+    expect($response->json('message'))->toBe('Problem with registration, please contact support');
 });
 
 test('a user that was invited can register without following the link', function () {
@@ -135,4 +135,22 @@ test('a user that was invited can register without following the link', function
     ]);
 
     $response->assertOk();
+}) ;
+
+test('a user cannot register with the wrong domain', function () {
+
+    $password = Str::random(12);
+
+    $response = $this->postJson('/register', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => 'john.doe@wrong.com',
+        'password' => $password,
+        'password_confirmation' => $password,
+    ]);
+
+    expect($response->status())
+        ->toBe(422)
+        ->and($response->json('message'))
+            ->toBe('Email domain not allowed');
 });

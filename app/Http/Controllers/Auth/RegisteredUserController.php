@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Auth\Traits\AuthorizedDomainTrait;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\LocaleTrait;
@@ -10,10 +11,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
     use LocaleTrait;
+    use AuthorizedDomainTrait;
 
     /**
      * Handle an incoming registration request.
@@ -24,9 +27,6 @@ class RegisteredUserController extends Controller
     {
         $this->setLocaleFromRequest($request);
 
-        // request email to lowercase - ensure no duplicate emails
-        $request->merge(['email' => strtolower($request->email)]);
-
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -35,15 +35,20 @@ class RegisteredUserController extends Controller
             'locale' => ['string', 'max:2', 'in:en,fr'],
         ]);
 
+        // request email to lowercase - ensure no duplicate emails
+        $validated['email'] = strtolower($validated['email']);
+
+        // check if the email domain is part of the allowed domains
+        $this->validateEmailDomain($validated['email']);
+
         // check if the user already exists
         $user = User::where('email', $validated['email'])->first();
         if ($user) {
             // User exits and does not have an invitation or is active (has registered)
             if ($user->active) {
-                $request->validate([
-                    'email' => ['unique:users'],
+                throw ValidationException::withMessages(
+                    ['account' => __('Problem with registration, please contact support')
                 ]);
-                throw new \Exception('User already exists');
             }
 
             // User exists but is not active (has not registered), so update the user
@@ -51,8 +56,10 @@ class RegisteredUserController extends Controller
             $user->password = Hash::make($validated['password']);
             $user->active = true;
             $user->save();
+
         } else {
             $user = User::create([
+
                 'first_name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
                 'email' => $validated['email'],
@@ -63,7 +70,6 @@ class RegisteredUserController extends Controller
 
         $user->email_verification_token = User::generateEmailVerificationToken();
         $user->save();
-        //$user->refresh();
         $user->associateAuthor();
 
         // give the user the author role - this is the default role

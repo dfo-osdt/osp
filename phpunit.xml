@@ -20,6 +20,8 @@
     <env name="ORCID_USE_SANDBOX" value="false"/>
     <env name="ORCID_CLIENT_ID" value="APP-XXXXXXXXXXXXXXXX"/>
     <env name="ORCID_REDIRECT_URI" value="https://example.test/orcid/callback?"/>
+    <env name="ALLOWED_REGISTRATION_EMAIL_DOMAINS" value="example.com" />
+
   </php>
   <source>
     <include>

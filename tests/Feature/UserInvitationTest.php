@@ -14,7 +14,7 @@ test('an existing user can invite a new user', function () {
     $response = $this->actingAs($invitingUser)->postJson('/api/users/invite', [
         'first_name' => 'John',
         'last_name' => 'Doe',
-        'email' => 'john.doe@test.com',
+        'email' => 'john.doe@example.com',
         'locale' => 'fr',
     ]);
 
@@ -23,7 +23,7 @@ test('an existing user can invite a new user', function () {
         'data' => [
             'first_name' => 'John',
             'last_name' => 'Doe',
-            'email' => 'john.doe@test.com',
+            'email' => 'john.doe@example.com',
             'locale' => 'fr',
         ]]);
 
@@ -33,13 +33,25 @@ test('an existing user can invite a new user', function () {
             return false;
         }
 
-        return $event->invitation->user->email === 'john.doe@test.com';
+        return $event->invitation->user->email === 'john.doe@example.com';
     });
+});
+
+test('a user cannot be invited with an invalid email domain', function () {
+
+    $invitingUser = User::factory()->create();
+
+    $response = $this->actingAs($invitingUser)->postJson('/api/users/invite', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => 'john.doe@wrong.com'
+    ]);
+
+    $response->assertStatus(422);
 });
 
 test('a user cannot invited a user that already exists', function () {
     // inviting a new user should create both a user and an invitation
-    Event::fake();
 
     $invitingUser = User::factory()->create();
     $user = User::factory()->create();

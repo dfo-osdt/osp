@@ -15,10 +15,10 @@ export default defineConfig({
   fixturesFolder: 'tests/cypress/fixture',
   downloadsFolder: 'tests/cypress/downloads',
   e2e: {
-    setupNodeEvents(on, config) {
-      on('task', { activateCypressEnvFile, activateLocalEnvFile })
-    },
-    baseUrl: 'http://osp.test',
+    // setupNodeEvents(on, config) {
+    //   on('task', { activateCypressEnvFile, activateLocalEnvFile })
+    // },
+    baseUrl: 'http://127.0.0.1:8000/',
     specPattern: 'tests/cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'tests/cypress/support/index.ts',
   },
