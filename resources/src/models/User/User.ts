@@ -1,5 +1,5 @@
 import type { AuthorResource } from '../Author/Author'
-import type { Resource, ResourceList } from '../Resource'
+import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import { http } from '@/api/http'
 import type { Locale } from '@/stores/LocaleStore'
 
@@ -9,6 +9,7 @@ export interface User {
   last_name: string
   email: string
   locale: Locale
+  sensitivity_label: SensitivityLabel
   author?: AuthorResource
 }
 

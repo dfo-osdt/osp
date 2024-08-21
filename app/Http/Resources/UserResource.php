@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\SensitivityLabel;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -21,6 +22,7 @@ class UserResource extends JsonResource
                 'last_name' => $this->last_name,
                 'email' => $this->email,
                 'locale' => $this->locale,
+                'sensitivity_label' => SensitivityLabel::ProtectedA,
                 'author' => AuthorResource::make($this->whenLoaded('author')),
             ],
             'can' => [

@@ -45,7 +45,10 @@ export interface Media {
   collection_name: string
   mime_type: string
   locked: boolean
+  sensitivity_label: SensitivityLabel
 }
+
+export type SensitivityLabel = 'Unclassified' | 'Protected A'
 
 export type MediaResource = Resource<Media>
 export type MediaResourceList = Resource<Media[]>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\SensitivityLabel;
 use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,6 +29,7 @@ class ManagementReviewStepResource extends JsonResource
                 'completed_at' => $this->completed_at,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
+                'sensitivity_label' => SensitivityLabel::ProtectedA,
                 // relationships
                 'manuscript_record' => ManuscriptRecordSummaryResource::make($this->whenLoaded('manuscriptRecord')),
                 'previous_step' => ManagementReviewStepResource::make($this->whenLoaded('previousStep')),

@@ -13,6 +13,7 @@ import type {
 import {
   ManuscriptRecordService,
 } from '@/models/ManuscriptRecord/ManuscriptRecord'
+import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 
 const props = defineProps<{
   id: number
@@ -55,9 +56,9 @@ const sentForReview = computed(() => {
     default:
       return (
         `${t('common.submitted-on')
-                 } ${
-                 useLocaleDate(manuscriptRecord.value.data.sent_for_review_at)
-                  .value}`
+        } ${
+          useLocaleDate(manuscriptRecord.value.data.sent_for_review_at)
+            .value}`
       )
   }
 })
@@ -85,8 +86,8 @@ const reviewCompletedOn = computed(() => {
     default:
       return (
         `${t('common.completed-on')
-                 } ${
-                 useLocaleDate(manuscriptRecord.value.data.reviewed_at).value}`
+        } ${
+          useLocaleDate(manuscriptRecord.value.data.reviewed_at).value}`
       )
   }
 })
@@ -140,8 +141,11 @@ async function decisionSubmitted() {
 <template>
   <q-timeline color="primary" class="q-px-md">
     <q-timeline-entry heading>
-      <div class="text-h4 text-primary">
-        {{ $t('management-review-step-view.title') }}
+      <div class="row justify-between">
+        <div class="text-h4 text-primary">
+          {{ t('management-review-step-view.title') }}
+        </div>
+        <div><SensitivityLabelChip sensitivity="Protected A" /></div>
       </div>
       <div
         class="text-subtitle2 text-weight-bold text-grey-7 text-uppercase"
@@ -152,7 +156,7 @@ async function decisionSubmitted() {
     <q-timeline-entry
       class="q-mx-lg"
       icon="mdi-send-check-outline"
-      :title="$t('management-review-step-view.submission-for-review')"
+      :title="t('management-review-step-view.submission-for-review')"
       :color="submittedColor"
       :subtitle="sentForReview"
     >
@@ -160,46 +164,46 @@ async function decisionSubmitted() {
         <template #copyrightsAct>
           <a
             :href="
-              $t(
+              t(
                 'policy.intellectual-property-policy-copyright-act-link',
               )
             "
             target="_blank"
           >{{
-            $t(
+            t(
               'policy.intellectual-property-policy-copyright-act',
             )
           }}</a>
         </template>
         <template #privacyAct>
-          <a :href="$t('policy.privacy-act-link')" target="_blank">{{
-            $t('policy.privacy-act')
+          <a :href="t('policy.privacy-act-link')" target="_blank">{{
+            t('policy.privacy-act')
           }}</a>
         </template>
         <template #valueAndEthicsCode>
           <a
-            :href="$t('policy.values-and-ethics-code-for-dfo-link')"
+            :href="t('policy.values-and-ethics-code-for-dfo-link')"
             target="_blank"
-          >{{ $t('policy.values-and-ethics-code-for-dfo') }}</a>
+          >{{ t('policy.values-and-ethics-code-for-dfo') }}</a>
         </template>
       </i18n-t>
       <p>
-        {{ $t('policy.message.p2') }}
+        {{ t('policy.message.p2') }}
       </p>
       <p>
-        {{ $t('policy.p2') }}
+        {{ t('policy.p2') }}
       </p>
       <i18n-t keypath="policy.for-more-info" tag="p" scope="global">
         <template #policy>
           <a
             :href="
-              $t(
+              t(
                 'policy.national-policy-for-science-publications-link',
               )
             "
             target="_blank"
           >{{
-            $t(
+            t(
               'policy.national-policy-for-science-publications',
             )
           }}</a>
@@ -220,7 +224,7 @@ async function decisionSubmitted() {
       class="q-mx-lg"
       icon="mdi-check-all"
       :title="
-        $t(
+        t(
           'management-review-step-view.completion-of-management-review',
         )
       "
