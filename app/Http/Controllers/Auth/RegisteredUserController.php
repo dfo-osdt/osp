@@ -27,9 +27,6 @@ class RegisteredUserController extends Controller
     {
         $this->setLocaleFromRequest($request);
 
-        // request email to lowercase - ensure no duplicate emails
-        $request->merge(['email' => strtolower($request->email)]);
-
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -37,6 +34,9 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Password::min(config('auth.password_min_length'))->uncompromised()],
             'locale' => ['string', 'max:2', 'in:en,fr'],
         ]);
+
+        // request email to lowercase - ensure no duplicate emails
+        $validated['email'] = strtolower($validated['email']);
 
         // check if the email domain is part of the allowed domains
         $this->validateEmailDomain($validated['email']);
@@ -46,10 +46,9 @@ class RegisteredUserController extends Controller
         if ($user) {
             // User exits and does not have an invitation or is active (has registered)
             if ($user->active) {
-                $request->validate([
-                    'email' => ['unique:users'],
+                throw ValidationException::withMessages(
+                    ['account' => __('Problem with registration, please contact support')
                 ]);
-                throw new \Exception('User already exists');
             }
 
             // User exists but is not active (has not registered), so update the user
@@ -57,8 +56,10 @@ class RegisteredUserController extends Controller
             $user->password = Hash::make($validated['password']);
             $user->active = true;
             $user->save();
+
         } else {
             $user = User::create([
+
                 'first_name' => $validated['first_name'],
                 'last_name' => $validated['last_name'],
                 'email' => $validated['email'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Events\Auth\Invited;
+use App\Http\Controllers\Auth\Traits\AuthorizedDomainTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\Invitation;
@@ -10,19 +11,35 @@ use App\Models\User;
 use Hash;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Str;
 
 class InvitedUserController extends Controller
 {
+
+    use AuthorizedDomainTrait;
+
     public function invite(Request $request): UserResource
     {
+
         // validate the request
         $validated = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'bail|required|email|unique:users,email',
+            'email' => 'bail|required|email',
             'locale' => 'string|in:en,fr',
         ]);
+
+        $validated['email'] = strtolower($validated['email']);
+
+        $this->validateEmailDomain($validated['email']);
+
+        // does the user already exist?
+        if (User::where('email', $validated['email'])->exists()) {
+            throw ValidationException::withMessages([
+                'email' => __('The account already exists'),
+            ]);
+        }
 
         // generate random 20 char password string
         $password = Str::password(20);

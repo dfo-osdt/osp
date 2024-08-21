@@ -6,7 +6,7 @@ return [
      * The allowed registration email domains for new users.
      */
     'allowed_registration_email_domains' =>
-        explode(',', env('ALLOWED_REGISTRATION_EMAIL_DOMAINS', 'dfo-mpo.gc.ca')),
+        explode(',', strtolower(env('ALLOWED_REGISTRATION_EMAIL_DOMAINS', 'dfo-mpo.gc.ca'))),
 
     /*
      The default pagination for API requests. This is used by the

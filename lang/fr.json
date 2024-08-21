@@ -28,5 +28,7 @@
   "Unable to retrieve ORCID iD from ORCID.": "Impossible de récupérer l'identifiant ORCID depuis ORCID.",
   "Server side ORCID configuration is missing - please contact the administrator.": "La configuration côté serveur de ORCID est manquante - veuillez contacter l'administrateur.",
   "Hello": "Bonjour",
-  "Email domain not allowed": "Domaine de courriel non autorisé"
+  "Email domain not allowed": "Domaine de courriel non autorisé",
+  "Problem with registration, please contact support": "Problème avec l'inscription, veuillez contacter le support",
+  "The account already exists": "Le compte existe déjà"
 }

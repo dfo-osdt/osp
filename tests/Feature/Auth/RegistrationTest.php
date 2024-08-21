@@ -116,7 +116,7 @@ test('a user cannot register twice with the same email', function () {
     ]);
 
     expect($response->status())->toBe(422);
-    expect($response->json('errors.email.0'))->toBe('The email has already been taken.');
+    expect($response->json('message'))->toBe('Problem with registration, please contact support');
 });
 
 test('a user that was invited can register without following the link', function () {
