@@ -21,10 +21,10 @@
     "vue-router": "^4.4.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.26.0",
+    "@antfu/eslint-config": "^2.27.0",
     "@quasar/vite-plugin": "^1.7.0",
     "@types/dompurify": "^3.0.5",
-    "@types/node": "^22.4.1",
+    "@types/node": "^22.5.0",
     "axios": "^1.7.4",
     "cypress": "^13.13.3",
     "eslint": "^9.9.0",
@@ -36,7 +36,7 @@
     "sass": "^1.77.8",
     "typescript": "^5.5.4",
     "unplugin-auto-import": "^0.18.2",
-    "vite": "^5.4.1",
+    "vite": "^5.4.2",
     "vue-tsc": "^2.0.29"
   }
 }

@@ -20,12 +20,17 @@ class Kernel extends ConsoleKernel
         // prune the telescope database
         $schedule->command('telescope:prune --hours=48')->daily('00:30');
 
+        // prune the activity log - keep 1 year of data
+        $schedule->command('activitylog:clean --days=365')->daily('01:00');
+
         // backup the database
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run --only-db')->daily()->at('02:00');
 
         // health checks
         $schedule->command(RunHealthChecksCommand::class)->everyMinute();
+
+
 
     }
 
