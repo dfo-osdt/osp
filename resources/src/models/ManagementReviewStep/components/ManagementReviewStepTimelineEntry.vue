@@ -45,7 +45,7 @@ const icon = computed(() => {
       return 'mdi-account-check-outline'
     case 'pending':
       return 'mdi-account-clock-outline'
-    case 'deferred':
+    case 'reassign':
       return 'mdi-account-arrow-right-outline'
     case 'on_hold':
       return 'mdi-timer-pause-outline'
@@ -72,7 +72,7 @@ const color = computed(() => {
     case 'pending':
     case 'on_hold':
       return 'yellow-8'
-    case 'deferred':
+    case 'reassign':
       return 'secondary'
     default:
       return 'primary'
@@ -114,7 +114,6 @@ async function showDecisionDialog() {
   submitDecisionDialog.value = true
 }
 function decisionSubmitted(decision: ManagementReviewStepResource) {
-  console.log(decision)
   managementStep.value = decision
   submitDecisionDialog.value = false
   emit('decision', decision)
@@ -146,15 +145,15 @@ function withdrawManuscript() {
     <template v-if="canUpdate" #title>
       {{
         managementStep.data.status === 'on_hold'
-          ? $t('review-step.your-response', [userName])
-          : $t('review-step.your-review', [userName])
+          ? t('review-step.your-response', [userName])
+          : t('review-step.your-review', [userName])
       }}
     </template>
     <template v-else #title>
       {{
-        managementStep.data.status == 'on_hold'
-          ? $t('review-step.response-by', [userName])
-          : $t('review-step.review-by', [userName])
+        managementStep.data.status === 'on_hold'
+          ? t('review-step.response-by', [userName])
+          : t('review-step.review-by', [userName])
       }}
     </template>
     <template #subtitle>
@@ -164,7 +163,7 @@ function withdrawManuscript() {
       <span v-if="completedAtDate"> - {{ completedAtDate }}</span>
       <span v-else-if="managementStep.data.status === 'pending'">-
         {{
-          `${$t('common.decision-expected-by')}: ${decisionExpectedByDate}`
+          `${t('common.decision-expected-by')}: ${decisionExpectedByDate}`
         }}</span>
     </template>
     <template v-if="canUpdate">
@@ -175,24 +174,24 @@ function withdrawManuscript() {
         flat
       >
         <div class="text-body1 text-weight-medium text-primary">
-          {{ $t('management-review-response.title') }}
+          {{ t('management-review-response.title') }}
         </div>
         <p>
-          {{ $t('management-review-response.subtitle') }}
+          {{ t('management-review-response.subtitle') }}
         </p>
         <QuestionEditor
           v-model="managementStep.data.comments"
-          :title="$t('author-comments.title')"
+          :title="t('author-comments.title')"
         >
           <p>
-            {{ $t('author-comments.description') }}
+            {{ t('author-comments.description') }}
           </p>
         </QuestionEditor>
         <q-card-actions align="right">
           <q-btn
             color="primary"
             outline
-            :label="$t('review-step.save-comments')"
+            :label="t('review-step.save-comments')"
             @click="save"
           />
           <q-btn
@@ -200,14 +199,14 @@ function withdrawManuscript() {
             color="red"
             outline
             :label="
-              $t('manuscript-progress-view.withdraw-manuscript')
+              t('manuscript-progress-view.withdraw-manuscript')
             "
             @click="withdrawManuscript()"
           />
           <q-btn
             icon="mdi-message-reply-text-outline"
             color="primary"
-            :label="$t('review-step.reply')"
+            :label="t('review-step.reply')"
             :disable="managementStep.data.comments === ''"
             @click="submitDecision()"
           />
@@ -221,17 +220,17 @@ function withdrawManuscript() {
       </q-card>
       <q-card v-else class="q-pa-md" bordered flat>
         <div class="text-body1 text-weight-medium text-primary">
-          {{ $t('management-review-guidelines.title') }}
+          {{ t('management-review-guidelines.title') }}
         </div>
         <p>
-          {{ $t('management-review-guidelines.subtitle') }}
+          {{ t('management-review-guidelines.subtitle') }}
         </p>
         <ul class="q-mb-md">
           <li>
-            {{ $t('management-review-guidelines.tip-one') }}
+            {{ t('management-review-guidelines.tip-one') }}
           </li>
           <q-btn
-            :label="$t('common.go-to-manuscript-form')"
+            :label="t('common.go-to-manuscript-form')"
             icon="mdi-arrow-left"
             outline
             color="primary"
@@ -239,11 +238,11 @@ function withdrawManuscript() {
             :to="`/manuscript/${managementStep.data.manuscript_record_id}/form`"
           />
           <li>
-            {{ $t('management-review-guidelines.tip-two') }}
+            {{ t('management-review-guidelines.tip-two') }}
           </li>
           <q-btn
             :label="
-              $t('common.go-to-potential-public-interest-section')
+              t('common.go-to-potential-public-interest-section')
             "
             icon="mdi-arrow-left"
             outline
@@ -254,23 +253,23 @@ function withdrawManuscript() {
         </ul>
         <QuestionEditor
           v-model="managementStep.data.comments"
-          :title="$t('reviewer-comments.title')"
+          :title="t('reviewer-comments.title')"
         >
           <p>
-            {{ $t('reviewer-comments.description') }}
+            {{ t('reviewer-comments.description') }}
           </p>
         </QuestionEditor>
         <q-card-actions align="right">
           <q-btn
             color="primary"
             outline
-            :label="$t('review-step.save-comments')"
+            :label="t('review-step.save-comments')"
             @click="save"
           />
           <q-btn
             icon="mdi-arrow-decision"
             color="primary"
-            :label="$t('review-step.submit-decision')"
+            :label="t('review-step.submit-decision')"
             @click="showDecisionDialog"
           />
           <SubmitDecisionDialog
@@ -298,7 +297,7 @@ function withdrawManuscript() {
         >
           <span
             class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
-          >{{ $t('common.decision') }}</span>
+          >{{ t('common.decision') }}</span>
           <ManagementReviewStepDecisionSpan
             class="text-weight-bold text-uppercase text-primary"
             :class="`text-${color}`"
@@ -309,7 +308,7 @@ function withdrawManuscript() {
           <div
             class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
           >
-            {{ $t('common.comments') }}
+            {{ t('common.comments') }}
           </div>
           <span class="text-grey-8">
             <!-- eslint-disable-next-line vue/no-v-html -->

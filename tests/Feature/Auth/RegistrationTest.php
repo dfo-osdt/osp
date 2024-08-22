@@ -135,7 +135,7 @@ test('a user that was invited can register without following the link', function
     ]);
 
     $response->assertOk();
-}) ;
+});
 
 test('a user cannot register with the wrong domain', function () {
 
@@ -152,5 +152,5 @@ test('a user cannot register with the wrong domain', function () {
     expect($response->status())
         ->toBe(422)
         ->and($response->json('message'))
-            ->toBe('Email domain not allowed');
+        ->toBe('Email domain not allowed');
 });

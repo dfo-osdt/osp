@@ -20,8 +20,8 @@ class OrganizationListQuery extends QueryBuilder
                 'name_en',
                 'name_fr',
                 'country_code',
-                AllowedSort::custom('name-fr-length', new StringLengthSort(), 'name_fr'),
-                AllowedSort::custom('name-en-length', new StringLengthSort(), 'name_en'),
+                AllowedSort::custom('name-fr-length', new StringLengthSort, 'name_fr'),
+                AllowedSort::custom('name-en-length', new StringLengthSort, 'name_en'),
             ])
             ->allowedFilters([
                 AllowedFilter::exact('id'),

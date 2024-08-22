@@ -19,8 +19,8 @@ class ExpertiseListQuery extends QueryBuilder
             ->allowedSorts([
                 'name_en',
                 'name_fr',
-                AllowedSort::custom('name-en-length', new StringLengthSort(), 'name_en'),
-                AllowedSort::custom('name-fr-length', new StringLengthSort(), 'name_fr'),
+                AllowedSort::custom('name-en-length', new StringLengthSort, 'name_en'),
+                AllowedSort::custom('name-fr-length', new StringLengthSort, 'name_fr'),
             ])
             ->allowedFilters(([
                 AllowedFilter::partial('name_en'),

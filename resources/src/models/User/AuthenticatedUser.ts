@@ -1,7 +1,7 @@
 import type { UserResource } from './User'
 import type { Locale } from '@/stores/LocaleStore'
 import type { AuthorResource } from '@/models/Author/Author'
-import type { Resource, ResourceList } from '@/models/Resource'
+import type { Resource, ResourceList, SensitivityLabel } from '@/models/Resource'
 import { http } from '@/api/http'
 
 export type AuthenticatedUserResource = Resource<IAuthenticatedUser>
@@ -53,6 +53,7 @@ export interface IAuthenticatedUser {
   last_name: string
   email: string
   locale: Locale
+  sensitivity_label: SensitivityLabel
   new_password_required: boolean
   author: AuthorResource
   roles: AuthenticatedUserRoles[]

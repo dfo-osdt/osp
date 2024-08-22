@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\SensitivityLabel;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -23,6 +24,7 @@ class AuthenticatedUserResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'locale' => $this->locale,
+            'sensitivity_label' => SensitivityLabel::ProtectedA,
             'new_password_required' => $this->new_password_required,
             'author' => AuthorResource::make($this->author),
             'roles' => $this->getRoleNames(),

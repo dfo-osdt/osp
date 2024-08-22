@@ -22,7 +22,6 @@ class FunctionalAreaSeeder extends Seeder
          * Oceans and Climate Change Science
          * Hydrographic Services, Data and Science
          * Aquatic invasive species
-         *
          */
         $functionalAreas = [
             ['name_en' => 'Fisheries Science', 'name_fr' => 'Sciences halieutiques'],
@@ -33,7 +32,7 @@ class FunctionalAreaSeeder extends Seeder
             ['name_en' => 'Oceans and Climate Change Science', 'name_fr' => 'Science des océans & changements climatiques'],
             ['name_en' => 'Hydrographic Services, Data and Science', 'name_fr' => 'Services hydrographiques, données et science'],
             ['name_en' => 'Aquatic invasive species', 'name_fr' => 'Espèces aquatiques envahissantes'],
-            ['name_en' => 'Species at Risk', 'name_fr' => 'Espèces en péril']
+            ['name_en' => 'Species at Risk', 'name_fr' => 'Espèces en péril'],
         ];
 
         foreach ($functionalAreas as $functionalArea) {

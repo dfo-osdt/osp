@@ -43,7 +43,7 @@ class PublicationAuthorController extends Controller
 
         $author = Author::find($validated['author_id']);
 
-        $publicationAuthor = new PublicationAuthor();
+        $publicationAuthor = new PublicationAuthor;
         $publicationAuthor->publication_id = $publication->id;
         $publicationAuthor->author_id = $validated['author_id'];
         $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;

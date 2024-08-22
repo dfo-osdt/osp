@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
-use Spatie\Health\Http\Controllers\SimpleHealthCheckController;
-use Spatie\LaravelIgnition\Http\Controllers\HealthCheckController;
 
 /*
 |--------------------------------------------------------------------------

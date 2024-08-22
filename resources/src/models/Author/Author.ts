@@ -1,5 +1,5 @@
 import type { OrganizationResource } from '../Organization/Organization'
-import type { Resource, ResourceList } from '../Resource'
+import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import type {
   ExpertiseResource,
   ExpertiseResourceList,
@@ -16,6 +16,7 @@ export interface Author {
   email: string
   user_id: number | null
   organization_id: number
+  sentivity_label: SensitivityLabel
   // relationships
   organization?: OrganizationResource
   expertises?: ExpertiseResource[]
@@ -56,8 +57,8 @@ export class AuthorService {
    */
   public static async update(author: Author) {
     const response = await http.put<Author, AuthorResource>(
-            `api/authors/${author.id}`,
-            author,
+      `api/authors/${author.id}`,
+      author,
     )
     return response.data
   }

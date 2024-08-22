@@ -16,6 +16,8 @@ class LocalTestDataSeeder extends Seeder
      */
     public function run(): void
     {
+        activity()->disableLogging();
+
         $this->call([
             JournalsTableSeeder::class,
             ExpertisesTableSeeder::class,
@@ -128,5 +130,7 @@ class LocalTestDataSeeder extends Seeder
             'email' => 'admin@test.local',
         ]);
         $adminUser->assignRole('admin');
+
+        activity()->enableLogging();
     }
 }

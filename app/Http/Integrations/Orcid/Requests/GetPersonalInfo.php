@@ -15,8 +15,7 @@ class GetPersonalInfo extends Request
 
     public function __construct(
         protected PersonalInfoEndpoints $endpoint
-    ) {
-    }
+    ) {}
 
     /**
      * The endpoint for the request

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\SensitivityLabel;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MediaResource extends JsonResource
@@ -22,6 +23,7 @@ class MediaResource extends JsonResource
             'collection_name' => $this->collection_name,
             'mime_type' => $this->mime_type,
             'locked' => $this->getCustomProperty('locked', false),
+            'sensitivity_label' => $this->getCustomProperty('sensitivity_label', SensitivityLabel::Unclassified),
         ];
     }
 }

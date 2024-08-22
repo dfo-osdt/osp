@@ -25,8 +25,7 @@ class GetPersonalInfoRequest extends Request
      */
     public function __construct(
         protected PersonalInfoEndpoints $endpoint = PersonalInfoEndpoints::PERSON
-    ) {
-    }
+    ) {}
 
     /**
      * The endpoint for the request

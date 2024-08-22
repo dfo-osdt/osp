@@ -8,12 +8,6 @@ const props = defineProps<{
 
 const { t } = useI18n()
 
-const value = computed(() => {
-  if (props.showLabel)
-    return `${t('common.decision')}: ${decision.value}`
-  return decision.value
-})
-
 const decision = computed(() => {
   switch (props.decision) {
     case 'approved':
@@ -29,6 +23,12 @@ const decision = computed(() => {
     default:
       return t('common.unknown')
   }
+})
+
+const value = computed(() => {
+  if (props.showLabel)
+    return `${t('common.decision')}: ${decision.value}`
+  return decision.value
 })
 </script>
 

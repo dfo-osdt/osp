@@ -256,7 +256,11 @@
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
     "your-password": "Your password",
-    "functional-area": "Functional Area"
+    "functional-area": "Functional Area",
+    "protected-a": "Protected A",
+    "unclassified": "Unclassified",
+    "unclassified-tooltip": "This information is unclassified",
+    "protected-a-tooltip": "This information is Protected A"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -637,7 +641,8 @@
     "save-comments": "Save Comments",
     "submit-decision": "Submit Decision",
     "your-response": "Your Response : {0}",
-    "your-review": "Your Review : {0}"
+    "your-review": "Your Review : {0}",
+    "comments-required": "A comment is required."
   },
   "review-step-view": {
     "all-my-reviews": "All My Reviews",

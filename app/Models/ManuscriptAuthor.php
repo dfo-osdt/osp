@@ -13,7 +13,6 @@ class ManuscriptAuthor extends Model
     use HasFactory;
     use LogsActivity;
 
-
     public $guarded = [
         'id',
         'created_at',

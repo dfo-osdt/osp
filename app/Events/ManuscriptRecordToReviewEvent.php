@@ -18,9 +18,7 @@ class ManuscriptRecordToReviewEvent
      *
      * @return void
      */
-    public function __construct(public ManuscriptRecord $manuscriptRecord, public User $divisionManagerUser)
-    {
-    }
+    public function __construct(public ManuscriptRecord $manuscriptRecord, public User $divisionManagerUser) {}
 
     /**
      * Get the channels the event should broadcast on.

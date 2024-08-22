@@ -20,11 +20,11 @@ use Str;
 class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
     use AuthenticationLoggable;
+    use CausesActivity;
     use HasApiTokens;
     use HasFactory;
     use HasRoles;
     use Notifiable;
-    use CausesActivity;
 
     /**
      * The attributes that are mass assignable.

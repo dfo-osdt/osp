@@ -16,7 +16,6 @@ use Str;
 
 class InvitedUserController extends Controller
 {
-
     use AuthorizedDomainTrait;
 
     public function invite(Request $request): UserResource

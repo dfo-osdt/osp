@@ -256,7 +256,11 @@
     "your-first-name": "Ton prénom",
     "your-last-name": "Votre nom de famille",
     "your-password": "Votre mot de passe",
-    "functional-area": "Domaine fonctionnel"
+    "functional-area": "Domaine fonctionnel",
+    "unclassified": "Non classé",
+    "protected-a": "Protégé A",
+    "unclassified-tooltip": "Cette information n'est pas classifiée",
+    "protected-a-tooltip": "Ces informations sont protégées A"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -637,7 +641,8 @@
     "save-comments": "Enregistrer les commentaires",
     "submit-decision": "Soumettre la décision",
     "your-response": "Votre réponse : {0}",
-    "your-review": "Votre révision : {0}"
+    "your-review": "Votre révision : {0}",
+    "comments-required": "Un commentaire s'impose."
   },
   "review-step-view": {
     "all-my-reviews": "Toutes mes revues",

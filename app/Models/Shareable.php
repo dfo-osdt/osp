@@ -28,7 +28,7 @@ class Shareable extends Model
         'updated_at',
     ];
 
-   //logging options
+    //logging options
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

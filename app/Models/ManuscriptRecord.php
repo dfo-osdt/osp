@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\Fundable;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Enums\SensitivityLabel;
 use App\Models\Concerns\HasUlid;
 use App\Traits\FundableTrait;
 use Exception;
@@ -31,8 +32,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     use HasFactory;
     use HasUlid;
     use InteractsWithMedia;
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     public $guarded = [
         'id',
@@ -162,11 +163,20 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     }
 
     /**
-     * Add a manuscript file to the manuscript record.
+     * Add a manuscript file to the manuscript record. Since manuscripts are
+     * unpublished and should not be shared, we set the sensitivity label
+     * to Protected A by default.
      */
-    public function addManuscriptFile($file)
+    public function addManuscriptFile($file, $preserveOriginal = false)
     {
-        return $this->addMedia($file)->withCustomProperties(['locked' => false])->toMediaCollection('manuscript');
+        return $this->addMedia($file)
+            ->withCustomProperties([
+                'locked' => false,
+                'sensitivity_label' => SensitivityLabel::ProtectedA,
+            ])
+            ->preservingOriginal($preserveOriginal)
+            ->toMediaCollection('manuscript');
+
     }
 
     public function getManuscriptFile($uuid)
@@ -180,7 +190,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     public function deleteManuscriptFile($uuid, $force = false)
     {
         $media = $this->getMedia('manuscript')->where('uuid', $uuid)->first();
-        if (!$media) {
+        if (! $media) {
             throw new FileNotFoundException('File not found.');
         }
         if ($force) {
@@ -234,7 +244,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             }
         });
 
-        if (!$noExceptions) {
+        if (! $noExceptions) {
             $validator->validate();
         }
 

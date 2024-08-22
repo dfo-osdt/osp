@@ -68,7 +68,7 @@ class ManagementReviewStepController extends Controller
                 'comments' => 'required|string',
             ])->validate();
 
-            $nextReviewStep = new ManagementReviewStep();
+            $nextReviewStep = new ManagementReviewStep;
             $nextReviewStep->user_id = $validated['next_user_id'];
             $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
             $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
@@ -124,7 +124,7 @@ class ManagementReviewStepController extends Controller
 
         // if the next user is not set, then the review is complete and the manuscript review is complete.
         if (isset($validated['next_user_id'])) {
-            $nextReviewStep = new ManagementReviewStep();
+            $nextReviewStep = new ManagementReviewStep;
             $nextReviewStep->user_id = $validated['next_user_id'];
             $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
             $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
@@ -172,7 +172,7 @@ class ManagementReviewStepController extends Controller
             'comments' => 'required|string',
         ])->validate();
 
-        $nextReviewStep = new ManagementReviewStep();
+        $nextReviewStep = new ManagementReviewStep;
         $nextReviewStep->user_id = $validated['next_user_id'];
         $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
@@ -207,7 +207,7 @@ class ManagementReviewStepController extends Controller
             'comments' => 'required|string',
         ])->validate();
 
-        $nextReviewStep = new ManagementReviewStep();
+        $nextReviewStep = new ManagementReviewStep;
         $nextReviewStep->user_id = $manuscriptRecord->user_id;
         $nextReviewStep->status = ManagementReviewStepStatus::ON_HOLD;
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
@@ -244,7 +244,7 @@ class ManagementReviewStepController extends Controller
             'comments' => 'required|string',
         ])->validate();
 
-        $nextReviewStep = new ManagementReviewStep();
+        $nextReviewStep = new ManagementReviewStep;
         $nextReviewStep->user_id = $previousStep->user_id;
         $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;

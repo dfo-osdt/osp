@@ -1,5 +1,5 @@
 import type { ManuscriptRecordSummaryResource } from '../ManuscriptRecord/ManuscriptRecord'
-import type { Resource, ResourceList } from '../Resource'
+import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import type { UserResource } from '../User/User'
 import { SpatieQuery } from '@/api/SpatieQuery'
 import { http } from '@/api/http'
@@ -33,6 +33,7 @@ export interface ManagementReviewStep {
   manuscript_record_id: number
   previous_step_id: number | null
   user_id: number
+  sensitivity_label: SensitivityLabel
   // relationships
   manuscript_record?: ManuscriptRecordSummaryResource
   user?: UserResource
@@ -67,7 +68,7 @@ export class ManagementReviewStepService {
    */
   public static async list(manuscriptRecordId: number) {
     const response = await http.get<RList>(
-            `api/manuscript-records/${manuscriptRecordId}/management-review-steps`,
+      `api/manuscript-records/${manuscriptRecordId}/management-review-steps`,
     )
     return response.data
   }
@@ -78,8 +79,8 @@ export class ManagementReviewStepService {
    */
   public static async update(step: ManagementReviewStep) {
     const response = await http.put<UpdateStep, R>(
-            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}`,
-            { comments: step.comments },
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}`,
+      { comments: step.comments },
     )
     return response.data
   }
@@ -102,8 +103,8 @@ export class ManagementReviewStepService {
       data.next_user_id = nextUserId
 
     const response = await http.put<DecisionStep, R>(
-            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/approve`,
-            data,
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/approve`,
+      data,
     )
     return response.data
   }
@@ -126,8 +127,8 @@ export class ManagementReviewStepService {
       data.next_user_id = nextUserId
 
     const response = await http.put<DecisionStep, R>(
-            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/withhold`,
-            data,
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/withhold`,
+      data,
     )
     return response.data
   }
@@ -135,7 +136,7 @@ export class ManagementReviewStepService {
   /**
    * Reassign the management review step.
    *
-   * @param step the management review step to defer
+   * @param step the management review step to reassign
    * @param nextUserId the user id of the next user in the workflow.
    */
   public static async reassign(
@@ -148,8 +149,8 @@ export class ManagementReviewStepService {
     }
 
     const response = await http.put<DecisionStep, R>(
-            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/reassign`,
-            data,
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/reassign`,
+      data,
     )
     return response.data
   }
@@ -161,8 +162,8 @@ export class ManagementReviewStepService {
    */
   public static async flag(step: ManagementReviewStep) {
     const response = await http.put<DecisionStep, R>(
-            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flag`,
-            { comments: step.comments },
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flag`,
+      { comments: step.comments },
     )
     return response.data
   }
@@ -175,8 +176,8 @@ export class ManagementReviewStepService {
    */
   public static async response(step: ManagementReviewStep) {
     const response = await http.put<DecisionStep, R>(
-            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flagged-response`,
-            { comments: step.comments },
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flagged-response`,
+      { comments: step.comments },
     )
     return response.data
   }
@@ -191,8 +192,8 @@ export class ManagementReviewStepService {
     if (step.status !== 'on_hold')
       throw new Error('Cannot withdraw a step that is not on hold')
     const response = await http.put<DecisionStep, R>(
-            `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/withdraw`,
-            { comments: step.comments },
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/withdraw`,
+      { comments: step.comments },
     )
     return response.data
   }

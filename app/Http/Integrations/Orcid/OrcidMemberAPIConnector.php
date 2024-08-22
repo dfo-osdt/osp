@@ -18,8 +18,7 @@ class OrcidMemberAPIConnector extends Connector
     public function __construct(
         protected readonly string $bearerToken,
         protected readonly string $orcid
-    ) {
-    }
+    ) {}
 
     /**
      * The Base URL of the Member API this will use the sandbox if
