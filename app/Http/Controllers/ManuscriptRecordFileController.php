@@ -37,6 +37,12 @@ class ManuscriptRecordFileController extends Controller
 
         $media = $manuscriptRecord->addManuscriptFile($validated['pdf']);
 
+        activity()
+            ->performedOn($manuscriptRecord)
+            ->withProperties($media->toArray())
+            ->causedBy($request->user())
+            ->log('manuscript.file.uploaded');
+
         return MediaResource::make($media);
     }
 
@@ -79,6 +85,12 @@ class ManuscriptRecordFileController extends Controller
                 'message' => 'This file is locked.',
             ], 403);
         }
+
+        activity()
+            ->performedOn($manuscriptRecord)
+            ->withProperties(['uuid' => $uuid])
+            ->causedBy($request->user())
+            ->log('manuscript.file.deleted');
 
         return response()->noContent();
     }
