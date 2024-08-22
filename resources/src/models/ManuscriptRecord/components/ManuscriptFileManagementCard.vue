@@ -9,6 +9,7 @@ import FormSectionStatusIcon, {
   type FormSectionStatus,
 } from '@/components/FormSectionStatusIcon.vue'
 import type { Media, MediaResourceList } from '@/models/Resource'
+import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 
 const props = defineProps<{
   manuscript: ManuscriptRecordResource
@@ -56,7 +57,6 @@ defineExpose({
 })
 
 function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
-  console.log(rejectedEntries)
   rejectedEntries.forEach((rejectedEntry) => {
     if (rejectedEntry.failedPropValidation === 'max-file-size') {
       $q.notify({
@@ -145,13 +145,13 @@ async function deleteFile(manuscriptFile: Media) {
 <template>
   <ContentCard>
     <template #title>
-      {{ $t('common.manuscript') }}
+      {{ t('common.manuscript') }}
     </template>
     <template #title-right>
       <FormSectionStatusIcon :status="sectionStatus" />
     </template>
     <p>
-      {{ $t('mrf.upload-text') }}
+      {{ t('mrf.upload-text') }}
     </p>
     <template v-if="manuscriptFiles">
       <q-card outlined class="q-mb-md">
@@ -165,7 +165,7 @@ async function deleteFile(manuscriptFile: Media) {
               <q-icon name="mdi-history" color="secondary">
                 <q-tooltip>
                   {{
-                    $t('common.manuscript-previous-version')
+                    t('common.manuscript-previous-version')
                   }}
                 </q-tooltip>
               </q-icon>
@@ -181,9 +181,12 @@ async function deleteFile(manuscriptFile: Media) {
               </q-item-label>
               <q-item-label caption>
                 {{ m.size_bytes / 1000 }}
-                {{ $t('common.kb-uploaded-on') }}
+                {{ t('common.kb-uploaded-on') }}
                 {{ new Date(m.created_at).toLocaleString() }}
               </q-item-label>
+            </q-item-section>
+            <q-item-section v-if="m.sensitivity_label === 'Protected A'" side>
+              <SensitivityLabelChip :sensitivity="m.sensitivity_label" />
             </q-item-section>
             <q-item-section side>
               <span>
@@ -213,10 +216,10 @@ async function deleteFile(manuscriptFile: Media) {
       use-chips
       :label="
         manuscriptFiles?.data.length ?? 0 > 0
-          ? $t('mrf.replace-manuscript')
-          : $t('mrf.upload-manuscript')
+          ? t('mrf.replace-manuscript')
+          : t('mrf.upload-manuscript')
       "
-      :hint="$t('mrf.upload-hint', { max: maxFileSizeMB })"
+      :hint="t('mrf.upload-hint', { max: maxFileSizeMB })"
       accept="application/pdf"
       :max-file-size="maxFileSizeMB * 1e6"
       counter

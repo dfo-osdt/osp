@@ -90,3 +90,5 @@ php artisan server --env=ci
 
 Once the local server is up and running, you can launch Cypress
 with `pnpm cy:open` or just run the tests with `pnpm cy:run`
+
+If using WSL, you will need to follow this [guide](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) first.

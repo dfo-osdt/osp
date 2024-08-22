@@ -6,6 +6,7 @@ import { AuthorService } from '../Author'
 import ContentCard from '@/components/ContentCard.vue'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
 import OrcidInput from '@/components/OrcidInput.vue'
+import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 
 const props = defineProps<{
   authorId: number
@@ -61,7 +62,10 @@ async function save() {
 <template>
   <ContentCard>
     <template #title>
-      {{ $t('SettingsPage.author-profile') }}
+      {{ t('SettingsPage.author-profile') }}
+    </template>
+    <template #title-right>
+      <SensitivityLabelChip sensitivity="Protected A" />
     </template>
     <template v-if="author">
       <QForm ref="form" @submit="save">
@@ -69,7 +73,7 @@ async function save() {
           <QInput
             v-model="author.data.first_name"
             class="col-12 col-md-6"
-            :label="$t('common.first-name')"
+            :label="t('common.first-name')"
             outlined
             :disable="hasOwner"
             :rules="[
@@ -77,7 +81,7 @@ async function save() {
             ]"
             :show-hint="hasOwner"
             :hint="
-              $t(
+              t(
                 'manage-author-profile-card.synced-to-your-user-profile',
               )
             "
@@ -93,7 +97,7 @@ async function save() {
             ]"
             :show-hint="hasOwner"
             :hint="
-              $t(
+              t(
                 'manage-author-profile-card.synced-to-your-user-profile',
               )
             "
@@ -101,12 +105,12 @@ async function save() {
           <QInput
             v-model="author.data.email"
             class="col-12 col-md-6"
-            :label="$t('common.email')"
+            :label="t('common.email')"
             outlined
             :disable="true"
             :show-hint="hasOwner"
             :hint="
-              $t(
+              t(
                 'manage-author-profile-card.synced-to-your-user-profile',
               )
             "
@@ -114,10 +118,10 @@ async function save() {
           <OrganizationSelect
             v-model="author.data.organization_id"
             class="col-12 col-md-6"
-            :label="$t('common.current-affiliation')"
+            :label="t('common.current-affiliation')"
             outlined
             :hint="
-              $t(
+              t(
                 'manage-author-profile-card.current-affiliation-hint',
               )
             "
@@ -137,7 +141,7 @@ async function save() {
         <q-card-actions align="right">
           <q-btn
             color="primary"
-            :label="$t('common.save')"
+            :label="t('common.save')"
             :loading="loading"
             type="submit"
           />

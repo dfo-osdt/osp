@@ -5,6 +5,7 @@ import type { User } from '../User'
 import { UserService } from '../User'
 import ContentCard from '@/components/ContentCard.vue'
 import LocaleSelect from '@/components/LocaleSelect.vue'
+import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 
 const props = defineProps<{
   userId: number
@@ -29,7 +30,6 @@ onMounted(async () => {
 })
 
 async function save() {
-  console.log('save')
   if (!user.value)
     return
   loading.value = true
@@ -54,38 +54,41 @@ async function save() {
 <template>
   <ContentCard secondary>
     <template #title>
-      {{ $t('SettingsPage.user-profile') }}
+      {{ t('SettingsPage.user-profile') }}
+    </template>
+    <template #title-right>
+      <SensitivityLabelChip sensitivity="Protected A" />
     </template>
     <q-form v-if="user" @submit="save()">
       <div class="row q-col-gutter-md">
         <q-input
           v-model="user.first_name"
           class="col-12 col-md-6"
-          :label="$t('common.first-name')"
+          :label="t('common.first-name')"
           outlined
-          :rules="[(val) => val.length > 0 || $t('common.required')]"
+          :rules="[(val) => val.length > 0 || t('common.required')]"
         />
         <q-input
           v-model="user.last_name"
           class="col-12 col-md-6"
-          :label="$t('common.last-name')"
+          :label="t('common.last-name')"
           outlined
-          :rules="[(val) => val.length > 0 || $t('common.required')]"
+          :rules="[(val) => val.length > 0 || t('common.required')]"
         />
         <q-input
           v-model="user.email"
           class="col-12 col-md-6"
-          :label="$t('common.email')"
+          :label="t('common.email')"
           outlined
           :disable="true"
-          :hint="$t('user-profile.email-hint')"
+          :hint="t('user-profile.email-hint')"
         />
         <LocaleSelect v-model="user.locale" />
       </div>
       <q-card-actions align="right">
         <q-btn
           color="primary"
-          :label="$t('common.save')"
+          :label="t('common.save')"
           type="submit"
           :loading="loading"
         />
