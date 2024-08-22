@@ -46,6 +46,12 @@ class ManuscriptRecordSharingController extends Controller
 
         ItemShared::dispatch($shareable);
 
+        activity()
+            ->performedOn($manuscriptRecord)
+            ->withProperties($shareable->toArray())
+            ->causedBy($request->user())
+            ->log('manuscript.shared.created');
+
         return new ShareableResource($shareable->load(['user', 'sharingUser']));
     }
 
@@ -74,18 +80,31 @@ class ManuscriptRecordSharingController extends Controller
 
         $shareable->update($validated);
 
+        activity()
+            ->performedOn($manuscriptRecord)
+            ->withProperties($shareable->toArray())
+            ->causedBy($request->user())
+            ->log('manuscript.shared.updated');
+
         return new ShareableResource($shareable->load(['user', 'sharingUser']));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ManuscriptRecord $manuscriptRecord, Shareable $shareable)
+    public function destroy(Request $request, ManuscriptRecord $manuscriptRecord, Shareable $shareable)
     {
         $this->authorize('share', $manuscriptRecord);
 
         $shareable->delete();
 
+        activity()
+            ->performedOn($manuscriptRecord)
+            ->withProperties($shareable->toArray())
+            ->causedBy($request->user())
+            ->log('manuscript.shared.removed');
+
         return response()->noContent();
+
     }
 }
