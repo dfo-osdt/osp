@@ -33,6 +33,15 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
+        // log request and status
+        activity()
+            ->withProperties([
+                'email' => $request->email,
+                'ip' => $request->ip(),
+                'status' => $status,
+            ])
+            ->log('password.reset.request');
+
         if ($status != Password::RESET_LINK_SENT) {
             throw ValidationException::withMessages([
                 'email' => [__($status)],
