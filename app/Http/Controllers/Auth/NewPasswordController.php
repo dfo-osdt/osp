@@ -27,6 +27,15 @@ class NewPasswordController extends Controller
     {
         $this->setLocaleFromRequest($request);
 
+        // log password reset attempt
+        activity()
+            ->causedBy($request->user())
+            ->withProperties([
+                'email' => $request->email,
+                'ip' => $request->ip(),
+            ])
+            ->log('password.reset.attempt');
+
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
@@ -54,6 +63,14 @@ class NewPasswordController extends Controller
                 'email' => [__($status)],
             ]);
         }
+
+        // log password reset success
+        activity()
+            ->withProperties([
+                'email' => $request->email,
+                'ip' => $request->ip(),
+            ])
+            ->log('password.reset.success');
 
         return response()->json(['status' => __($status)]);
     }

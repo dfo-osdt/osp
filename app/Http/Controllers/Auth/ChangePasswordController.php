@@ -15,6 +15,15 @@ class ChangePasswordController extends Controller
     {
         $request->updatePassword();
 
+        // log password change
+        activity()
+            ->causedBy($request->user())
+            ->withProperties([
+                'email' => $request->user()->email,
+                'ip' => $request->ip(),
+            ])
+            ->log('password.changed');
+
         return response()->json(['status' => __('passwords.changed')]);
     }
 }
