@@ -40,7 +40,6 @@ async function reset() {
   await sanctum
     .resetPassword(data)
     .then((resp) => {
-      console.log(resp)
       statusMessage.value = resp.data.status
       hideForm.value = true
       setTimeout(() => {

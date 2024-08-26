@@ -23,7 +23,6 @@ async function reset() {
   await sanctum
     .forgotPassword(email.value, localeStore.locale)
     .then((resp) => {
-      console.log(resp)
       statusMessage.value = resp.data.status
       hideForm.value = true
       setTimeout(() => {
@@ -62,12 +61,12 @@ const emailRules = computed(() => [
     </div>
     <div class="text-primary">
       <div class="text-h5 text-center">
-        {{ $t('forgot-password-card.title') }}
+        {{ t('forgot-password-card.title') }}
       </div>
     </div>
     <q-card-section>
       <p class="text-body1 text-grey-8 q-pb-lg">
-        {{ $t('forgot-password-card.text') }}
+        {{ t('forgot-password-card.text') }}
       </p>
       <q-banner
         v-if="errorMessage"
@@ -101,7 +100,7 @@ const emailRules = computed(() => [
           v-model="email"
           type="email"
           outlined
-          :label="$t('common.your-email')"
+          :label="t('common.your-email')"
           lazy-rules
           :rules="emailRules"
           data-cy="email"
@@ -109,14 +108,14 @@ const emailRules = computed(() => [
         />
         <div class="flex justify-end">
           <q-btn
-            :label="$t('common.reset')"
+            :label="t('common.reset')"
             type="submit"
             color="primary"
             data-cy="reset-password"
             :loading="loading"
           />
           <q-btn
-            :label="$t('forgot-password-card.cancel')"
+            :label="t('forgot-password-card.cancel')"
             color="primary"
             flat
             data-cy="cancel"

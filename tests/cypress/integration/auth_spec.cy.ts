@@ -28,12 +28,13 @@ describe('Authentication Tests', () => {
     cy.get('[data-cy="email"]').type('wrong@test.com')
     cy.get('[data-cy="reset-password"]').click()
     cy.wait(1000)
-    cy.contains('We can\'t find a user with that email address.')
+    cy.contains('If the email address is registered, you will receive an email with instructions on how to reset your password.')
+    cy.reload()
     cy.get('[data-cy="email"]').clear()
     cy.get('[data-cy="email"]').type('joe@example.com')
     cy.get('[data-cy="reset-password"]').click()
     cy.wait(1000)
-    cy.contains('We have emailed your password reset link!')
+    cy.contains('If the email address is registered, you will receive an email with instructions on how to reset your password.')
   })
 
   it('lets a user register', () => {
