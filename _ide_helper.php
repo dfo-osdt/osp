@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 11.21.0.
+ * Generated for Laravel 11.22.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6984,7 +6984,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param string $path
          * @param string $algorithm
-         * @return string 
+         * @return string|false 
          * @static 
          */        public static function hash($path, $algorithm = 'md5')
         {
@@ -8040,7 +8040,7 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
      * @method static \Illuminate\Http\Client\PendingRequest throw(callable|null $callback = null)
      * @method static \Illuminate\Http\Client\PendingRequest throwIf(callable|bool $condition)
-     * @method static \Illuminate\Http\Client\PendingRequest throwUnless(bool $condition)
+     * @method static \Illuminate\Http\Client\PendingRequest throwUnless(callable|bool $condition)
      * @method static \Illuminate\Http\Client\PendingRequest dump()
      * @method static \Illuminate\Http\Client\PendingRequest dd()
      * @method static \Illuminate\Http\Client\Response get(string $url, array|string|null $query = null)
@@ -10840,7 +10840,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a new redirect response to a named route.
          *
-         * @param string $route
+         * @param \BackedEnum|string $route
          * @param mixed $parameters
          * @param int $status
          * @param array $headers
@@ -10854,7 +10854,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a new redirect response to a signed named route.
          *
-         * @param string $route
+         * @param \BackedEnum|string $route
          * @param mixed $parameters
          * @param \DateTimeInterface|\DateInterval|int|null $expiration
          * @param int $status
@@ -10869,7 +10869,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a new redirect response to a signed named route.
          *
-         * @param string $route
+         * @param \BackedEnum|string $route
          * @param \DateTimeInterface|\DateInterval|int|null $expiration
          * @param mixed $parameters
          * @param int $status
@@ -13314,10 +13314,10 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Routing\RouteRegistrar whereIn(array|string $parameters, array $values)
      * @method static \Illuminate\Routing\RouteRegistrar as(string $value)
      * @method static \Illuminate\Routing\RouteRegistrar controller(string $controller)
-     * @method static \Illuminate\Routing\RouteRegistrar domain(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar domain(\BackedEnum|string $value)
      * @method static \Illuminate\Routing\RouteRegistrar middleware(array|string|null $middleware)
      * @method static \Illuminate\Routing\RouteRegistrar missing(\Closure $missing)
-     * @method static \Illuminate\Routing\RouteRegistrar name(string $value)
+     * @method static \Illuminate\Routing\RouteRegistrar name(\BackedEnum|string $value)
      * @method static \Illuminate\Routing\RouteRegistrar namespace(string|null $value)
      * @method static \Illuminate\Routing\RouteRegistrar prefix(string $prefix)
      * @method static \Illuminate\Routing\RouteRegistrar scopeBindings()
@@ -16476,7 +16476,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a signed route URL for a named route.
          *
-         * @param string $name
+         * @param \BackedEnum|string $name
          * @param mixed $parameters
          * @param \DateTimeInterface|\DateInterval|int|null $expiration
          * @param bool $absolute
@@ -16491,7 +16491,7 @@ namespace Illuminate\Support\Facades {
                     /**
          * Create a temporary signed route URL for a named route.
          *
-         * @param string $name
+         * @param \BackedEnum|string $name
          * @param \DateTimeInterface|\DateInterval|int $expiration
          * @param array $parameters
          * @param bool $absolute
@@ -16554,11 +16554,11 @@ namespace Illuminate\Support\Facades {
                     /**
          * Get the URL to a named route.
          *
-         * @param string $name
+         * @param \BackedEnum|string $name
          * @param mixed $parameters
          * @param bool $absolute
          * @return string 
-         * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
+         * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException|\InvalidArgumentException
          * @static 
          */        public static function route($name, $parameters = [], $absolute = true)
         {
@@ -18037,9 +18037,20 @@ namespace Illuminate\Support\Facades {
                         return $instance->usePreloadTagAttributes($attributes);
         }
                     /**
-         * Use the "waterfall" prefetching strategy.
+         * Eagerly prefetch assets.
          *
          * @param int|null $concurrency
+         * @param string $event
+         * @return \Illuminate\Foundation\Vite 
+         * @static 
+         */        public static function prefetch($concurrency = null, $event = 'load')
+        {
+                        /** @var \Illuminate\Foundation\Vite $instance */
+                        return $instance->prefetch($concurrency, $event);
+        }
+                    /**
+         * Use the "waterfall" prefetching strategy.
+         *
          * @return \Illuminate\Foundation\Vite 
          * @static 
          */        public static function useWaterfallPrefetching($concurrency = null)
@@ -22592,7 +22603,7 @@ namespace  {
                             /**
              * Add a "where" clause to the query for multiple columns with "and" conditions between them.
              *
-             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -22606,7 +22617,7 @@ namespace  {
                             /**
              * Add an "or where" clause to the query for multiple columns with "and" conditions between them.
              *
-             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
              * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Query\Builder 
@@ -22619,7 +22630,7 @@ namespace  {
                             /**
              * Add a "where" clause to the query for multiple columns with "or" conditions between them.
              *
-             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -22633,7 +22644,7 @@ namespace  {
                             /**
              * Add an "or where" clause to the query for multiple columns with "or" conditions between them.
              *
-             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
              * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Query\Builder 
@@ -22646,7 +22657,7 @@ namespace  {
                             /**
              * Add a "where not" clause to the query for multiple columns where none of the conditions should be true.
              *
-             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
              * @param mixed $operator
              * @param mixed $value
              * @param string $boolean
@@ -22660,7 +22671,7 @@ namespace  {
                             /**
              * Add an "or where not" clause to the query for multiple columns where none of the conditions should be true.
              *
-             * @param \Illuminate\Contracts\Database\Query\Expression[]|string[] $columns
+             * @param \Illuminate\Contracts\Database\Query\Expression[]|\Closure[]|string[] $columns
              * @param mixed $operator
              * @param mixed $value
              * @return \Illuminate\Database\Query\Builder 
