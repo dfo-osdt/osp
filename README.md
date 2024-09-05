@@ -36,7 +36,7 @@ Some helper libraries of note here:
 All changes must be done via a PR to the `main` branch. PR should be descriptive and provide
 reference to any issues as required.
 
-For commits, messages, use [Coventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+For commits, messages, use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 The commit message should be structured as follows:
 
