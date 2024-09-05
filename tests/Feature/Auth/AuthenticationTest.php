@@ -24,6 +24,7 @@ class AuthenticationTest extends TestCase
 
         $this->assertAuthenticated();
         $response->assertNoContent();
+
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
@@ -88,5 +89,35 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(422);
 
         $this->assertGuest();
+    }
+
+    public function test_a_user_has_his_last_login_at_updated_on_successful_login()
+    {
+        $user = User::factory()->create();
+
+        $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $this->assertNull($user->previousSuccessfulLoginAt());
+
+        // logout
+        $this->post('/logout');
+
+        // time travel 10 minutes in the future
+        $this->travel(10)->minutes();
+
+        // login again
+        $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        // get authenticated user route and see if it returns the last_login_at attribute
+        $response = $this->get('/api/user');
+        $response->assertJsonFragment(['last_login_at' => $user->previousSuccessfulLoginAt()]);
+
     }
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useLocaleTimeAgo } from '@/composables/useLocaleTimeAgo'
+
 defineProps<{
   props: {
     value: string | null

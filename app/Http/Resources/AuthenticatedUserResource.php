@@ -28,6 +28,7 @@ class AuthenticatedUserResource extends JsonResource
             'new_password_required' => $this->new_password_required,
             'author' => AuthorResource::make($this->author),
             'roles' => $this->getRoleNames(),
+            'last_login_at' => $this->previousSuccessfulLoginAt(),
             'permissions' => $this->getAllPermissions()->pluck('name'),
         ];
     }
