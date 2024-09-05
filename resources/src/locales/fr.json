@@ -24,7 +24,9 @@
   },
   "auth": {
     "logged-out-successfully": "Déconnecté avec succès",
-    "redirected": "Vous avez été automatiquement redirigé."
+    "redirected": "Vous avez été automatiquement redirigé.",
+    "last-login-never": "Ceci est votre première connexion",
+    "last-login": "Votre dernière connexion réussie remonte au {date}"
   },
   "authentication-history-card": {
     "browser": "Agent",
@@ -260,7 +262,8 @@
     "unclassified": "Non classé",
     "protected-a": "Protégé A",
     "unclassified-tooltip": "Cette information n'est pas classifiée",
-    "protected-a-tooltip": "Ces informations sont protégées A"
+    "protected-a-tooltip": "Ces informations sont protégées A",
+    "review": "Revoir"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"

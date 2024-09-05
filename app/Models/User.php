@@ -209,4 +209,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
         $this->notify(new PasswordResetNotification($this, $token));
     }
+
+    public function previousSuccessfulLoginAt()
+    {
+        return $this->authentications()->whereLoginSuccessful(true)->skip(1)->first()?->login_at;
+    }
 }

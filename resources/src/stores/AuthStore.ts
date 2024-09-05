@@ -37,15 +37,16 @@ export const useAuthStore = defineStore('AuthStore', () => {
    *
    * @returns void
    */
-  async function refreshUser(silent = false) {
+  async function refreshUser(silent = false): Promise<AuthenticatedUser | null> {
     if (!silent)
       loading.value = true
     try {
       user.value = await getAuthenticatedUser()
+      return user.value
     }
-    catch (err) {
+    catch {
       user.value = null
-      console.log(err)
+      return null
     }
     finally {
       loading.value = false
@@ -74,7 +75,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
       const authUser = new AuthenticatedUser(response.data)
       return authUser
     }
-    catch (err) {
+    catch {
       return null
     }
   }
@@ -89,8 +90,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
       userAuthentications.value = response.data
       return true
     }
-    catch (err) {
-      console.log(err)
+    catch {
       return false
     }
     finally {

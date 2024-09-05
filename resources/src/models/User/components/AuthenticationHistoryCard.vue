@@ -65,12 +65,12 @@ const columns = computed<QTableColumnProps>(() => {
   <ContentCard secondary>
     <template #title>
       {{
-        $t('authentication-history-card.title')
+        t('authentication-history-card.title')
       }}
     </template>
     <template #subtitle>
       {{
-        $t('authentication-history-card.subtitle')
+        t('authentication-history-card.subtitle')
       }}
     </template>
     <q-table

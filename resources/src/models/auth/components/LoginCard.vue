@@ -6,6 +6,7 @@ import { extractErrorMessages } from '@/api/errors'
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue'
 
 const authStore = useAuthStore()
+const localeStore = useLocaleStore()
 const router = useRouter()
 const { t } = useI18n()
 const $q = useQuasar()
@@ -35,11 +36,13 @@ async function login() {
         }, 500)
         return
       }
-      router.currentRoute.value.query?.redirect
-        ? router.push(
-          router.currentRoute.value.query.redirect as string,
-        )
-        : router.push({ name: 'dashboard' })
+      if (router.currentRoute.value.query?.redirect) {
+        router.push(router.currentRoute.value.query.redirect as string)
+      }
+      else {
+        router.push({ name: 'dashboard' })
+      }
+      notifyUserLastLogin()
     })
     .catch((err) => {
       errorMessage.value = extractErrorMessages(err)
@@ -49,6 +52,11 @@ async function login() {
     })
   loading.value = false
 }
+
+// verified email section
+const verified = ref(
+  (router.currentRoute.value.query?.verified as string) || '',
+)
 
 onMounted(async () => {
   /** Redirect if user is authenticated, likely got here following an email link */
@@ -76,11 +84,6 @@ onMounted(async () => {
   }
 })
 
-// verified email section
-const verified = ref(
-  (router.currentRoute.value.query?.verified as string) || '',
-)
-
 const showVerified = computed(() => {
   return verified.value === '1'
 })
@@ -96,6 +99,45 @@ const emailRules = computed(() => [
 const passwordRules = computed(() => [
   (val: string) => !!val || t('common.validation.password-required'),
 ])
+
+function notifyUserLastLogin() {
+  const lastLoginAt = authStore.user?.lastLoginAt
+  if (!lastLoginAt) {
+    setTimeout(() => {
+      $q.notify({
+        message: t('auth.last-login-never'),
+        color: 'primary',
+      })
+    }, 500)
+    return
+  }
+
+  const date = new Date(lastLoginAt).toLocaleString(`${localeStore.locale}-CA`)
+  const timeAgo = useLocaleTimeAgo(lastLoginAt)
+
+  const msg = t('auth.last-login', {
+    date,
+  })
+
+  setTimeout(() => {
+    $q.notify({
+      message: msg,
+      caption: timeAgo.value,
+      timeout: 15000,
+      color: 'primary',
+      progress: true,
+      actions: [
+        {
+          label: t('common.review'),
+          color: 'white',
+          handler: () => {
+            router.push({ name: 'settings.security' })
+          },
+        },
+      ],
+    })
+  }, 500)
+}
 </script>
 
 <template>
@@ -115,7 +157,7 @@ const passwordRules = computed(() => [
       <template #avatar>
         <q-icon name="mdi-email-seal-outline" />
       </template>
-      <div>{{ $t('login-card.email-verified-text') }}</div>
+      <div>{{ t('login-card.email-verified-text') }}</div>
     </q-banner>
     <q-card-section class="q-mt-md">
       <q-form class="q-gutter-md" autofocus @submit="login">
@@ -123,7 +165,7 @@ const passwordRules = computed(() => [
           v-model="email"
           type="email"
           filled
-          :label="$t('common.your-email')"
+          :label="t('common.your-email')"
           lazy-rules
           :rules="emailRules"
           data-cy="email"
@@ -132,14 +174,14 @@ const passwordRules = computed(() => [
         <PasswordWithToggleInput
           v-model="password"
           filled
-          :label="$t('common.your-password')"
+          :label="t('common.your-password')"
           :rules="passwordRules"
           data-cy="password"
           @focus="errorMessage = null"
         />
         <div class="flex justify-end">
           <q-btn
-            :label="$t('common.login')"
+            :label="t('common.login')"
             type="submit"
             color="primary"
             data-cy="login"
@@ -153,7 +195,7 @@ const passwordRules = computed(() => [
             class="text-grey-8"
           >
             {{
-              $t('login-card.forgot-your-password')
+              t('login-card.forgot-your-password')
             }}
           </router-link>
           <div class="q-px-sm">
@@ -164,7 +206,7 @@ const passwordRules = computed(() => [
             class="text-grey-8"
           >
             {{
-              $t('login-card.dont-have-an-account')
+              t('login-card.dont-have-an-account')
             }}
           </router-link>
         </div>

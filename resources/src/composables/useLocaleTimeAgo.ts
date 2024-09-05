@@ -1,7 +1,8 @@
 import type { UseTimeAgoMessages, UseTimeAgoUnitNamesDefault } from '@vueuse/core'
+import { i18n } from '@/plugins/i18n'
 
 export function useLocaleTimeAgo(date: Date) {
-  const { t } = useI18n()
+  const t = i18n.global.t
 
   const I18N_MESSAGES: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
     justNow: t('common.timeAgo.just-now'),

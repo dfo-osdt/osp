@@ -57,6 +57,7 @@ export interface IAuthenticatedUser {
   new_password_required: boolean
   author: AuthorResource
   roles: AuthenticatedUserRoles[]
+  last_login_at: null | string
   permissions: AuthenticatedUserPermissions[]
 }
 
@@ -86,6 +87,8 @@ export class AuthenticatedUser implements IAuthenticatedUser {
   public author!: AuthorResource
   public roles!: AuthenticatedUserRoles[]
   public permissions!: AuthenticatedUserPermissions[]
+  public sensitivity_label!: SensitivityLabel
+  public last_login_at!: string | null
 
   constructor(user: IAuthenticatedUser) {
     Object.assign(this, user)
@@ -110,6 +113,18 @@ export class AuthenticatedUser implements IAuthenticatedUser {
    */
   get authorId(): number {
     return this.author.data.id
+  }
+
+  /**
+   * Get the user's last login date
+   */
+  get lastLoginAt(): Date | null {
+    if (this.last_login_at === null) {
+      return null
+    }
+
+    const date = new Date(this.last_login_at)
+    return date
   }
 
   /**
