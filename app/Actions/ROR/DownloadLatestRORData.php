@@ -36,8 +36,11 @@ class DownloadLatestRORData
             mkdir($base_path);
         }
 
-        $fileName = Str::afterLast($url, '/');
-        $zipFile = $base_path.'/'.$fileName;
+        $fileName = $fileName = Str::of($url)
+            ->beforeLast("/")
+            ->afterLast("/")
+            ->toString();
+        $zipFile = $base_path . '/' . $fileName;
 
         // does the file already exist?
         if (! file_exists($zipFile)) {
@@ -47,11 +50,11 @@ class DownloadLatestRORData
             $update = is_callable($progressCallable);
 
             if ($update) {
-                $progressCallable('Staring ROR download: '.$command.'...'.PHP_EOL);
+                $progressCallable('Staring ROR download: ' . $command . '...' . PHP_EOL);
             }
             $process = Process::timeout(120)->start($command, function ($type, $buffer) use ($progressCallable) {
                 if ($type === 'stderr') {
-                    $progressCallable('ERROR: '.$buffer);
+                    $progressCallable('ERROR: ' . $buffer);
                 } else {
                     $progressCallable($buffer);
                 }
@@ -61,12 +64,12 @@ class DownloadLatestRORData
                 return null;
             }
             if ($update) {
-                $progressCallable('Finished download: '.$zipFile.PHP_EOL);
+                $progressCallable('Finished download: ' . $zipFile . PHP_EOL);
             }
         }
 
         // is Json file already extracted?
-        $jsonFile = $base_path.'/'.Str::beforeLast($fileName, '.').'.json';
+        $jsonFile = $base_path . '/' . Str::beforeLast($fileName, '.') . '_schema_v2.json';
 
         if (file_exists($jsonFile)) {
             return [
@@ -79,7 +82,7 @@ class DownloadLatestRORData
 
         $result = Process::path($base_path)->start($command, function ($type, $buffer) use ($progressCallable) {
             if ($type === 'stderr') {
-                $progressCallable('ERROR: '.$buffer);
+                $progressCallable('ERROR: ' . $buffer);
             } else {
                 $progressCallable($buffer);
             }
