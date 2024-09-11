@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.321.8",
+            "version": "3.321.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "df456658bdc2ad84a00cf35a7b5af874fdcc7a53"
+                "reference": "5de5099cfe0e17cb3eb2fe51de0101c99bc9442a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/df456658bdc2ad84a00cf35a7b5af874fdcc7a53",
-                "reference": "df456658bdc2ad84a00cf35a7b5af874fdcc7a53",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5de5099cfe0e17cb3eb2fe51de0101c99bc9442a",
+                "reference": "5de5099cfe0e17cb3eb2fe51de0101c99bc9442a",
                 "shasum": ""
             },
             "require": {
@@ -154,9 +154,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.321.8"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.321.9"
             },
-            "time": "2024-09-10T18:18:03+00:00"
+            "time": "2024-09-11T18:15:49+00:00"
         },
         {
             "name": "brick/math",
@@ -11440,16 +11440,16 @@
         },
         {
             "name": "pestphp/pest",
-            "version": "v3.0.5",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest.git",
-                "reference": "45f16484d5bc4d697bcb31da271201a5b425f2fb"
+                "reference": "0d50d35b5eab4164b1e777e63f689be5cd8c40e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest/zipball/45f16484d5bc4d697bcb31da271201a5b425f2fb",
-                "reference": "45f16484d5bc4d697bcb31da271201a5b425f2fb",
+                "url": "https://api.github.com/repos/pestphp/pest/zipball/0d50d35b5eab4164b1e777e63f689be5cd8c40e5",
+                "reference": "0d50d35b5eab4164b1e777e63f689be5cd8c40e5",
                 "shasum": ""
             },
             "require": {
@@ -11535,7 +11535,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pestphp/pest/issues",
-                "source": "https://github.com/pestphp/pest/tree/v3.0.5"
+                "source": "https://github.com/pestphp/pest/tree/v3.0.6"
             },
             "funding": [
                 {
@@ -11547,7 +11547,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-11T14:13:49+00:00"
+            "time": "2024-09-11T17:59:43+00:00"
         },
         {
             "name": "pestphp/pest-plugin",
