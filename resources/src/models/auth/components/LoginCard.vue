@@ -168,6 +168,7 @@ function notifyUserLastLogin() {
           :label="t('common.your-email')"
           lazy-rules
           :rules="emailRules"
+          autocomplete="email"
           data-cy="email"
           @focus="errorMessage = null"
         />
@@ -177,6 +178,7 @@ function notifyUserLastLogin() {
           :label="t('common.your-password')"
           :rules="passwordRules"
           data-cy="password"
+          autocomplete="current-password"
           @focus="errorMessage = null"
         />
         <div class="flex justify-end">

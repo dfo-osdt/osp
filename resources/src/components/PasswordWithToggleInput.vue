@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const isPwd = ref(true)
 const localPassword = ref('')
+const { t } = useI18n()
+
+const { start, stop } = useTimeoutFn(() => {
+  isPwd.value = true
+}, 5000)
 
 /**
  * Toggle password visibility - hides password again after 5 seconds
@@ -14,10 +19,6 @@ function show() {
   isPwd.value = false
   start()
 }
-
-const { start, stop } = useTimeoutFn(() => {
-  isPwd.value = true
-}, 5000)
 </script>
 
 <template>
@@ -30,7 +31,7 @@ const { start, stop } = useTimeoutFn(() => {
       >
         <q-tooltip>
           {{
-            isPwd ? $t('common.show') : $t('common.hide')
+            isPwd ? t('common.show') : t('common.hide')
           }}
         </q-tooltip>
       </q-icon>
