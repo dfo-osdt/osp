@@ -109,37 +109,40 @@ const passwordConfirmationRules = computed(() => [
           v-model="first_name"
           type="text"
           filled
-          :label="$t('common.your-first-name')"
+          :label="t('common.your-first-name')"
           lazy-rules
           :rules="nameRules"
           data-cy="first_name"
+          autocomplete="given-name"
           @focus="errorMessage = null"
         />
         <q-input
           v-model="last_name"
           type="text"
           filled
-          :label="$t('common.your-last-name')"
+          :label="t('common.your-last-name')"
           lazy-rules
           :rules="nameRules"
           data-cy="last_name"
+          autocomplete="family-name"
           @focus="errorMessage = null"
         />
         <q-input
           v-model="email"
           type="email"
           filled
-          :label="$t('common.your-email')"
+          :label="t('common.your-email')"
           lazy-rules
           :rules="emailRules"
           data-cy="email"
+          autocomplete="email"
           @focus="errorMessage = null"
         />
         <!-- <q-input
                     v-model="email_confirmation"
                     type="email"
                     filled
-                    :label="$t('common.confirm-email')"
+                    :label="t('common.confirm-email')"
                     lazy-rules
                     :rules="emailConfirmationRules"
                     data-cy="email"
@@ -148,22 +151,24 @@ const passwordConfirmationRules = computed(() => [
         <PasswordWithToggleInput
           v-model="password"
           filled
-          :label="$t('common.your-password')"
+          :label="t('common.your-password')"
           :rules="passwordRules"
+          autocomplete="new-password"
           data-cy="password"
           @focus="errorMessage = null"
         />
         <PasswordWithToggleInput
           v-model="password_confirmation"
           filled
-          :label="$t('common.confirm-password')"
+          :label="t('common.confirm-password')"
           :rules="passwordConfirmationRules"
+          autocomplete="new-password"
           data-cy="password-confirm"
           @focus="errorMessage = null"
         />
         <div class="flex justify-end">
           <q-btn
-            :label="$t('common.register')"
+            :label="t('common.register')"
             type="submit"
             color="primary"
             data-cy="register-btn"
@@ -181,11 +186,11 @@ const passwordConfirmationRules = computed(() => [
           class="col-auto"
         />
         <div class="text-h5 col-12 text-center">
-          {{ $t('register-card.registered-subtitle') }}
+          {{ t('register-card.registered-subtitle') }}
         </div>
         <div class="text-body1 q-mt-md text-grey-8 col-12">
           {{
-            $t('register-card.registered.text', [registered.email])
+            t('register-card.registered.text', [registered.email])
           }}
         </div>
       </div>
