@@ -38,7 +38,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware(['auth', 'respond.json'])
     ->name('logout');
 
-Route::post('/change-password', [ChangePasswordController::class, 'changePassword'])
+Route::post('/change-password', [ChangePasswordController::class, '__invoke'])
     ->middleware(['auth', 'respond.json', 'locale'])
     ->name('change.password');
 

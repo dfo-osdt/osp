@@ -11,7 +11,7 @@ class ChangePasswordController extends Controller
     /**
      * Change the password of the user
      */
-    public function changePassword(ChangePasswordRequest $request): JsonResponse
+    public function __invoke(ChangePasswordRequest $request): JsonResponse
     {
         $request->updatePassword();
 

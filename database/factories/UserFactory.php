@@ -68,7 +68,7 @@ class UserFactory extends Factory
                 ]
             );
 
-            $author->expertises()->attach(Expertise::factory()->count(rand(1, 3))->create());
+            $author->expertises()->attach(Expertise::factory()->count(random_int(1, 3))->create());
 
             // by default a new user is an author
             $user->assignRole('author');
