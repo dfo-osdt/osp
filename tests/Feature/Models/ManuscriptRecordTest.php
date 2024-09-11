@@ -70,6 +70,7 @@ test('a user can save a draft manuscript', function () {
         'pls' => 'My new pls',
         'relevant_to' => 'My new relevant_to',
         'potential_public_interest' => true,
+        'functional_area_id' => null,
     ];
 
     // update all the fields
