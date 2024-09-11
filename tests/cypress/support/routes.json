@@ -451,7 +451,7 @@
   "change.password": {
     "name": "change.password",
     "domain": null,
-    "action": "App\\Http\\Controllers\\Auth\\ChangePasswordController@changePassword",
+    "action": "App\\Http\\Controllers\\Auth\\ChangePasswordController@__invoke",
     "uri": "change-password",
     "method": [
       "POST"
