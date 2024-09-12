@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Vite;
 use Spatie\Csp\Directive;
 use Spatie\Csp\Keyword;
 use Spatie\Csp\Policies\Policy;
@@ -22,8 +23,8 @@ class OspCspPolicy extends Policy
             ->addDirective(Directive::OBJECT, Keyword::NONE)
             ->addDirective(Directive::SCRIPT, Keyword::SELF)
             ->addDirective(Directive::STYLE, Keyword::SELF)
-            ->addNonceForDirective(Directive::SCRIPT)
-            ->addNonceForDirective(Directive::STYLE);
+            ->addDirective(Directive::SCRIPT_ELEM, Keyword::SELF);
+
     }
 
     /**
@@ -34,6 +35,15 @@ class OspCspPolicy extends Policy
      */
     public function shouldBeApplied(Request $request, Response $response): bool
     {
+
+        /**
+         * If Vite is running in hot module replacement mode, we don't want to apply CSP
+         * because the inline script injected by Vite will be blocked by the CSP policy.
+         */
+        if(Vite::isRunningHot()) {
+            return false;
+        }
+
         if (config('app.debug') && ($response->isClientError() || $response->isServerError())) {
             return false;
         }
