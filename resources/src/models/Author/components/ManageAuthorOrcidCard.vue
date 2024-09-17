@@ -8,6 +8,14 @@ const authStore = useAuthStore()
 const url = computed(() => {
   return `/api/user/orcid/verify?locale=${localeStore.locale}`
 })
+
+const isVerified = computed(() => {
+  return authStore.user?.author.data.orcid_verified
+})
+
+async function revokeToken() {
+  await authStore.revokeOrcidToken()
+}
 </script>
 
 <template>
@@ -18,7 +26,7 @@ const url = computed(() => {
         $t('manage-author-profile-view.authorize-orcid')
       }}</span>
     </template>
-    <q-card-section v-if="authStore.user?.author.data.orcid_verified">
+    <q-card-section v-if="isVerified">
       <p>
         {{ $t('orcid.already-verified-text') }}
       </p>
@@ -31,8 +39,8 @@ const url = computed(() => {
         >{{ authStore.user.author.data.orcid }}</a>
       </div>
       <div class="flex justify-end">
-        <q-btn outline color="primary" :href="url">
-          <OrcidAvatar size="md" /><span class="q-ml-md text-grey-8">{{ $t('ocrid.verify-btn-text') }}
+        <q-btn outline color="primary" @click="revokeToken()">
+          <OrcidAvatar size="md" /><span class="q-ml-md text-grey-8">{{ $t('ocrid.revoke-btn-text') }}
           </span>
         </q-btn>
       </div>

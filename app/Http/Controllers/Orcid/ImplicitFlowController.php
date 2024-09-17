@@ -8,6 +8,7 @@ use App\Traits\LocaleTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 
@@ -32,7 +33,7 @@ class ImplicitFlowController extends Controller
         $orcidId = $this->getOrcidId($request->access_token);
 
         // update the user's author record in the database
-        $user = auth()->user();
+        $user = Auth::user();
 
         $user->author->orcid = $orcidId;
         $user->author->orcid_verified = true;

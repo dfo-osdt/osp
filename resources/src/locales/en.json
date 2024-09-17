@@ -26,7 +26,8 @@
     "logged-out-successfully": "Logged out successfully",
     "redirected": "You've been automatically redirected.",
     "last-login-never": "This is your first login",
-    "last-login": "Your last successful login was at {date}"
+    "last-login": "Your last successful login was at {date}",
+    "orcid-token-revoked": "Your ORCID was succesfully disconnected"
   },
   "authentication-history-card": {
     "browser": "Agent",
@@ -547,7 +548,8 @@
     "p1": "Manuscripts that have been reviewed will appear here. Once published, you can update the publication details. You can also add any past publications here so that it is part of our database and available for all to see."
   },
   "ocrid": {
-    "verify-btn-text": "Create or connect your ORCID iD"
+    "verify-btn-text": "Create or connect your ORCID iD",
+    "revoke-btn-text": "Disconnect your ORCID ID"
   },
   "orcid": {
     "already-verified-text": "Your ORCID has been successfully verified with ORCID.org. If you'd like to change it or verify it again, click below.",
