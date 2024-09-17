@@ -18,6 +18,7 @@ use App\Http\Controllers\OhDear\CheckStatusPageController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\FullFlowController;
 use App\Http\Controllers\Orcid\ImplicitFlowController;
+use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PublicationAuthorController;
 use App\Http\Controllers\PublicationController;
@@ -57,6 +58,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Route::get('/user/orcid/verify', [ImplicitFlowController::class, 'redirect']);
     // Routes for 3-legged OAuth flow
     Route::get('/user/orcid/verify', [FullFlowController::class, 'redirect']);
+    Route::post('/user/orcid/revoke', RevokeTokenController::class);
 
     Route::controller(AuthorController::class)->group(function () {
         Route::get('/authors', 'index');

@@ -79,6 +79,20 @@ class Author extends Model
         );
     }
 
+    /**
+     * Clear the ORCID token and related fields.
+     * This is used when the user revokes the ORCID token.
+     */
+    public function clearOrcidToken(): void
+    {
+        $this->orcid_access_token = null;
+        $this->orcid_refresh_token = null;
+        $this->orcid_token_scope = null;
+        $this->orcid_expires_at = null;
+        $this->orcid_verified = false;
+        $this->save();
+    }
+
     // Relationships
 
     /** ManuscriptAuthors */

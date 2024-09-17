@@ -1,7 +1,7 @@
-import type { UserResource } from './User'
-import type { Locale } from '@/stores/LocaleStore'
 import type { AuthorResource } from '@/models/Author/Author'
 import type { Resource, ResourceList, SensitivityLabel } from '@/models/Resource'
+import type { Locale } from '@/stores/LocaleStore'
+import type { UserResource } from './User'
 import { http } from '@/api/http'
 
 export type AuthenticatedUserResource = Resource<IAuthenticatedUser>
@@ -149,7 +149,7 @@ export class AuthenticatedUser implements IAuthenticatedUser {
 
   getRoleNameForDisplay(
     role: AuthenticatedUserRoles,
-        locale: Locale = 'en',
+    locale: Locale = 'en',
   ): string {
     switch (role) {
       case 'author':
@@ -184,5 +184,10 @@ export class AuthenticatedUserService {
       '/api/user/invitations',
     )
     return response.data
+  }
+
+  public static async revokeOrcid(): Promise<boolean> {
+    const response = await http.post('/api/user/orcid/revoke')
+    return response.status === 200
   }
 }

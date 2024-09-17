@@ -26,7 +26,8 @@
     "logged-out-successfully": "Déconnecté avec succès",
     "redirected": "Vous avez été automatiquement redirigé.",
     "last-login-never": "Ceci est votre première connexion",
-    "last-login": "Votre dernière connexion réussie remonte au {date}"
+    "last-login": "Votre dernière connexion réussie remonte au {date}",
+    "orcid-token-revoked": "Votre ORCID a été déconnecté avec succès"
   },
   "authentication-history-card": {
     "browser": "Agent",
@@ -547,7 +548,8 @@
     "p1": "Les manuscrits qui ont été révisés apparaîtront ici. \nUne fois publié, vous pouvez mettre à jour les détails de la publication. \nVous pouvez également ajouter ici toutes publications passées afin qu'elles fassent partie de notre base de données et soient accessibles à tous."
   },
   "ocrid": {
-    "verify-btn-text": "Créez ou connectez votre ORCID iD"
+    "verify-btn-text": "Créez ou connectez votre ORCID iD",
+    "revoke-btn-text": "Déconnectez votre ORCID ID"
   },
   "orcid": {
     "already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le modifier ou le vérifier à nouveau, cliquez ci-dessous.",

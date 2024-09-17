@@ -1,16 +1,16 @@
+import type { SanctumUser } from '@/api/sanctum'
+import type { Locale } from '@/stores/LocaleStore'
 import type { Ref } from 'vue'
-import { Notify } from 'quasar'
 import type {
   UserAuthenticationRecord,
 } from '../models/User/AuthenticatedUser'
+import { useSanctum } from '@/api/sanctum'
+import { i18n } from '@/plugins/i18n'
+import { Notify } from 'quasar'
 import {
   AuthenticatedUser,
   AuthenticatedUserService,
 } from '../models/User/AuthenticatedUser'
-import { useSanctum } from '@/api/sanctum'
-import type { Locale } from '@/stores/LocaleStore'
-import { i18n } from '@/plugins/i18n'
-import type { SanctumUser } from '@/api/sanctum'
 
 export const useAuthStore = defineStore('AuthStore', () => {
   const { login: sanctumLogin, logout: sanctumLogout } = useSanctum()
@@ -145,11 +145,28 @@ export const useAuthStore = defineStore('AuthStore', () => {
       setTimeout(() => {
         Notify.create({
           message: msg,
-          color: 'green',
+          color: 'primary',
         })
       }, 500)
     })
     loading.value = false
+  }
+
+  /**
+   * Revoke the user's ORCID token
+   */
+  async function revokeOrcidToken() {
+    const success = await AuthenticatedUserService.revokeOrcid()
+    await refreshUser()
+
+    if (!success)
+      return
+
+    const msg = t('auth.orcid-token-revoked')
+    Notify.create({
+      message: msg,
+      color: 'primary',
+    })
   }
 
   /**
@@ -171,6 +188,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
     getAuthentications,
     userAuthentications,
     authenticationsLoading,
+    revokeOrcidToken,
     // general application state
     isDrawerMini,
     leftDrawerOpen,
