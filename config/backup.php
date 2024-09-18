@@ -154,11 +154,11 @@ return [
              */
             'disks' => env('BACKUP_TO_DO_SPACES', false) ?
                 [
-                    'local',
+                    'backup',
                     'do_backup',
                 ] :
                 [
-                    'local',
+                    'backup',
                 ],
 
         ],
