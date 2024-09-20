@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
+import { useQuasar } from 'quasar'
 
 const localeStore = useLocaleStore()
 const authStore = useAuthStore()
 const { t } = useI18n()
+const $q = useQuasar()
 
 const url = computed(() => {
   return `/api/user/orcid/verify?locale=${localeStore.locale}`
@@ -15,7 +17,21 @@ const isVerified = computed(() => {
 })
 
 async function revokeToken() {
-  await authStore.revokeOrcidToken()
+  $q.dialog({
+    title: t('orcid.revoke-title'),
+    message: t('orcid.revoke-message'),
+    ok: {
+      label: t('common.yes'),
+      color: 'primary',
+    },
+    cancel: {
+      label: t('common.no'),
+      color: 'grey-8',
+      outline: true,
+    },
+  }).onOk(async () => {
+    await authStore.revokeOrcidToken()
+  })
 }
 </script>
 

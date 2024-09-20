@@ -552,14 +552,16 @@
     "revoke-btn-text": "Déconnectez votre ORCID ID"
   },
   "orcid": {
-    "already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le modifier ou le vérifier à nouveau, cliquez ci-dessous.",
+    "already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le déconnecter du portail, cliquez ci-dessous ou visitez votre profil ORCID sous « Parties de confiance ».",
     "error-verifying": "Erreur lors de la vérification avec ORCID.org",
     "verified-with": "Vérifié avec succès avec ORCID.org",
     "verify-header-text": "Connectez votre ORCID iD (ou inscrivez-vous pour un iD)",
     "verifying": "Vérification avec ORCID.org",
     "invalid-key": "Clé non valide - probablement en raison d'un délai d'attente - veuillez réessayer.",
     "invalid-user": "Utilisateur introuvable – erreur interne – veuillez nous contacter.",
-    "failed": "Un problème est survenu lors de l'autorisation de votre compte avec ORCID.org"
+    "failed": "Un problème est survenu lors de l'autorisation de votre compte avec ORCID.org",
+    "revoke-message": "Êtes-vous sûr de vouloir déconnecter votre ORCID profil du portail ? \nNous ne pourrons pas synchroniser avec votre profil ORCID ou utiliser votre ORCID pour identifier de manière unique vos contributions.",
+    "revoke-title": "Déconnectez votre ORCID"
   },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",
