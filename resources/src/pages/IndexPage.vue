@@ -2,6 +2,7 @@
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
+const { t } = useI18n()
 const authStore = useAuthStore()
 </script>
 
@@ -14,7 +15,9 @@ const authStore = useAuthStore()
             <q-img
               src="/assets/ideas_grow.png"
               width="100%"
-              :alt="$t('osp.alt.main-image')"
+              :alt="t('osp.alt.main-image')"
+              fetchpriority="high"
+              loading="eager"
             />
           </div>
           <div
@@ -22,14 +25,14 @@ const authStore = useAuthStore()
             :class="$q.screen.lt.md ? 'text-center' : ''"
           >
             <div class="text-h2">
-              {{ $t('osp.slogan.p1') }},
+              {{ t('osp.slogan.p1') }},
             </div>
             <div class="text-h1 text-weight-medium align-end">
-              {{ $t('osp.slogan.p2')
-              }}<span class="text-primary">&nbsp;{{ $t('osp.slogan.p3') }}</span>.
+              {{ t('osp.slogan.p2')
+              }}<span class="text-primary">&nbsp;{{ t('osp.slogan.p3') }}</span>.
             </div>
             <div class="q-my-lg text-h5 text-grey-8">
-              {{ $t('osp.description') }}
+              {{ t('osp.description') }}
             </div>
             <div
               v-if="!authStore.isAuthenticated"
@@ -39,14 +42,14 @@ const authStore = useAuthStore()
               <q-btn
                 size="lg"
                 color="primary"
-                :label="$t('common.login')"
+                :label="t('common.login')"
                 :to="{ name: 'login' }"
               />
               <q-btn
                 size="lg"
                 class="q-ml-md"
                 outline
-                :label="$t('common.register')"
+                :label="t('common.register')"
                 :to="{ name: 'register' }"
               />
             </div>
