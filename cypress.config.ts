@@ -7,6 +7,7 @@ import {
 export default defineConfig({
   projectId: '7wfgwp',
   chromeWebSecurity: false,
+  experimentalModifyObstructiveThirdPartyCode: true,
   retries: 2,
   defaultCommandTimeout: 5000,
   watchForFileChanges: true,
