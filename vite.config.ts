@@ -1,16 +1,18 @@
-import path, { resolve } from 'node:path'
-import { homedir } from 'node:os'
 import fs from 'node:fs'
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
-import vue from '@vitejs/plugin-vue'
-import { quasar } from '@quasar/vite-plugin'
+import { homedir } from 'node:os'
+import path, { resolve } from 'node:path'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import { quasar } from '@quasar/vite-plugin'
+import vue from '@vitejs/plugin-vue'
+import laravel from 'laravel-vite-plugin'
 import AutoImport from 'unplugin-auto-import/vite'
+import { defineConfig } from 'vite'
+import manifestSRI from 'vite-plugin-manifest-sri'
 
 export default defineConfig({
   plugins: [
     laravel(['resources/src/main.ts']),
+    manifestSRI(),
     vue({
       template: {
         transformAssetUrls: {
@@ -65,7 +67,7 @@ function detectServerConfig(host: string) {
   const keyPath = resolve(homedir(), `.config/valet/Certificates/${host}.key`)
   const certificatePath = resolve(
     homedir(),
-        `.config/valet/Certificates/${host}.crt`,
+    `.config/valet/Certificates/${host}.crt`,
   )
 
   if (!fs.existsSync(keyPath)) {
