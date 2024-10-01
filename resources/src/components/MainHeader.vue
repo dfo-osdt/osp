@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const emit = defineEmits(['toggleLeftDrawer'])
+
+const { t } = useI18n()
 // stores
 const authStore = useAuthStore()
 const localeStore = useLocaleStore()
@@ -20,19 +22,19 @@ function toggleLeftDrawer() {
         dense
         round
         :icon="authStore.leftDrawerOpen ? 'mdi-menu-open' : 'mdi-menu'"
-        aria-label="$t('osp.alt.toggle-drawer')"
+        aria-label="t('osp.alt.toggle-drawer')"
         @click="toggleLeftDrawer"
       />
       <router-link to="/">
         <q-img
           src="/assets/logo.svg"
           width="40px"
-          :alt="$t('osp.alt.logo')"
+          :alt="t('osp.alt.logo')"
         />
       </router-link>
       <q-toolbar-title class="q-mt-sm text-black">
         {{
-          $t('common.app-name')
+          t('common.app-name')
         }}
       </q-toolbar-title>
       <!-- login button -->
@@ -41,7 +43,7 @@ function toggleLeftDrawer() {
         outline
         dense
         icon="mdi-login"
-        :label="$t('common.login')"
+        :label="t('common.login')"
         padding="xs md"
         @click="$router.push({ name: 'login' })"
       />
@@ -64,7 +66,7 @@ function toggleLeftDrawer() {
               <q-item-section>
                 <q-item-label>
                   {{
-                    $t('common.settings')
+                    t('common.settings')
                   }}
                 </q-item-label>
               </q-item-section>
@@ -76,7 +78,7 @@ function toggleLeftDrawer() {
               <q-item-section>
                 <q-item-label>
                   {{
-                    $t('common.dashboard')
+                    t('common.dashboard')
                   }}
                 </q-item-label>
               </q-item-section>
@@ -88,7 +90,7 @@ function toggleLeftDrawer() {
               <q-item-section>
                 <q-item-label>
                   {{
-                    $t('common.logout')
+                    t('common.logout')
                   }}
                 </q-item-label>
               </q-item-section>
