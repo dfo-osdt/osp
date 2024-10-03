@@ -27,6 +27,7 @@
     "spatie/laravel-activitylog": "^4.8",
     "spatie/laravel-backup": "^9.0",
     "spatie/laravel-csp": "^2.10",
+    "spatie/laravel-data": "^4.9",
     "spatie/laravel-health": "^1.29",
     "spatie/laravel-medialibrary": "^11.4.7",
     "spatie/laravel-permission": "^6.7",

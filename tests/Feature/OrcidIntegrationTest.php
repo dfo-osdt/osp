@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\ORCID\ORCIDAuthScope;
+use App\Http\Integrations\Orcid\Enums\ORCIDAuthScope;
 use App\Models\User;
 
 test('check OpenID redirect works', function () {
