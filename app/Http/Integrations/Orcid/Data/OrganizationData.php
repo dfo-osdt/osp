@@ -5,8 +5,8 @@ namespace App\Http\Integrations\Orcid\Data;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Data;
 
-class OrganizationData extends Data{
-
+class OrganizationData extends Data
+{
     public function __construct(
         #[MapName('name')]
         public string $name,
@@ -17,5 +17,4 @@ class OrganizationData extends Data{
         #[MapName('disambiguated-organization')]
         public DisambiguatedOrganizationData $disambiguatedOrganization
     ) {}
-
 }

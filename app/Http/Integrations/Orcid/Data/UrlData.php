@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Integrations\Orcid\Data;
 
 use Spatie\LaravelData\Data;
