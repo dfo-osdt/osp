@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Integrations\Orcid\Data;
 
 use Spatie\LaravelData\Attributes\MapName;
@@ -10,6 +11,6 @@ class DisambiguatedOrganizationData extends Data
         #[MapName('disambiguated-organization-identifier')]
         public string $disambiguatedOrganizationIdentifier,
         #[MapName('disambiguation-source')]
-        public string $disambiguationSource = "ROR"
+        public string $disambiguationSource = 'ROR'
     ) {}
 }

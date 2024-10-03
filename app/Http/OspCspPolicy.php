@@ -52,7 +52,6 @@ class OspCspPolicy extends Policy
             }
         }
 
-
         // https://github.com/spatie/laravel-csp?tab=readme-ov-file#using-whoops
         if (config('app.debug') && ($response->isClientError() || $response->isServerError())) {
             return false;

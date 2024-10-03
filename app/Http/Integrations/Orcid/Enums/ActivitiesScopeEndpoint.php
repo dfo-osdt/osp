@@ -4,7 +4,6 @@ namespace App\Http\Integrations\Orcid\Enums;
 
 enum ActivitiesScopeEndpoint: string
 {
-
     case EDUCATION = '/education';
     case EMPLOYMENT = '/employment';
     case DISTINCTION = '/distinction';

@@ -19,16 +19,15 @@ class GetActivityRequest extends Request
         protected ActivitiesScopeEndpoint $endpoint = ActivitiesScopeEndpoint::EMPLOYMENT
     ) {
         if (empty($putcode)) {
-            throw new OrcidIntegrationException("Putcode is required for this request");
+            throw new OrcidIntegrationException('Putcode is required for this request');
         }
     }
-
 
     /**
      * The endpoint for the request
      */
     public function resolveEndpoint(): string
     {
-        return $this->endpoint->value . '/' . $this->putcode;
+        return $this->endpoint->value.'/'.$this->putcode;
     }
 }

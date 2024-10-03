@@ -10,7 +10,6 @@ use Spatie\LaravelData\Data;
  */
 class EmploymentData extends Data
 {
-
     public function __construct(
         #[MapName('department-name')]
         public string $departmentName,

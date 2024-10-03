@@ -19,5 +19,4 @@ class GetEmploymentRequest extends GetActivityRequest
 
         return EmploymentData::from($data);
     }
-
 }
