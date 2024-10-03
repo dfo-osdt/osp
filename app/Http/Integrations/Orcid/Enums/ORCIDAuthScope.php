@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\ORCID;
+namespace App\Http\Integrations\Orcid\Enums;
 
 use InvalidArgumentException;
 

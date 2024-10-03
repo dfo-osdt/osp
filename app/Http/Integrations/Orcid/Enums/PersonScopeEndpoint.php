@@ -2,7 +2,7 @@
 
 namespace App\Http\Integrations\Orcid\Enums;
 
-enum PersonalInfoEndpoints: string
+enum PersonScopeEndpoint: string
 {
     case PERSON = '/person';
     case PERSONAL_DETAILS = '/personal-details';
