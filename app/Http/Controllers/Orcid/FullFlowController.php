@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Orcid;
 
-use App\Enums\ORCID\ORCIDAuthScope;
+use App\Http\Integrations\Orcid\Enums\ORCIDAuthScope;
 use App\Models\User;
 use App\Traits\LocaleTrait;
 use Auth;

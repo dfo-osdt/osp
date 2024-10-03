@@ -2,11 +2,12 @@
 
 namespace App\Http\Integrations\Orcid\Requests;
 
-use App\Http\Integrations\Orcid\Enums\PersonalInfoEndpoints;
+use App\Http\Integrations\Orcid\Enums\ActivitiesScopeListEndpoint;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
-class GetPersonalInfo extends Request
+class GetActivitiesRequest extends Request
 {
     /**
      * The HTTP method of the request
@@ -14,8 +15,9 @@ class GetPersonalInfo extends Request
     protected Method $method = Method::GET;
 
     public function __construct(
-        protected PersonalInfoEndpoints $endpoint
+        protected ActivitiesScopeListEndpoint $endpoint = ActivitiesScopeListEndpoint::EMPLOYMENTS
     ) {}
+
 
     /**
      * The endpoint for the request
