@@ -8,7 +8,7 @@ use Spatie\LaravelData\Data;
 class ExternalIdsData extends Data
 {
     /**
-     * @param App\Http\Integrations\Orcid\Data\ExternalIdData[] $externalId;
+     * @param  App\Http\Integrations\Orcid\Data\ExternalIdData[]  $externalId;
      */
     public function __construct(
         #[MapName('external-id')]
