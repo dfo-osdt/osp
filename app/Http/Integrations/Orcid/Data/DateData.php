@@ -2,8 +2,8 @@
 
 namespace App\Http\Integrations\Orcid\Data;
 
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapInputName;
+use Spatie\LaravelData\Data;
 
 class DateData extends Data
 {

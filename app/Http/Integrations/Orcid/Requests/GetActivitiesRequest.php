@@ -5,7 +5,6 @@ namespace App\Http\Integrations\Orcid\Requests;
 use App\Http\Integrations\Orcid\Enums\ActivitiesScopeListEndpoint;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class GetActivitiesRequest extends Request
 {
@@ -17,7 +16,6 @@ class GetActivitiesRequest extends Request
     public function __construct(
         protected ActivitiesScopeListEndpoint $endpoint = ActivitiesScopeListEndpoint::EMPLOYMENTS
     ) {}
-
 
     /**
      * The endpoint for the request
