@@ -4,31 +4,29 @@ namespace App\Http\Integrations\Orcid\Data;
 
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Optional;
 
-/**
- * @property \App\Http\Integrations\Orcid\Data\ExternalIdData[] $externalIds
- */
 class EmploymentData extends Data
 {
     public function __construct(
         #[MapName('department-name')]
-        public string $departmentName,
+        public string|Optional $departmentName,
 
         #[MapName('role-title')]
-        public string $roleTitle,
+        public string|Optional $roleTitle,
 
         #[MapName('start-date')]
-        public DateData $startDate,
+        public DateData|Optional $startDate,
 
         #[MapName('end-date')]
-        public DateData $endDate,
+        public DateData|Optional $endDate,
 
         public OrganizationData $organization,
 
-        public UrlData $url,
+        public UrlData|Optional $url,
 
-        #[MapName('external-ids.external-id')]
-        public array $externalIds
+        #[MapName('external-ids')]
+        public ExternalIdsData $externalIds
 
     ) {}
 }
