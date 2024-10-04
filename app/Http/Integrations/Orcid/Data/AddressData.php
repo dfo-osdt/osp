@@ -9,6 +9,6 @@ class AddressData extends Data
     public function __construct(
         public string $country,
         public ?string $region = null,
-        public ?string $city = null
+        public string $city = 'Ottawa',
     ) {}
 }
