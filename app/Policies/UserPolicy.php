@@ -16,7 +16,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return false;
+        return $user->hasRole('admin');
     }
 
     /**
@@ -49,7 +49,7 @@ class UserPolicy
     public function update(User $user, User $model)
     {
         // a user can update their own profile
-        return $user->id === $model->id;
+        return $user->id === $model->id or $user->hasRole('admin');
     }
 
     /**
