@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Notifications\Authentication\PasswordResetNotification;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -17,7 +20,7 @@ use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Permission\Traits\HasRoles;
 use Str;
 
-class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
+class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail, FilamentUser, HasName
 {
     use AuthenticationLoggable;
     use CausesActivity;
@@ -193,6 +196,32 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         ])->save();
     }
 
+    /**
+     * Determine if the user can access the Filament admin panel.
+     * This function checks if the user has the 'admin' role, which
+     * is required to grant access to Filament. Users without this
+     * role will be denied access.
+     *
+     * @return bool True if the user has the 'admin' role, false otherwise.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+	return $this->hasRole('admin');
+    }
+
+    /**
+     * Get the display name for the user in the Filament admin panel.
+     * This function concatenates the user's first name and last name
+     * to form a full name that will be used as the user's display name
+     * within Filament.
+     *
+     * @return string The user's full name in "First Last" format.
+     */
+    public function getFilamentName(): string
+    {
+	return $this->getFullNameAttribute();
+    }
+    
     /**
      * Get the preferred locale of the user.
      */

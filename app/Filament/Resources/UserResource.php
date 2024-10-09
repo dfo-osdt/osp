@@ -23,7 +23,25 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('first_name')
+					  ->disabledOn('edit')
+					  ->Filled()
+					  ->required(),
+		Forms\Components\TextInput::make('last_name')
+					  ->disabledOn('edit')
+					  ->Filled(),
+		Forms\Components\TextInput::make('email')
+					  ->disabledOn('edit')
+					  ->Filled(),
+		Forms\Components\Section::make([
+		    Forms\Components\CheckboxList::make('roles')
+						 ->relationship(titleAttribute: 'name')
+						 ->default(['1'])
+						 ->options([
+						     '3' => 'Admin',
+						     '2' => 'Director',
+						 ]),
+		])
             ]);
     }
 
@@ -31,7 +49,22 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('first_name')
+					 ->sortable(),
+		Tables\Columns\TextColumn::make('last_name')
+					 ->sortable(),
+		Tables\Columns\TextColumn::make('email'),
+		Tables\Columns\IconColumn::make('active')
+					 ->boolean()
+					 ->sortable(),
+		Tables\Columns\TextColumn::make('roles.name')
+					 ->badge()
+					 ->color(fn (string $state): string => match ($state) {
+					     'author' => 'success',
+					     'director' => 'warning',
+					     'admin' => 'danger',
+					 })
+					 ->searchable(isIndividual: true),
             ])
             ->filters([
                 //
@@ -41,9 +74,10 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+		    // Placeholder
                 ]),
-            ]);
+            ])
+	    ->defaultSort('first_name');
     }
 
     public static function getRelations(): array
