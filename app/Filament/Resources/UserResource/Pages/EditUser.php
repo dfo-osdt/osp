@@ -16,4 +16,19 @@ class EditUser extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    /**
+     * Get the URL to redirect to after performing an action in the EditUser page.
+     *
+     * This method overrides the default behavior and ensures that
+     * after an action (such as updating a user), the user is redirected
+     * to the index page of the User resource.
+     *
+     * @return string The URL of the index page for the User resource.
+     */
+    protected function getRedirectUrl(): string
+    {
+	return $this->getResource()::getUrl('index');
+    }
+    
 }
