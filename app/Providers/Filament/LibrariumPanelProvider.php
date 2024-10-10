@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Requests\Auth\LoginRequest;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -26,7 +27,7 @@ class LibrariumPanelProvider extends PanelProvider
             ->default()
             ->id('librarium')
             ->path('librarium')
-            ->login()
+            ->login(LoginRequest::class)
             ->colors([
                 'primary' => Color::Amber,
             ])
