@@ -16,7 +16,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return false;
+        return $user->can('view_any_user');
     }
 
     /**
@@ -48,7 +48,10 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        // a user can update their own profile
+        
+	if($user->can('update_any_user')) return true;
+	
+	// a user can update their own profile
         return $user->id === $model->id;
     }
 
