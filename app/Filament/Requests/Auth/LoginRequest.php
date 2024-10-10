@@ -32,7 +32,7 @@ class LoginRequest extends BaseAuth
 
     public function authenticate(): ?LoginResponse
     {
-	
+
 	/**
 	 * Check if user is rate limited. Log attempt if user is rate limited.
 	 *
@@ -41,7 +41,7 @@ class LoginRequest extends BaseAuth
 	$maxAttempts = Config::get('auth.rate_limit.max_attempts');
 	$decaySeconds = Config::get('auth.rate_limit.decay_seconds');
 	try {
-	    $this->rateLimit($maxAttempts, $decaySeconds); 
+	    $this->rateLimit($maxAttempts, $decaySeconds);
 	} catch (TooManyRequestsException $exception) {
 	    $this->logLockout();
 	    $this->getRateLimitedNotification($exception)?->send();
@@ -98,10 +98,10 @@ class LoginRequest extends BaseAuth
      */
     public function throttleKey()
     {
-	
+
 	return Str::lower($this->data['email']).'|'.request()->ip();
     }
-    
+
     /**
      * Log lockout but rate limit to one entry per 2 minutes
      * as we don't want to log all failed attempts in the
