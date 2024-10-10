@@ -47,6 +47,8 @@ class RoleAndPermissionSeeder extends Seeder
             Permission::findOrCreate('view_telescope'),
             Permission::findOrCreate('view_horizon'),
             Permission::findOrCreate('view_pulse'),
+	    Permission::findOrCreate('view_any_user'),
+	    Permission::findOrCreate('update_any_user'),
         ]);
 
         $adminRole = Role::findOrCreate('admin');

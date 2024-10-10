@@ -17,3 +17,4 @@ yarn-error.log
 tests/cypress/videos/*
 tests/cypress/screenshots/*
 .phpactor.json
+.phpstorm.meta.php
