@@ -559,7 +559,10 @@
     "verifying": "Verifying with ORCID.org",
     "invalid-key": "Invalid key - likely due to timeout - please try again.",
     "invalid-user": "User not found - internal error - please contact us.",
-    "failed": "A probelm occured in authorizing your account with ORCID.org"
+    "failed": "A probelm occured in authorizing your account with ORCID.org",
+    "connect-introduction": "Linking your ORCID account with the Open Science Portal not only allows us to sync authoritative Fisheries and Oceans Canada (DFO) information with your profile but also confirms your ORCID identity with the department. This verification enables DFO to use your ORCID in other persistent identifier (PID) metadata, such as DOIs for datasets and publications, ensuring consistency and traceability across scientific outputs. By connecting your ORCID account, you streamline the management of your professional profile, enhance discoverability, and strengthen the integrity of your contributions within the open science ecosystem.",
+    "connect-linked-text": "The following ORCID is connected to your author profile:",
+    "connect-header": "ORCID Connection"
   },
   "organization-select": {
     "add-a-new-organization": "Add a new organization",

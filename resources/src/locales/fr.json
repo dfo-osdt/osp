@@ -559,7 +559,10 @@
     "verifying": "Vérification avec ORCID.org",
     "invalid-key": "Clé non valide - probablement en raison d'un délai d'attente - veuillez réessayer.",
     "invalid-user": "Utilisateur introuvable – erreur interne – veuillez nous contacter.",
-    "failed": "Un problème est survenu lors de l'autorisation de votre compte avec ORCID.org"
+    "failed": "Un problème est survenu lors de l'autorisation de votre compte avec ORCID.org",
+    "connect-introduction": "Lier votre compte ORCID au Portail science ouverte nous permet non seulement de synchroniser les informations faisant autorité de Pêches et Océans Canada (MPO) avec votre profil, mais confirme également votrE identité ORCID auprès du ministère. \nCette vérification permet au MPO d'utiliser votre ORCID dans d'autres métadonnées d'identifiant persistant (PID), telles que les DOI pour les ensembles de données et les publications, garantissant ainsi la cohérence et la traçabilité des résultats scientifiques. \nEn connectant votre compte ORCID, vous rationalisez la gestion de votre profil professionnel, améliorez la découvrabilité et renforcez l'intégrité de vos contributions au sein de l'écosystème scientifique ouvert.",
+    "connect-linked-text": "Le ORCID suivant est connecté à votre profil d'auteur :",
+    "connect-header": "Connexion ORCID"
   },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",

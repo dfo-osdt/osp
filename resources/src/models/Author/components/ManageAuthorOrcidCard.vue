@@ -27,37 +27,46 @@ async function revokeToken() {
         t('manage-author-profile-view.authorize-orcid')
       }}</span>
     </template>
-    <q-card-section v-if="isVerified">
-      <p>
-        {{ t('orcid.already-verified-text') }}
-      </p>
-      <div class="text-subtitle1 q-mb-md">
-        <span class="text-primary text-weight-bold">ORCID: </span>
-        <a
-          target="_blank"
-          class="text-primary"
-          :href="authStore.user?.author.data.orcid"
-        >{{ authStore.user?.author.data.orcid }}</a>
-      </div>
-      <div class="flex justify-end">
-        <q-btn outline color="primary" @click="revokeToken()">
-          <OrcidAvatar size="md" /><span class="q-ml-md text-grey-8">{{ t('ocrid.revoke-btn-text') }}
-          </span>
-        </q-btn>
-      </div>
-    </q-card-section>
-    <q-card-section v-else>
-      <div class="column flex flex-center">
-        <div class="q-ma-md text-h5 text-grey-8">
-          {{ t('orcid.verify-header-text') }}
+    <q-card-section>
+      <div class="row q-gutter-xl">
+        <div class="col-12 col-md-auto">
+          <span class="text-primary text-subtitle1">{{ t('orcid.connect-header') }}</span>
         </div>
-        <div>
-          <q-btn outline color="primary" :href="url">
-            <OrcidAvatar size="lg" /><span
-              class="q-ml-md q-my-sm text-grey-8"
-            >{{ t('ocrid.verify-btn-text') }}
-            </span>
-          </q-btn>
+        <div class="col text-body2 q-pt-xs">
+          <p>{{ t('orcid.connect-introduction') }}</p>
+          <div v-if="isVerified">
+            <div class="text-primary">
+              {{ t('orcid.connect-linked-text') }}
+            </div>
+            <OrcidAvatar size="lg" />
+            <a
+              target="_blank"
+              class="text-primary"
+              :href="authStore.user?.author.data.orcid"
+            >{{ authStore.user?.author.data.orcid }}</a>
+            <div class="flex justify-end">
+              <q-btn outline color="primary" @click="revokeToken()">
+                <OrcidAvatar size="md" /><span class="q-ml-md text-grey-8">{{ t('ocrid.revoke-btn-text') }}
+                </span>
+              </q-btn>
+            </div>
+          </div>
+          <div v-else>
+            <div class="column flex flex-center">
+              <div class="q-ma-md text-h6 text-grey-8">
+                {{ t('orcid.verify-header-text') }}
+              </div>
+              <div>
+                <q-btn outline color="primary" :href="url">
+                  <OrcidAvatar size="lg" />
+                  <span
+                    class="q-ml-md q-my-sm text-grey-8"
+                  >{{ t('ocrid.verify-btn-text') }}
+                  </span>
+                </q-btn>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </q-card-section>
