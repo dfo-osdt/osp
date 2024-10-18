@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
+import { useQuasar } from 'quasar'
 
 const localeStore = useLocaleStore()
 const authStore = useAuthStore()
 const { t } = useI18n()
+const q = useQuasar()
 
 const url = computed(() => {
   return `/api/user/orcid/verify?locale=${localeStore.locale}`
@@ -15,7 +17,20 @@ const isVerified = computed(() => {
 })
 
 async function revokeToken() {
-  await authStore.revokeOrcidToken()
+  q.dialog({
+    title: t('orcid.revoke-dialog-title'),
+    message: t('orcid.revoke-dialog-message'),
+    ok: {
+      label: t('common.yes'),
+      color: 'primary',
+    },
+    cancel: {
+      label: t('common.no'),
+      color: 'grey-8',
+    },
+  }).onOk(async () => {
+    await authStore.revokeOrcidToken()
+  })
 }
 </script>
 
@@ -29,7 +44,7 @@ async function revokeToken() {
     </template>
     <q-card-section>
       <div class="row q-gutter-xl">
-        <div class="col-12 col-md-auto">
+        <div class="col-12 col-md-1">
           <span class="text-primary text-subtitle1">{{ t('orcid.connect-header') }}</span>
         </div>
         <div class="col text-body2 q-pt-xs">
@@ -67,6 +82,15 @@ async function revokeToken() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <q-separator class="q-my-md" />
+      <div class="row q-gutter-xl">
+        <div class="col-12 col-md-1">
+          <span class="text-primary text-subtitle1">{{ t('orcid.employment-title') }}</span>
+        </div>
+        <div class="col text-body2 q-pt-xs">
+          <p>{{ t('orcid.employment-section-intro') }}</p>
         </div>
       </div>
     </q-card-section>
