@@ -111,4 +111,9 @@ class Author extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function employments(): HasMany
+    {
+        return $this->hasMany('App\Models\AuthorEmployment');
+    }
 }

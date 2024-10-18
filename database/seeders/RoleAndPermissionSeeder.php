@@ -26,6 +26,7 @@ class RoleAndPermissionSeeder extends Seeder
             Permission::findOrCreate('create_authors'),
             Permission::findOrCreate('update_authors'),
             Permission::findOrCreate('create_organizations'),
+            Permission::findOrCreate('create_author_employments'),
         ]);
 
         $authorRole = Role::findOrCreate('author');

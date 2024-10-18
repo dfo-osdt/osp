@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\InvitedUserController;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\AuthorEmploymentController;
 use App\Http\Controllers\AuthorExpertiseController;
 use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunctionalAreaController;
@@ -65,6 +66,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/authors/{author}', 'show');
         Route::post('/authors', 'store');
         Route::put('/authors/{author}', 'update');
+    });
+
+    Route::controller(AuthorEmploymentController::class)->group(function () {
+        Route::get('/authors/{author}/employments', 'index');
+        Route::post('/authors/{author}/employments', 'store');
+        Route::get('/authors/{author}/employments/{authorEmployment}', 'show');
+        Route::put('/authors/{author}/employments/{authorEmployment}', 'update');
+        Route::delete('/authors/{author}/employments/{authorEmployment}', 'destroy');
     });
 
     Route::controller(UserController::class)->group(function () {

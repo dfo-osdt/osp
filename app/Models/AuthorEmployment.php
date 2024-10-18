@@ -4,11 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class AuthorEmployment extends Model
 {
     /** @use HasFactory<\Database\Factories\AuthorEmploymentFactory> */
     use HasFactory;
+    use LogsActivity;
+
+    public $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+        'orcid_putcode',
+        'orcid_updated_at',
+    ];
 
     protected function casts(): array
     {
@@ -17,6 +28,24 @@ class AuthorEmployment extends Model
             'end_date' => 'date',
             'orcid_updated_at' => 'timestamp',
         ];
+    }
+
+    // logging options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
+
+    public function isSyncedWithOrcid(): bool
+    {
+        return $this->orcid_putcode !== null;
+    }
+
+    public function needsSyncWithOrcid(): bool
+    {
+        return $this->orcid_updated_at > $this->updated_at || $this->orcid_putcode === null;
     }
 
     public function author()
