@@ -46,8 +46,8 @@ importers:
         specifier: ^3.8.0
         version: 3.8.0(@typescript-eslint/utils@8.10.0(eslint@9.12.0)(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint@9.12.0)(typescript@5.6.3)
       '@quasar/vite-plugin':
-        specifier: ^1.7.0
-        version: 1.7.0(@vitejs/plugin-vue@5.1.4(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3)))(quasar@2.17.0)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3))
+        specifier: ^1.8.0
+        version: 1.8.0(@vitejs/plugin-vue@5.1.4(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3)))(quasar@2.17.0)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3))
       '@types/dompurify':
         specifier: ^3.0.5
         version: 3.0.5
@@ -544,8 +544,8 @@ packages:
   '@quasar/extras@1.16.12':
     resolution: {integrity: sha512-hLlb3Buxo38Xg/2w0BTkz98RBh/VH8apZ2r6Fl8YpPgrVQ0diHyN/BVTvIOk5Kch2y38L2kvwOIddsB2UcCuIg==}
 
-  '@quasar/vite-plugin@1.7.0':
-    resolution: {integrity: sha512-ia4w1n4DuPYm92MQLPNpMqLJID1WGGRyVGxkVeg8V+V25Vh3p9QBo++iuXR4sW/bCmzzx66Ko6VStsr1zp90GQ==}
+  '@quasar/vite-plugin@1.8.0':
+    resolution: {integrity: sha512-+LC+y29R7dV7Y7GuCZyuC7MZ7E2Qz8r1ViUFQbJEV4+sx3561d/kDKTM7ZS4UQlrGgU22/LCOUrTC07N7g3JGg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@vitejs/plugin-vue': ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
@@ -3079,7 +3079,7 @@ snapshots:
 
   '@quasar/extras@1.16.12': {}
 
-  '@quasar/vite-plugin@1.7.0(@vitejs/plugin-vue@5.1.4(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3)))(quasar@2.17.0)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3))':
+  '@quasar/vite-plugin@1.8.0(@vitejs/plugin-vue@5.1.4(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3)))(quasar@2.17.0)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3))':
     dependencies:
       '@vitejs/plugin-vue': 5.1.4(vite@5.4.9(@types/node@22.7.6)(sass@1.80.2))(vue@3.5.12(typescript@5.6.3))
       quasar: 2.17.0
