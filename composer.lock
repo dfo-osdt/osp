@@ -1224,16 +1224,16 @@
         },
         {
             "name": "cmixin/business-day",
-            "version": "1.18.6",
+            "version": "1.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kylekatarnls/business-day.git",
-                "reference": "b8efadecb80b098a6c9afa97b83ec198794bf8ff"
+                "reference": "69f34c08cffa38f9c677b19e364ac85314047a79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/b8efadecb80b098a6c9afa97b83ec198794bf8ff",
-                "reference": "b8efadecb80b098a6c9afa97b83ec198794bf8ff",
+                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/69f34c08cffa38f9c677b19e364ac85314047a79",
+                "reference": "69f34c08cffa38f9c677b19e364ac85314047a79",
                 "shasum": ""
             },
             "require": {
@@ -1272,7 +1272,7 @@
             "description": "Carbon mixin to handle business days",
             "support": {
                 "issues": "https://github.com/kylekatarnls/business-day/issues",
-                "source": "https://github.com/kylekatarnls/business-day/tree/1.18.6"
+                "source": "https://github.com/kylekatarnls/business-day/tree/1.19.2"
             },
             "funding": [
                 {
@@ -1284,7 +1284,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-17T22:01:21+00:00"
+            "time": "2024-10-19T17:33:46+00:00"
         },
         {
             "name": "composer/semver",
