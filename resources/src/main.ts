@@ -1,11 +1,11 @@
 import { createApp } from 'vue'
-import { installQuasar } from './plugins/quasar'
+import App from './App.vue'
 import { installI18n } from './plugins/i18n'
 import { installPinia } from './plugins/pinia'
-import { Router, installRouter } from './plugins/router'
-import { useAuthStore } from './stores/AuthStore'
+import { installQuasar } from './plugins/quasar'
+import { installRouter, Router } from './plugins/router'
 
-import App from './App.vue'
+import { useAuthStore } from './stores/AuthStore'
 
 const myApp = createApp(App)
 
@@ -17,17 +17,14 @@ installRouter(myApp)
 // Global navigation guard
 const authStore = useAuthStore()
 
-Router.beforeEach(async (to, from) => {
+Router.beforeEach(async (to) => {
   // check if pages requires auth
   if (authStore.loading) {
     await authStore.waitForLoading()
   }
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (authStore.isAuthenticated) {
-
-    }
-    else {
+    if (!authStore.isAuthenticated) {
       // redirect to login page
       return {
         name: 'login',
