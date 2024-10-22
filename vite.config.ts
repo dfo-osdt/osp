@@ -26,7 +26,7 @@ export default defineConfig({
     }),
 
     quasar({
-      sassVariables: 'resources/src/styles/variables.scss',
+      sassVariables: path.resolve(__dirname, 'resources/src/styles/variables.scss'),
     }),
 
     // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
