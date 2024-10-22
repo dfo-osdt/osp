@@ -90,6 +90,11 @@ class AuthorEmploymentController extends Controller
      */
     public function destroy(Author $author, AuthorEmployment $authorEmployment)
     {
-        //
+        $this->authorize('delete', $authorEmployment);
+
+        $authorEmployment->delete();
+
+        return response()->noContent();
     }
+
 }
