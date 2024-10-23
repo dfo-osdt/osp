@@ -2,17 +2,21 @@
 
 namespace App\Filament\Requests\Auth;
 
-//use App\Models\User;
+use App\Models\User;
+use Filament\Facades\Filament;
+use Filament\Forms\Form;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Pages\Auth\Login as BaseAuth;
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-/* 
- * use Illuminate\Auth\Events\Lockout;
- * use Illuminate\Foundation\Http\FormRequest;
- * use Illuminate\Support\Facades\Auth;
- * use Illuminate\Support\Facades\RateLimiter;
- * use Illuminate\Support\Str;
- * // use Illuminate\Validation\ValidationException; // included in parent
- */
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+
+use Illuminate\Validation\ValidationException;
+
 
 class LoginRequest extends BaseAuth
 {
@@ -48,8 +52,39 @@ class LoginRequest extends BaseAuth
 	];
     }
 
-    /* public function authenticate()
-     * {
+    public function authenticate(): ?LoginResponse
+    {
+	//	$data = $this->form->getState()
+	$this -> validateRequest();
+	
+	return parent::authenticate();
+    }
 
-     * } */
+    public function validateRequest()
+    {
+	
+	/* $data = Arr::only($this->data, ['email','password']);
+	   dd($this);
+	   $credentials = $this->validate([
+	   'email' => ['required', 'string', 'email'],
+	   'password' => ['required', 'string'],
+	   ], $this->data); */
+	$credentials = $this->form->getState();
+//	   dd($this->form->getState());
+	// User must be active
+	$credentials['active'] = true;
+
+	if (! Filament::auth()->attempt($credentials, $credentials['remember'] ?? false)) {
+	    $user = User::where('email', $credentials['email'])->first();
+	    if ($user && ! $user->hasVerifiedEmail()) {
+		throw ValidationException::withMessages([
+		    'email' => __('auth.failed_email_not_verified'),
+		]);
+	    }
+	    throw ValidationException::withMessages([
+		'email' => __('auth.failed'),
+	    ]);
+	}
+	return;
+    }
 }
