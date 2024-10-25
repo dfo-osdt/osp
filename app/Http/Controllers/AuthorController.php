@@ -41,7 +41,6 @@ class AuthorController extends Controller
         ]);
 
         $author = Author::create($validated);
-
         return new AuthorResource($author);
     }
 
@@ -72,7 +71,9 @@ class AuthorController extends Controller
             'last_name' => 'string',
             'email' => 'email|unique:authors,email,'.$author->id,
             'organization_id' => 'exists:organizations,id',
-            'orcid' => ['nullable', 'string', new Ocrid, Rule::unique('authors', 'orcid')->ignore($author->id)],
+            'orcid' => [
+                Rule::excludeIf(fn () => $author->orcid_verified),
+                'nullable', 'string', new Ocrid, Rule::unique('authors', 'orcid')->ignore($author->id)],
         ]);
 
         // does this user have a user_id? If so, the name and email are controller
@@ -81,11 +82,6 @@ class AuthorController extends Controller
             unset($validated['first_name']);
             unset($validated['last_name']);
             unset($validated['email']);
-        }
-
-        // does this user have a verified orcid? If so, we don't want to update it here.
-        if ($author->orcid_verified) {
-            unset($validated['orcid']);
         }
 
         $author->update($validated);

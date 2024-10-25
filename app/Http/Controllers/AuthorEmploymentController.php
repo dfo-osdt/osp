@@ -18,7 +18,7 @@ class AuthorEmploymentController extends Controller
         //validate user can do this
         $this->authorize('viewAny', [AuthorEmployment::class, $author]);
 
-        return AuthorEmploymentResource::collection($author->employments);
+        return AuthorEmploymentResource::collection($author->employments()->orderByDesc('start_date')->get());
     }
 
     /**
