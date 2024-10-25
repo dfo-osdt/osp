@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
+import ManageAuthorEmploymentsCard from '@/models/AuthorEmployment/components/ManageAuthorEmploymentsCard.vue'
 import { useQuasar } from 'quasar'
 
 const localeStore = useLocaleStore()
@@ -26,7 +27,7 @@ async function revokeToken() {
     },
     cancel: {
       label: t('common.no'),
-      color: 'grey-8',
+      outline: true,
     },
   }).onOk(async () => {
     await authStore.revokeOrcidToken()
@@ -91,6 +92,7 @@ async function revokeToken() {
         </div>
         <div class="col text-body2 q-pt-xs">
           <p>{{ t('orcid.employment-section-intro') }}</p>
+          <ManageAuthorEmploymentsCard v-if="authStore.user" :author-id="authStore.user?.author.data.id" />
         </div>
       </div>
     </q-card-section>

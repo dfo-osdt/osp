@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
 import type {
   FundableType,
   FundingSourceResource,
 } from '../FundingSource'
+import ContentCard from '@/components/ContentCard.vue'
+import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
+import { useQuasar } from 'quasar'
 import {
   FundingSourceService,
 } from '../FundingSource'
-import FundingSourceList from './FundingSourceList.vue'
 import CreateFundingSourceDialog from './CreateFundingSourceDialog.vue'
-import ContentCard from '@/components/ContentCard.vue'
-import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
+import FundingSourceList from './FundingSourceList.vue'
 
 const props = defineProps<{
   fundableId: number
@@ -22,6 +22,7 @@ const { t } = useI18n()
 
 const loading = ref(true)
 const fundingSources = ref<FundingSourceResource[]>([])
+const showCreateDialog = ref(false)
 
 onMounted(async () => {
   await loadFundingSources()
@@ -65,12 +66,9 @@ async function deleteFundingSource(fundingSource: FundingSourceResource) {
     })
   }
   catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
-
-// create dialog
-const showCreateDialog = ref(false)
 </script>
 
 <template>

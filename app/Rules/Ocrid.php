@@ -23,7 +23,7 @@ class Ocrid implements ValidationRule
         $orcid = Str::substr($value, -19);
 
         // check value against regex
-        if (! preg_match('/^0000-000[1-9]-[0-9]{4}-[0-9]{3}[0-9X]$/', $orcid)) {
+        if (! preg_match('/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$/', $orcid)) {
             $fail(__('validation.orcid.format', ['attribute' => $attribute]));
         }
 
