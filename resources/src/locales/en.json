@@ -720,5 +720,8 @@
   "withdraw-manuscript-dialog": {
     "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record.",
     "title": "Withdraw this manuscript"
+  },
+  "author-employment-list": {
+    "no-employment-given": "No ORCID employments entries"
   }
 }

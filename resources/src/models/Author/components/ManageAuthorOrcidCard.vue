@@ -92,7 +92,7 @@ async function revokeToken() {
         </div>
         <div class="col text-body2 q-pt-xs">
           <p>{{ t('orcid.employment-section-intro') }}</p>
-          <ManageAuthorEmploymentsCard v-if="authStore.user" :author-id="authStore.user?.author.data.id" />
+          <ManageAuthorEmploymentsCard v-if="authStore.user" :author-id="authStore.user?.author.data.id" :disabled="!isVerified" />
         </div>
       </div>
     </q-card-section>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { type AuthorEmploymentResource, AuthorEmploymentService } from '../AuthorEmployement'
+import AuthorEmploymentList from './AuthorEmploymentList.vue'
 
 const props = defineProps < {
   authorId: number
+  disabled?: boolean
 }>()
 
 const loading = ref(true)
@@ -26,14 +28,24 @@ async function loadAuthorEmployments() {
   <q-card flat>
     <div class="q-pt-sm row justify-end">
       <q-btn
+        outline
+        :disable="disabled"
+        icon-right="mdi-briefcase-plus-outline"
         color="primary"
         label="Add Employment"
         @click="showCreateDialog = true"
-      />
+      >
+        <q-tooltip v-if="disabled">
+          Link your ORCID to add Employment
+        </q-tooltip>
+        <q-tooltip v-else>
+          Add Employment
+        </q-tooltip>
+      </q-btn>
     </div>
-    <pre>
-    {{ authorEmployments }}
-  </pre>
+    <div class="q-mt-md">
+      <AuthorEmploymentList :author-employments="authorEmployments" />
+    </div>
   </q-card>
 </template>
 
