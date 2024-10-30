@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -12,6 +13,7 @@ class AuthorEmployment extends Model
     /** @use HasFactory<\Database\Factories\AuthorEmploymentFactory> */
     use HasFactory;
     use LogsActivity;
+    use SoftDeletes;
 
     public $guarded = [
         'id',

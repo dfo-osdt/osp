@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('author_employments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
             $table->integer('orcid_putcode')->nullable();
             $table->timestamp('orcid_updated_at')->nullable();
             $table->foreignId('author_id')->constrained()->cascadeOnDelete();

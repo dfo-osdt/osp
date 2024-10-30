@@ -264,7 +264,9 @@
     "unclassified": "Unclassified",
     "unclassified-tooltip": "This information is unclassified",
     "protected-a-tooltip": "This information is Protected A",
-    "review": "Review"
+    "review": "Review",
+    "present": "present",
+    "confirm": "Confirm"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -566,7 +568,9 @@
     "employment-section-intro": "This section allows you to update your ORCID profile with an authoritative employment source from Fisheries and Oceans Canada (DFO). By allowing trusted organizations like DFO to manage these updates, you enhance the credibility of your professional profile, as the information will be recognized as authoritative and trustworthy. Ultimately, linking your DFO employment through the Open Science Portal not only establishes your employement at DFO but also boosts your visibility within the scientific community.",
     "revoke-dialog-title": "Confirm the disconnection your ORCID account",
     "revoke-dialog-message": "This will revoke the portal's access to your ORICD account. You can always reconnected it later. Information we've added to your profile up to this point will remain but you can choose to manually delete it.",
-    "employment-title": "Employment"
+    "employment-title": "Employment",
+    "needs_sync": "ORCID synchronization pending",
+    "synced": "Synchronzied with your ORCID profile"
   },
   "organization-select": {
     "add-a-new-organization": "Add a new organization",
@@ -723,5 +727,16 @@
   },
   "author-employment-list": {
     "no-employment-given": "No ORCID employments entries"
+  },
+  "orcid-employment-edit": {
+    "delete-confirmation-title": "Delete employment from ORCID profile",
+    "delete-confirmation-message": "Are you sure you want to delete this employment record from your ORCID profile?",
+    "update-confirmation-title": "Confirm Employment Record Update",
+    "update-confirmation-message": "By updating your ORCID employment record from the portal, you confirm that the information provided is accurate and reflects your current and past DFO employments to the best of your knowledge.",
+    "department-name-hint": "Please include your sector. e.g.: Ecosystem and Oceans Science",
+    "role-title": "Role/Title",
+    "department-name": "Department",
+    "dialog-title": "Edit your DFO employment ORCID record",
+    "dialog-description": "Add your verified DFO employment record to your ORCID profile to confirm your affiliation and enhance your visibility in the scientific community. Please ensure that all information provided is accurate and up-to-date."
   }
 }
