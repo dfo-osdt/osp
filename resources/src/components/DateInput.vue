@@ -62,7 +62,7 @@ const rules = [
     if (val === null)
       return true
     const date = new Date(val)
-    return !isNaN(date.getTime()) || t('common.validation.invalid-date')
+    return !Number.isNaN(date.getTime()) || t('common.validation.invalid-date')
   },
   // date is greater or equal to min date if provided
   (val: string | null) => {

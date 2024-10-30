@@ -18,7 +18,7 @@ class AuthorEmploymentController extends Controller
         //validate user can do this
         $this->authorize('viewAny', [AuthorEmployment::class, $author]);
 
-        return AuthorEmploymentResource::collection($author->employments()->orderByDesc('start_date')->get());
+        return AuthorEmploymentResource::collection($author->employments()->orderByDesc('start_date')->with('organization')->get());
     }
 
     /**
@@ -52,6 +52,8 @@ class AuthorEmploymentController extends Controller
             'end_date' => $validated['end_date'],
         ]);
 
+        $authorEmployment->load('organization');
+
         return AuthorEmploymentResource::make($authorEmployment);
 
     }
@@ -62,6 +64,8 @@ class AuthorEmploymentController extends Controller
     public function show(Author $author, AuthorEmployment $authorEmployment)
     {
         $this->authorize('view', $authorEmployment);
+
+        $authorEmployment->load('organization');
 
         return AuthorEmploymentResource::make($authorEmployment);
     }
@@ -81,6 +85,7 @@ class AuthorEmploymentController extends Controller
         ]);
 
         $authorEmployment->update($validated);
+        $authorEmployment->load('organization');
 
         return AuthorEmploymentResource::make($authorEmployment->fresh());
     }

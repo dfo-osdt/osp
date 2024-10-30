@@ -44,7 +44,7 @@ async function loadAuthorEmployments() {
       </q-btn>
     </div>
     <div class="q-mt-md">
-      <AuthorEmploymentList :author-employments="authorEmployments" />
+      <AuthorEmploymentList :author-employments="authorEmployments" @changed="loadAuthorEmployments" />
     </div>
   </q-card>
 </template>

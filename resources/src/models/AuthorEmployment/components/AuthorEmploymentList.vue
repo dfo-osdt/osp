@@ -5,6 +5,10 @@ import AuthorEmploymentListItem from './AuthorEmploymentListItem.vue'
 defineProps<{
   authorEmployments: AuthorEmploymentResource[]
 }>()
+
+const emit = defineEmits<{
+  changed: []
+}>()
 </script>
 
 <template>
@@ -13,6 +17,7 @@ defineProps<{
       v-for="authorEmployment in authorEmployments"
       :key="authorEmployment.data.id"
       :author-employment="authorEmployment"
+      @changed="emit('changed')"
     />
   </q-list>
   <div v-else>
