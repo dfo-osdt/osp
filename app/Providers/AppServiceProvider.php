@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -40,6 +41,8 @@ class AppServiceProvider extends ServiceProvider
         Model::preventSilentlyDiscardingAttributes();
         Model::preventAccessingMissingAttributes();
 
+        $this->configureCommands();
+
         // https://spatie.be/docs/laravel-permission/v5/prerequisites#content-schema-limitation-in-mysql
         Schema::defaultStringLength(125);
 
@@ -58,5 +61,15 @@ class AppServiceProvider extends ServiceProvider
             PingCheck::new()->url('https://api.orcid.org/')->timeout(2)->name('Orcid Api'),
             RedisCheck::new(),
         ]);
+    }
+
+    /**
+     * Configure the application's commands.
+     */
+    private function configureCommands(): void
+    {
+        DB::prohibitDestructiveCommands(
+            App::isProduction()
+        );
     }
 }
