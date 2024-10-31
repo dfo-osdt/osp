@@ -40,6 +40,9 @@ test('a user can see a single profile employement', function () {
 
 test('a user can create a new author employment record', function (){
 
+    // mock queue to ensure job dispatched
+    Queue::fake();
+
     $user = User::factory()->create();
 
     $data = AuthorEmployment::factory()->make([
@@ -59,6 +62,8 @@ test('a user can create a new author employment record', function (){
     $data['organization_id'] = Organization::factory()->create()->id;
     $response = $this->actingAs($user)->postJson("api/authors/{$user->author->id}/employments", $data)->assertForbidden();
 
+    Queue::assertPushed(\App\Jobs\SyncAuthorEmploymentWithOrcid::class);
+
     // try to create with another user
     $anotherUser = User::factory()->create();
     $response = $this->actingAs($anotherUser)->postJson("api/authors/{$user->author->id}/employments", $data)->assertForbidden();
@@ -66,6 +71,8 @@ test('a user can create a new author employment record', function (){
 });
 
 test('a user can update an author employment record', function (){
+
+    Queue::fake();
 
     $user = User::factory()->create();
     $employment = AuthorEmployment::factory()->create([
@@ -87,6 +94,8 @@ test('a user can update an author employment record', function (){
 
     expect($response->json('data.role_title'))->toBe('Software Developer');
 
+    Queue::assertPushed(\App\Jobs\SyncAuthorEmploymentWithOrcid::class);
+
     // try to update with another user
     $anotherUser = User::factory()->create();
     $response = $this->actingAs($anotherUser)->putJson("api/authors/{$user->author->id}/employments/{$employment->id}", $data)->assertForbidden();
@@ -95,6 +104,7 @@ test('a user can update an author employment record', function (){
 
 test('a user can delete an author employment record', function (){
 
+    Queue::fake();
     $user = User::factory()->create();
     $employment = AuthorEmployment::factory()->create([
         'author_id' => $user->author->id,
@@ -106,5 +116,6 @@ test('a user can delete an author employment record', function (){
     $response = $this->actingAs($anotherUser)->deleteJson("api/authors/{$user->author->id}/employments/{$employment->id}")->assertForbidden();
 
     $response = $this->actingAs($user)->deleteJson("api/authors/{$user->author->id}/employments/{$employment->id}")->assertNoContent();
+    Queue::assertPushed(\App\Jobs\SyncAuthorEmploymentWithOrcid::class);
 
 });
