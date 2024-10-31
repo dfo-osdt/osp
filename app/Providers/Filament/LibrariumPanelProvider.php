@@ -27,7 +27,7 @@ class LibrariumPanelProvider extends PanelProvider
             ->default()
             ->id('librarium')
             ->path('librarium')
-            ->login(LoginRequest::class)
+            ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
