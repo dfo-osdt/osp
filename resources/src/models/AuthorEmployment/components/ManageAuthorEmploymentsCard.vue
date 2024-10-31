@@ -36,14 +36,14 @@ async function loadAuthorEmployments() {
         :disable="disabled"
         icon-right="mdi-briefcase-plus-outline"
         color="primary"
-        label="Add Employment"
+        :label="$t('author-employment.add-employment')"
         @click="showCreateDialog = true"
       >
         <q-tooltip v-if="disabled">
-          Link your ORCID to add Employment
+          {{ $t('author-employment.add-employment-tooltip') }}
         </q-tooltip>
         <q-tooltip v-else>
-          Add Employment
+          {{ $t('author-employment.add-employment') }}
         </q-tooltip>
       </q-btn>
     </div>

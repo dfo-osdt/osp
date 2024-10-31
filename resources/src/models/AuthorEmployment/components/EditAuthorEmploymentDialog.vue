@@ -94,7 +94,7 @@ function deleteAuthorEmployment() {
         />
         <DateInput
           v-model="startDate"
-          label="Start Date"
+          :label="t('orcid-employment-edit.start-date')"
           :max-date="endDate"
           outlined
           :rules="[(val : string) => !!val || t('common.required')]"
@@ -102,7 +102,7 @@ function deleteAuthorEmployment() {
         />
         <DateInput
           v-model="endDate"
-          label="End Date"
+          :label="t('orcid-employment-edit.end-date')"
           :min-date="startDate"
           outlined
           clearable
@@ -110,7 +110,7 @@ function deleteAuthorEmployment() {
         />
       </q-card-section>
       <q-card-actions class="justify-end">
-        <q-btn color="red" outline label="Delete" icon="mdi-delete-outline" @click="deleteAuthorEmployment" />
+        <q-btn color="red" outline :label="$t('common.delete')" icon="mdi-delete-outline" @click="deleteAuthorEmployment" />
         <q-btn v-close-popup :label="$t('common.cancel')" color="primary" outline />
         <q-btn
           type="submit"

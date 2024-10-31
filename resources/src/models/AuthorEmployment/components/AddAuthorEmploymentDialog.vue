@@ -56,7 +56,7 @@ async function createAuthorEmployment() {
     </q-card-section>
     <q-form @submit="createAuthorEmployment">
       <q-card-section>
-        <OrganizationSelect v-model="organizationId" label="Organization" outlined disable hide-hint class="q-mb-md" />
+        <OrganizationSelect v-model="organizationId" :label="t('common.organization')" outlined disable hide-hint class="q-mb-md" />
         <q-input
           v-model="roleTitle"
           :label="t('orcid-employment-edit.role-title')"
@@ -79,7 +79,7 @@ async function createAuthorEmployment() {
         />
         <DateInput
           v-model="startDate"
-          label="Start Date"
+          :label="t('orcid-employment-edit.start-date')"
           :max-date="endDate"
           outlined
           :rules="[(val : string) => !!val || t('common.required')]"
@@ -87,7 +87,7 @@ async function createAuthorEmployment() {
         />
         <DateInput
           v-model="endDate"
-          label="End Date"
+          :label="t('orcid-employment-edit.end-date')"
           :min-date="startDate"
           outlined
           clearable
