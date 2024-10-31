@@ -734,12 +734,18 @@
     "dialog-description": "Ajoutez votre relevé d'emploi vérifié du MPO à votre profil ORCID pour confirmer votre affiliation et améliorer votre visibilité dans la communauté scientifique. \nVeuillez vous assurer que toutes les informations fournies sont exactes et à jour.",
     "delete-confirmation-message": "Êtes-vous sûr de vouloir supprimer ce relevé d'emploi de votre ORCID profil ?",
     "delete-confirmation-title": "Supprimer l'emploi de ORCID profil",
-    "dialog-title": "Modifier votre emploi au MPO ORCID enregistrement"
+    "dialog-title": "Modifier votre emploi au MPO ORCID enregistrement",
+    "start-date": "Date de début",
+    "end-date": "Date de fin"
   },
   "author-employment-list": {
     "no-employment-given": "Aucune ORCID entrées d'emploi"
   },
   "orcid-employment-add": {
     "dialog-title": "Ajouter un emploi du MPO a ORCID"
+  },
+  "author-employment": {
+    "add-employment-tooltip": "Liez votre ORCID pour ajouter un emploi",
+    "add-employment": "Ajouter un emploi"
   }
 }
