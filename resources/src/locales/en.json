@@ -738,5 +738,8 @@
     "department-name": "Department",
     "dialog-title": "Edit your DFO employment ORCID record",
     "dialog-description": "Add your verified DFO employment record to your ORCID profile to confirm your affiliation and enhance your visibility in the scientific community. Please ensure that all information provided is accurate and up-to-date."
+  },
+  "orcid-employment-add": {
+    "dialog-title": " Add a DFO employment to ORCID"
   }
 }

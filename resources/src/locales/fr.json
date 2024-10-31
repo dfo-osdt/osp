@@ -738,5 +738,8 @@
   },
   "author-employment-list": {
     "no-employment-given": "Aucune ORCID entrées d'emploi"
+  },
+  "orcid-employment-add": {
+    "dialog-title": "Ajouter un emploi du MPO a ORCID"
   }
 }
