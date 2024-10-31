@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { QForm, QInput, useQuasar } from 'quasar'
 import type { AuthorResource } from '../Author'
-import { AuthorService } from '../Author'
 import ContentCard from '@/components/ContentCard.vue'
-import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
 import OrcidInput from '@/components/OrcidInput.vue'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
+import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
+import { QForm, QInput, useQuasar } from 'quasar'
+import { AuthorService } from '../Author'
 
 const props = defineProps<{
   authorId: number
@@ -51,7 +51,7 @@ async function save() {
       author.value = resp
     })
     .catch((err) => {
-      console.log(err)
+      console.error(err)
     })
     .finally(() => {
       loading.value = false
@@ -120,6 +120,7 @@ async function save() {
             class="col-12 col-md-6"
             :label="t('common.current-affiliation')"
             outlined
+            :disable="hasOwner"
             :hint="
               t(
                 'manage-author-profile-card.current-affiliation-hint',
