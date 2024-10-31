@@ -42,7 +42,6 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
     public function handle(): void
     {
         Log::debug('Job Starting: Syncing author employment with ORCID');
-        Log::debug(dump($this->authorEmployment));
 
         // Does the author have a valid ORCID connection?
         $author = $this->authorEmployment->author;
