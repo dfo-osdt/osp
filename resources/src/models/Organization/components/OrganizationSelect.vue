@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { QSelect } from 'quasar'
 import type {
   OrganizationResource,
   OrganizationResourceList,
 } from '../Organization'
+import { SpatieQuery } from '@/api/SpatieQuery'
+import { QSelect } from 'quasar'
 import {
   OrganizationService,
 } from '../Organization'
 import CreateOrganizationDialog from './CreateOrganizationDialog.vue'
-import { SpatieQuery } from '@/api/SpatieQuery'
 
 const props = defineProps<{
   modelValue: number | null

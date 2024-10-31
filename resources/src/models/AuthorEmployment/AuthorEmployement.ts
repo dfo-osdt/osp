@@ -46,7 +46,7 @@ export class AuthorEmploymentService {
 
   public async create(data: AuthorEmploymentCreate): Promise<R> {
     const response = await http.post<AuthorEmploymentCreate, R>(
-      `api/author/${this.authorId}/employments`,
+      `api/authors/${this.authorId}/employments`,
       data,
     )
     return response.data

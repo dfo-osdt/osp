@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type AuthorEmploymentResource, AuthorEmploymentService } from '../AuthorEmployement'
+import AddAuthorEmploymentDialog from './AddAuthorEmploymentDialog.vue'
 import AuthorEmploymentList from './AuthorEmploymentList.vue'
 
 const props = defineProps < {
@@ -17,6 +18,9 @@ onMounted(async () => {
 })
 
 async function loadAuthorEmployments() {
+  if (showCreateDialog.value) {
+    showCreateDialog.value = false
+  }
   loading.value = true
   const response = await authorEmploymentService.list()
   authorEmployments.value = response.data
@@ -46,6 +50,12 @@ async function loadAuthorEmployments() {
     <div class="q-mt-md">
       <AuthorEmploymentList :author-employments="authorEmployments" @changed="loadAuthorEmployments" />
     </div>
+    <AddAuthorEmploymentDialog
+      v-if="showCreateDialog"
+      v-model="showCreateDialog"
+      :author-id="props.authorId"
+      @changed="loadAuthorEmployments"
+    />
   </q-card>
 </template>
 
