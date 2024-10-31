@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AuthorEmploymentResource;
+use App\Jobs\SyncAuthorEmploymentWithOrcid;
 use App\Models\Author;
 use App\Models\AuthorEmployment;
 use App\Models\Organization;
@@ -54,6 +55,8 @@ class AuthorEmploymentController extends Controller
 
         $authorEmployment->load('organization');
 
+        SyncAuthorEmploymentWithOrcid::dispatch($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_CREATE);
+
         return AuthorEmploymentResource::make($authorEmployment);
 
     }
@@ -86,8 +89,11 @@ class AuthorEmploymentController extends Controller
 
         $authorEmployment->update($validated);
         $authorEmployment->load('organization');
+        $authorEmployment->refresh();
 
-        return AuthorEmploymentResource::make($authorEmployment->fresh());
+        SyncAuthorEmploymentWithOrcid::dispatch($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_UPDATE);
+
+        return AuthorEmploymentResource::make($authorEmployment);
     }
 
     /**
@@ -96,6 +102,8 @@ class AuthorEmploymentController extends Controller
     public function destroy(Author $author, AuthorEmployment $authorEmployment)
     {
         $this->authorize('delete', $authorEmployment);
+
+        SyncAuthorEmploymentWithOrcid::dispatch($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_DELETE);
 
         $authorEmployment->delete();
 
