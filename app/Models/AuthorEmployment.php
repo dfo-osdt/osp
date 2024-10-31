@@ -28,7 +28,7 @@ class AuthorEmployment extends Model
         return [
             'start_date' => 'date',
             'end_date' => 'date',
-            'orcid_updated_at' => 'timestamp',
+            'orcid_updated_at' => 'datetime',
         ];
     }
 

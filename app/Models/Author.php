@@ -31,6 +31,7 @@ class Author extends Model
         'orcid_verified' => 'boolean',
         'orcid_access_token' => 'encrypted',
         'orcid_refresh_token' => 'encrypted',
+        'orcid_expires_at' => 'datetime',
     ];
 
     // logging options
@@ -91,6 +92,19 @@ class Author extends Model
         $this->orcid_expires_at = null;
         $this->orcid_verified = false;
         $this->save();
+    }
+
+    /**
+     * Does this author have a valid ORCID connection
+     * according to the token and the verified flag?
+     */
+    public function hasValidOrcidCredentials(): bool
+    {
+       if(!$this->orcid_verified) return false;
+       if(!$this->orcid_access_token) return false;
+       if($this->orcid_expires_at < now()) return false;
+
+       return true;
     }
 
     // Relationships
