@@ -12,11 +12,11 @@
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@quasar/extras": "^1.16.12",
     "@vitejs/plugin-vue": "^5.1.4",
-    "@vueuse/core": "^11.1.0",
+    "@vueuse/core": "^11.2.0",
     "dompurify": "^3.1.7",
-    "pinia": "^2.2.4",
+    "pinia": "^2.2.5",
     "quasar": "^2.17.1",
-    "sass-embedded": "^1.80.2",
+    "sass-embedded": "^1.80.5",
     "vite-plugin-manifest-sri": "^0.2.0",
     "vue": "^3.5.12",
     "vue-i18n": "^9.14.1",
@@ -26,9 +26,9 @@
     "@antfu/eslint-config": "^3.8.0",
     "@quasar/vite-plugin": "^1.8.0",
     "@types/dompurify": "^3.0.5",
-    "@types/node": "^22.7.8",
+    "@types/node": "^22.8.5",
     "axios": "^1.7.7",
-    "cypress": "^13.15.0",
+    "cypress": "^13.15.1",
     "eslint": "^9.13.0",
     "eslint-plugin-quasar": "^1.1.0",
     "globals": "^15.11.0",
@@ -37,7 +37,7 @@
     "prettier": "^3.3.3",
     "typescript": "^5.6.3",
     "unplugin-auto-import": "^0.18.3",
-    "vite": "^5.4.9",
-    "vue-tsc": "^2.1.6"
+    "vite": "^5.4.10",
+    "vue-tsc": "^2.1.10"
   }
 }
