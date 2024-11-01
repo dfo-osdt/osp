@@ -22,6 +22,7 @@ class SyncExpertiseWithScience
         $termsToRemove = [
             'bio-informatics',
             'biological',
+            'Forage plant'
         ];
 
         // Taken from RESE guidance - retreived on: 2023-10-27
