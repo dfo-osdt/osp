@@ -35,6 +35,7 @@ class UpdateScopusJournals extends Command
      */
     public function handle()
     {
+
         // Make sure the file exists and is readable
         $file = $this->argument('file');
         if (! file_exists($file) || ! is_readable($file)) {
@@ -116,14 +117,14 @@ class UpdateScopusJournals extends Command
                 if ($journal && $journal->publications()->count() == 0) {
                     $journal->delete();
                     $actionRegister[3]['count']++;
-                    $this->info('['.$actionRegister[3]['text'].']: '.$row['Source Title (Medline-sourced journals are indicated in Green)']);
+                    $this->info('['.$actionRegister[3]['text'].']: '.$row['Source Title']);
                 }
 
                 return;
             }
 
             // make sure journal publishes in English and/or French
-            if (! Str::contains($row['Article language in source (three-letter ISO language codes)'], ['ENG', 'FRE'])) {
+            if (! Str::contains($row['Article Language in Source (Three-Letter ISO Language Codes)'], ['ENG', 'FRE'])) {
                 return;
             }
 
@@ -131,8 +132,8 @@ class UpdateScopusJournals extends Command
             $asjcCodesInRow = array_map('intval', explode(';', $row['All Science Journal Classification Codes (ASJC)']));
 
             if ($asjcCodes->intersect($asjcCodesInRow)->isNotEmpty()) {
-                $title_en = $row['Source Title (Medline-sourced journals are indicated in Green)'];
-                $publisher = $row['Publisher imprints grouped to main Publisher'];
+                $title_en = $row['Source Title'];
+                $publisher = $row['Publisher Imprints Grouped to Main Publisher'];
 
                 $action = 0;
 
@@ -156,7 +157,7 @@ class UpdateScopusJournals extends Command
 
                 $actionRegister[$action]['count']++;
 
-                $this->info('['.$actionRegister[$action]['text'].']: '.$row['Source Title (Medline-sourced journals are indicated in Green)']);
+                $this->info('['.$actionRegister[$action]['text'].']: '.$row['Source Title']);
             }
         });
 
