@@ -5,6 +5,7 @@ import SyncStatusIcon from './SyncStatusIcon.vue'
 
 const props = defineProps<{
   authorEmployment: AuthorEmploymentResource
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -47,7 +48,7 @@ function changed() {
 </script>
 
 <template>
-  <q-item :clickable="canEdit" @click="showEditDialog = true">
+  <q-item :clickable="canEdit" :disable="disabled" @click="showEditDialog = true">
     <q-item-section>
       <q-item-label overline>
         {{ organization }}
