@@ -921,16 +921,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.325.1",
+            "version": "3.325.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5ac57c98062f1c45d094c2baa94a7e557989465f"
+                "reference": "9e354a5e0cd1d563ec85245e3000e98e16a44fce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5ac57c98062f1c45d094c2baa94a7e557989465f",
-                "reference": "5ac57c98062f1c45d094c2baa94a7e557989465f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9e354a5e0cd1d563ec85245e3000e98e16a44fce",
+                "reference": "9e354a5e0cd1d563ec85245e3000e98e16a44fce",
                 "shasum": ""
             },
             "require": {
@@ -1013,9 +1013,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.325.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.325.2"
             },
-            "time": "2024-10-31T18:15:14+00:00"
+            "time": "2024-11-01T18:08:38+00:00"
         },
         {
             "name": "brick/math",
@@ -4248,20 +4248,20 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.8.0",
+            "version": "3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "bbd3eef89af8ba66a3aa7952b5439168fbcc529f"
+                "reference": "10ac0aa86b8062219ce21e8189123d611ca3ecd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bbd3eef89af8ba66a3aa7952b5439168fbcc529f",
-                "reference": "bbd3eef89af8ba66a3aa7952b5439168fbcc529f",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/10ac0aa86b8062219ce21e8189123d611ca3ecd9",
+                "reference": "10ac0aa86b8062219ce21e8189123d611ca3ecd9",
                 "shasum": ""
             },
             "require": {
-                "carbonphp/carbon-doctrine-types": "*",
+                "carbonphp/carbon-doctrine-types": "<100.0",
                 "ext-json": "*",
                 "php": "^8.1",
                 "psr/clock": "^1.0",
@@ -4350,7 +4350,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-19T06:22:39+00:00"
+            "time": "2024-11-03T16:02:24+00:00"
         },
         {
             "name": "nette/schema",
@@ -5368,23 +5368,23 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.8.2",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "153ae662783729388a584b4361f2545e4d841e3c"
+                "reference": "1fb5ba8d045f5dd984ebded5b1cc66f29459422d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/153ae662783729388a584b4361f2545e4d841e3c",
-                "reference": "153ae662783729388a584b4361f2545e4d841e3c",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/1fb5ba8d045f5dd984ebded5b1cc66f29459422d",
+                "reference": "1fb5ba8d045f5dd984ebded5b1cc66f29459422d",
                 "shasum": ""
             },
             "require": {
                 "doctrine/deprecations": "^1.0",
                 "php": "^7.3 || ^8.0",
                 "phpdocumentor/reflection-common": "^2.0",
-                "phpstan/phpdoc-parser": "^1.13"
+                "phpstan/phpdoc-parser": "^1.18"
             },
             "require-dev": {
                 "ext-tokenizer": "*",
@@ -5420,9 +5420,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.8.2"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.9.0"
             },
-            "time": "2024-02-23T11:10:43+00:00"
+            "time": "2024-11-03T20:11:34+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -7009,16 +7009,16 @@
         },
         {
             "name": "spatie/image-optimizer",
-            "version": "1.7.5",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/image-optimizer.git",
-                "reference": "43aff6725cd87bb78ccd8532633cfa8bdc962505"
+                "reference": "4fd22035e81d98fffced65a8c20d9ec4daa9671c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/image-optimizer/zipball/43aff6725cd87bb78ccd8532633cfa8bdc962505",
-                "reference": "43aff6725cd87bb78ccd8532633cfa8bdc962505",
+                "url": "https://api.github.com/repos/spatie/image-optimizer/zipball/4fd22035e81d98fffced65a8c20d9ec4daa9671c",
+                "reference": "4fd22035e81d98fffced65a8c20d9ec4daa9671c",
                 "shasum": ""
             },
             "require": {
@@ -7058,9 +7058,9 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/image-optimizer/issues",
-                "source": "https://github.com/spatie/image-optimizer/tree/1.7.5"
+                "source": "https://github.com/spatie/image-optimizer/tree/1.8.0"
             },
-            "time": "2024-05-16T08:48:33+00:00"
+            "time": "2024-11-04T08:24:54+00:00"
         },
         {
             "name": "spatie/laravel-activitylog",
@@ -8443,16 +8443,16 @@
         },
         {
             "name": "staudenmeir/laravel-adjacency-list",
-            "version": "v1.23",
+            "version": "v1.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/laravel-adjacency-list.git",
-                "reference": "5ed86b9d2f954f3bec4c5d48ef23125fa05f59dc"
+                "reference": "3c4c0d964e8e4f2669d0917917c87ad61d2f0017"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/laravel-adjacency-list/zipball/5ed86b9d2f954f3bec4c5d48ef23125fa05f59dc",
-                "reference": "5ed86b9d2f954f3bec4c5d48ef23125fa05f59dc",
+                "url": "https://api.github.com/repos/staudenmeir/laravel-adjacency-list/zipball/3c4c0d964e8e4f2669d0917917c87ad61d2f0017",
+                "reference": "3c4c0d964e8e4f2669d0917917c87ad61d2f0017",
                 "shasum": ""
             },
             "require": {
@@ -8500,7 +8500,7 @@
             "description": "Recursive Laravel Eloquent relationships with CTEs",
             "support": {
                 "issues": "https://github.com/staudenmeir/laravel-adjacency-list/issues",
-                "source": "https://github.com/staudenmeir/laravel-adjacency-list/tree/v1.23"
+                "source": "https://github.com/staudenmeir/laravel-adjacency-list/tree/v1.23.1"
             },
             "funding": [
                 {
@@ -8508,7 +8508,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-10-27T11:36:38+00:00"
+            "time": "2024-11-03T10:47:29+00:00"
         },
         {
             "name": "staudenmeir/laravel-cte",
@@ -12590,16 +12590,16 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v2.9.9",
+            "version": "v2.9.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "148faa138f0d8acb7d85f4a55693d3e13b6048d2"
+                "reference": "9e7233d88f4f10796fadb8a2d85c5f2b55277c76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/148faa138f0d8acb7d85f4a55693d3e13b6048d2",
-                "reference": "148faa138f0d8acb7d85f4a55693d3e13b6048d2",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/9e7233d88f4f10796fadb8a2d85c5f2b55277c76",
+                "reference": "9e7233d88f4f10796fadb8a2d85c5f2b55277c76",
                 "shasum": ""
             },
             "require": {
@@ -12669,7 +12669,7 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v2.9.9"
+                "source": "https://github.com/larastan/larastan/tree/v2.9.10"
             },
             "funding": [
                 {
@@ -12689,7 +12689,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-10-15T19:41:22+00:00"
+            "time": "2024-10-19T23:04:40+00:00"
         },
         {
             "name": "laravel/breeze",
