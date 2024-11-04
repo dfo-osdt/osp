@@ -48,7 +48,7 @@ async function loadAuthorEmployments() {
       </q-btn>
     </div>
     <div class="q-mt-md">
-      <AuthorEmploymentList :author-employments="authorEmployments" @changed="loadAuthorEmployments" />
+      <AuthorEmploymentList :author-employments="authorEmployments" :disabled="disabled" @changed="loadAuthorEmployments" />
     </div>
     <AddAuthorEmploymentDialog
       v-if="showCreateDialog"

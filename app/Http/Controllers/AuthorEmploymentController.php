@@ -88,6 +88,8 @@ class AuthorEmploymentController extends Controller
         ]);
 
         $authorEmployment->update($validated);
+        $authorEmployment->orcid_updated_at = null;
+        $authorEmployment->save();
         $authorEmployment->load('organization');
         $authorEmployment->refresh();
 

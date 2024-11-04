@@ -4,6 +4,7 @@ import AuthorEmploymentListItem from './AuthorEmploymentListItem.vue'
 
 defineProps<{
   authorEmployments: AuthorEmploymentResource[]
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -17,6 +18,7 @@ const emit = defineEmits<{
       v-for="authorEmployment in authorEmployments"
       :key="authorEmployment.data.id"
       :author-employment="authorEmployment"
+      :disabled="disabled"
       @changed="emit('changed')"
     />
   </q-list>

@@ -47,7 +47,7 @@ class AuthorEmployment extends Model
 
     public function needsSyncWithOrcid(): bool
     {
-        return $this->orcid_updated_at > $this->updated_at || $this->orcid_putcode === null;
+        return $this->orcid_updated_at === null || $this->updated_at->gt($this->orcid_updated_at);
     }
 
     public function author()
