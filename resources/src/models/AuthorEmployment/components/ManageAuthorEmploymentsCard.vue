@@ -17,14 +17,28 @@ onMounted(async () => {
   await loadAuthorEmployments()
 })
 
+let timeoutId: NodeJS.Timeout | null = null
+
 async function loadAuthorEmployments() {
+  if (timeoutId) {
+    clearTimeout(timeoutId)
+  }
   if (showCreateDialog.value) {
     showCreateDialog.value = false
   }
+
   loading.value = true
   const response = await authorEmploymentService.list()
   authorEmployments.value = response.data
-  loading.value = false
+
+  const needsSyncing = authorEmployments.value.some((authorEmployment) => {
+    return authorEmployment.data.orcid_needs_sync
+  })
+  if (needsSyncing) {
+    timeoutId = setTimeout(() => {
+      loadAuthorEmployments()
+    }, 2000)
+  }
 }
 </script>
 
