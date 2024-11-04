@@ -26,6 +26,8 @@ const q = useQuasar()
 
 const authorEmploymentService = new AuthorEmploymentService(props.authorId)
 
+const today = new Date().toISOString().split('T')[0]
+
 async function createAuthorEmployment() {
   q.dialog({
     title: t('orcid-employment-edit.update-confirmation-title'),
@@ -80,7 +82,7 @@ async function createAuthorEmployment() {
         <DateInput
           v-model="startDate"
           :label="t('orcid-employment-edit.start-date')"
-          :max-date="endDate"
+          :max-date="today"
           outlined
           :rules="[(val : string) => !!val || t('common.required')]"
           class="q-mb-md"

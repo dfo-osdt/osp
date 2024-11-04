@@ -18,6 +18,7 @@ const roleTitle = ref(props.authorEmployment.data.role_title)
 const departmentName = ref(props.authorEmployment.data.department_name)
 const startDate = ref(props.authorEmployment.data.start_date)
 const endDate = ref(props.authorEmployment.data.end_date)
+const today = new Date().toISOString().split('T')[0]
 
 const { t } = useI18n()
 const q = useQuasar()
@@ -95,7 +96,7 @@ function deleteAuthorEmployment() {
         <DateInput
           v-model="startDate"
           :label="t('orcid-employment-edit.start-date')"
-          :max-date="endDate"
+          :max-date="today"
           outlined
           :rules="[(val : string) => !!val || t('common.required')]"
           class="q-mb-md"
