@@ -16,7 +16,6 @@ class DeleteEmploymentRequest extends Request
 
     protected ActivitiesScopeEndpoint $endpoint = ActivitiesScopeEndpoint::EMPLOYMENT;
 
-
     public function __construct(readonly protected string $putCode)
     {
 
@@ -30,6 +29,6 @@ class DeleteEmploymentRequest extends Request
      */
     public function resolveEndpoint(): string
     {
-        return $this->endpoint->value . '/' . $this->putCode;
+        return $this->endpoint->value.'/'.$this->putCode;
     }
 }

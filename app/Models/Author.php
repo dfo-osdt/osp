@@ -100,11 +100,17 @@ class Author extends Model
      */
     public function hasValidOrcidCredentials(): bool
     {
-       if(!$this->orcid_verified) return false;
-       if(!$this->orcid_access_token) return false;
-       if($this->orcid_expires_at < now()) return false;
+        if (! $this->orcid_verified) {
+            return false;
+        }
+        if (! $this->orcid_access_token) {
+            return false;
+        }
+        if ($this->orcid_expires_at < now()) {
+            return false;
+        }
 
-       return true;
+        return true;
     }
 
     // Relationships

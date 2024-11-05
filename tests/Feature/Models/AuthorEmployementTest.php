@@ -38,7 +38,7 @@ test('a user can see a single profile employement', function () {
 
 });
 
-test('a user can create a new author employment record', function (){
+test('a user can create a new author employment record', function () {
 
     // mock queue to ensure job dispatched
     Queue::fake();
@@ -70,7 +70,7 @@ test('a user can create a new author employment record', function (){
 
 });
 
-test('a user can update an author employment record', function (){
+test('a user can update an author employment record', function () {
 
     Queue::fake();
 
@@ -102,7 +102,7 @@ test('a user can update an author employment record', function (){
 
 });
 
-test('a user can delete an author employment record', function (){
+test('a user can delete an author employment record', function () {
 
     Queue::fake();
     $user = User::factory()->create();

@@ -12,6 +12,7 @@ class AuthorEmployment extends Model
 {
     /** @use HasFactory<\Database\Factories\AuthorEmploymentFactory> */
     use HasFactory;
+
     use LogsActivity;
     use SoftDeletes;
 

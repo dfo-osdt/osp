@@ -12,19 +12,17 @@ use Saloon\Traits\Body\HasJsonBody;
 
 class PutEmploymentRequest extends Request implements HasBody
 {
-
     use HasJsonBody;
+
     /**
      * The HTTP method of the request
      */
     protected Method $method = Method::PUT;
 
-
     public function __construct(
         readonly protected EmploymentData $employmentData,
         protected ActivitiesScopeEndpoint $endpoint = ActivitiesScopeEndpoint::EMPLOYMENT
-    )
-    {
+    ) {
         if (empty($this->employmentData->putCode)) {
             throw new OrcidIntegrationException('Putcode is required for this request');
         }
@@ -40,6 +38,6 @@ class PutEmploymentRequest extends Request implements HasBody
      */
     public function resolveEndpoint(): string
     {
-        return $this->endpoint->value . '/' . $this->employmentData->putCode;
+        return $this->endpoint->value.'/'.$this->employmentData->putCode;
     }
 }
