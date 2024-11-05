@@ -3,88 +3,141 @@
 namespace App\Filament\Requests\Auth;
 
 use App\Models\User;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Component;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Login as BaseAuth;
-use Illuminate\Auth\Events\Lockout;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
+use Filament\Pages\Concerns\InteractsWithFormActions;
+use Filament\Pages\SimplePage;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
-
 use Illuminate\Validation\ValidationException;
-
 
 class LoginRequest extends BaseAuth
 {
-
-    /**
-     * Override the rateLimit method to allow configurable maxAttempts and decaySeconds
-     * for login throttling. This method pulls rate-limiting values from the
-     * configuration file ('filament.rate_limit') and applies them to the Filament
-     * login process.
-     *
-     * @param int $maxAttempts      The maximum number of login attempts before the user is throttled.
-     * @param int $decaySeconds     The number of seconds the user is locked out after exceeding max attempts.
-     * @param string|null $method   The optional method used to differentiate between rate-limiting contexts.
-     * @param string|null $component The optional Filament component for which rate-limiting is being applied.
-     *
-     * @return mixed
-     */
-    protected function rateLimit($maxAttempts, $decaySeconds = 60, $method = null, $component = null)
-    {
-        // Fetch the maxAttempts and decaySeconds from config
-        $maxAttempts = Config::get('filament.rate_limit.max_attempts', $maxAttempts);
-        $decaySeconds = Config::get('filament.rate_limit.decay_seconds', $decaySeconds);
-
-        // Call the parent rateLimit method with the new values
-        return parent::rateLimit($maxAttempts, $decaySeconds, $method, $component);
-    }
-    
-    public function rules()
-    {
-	return [
-	    'email' => ['required', 'string', 'email'],
-	    'password' => ['required', 'string'],
-	];
-    }
+    use WithRateLimiting;
 
     public function authenticate(): ?LoginResponse
     {
-	//	$data = $this->form->getState()
-	$this -> validateRequest();
 	
-	return parent::authenticate();
+	/**
+	 * Check if user is rate limited. Log attempt if user is rate limited.
+	 *
+	 * @throws DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException
+	 */
+	$maxAttempts = Config::get('auth.rate_limit.max_attempts');
+	$decaySeconds = Config::get('auth.rate_limit.decay_seconds');
+	try {
+	    $this->rateLimit($maxAttempts, $decaySeconds); 
+	} catch (TooManyRequestsException $exception) {
+	    $this->logLockout();
+	    $this->getRateLimitedNotification($exception)?->send();
+
+	    return null;
+	}
+
+        $data = $this->form->getState();
+
+	/**
+	 * Attempt to authenticate the request's credentials.
+	 *
+	 * @throws \Illuminate\Validation\ValidationException
+	 */
+        if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
+	    $this->throwFailureValidationException();
+        }
+
+        $user = Filament::auth()->user();
+
+	/**
+	 * Check if user's email is verified
+	 *
+	 * @throws \Illuminate\Validation\ValidationException
+	 */
+	if ($user && ! $user->hasVerifiedEmail()) {
+	    Filament::auth()->logout();
+	    $this->throwFailureValidationException();
+	}
+
+	/**
+	 * Check if user has permission to access admin panel
+	 *
+	 * @throws \Illuminate\Validation\ValidationException
+	 */
+        if (
+	    ($user instanceof FilamentUser) &&
+	    (! $user->canAccessPanel(Filament::getCurrentPanel()))
+        ) {
+	    Filament::auth()->logout();
+
+	    $this->throwFailureValidationException();
+        }
+
+        session()->regenerate();
+
+        return app(LoginResponse::class);
     }
 
-    public function validateRequest()
+    /**
+     * Get the rate limiting throttle key for the request
+     *
+     * @return string
+     */
+    public function throttleKey()
     {
 	
-	/* $data = Arr::only($this->data, ['email','password']);
-	   dd($this);
-	   $credentials = $this->validate([
-	   'email' => ['required', 'string', 'email'],
-	   'password' => ['required', 'string'],
-	   ], $this->data); */
-	$credentials = $this->form->getState();
-//	   dd($this->form->getState());
-	// User must be active
-	$credentials['active'] = true;
+	return Str::lower($this->data['email']).'|'.request()->ip();
+    }
+    
+    /**
+     * Log lockout but rate limit to one entry per 2 minutes
+     * as we don't want to log all failed attempts in the
+     * log. This could be asbused to fill up the logs.
+     */
+    public function logLockout()
+    {
+	RateLimiter::attempt(
+	    $this->throttleKey().'|lockout',
+	    Config::get('auth.rate_limit.max_attempts'),
+	    function () {
+		activity()->withProperties([
+		    'ip' => request()->ip(),
+		    'email' => $this->data['email'],
+		])->log('auth.lockout');
+	    },
+	    120
+	);
+    }
 
-	if (! Filament::auth()->attempt($credentials, $credentials['remember'] ?? false)) {
-	    $user = User::where('email', $credentials['email'])->first();
-	    if ($user && ! $user->hasVerifiedEmail()) {
-		throw ValidationException::withMessages([
-		    'email' => __('auth.failed_email_not_verified'),
-		]);
-	    }
-	    throw ValidationException::withMessages([
-		'email' => __('auth.failed'),
-	    ]);
-	}
-	return;
+    /**
+     * Overload getForms() to remove 'Remember Me' checkbox.
+     *
+     * @return array
+     */
+    protected function getForms(): array
+    {
+	return [
+	    'form' => $this->form(
+		$this->makeForm()
+		     ->schema([
+			 $this->getEmailFormComponent(),
+			 $this->getPasswordFormComponent(),
+		     ])
+		     ->statePath('data'),
+	    ),
+	];
     }
 }
