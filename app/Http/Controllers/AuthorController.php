@@ -41,6 +41,7 @@ class AuthorController extends Controller
         ]);
 
         $author = Author::create($validated);
+
         return new AuthorResource($author);
     }
 

@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Author;
 use App\Models\AuthorEmployment;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class AuthorEmploymentPolicy
 {
@@ -30,7 +29,10 @@ class AuthorEmploymentPolicy
      */
     public function create(User $user, Author $author): bool
     {
-        if ($user->author->id !== $author->id) return false;
+        if ($user->author->id !== $author->id) {
+            return false;
+        }
+
         return $user->can('create_author_employments');
     }
 
@@ -49,5 +51,4 @@ class AuthorEmploymentPolicy
     {
         return $user->author->id === $authorEmployment->author_id;
     }
-
 }

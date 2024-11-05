@@ -111,5 +111,4 @@ class AuthorEmploymentController extends Controller
 
         return response()->noContent();
     }
-
 }

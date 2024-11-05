@@ -19,7 +19,9 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
     use Queueable;
 
     const SYNC_TYPE_CREATE = 'create';
+
     const SYNC_TYPE_UPDATE = 'update';
+
     const SYNC_TYPE_DELETE = 'delete';
 
     public $tries = 3;
@@ -45,8 +47,9 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
 
         // Does the author have a valid ORCID connection?
         $author = $this->authorEmployment->author;
-        if(!$author->hasValidOrcidCredentials()){
+        if (! $author->hasValidOrcidCredentials()) {
             Log::error('SyncAuthor: Author does not have valid ORCID credentials');
+
             return;
         }
 
@@ -81,7 +84,7 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
         $request = new PostEmploymentRequest($employmentData);
         $response = $connector->send($request);
 
-        if($response->failed() || $response->status() !== 201){
+        if ($response->failed() || $response->status() !== 201) {
             Log::error('SyncAuthor: Error creating employment record in ORCID', [
                 'status' => $response->status(),
                 'headers' => $response->headers()->all(),
@@ -89,12 +92,12 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
             $response->throw();
         }
 
-        if(!$response->header('location')){
+        if (! $response->header('location')) {
             throw new \Exception('No location header in response - cannot get putcode');
         }
 
         $location = $response->header('location');
-        $putcode = (int)Str::afterLast($location, '/');
+        $putcode = (int) Str::afterLast($location, '/');
 
         $this->authorEmployment->orcid_putcode = $putcode;
         $this->authorEmployment->orcid_updated_at = now();
@@ -112,13 +115,14 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
         $request = new PutEmploymentRequest($employmentData);
         $response = $connector->send($request);
 
-        if($response->failed() || $response->status() !== 200){
+        if ($response->failed() || $response->status() !== 200) {
 
-            if($response->status() === 404){
+            if ($response->status() === 404) {
                 Log::error('SyncAuthor: Employment record not found in ORCID - Likely Deleted', [
                     'author_employment_id' => $this->authorEmployment->id,
                 ]);
                 $this->createEmploymentRecordInOrcid($connector);
+
                 return;
             }
 
@@ -145,7 +149,7 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
         $request = new DeleteEmploymentRequest($putcode);
         $response = $connector->send($request);
 
-        if($response->failed() || $response->status() !== 204 || $response->status() !== 404){
+        if ($response->failed() || $response->status() !== 204 || $response->status() !== 404) {
             Log::error('SyncAuthor: Error deleting employment record in ORCID', [
                 'status' => $response->status(),
                 'headers' => $response->headers()->all(),
