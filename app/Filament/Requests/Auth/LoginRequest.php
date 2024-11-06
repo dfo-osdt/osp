@@ -4,7 +4,6 @@ namespace App\Filament\Requests\Auth;
 
 use App\Models\User;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Filament\Facades\Filament;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Models\Contracts\FilamentUser;
@@ -15,8 +14,6 @@ use Illuminate\Support\Str;
 
 class LoginRequest extends BaseAuth
 {
-    use WithRateLimiting;
-
     protected int $maxAttempts;
 
     protected int $decaySeconds;
@@ -82,7 +79,7 @@ class LoginRequest extends BaseAuth
         $this->logLockout();
 
         $component = static::class;
-		$method = __FUNCTION__;
+        $method = __FUNCTION__;
         $seconds = RateLimiter::availableIn($this->throttleKey());
         $ip = request()->ip();
 
