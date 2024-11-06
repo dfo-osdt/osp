@@ -15,6 +15,11 @@ test('An unauthenticated user cannot access the admin areas', function (string $
     '/pulse',
 ]);
 
+test('An unauthenticated user cannot access the Librarium admin area', function () {
+    $response = $this->get('/librarium');
+    $response->assertRedirect('librarium/login');
+});
+
 test('An unauthorized user cannot access the admin areas', function (string $path) {
     // create regular user
     $user = User::factory()->create();
@@ -23,6 +28,7 @@ test('An unauthorized user cannot access the admin areas', function (string $pat
 })->with([
     '/horizon',
     '/pulse',
+    '/librarium',
 ]);
 
 test('An admin user can access the admin areas', function (string $path) {
@@ -34,4 +40,5 @@ test('An admin user can access the admin areas', function (string $path) {
 })->with([
     '/horizon',
     '/pulse',
+    '/librarium',
 ]);
