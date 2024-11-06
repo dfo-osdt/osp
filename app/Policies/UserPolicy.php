@@ -16,7 +16,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view_any_user');
+        return $user->can('view_any_users');
     }
 
     /**
@@ -49,7 +49,7 @@ class UserPolicy
     public function update(User $user, User $model)
     {
 
-        if ($user->can('administer_user')) {
+        if ($user->can('administer_users')) {
             return true;
         }
 
