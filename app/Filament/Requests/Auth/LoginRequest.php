@@ -82,7 +82,7 @@ class LoginRequest extends BaseAuth
         $this->logLockout();
 
         $component = static::class;
-        $method = debug_backtrace(limit: 2)[1]['function'];
+		$method = __FUNCTION__;
         $seconds = RateLimiter::availableIn($this->throttleKey());
         $ip = request()->ip();
 
