@@ -18,3 +18,4 @@ tests/cypress/videos/*
 tests/cypress/screenshots/*
 .phpactor.json
 .phpstorm.meta.php
+_ide_helper.php
