@@ -144,7 +144,7 @@ return [
        |--------------------------------------------------------------------------
      */
     'rate_limit' => [
-	'max_attempts' => 5,
-	'decay_seconds' => 600, // seconds
+        'max_attempts' => 5,
+        'decay_seconds' => 600, // seconds
     ],
 ];

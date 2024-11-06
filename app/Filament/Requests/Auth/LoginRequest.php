@@ -5,103 +5,93 @@ namespace App\Filament\Requests\Auth;
 use App\Models\User;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use DanHarrin\LivewireRateLimiting\WithRateLimiting;
-use Filament\Actions\Action;
-use Filament\Actions\ActionGroup;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Component;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Login as BaseAuth;
-use Filament\Pages\Concerns\InteractsWithFormActions;
-use Filament\Pages\SimplePage;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends BaseAuth
 {
     use WithRateLimiting;
 
-    /* public function authorize()
-     * {
-       return true;
-     * } */
+    protected int $maxAttempts;
+
+    protected int $decaySeconds;
+
+    public function __construct()
+    {
+        $this->maxAttempts = Config::get('auth.rate_limit.max_attempts', 5);
+        $this->decaySeconds = Config::get('auth.rate_limit.decay_seconds', 600);
+    }
 
     public function authenticate(): ?LoginResponse
     {
 
-	/**
-	 * Check if user is rate limited. Log attempt if user is rate limited.
-	 *
-	 * @throws DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException
-	 */
-	$maxAttempts = Config::get('auth.rate_limit.max_attempts');
-	$decaySeconds = Config::get('auth.rate_limit.decay_seconds');
-	try {
-	    $this->rateLimit($maxAttempts, $decaySeconds);
-	} catch (TooManyRequestsException $exception) {
-	    $this->logLockout();
-	    $this->getRateLimitedNotification($exception)?->send();
+        try {
+            $this->ensureIsNotRateLimited();
+        } catch (TooManyRequestsException $exception) {
+            $this->getRateLimitedNotification($exception)?->send();
 
-	    return null;
-	}
+            return null;
+        }
 
         $data = $this->form->getState();
 
-	/**
-	 * Attempt to authenticate the request's credentials.
-	 *
-	 * @throws \Illuminate\Validation\ValidationException
-	 */
         if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
-	    $this->throwFailureValidationException();
+            RateLimiter::hit($this->throttleKey(), $this->decaySeconds);
+            $this->throwFailureValidationException();
         }
 
-        $user = Filament::auth()->user();
+        $user = User::findOrFail(Filament::auth()->user()->id);
 
-	/**
-	 * Authorizes user.
-	 *
-	 * @thows 403 AuthorizationException
-	*/
-	Gate::authorize('viewLibrarium', $user);
-
-	/**
-	 * Check if user's email is verified
-	 *
-	 * @throws \Illuminate\Validation\ValidationException
-	 */
-	if ($user && ! $user->hasVerifiedEmail()) {
-	    Filament::auth()->logout();
-	    $this->throwFailureValidationException();
-	}
-
-	/**
-	 * Check if user has permission to access admin panel
-	 *
-	 * @throws \Illuminate\Validation\ValidationException
-	 */
+        /**
+         * Check if user has permission to access admin panel
+         *
+         * @throws \Illuminate\Validation\ValidationException
+         */
         if (
-	    ($user instanceof FilamentUser) &&
-	    (! $user->canAccessPanel(Filament::getCurrentPanel()))
+            (($user instanceof FilamentUser) && (! $user->canAccessPanel(Filament::getCurrentPanel()))) ||
+            (! $user->hasVerifiedEmail()) ||
+            (! $user->active)
         ) {
-	    Filament::auth()->logout();
-
-	    $this->throwFailureValidationException();
+            Filament::auth()->logout();
+            $this->throwFailureValidationException();
         }
 
         session()->regenerate();
 
         return app(LoginResponse::class);
+    }
+
+    /**
+     * Ensure the login request is not rate limited.
+     *
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function ensureIsNotRateLimited()
+    {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), $this->maxAttempts)) {
+            return;
+        }
+
+        $this->logLockout();
+
+        $component = static::class;
+        $method = debug_backtrace(limit: 2)[1]['function'];
+        $seconds = RateLimiter::availableIn($this->throttleKey());
+        $ip = request()->ip();
+
+        throw new TooManyRequestsException(
+            $component,
+            $method,
+            $ip,
+            $seconds
+        );
     }
 
     /**
@@ -111,9 +101,9 @@ class LoginRequest extends BaseAuth
      */
     public function throttleKey()
     {
-
-	return Str::lower($this->data['email']).'|'.request()->ip();
+        return Str::lower($this->data['email']).'|'.request()->ip();
     }
+
 
     /**
      * Log lockout but rate limit to one entry per 2 minutes
@@ -122,35 +112,33 @@ class LoginRequest extends BaseAuth
      */
     public function logLockout()
     {
-	RateLimiter::attempt(
-	    $this->throttleKey().'|lockout',
-	    Config::get('auth.rate_limit.max_attempts'),
-	    function () {
-		activity()->withProperties([
-		    'ip' => request()->ip(),
-		    'email' => $this->data['email'],
-		])->log('auth.lockout');
-	    },
-	    120
-	);
+        RateLimiter::attempt(
+            $this->throttleKey().'|lockout',
+            1,
+            function () {
+                activity()->withProperties([
+                    'ip' => request()->ip(),
+                    'email' => $this->data['email'],
+                ])->log('auth.lockout-librarium');
+            },
+            120
+        );
     }
 
     /**
      * Overload getForms() to remove 'Remember Me' checkbox.
-     *
-     * @return array
      */
     protected function getForms(): array
     {
-	return [
-	    'form' => $this->form(
-		$this->makeForm()
-		     ->schema([
-			 $this->getEmailFormComponent(),
-			 $this->getPasswordFormComponent(),
-		     ])
-		     ->statePath('data'),
-	    ),
-	];
+        return [
+            'form' => $this->form(
+                $this->makeForm()
+                    ->schema([
+                        $this->getEmailFormComponent(),
+                        $this->getPasswordFormComponent(),
+                    ])
+                    ->statePath('data'),
+            ),
+        ];
     }
 }

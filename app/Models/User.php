@@ -14,13 +14,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Permission\Traits\HasRoles;
-use Str;
 
-class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail, FilamentUser, HasName
+class User extends Authenticatable implements FilamentUser, HasLocalePreference, HasName, MustVerifyEmail
 {
     use AuthenticationLoggable;
     use CausesActivity;
@@ -206,7 +206,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     public function canAccessPanel(Panel $panel): bool
     {
-	return $this->can('view_librarium');
+        return $this->can('view_librarium');
     }
 
     /**
@@ -219,9 +219,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     public function getFilamentName(): string
     {
-	return $this->getFullNameAttribute();
+        return $this->getFullNameAttribute();
     }
-    
+
     /**
      * Get the preferred locale of the user.
      */

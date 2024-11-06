@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Forms;
@@ -11,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Gate;
 
 class UserResource extends Resource
@@ -26,24 +23,24 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('first_name')
-					  ->disabledOn('edit')
-					  ->Filled()
-					  ->required(),
-		Forms\Components\TextInput::make('last_name')
-					  ->disabledOn('edit')
-					  ->Filled(),
-		Forms\Components\TextInput::make('email')
-					  ->disabledOn('edit')
-					  ->Filled(),
-		Forms\Components\Section::make([
-		    Forms\Components\CheckboxList::make('roles')
-						 ->relationship(titleAttribute: 'name')
-						 ->default(['1'])
-						 ->options([
-						     '3' => 'Admin',
-						     '2' => 'Director',
-						 ]),
-		])
+                    ->disabledOn('edit')
+                    ->Filled()
+                    ->required(),
+                Forms\Components\TextInput::make('last_name')
+                    ->disabledOn('edit')
+                    ->Filled(),
+                Forms\Components\TextInput::make('email')
+                    ->disabledOn('edit')
+                    ->Filled(),
+                Forms\Components\Section::make([
+                    Forms\Components\CheckboxList::make('roles')
+                        ->relationship(titleAttribute: 'name')
+                        ->default(['1'])
+                        ->options([
+                            '3' => 'Admin',
+                            '2' => 'Director',
+                        ]),
+                ]),
             ]);
     }
 
@@ -52,24 +49,24 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-					 ->sortable(),
-		Tables\Columns\TextColumn::make('last_name')
-					 ->sortable(),
-		Tables\Columns\TextColumn::make('email'),
-		Tables\Columns\IconColumn::make('email_verified_at')
-					 ->boolean()
-					 ->sortable(),
-		Tables\Columns\IconColumn::make('active')
-					 ->boolean()
-					 ->sortable(),
-		Tables\Columns\TextColumn::make('roles.name')
-					 ->badge()
-					 ->color(fn (string $state): string => match ($state) {
-					     'author' => 'success',
-					     'director' => 'warning',
-					     'admin' => 'danger',
-					 })
-					 ->searchable(isIndividual: true),
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('last_name')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\IconColumn::make('email_verified_at')
+                    ->boolean()
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('active')
+                    ->boolean()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'author' => 'success',
+                        'director' => 'warning',
+                        'admin' => 'danger',
+                    })
+                    ->searchable(isIndividual: true),
             ])
             ->filters([
                 //
@@ -79,10 +76,10 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-		    // Placeholder
+                    // Placeholder
                 ]),
             ])
-	    ->defaultSort('first_name');
+            ->defaultSort('first_name');
     }
 
     public static function getRelations(): array
@@ -94,9 +91,9 @@ class UserResource extends Resource
 
     public static function getPages(): array
     {
-//	$user = Filament::auth()->user();
-//	Gate::authorize('updateAnyUser', $user);
-	
+        //	$user = Filament::auth()->user();
+        //	Gate::authorize('updateAnyUser', $user);
+
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),

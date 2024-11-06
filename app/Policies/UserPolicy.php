@@ -49,9 +49,11 @@ class UserPolicy
     public function update(User $user, User $model)
     {
 
-	if($user->can('update_any_user')) return true;
+        if ($user->can('administer_user')) {
+            return true;
+        }
 
-	// a user can update their own profile
+        // a user can update their own profile
         return $user->id === $model->id;
     }
 
