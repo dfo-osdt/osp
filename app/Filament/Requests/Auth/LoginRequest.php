@@ -21,14 +21,20 @@ use Filament\Pages\SimplePage;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\HtmlString;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends BaseAuth
 {
     use WithRateLimiting;
+
+    /* public function authorize()
+     * {
+       return true;
+     * } */
 
     public function authenticate(): ?LoginResponse
     {
@@ -61,6 +67,13 @@ class LoginRequest extends BaseAuth
         }
 
         $user = Filament::auth()->user();
+
+	/**
+	 * Authorizes user.
+	 *
+	 * @thows 403 AuthorizationException
+	*/
+	Gate::authorize('viewLibrarium', $user);
 
 	/**
 	 * Check if user's email is verified

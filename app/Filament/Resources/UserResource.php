@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Gate;
 
 class UserResource extends Resource
 {
@@ -54,6 +56,9 @@ class UserResource extends Resource
 		Tables\Columns\TextColumn::make('last_name')
 					 ->sortable(),
 		Tables\Columns\TextColumn::make('email'),
+		Tables\Columns\IconColumn::make('email_verified_at')
+					 ->boolean()
+					 ->sortable(),
 		Tables\Columns\IconColumn::make('active')
 					 ->boolean()
 					 ->sortable(),
@@ -89,6 +94,9 @@ class UserResource extends Resource
 
     public static function getPages(): array
     {
+//	$user = Filament::auth()->user();
+//	Gate::authorize('updateAnyUser', $user);
+	
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),

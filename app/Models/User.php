@@ -206,7 +206,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     public function canAccessPanel(Panel $panel): bool
     {
-	return $this->hasRole('admin');
+	return $this->can('view_librarium');
     }
 
     /**

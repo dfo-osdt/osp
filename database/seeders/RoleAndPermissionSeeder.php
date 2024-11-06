@@ -43,7 +43,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         // create initial admin user
         $adminPermissions = collect([
-            Permission::findOrCreate('view_admin_dashboard'),
+            Permission::findOrCreate('view_librarium'),
             Permission::findOrCreate('view_telescope'),
             Permission::findOrCreate('view_horizon'),
             Permission::findOrCreate('view_pulse'),
