@@ -2,7 +2,6 @@
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
-import { useQuasar } from 'quasar'
 import { AuthorEmploymentService } from '../AuthorEmployement'
 
 const props = defineProps<{
@@ -63,8 +62,8 @@ async function createAuthorEmployment() {
           v-model="roleTitle"
           :label="t('orcid-employment-edit.role-title')"
           outlined
-          :rules="[(val) => !!val || t('common.required'),
-                   (val) => val.length <= 50 || t('common.validation.must-be-less-than-x-characters', [50]),
+          :rules="[(val: string|null) => !!val || t('common.required'),
+                   (val: string) => val.length <= 50 || t('common.validation.must-be-less-than-x-characters', [50]),
           ]"
           class="q-mb-md"
         />
@@ -72,8 +71,8 @@ async function createAuthorEmployment() {
           v-model="departmentName"
           :label="t('orcid-employment-edit.department-name')"
           outlined
-          :rules="[(val) => !!val || t('common.required'),
-                   (val) => val.length <= 50 || t('common.validation.must-be-less-than-x-characters', [50]),
+          :rules="[(val: string|null) => !!val || t('common.required'),
+                   (val: string) => val.length <= 50 || t('common.validation.must-be-less-than-x-characters', [50]),
           ]"
           class="q-mb-md"
           :hint="t('orcid-employment-edit.department-name-hint')"
