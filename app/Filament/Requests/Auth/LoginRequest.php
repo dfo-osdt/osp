@@ -101,7 +101,6 @@ class LoginRequest extends BaseAuth
         return Str::lower($this->data['email']).'|'.request()->ip();
     }
 
-
     /**
      * Log lockout but rate limit to one entry per 2 minutes
      * as we don't want to log all failed attempts in the
