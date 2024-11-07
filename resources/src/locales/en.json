@@ -735,7 +735,7 @@
     "update-confirmation-message": "By updating your ORCID employment record from the portal, you confirm that the information provided is accurate and reflects your current and past DFO employments to the best of your knowledge.",
     "department-name-hint": "Please include your sector. e.g.: Ecosystem and Oceans Science",
     "role-title": "Role/Title",
-    "department-name": "Department",
+    "department-name": "Sector",
     "dialog-title": "Edit your DFO employment ORCID record",
     "dialog-description": "Add your verified DFO employment record to your ORCID profile to confirm your affiliation and enhance your visibility in the scientific community. Please ensure that all information provided is accurate and up-to-date.",
     "start-date": "Start Date",
