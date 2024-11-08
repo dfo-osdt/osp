@@ -15,9 +15,4 @@ return [
     'api_key' => env('OPENAI_API_KEY'),
     'organization' => env('OPENAI_ORGANIZATION'),
 
-    // Ollama configuration for local use
-    'use_ollama' => env('OPENAI_USE_OLLAMA', false),
-    'ollama_url' => env('OPENAI_OLLAMA_URL'),
-    'ollama_model' => env('OPENAI_OLLAMA_MODEL', 'llama3.2'),
-
 ];
