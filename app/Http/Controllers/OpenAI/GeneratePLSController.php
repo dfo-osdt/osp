@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\OpenAI;
 
 use App\Http\Controllers\Controller;
+use App\Http\Integrations\Ollama\Data\CompletionRequestData;
+use App\Http\Integrations\Ollama\OllamaConnector;
+use App\Http\Integrations\Ollama\Requests\CompletionRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use OpenAI;
 use OpenAI\Laravel\Facades\OpenAI as OpenAILaravel;
 
@@ -21,15 +25,12 @@ class GeneratePLSController extends Controller
 
     private bool $useOllama = false;
 
-    private ?string $ollamaUrl = null;
-
     private ?string $ollamaModel = null;
 
     public function __construct()
     {
-        $this->useOllama = config('openai.use_ollama');
-        $this->ollamaUrl = config('openai.ollama_url');
-        $this->ollamaModel = config('openai.ollama_model');
+        $this->useOllama = config('osp.ollama.enabled');
+        $this->ollamaModel = config('osp.ollama.model');
     }
 
     /**
@@ -44,29 +45,67 @@ class GeneratePLSController extends Controller
         // clean up the abstract - it could have html tags we don't want
         $validated['abstract'] = strip_tags($validated['abstract']);
 
-        if (! $this->useOllama) {
-            $result = OpenAILaravel::completions()->create($this->buildOpenAiPrompt($validated['abstract']));
+        if ($this->useOllama) {
+            return $this->queryOllama($validated['abstract']);
         } else {
-            $client = OpenAI::factory()->withApiKey('ollama')->withBaseUri($this->ollamaUrl)->make();
-            $result = $client->completions()->create($this->buildOpenAiPrompt($validated['abstract']));
+            return $this->queryOpenAi($validated['abstract']);
         }
+    }
+
+    /**
+     * Query the OpenAI API to generate a PLS.
+     */
+    private function queryOpenAi(string $abstract): JsonResponse
+    {
+
+        $result = OpenAILaravel::completions()->create($this->buildOpenAiPrompt($abstract));
+
         // does result contain an error?
         if (isset($result['error'])) {
             return $this->error();
         }
 
         $pls = $result['choices'][0]['text'];
-        // clean up the PLS - remove newlines and extra spaces
-        $pls = str_replace("\n", ' ', $pls);
 
-        // build the response
-        $response = [
-            'data' => [
-                'pls' => $pls,
+        return $this->respond($pls);
+
+    }
+
+    /**
+     * Query the a local Ollama API to generate a PLS.
+     */
+    private function queryOllama(string $abstract): JsonResponse
+    {
+        $connector = new OllamaConnector;
+        $request = new CompletionRequest($this->buildOllamaRequest($abstract));
+        $response = $connector->send($request);
+
+        if ($response->failed()) {
+            Log::error('Ollama request failed', ['response' => $response]);
+
+            return $this->error();
+        }
+
+        $completion = $request->createDtoFromResponse($response);
+        $pls = $completion->response;
+
+        return $this->respond($pls);
+
+    }
+
+    private function buildOllamaRequest(string $abstract): CompletionRequestData
+    {
+
+        $prompt = "Give me a 150 to 250 word plain language summary for this text. It is written in a way that is difficult for most people to understand. Summarize it so that someone with a high-school education can understand. Please respond only with the answer, without any introductory or concluding phrases\n\n Text: ###\n".$abstract."\n###";
+
+        return CompletionRequestData::from([
+            'model' => $this->ollamaModel,
+            'prompt' => $prompt,
+            'options' => [
+                'temperature' => 0.3,
             ],
-        ];
-
-        return response()->json($response);
+            'stream' => false,
+        ]);
     }
 
     /**
@@ -77,25 +116,37 @@ class GeneratePLSController extends Controller
     private function buildOpenAiPrompt($abstract): array
     {
         $prompt = self::$basePrompt."\n\n Text: ###\n".$abstract."\n###";
-        if ($this->useOllama) {
-            $prompt = "Give me a 150 to 250 word plain language summary for this text. It is written in a way that is difficult for most people to understand. Summarize it so that someone with a high-school education can understand. Please respond only with the answer, without any introductory or concluding phrases\n\n Text: ###\n".$abstract."\n###";
-        }
-        $model = $this->useOllama ? $this->ollamaModel : 'gpt-3.5-turbo-instruct';
+        $model = 'gpt-3.5-turbo-instruct';
 
-        $request = [
+        return [
             'model' => $model,
             'prompt' => $prompt,
             'temperature' => 0.3,
+            'max_tokens' => 500,
         ];
-
-        if (! $this->useOllama) {
-            $request['max_tokens'] = 500;
-        }
-
-        return $request;
 
     }
 
+    /**
+     * Respond with the PLS.
+     */
+    private function respond(string $pls): JsonResponse
+    {
+        // clean up the PLS - remove newlines and extra spaces
+        $pls = str_replace("\n", ' ', $pls);
+
+        return response()->json([
+            'data' => [
+                'pls' => $pls,
+            ],
+        ]);
+    }
+
+    /**
+     * Respond with an error.
+     *
+     * @param  string  $message
+     */
     private function error($message = 'Feature temporarily unavailable.'): JsonResponse
     {
         return response()->json([

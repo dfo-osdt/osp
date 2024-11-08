@@ -45,4 +45,11 @@ return [
         'enabled' => env('OHDEAR_ENABLED', false),
         'url' => env('OHDEAR_URL'),
     ],
+
+    'ollama' => [
+        'enabled' => env('USE_OLLAMA', false),
+        'url' => env('OLLAMA_URL'),
+        'model' => env('OLLAMA_MODEL', 'llama3.2'),
+    ],
+
 ];
