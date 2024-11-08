@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
+import { useQuasar } from 'quasar'
 import { type AuthorEmploymentResource, AuthorEmploymentService } from '../AuthorEmployement'
 
 const props = defineProps<{
