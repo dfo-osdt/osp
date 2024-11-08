@@ -15,7 +15,8 @@ const emit = defineEmits<{
 }>()
 
 // form data
-const organizationId = 1
+// eslint-disable-next-line prefer-const -- used as v-model in the template
+let organizationId = 1
 const roleTitle = ref<string | null>(null)
 const departmentName = ref<string | null>(null)
 const startDate = ref<string | null>(null)
