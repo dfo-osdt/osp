@@ -4,6 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Container\Attributes\Config;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -12,6 +13,11 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
+    public function __construct(
+        #[Config('auth.rate_limit.max_attempts', 5)] protected int $maxAttempts,
+        #[Config('auth.rate_limit.decay_seconds', 600)] protected int $decaySeconds
+    ) {}
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -51,7 +57,7 @@ class LoginRequest extends FormRequest
         $credentials['active'] = true;
 
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey(), 600);
+            RateLimiter::hit($this->throttleKey(), $this->decaySeconds);
 
             // check if this user has verified their email address
             $user = User::where('email', $this->email)->first();
@@ -78,7 +84,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited()
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), $this->maxAttempts)) {
             return;
         }
 
