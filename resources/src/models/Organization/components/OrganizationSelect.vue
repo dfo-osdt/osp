@@ -18,6 +18,7 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue'])
 
 const localeStore = useLocaleStore()
+const { copy } = useClipboard()
 
 const organizationSelect = ref<QSelect | null>(null)
 
@@ -26,6 +27,7 @@ const selectedOrganization = ref<OrganizationResource | null>(null)
 const lastSearchTerm = ref('')
 const organizationsLoading = ref(false)
 const showCreateOrganizationDialog = ref(false)
+const defaultOrganiztionId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
 
 watch(selectedOrganization, (organization) => {
   if (organization) {
@@ -38,9 +40,15 @@ onMounted(async () => {
     selectedOrganization.value = await OrganizationService.find(
       props.modelValue,
     )
+    return
   }
   if (props.initialSearchTerm) {
     organizationSelect.value?.filter(props.initialSearchTerm)
+  }
+  if (props.modelValue === null) {
+    selectedOrganization.value = await OrganizationService.find(
+      defaultOrganiztionId,
+    )
   }
 })
 
@@ -107,6 +115,7 @@ function optionLabel(item: OrganizationResource) {
     :label="$t('common.organization')"
     :loading="organizationsLoading"
     use-input
+    clearable
     stack-label
     outlined
     :hint="$t('organization-select.hint')"
@@ -150,6 +159,32 @@ function optionLabel(item: OrganizationResource) {
         </q-item>
       </template>
     </template>
+    <template #option="{ itemProps, opt }">
+      <q-item v-bind="itemProps">
+        <q-item-section>
+          <q-item-label>
+            {{ (opt as OrganizationResource).data[`name_${localeStore.locale}`] }}
+          </q-item-label>
+          <q-item-label v-if="opt.data.ror_identifier" caption>
+            {{ (opt as OrganizationResource).data.ror_identifier }}
+            <q-btn
+              icon="mdi-content-copy"
+              size="xs"
+              flat
+              dense
+              @click="copy(opt.data.ror_identifier)"
+            >
+              <q-tooltip>{{ $t('common.copy-to-clipboard') }}</q-tooltip>
+            </q-btn>
+          </q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-item-label>
+            <q-icon name="mdi-earth" class="q-mr-xs" />{{ (opt as OrganizationResource).data.country_code }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+    </template>
     <CreateOrganizationDialog
       v-if="showCreateOrganizationDialog"
       v-model="showCreateOrganizationDialog"
@@ -157,5 +192,3 @@ function optionLabel(item: OrganizationResource) {
     />
   </QSelect>
 </template>
-
-<style scoped></style>
