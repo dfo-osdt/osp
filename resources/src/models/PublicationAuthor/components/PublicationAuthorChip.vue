@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import OrcidAvatar from '../../../components/OrcidAvatar.vue'
 import type { PublicationAuthorResource } from '../PublicationAuthor'
+import OrcidAvatar from '../../../components/OrcidAvatar.vue'
 
 const props = withDefaults(
   defineProps<{
