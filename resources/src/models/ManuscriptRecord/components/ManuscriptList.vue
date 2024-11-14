@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { ManuscriptRecordSummaryResource } from '../ManuscriptRecord'
-import ManuscriptTypeBadge from './ManuscriptTypeBadge.vue'
-import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue'
+import OrcidIcon from '@/components/OrcidIcon.vue'
 import DeleteManuscriptButton from './DeleteManuscriptButton.vue'
+import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue'
+import ManuscriptTypeBadge from './ManuscriptTypeBadge.vue'
 
 defineProps<{
   manuscripts: ManuscriptRecordSummaryResource[]
@@ -46,10 +47,8 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
                   .manuscript_authors"
                 :key="item.data.id"
               >
-                <q-img
+                <OrcidIcon
                   v-if="item.data.author?.data.orcid"
-                  src="/assets/orcid/orcid.logo.icon.svg"
-                  width="15px"
                 />
                 {{ item.data.author?.data.last_name }},
                 {{ item.data.author?.data.first_name }}
