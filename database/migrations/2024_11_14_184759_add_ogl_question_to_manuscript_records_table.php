@@ -17,5 +17,4 @@ return new class extends Migration
             $table->renameColumn('additional_information', 'public_interest_information');
         });
     }
-
 };
