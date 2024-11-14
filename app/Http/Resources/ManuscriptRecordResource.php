@@ -31,8 +31,10 @@ class ManuscriptRecordResource extends JsonResource
                 'abstract' => $this->abstract ?? '',
                 'pls' => $this->pls ?? '',
                 'relevant_to' => $this->relevant_to ?? '',
-                'additional_information' => $this->additional_information ?? '',
                 'potential_public_interest' => $this->potential_public_interest,
+                'public_interest_information' => $this->public_interest_information ?? '',
+                'do_not_apply_ogl' => $this->do_not_apply_ogl,
+                'no_ogl_explanation' => $this->no_ogl_explanation ?? '',
 
                 // dates and times
                 'created_at' => $this->created_at,

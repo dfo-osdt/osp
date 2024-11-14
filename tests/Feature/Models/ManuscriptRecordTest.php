@@ -270,6 +270,23 @@ test('a user can mark their manuscript as submitted', function () {
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::SUBMITTED);
 });
 
+test('a user cannot submit their manuscript for review if they do not want an OGL but have provide no explanation', function () {
+    $manuscript = ManuscriptRecord::factory()->filled()->create([
+        'do_not_apply_ogl' => true,
+    ]);
+
+    $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", [
+        'reviewer_user_id' => User::factory()->create()->id,
+    ])->assertStatus(422);
+
+    $manuscript->no_ogl_explanation = 'I do not want to apply for OGL';
+    $manuscript->save();
+
+    $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", [
+        'reviewer_user_id' => User::factory()->create()->id,
+    ])->assertOk();
+});
+
 test('a user can mark their manuscript as accepted', function () {
     // create a manuscript that has been submitted
     $manuscript = ManuscriptRecord::factory()->filled()->create([

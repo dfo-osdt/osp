@@ -51,6 +51,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
         'type' => ManuscriptRecordType::class,
         'status' => ManuscriptRecordStatus::class,
         'potential_public_interest' => 'boolean',
+        'do_not_apply_ogl' => 'boolean',
     ];
 
     // default values for optional fields
@@ -58,7 +59,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
         'abstract' => '',
         'pls' => '',
         'relevant_to' => '',
-        'additional_information' => '',
+        'public_interest_information' => '',
+        'no_ogl_explanation' => '',
     ];
 
     // logging options
@@ -233,6 +235,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             'region_id' => 'required|exists:regions,id',
             'functional_area_id' => 'required|exists:functional_areas,id',
             'relevant_to' => 'required',
+            'no_ogl_explanation' => 'required_if:do_not_apply_ogl,true',
         ]);
 
         $validator->after(function ($validator) {

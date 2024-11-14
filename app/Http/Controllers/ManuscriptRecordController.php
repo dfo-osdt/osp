@@ -19,6 +19,7 @@ use App\Rules\UserNotAManuscriptAuthor;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -40,7 +41,7 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord = new ManuscriptRecord($validated);
         $manuscriptRecord->status = ManuscriptRecordStatus::DRAFT;
-        $manuscriptRecord->user_id = auth()->id();
+        $manuscriptRecord->user_id = Auth::id();
         $manuscriptRecord->save();
         $manuscriptRecord->refresh();
 
@@ -72,8 +73,10 @@ class ManuscriptRecordController extends Controller
             'abstract' => 'nullable|string',
             'pls' => 'nullable|string',
             'relevant_to' => 'nullable|string',
-            'additional_information' => 'nullable|string',
+            'public_interest_information' => 'nullable|string',
             'potential_public_interest' => 'boolean',
+            'do_not_apply_ogl' => 'boolean',
+            'no_ogl_explanation' => 'nullable|string',
         ]);
 
         $manuscriptRecord->update($validated);
