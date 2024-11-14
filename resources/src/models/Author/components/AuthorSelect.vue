@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { QSelect } from 'quasar'
 import type { AuthorResource, AuthorResourceList } from '../Author'
+import { QSelect } from 'quasar'
 import { AuthorService } from '../Author'
 import CreateAuthorDialog from './CreateAuthorDialog.vue'
 
@@ -41,7 +41,7 @@ async function filterAuthors(val: string, update: (arg0: () => Promise<void>) =>
       const needle = val.toLowerCase()
       authorsLoading.value = true
       await AuthorService.list(
-                `limit=10&include=organization&filter[search]=${needle}`,
+        `limit=10&include=organization&filter[search]=${needle}`,
       ).then((response) => {
         authors.value = response
       })
