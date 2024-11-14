@@ -1,3 +1,5 @@
+import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
+import type { FunctionalArea } from '../FunctionalArea/FunctionalArea'
 import type { PublicationResource } from '../Publication/Publication'
 import type { Region } from '../Region/Region'
 import type {
@@ -7,10 +9,8 @@ import type {
   ResourceList,
 } from '../Resource'
 import type { UserResource } from '../User/User'
-import type { FunctionalArea } from '../FunctionalArea/FunctionalArea'
-import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
-import { SpatieQuery } from '@/api/SpatieQuery'
 import { http } from '@/api/http'
+import { SpatieQuery } from '@/api/SpatieQuery'
 
 export type ManuscriptRecordType = 'primary' | 'secondary'
 
@@ -46,8 +46,10 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   abstract: string
   pls: string
   relevant_to: string
-  additional_information: string
   potential_public_interest: boolean
+  public_interest_information: string
+  do_not_apply_ogl: boolean
+  no_ogl_explanation: string
   readonly sent_for_review_at: string | null
   readonly reviewed_at: string | null
   submitted_to_journal_on: string | null
@@ -90,7 +92,7 @@ export class ManuscriptRecordService {
    */
   public static async find(id: number) {
     const response = await http.get<ManuscriptRecordResource>(
-            `${this.baseURL}/${id}`,
+      `${this.baseURL}/${id}`,
     )
     return response.data
   }
@@ -137,13 +139,13 @@ export class ManuscriptRecordService {
     const formData = new FormData()
     formData.append('pdf', file)
     const response = await http.post<FormData, MediaResource>(
-            `${this.baseURL}/${id}/files`,
-            formData,
-            {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            },
+      `${this.baseURL}/${id}/files`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     )
     return response.data
   }
@@ -151,7 +153,7 @@ export class ManuscriptRecordService {
   /** List all PDF files associated with this manuscript */
   public static async listPDFs(id: number) {
     const response = await http.get<MediaResourceList>(
-            `${this.baseURL}/${id}/files`,
+      `${this.baseURL}/${id}/files`,
     )
     return response.data
   }
@@ -162,7 +164,7 @@ export class ManuscriptRecordService {
    */
   public static async deletePDF(id: number, uuid: string) {
     const response = await http.delete(
-            `${this.baseURL}/${id}/files/${uuid}`,
+      `${this.baseURL}/${id}/files/${uuid}`,
     )
     return response.status === 204
   }
@@ -173,8 +175,8 @@ export class ManuscriptRecordService {
       reviewer_user_id: userId,
     }
     const response = await http.put<any, ManuscriptRecordResource>(
-            `${this.baseURL}/${id}/submit-for-review`,
-            data,
+      `${this.baseURL}/${id}/submit-for-review`,
+      data,
     )
     return response.data
   }
@@ -185,8 +187,8 @@ export class ManuscriptRecordService {
       submitted_to_journal_on: date,
     }
     const response = await http.put<any, ManuscriptRecordResource>(
-            `${this.baseURL}/${id}/submitted`,
-            data,
+      `${this.baseURL}/${id}/submitted`,
+      data,
     )
     return response.data
   }
@@ -204,8 +206,8 @@ export class ManuscriptRecordService {
       journal_id: journalId,
     }
     const response = await http.put<any, ManuscriptRecordResource>(
-            `${this.baseURL}/${id}/accepted`,
-            data,
+      `${this.baseURL}/${id}/accepted`,
+      data,
     )
     return response.data
   }
@@ -213,7 +215,7 @@ export class ManuscriptRecordService {
   // Withdraw the manuscript
   public static async withdraw(id: number) {
     const response = await http.put<any, ManuscriptRecordResource>(
-            `${this.baseURL}/${id}/withdraw`,
+      `${this.baseURL}/${id}/withdraw`,
     )
     return response.data
   }

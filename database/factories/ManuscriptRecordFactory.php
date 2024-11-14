@@ -44,7 +44,7 @@ class ManuscriptRecordFactory extends Factory
             'pls' => $this->faker->paragraph(),
             'relevant_to' => $this->faker->paragraph(),
             'potential_public_interest' => $this->faker->boolean(),
-            'additional_information' => $this->faker->paragraph(),
+            'public_interest_information' => $this->faker->paragraph(),
             'functional_area_id' => FunctionalArea::factory()->create()->id,
         ])->afterCreating(function ($manuscript) {
             $manuscript->manuscriptAuthors()->save(ManuscriptAuthor::factory()->make(['is_corresponding_author' => true])); // create a corresponding author

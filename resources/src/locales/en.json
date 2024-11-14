@@ -519,7 +519,12 @@
     "upload-manuscript": "Upload manuscript",
     "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
     "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
-    "functional-area-text": "In order to improve reporting on research outputs, please select the relevant functional area for this manuscript."
+    "functional-area-text": "In order to improve reporting on research outputs, please select the relevant functional area for this manuscript.",
+    "no-ogl-explanation": "Report Licensing",
+    "no-ogl-explanation-text-field-text": "DFO is committed to the \"Open by Design and by Default\" principle of Open Science, which means that all DFO publications will be published under the latest version of the \"{url}\" Are there any specific reasons or concerns that would prevent your report from being licensed under this Open Government Licence?",
+    "ogl-link": "Open Government Licence - Canada",
+    "do_not_apply_ogl": "We have reasons not to apply an open license for this report.",
+    "ogl-provide-explanation": "Since you answered \"yes,\" please provide an explanation of why an open license cannot be applied to your report."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",

@@ -519,7 +519,12 @@
     "upload-manuscript": "Télécharger le manuscrit",
     "upload-text": "Téléchargez la copie la plus récente de votre manuscrit au format PDF. \nCe fichier peut être mis à jour selon les besoins du demandeur, même après la soumission du manuscrit.",
     "working-title-text": "Entrez le titre provisoir du manuscrit. \nVous pourrez modifier le titre lorsque vous mettrez à jour le statut de ce manuscrit à publié.",
-    "functional-area-text": "Afin d'améliorer les rapports sur les résultats de la recherche, veuillez sélectionner le domaine fonctionnel pertinent pour ce manuscrit."
+    "functional-area-text": "Afin d'améliorer les rapports sur les résultats de la recherche, veuillez sélectionner le domaine fonctionnel pertinent pour ce manuscrit.",
+    "no-ogl-explanation-text-field-text": "Le MPO s'engage à suivre le principe « ouvert par conception et par défaut » de la science ouverte. Par conséquent, toutes les publications du MPO seront publiées sous la dernière version de la « {url} ». Avez-vous des raisons de croire que votre rapport ne devrait pas être licencié sous cette licence du gouvernement ouvert?",
+    "ogl-link": "Licence du gouvernement ouvert – Canada",
+    "do_not_apply_ogl": "Nous avons des raisons de ne pas appliquer une licence ouverte pour ce rapport.",
+    "no-ogl-explanation": "Licence de rapport",
+    "ogl-provide-explanation": "Puisque vous avez répondu « oui », veuillez expliquer pourquoi une licence ouverte ne peut pas être appliquée à votre rapport."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",

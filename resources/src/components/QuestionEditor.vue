@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { QEditor } from 'quasar'
 import DOMPurify from 'dompurify'
+import { QEditor } from 'quasar'
 import RequiredSpan from './RequiredSpan.vue'
 
 const props = withDefaults(
@@ -10,11 +10,13 @@ const props = withDefaults(
     disable?: boolean
     readonly?: boolean
     required?: boolean
+    hideEditor?: boolean
   }>(),
   {
     disable: false,
     readonly: false,
     required: false,
+    hideEditor: false,
   },
 )
 
@@ -66,6 +68,7 @@ function onPaste(e: ClipboardEvent) {
       </div>
     </div>
     <QEditor
+      v-if="!hideEditor"
       ref="editor"
       v-model="value"
       :disable="disable"

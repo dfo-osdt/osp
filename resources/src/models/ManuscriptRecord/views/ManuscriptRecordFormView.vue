@@ -1,38 +1,39 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { QForm, useQuasar } from 'quasar'
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import { UtilityService } from '@/api/utils'
+import ContentCard from '@/components/ContentCard.vue'
+import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
+import QuestionEditor from '@/components/QuestionEditor.vue'
+import RequiredSpan from '@/components/RequiredSpan.vue'
+import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
+import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
+import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue'
+import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
+import { QForm, useQuasar } from 'quasar'
+import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue'
+import ManuscriptFileManagementCard from '../components/ManuscriptFileManagementCard.vue'
+import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue'
+import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue'
+import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue'
+import YesNoBooleanOptionGroup from '../components/YesNoBooleanOptionGroup.vue'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
-import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue'
-import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue'
-import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue'
-import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue'
-import ManuscriptFileManagementCard from '../components/ManuscriptFileManagementCard.vue'
-import YesNoBooleanOptionGroup from '../components/YesNoBooleanOptionGroup.vue'
-import QuestionEditor from '@/components/QuestionEditor.vue'
-import ContentCard from '@/components/ContentCard.vue'
-import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue'
-import RegionSelect from '@/models/Region/components/RegionSelect.vue'
-import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
-import RequiredSpan from '@/components/RequiredSpan.vue'
-import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
-import { UtilityService } from '@/api/utils'
-import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue'
-import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
 
 const props = defineProps<{
   id: number
 }>()
 const emit = defineEmits<{
-  (e: 'update-manuscript', manuscript: ManuscriptRecordResource): void
+  (e: 'updateManuscript', manuscript: ManuscriptRecordResource): void
 }>()
 const $q = useQuasar()
 const router = useRouter()
 const { t } = useI18n()
+const localeStore = useLocaleStore()
 
 const generalInformationForm = ref<QForm | null>(null)
 
@@ -77,6 +78,11 @@ const generalSectionStatus = computed(() => {
   if (manuscript.title === '')
     return 'error'
 
+  if (manuscript.type === 'secondary') {
+    if (manuscript.no_ogl_explanation === '' && manuscript.do_not_apply_ogl)
+      return 'incomplete'
+  }
+
   const complete
         = manuscript.title !== ''
         && manuscript.abstract !== ''
@@ -90,17 +96,17 @@ onMounted(async () => {
   await ManuscriptRecordService.find(props.id)
     .then((response) => {
       manuscriptResource.value = response
-      emit('update-manuscript', manuscriptResource.value)
+      emit('updateManuscript', manuscriptResource.value)
     })
     .catch((error) => {
-      if (error.status == 403) {
+      if (error.status === 403) {
         $q.notify({
           type: 'negative',
           message: t('mrf.not-authorized-text'),
         })
         router.push({ name: 'notFound' })
       }
-      console.log(error)
+      console.error(error)
     })
     .finally(() => {
       loading.value = false
@@ -128,12 +134,12 @@ async function save() {
       })
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
     .finally(() => {
       // emit the event to the parent
       if (manuscriptResource.value) {
-        emit('update-manuscript', manuscriptResource.value)
+        emit('updateManuscript', manuscriptResource.value)
       }
       loading.value = false
       isDirty.value = false
@@ -246,7 +252,7 @@ async function generatePLS() {
       })
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
     .finally(() => {
       PLSLoading.value = false
@@ -498,7 +504,7 @@ async function generatePLS() {
           </QuestionEditor>
           <QuestionEditor
             id="pi"
-            v-model="manuscriptResource.data.additional_information"
+            v-model="manuscriptResource.data.public_interest_information"
             :title="$t('mrf.additional-information-of-importance')"
             :disable="loading"
             :readonly="isManuscriptReadOnly"
@@ -524,6 +530,43 @@ async function generatePLS() {
                   'mrf.potential-media-interest-text-field-text',
                 )
               }}
+            </p>
+          </QuestionEditor>
+          <QuestionEditor
+            v-if="manuscriptResource.data.type === 'secondary'"
+            v-model="manuscriptResource.data.no_ogl_explanation"
+            :title="$t('mrf.no-ogl-explanation')"
+            :disable="loading"
+            :readonly="isManuscriptReadOnly"
+            :hide-editor="!manuscriptResource.data.do_not_apply_ogl"
+            required
+            class="q-mb-md"
+          >
+            <i18n-t keypath="mrf.no-ogl-explanation-text-field-text" tag="p">
+              <template #url>
+                <a
+                  :href="localeStore.locale === 'en'
+                    ? 'https://open.canada.ca/en/open-government-licence-canada'
+                    : 'https://ouvert.canada.ca/fr/licence-du-gouvernement-ouvert-canada'"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ $t('mrf.ogl-link') }}
+                </a>
+              </template>
+            </i18n-t>
+            <div class="text-body2 text-primary text-weight-medium">
+              {{ $t('mrf.do_not_apply_ogl') }}
+            </div>
+            <YesNoBooleanOptionGroup
+              v-model="
+                manuscriptResource.data
+                  .do_not_apply_ogl
+              "
+              class="q-mb-md"
+            />
+            <p v-if="manuscriptResource.data.do_not_apply_ogl">
+              {{ $t('mrf.ogl-provide-explanation') }}
             </p>
           </QuestionEditor>
         </QForm>
