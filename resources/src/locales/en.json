@@ -752,5 +752,12 @@
   "author-employment": {
     "add-employment-tooltip": "Link your ORCID to add Employment",
     "add-employment": "Add Employment"
+  },
+  "manage-peer-review": {
+    "title": "Peer Review",
+    "description": "Please enter the peer reviewers for this report. At least two subject matter experts must have conducted a peer review of the report. Note that a peer review for data reports and contactor reports is optional.",
+    "peer-reviewer": "Peer-Reviewers",
+    "no-reviewers": "No reviewers. Please add at least two if applicable for your report.",
+    "add-peer-reviewer": "Add a reviewer"
   }
 }

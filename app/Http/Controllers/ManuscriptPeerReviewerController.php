@@ -64,5 +64,7 @@ class ManuscriptPeerReviewerController extends Controller
         Gate::authorize('delete', $manuscriptPeerReviewer);
 
         $manuscriptPeerReviewer->delete();
+
+        return response()->noContent();
     }
 }

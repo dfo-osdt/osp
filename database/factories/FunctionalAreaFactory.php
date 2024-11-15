@@ -17,8 +17,8 @@ class FunctionalAreaFactory extends Factory
     public function definition(): array
     {
         return [
-            'name_en' => $this->faker->word,
-            'name_fr' => $this->faker->word,
+            'name_en' => $this->faker->word(),
+            'name_fr' => $this->faker->word(),
         ];
     }
 }

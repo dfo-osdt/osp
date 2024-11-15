@@ -752,5 +752,12 @@
   "author-employment": {
     "add-employment-tooltip": "Liez votre ORCID pour ajouter un emploi",
     "add-employment": "Ajouter un emploi"
+  },
+  "manage-peer-review": {
+    "title": "Examen par les pairs",
+    "description": "Veuillez indiquer les évaluateurs de ce rapport. Au moins deux experts en la matière doivent avoir procédé à un examen par les pairs du rapport. Notez qu'un examen par les pairs des rapports de données et des rapports de contacteurs est facultatif.",
+    "peer-reviewer": "Évaluateurs",
+    "no-reviewers": "Aucun évaluateur. \nVeuillez en ajouter au moins deux, si applicable pour votre rapport.",
+    "add-peer-reviewer": "Ajouté un évaluateur"
   }
 }
