@@ -65,7 +65,7 @@ test('a user can remove a peer reviewer from their secondary manuscript', functi
 
     $response = $this->actingAs($user)->deleteJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers/'.$peerReviewer->id);
 
-    $response->assertStatus(200);
+    $response->assertStatus(204);
     expect($manuscript->peerReviewers()->count())->toBe(0);
 });
 

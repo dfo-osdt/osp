@@ -65,7 +65,7 @@ class LocalTestDataSeeder extends Seeder
         ]);
 
         // create 1 manuscript record for the test user with a review step
-        $toReview = \App\Models\ManuscriptRecord::factory()->in_review()->create([
+        $toReview = \App\Models\ManuscriptRecord::factory()->in_review(false)->create([
             'user_id' => $user->id,
         ]);
 

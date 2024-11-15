@@ -12,6 +12,7 @@ import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
 import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue'
 import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue'
+import ManageManuscriptPeerReviewers from '@/models/ManuscriptPeerReviewer/components/ManageManuscriptPeerReviewers.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import { QForm, useQuasar } from 'quasar'
 import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue'
@@ -347,6 +348,13 @@ async function generatePLS() {
     />
     <ManageManuscriptAuthorsCard
       ref="manuscriptAuthorsCard"
+      :manuscript-record-id="id"
+      :readonly="isManuscriptReadOnly"
+      class="q-mb-lg"
+      secondary
+    />
+    <ManageManuscriptPeerReviewers
+      v-if="manuscriptResource?.data.type === 'secondary'"
       :manuscript-record-id="id"
       :readonly="isManuscriptReadOnly"
       class="q-mb-lg"

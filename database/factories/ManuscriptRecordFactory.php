@@ -70,15 +70,17 @@ class ManuscriptRecordFactory extends Factory
     /**
      * A manuscript record that has been submitted for internal review
      */
-    public function in_review()
+    public function in_review(bool $withAreviewstep = true)
     {
         return $this->filled()->state([
             'title' => 'A manuscript record that has been submitted for internal review',
             'status' => ManuscriptRecordStatus::IN_REVIEW,
             'sent_for_review_at' => now(),
-        ])->afterCreating(function ($manuscript) {
+        ])->afterCreating(function ($manuscript) use ($withAreviewstep) {
             $manuscript->lockManuscriptFiles();
-            $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->make());
+            if($withAreviewstep) {
+                $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->make());
+            }
         });
     }
 

@@ -1,20 +1,20 @@
 <script setup lang="ts">
+import type {
+  FormSectionStatus,
+} from '@/components/FormSectionStatusIcon.vue'
 import type { Ref } from 'vue'
-import { useQuasar } from 'quasar'
 import type {
   ManuscriptAuthorResource,
   ManuscriptAuthorResourceList,
 } from '../ManuscriptAuthor'
+import ContentCard from '@/components/ContentCard.vue'
+import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
+import { useQuasar } from 'quasar'
 import {
   ManuscriptAuthorService,
 } from '../ManuscriptAuthor'
-import ManuscriptAuthorChip from './ManuscriptAuthorChip.vue'
 import AddManuscriptAuthorDialog from './AddManuscriptAuthorDialog.vue'
-import ContentCard from '@/components/ContentCard.vue'
-import type {
-  FormSectionStatus,
-} from '@/components/FormSectionStatusIcon.vue'
-import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
+import ManuscriptAuthorChip from './ManuscriptAuthorChip.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -68,7 +68,7 @@ async function loadManuscriptAuthors() {
       manuscriptAuthors.value = response
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
   loading.value = false
 }
@@ -83,8 +83,8 @@ function addedManuscriptAuthor(manuscriptAuthor: ManuscriptAuthorResource) {
     type: 'positive',
     color: 'primary',
     message: `${
-            manuscriptAuthor.data.author?.data.first_name ?? t('common.author')
-        } ${t('common.added-successfully')}`,
+      manuscriptAuthor.data.author?.data.first_name ?? t('common.author')
+    } ${t('common.added-successfully')}`,
   })
   showAddDialog.value = false
   loadManuscriptAuthors()
@@ -102,9 +102,9 @@ async function toggleCorrespondingAuthor(
         type: 'positive',
         color: 'primary',
         message: `${
-                    manuscriptAuthor.author?.data.first_name
-                    ?? t('common.author')
-                } ${t('common.updated-successfully')}`,
+          manuscriptAuthor.author?.data.first_name
+          ?? t('common.author')
+        } ${t('common.updated-successfully')}`,
       })
       loadManuscriptAuthors()
     })
