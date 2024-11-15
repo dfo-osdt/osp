@@ -132,6 +132,15 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     }
 
     /**
+     * A manuscript has no to many peer reviewers. Only
+     * internal publications have peer reviewers.
+     */
+    public function peerReviewers(): HasMany
+    {
+        return $this->hasMany(ManuscriptPeerReviewer::class);
+    }
+
+    /**
      * A manuscript can have one publication
      */
     public function publication(): HasOne
