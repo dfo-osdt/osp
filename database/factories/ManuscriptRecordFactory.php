@@ -9,7 +9,7 @@ use App\Models\FundingSource;
 use App\Models\ManuscriptAuthor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Str;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ManuscriptRecord>
@@ -60,7 +60,7 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->manuscriptAuthors()->save(ManuscriptAuthor::factory()->make(['is_corresponding_author' => true])); // create a corresponding author
             $manuscript->manuscriptAuthors()->saveMany(ManuscriptAuthor::factory()->count(3)->make()); // create 3 other authors
             $manuscript->fundingSources()->saveMany(FundingSource::factory()->count(3)->make()); // create 3 funding sources
-            $manuscript->addManuscriptFile(getcwd().'/database/factories/files/BieberFever.pdf', true); // add a manuscript file
+            $manuscript->addManuscriptFile(getcwd() . '/database/factories/files/BieberFever.pdf', true); // add a manuscript file
             if ($manuscript->type == ManuscriptRecordType::SECONDARY) {
                 $manuscript->peerReviewers()->saveMany(\App\Models\ManuscriptPeerReviewer::factory()->count(2)->make()); // add 2 peer reviewers for secondary manuscripts
             }
@@ -78,6 +78,7 @@ class ManuscriptRecordFactory extends Factory
             'sent_for_review_at' => now(),
         ])->afterCreating(function ($manuscript) {
             $manuscript->lockManuscriptFiles();
+            $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->make());
         });
     }
 
@@ -91,7 +92,12 @@ class ManuscriptRecordFactory extends Factory
             'status' => ManuscriptRecordStatus::REVIEWED,
             'reviewed_at' => now(),
         ])->afterCreating(function ($manuscript) {
-            $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->approved()->make());
+            $manuscript->managementReviewSteps()->update([
+                'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
+                'decision' => \App\Enums\ManagementReviewStepDecision::APPROVED,
+                'comments' => 'This manuscript is approved - great job!',
+                'completed_at' => now(),
+            ]);
         });
     }
 
