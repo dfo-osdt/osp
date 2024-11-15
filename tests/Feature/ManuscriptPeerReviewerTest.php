@@ -68,3 +68,25 @@ test('a user can remove a peer reviewer from their secondary manuscript', functi
     $response->assertStatus(200);
     expect($manuscript->peerReviewers()->count())->toBe(0);
 });
+
+test('a user cannot change the peer reviewer if they can only view the manuscript', function () {
+
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->secondary()->in_review()->create(['user_id' => $user->id]);
+    $peerReviewer = ManuscriptPeerReviewer::factory()->create(['manuscript_record_id' => $manuscript->id]);
+
+    $author = Author::factory()->create();
+
+    $data = [
+        'author_id' => $author->id,
+    ];
+
+    $response = $this->actingAs($user)->postJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers', $data);
+    $response->assertStatus(403);
+
+    $response = $this->actingAs($user)->deleteJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers/'.$peerReviewer->id);
+    $response->assertStatus(403);
+
+    // act as active reviwer - can change the peer reviewer
+    $response = $this->actingAs($manuscript->managementReviewSteps()->first()->user)->postJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers', $data);
+});

@@ -233,9 +233,9 @@ test('a regular user can only view a publication if it has been published', func
 test('a user that can see the manuscript can see the publication', function () {
 
     $publication = Publication::factory()->withManuscript()->create();
-    // get a user that did the review
+
+    $publication->load('manuscriptRecord.managementReviewSteps.user');    // get a user that did the review
     $user = $publication->manuscriptRecord->managementReviewSteps->first()->user;
-    ray($user);
     $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
     $response->assertOk();
 });

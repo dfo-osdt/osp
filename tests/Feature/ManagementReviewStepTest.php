@@ -14,7 +14,7 @@ use App\Models\User;
 test('a reviewer can view all review steps associated with manuscript', function () {
     $owner = User::factory()->create();
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->in_review()->create(['user_id' => $owner->id]);
+    $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $owner->id]);
 
     // no review steps yet, so the reviewer should not be able to view any
     $this->actingAs($reviewer)->getJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps')
