@@ -136,4 +136,9 @@ class Author extends Model
     {
         return $this->hasMany('App\Models\AuthorEmployment');
     }
+
+    public function peerReviews(): HasMany
+    {
+        return $this->hasMany('App\Models\ManuscriptPeerReviewer');
+    }
 }

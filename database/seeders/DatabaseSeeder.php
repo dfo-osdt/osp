@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class DatabaseSeeder extends Seeder
 {

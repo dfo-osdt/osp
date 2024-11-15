@@ -34,6 +34,16 @@ class ManuscriptRecordFactory extends Factory
     }
 
     /**
+     * Secondary manuscript record
+     */
+    public function secondary()
+    {
+        return $this->state([
+            'type' => ManuscriptRecordType::SECONDARY,
+        ]);
+    }
+
+    /**
      * A fully filled out manuscript record, ready to be submitted for internal review
      */
     public function filled()
@@ -51,6 +61,9 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->manuscriptAuthors()->saveMany(ManuscriptAuthor::factory()->count(3)->make()); // create 3 other authors
             $manuscript->fundingSources()->saveMany(FundingSource::factory()->count(3)->make()); // create 3 funding sources
             $manuscript->addManuscriptFile(getcwd().'/database/factories/files/BieberFever.pdf', true); // add a manuscript file
+            if ($manuscript->type == ManuscriptRecordType::SECONDARY) {
+                $manuscript->peerReviewers()->saveMany(\App\Models\ManuscriptPeerReviewer::factory()->count(2)->make()); // add 2 peer reviewers for secondary manuscripts
+            }
         });
     }
 

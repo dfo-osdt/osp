@@ -11,6 +11,7 @@ use App\Http\Controllers\FunderController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
+use App\Http\Controllers\ManuscriptPeerReviewerController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\ManuscriptRecordFileController;
 use App\Http\Controllers\ManuscriptRecordFundingSourceController;
@@ -92,6 +93,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}', 'update');
         Route::delete('/manuscript-records/{manuscriptRecord}/manuscript-authors/{manuscriptAuthor}', 'destroy');
         Route::post('/manuscript-records/{manuscriptRecord}/manuscript-authors', 'store');
+    });
+
+    Route::controller(ManuscriptPeerReviewerController::class)->group(function () {
+        Route::get('/manuscript-records/{manuscriptRecord}/peer-reviewers', 'index');
+        Route::post('/manuscript-records/{manuscriptRecord}/peer-reviewers', 'store');
+        Route::get('/manuscript-records/{manuscriptRecord}/peer-reviewers/{manuscriptPeerReviewer}', 'show');
+        Route::delete('/manuscript-records/{manuscriptRecord}/peer-reviewers/{manuscriptPeerReviewer}', 'destroy');
     });
 
     Route::controller(ManagementReviewStepController::class)->group(function () {

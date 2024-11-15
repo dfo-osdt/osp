@@ -55,7 +55,12 @@ class LocalTestDataSeeder extends Seeder
         ]);
 
         // create 1 filled out manuscript record for the test user
-        \App\Models\ManuscriptRecord::factory()->filled()->count(5)->create([
+        \App\Models\ManuscriptRecord::factory()->filled()->create([
+            'user_id' => $user->id,
+        ]);
+
+        // create 1 filled out secondary manuscript record for the test user
+        \App\Models\ManuscriptRecord::factory()->secondary()->filled()->create([
             'user_id' => $user->id,
         ]);
 
