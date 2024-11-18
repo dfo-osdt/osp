@@ -4,8 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use App\Rules\AuthorizeEmailDomain;
 use Filament\Facades\Filament;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,26 +29,35 @@ class UserResource extends Resource
                     ->Filled()
                     ->required(),
                 Forms\Components\TextInput::make('last_name')
-                    ->disabledOn('edit')
-                    ->Filled(),
-                Forms\Components\TextInput::make('email')
-                    ->disabledOn('edit')
-                    ->Filled(),
+					  ->disabledOn('edit')
+					  ->Filled(),
                 Forms\Components\Section::make([
-                    Forms\Components\CheckboxList::make('roles')
-                        ->relationship(titleAttribute: 'name')
-                        ->default(['1'])
-                        ->options([
-                            '3' => 'Admin',
-                            '2' => 'Director',
-                        ]),
-                ]),
-            ]);
+		    Forms\Components\TextInput::make('email')
+					      ->Filled()
+					      ->rules(['required', 'string', 'email', new AuthorizeEmailDomain()]),
+		    Forms\Components\Actions::make([
+			Forms\Components\Actions\Action::make('email_verified_at')
+						       ->action(function (Forms\Get $get, Forms\Set $set) {
+							   $set('email_verified_at', false);
+						       }
+						       )
+			]
+							   ),
+
+		    Forms\Components\CheckboxList::make('roles')
+						 ->relationship(titleAttribute: 'name')
+						 ->default(['1'])
+						 ->options([
+						     '3' => 'Admin',
+						     '2' => 'Director',
+						 ]),
+		]),
+	    ]);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
+	return $table
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
                     ->sortable(),
@@ -69,35 +80,59 @@ class UserResource extends Resource
                     ->searchable(isIndividual: true),
             ])
             ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    // Placeholder
-                ]),
-            ])
-            ->defaultSort('first_name');
+		Tables\Filters\TernaryFilter::make('email_verified_at')
+					    ->label('Verified')
+					    ->nullable()
+					    ->placeholder('All'),
+                Tables\Filters\SelectFilter::make('active')
+					   ->options([
+					       true => 'Active',
+					       false => 'Inactive',
+					   ]),
+		Tables\Filters\Filter::make('no_roles')
+				     ->label('No Roles')
+				     ->query(fn ($query) => $query->whereDoesntHave('roles')),
+		Tables\Filters\Filter::make('author')
+				     ->label('Author')
+				     ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'author'))),
+
+		Tables\Filters\Filter::make('director')
+				     ->label('Director')
+				     ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'director'))),
+
+		Tables\Filters\Filter::make('admin')
+				     ->label('Admin')
+				     ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'admin'))),
+
+	    ])
+	    ->actions([
+		Tables\Actions\EditAction::make(),
+	    ])
+	    ->bulkActions([
+		Tables\Actions\BulkActionGroup::make([
+		    // Placeholder
+		]),
+	    ])
+	    ->defaultSort('first_name');
     }
 
+    
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+	return [
+	    //
+	];
     }
 
     public static function getPages(): array
     {
-        //	$user = Filament::auth()->user();
-        //	Gate::authorize('updateAnyUser', $user);
+	//	$user = Filament::auth()->user();
+	//	Gate::authorize('updateAnyUser', $user);
 
-        return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
-        ];
+	return [
+	    'index' => Pages\ListUsers::route('/'),
+	    'create' => Pages\CreateUser::route('/create'),
+	    'edit' => Pages\EditUser::route('/{record}/edit'),
+	];
     }
 }
