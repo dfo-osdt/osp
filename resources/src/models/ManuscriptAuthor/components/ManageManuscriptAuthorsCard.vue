@@ -54,6 +54,7 @@ const sectionStatus: ComputedRef<FormSectionStatus> = computed(() => {
 
 defineExpose({
   sectionStatus,
+  manuscriptAuthors,
 })
 
 // on mounted get the manuscript authors
@@ -109,7 +110,7 @@ async function toggleCorrespondingAuthor(
       loadManuscriptAuthors()
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
 }
 
@@ -127,7 +128,7 @@ async function deleteManuscriptAuthor(manuscriptAuthor: ManuscriptAuthorResource
         loadManuscriptAuthors()
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   })
 }

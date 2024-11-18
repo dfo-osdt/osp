@@ -266,7 +266,8 @@
     "protected-a-tooltip": "Ces informations sont protégées A",
     "review": "Revoir",
     "confirm": "Confirmer",
-    "present": "présent"
+    "present": "présent",
+    "reviewer": "Évaluateur par les pairs"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -758,6 +759,13 @@
     "description": "Veuillez indiquer les évaluateurs de ce rapport. Au moins deux experts en la matière doivent avoir procédé à un examen par les pairs du rapport. Notez qu'un examen par les pairs des rapports de données et des rapports de contacteurs est facultatif.",
     "peer-reviewer": "Évaluateurs",
     "no-reviewers": "Aucun évaluateur. \nVeuillez en ajouter au moins deux, si applicable pour votre rapport.",
-    "add-peer-reviewer": "Ajouté un évaluateur"
+    "add-peer-reviewer": "Ajouté un évaluateur",
+    "delete-peer-reviewer-confirm": "Êtes-vous sûr de vouloir supprimer cet évaluateur ?"
+  },
+  "manuscript-peer-reviewer-dialog": {
+    "instructions": "Recherchez l'évaluateur que vous souhaitez ajouter en utilisant son nom ou son adresse e-mail professionnelle. Si vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse électronique a changé, vous pouvez créer une nouvelle fiche d'auteur."
+  },
+  "mannage-peer-review": {
+    "delete-peer-reviewer": "Supprimer l'évaluateur"
   }
 }

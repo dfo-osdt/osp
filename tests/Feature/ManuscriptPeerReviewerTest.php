@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Author;
+use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptPeerReviewer;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
@@ -89,4 +90,36 @@ test('a user cannot change the peer reviewer if they can only view the manuscrip
 
     // act as active reviwer - can change the peer reviewer
     $response = $this->actingAs($manuscript->managementReviewSteps()->first()->user)->postJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers', $data);
+});
+
+test('a user cannot add a peer reviwer that already exists or that is on the list of manuscript authors', function () {
+
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->secondary()->create(['user_id' => $user->id]);
+    $author = Author::factory()->create();
+    $manuscript->manuscriptAuthors()->save(ManuscriptAuthor::factory()->create(['author_id' => $author->id]));
+
+    $data = [
+        'author_id' => $author->id,
+    ];
+
+    $response = $this->actingAs($user)->postJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers', $data);
+
+    $response->assertStatus(422);
+});
+
+test('a user cannot add a peer reviewer to a manuscript twice', function () {
+
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->secondary()->create(['user_id' => $user->id]);
+    $author = Author::factory()->create();
+
+    $data = [
+        'author_id' => $author->id,
+    ];
+
+    $response = $this->actingAs($user)->postJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers', $data);
+    $response->assertStatus(201);
+    $response = $this->actingAs($user)->postJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers', $data);
+    $response->assertStatus(422);
 });

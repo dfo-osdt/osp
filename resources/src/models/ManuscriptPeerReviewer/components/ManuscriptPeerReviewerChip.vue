@@ -8,9 +8,9 @@ const props = defineProps<{
   readonly?: boolean
 }>()
 
-const emit = defineEmits([
-  'delete',
-])
+const emit = defineEmits<{
+  delete: [value: ManuscriptPeerReviewerResource]
+}>()
 
 const localeStore = useLocaleStore()
 const { copy, copied, isSupported } = useClipboard()
@@ -32,7 +32,7 @@ const removable = computed(() => {
     clickable
     :removable="removable"
     color="teal-2"
-    @remove="emit('delete')"
+    @remove="emit('delete', props.manuscriptPeerReviewer)"
   >
     {{ name }}
     <q-menu>
