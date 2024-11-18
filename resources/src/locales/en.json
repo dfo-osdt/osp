@@ -767,5 +767,8 @@
   },
   "mannage-peer-review": {
     "delete-peer-reviewer": "Delete Peer Reviewer"
+  },
+  "manuscript-peer-review-dialog": {
+    "title": "Add a peer reviewer for this manuscript"
   }
 }

@@ -767,5 +767,8 @@
   },
   "mannage-peer-review": {
     "delete-peer-reviewer": "Supprimer l'évaluateur"
+  },
+  "manuscript-peer-review-dialog": {
+    "title": "Ajouter un évaluateur pour ce manuscrit"
   }
 }
