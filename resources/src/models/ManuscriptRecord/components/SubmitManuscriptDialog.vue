@@ -1,19 +1,20 @@
 <script setup lang="ts">
+import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import type { QDialog } from 'quasar'
-import { QForm, QStepper } from 'quasar'
 import type { Ref } from 'vue'
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import BaseDialog from '@/components/BaseDialog.vue'
+import UserSelect from '@/models/User/components/UserSelect.vue'
+import { QForm, QStepper } from 'quasar'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
-import BaseDialog from '@/components/BaseDialog.vue'
-import { ManuscriptAuthorService } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
-import UserSelect from '@/models/User/components/UserSelect.vue'
 
-const props = defineProps<{
-  manuscriptRecordId: number
+const { manuscriptRecord, manuscriptAuthors = [] } = defineProps<{
+  manuscriptRecord: ManuscriptRecordResource
+  manuscriptAuthors?: ManuscriptAuthorResource[]
 }>()
 
 const emit = defineEmits<{
@@ -28,9 +29,6 @@ const stepper: Ref<QStepper | null> = ref(null)
 const step = ref(1)
 const validationError = ref(false)
 
-const authorEmails = ref<string[]>([])
-const ownerId = ref<number>(0)
-
 const divisionManagerUserId = ref<number | null>(null)
 const agreeToTerms = ref(false)
 const agreeToTermsOptions = ref([
@@ -44,26 +42,11 @@ const agreeToTermsOptions = ref([
   },
 ])
 
-onMounted(async () => {
-  authorEmails.value = await getAllManuscriptAuthorsEmails()
-  ownerId.value = await getManuscriptOwnerId()
-})
-
-async function getAllManuscriptAuthorsEmails(): Promise<string[]> {
-  const manuscriptAuthors = await ManuscriptAuthorService.list(
-    props.manuscriptRecordId,
-  )
-  return manuscriptAuthors.data.map(
+const authorEmails = computed(() => {
+  return manuscriptAuthors.map(
     author => author.data.author?.data.email ?? '',
   )
-}
-
-async function getManuscriptOwnerId(): Promise<number> {
-  const manuscriptRecord = await ManuscriptRecordService.find(
-    props.manuscriptRecordId,
-  )
-  return manuscriptRecord.data.user_id
-}
+})
 
 const loading = ref(false)
 async function submit() {
@@ -73,13 +56,13 @@ async function submit() {
     if (divisionManagerUserId?.value === null)
       return
 
-    const manuscriptRecord = await ManuscriptRecordService.submitForReview(
-      props.manuscriptRecordId,
+    const response = await ManuscriptRecordService.submitForReview(
+      manuscriptRecord.data.id,
       divisionManagerUserId.value,
     )
 
     loading.value = false
-    emit('submitted', manuscriptRecord)
+    emit('submitted', response)
   }
 }
 </script>
@@ -153,7 +136,7 @@ async function submit() {
             :label="$t('common.division-manager')"
             class="q-ma-md"
             :disabled-emails="authorEmails"
-            :disabled-ids="[ownerId]"
+            :disabled-ids="[manuscriptRecord.data.user_id]"
             :rules="[(val: number|null) => val !== null || $t('common.required')]"
           />
         </q-step>

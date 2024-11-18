@@ -637,7 +637,8 @@ async function generatePLS() {
       </div>
       <SubmitManuscriptDialog
         v-model="showSubmitDialog"
-        :manuscript-record-id="id"
+        :manuscript-record="manuscriptResource"
+        :manuscript-authors="manuscriptAuthorsCard?.manuscriptAuthors.data"
         @submitted="onSubmitted"
       />
     </q-card-actions>
