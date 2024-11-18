@@ -40,7 +40,7 @@ async function addManuscriptPeerReviewer() {
 </script>
 
 <template>
-  <BaseDialog :title="$t('manuscript-author-dialog.title')">
+  <BaseDialog :title="$t('manuscript-peer-review-dialog.title')">
     <q-form @submit="addManuscriptPeerReviewer">
       <div
         class="q-mx-md q-mt-lg text-body1 text-primary text-weight-medium"
@@ -53,6 +53,7 @@ async function addManuscriptPeerReviewer() {
       <AuthorSelect
         v-model="authorId"
         class="q-ma-md"
+        :label="$t('common.reviewer')"
         :disabled-author-ids="disabledAuthorIds"
         :rules="[(val: number|null) => val !== null || t('common.required')]"
       />
