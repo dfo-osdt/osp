@@ -266,7 +266,8 @@
     "protected-a-tooltip": "This information is Protected A",
     "review": "Review",
     "present": "present",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "reviewer": "Peer Reviewer"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -758,6 +759,13 @@
     "description": "Please enter the peer reviewers for this report. At least two subject matter experts must have conducted a peer review of the report. Note that a peer review for data reports and contactor reports is optional.",
     "peer-reviewer": "Peer-Reviewers",
     "no-reviewers": "No reviewers. Please add at least two if applicable for your report.",
-    "add-peer-reviewer": "Add a reviewer"
+    "add-peer-reviewer": "Add a reviewer",
+    "delete-peer-reviewer-confirm": "Are you sure you want to delete this peer reviewer?"
+  },
+  "manuscript-peer-reviewer-dialog": {
+    "instructions": "Search for the peer reviewer you'd want to add using their name or professional email. If you cannot find the author you are looking for, or their affiliation or email has changed, you can create a new author record."
+  },
+  "mannage-peer-review": {
+    "delete-peer-reviewer": "Delete Peer Reviewer"
   }
 }

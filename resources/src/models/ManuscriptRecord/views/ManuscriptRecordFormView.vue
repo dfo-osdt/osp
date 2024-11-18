@@ -12,7 +12,7 @@ import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
 import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue'
 import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue'
-import ManageManuscriptPeerReviewers from '@/models/ManuscriptPeerReviewer/components/ManageManuscriptPeerReviewers.vue'
+import ManageManuscriptPeerReviewersCard from '@/models/ManuscriptPeerReviewer/components/ManageManuscriptPeerReviewersCard.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import { QForm, useQuasar } from 'quasar'
 import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue'
@@ -45,6 +45,9 @@ const manuscriptAuthorsCard = ref<InstanceType<
 > | null>(null)
 const manuscriptFileManagementCard = ref<InstanceType<
     typeof ManuscriptFileManagementCard
+> | null>(null)
+const manuscriptPeerReviewersCard = ref<InstanceType<
+    typeof ManageManuscriptPeerReviewersCard
 > | null>(null)
 
 // watch if there is a change
@@ -353,9 +356,11 @@ async function generatePLS() {
       class="q-mb-lg"
       secondary
     />
-    <ManageManuscriptPeerReviewers
+    <ManageManuscriptPeerReviewersCard
       v-if="manuscriptResource?.data.type === 'secondary'"
+      ref="manuscriptPeerReviewersCard"
       :manuscript-record-id="id"
+      :manuscript-authors="manuscriptAuthorsCard?.manuscriptAuthors.data"
       :readonly="isManuscriptReadOnly"
       class="q-mb-lg"
       secondary

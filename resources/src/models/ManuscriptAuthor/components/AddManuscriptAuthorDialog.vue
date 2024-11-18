@@ -2,11 +2,11 @@
 import type {
   ManuscriptAuthorResource,
 } from '../ManuscriptAuthor'
+import BaseDialog from '@/components/BaseDialog.vue'
+import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
 import {
   ManuscriptAuthorService,
 } from '../ManuscriptAuthor'
-import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
-import BaseDialog from '@/components/BaseDialog.vue'
 
 const props = withDefaults(
   defineProps<{
