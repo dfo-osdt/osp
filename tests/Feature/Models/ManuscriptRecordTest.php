@@ -272,7 +272,7 @@ test('a user can mark their manuscript as submitted', function () {
 
 test('a user cannot submit their manuscript for review if they do not want an OGL but have provide no explanation', function () {
     $manuscript = ManuscriptRecord::factory()->filled()->create([
-        'do_not_apply_ogl' => true,
+        'apply_ogl' => false,
     ]);
 
     $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", [
