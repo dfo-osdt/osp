@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\Permissions\UserPermission;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Laravel Pulse view gate
         Gate::define('viewPulse', function ($user) {
-            return $user->can('view_pulse');
+            return $user->can(UserPermission::VIEW_PULSE);
         });
 
         // Add Spatie Health Checks
