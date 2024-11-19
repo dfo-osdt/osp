@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('manuscript_records', function (Blueprint $table) {
-            $table->boolean('do_not_apply_ogl')->default(false);
+            $table->boolean('apply_ogl')->default(true);
             $table->text('no_ogl_explanation')->nullable();
             $table->renameColumn('additional_information', 'public_interest_information');
         });

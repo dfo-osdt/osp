@@ -75,7 +75,7 @@ class ManuscriptRecordController extends Controller
             'relevant_to' => 'nullable|string',
             'public_interest_information' => 'nullable|string',
             'potential_public_interest' => 'boolean',
-            'do_not_apply_ogl' => 'boolean',
+            'apply_ogl' => 'boolean',
             'no_ogl_explanation' => 'nullable|string',
         ]);
 

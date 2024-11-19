@@ -83,7 +83,7 @@ const generalSectionStatus = computed(() => {
     return 'error'
 
   if (manuscript.type === 'secondary') {
-    if (manuscript.no_ogl_explanation === '' && manuscript.do_not_apply_ogl)
+    if (manuscript.no_ogl_explanation === '' && manuscript.apply_ogl)
       return 'incomplete'
   }
 
@@ -551,7 +551,7 @@ async function generatePLS() {
             :title="$t('mrf.no-ogl-explanation')"
             :disable="loading"
             :readonly="isManuscriptReadOnly"
-            :hide-editor="!manuscriptResource.data.do_not_apply_ogl"
+            :hide-editor="manuscriptResource.data.apply_ogl"
             required
             class="q-mb-md"
           >
@@ -569,16 +569,16 @@ async function generatePLS() {
               </template>
             </i18n-t>
             <div class="text-body2 text-primary text-weight-medium">
-              {{ $t('mrf.do_not_apply_ogl') }}
+              {{ $t('mrf.apply_ogl') }}
             </div>
             <YesNoBooleanOptionGroup
               v-model="
                 manuscriptResource.data
-                  .do_not_apply_ogl
+                  .apply_ogl
               "
               class="q-mb-md"
             />
-            <p v-if="manuscriptResource.data.do_not_apply_ogl">
+            <p v-if="!manuscriptResource.data.apply_ogl">
               {{ $t('mrf.ogl-provide-explanation') }}
             </p>
           </QuestionEditor>
