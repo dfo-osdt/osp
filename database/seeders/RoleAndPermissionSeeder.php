@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
+use App\Enums\Permissions\UserRole;
 
 class RoleAndPermissionSeeder extends Seeder
 {
@@ -20,38 +21,24 @@ class RoleAndPermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create author permissions
-        $authorPermissions = collect([
-            Permission::findOrCreate('create_manuscript_records'),
-            Permission::findOrCreate('create_publications'),
-            Permission::findOrCreate('create_authors'),
-            Permission::findOrCreate('update_authors'),
-            Permission::findOrCreate('create_organizations'),
-            Permission::findOrCreate('create_author_employments'),
-        ]);
+        $authorPermissions = collect(UserRole::AUTHOR->permissions())
+            ->map(fn($permission) => Permission::findOrCreate($permission));
 
-        $authorRole = Role::findOrCreate('author');
+        $authorRole = Role::findOrCreate(UserRole::AUTHOR->value);
         $authorRole->syncPermissions($authorPermissions);
 
-        // what permission does have RDS or DG have, add them here
-        // We also merge all author permissions so do not duplicate.
-        $directorPermissions = collect([
-            Permission::findOrCreate('withhold_and_complete_management_review'),
-        ])->merge($authorPermissions);
+        // create director permissions
+        $directorPermissions = collect(UserRole::DIRECTOR->permissions())
+            ->map(fn($permission) => Permission::findOrCreate($permission));
 
-        $directorRole = Role::findOrCreate('director');
+        $directorRole = Role::findOrCreate(UserRole::DIRECTOR->value);
         $directorRole->syncPermissions($directorPermissions);
 
-        // create initial admin user
-        $adminPermissions = collect([
-            Permission::findOrCreate('view_librarium'),
-            Permission::findOrCreate('view_telescope'),
-            Permission::findOrCreate('view_horizon'),
-            Permission::findOrCreate('view_pulse'),
-            Permission::findOrCreate('view_any_users'),
-            Permission::findOrCreate('administer_users'),
-        ]);
+        // create admin permissions
+        $adminPermissions = collect(UserRole::ADMIN->permissions())
+            ->map(fn($permission) => Permission::findOrCreate($permission));
 
-        $adminRole = Role::findOrCreate('admin');
+        $adminRole = Role::findOrCreate(UserRole::ADMIN->value);
         $adminRole->syncPermissions($adminPermissions);
     }
 }
