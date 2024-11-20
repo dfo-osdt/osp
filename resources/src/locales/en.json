@@ -522,7 +522,7 @@
     "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
     "functional-area-text": "In order to improve reporting on research outputs, please select the relevant functional area for this manuscript.",
     "no-ogl-explanation": "Report Licensing",
-    "no-ogl-explanation-text-field-text": "DFO is committed to the \"Open by Design and by Default\" principle of Open Science, ensuring that all DFO publications are made available under the latest version of the \"Open Government Licence - Canada\" whenever possible. The Open Government Licence - Canada should not be applied if there are conflicting Licensing obligations.",
+    "no-ogl-explanation-text-field-text": "DFO is committed to the \"Open by Design and by Default\" principle of Open Science, ensuring that all DFO publications are made available under the latest version of the \"{url}\" whenever possible. The Open Government Licence - Canada should not be applied if there are conflicting Licensing obligations.",
     "ogl-link": "Open Government Licence - Canada",
     "apply_ogl": "Should this report be licensed under the Open Government Licence - Canada?",
     "ogl-provide-explanation": "Since you answered \"No,\" please provide an explanation of why an Open Government License cannot be applied to your report."

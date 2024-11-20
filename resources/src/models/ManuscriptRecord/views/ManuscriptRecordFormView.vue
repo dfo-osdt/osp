@@ -83,7 +83,7 @@ const generalSectionStatus = computed(() => {
     return 'error'
 
   if (manuscript.type === 'secondary') {
-    if (manuscript.no_ogl_explanation === '' && manuscript.apply_ogl)
+    if (manuscript.no_ogl_explanation === '' && !manuscript.apply_ogl)
       return 'incomplete'
   }
 
