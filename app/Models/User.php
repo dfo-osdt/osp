@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Permissions\UserPermission;
 use App\Notifications\Authentication\PasswordResetNotification;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
@@ -206,7 +207,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->can('view_librarium');
+        return $this->can(UserPermission::VIEW_LIBRARIUM);
     }
 
     /**

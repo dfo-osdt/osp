@@ -34,4 +34,13 @@ enum UserRole: string
             ],
         };
     }
+
+    public function label(): string
+    {
+        return match($this) {
+            self::AUTHOR => 'Author',
+            self::DIRECTOR => 'Director',
+            self::ADMIN => 'Admin',
+        };
+    }
 }

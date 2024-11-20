@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\ManuscriptRecordStatus;
+use App\Enums\Permissions\UserPermission;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -59,7 +60,7 @@ class ManuscriptRecordPolicy
      */
     public function create(User $user)
     {
-        return $user->can('create_manuscript_records');
+        return $user->can(UserPermission::CREATE_MANUSCRIPT_RECORDS);
     }
 
     /**

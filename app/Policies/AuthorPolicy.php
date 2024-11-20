@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\UserPermission;
 use App\Models\Author;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -49,7 +50,7 @@ class AuthorPolicy
     {
         // this record isn't associated with a user,
         // and user can update authors.
-        if ($author->user_id === null && $user->can('update_authors')) {
+        if ($author->user_id === null && $user->can(UserPermission::UPDATE_AUTHORS)) {
             return true;
         }
 
