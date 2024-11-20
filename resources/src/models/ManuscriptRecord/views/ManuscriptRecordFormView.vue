@@ -536,6 +536,7 @@ async function generatePLS() {
                   .potential_public_interest
               "
               class="q-mb-md"
+              :disable="isManuscriptReadOnly"
             />
             <p>
               {{
@@ -577,6 +578,7 @@ async function generatePLS() {
                   .apply_ogl
               "
               class="q-mb-md"
+              :disable="isManuscriptReadOnly"
             />
             <p v-if="!manuscriptResource.data.apply_ogl">
               {{ $t('mrf.ogl-provide-explanation') }}
