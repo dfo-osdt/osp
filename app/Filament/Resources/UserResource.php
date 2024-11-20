@@ -35,15 +35,6 @@ class UserResource extends Resource
 		    Forms\Components\TextInput::make('email')
 					      ->Filled()
 					      ->rules(['required', 'string', 'email', new AuthorizeEmailDomain()]),
-		    Forms\Components\Actions::make([
-			Forms\Components\Actions\Action::make('email_verified_at')
-						       ->action(function (Forms\Get $get, Forms\Set $set) {
-							   $set('email_verified_at', false);
-						       }
-						       )
-			]
-							   ),
-
 		    Forms\Components\CheckboxList::make('roles')
 						 ->relationship(titleAttribute: 'name')
 						 ->default(['1'])
