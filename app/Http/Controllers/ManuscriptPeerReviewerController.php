@@ -39,11 +39,11 @@ class ManuscriptPeerReviewerController extends Controller
             'author_id' => 'required|exists:authors,id',
         ]);
 
-        if($manuscriptRecord->peerReviewers()->where('author_id', $validated['author_id'])->exists()) {
+        if ($manuscriptRecord->peerReviewers()->where('author_id', $validated['author_id'])->exists()) {
             throw ValidationException::withMessages(['author_id' => 'This author is already a peer reviewer for this manuscript']);
         }
 
-        if($manuscriptRecord->manuscriptAuthors()->where('author_id', $validated['author_id'])->exists()) {
+        if ($manuscriptRecord->manuscriptAuthors()->where('author_id', $validated['author_id'])->exists()) {
             throw ValidationException::withMessages(['author_id' => 'This author is already on the list of manuscript authors']);
         }
 
