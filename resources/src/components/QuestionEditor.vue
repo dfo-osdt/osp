@@ -55,6 +55,12 @@ function onPaste(e: ClipboardEvent) {
   })
   editor.value?.runCmd('insertHTML', cleanText)
 }
+
+watch(value, (newValue) => {
+  if (newValue === '<br>') {
+    value.value = ''
+  }
+})
 </script>
 
 <template>
