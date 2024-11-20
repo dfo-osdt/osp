@@ -10,7 +10,7 @@ enum UserRole: string
 
     public function permissions(): array
     {
-        return match($this) {
+        return match ($this) {
             self::AUTHOR => [
                 UserPermission::CREATE_MANUSCRIPT_RECORDS->value,
                 UserPermission::CREATE_PUBLICATIONS->value,
@@ -37,7 +37,7 @@ enum UserRole: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::AUTHOR => 'Author',
             self::DIRECTOR => 'Director',
             self::ADMIN => 'Admin',
