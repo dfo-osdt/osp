@@ -7,6 +7,41 @@ A web-based application to promote open science and track science publications w
 For now, we'll use spatie.be's excellent [guidelines](https://spatie.be/guidelines).
 Additional guidelines will be added here as we progress.
 
+## Get Started
+
+Before you begin, ensure you have the following prerequisites installed:
+
+- [PHP 8.3](https://www.php.net/) (see [php.net](https://www.php.net/))
+- [WSL](https://docs.microsoft.com/en-us/windows/wsl/install) if you are on Windows
+- [Redis](https://redis.io/)
+- [MySQL](https://www.mysql.com/) (to mimic production, though SQLite can be used for development)
+
+1. Install dependencies:
+
+    ```bash
+    composer install
+    pnpm install
+    ```
+
+2. Set up environment variables:
+
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+
+3. Run database migrations:
+
+    ```bash
+    php artisan migrate
+    ```
+
+4. Start the development servers:
+
+    ```bash
+    composer run dev
+    ```
+
 ## Built With
 
 This repo has both the front end and backend code. The front end is a SPA that consumes the API backend.
