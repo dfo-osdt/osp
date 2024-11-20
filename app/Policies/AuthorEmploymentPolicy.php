@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\UserPermission;
 use App\Models\Author;
 use App\Models\AuthorEmployment;
 use App\Models\User;
@@ -33,7 +34,7 @@ class AuthorEmploymentPolicy
             return false;
         }
 
-        return $user->can('create_author_employments');
+        return $user->can(UserPermission::CREATE_AUTHOR_EMPLOYMENTS);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
 use App\Models\Publication;
 use App\Models\User;
@@ -82,7 +83,7 @@ class PublicationPolicy
      */
     public function create(User $user)
     {
-        return $user->can('create_publications');
+        return $user->can(UserPermission::CREATE_PUBLICATIONS);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\UserPermission;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -16,7 +17,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view_any_users');
+        return $user->can(UserPermission::VIEW_ANY_USERS);
     }
 
     /**
@@ -49,7 +50,7 @@ class UserPolicy
     public function update(User $user, User $model)
     {
 
-        if ($user->can('administer_users')) {
+        if ($user->can(UserPermission::ADMINISTER_USERS)) {
             return true;
         }
 
