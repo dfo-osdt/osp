@@ -1,10 +1,10 @@
 import type { JournalResource } from '../Journal/Journal'
 import type { ManuscriptRecordResource } from '../ManuscriptRecord/ManuscriptRecord'
 import type { PublicationAuthorResource } from '../PublicationAuthor/PublicationAuthor'
-import type { MediaResource, Resource, ResourceList } from '../Resource'
+import type { MediaResource, MediaResourceList, Resource, ResourceList } from '../Resource'
 import type { UserResource } from '../User/User'
-import { SpatieQuery } from '@/api/SpatieQuery'
 import { http } from '@/api/http'
+import { SpatieQuery } from '@/api/SpatieQuery'
 
 export type PublicationStatus = 'accepted' | 'published'
 
@@ -70,8 +70,8 @@ export class PublicationService {
   /** Create a new publication */
   public static async create(data: PublicationCreate) {
     const response = await http.post<PublicationCreate, R>(
-            `api/publications`,
-            data,
+      `api/publications`,
+      data,
     )
     return response.data
   }
@@ -79,8 +79,8 @@ export class PublicationService {
   /** Update a publication */
   public static async update(id: number, data: Publication) {
     const response = await http.put<Publication, R>(
-            `api/publications/${id}`,
-            data,
+      `api/publications/${id}`,
+      data,
     )
     return response.data
   }
@@ -102,9 +102,9 @@ export class PublicationService {
   }
 
   /** Get PDF media resource - if it exits */
-  public static async getPDF(id: number) {
-    const response = await http.get<MediaResource>(
-            `api/publications/${id}/pdf`,
+  public static async listPDF(id: number) {
+    const response = await http.get<MediaResourceList>(
+      `api/publications/${id}/files`,
     )
     return response.data
   }
@@ -114,15 +114,21 @@ export class PublicationService {
     const formData = new FormData()
     formData.append('pdf', file)
     const response = await http.post<FormData, MediaResource>(
-            `api/publications/${id}/pdf`,
-            formData,
-            {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            },
+      `api/publications/${id}/files`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     )
     return response.data
+  }
+
+  /** Delete the PDF file from the publication */
+  public static async deletePDF(id: number, uuid: string) {
+    const response = await http.delete(`api/publications/${id}/files/${uuid}`)
+    return response.status === 204
   }
 }
 

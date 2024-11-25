@@ -267,7 +267,9 @@
     "review": "Revoir",
     "confirm": "Confirmer",
     "present": "présent",
-    "reviewer": "Évaluateur par les pairs"
+    "reviewer": "Évaluateur par les pairs",
+    "download": "Télécharger",
+    "copy": "Copie"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -349,6 +351,11 @@
     "unsaved-changes": {
       "message": "Vous avez des changements non enregistrés. \nÊtes-vous sûr de vouloir quitter?",
       "title": "Modifications non enregistrées"
+    },
+    "delete-publication-pdf": {
+      "message": "Cela supprimera le fichier de publication joint suivant : {file}",
+      "title": "Veuillez confirmer la suppression de ce fichier",
+      "success": "Le fichier de publication a été supprimé."
     }
   },
   "error-invalid-signature": {

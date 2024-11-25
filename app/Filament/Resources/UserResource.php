@@ -28,8 +28,8 @@ class UserResource extends Resource
 					  ->Filled()
 					  ->required(),
                 Forms\Components\TextInput::make('last_name')
-					  ->disabledOn('edit')
-					  ->Filled(),
+                    ->disabledOn('edit')
+                    ->Filled(),
                 Forms\Components\Section::make([
                     Forms\Components\TextInput::make('email')
 					      ->Filled()

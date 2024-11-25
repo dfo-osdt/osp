@@ -3,20 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PublicationStatus;
-use App\Http\Resources\MediaResource;
 use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
 use App\Rules\Doi;
 use App\Traits\PaginationLimitTrait;
-use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PublicationController extends Controller
 {
@@ -116,48 +114,6 @@ class PublicationController extends Controller
         $publication->update($validated);
 
         return $this->defaultResource($publication);
-    }
-
-    /** Attach a PDF file to this publication */
-    public function attachPDF(Request $request, Publication $publication): JsonResource
-    {
-        Gate::authorize('update', $publication);
-
-        $validated = $request->validate([
-            'pdf' => 'required|file|mimes:pdf',
-        ]);
-
-        $publication->addMedia($validated['pdf'])->toMediaCollection('publication');
-
-        return new MediaResource($publication->getPublicationFile('publication'));
-    }
-
-    /** return pdf media resource if it exists null response otherwise */
-    public function getPDFInfo(Request $request, Publication $publication): mixed
-    {
-        Gate::authorize('view', $publication);
-
-        $media = $publication->getPublicationFile('publication');
-
-        if ($media) {
-            return MediaResource::make($media);
-        }
-
-        return response()->noContent();
-    }
-
-    /** Download PDF attached to this publication - return NoContent if empty */
-    public function downloadPDF(Publication $publication): mixed
-    {
-        Gate::authorize('viewPdf', $publication);
-
-        $pdf = $publication->getPublicationFile();
-
-        if ($pdf) {
-            return $pdf;
-        } else {
-            throw new NotFoundHttpException('No PDF attached to this publication');
-        }
     }
 
     /**

@@ -24,6 +24,8 @@ class MediaResource extends JsonResource
             'mime_type' => $this->mime_type,
             'locked' => $this->getCustomProperty('locked', false),
             'sensitivity_label' => $this->getCustomProperty('sensitivity_label', SensitivityLabel::Unclassified),
+            'supplementary_file_type' => $this->when($this->hasCustomProperty('supplementary_file_type'), $this->getCustomProperty('supplementary_file_type')),
+            'description' => $this->when($this->hasCustomProperty('description'), $this->getCustomProperty('description')),
         ];
     }
 }

@@ -46,9 +46,19 @@ export interface Media {
   mime_type: string
   locked: boolean
   sensitivity_label: SensitivityLabel
+  supplementary_file_type?: SupplementaryFileType
+  description?: string
 }
 
 export type SensitivityLabel = 'Unclassified' | 'Protected A'
+export type SupplementaryFileType =
+  | 'manuscript_record_form'
+  | 'author_agreement'
+  | 'joint_copyright_agreement'
+  | 'preprint'
+  | 'authors_accepted_manuscript'
+  | 'errata'
+  | 'other'
 
 export type MediaResource = Resource<Media>
 export type MediaResourceList = Resource<Media[]>

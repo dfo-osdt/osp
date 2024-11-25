@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { QForm, type QRejectedEntry, useQuasar } from 'quasar'
-import { type PublicationResource, PublicationService } from '../Publication'
-import PublicationStatusBadge from '../components/PublicationStatusBadge.vue'
-import DoiInput from '../components/DoiInput.vue'
-import DoiLink from '../components/DoiLink.vue'
-import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import type { MediaResource } from '@/models/Resource'
 import ContentCard from '@/components/ContentCard.vue'
-import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import DateInput from '@/components/DateInput.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
+import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import ManagePublicationAuthorsCard from '@/models/PublicationAuthor/components/ManagePublicationAuthorsCard.vue'
-import type { MediaResource } from '@/models/Resource'
+import { QForm, type QRejectedEntry, useQuasar } from 'quasar'
+import DoiInput from '../components/DoiInput.vue'
+import DoiLink from '../components/DoiLink.vue'
+import PublicationFileManagementCard from '../components/PublicationFileManagementCard.vue'
+import PublicationStatusBadge from '../components/PublicationStatusBadge.vue'
+import { type PublicationResource, PublicationService } from '../Publication'
 
 const props = defineProps<{
   id: number
@@ -40,15 +41,19 @@ function markAsPublished() {
 onMounted(async () => {
   try {
     publication.value = await PublicationService.find(props.id)
-    publicationResource.value = await PublicationService.getPDF(props.id)
   }
   catch (error) {
-    console.log(error)
+    console.error(error)
     router.push({ name: 'notFound' })
   }
   finally {
     loading.value = false
   }
+})
+
+// permissions
+const canEdit = computed(() => {
+  return publication.value?.can?.update ?? false
 })
 
 // watch if there is a change
@@ -66,11 +71,6 @@ watch(
   { deep: true },
 )
 
-// permissions
-const canEdit = computed(() => {
-  return publication.value?.can?.update ?? false
-})
-
 // display elements
 const publicationYear = computed(() => {
   // if (publication.value?.data?.published_on === null) return 'Pending';
@@ -87,7 +87,6 @@ async function save() {
     return
 
   const valid = await generalInformationForm.value?.validate()
-  console.log('valid', valid)
 
   if (!valid)
     return
@@ -105,68 +104,12 @@ async function save() {
       })
     })
     .catch((e) => {
-      console.log(e)
+      console.error(e)
     })
     .finally(() => {
       loading.value = false
       isDirty.value = false
     })
-}
-
-// file upload
-const publicationResource = ref<MediaResource | null>(null)
-const publicationFile = ref<File | null>(null)
-const uploadingFile = ref(false)
-
-function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
-  console.log(rejectedEntries)
-  rejectedEntries.forEach((rejectedEntry) => {
-    if (rejectedEntry.failedPropValidation === 'max-file-size') {
-      $q.notify({
-        type: 'negative',
-        color: 'negative',
-        message: t('common.validation.file-size-is-too-large'),
-      })
-    }
-    else if (rejectedEntry.failedPropValidation === 'accept') {
-      $q.notify({
-        type: 'negative',
-        color: 'negative',
-        message: t('common.validation.file-type-is-not-accepted'),
-      })
-    }
-  })
-}
-
-async function upload() {
-  // if there is no manuscript file, return
-  if (publicationFile.value === null)
-    return
-
-  disableDirtyWatcher.value = true
-  uploadingFile.value = true
-
-  const response = await PublicationService.attachPDF(
-    publicationFile.value,
-    props.id,
-  )
-
-  publicationResource.value = response
-
-  uploadingFile.value = false
-  // clear file
-  publicationFile.value = null
-
-  $q.notify({
-    type: 'positive',
-    color: 'primary',
-    message: t('common.file-uploaded-successfully'),
-  })
-
-  // re-enable dirty watcher in 500 ms
-  setTimeout(() => {
-    disableDirtyWatcher.value = false
-  }, 500)
 }
 </script>
 
@@ -364,97 +307,10 @@ async function upload() {
           />
         </QForm>
       </ContentCard>
-      <ContentCard class="q-mb-md" secondary>
-        <template #title>
-          {{
-            $t('publication-page.attach-publication')
-          }}
-        </template>
-        <p>
-          {{ $t('publication-page.attach-pub-details') }}
-        </p>
-        <template v-if="publicationResource?.data">
-          <q-card outlined class="q-mb-md">
-            <q-list>
-              <q-item>
-                <q-item-section>
-                  <q-item-label>
-                    {{
-                      publicationResource.data.file_name
-                    }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{
-                      publicationResource.data
-                        .size_bytes / 1000
-                    }}
-                    KB uploaded on
-                    {{
-                      new Date(
-                        publicationResource.data.created_at,
-                      ).toLocaleString()
-                    }}
-                  </q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <q-btn
-                    v-if="publication.data.can_view_pdf"
-                    icon="mdi-file-download-outline"
-                    color="primary"
-                    :loading="loading"
-                    :href="`api/publications/${id}/pdf/download`"
-                  >
-                    <q-tooltip>
-                      {{ $t('common.download') }}
-                    </q-tooltip>
-                  </q-btn>
-                  <div v-else>
-                    <span class="q-mr-sm">{{
-                      $t(
-                        'common.publication-under-embargo',
-                      )
-                    }}</span>
-                    <q-icon
-                      name="mdi-download-lock"
-                      size="sm"
-                    />
-                  </div>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-card>
-        </template>
-        <q-file
-          v-if="publication?.can?.update"
-          v-model="publicationFile"
-          outlined
-          use-chips
-          :label="
-            publicationResource?.data
-              ? 'Upload a new version of the publication'
-              : 'Upload the publication'
-          "
-          hint="Only PDF files are accepted. Maximum file size is 10MB."
-          accept="application/pdf"
-          max-file-size="10000000"
-          counter
-          :loading="uploadingFile"
-          @rejected="onFileRejected"
-        >
-          <template #prepend>
-            <q-icon name="mdi-file-pdf-box" />
-          </template>
-          <template #append>
-            <q-btn
-              color="primary"
-              :loading="uploadingFile"
-              :disable="!publicationFile"
-              :label="$t('common.upload')"
-              @click="upload"
-            />
-          </template>
-        </q-file>
-      </ContentCard>
+      <PublicationFileManagementCard
+        v-if="publication"
+        :publication="publication"
+      />
       <q-card-actions align="right">
         <q-btn
           v-if="publication.data.status === 'accepted' && canEdit"

@@ -160,7 +160,6 @@ export class ManuscriptRecordService {
 
   /**
    * Delete a PDF file associated with this manuscript
-   * If no uuid is provided, the manuscript's manuscript_pdf will be used.
    */
   public static async deletePDF(id: number, uuid: string) {
     const response = await http.delete(
