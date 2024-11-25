@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Contracts\Fundable;
 use App\Enums\PublicationStatus;
 use App\Traits\FundableTrait;
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +16,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Publication extends Model implements Fundable, HasMedia
 {
@@ -84,12 +87,39 @@ class Publication extends Model implements Fundable, HasMedia
             ->acceptsMimeTypes(['application/pdf']);
     }
 
+    public function addPublicationFile($file, $preserveOriginal = false): Media
+    {
+        return $this->addMedia($file)
+            ->preservingOriginal($preserveOriginal)
+            ->toMediaCollection('publication');
+    }
+
     /**
      * Get publication file media model.
      */
-    public function getPublicationFile()
+    public function getPublicationFile($uuid)
     {
-        return $this->getMedia('publication')->last();
+        return $this->getMedia('publication')->where('uuid', $uuid)->first();
+    }
+
+    /**
+     * Delete publication file media model.
+     */
+    public function deletePublicationFile($uuid, $force = false): void
+    {
+        $media = $this->getPublicationFile($uuid);
+        if (! $media) {
+            throw new FileNotFoundException('File not found.');
+        }
+        if ($force) {
+            $media->delete();
+
+            return;
+        }
+        if ($media->getCustomProperty('locked', false)) {
+            throw new Exception('Cannot delete locked file.');
+        }
+        $media->delete();
     }
 
     /** Is the publication under embargo? */

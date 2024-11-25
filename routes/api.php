@@ -24,6 +24,7 @@ use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PublicationAuthorController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\PublicationFileController;
 use App\Http\Controllers\PublicationFundingSourceController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserController;
@@ -195,9 +196,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/publications/{publication}', 'show');
         Route::put('/publications/{publication}', 'update');
         Route::post('/publications', 'store');
-        Route::post('/publications/{publication}/pdf', 'attachPdf');
-        Route::get('/publications/{publication}/pdf', 'getPDFInfo');
-        Route::get('/publications/{publication}/pdf/download', 'downloadPdf');
+    });
+
+    Route::controller(PublicationFileController::class)->group(function () {
+        Route::get('/publications/{publication}/files', 'index');
+        Route::post('/publications/{publication}/files', 'store');
+        Route::get('/publications/{publication}/files/{uuid}', 'show');
+        Route::delete('/publications/{publication}/files/{uuid}', 'destroy');
     });
 
     Route::controller(PublicationAuthorController::class)->group(function () {

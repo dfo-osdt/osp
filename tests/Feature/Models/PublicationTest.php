@@ -53,7 +53,7 @@ test('a user can create a new publication without a manuscript attached', functi
     $response = $this->actingAs($user)->postJson('/api/publications', [
         'status' => 'published',
         'title' => 'Test Publication',
-        'doi' => '10.1234/1234',
+        'doi' => 'https://doi.org/10.1234/1234',
         'is_open_access' => true,
         'journal_id' => $journal->id,
         'accepted_on' => '2021-01-01',
@@ -74,7 +74,7 @@ test('a user cannot create a publication with an invalid DOI', function () {
 
     $response = $this->actingAs($user)->postJson('/api/publications', [
         'title' => 'Test Publication',
-        'doi' => '10s.1234/1234',
+        'doi' => 'https://doi.org/10s.1234/1234',
         'is_open_access' => true,
         'journal_id' => $journal->id,
         'accepted_on' => '2021-01-01',
@@ -105,7 +105,7 @@ test('a user can update their publication', function () {
 
     $response = $this->actingAs($user)->putJson('/api/publications/'.$publication->id, [
         'title' => 'Updated Publication',
-        'doi' => '10.1234/1234',
+        'doi' => 'https://doi.org/10.1234/1234',
         'is_open_access' => true,
         'accepted_on' => '2021-01-01',
         'published_on' => '2021-03-01',
@@ -200,22 +200,39 @@ test('a user can attach a new publication pdf to their publication', function ()
     // upload pdf
     $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
 
-    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/pdf', [
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/files', [
         'pdf' => $file,
     ]);
 
-    $response->assertOk();
+    $response->assertCreated();
+    expect($response->json('data.file_name'))->toBe('test.pdf');
+    expect($response->json('data.uuid'))->toBeString();
     //expect($response->json('data.publication_pdf'))->not()->toBeNull();
 
+    $uuid = $response->json('data.uuid');
+
     // check that user can see the pdf resrouce
-    $response = $this->actingAs($user)->get('/api/publications/'.$publication->id.'/pdf');
+    $response = $this->actingAs($user)->get("/api/publications/{$publication->id}/files/{$uuid}");
     $response->assertOk();
-    ray($response->json());
     expect($response->json('data.file_name'))->toBe('test.pdf');
 
     // check that user can download the pdf
-    $response = $this->actingAs($user)->get('/api/publications/'.$publication->id.'/pdf');
+    $response = $this->actingAs($user)->get("/api/publications/{$publication->id}/files/{$uuid}?download=true");
+    $response->assertDownload('test.pdf');
+
+    // can add another pdf
+    $file = UploadedFile::fake()->createWithContent('test2.pdf', $fakePdfContent)->size(1000);
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/files', [
+        'pdf' => $file,
+    ]);
+
+    $response->assertCreated();
+    expect($response->json('data.file_name'))->toBe('test2.pdf');
+
+    // check that user can list the pdfs
+    $response = $this->actingAs($user)->get("/api/publications/{$publication->id}/files");
     $response->assertOk();
+    $response->assertJsonCount(2, 'data');
 });
 
 test('a regular user can only view a publication if it has been published', function () {

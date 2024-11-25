@@ -143,7 +143,7 @@ PDF;
     $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/files/{$uuid}")->assertOk();
     expect($response->json('data.file_name'))->toBe('test.pdf');
 
-    // upload a new pdf - it should replace the old one
+    // upload a new pdf - it should be added to the list
     $file = UploadedFile::fake()->createWithContent('test2.pdf', $fakePdfContent)->size(1000);
     $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
         'pdf' => $file,

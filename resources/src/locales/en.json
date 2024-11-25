@@ -267,7 +267,9 @@
     "review": "Review",
     "present": "present",
     "confirm": "Confirm",
-    "reviewer": "Peer Reviewer"
+    "reviewer": "Peer Reviewer",
+    "download": "Download",
+    "copy": "Copy"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -349,6 +351,11 @@
     "unsaved-changes": {
       "message": "You have unsaved changes. Are you sure you want to leave?",
       "title": "Unsaved Changes"
+    },
+    "delete-publication-pdf": {
+      "message": "This will delete the following attached publicaiton file: {file}",
+      "title": "Please confirm deletion of this file",
+      "success": "The publication file was deleted."
     }
   },
   "error-invalid-signature": {
