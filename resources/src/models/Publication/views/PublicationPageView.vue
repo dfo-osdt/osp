@@ -11,6 +11,7 @@ import DoiInput from '../components/DoiInput.vue'
 import DoiLink from '../components/DoiLink.vue'
 import PublicationFileManagementCard from '../components/PublicationFileManagementCard.vue'
 import PublicationStatusBadge from '../components/PublicationStatusBadge.vue'
+import PublicationSupplementaryFileManagementCard from '../components/PublicationSupplementaryFileManagementCard.vue'
 import { type PublicationResource, PublicationService } from '../Publication'
 
 const props = defineProps<{
@@ -308,6 +309,10 @@ async function save() {
         </QForm>
       </ContentCard>
       <PublicationFileManagementCard
+        v-if="publication"
+        :publication="publication"
+      />
+      <PublicationSupplementaryFileManagementCard
         v-if="publication"
         :publication="publication"
       />

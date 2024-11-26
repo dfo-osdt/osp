@@ -638,7 +638,8 @@
     "publication-date-pending": "Date de publication en attente",
     "publication-status": "Statut de publication",
     "publication-updated-successfully": "Publication mise à jour avec succès",
-    "title": "Publication"
+    "title": "Publication",
+    "attach-supplementary-files": "Joindre des fichiers supplémentaires"
   },
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",
