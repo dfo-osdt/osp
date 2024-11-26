@@ -190,6 +190,7 @@ declare global {
   const useFavicon: typeof import('@vueuse/core')['useFavicon']
   const useFetch: typeof import('@vueuse/core')['useFetch']
   const useFileDialog: typeof import('@vueuse/core')['useFileDialog']
+  const useFileRejectionHandler: typeof import('./composables/useFileRejectionHandler')['useFileRejectionHandler']
   const useFileSystemAccess: typeof import('@vueuse/core')['useFileSystemAccess']
   const useFocus: typeof import('@vueuse/core')['useFocus']
   const useFocusWithin: typeof import('@vueuse/core')['useFocusWithin']
@@ -520,6 +521,7 @@ declare module 'vue' {
     readonly useFavicon: UnwrapRef<typeof import('@vueuse/core')['useFavicon']>
     readonly useFetch: UnwrapRef<typeof import('@vueuse/core')['useFetch']>
     readonly useFileDialog: UnwrapRef<typeof import('@vueuse/core')['useFileDialog']>
+    readonly useFileRejectionHandler: UnwrapRef<typeof import('./composables/useFileRejectionHandler')['useFileRejectionHandler']>
     readonly useFileSystemAccess: UnwrapRef<typeof import('@vueuse/core')['useFileSystemAccess']>
     readonly useFocus: UnwrapRef<typeof import('@vueuse/core')['useFocus']>
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>

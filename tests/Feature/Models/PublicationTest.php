@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\PublicationStatus;
+use App\Enums\SupplementaryFileType;
 use App\Models\Journal;
 use App\Models\Publication;
 use App\Models\User;
@@ -255,4 +256,64 @@ test('a user that can see the manuscript can see the publication', function () {
     $user = $publication->manuscriptRecord->managementReviewSteps->first()->user;
     $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
     $response->assertOk();
+});
+
+test('a user can manage supplementary files for their publication record', function () {
+    $publication = Publication::factory()->create();
+    $user = $publication->user;
+
+    $fakePdfContent = <<<'PDF'
+        %PDF-1.4
+        1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+        2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
+        3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
+        xref
+        0 4
+        0000000000 65535 f
+        0000000009 00000 n
+        0000000052 00000 n
+        0000000101 00000 n
+        trailer<</Size 4/Root 1 0 R>>
+        startxref
+        178
+        %%EOF
+        PDF;
+
+    // upload pdf
+    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
+
+    // can't do it if wrong user
+    $response = $this->actingAs(User::factory()->create())->postJson('/api/publications/'.$publication->id.'/supplementary-files', [
+        'pdf' => $file,
+        'supplementary_file_type' => SupplementaryFileType::MANUSCRIPT_RECORD_FORM->value,
+        'description' => 'Test Description',
+    ]);
+
+    $response->assertForbidden();
+
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/supplementary-files', [
+        'pdf' => $file,
+        'supplementary_file_type' => SupplementaryFileType::MANUSCRIPT_RECORD_FORM->value,
+        'description' => 'Test Description',
+    ]);
+
+    $response->assertCreated();
+    $uuid = $response->json('data.uuid');
+
+    // list the files
+    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id.'/supplementary-files');
+    $response->assertOk();
+    $response->assertJsonCount(1, 'data');
+
+    $response2 = $this->actingAs($user)->get("/api/publications/{$publication->id}/supplementary-files/{$uuid}?download=true");
+    $response2->assertDownload('test.pdf');
+
+    // can't delete if wrong user
+    $response = $this->actingAs(User::factory()->create())->deleteJson("/api/publications/{$publication->id}/supplementary-files/{$uuid}");
+    $response->assertForbidden();
+
+    // delete the file
+    $response = $this->actingAs($user)->deleteJson("/api/publications/{$publication->id}/supplementary-files/{$uuid}");
+    $response->assertNoContent();
+
 });

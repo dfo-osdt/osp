@@ -39,7 +39,8 @@ class PublicationSupplementaryFileController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $media = $publication->addSupplementaryFile($validated['pdf'], $validated['supplementary_file_type'], $validated['description'] ?? null);
+        $type = SupplementaryFileType::tryFrom($validated['supplementary_file_type']);
+        $media = $publication->addSupplementaryFile($validated['pdf'], $type, $validated['description'] ?? null);
 
         activity()
             ->performedOn($publication)
@@ -55,12 +56,13 @@ class PublicationSupplementaryFileController extends Controller
      */
     public function show(Request $request, Publication $publication, string $uuid)
     {
+
         Gate::authorize('view', $publication);
 
         $media = $publication->getSupplementaryFile($uuid);
 
         $download = $request->query('download', false);
-        if ($download && Gate::allow('viewSupplementaryPdf', $publication, $media)) {
+        if ($download && Gate::allows('downloadMedia', [$publication, $media])) {
             return $media;
         }
 
@@ -84,5 +86,7 @@ class PublicationSupplementaryFileController extends Controller
                 'message' => 'This file is locked.',
             ], 403);
         }
+
+        return response()->noContent();
     }
 }

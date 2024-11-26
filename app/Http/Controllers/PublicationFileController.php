@@ -67,7 +67,7 @@ class PublicationFileController extends Controller
         $media = $publication->getPublicationFile($uuid);
 
         $download = $request->query('download', false);
-        if ($download && Gate::allows('downloadMedia', [$publication,$media])) {
+        if ($download && Gate::allows('downloadMedia', [$publication, $media])) {
             return $media;
         }
 
@@ -91,5 +91,7 @@ class PublicationFileController extends Controller
                 'message' => 'This file is locked.',
             ], 403);
         }
+
+        return response()->noContent();
     }
 }
