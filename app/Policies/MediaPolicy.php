@@ -9,11 +9,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 /**
  * This policy class will be used to route to the correct policy
  * of the model to which it is associated.
- *
  */
 class MediaPolicy
 {
-
     public function update(User $user, Media $media)
     {
         return Gate::allows('updateMedia', [$media->model, $media]);
@@ -28,6 +26,4 @@ class MediaPolicy
     {
         return Gate::allows('downloadMedia', [$media->model, $media]);
     }
-
-
 }

@@ -5,7 +5,7 @@ import FormSectionStatusIcon, {
   type FormSectionStatus,
 } from '@/components/FormSectionStatusIcon.vue'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
-import { type QRejectedEntry, useQuasar } from 'quasar'
+import { useQuasar } from 'quasar'
 import {
   type ManuscriptRecordResource,
   ManuscriptRecordService,
@@ -16,7 +16,7 @@ const props = defineProps<{
 }>()
 const { t } = useI18n()
 const $q = useQuasar()
-
+const { onFileRejected } = useFileRejectionHandler()
 const maxFileSizeMB = 50
 
 const manuscriptFiles: Ref<MediaResourceList | null> = ref(null)
@@ -51,25 +51,6 @@ defineExpose({
   sectionStatus,
   getFiles,
 })
-
-function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
-  rejectedEntries.forEach((rejectedEntry) => {
-    if (rejectedEntry.failedPropValidation === 'max-file-size') {
-      $q.notify({
-        type: 'negative',
-        color: 'negative',
-        message: t('common.validation.file-size-is-too-large'),
-      })
-    }
-    else if (rejectedEntry.failedPropValidation === 'accept') {
-      $q.notify({
-        type: 'negative',
-        color: 'negative',
-        message: t('common.validation.file-type-is-not-accepted'),
-      })
-    }
-  })
-}
 
 const displayFileUpload = computed(() => {
   const m = props.manuscript.data

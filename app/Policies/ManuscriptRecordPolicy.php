@@ -218,7 +218,6 @@ class ManuscriptRecordPolicy
         return $user->id === $manuscriptRecord->user_id;
     }
 
-
     public function updateMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)
     {
         return $this->update($user, $manuscriptRecord);
@@ -226,9 +225,10 @@ class ManuscriptRecordPolicy
 
     public function deleteMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)
     {
-        if($media->getCustomProperty('locked') === true) {
+        if ($media->getCustomProperty('locked') === true) {
             return false;
         }
+
         return $this->update($user, $manuscriptRecord);
     }
 
@@ -236,5 +236,4 @@ class ManuscriptRecordPolicy
     {
         return $this->view($user, $manuscriptRecord);
     }
-
 }

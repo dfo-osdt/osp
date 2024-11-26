@@ -9,7 +9,6 @@ use App\Enums\SupplementaryFileType;
 use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PublicationPolicy
@@ -86,8 +85,8 @@ class PublicationPolicy
         }
 
         //if it's a publication file and not under embargo, then it can be downloaded
-        if($media->collection_name === MediaCollection::PUBLICATION->value) {
-            return !$publication->isUnderEmbargo();
+        if ($media->collection_name === MediaCollection::PUBLICATION->value) {
+            return ! $publication->isUnderEmbargo();
         }
 
         return false;
@@ -102,7 +101,6 @@ class PublicationPolicy
     {
         return $this->update($user, $publication);
     }
-
 
     /**
      * Determine whether the user can create models.

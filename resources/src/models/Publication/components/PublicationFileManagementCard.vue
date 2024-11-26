@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Media, MediaResourceList } from '@/models/Resource'
 import ContentCard from '@/components/ContentCard.vue'
-import { type QRejectedEntry, useQuasar } from 'quasar'
+import { useQuasar } from 'quasar'
 import { type PublicationResource, PublicationService } from '../Publication'
 
 const props = defineProps<{
@@ -13,6 +13,7 @@ const { t } = useI18n()
 const publicationResourceList = ref<MediaResourceList | null>(null)
 const publicationFile = ref<File | null>(null)
 const uploadingFile = ref(false)
+const { onFileRejected } = useFileRejectionHandler()
 
 onMounted(async () => {
   await getFiles()
@@ -21,26 +22,6 @@ onMounted(async () => {
 async function getFiles() {
   PublicationService.listPDF(props.publication.data.id).then((response) => {
     publicationResourceList.value = response
-  })
-}
-
-function onFileRejected(rejectedEntries: QRejectedEntry[]): void {
-  console.error(rejectedEntries)
-  rejectedEntries.forEach((rejectedEntry) => {
-    if (rejectedEntry.failedPropValidation === 'max-file-size') {
-      $q.notify({
-        type: 'negative',
-        color: 'negative',
-        message: t('common.validation.file-size-is-too-large'),
-      })
-    }
-    else if (rejectedEntry.failedPropValidation === 'accept') {
-      $q.notify({
-        type: 'negative',
-        color: 'negative',
-        message: t('common.validation.file-type-is-not-accepted'),
-      })
-    }
   })
 }
 
@@ -102,7 +83,7 @@ async function deleteFile(publicationResource: Media) {
     </p>
     <template v-if="publicationResourceList?.data">
       <q-card outlined class="q-mb-md">
-        <q-list>
+        <q-list separator>
           <q-item v-for="publicationResource in publicationResourceList.data" :key="publicationResource.data.uuid">
             <q-item-section>
               <q-item-label>
@@ -128,6 +109,7 @@ async function deleteFile(publicationResource: Media) {
                   v-if="publicationResource.can?.delete"
                   icon="mdi-delete-outline"
                   color="negative"
+                  outline
                   class="q-mr-sm"
                   @click="deleteFile(publicationResource.data)"
                 />

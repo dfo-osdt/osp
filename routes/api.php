@@ -19,13 +19,13 @@ use App\Http\Controllers\ManuscriptRecordSharingController;
 use App\Http\Controllers\OhDear\CheckStatusPageController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\FullFlowController;
-use App\Http\Controllers\Orcid\ImplicitFlowController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PublicationAuthorController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicationFileController;
 use App\Http\Controllers\PublicationFundingSourceController;
+use App\Http\Controllers\PublicationSupplementaryFileController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManagementReviewStepsController;
@@ -55,10 +55,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/user/invitations', 'invitations');
     });
 
-    // ORCID OAuth routes - only one of these flows should be used.
-    // Routes for Implicit Flow
-    // Route::post('/user/orcid/verify', ImplicitFlowController::class);
-    // Route::get('/user/orcid/verify', [ImplicitFlowController::class, 'redirect']);
     // Routes for 3-legged OAuth flow
     Route::get('/user/orcid/verify', [FullFlowController::class, 'redirect']);
     Route::post('/user/orcid/revoke', RevokeTokenController::class);
@@ -203,6 +199,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/publications/{publication}/files', 'store');
         Route::get('/publications/{publication}/files/{uuid}', 'show');
         Route::delete('/publications/{publication}/files/{uuid}', 'destroy');
+    });
+
+    Route::controller(PublicationSupplementaryFileController::class)->group(function () {
+        Route::get('/publications/{publication}/supplementary-files', 'index');
+        Route::post('/publications/{publication}/supplementary-files', 'store');
+        Route::get('/publications/{publication}/supplementary-files/{uuid}', 'show');
+        Route::delete('/publications/{publication}/supplementary-files/{uuid}', 'destroy');
     });
 
     Route::controller(PublicationAuthorController::class)->group(function () {
