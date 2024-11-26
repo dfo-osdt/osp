@@ -2,11 +2,15 @@
 
 namespace App\Policies;
 
+use App\Enums\MediaCollection;
 use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
+use App\Enums\SupplementaryFileType;
 use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PublicationPolicy
 {
@@ -54,27 +58,51 @@ class PublicationPolicy
     }
 
     /**
-     * Determine whether the user can view the pdf of the publication
+     * Determine whether the user can download the given media.
      */
-    public function viewPdf(User $user, Publication $publication)
+    public function downloadMedia(User $user, Publication $publication, Media $media): bool
     {
+
         if ($publication->user_id == $user->id) {
             return true;
         }
 
-        // if the user is an author on the publication, then they can view it
+        if ($media->collection_name == MediaCollection::SUPPLEMENTARY_FILE->value && $publication->status == PublicationStatus::PUBLISHED) {
+            $allowedSupplementaryFiles = [SupplementaryFileType::PREPRINT->value];
+            if ($media->getCustomProperty('supplementary_file_type') && in_array($media->getCustomProperty('supplementary_file_type'), $allowedSupplementaryFiles)) {
+                return true;
+            }
+        }
+
+        // if the user is an author on the publication, then they can download it
         $users = $publication->publicationAuthors()->with('author')->get()->pluck('author.user_id');
         if ($users->contains($user->id)) {
             return true;
         }
 
-        // if the publication has a manuscript record, then the users that can view it, can view this publication
+        // if the publication has a manuscript record, then the users that can view it, can download
         if ($publication->manuscript_record_id) {
             return $user->can('view', $publication->manuscriptRecord);
         }
 
-        return ! $publication->isUnderEmbargo();
+        //if it's a publication file and not under embargo, then it can be downloaded
+        if($media->collection_name === MediaCollection::PUBLICATION->value) {
+            return !$publication->isUnderEmbargo();
+        }
+
+        return false;
     }
+
+    public function updateMedia(User $user, Publication $publication, Media $media)
+    {
+        return $this->update($user, $publication);
+    }
+
+    public function deleteMedia(User $user, Publication $publication, Media $media)
+    {
+        return $this->update($user, $publication);
+    }
+
 
     /**
      * Determine whether the user can create models.

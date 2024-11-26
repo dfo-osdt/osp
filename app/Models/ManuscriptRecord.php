@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\Fundable;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Enums\MediaCollection;
 use App\Enums\SensitivityLabel;
 use App\Models\Concerns\HasUlid;
 use App\Traits\FundableTrait;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -153,7 +155,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
      */
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('manuscript')
+        $this->addMediaCollection(MediaCollection::MANUSCRIPT->value)
             ->acceptsMimeTypes(['application/pdf']);
     }
 
@@ -162,7 +164,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
      */
     public function getLastManuscriptFile()
     {
-        return $this->getMedia('manuscript')->last();
+        return $this->getMedia(MediaCollection::MANUSCRIPT->value)->last();
     }
 
     /**
@@ -170,7 +172,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
      */
     public function getManuscriptFiles()
     {
-        return $this->getMedia('manuscript');
+        return $this->getMedia(MediaCollection::MANUSCRIPT->value);
     }
 
     /**
@@ -186,13 +188,13 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
                 'sensitivity_label' => SensitivityLabel::ProtectedA,
             ])
             ->preservingOriginal($preserveOriginal)
-            ->toMediaCollection('manuscript');
+            ->toMediaCollection(MediaCollection::MANUSCRIPT->value);
 
     }
 
     public function getManuscriptFile($uuid)
     {
-        return $this->getMedia('manuscript')->where('uuid', $uuid)->first();
+        return $this->getMedia(MediaCollection::MANUSCRIPT->value)->where('uuid', $uuid)->first();
     }
 
     /**
@@ -200,7 +202,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
      */
     public function deleteManuscriptFile($uuid, $force = false)
     {
-        $media = $this->getMedia('manuscript')->where('uuid', $uuid)->first();
+        $media = $this->getMedia(MediaCollection::MANUSCRIPT->value)->where('uuid', $uuid)->first();
         if (! $media) {
             throw new FileNotFoundException('File not found.');
         }
@@ -236,7 +238,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
      */
     public function validateIsFilled(bool $noExceptions = false): bool
     {
-        $validator = \Validator::make($this->toArray(), [
+        $validator = Validator::make($this->toArray(), [
             'title' => 'required',
             'abstract' => 'required',
             'pls' => 'required',

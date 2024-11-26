@@ -1,6 +1,7 @@
 interface ModelPermissions {
   update?: boolean
   delete?: boolean
+  download?: boolean
 }
 
 export interface Meta {
@@ -61,4 +62,4 @@ export type SupplementaryFileType =
   | 'other'
 
 export type MediaResource = Resource<Media>
-export type MediaResourceList = Resource<Media[]>
+export type MediaResourceList = Resource<MediaResource[]>

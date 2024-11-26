@@ -7,6 +7,7 @@ use App\Enums\Permissions\UserPermission;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ManuscriptRecordPolicy
 {
@@ -216,4 +217,24 @@ class ManuscriptRecordPolicy
     {
         return $user->id === $manuscriptRecord->user_id;
     }
+
+
+    public function updateMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)
+    {
+        return $this->update($user, $manuscriptRecord);
+    }
+
+    public function deleteMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)
+    {
+        if($media->getCustomProperty('locked') === true) {
+            return false;
+        }
+        return $this->update($user, $manuscriptRecord);
+    }
+
+    public function downloadMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)
+    {
+        return $this->view($user, $manuscriptRecord);
+    }
+
 }
