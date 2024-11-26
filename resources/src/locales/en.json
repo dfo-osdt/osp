@@ -353,7 +353,7 @@
       "title": "Unsaved Changes"
     },
     "delete-publication-pdf": {
-      "message": "This will delete the following attached publicaiton file: {file}",
+      "message": "This will delete the following attached publication file: {file}",
       "title": "Please confirm deletion of this file",
       "success": "The publication file was deleted."
     }
@@ -638,7 +638,9 @@
     "publication-date-pending": "Publication Date Pending",
     "publication-status": "Publication Status",
     "publication-updated-successfully": "Publication updated successfully",
-    "title": "Publication"
+    "title": "Publication",
+    "attach-supplementary-files": "Attach Supplementary Files",
+    "attach-supplementary-files-details": "description here.."
   },
   "publications-view": {
     "all-published-publications-details": "All published publications",

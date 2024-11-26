@@ -1,7 +1,7 @@
 import type { JournalResource } from '../Journal/Journal'
 import type { ManuscriptRecordResource } from '../ManuscriptRecord/ManuscriptRecord'
 import type { PublicationAuthorResource } from '../PublicationAuthor/PublicationAuthor'
-import type { MediaResource, MediaResourceList, Resource, ResourceList } from '../Resource'
+import type { MediaResource, MediaResourceList, Resource, ResourceList, SupplementaryFileType } from '../Resource'
 import type { UserResource } from '../User/User'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
@@ -128,6 +128,37 @@ export class PublicationService {
   /** Delete the PDF file from the publication */
   public static async deletePDF(id: number, uuid: string) {
     const response = await http.delete(`api/publications/${id}/files/${uuid}`)
+    return response.status === 204
+  }
+
+  public static async listSupplementaryFiles(id: number) {
+    const response = await http.get<MediaResourceList>(
+      `api/publications/${id}/supplementary-files`,
+    )
+    return response.data
+  }
+
+  public static async attachSupplementaryFile(file: File, id: number, type: SupplementaryFileType, desc: string | null = null) {
+    const formData = new FormData()
+    formData.append('pdf', file)
+    formData.append('supplementary_file_type', type)
+    if (desc) {
+      formData.append('description', desc)
+    }
+    const response = await http.post<FormData, MediaResource>(
+      `api/publications/${id}/supplementary-files`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
+    return response.data
+  }
+
+  public static async deleteSupplementaryFile(id: number, uuid: string) {
+    const response = await http.delete(`api/publications/${id}/supplementary-files/${uuid}`)
     return response.status === 204
   }
 }
