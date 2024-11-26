@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Permissions\UserRole;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use App\Rules\AuthorizeEmailDomain;
@@ -25,9 +26,9 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('first_name')
-                    ->disabledOn('edit')
-                    ->Filled()
-                    ->required(),
+					  ->disabledOn('edit')
+					  ->Filled()
+					  ->required(),
                 Forms\Components\TextInput::make('last_name')
 					  ->disabledOn('edit')
 					  ->Filled(),
@@ -36,12 +37,12 @@ class UserResource extends Resource
 					      ->Filled()
 					      ->rules(['required', 'string', 'email', new AuthorizeEmailDomain()]),
 		    Forms\Components\CheckboxList::make('roles')
-						 ->relationship(titleAttribute: 'name')
-						 ->default(['1'])
-						 ->options([
-						     '3' => 'Admin',
-						     '2' => 'Director',
-						 ]),
+						 ->label('Roles')
+						 ->options(UserRole::class)
+						 ->afterStateHydrated(function ($component, $state) {
+						     // Prepopulate the roles based on what is passed from beforeFill()
+						     $component->state($state);
+						 })
 		]),
 	    ]);
     }
@@ -51,24 +52,24 @@ class UserResource extends Resource
 	return $table
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-                    ->sortable(),
+					 ->sortable(),
                 Tables\Columns\TextColumn::make('last_name')
-                    ->sortable(),
+					 ->sortable(),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\IconColumn::make('email_verified_at')
-                    ->boolean()
-                    ->sortable(),
+					 ->boolean()
+					 ->sortable(),
                 Tables\Columns\IconColumn::make('active')
-                    ->boolean()
-                    ->sortable(),
+					 ->boolean()
+					 ->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'author' => 'success',
-                        'director' => 'warning',
-                        'admin' => 'danger',
-                    })
-                    ->searchable(isIndividual: true),
+					 ->badge()
+					 ->color(fn (string $state): string => match ($state) {
+					     'author' => 'success',
+					     'director' => 'warning',
+					     'admin' => 'danger',
+					 })
+					 ->searchable(isIndividual: true),
             ])
             ->filters([
 		Tables\Filters\TernaryFilter::make('email_verified_at')

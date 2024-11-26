@@ -2,7 +2,9 @@
 
 namespace App\Enums\Permissions;
 
-enum UserRole: string
+use Filament\Support\Contracts\HasLabel;
+
+enum UserRole: string implements HasLabel
 {
     case AUTHOR = 'author';
     case DIRECTOR = 'director';
@@ -35,7 +37,7 @@ enum UserRole: string
         };
     }
 
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::AUTHOR => 'Author',
