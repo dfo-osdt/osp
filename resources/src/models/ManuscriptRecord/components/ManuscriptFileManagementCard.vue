@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import type { Media, MediaResourceList } from '@/models/Resource'
+import ContentCard from '@/components/ContentCard.vue'
+import FormSectionStatusIcon, {
+  type FormSectionStatus,
+} from '@/components/FormSectionStatusIcon.vue'
+import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 import { type QRejectedEntry, useQuasar } from 'quasar'
 import {
   type ManuscriptRecordResource,
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
-import ContentCard from '@/components/ContentCard.vue'
-import FormSectionStatusIcon, {
-  type FormSectionStatus,
-} from '@/components/FormSectionStatusIcon.vue'
-import type { Media, MediaResourceList } from '@/models/Resource'
-import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 
 const props = defineProps<{
   manuscript: ManuscriptRecordResource
@@ -22,10 +22,6 @@ const maxFileSizeMB = 50
 const manuscriptFiles: Ref<MediaResourceList | null> = ref(null)
 const manuscriptFile: Ref<File | null> = ref(null)
 const uploadingFile = ref(false)
-
-const canDelete = computed(() => {
-  return props.manuscript.data?.can_attach_manuscript
-})
 
 onMounted(() => {
   getFiles()
@@ -158,7 +154,7 @@ async function deleteFile(manuscriptFile: Media) {
         <q-list separator>
           <q-item
             v-for="(m, index) in manuscriptFiles.data"
-            :key="m.uuid"
+            :key="m.data.uuid"
             :class="index === 0 ? '' : 'bg-grey-3'"
           >
             <q-item-section v-if="index !== 0" avatar>
@@ -173,35 +169,36 @@ async function deleteFile(manuscriptFile: Media) {
             <q-item-section>
               <q-item-label>
                 <q-icon
-                  v-if="m.locked"
+                  v-if="m.data.locked"
                   name="mdi-lock-outline"
                   color="secondary"
                   class="q-mr-sm"
-                />{{ m.file_name }}
+                />{{ m.data.file_name }}
               </q-item-label>
               <q-item-label caption>
-                {{ m.size_bytes / 1000 }}
+                {{ m.data.size_bytes / 1000 }}
                 {{ t('common.kb-uploaded-on') }}
-                {{ new Date(m.created_at).toLocaleString() }}
+                {{ new Date(m.data.created_at).toLocaleString() }}
               </q-item-label>
             </q-item-section>
-            <q-item-section v-if="m.sensitivity_label === 'Protected A'" side>
-              <SensitivityLabelChip :sensitivity="m.sensitivity_label" />
+            <q-item-section v-if="m.data.sensitivity_label === 'Protected A'" side>
+              <SensitivityLabelChip :sensitivity="m.data.sensitivity_label" />
             </q-item-section>
             <q-item-section side>
               <span>
                 <q-btn
-                  v-if="!m.locked && canDelete"
+                  v-if="m.can?.delete"
                   icon="mdi-delete-outline"
                   color="negative"
                   class="q-mr-sm"
                   outline
-                  @click="confirmDelete(m)"
+                  @click="confirmDelete(m.data)"
                 />
                 <q-btn
+                  v-if="m.can?.download"
                   icon="mdi-file-download-outline"
                   color="primary"
-                  :href="`api/manuscript-records/${manuscript.data.id}/files/${m.uuid}?download=true`"
+                  :href="`api/manuscript-records/${manuscript.data.id}/files/${m.data.uuid}?download=true`"
                 />
               </span>
             </q-item-section>

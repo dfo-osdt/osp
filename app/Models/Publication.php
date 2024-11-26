@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Contracts\Fundable;
+use App\Enums\MediaCollection;
 use App\Enums\PublicationStatus;
+use App\Enums\SupplementaryFileType;
 use App\Traits\FundableTrait;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -17,6 +19,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Publication extends Model implements Fundable, HasMedia
 {
@@ -83,15 +86,21 @@ class Publication extends Model implements Fundable, HasMedia
     // media
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('publication')
+        $this->addMediaCollection(MediaCollection::PUBLICATION->value)
+            ->acceptsMimeTypes(['application/pdf']);
+
+        $this->addMediaCollection(MediaCollection::SUPPLEMENTARY_FILE->value)
             ->acceptsMimeTypes(['application/pdf']);
     }
 
+    /**
+     * Add publication file media model.
+     */
     public function addPublicationFile($file, $preserveOriginal = false): Media
     {
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)
-            ->toMediaCollection('publication');
+            ->toMediaCollection(MediaCollection::PUBLICATION->value);
     }
 
     /**
@@ -99,7 +108,7 @@ class Publication extends Model implements Fundable, HasMedia
      */
     public function getPublicationFile($uuid)
     {
-        return $this->getMedia('publication')->where('uuid', $uuid)->first();
+        return $this->getMedia(MediaCollection::PUBLICATION->value)->where('uuid', $uuid)->first();
     }
 
     /**
@@ -108,6 +117,53 @@ class Publication extends Model implements Fundable, HasMedia
     public function deletePublicationFile($uuid, $force = false): void
     {
         $media = $this->getPublicationFile($uuid);
+        if (! $media) {
+            throw new FileNotFoundException('File not found.');
+        }
+        if ($force) {
+            $media->delete();
+
+            return;
+        }
+        if ($media->getCustomProperty('locked', false)) {
+            throw new Exception('Cannot delete locked file.');
+        }
+        $media->delete();
+    }
+
+    /**
+     * Add supplementary file media model.
+     */
+    public function addSupplementaryFile(string|UploadedFile $file, SupplementaryFileType $type, ?string $description = null, $preserveOriginal = false): Media
+    {
+
+        $properties = [
+            'supplementary_file_type' => $type->value,
+        ];
+        if ($description) {
+            $properties['description'] = $description;
+        }
+
+        return $this->addMedia($file)
+            ->preservingOriginal($preserveOriginal)
+            ->withCustomProperties($properties)
+            ->toMediaCollection(MediaCollection::SUPPLEMENTARY_FILE->value);
+    }
+
+    /**
+     * Get supplementary file media model.
+     */
+    public function getSupplementaryFile($uuid)
+    {
+        return $this->getMedia(MediaCollection::SUPPLEMENTARY_FILE->value)->where('uuid', $uuid)->first();
+    }
+
+    /**
+     * Delete supplementary file media model.
+     */
+    public function deleteSupplementaryFile($uuid, $force = false): void
+    {
+        $media = $this->getSupplementaryFile($uuid);
         if (! $media) {
             throw new FileNotFoundException('File not found.');
         }

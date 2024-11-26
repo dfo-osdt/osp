@@ -129,6 +129,7 @@ PDF;
 
     expect($response->json('data.file_name'))->toBe('test.pdf');
     expect($response->json('data.uuid'))->toBeString();
+    expect($response->json('can.download'))->toBe(true);
 
     // save uuid
     $uuid = $response->json('data.uuid');

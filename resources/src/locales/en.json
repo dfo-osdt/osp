@@ -631,7 +631,7 @@
     "published": "Published"
   },
   "publication-page": {
-    "attach-pub-details": "Upload the most recent copy of your publication as a PDF. We will not allow portal users to download this file until the end of its embargo period.",
+    "attach-pub-details": "Please upload the most recent version of your publication in PDF format. Files in this section are subject to the applicable embargo period and can only be accessed by authorized users, such as the authors and managers, until the embargo has expired.",
     "attach-publication": "Attach Publication",
     "go-to-manuscript-record": "Go to Manuscript Record",
     "mark-as-published": "Mark as Published",

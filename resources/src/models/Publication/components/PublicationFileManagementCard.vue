@@ -56,7 +56,7 @@ async function upload() {
     props.publication.data.id,
   )
 
-  publicationResourceList.value?.data.push(response.data)
+  publicationResourceList.value?.data.push(response)
 
   uploadingFile.value = false
   // clear file
@@ -103,21 +103,21 @@ async function deleteFile(publicationResource: Media) {
     <template v-if="publicationResourceList?.data">
       <q-card outlined class="q-mb-md">
         <q-list>
-          <q-item v-for="publicationResource in publicationResourceList.data" :key="publicationResource.uuid">
+          <q-item v-for="publicationResource in publicationResourceList.data" :key="publicationResource.data.uuid">
             <q-item-section>
               <q-item-label>
                 {{
-                  publicationResource.file_name
+                  publicationResource.data.file_name
                 }}
               </q-item-label>
               <q-item-label caption>
                 {{
-                  publicationResource.size_bytes / 1000
+                  publicationResource.data.size_bytes / 1000
                 }}
-                KB uploaded on
+                {{ $t('common.kb-uploaded-on') }}
                 {{
                   new Date(
-                    publicationResource.created_at,
+                    publicationResource.data.created_at,
                   ).toLocaleString()
                 }}
               </q-item-label>
@@ -125,17 +125,17 @@ async function deleteFile(publicationResource: Media) {
             <q-item-section side>
               <span>
                 <q-btn
-                  v-if="publication.can?.update"
+                  v-if="publicationResource.can?.delete"
                   icon="mdi-delete-outline"
                   color="negative"
                   class="q-mr-sm"
-                  @click="deleteFile(publicationResource)"
+                  @click="deleteFile(publicationResource.data)"
                 />
                 <q-btn
-                  v-if="publication.data.can_view_pdf"
+                  v-if="publicationResource.can?.download"
                   icon="mdi-file-download-outline"
                   color="primary"
-                  :href="`api/publications/${publication.data.id}/files/${publicationResource.uuid}?download=true`"
+                  :href="`api/publications/${publication.data.id}/files/${publicationResource.data.uuid}?download=true`"
                 >
                   <q-tooltip>
                     {{ $t('common.download') }}

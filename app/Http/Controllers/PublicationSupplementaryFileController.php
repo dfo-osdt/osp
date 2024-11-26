@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SupplementaryFileType;
 use App\Http\Resources\MediaResource;
 use App\Models\Publication;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PublicationFileController extends Controller
+class PublicationSupplementaryFileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,18 +21,7 @@ class PublicationFileController extends Controller
     {
         Gate::authorize('view', $publication);
 
-        $media = $publication->getMedia('publication');
-
-        // get publication model and all required relations to avoid n+1
-        $publication->load([
-            'manuscriptRecord' => [
-                'manuscriptAuthors.author',
-                'managementReviewSteps',
-                'shareables',
-            ],
-            'publicationAuthors.author',
-        ]);
-        $media->each(fn ($media) => $media->setRelation('model', $publication));
+        $media = $publication->getMedia('supplementary_file');
 
         return MediaResource::collection($media->sortBy('created_at', SORT_REGULAR, true));
     }
@@ -44,9 +35,11 @@ class PublicationFileController extends Controller
 
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:50000',
+            'supplementary_file_type' => ['required', Rule::enum(SupplementaryFileType::class)],
+            'description' => 'nullable|string',
         ]);
 
-        $media = $publication->addPublicationFile($validated['pdf']);
+        $media = $publication->addSupplementaryFile($validated['pdf'], $validated['supplementary_file_type'], $validated['description'] ?? null);
 
         activity()
             ->performedOn($publication)
@@ -64,10 +57,10 @@ class PublicationFileController extends Controller
     {
         Gate::authorize('view', $publication);
 
-        $media = $publication->getPublicationFile($uuid);
+        $media = $publication->getSupplementaryFile($uuid);
 
         $download = $request->query('download', false);
-        if ($download && Gate::allows('downloadMedia', [$publication,$media])) {
+        if ($download && Gate::allow('viewSupplementaryPdf', $publication, $media)) {
             return $media;
         }
 
@@ -83,7 +76,7 @@ class PublicationFileController extends Controller
         Gate::authorize('update', $publication);
 
         try {
-            $publication->deletePublicationFile($uuid);
+            $publication->deleteSupplementaryFile($uuid);
         } catch (FileNotFoundException $e) {
             throw new NotFoundHttpException('File not found.');
         } catch (Exception $e) {

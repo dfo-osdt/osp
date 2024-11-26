@@ -631,7 +631,7 @@
     "published": "Publiée"
   },
   "publication-page": {
-    "attach-pub-details": "Télécharger la copie la plus récente de votre publication en format PDF. Nous n'autoriserons pas les utilisateurs du portail à télécharger ce fichier avant la fin de sa période d'embargo.",
+    "attach-pub-details": "Veuillez télécharger la version la plus récente de votre publication au format PDF. \nLes fichiers de cette section sont soumis à la période d'embargo applicable et ne sont accessibles qu'aux utilisateurs autorisés, tels que les auteurs et les gestionnaires, jusqu'à l'expiration de l'embargo.",
     "attach-publication": "Joindre la publication",
     "go-to-manuscript-record": "Aller au registre du manuscrit",
     "mark-as-published": "Marquer comme publié",
