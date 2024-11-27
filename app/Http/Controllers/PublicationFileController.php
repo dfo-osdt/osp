@@ -21,7 +21,7 @@ class PublicationFileController extends Controller
 
         $media = $publication->getMedia('publication');
 
-        // get publication model and all required relations to avoid n+1
+        // get publicatVion model and all required relations to avoid n+1
         $publication->load([
             'manuscriptRecord' => [
                 'manuscriptAuthors.author',
@@ -30,6 +30,7 @@ class PublicationFileController extends Controller
             ],
             'publicationAuthors.author',
         ]);
+
         $media->each(fn ($media) => $media->setRelation('model', $publication));
 
         return MediaResource::collection($media->sortBy('created_at', SORT_REGULAR, true));
@@ -69,6 +70,17 @@ class PublicationFileController extends Controller
         if (! $media) {
             throw new NotFoundHttpException('File not found.');
         }
+        // get publicatVion model and all required relations to avoid n+1
+        $publication->load([
+            'manuscriptRecord' => [
+                'manuscriptAuthors.author',
+                'managementReviewSteps',
+                'shareables',
+            ],
+            'publicationAuthors.author',
+        ]);
+
+        $media->setRelation('model', $publication);
 
         $download = $request->query('download', false);
         if ($download && Gate::allows('downloadMedia', [$publication, $media])) {

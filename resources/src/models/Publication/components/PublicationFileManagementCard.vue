@@ -98,7 +98,19 @@ watch(publicationFile, () => {
             :media="publicationResource"
             :download-url="`api/publications/${props.publication.data.id}/files/${publicationResource.data.uuid}?download=true`"
             @delete="deleteFile"
-          />
+          >
+            <template v-if="!publicationResource.can?.download" #side>
+              <span class="q-mr-sm">{{
+                $t(
+                  'common.publication-under-embargo',
+                )
+              }}</span>
+              <q-icon
+                name="mdi-download-lock"
+                size="sm"
+              />
+            </template>
+          </MediaListItem>
         </q-list>
       </q-card>
     </template>
