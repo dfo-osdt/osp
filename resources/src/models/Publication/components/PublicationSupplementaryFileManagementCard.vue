@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import type { Media, MediaResourceList, SupplementaryFileType } from '@/models/Resource'
+import type { MediaResource, MediaResourceList } from '@/models/Media/Media'
 import ContentCard from '@/components/ContentCard.vue'
+import MediaListItem from '@/models/Media/components/MediaListItem.vue'
+import SupplementaryFileTypeSelect from '@/models/Media/components/SupplementaryFileTypeSelect.vue'
+import { type SupplementaryFileType, useSupplementaryFileOptions } from '@/models/Media/supplementaryFileOptions'
 import DOMPurify from 'dompurify'
 import { useQuasar } from 'quasar'
 import { type PublicationResource, PublicationService } from '../Publication'
@@ -10,11 +13,12 @@ const props = defineProps<{
 }>()
 const $q = useQuasar()
 const { t } = useI18n()
+const maxFileSizeMB = 50
 
 const supplementaryFileResourceList = ref<MediaResourceList | null>(null)
 
 const supplementaryFile = ref<File | null>(null)
-const fileType = ref<SupplementaryFileType>('author_agreement')
+const fileType = ref<SupplementaryFileType | null>(null)
 const description = ref<string | null>(null)
 
 const uploadingFile = ref(false)
@@ -58,6 +62,8 @@ async function upload() {
   uploadingFile.value = false
   // clear file
   supplementaryFile.value = null
+  fileType.value = null
+  description.value = null
 
   $q.notify({
     type: 'positive',
@@ -66,11 +72,11 @@ async function upload() {
   })
 }
 
-async function deleteFile(publicationResource: Media) {
+async function deleteFile(publicationResource: MediaResource) {
   $q.dialog({
     title: t('dialog.delete-publication-pdf.title'),
     message: t('dialog.delete-publication-pdf.message', {
-      file: publicationResource.file_name,
+      file: publicationResource.data.file_name,
     }),
     ok: {
       label: t('common.delete'),
@@ -81,10 +87,12 @@ async function deleteFile(publicationResource: Media) {
       color: 'primary',
     },
   }).onOk(async () => {
-    await PublicationService.deleteSupplementaryFile(props.publication.data.id, publicationResource.uuid)
+    await PublicationService.deleteSupplementaryFile(props.publication.data.id, publicationResource.data.uuid)
     await getFiles()
   })
 }
+
+const fileTypeOptions = useSupplementaryFileOptions()
 </script>
 
 <template>
@@ -97,95 +105,66 @@ async function deleteFile(publicationResource: Media) {
     <p>
       {{ $t('publication-page.attach-supplementary-files-details') }}
     </p>
+    <ul v-for="options in fileTypeOptions" :key="options.value">
+      <li><span class="text-bold">{{ options.label() }}: </span>{{ options.description }}</li>
+    </ul>
     <template v-if="supplementaryFileResourceList?.data">
       <q-card outlined class="q-mb-md">
         <q-list separator>
-          <q-item v-for="publicationResource in supplementaryFileResourceList.data" :key="publicationResource.data.uuid">
-            <q-item-section>
-              <q-item-label>
-                {{
-                  publicationResource.data.file_name
-                }}
-              </q-item-label>
-              <q-item-label caption>
-                {{
-                  publicationResource.data.size_bytes / 1000
-                }}
-                {{ $t('common.kb-uploaded-on') }}
-                {{
-                  new Date(
-                    publicationResource.data.created_at,
-                  ).toLocaleString()
-                }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <span>
-                <q-btn
-                  v-if="publicationResource.can?.delete"
-                  icon="mdi-delete-outline"
-                  color="negative"
-                  outline
-                  class="q-mr-sm"
-                  @click="deleteFile(publicationResource.data)"
-                />
-                <q-btn
-                  v-if="publicationResource.can?.download"
-                  icon="mdi-file-download-outline"
-                  color="primary"
-                  :href="`api/publications/${publication.data.id}/files/${publicationResource.data.uuid}?download=true`"
-                >
-                  <q-tooltip>
-                    {{ $t('common.download') }}
-                  </q-tooltip>
-                </q-btn>
-                <div v-else>
-                  <span class="q-mr-sm">{{
-                    $t(
-                      'common.publication-under-embargo',
-                    )
-                  }}</span>
-                  <q-icon
-                    name="mdi-download-lock"
-                    size="sm"
-                  />
-                </div>
-              </span>
-            </q-item-section>
-          </q-item>
+          <MediaListItem
+            v-for="media in supplementaryFileResourceList.data"
+            :key="media.data.uuid"
+            :media="media"
+            :download-url="`api/publications/${props.publication.data.id}/supplementary-files/${media.data.uuid}?download=true`"
+            @delete="deleteFile"
+          />
         </q-list>
       </q-card>
     </template>
-    <q-file
-      v-if="publication?.can?.update"
-      v-model="supplementaryFile"
-      outlined
-      use-chips
-      :label="
-        supplementaryFileResourceList?.data
-          ? 'Upload a new version of the publication'
-          : 'Upload the publication'
-      "
-      hint="Only PDF files are accepted. Maximum file size is 50MB."
-      accept="application/pdf"
-      max-file-size="50000000"
-      counter
-      :loading="uploadingFile"
-      @rejected="onFileRejected"
-    >
-      <template #prepend>
-        <q-icon name="mdi-file-pdf-box" />
-      </template>
-      <template #append>
+    <q-card class="q-pa-md" flat bordered>
+      <p class="text-primary">
+        Upload a supplementary file for the publication
+      </p>
+      <div class="row q-col-gutter-md q-mb-md">
+        <SupplementaryFileTypeSelect v-model="fileType" class="col" />
+        <q-file
+          v-if="publication?.can?.update"
+          v-model="supplementaryFile"
+          class="col-lg-8 col-md-12"
+          outlined
+          use-chips
+          :label="$t('common.select-file')"
+          :hint="t('mrf.upload-hint', { max: maxFileSizeMB })"
+          accept="application/pdf"
+          :max-file-size="maxFileSizeMB * 1e6"
+          counter
+          :loading="uploadingFile"
+          @rejected="onFileRejected"
+        >
+          <template #prepend>
+            <q-icon name="mdi-file-pdf-box" />
+          </template>
+        </q-file>
+      </div>
+      <div class="row q-mb-md">
+        <q-input
+          v-model="description"
+          class="col"
+          outlined
+          :label="t('common.description')"
+          :hint="t('common.optional')"
+        />
+      </div>
+      <div class="row justify-end">
         <q-btn
           color="primary"
           :loading="uploadingFile"
-          :disable="!supplementaryFile"
+          :disable="!supplementaryFile || !fileType"
           :label="$t('common.upload')"
           @click="upload"
         />
-      </template>
-    </q-file>
+      </div>
+    </q-card>
   </ContentCard>
 </template>
 

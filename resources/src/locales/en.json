@@ -269,7 +269,10 @@
     "confirm": "Confirm",
     "reviewer": "Peer Reviewer",
     "download": "Download",
-    "copy": "Copy"
+    "copy": "Copy",
+    "document-type": "Document Type",
+    "select-file": "Select or drop file here",
+    "optional": "Optional"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -639,8 +642,8 @@
     "publication-status": "Publication Status",
     "publication-updated-successfully": "Publication updated successfully",
     "title": "Publication",
-    "attach-supplementary-files": "Attach Supplementary Files",
-    "attach-supplementary-files-details": "description here.."
+    "attach-supplementary-files": "Supplementary Files",
+    "attach-supplementary-files-details": "Please upload all relevant supplementary files for your publications. You can choose from any of the following supplementary documents:"
   },
   "publications-view": {
     "all-published-publications-details": "All published publications",
@@ -779,5 +782,21 @@
   },
   "manuscript-peer-review-dialog": {
     "title": "Add a peer reviewer for this manuscript"
+  },
+  "supplementaryFileType": {
+    "manuscriptRecordForm": "Manuscript Record Form",
+    "authorAgreement": "Author Agreement",
+    "jointCopyrightAgreement": "Joint Copyright Agreement",
+    "preprint": "Preprint/Submitted",
+    "authorsAcceptedManuscript": "Accepted Manuscript",
+    "errata": "Errata",
+    "other": "Other",
+    "authorAgreementDescription": "The agreement signed by authors outlining publication terms",
+    "errataDescription": "Any corrections or updates to previously published work.",
+    "jointCopyrightAgreementDescription": "The agreement regarding copyright ownership and distribution rights.",
+    "authorsAcceptedManuscriptDescription": "The final manuscript accepted for publication after peer review.",
+    "otherDescription": "Any additional files related to your publication (please specify).",
+    "preprintDescription": "The version of the manuscript uploaded to a preprint server before peer review.",
+    "manuscriptRecordFormDescription": "A signed DFO manuscript record form (MRF) completed outside of the portal."
   }
 }

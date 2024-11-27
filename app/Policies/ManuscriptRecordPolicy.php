@@ -220,7 +220,7 @@ class ManuscriptRecordPolicy
 
     public function updateMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)
     {
-        return $this->update($user, $manuscriptRecord);
+        return false;
     }
 
     public function deleteMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)

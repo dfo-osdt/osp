@@ -66,6 +66,10 @@ class PublicationFileController extends Controller
 
         $media = $publication->getPublicationFile($uuid);
 
+        if (! $media) {
+            throw new NotFoundHttpException('File not found.');
+        }
+
         $download = $request->query('download', false);
         if ($download && Gate::allows('downloadMedia', [$publication, $media])) {
             return $media;
