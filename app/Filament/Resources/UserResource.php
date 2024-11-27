@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Rules\AuthorizeEmailDomain;
 use Filament\Facades\Filament;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,105 +25,104 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('first_name')
-					  ->disabledOn('edit')
-					  ->Filled()
-					  ->required(),
+                    ->disabledOn('edit')
+                    ->Filled()
+                    ->required(),
                 Forms\Components\TextInput::make('last_name')
-					  ->disabledOn('edit')
-					  ->Filled(),
+                    ->disabledOn('edit')
+                    ->Filled(),
                 Forms\Components\Section::make([
-		    Forms\Components\TextInput::make('email')
-					      ->Filled()
-					      ->rules(['required', 'string', 'email', new AuthorizeEmailDomain()]),
-		    Forms\Components\CheckboxList::make('roles')
-						 ->label('Roles')
-						 ->options(UserRole::class)
-						 ->afterStateHydrated(function ($component, $state) {
-						     // Prepopulate the roles based on what is passed from beforeFill()
-						     $component->state($state);
-						 })
-		]),
-	    ]);
+                    Forms\Components\TextInput::make('email')
+                        ->Filled()
+                        ->rules(['required', 'string', 'email', new AuthorizeEmailDomain]),
+                    Forms\Components\CheckboxList::make('roles')
+                        ->label('Roles')
+                        ->options(UserRole::class)
+                        ->afterStateHydrated(function ($component, $state) {
+                            // Prepopulate the roles based on what is passed from beforeFill()
+                            $component->state($state);
+                        }),
+                ]),
+            ]);
     }
 
     public static function table(Table $table): Table
     {
-	return $table
+        return $table
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-					 ->sortable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('last_name')
-					 ->sortable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\IconColumn::make('email_verified_at')
-					 ->boolean()
-					 ->sortable(),
+                    ->boolean()
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('active')
-					 ->boolean()
-					 ->sortable(),
+                    ->boolean()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')
-					 ->badge()
-					 ->color(fn (string $state): string => match ($state) {
-					     'author' => 'success',
-					     'director' => 'warning',
-					     'admin' => 'danger',
-					 })
-					 ->searchable(isIndividual: true),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'author' => 'success',
+                        'director' => 'warning',
+                        'admin' => 'danger',
+                    })
+                    ->searchable(isIndividual: true),
             ])
             ->filters([
-		Tables\Filters\TernaryFilter::make('email_verified_at')
-					    ->label('Verified')
-					    ->nullable()
-					    ->placeholder('All'),
-                Tables\Filters\SelectFilter::make('active')
-					   ->options([
-					       true => 'Active',
-					       false => 'Inactive',
-					   ]),
-		Tables\Filters\Filter::make('no_roles')
-				     ->label('No Roles')
-				     ->query(fn ($query) => $query->whereDoesntHave('roles')),
-		Tables\Filters\Filter::make('author')
-				     ->label('Author')
-				     ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'author'))),
+            Tables\Filters\TernaryFilter::make('email_verified_at')
+                    ->label('Verified')
+                    ->nullable()
+                    ->placeholder('All'),
+            Tables\Filters\SelectFilter::make('active')
+                    ->options([
+                        true => 'Active',
+                        false => 'Inactive',
+                    ]),
+            Tables\Filters\Filter::make('no_roles')
+                    ->label('No Roles')
+                    ->query(fn ($query) => $query->whereDoesntHave('roles')),
+            Tables\Filters\Filter::make('author')
+                    ->label('Author')
+                    ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'author'))),
 
-		Tables\Filters\Filter::make('director')
-				     ->label('Director')
-				     ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'director'))),
+            Tables\Filters\Filter::make('director')
+                    ->label('Director')
+                    ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'director'))),
 
-		Tables\Filters\Filter::make('admin')
-				     ->label('Admin')
-				     ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'admin'))),
+            Tables\Filters\Filter::make('admin')
+                    ->label('Admin')
+                    ->query(fn ($query) => $query->whereHas('roles', fn ($query) => $query->where('name', 'admin'))),
 
-	    ])
-	    ->actions([
-		Tables\Actions\EditAction::make(),
-	    ])
-	    ->bulkActions([
-		Tables\Actions\BulkActionGroup::make([
-		    // Placeholder
-		]),
-	    ])
-	    ->defaultSort('first_name');
+        ])
+            ->actions([
+            Tables\Actions\EditAction::make(),
+        ])
+            ->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                    // Placeholder
+            ]),
+        ])
+            ->defaultSort('first_name');
     }
 
-    
     public static function getRelations(): array
     {
-	return [
-	    //
-	];
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
-	//	$user = Filament::auth()->user();
-	//	Gate::authorize('updateAnyUser', $user);
+        //	$user = Filament::auth()->user();
+        //	Gate::authorize('updateAnyUser', $user);
 
-	return [
-	    'index' => Pages\ListUsers::route('/'),
-	    'create' => Pages\CreateUser::route('/create'),
-	    'edit' => Pages\EditUser::route('/{record}/edit'),
-	];
+        return [
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
+        ];
     }
 }
