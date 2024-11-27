@@ -37,13 +37,11 @@ const { t } = useI18n()
         {{ media.data.description }}
       </q-item-label>
     </q-item-section>
-    <q-item-section v-if="media.data.supplementary_file_type" side>
-      <q-item-label caption>
-        <SupplementaryFileTypeChip outline :type="media.data.supplementary_file_type" />
-      </q-item-label>
-    </q-item-section>
     <q-item-section v-if="media.data.sensitivity_label === 'Protected A'" side>
       <SensitivityLabelChip :sensitivity="media.data.sensitivity_label" />
+    </q-item-section>
+    <q-item-section v-if="media.data.supplementary_file_type" side>
+      <SupplementaryFileTypeChip outline :type="media.data.supplementary_file_type" />
     </q-item-section>
     <q-item-section side>
       <span>

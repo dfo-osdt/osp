@@ -11,4 +11,18 @@ enum SupplementaryFileType: string
     case AUTHORS_ACCEPTED_MANUSCRIPT = 'authors_accepted_manuscript';
     case ERRATA = 'errata';
     case OTHER = 'other';
+
+    public static function getProtectedAFileTypes(): array
+    {
+        return [
+            self::MANUSCRIPT_RECORD_FORM,
+            self::AUTHOR_AGREEMENT,
+            self::JOINT_COPYRIGHT_AGREEMENT,
+        ];
+    }
+
+    public static function isProtectedA(self $type): bool
+    {
+        return in_array($type, self::getProtectedAFileTypes());
+    }
 }

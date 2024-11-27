@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\Fundable;
 use App\Enums\MediaCollection;
 use App\Enums\PublicationStatus;
+use App\Enums\SensitivityLabel;
 use App\Enums\SupplementaryFileType;
 use App\Traits\FundableTrait;
 use Exception;
@@ -143,6 +144,11 @@ class Publication extends Model implements Fundable, HasMedia
         if ($description) {
             $properties['description'] = $description;
         }
+
+        if(SupplementaryFileType::isProtectedA($type)) {
+            $properties['sensitivity_label'] = SensitivityLabel::ProtectedA->value;
+        }
+
 
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)

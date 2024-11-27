@@ -49,7 +49,7 @@ class PublicationSupplementaryFileController extends Controller
         $validated = $request->validate([
             'pdf' => 'required|file|mimes:pdf|max:50000',
             'supplementary_file_type' => ['required', Rule::enum(SupplementaryFileType::class)],
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:200',
         ]);
 
         $type = SupplementaryFileType::tryFrom($validated['supplementary_file_type']);
