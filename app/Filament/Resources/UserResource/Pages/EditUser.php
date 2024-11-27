@@ -16,13 +16,12 @@ class EditUser extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-    
 
     protected function beforeFill(): void
     {
-	$this->data['roles'] = $this->record->roles->pluck('name')->toArray();
+        $this->data['roles'] = $this->record->roles->pluck('name')->toArray();
     }
-    
+
     /**
      * Get the URL to redirect to after performing an action in the EditUser page.
      *
