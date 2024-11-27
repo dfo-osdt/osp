@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { MediaResource } from '../Media'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
+import SupplementaryFileTypeChip from './SupplementaryFileTypeChip.vue'
 
 defineProps<{
   media: MediaResource
@@ -30,6 +31,15 @@ const { t } = useI18n()
         {{ media.data.size_bytes / 1000 }}
         {{ t('common.kb-uploaded-on') }}
         {{ new Date(media.data.created_at).toLocaleString() }}
+      </q-item-label>
+      <q-item-label v-if="media.data.description" class="q-ml-none">
+        <q-icon name="mdi-text" color="accent" size="sm" />
+        {{ media.data.description }}
+      </q-item-label>
+    </q-item-section>
+    <q-item-section v-if="media.data.supplementary_file_type" side>
+      <q-item-label caption>
+        <SupplementaryFileTypeChip outline :type="media.data.supplementary_file_type" />
       </q-item-label>
     </q-item-section>
     <q-item-section v-if="media.data.sensitivity_label === 'Protected A'" side>

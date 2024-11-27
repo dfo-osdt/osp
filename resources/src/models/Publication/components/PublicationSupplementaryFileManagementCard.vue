@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { MediaResource, MediaResourceList } from '@/models/Media/Media'
+import type { SupplementaryFileType } from '@/models/Media/supplementaryFileOptions'
 import ContentCard from '@/components/ContentCard.vue'
 import MediaListItem from '@/models/Media/components/MediaListItem.vue'
 import SupplementaryFileTypeSelect from '@/models/Media/components/SupplementaryFileTypeSelect.vue'
-import { type SupplementaryFileType, useSupplementaryFileOptions } from '@/models/Media/supplementaryFileOptions'
 import DOMPurify from 'dompurify'
-import { useQuasar } from 'quasar'
+import { QInput, useQuasar } from 'quasar'
 import { type PublicationResource, PublicationService } from '../Publication'
 
 const props = defineProps<{
@@ -19,6 +19,7 @@ const supplementaryFileResourceList = ref<MediaResourceList | null>(null)
 
 const supplementaryFile = ref<File | null>(null)
 const fileType = ref<SupplementaryFileType | null>(null)
+const descriptionInput = ref<QInput | null>(null)
 const description = ref<string | null>(null)
 
 const uploadingFile = ref(false)
@@ -92,7 +93,24 @@ async function deleteFile(publicationResource: MediaResource) {
   })
 }
 
-const fileTypeOptions = useSupplementaryFileOptions()
+const descriptionRules = [
+  (val: string) => val.length <= 150 || t('common.validation.must-be-less-than-x-characters', [150]),
+]
+
+const disableUpload = computed(() => {
+  if (!supplementaryFile.value)
+    return true
+  if (!fileType.value)
+    return true
+  if (description.value) {
+    for (const rule of descriptionRules) {
+      if (rule(description.value) !== true) {
+        return true
+      }
+    }
+  }
+  return false
+})
 </script>
 
 <template>
@@ -105,9 +123,6 @@ const fileTypeOptions = useSupplementaryFileOptions()
     <p>
       {{ $t('publication-page.attach-supplementary-files-details') }}
     </p>
-    <ul v-for="options in fileTypeOptions" :key="options.value">
-      <li><span class="text-bold">{{ options.label() }}: </span>{{ options.description }}</li>
-    </ul>
     <template v-if="supplementaryFileResourceList?.data">
       <q-card outlined class="q-mb-md">
         <q-list separator>
@@ -147,10 +162,12 @@ const fileTypeOptions = useSupplementaryFileOptions()
         </q-file>
       </div>
       <div class="row q-mb-md">
-        <q-input
+        <QInput
+          ref="descriptionInput"
           v-model="description"
           class="col"
           outlined
+          :rules="descriptionRules"
           :label="t('common.description')"
           :hint="t('common.optional')"
         />
@@ -159,7 +176,7 @@ const fileTypeOptions = useSupplementaryFileOptions()
         <q-btn
           color="primary"
           :loading="uploadingFile"
-          :disable="!supplementaryFile || !fileType"
+          :disable="disableUpload"
           :label="$t('common.upload')"
           @click="upload"
         />
