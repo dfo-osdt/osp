@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { Media, MediaResourceList } from '@/models/Resource'
+import type { Media, MediaResource, MediaResourceList } from '@/models/Media/Media'
 import ContentCard from '@/components/ContentCard.vue'
+import MediaListItem from '@/models/Media/components/MediaListItem.vue'
 import { useQuasar } from 'quasar'
 import { type PublicationResource, PublicationService } from '../Publication'
 
@@ -9,6 +10,7 @@ const props = defineProps<{
 }>()
 const $q = useQuasar()
 const { t } = useI18n()
+const maxFileSizeMB = 50
 
 const publicationResourceList = ref<MediaResourceList | null>(null)
 const publicationFile = ref<File | null>(null)
@@ -50,11 +52,11 @@ async function upload() {
   })
 }
 
-async function deleteFile(publicationResource: Media) {
+async function deleteFile(publicationResource: MediaResource) {
   $q.dialog({
     title: t('dialog.delete-publication-pdf.title'),
     message: t('dialog.delete-publication-pdf.message', {
-      file: publicationResource.file_name,
+      file: publicationResource.data.file_name,
     }),
     ok: {
       label: t('common.delete'),
@@ -65,7 +67,7 @@ async function deleteFile(publicationResource: Media) {
       color: 'primary',
     },
   }).onOk(async () => {
-    await PublicationService.deletePDF(props.publication.data.id, publicationResource.uuid)
+    await PublicationService.deletePDF(props.publication.data.id, publicationResource.data.uuid)
     await getFiles()
   })
 }
@@ -84,59 +86,13 @@ async function deleteFile(publicationResource: Media) {
     <template v-if="publicationResourceList?.data">
       <q-card outlined class="q-mb-md">
         <q-list separator>
-          <q-item v-for="publicationResource in publicationResourceList.data" :key="publicationResource.data.uuid">
-            <q-item-section>
-              <q-item-label>
-                {{
-                  publicationResource.data.file_name
-                }}
-              </q-item-label>
-              <q-item-label caption>
-                {{
-                  publicationResource.data.size_bytes / 1000
-                }}
-                {{ $t('common.kb-uploaded-on') }}
-                {{
-                  new Date(
-                    publicationResource.data.created_at,
-                  ).toLocaleString()
-                }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <span>
-                <q-btn
-                  v-if="publicationResource.can?.delete"
-                  icon="mdi-delete-outline"
-                  color="negative"
-                  outline
-                  class="q-mr-sm"
-                  @click="deleteFile(publicationResource.data)"
-                />
-                <q-btn
-                  v-if="publicationResource.can?.download"
-                  icon="mdi-file-download-outline"
-                  color="primary"
-                  :href="`api/publications/${publication.data.id}/files/${publicationResource.data.uuid}?download=true`"
-                >
-                  <q-tooltip>
-                    {{ $t('common.download') }}
-                  </q-tooltip>
-                </q-btn>
-                <div v-else>
-                  <span class="q-mr-sm">{{
-                    $t(
-                      'common.publication-under-embargo',
-                    )
-                  }}</span>
-                  <q-icon
-                    name="mdi-download-lock"
-                    size="sm"
-                  />
-                </div>
-              </span>
-            </q-item-section>
-          </q-item>
+          <MediaListItem
+            v-for="publicationResource in publicationResourceList.data"
+            :key="publicationResource.data.uuid"
+            :media="publicationResource"
+            :download-url="`api/publications/${props.publication.data.id}/files/${publicationResource.data.uuid}?download=true`"
+            @delete="deleteFile"
+          />
         </q-list>
       </q-card>
     </template>
@@ -150,9 +106,9 @@ async function deleteFile(publicationResource: Media) {
           ? 'Upload a new version of the publication'
           : 'Upload the publication'
       "
-      hint="Only PDF files are accepted. Maximum file size is 50MB."
+      :hint="t('mrf.upload-hint', { max: maxFileSizeMB })"
       accept="application/pdf"
-      max-file-size="50000000"
+      :max-file-size="maxFileSizeMB * 1e6"
       counter
       :loading="uploadingFile"
       @rejected="onFileRejected"

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Media, MediaResourceList } from '@/models/Resource'
+import type { MediaResource, MediaResourceList } from '@/models/Media/Media'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon, {
   type FormSectionStatus,
 } from '@/components/FormSectionStatusIcon.vue'
-import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
+import MediaListItem from '@/models/Media/components/MediaListItem.vue'
 import { useQuasar } from 'quasar'
 import {
   type ManuscriptRecordResource,
@@ -89,11 +89,11 @@ async function upload() {
   await getFiles()
 }
 
-async function confirmDelete(manuscriptFile: Media) {
+async function confirmDelete(manuscriptFile: MediaResource) {
   $q.dialog({
     title: t('dialog.delete-manuscript-pdf.title'),
     message: t('dialog.delete-manuscript-pdf.message', {
-      file: manuscriptFile.file_name,
+      file: manuscriptFile.data.file_name,
     }),
     cancel: true,
     persistent: false,
@@ -102,11 +102,11 @@ async function confirmDelete(manuscriptFile: Media) {
   })
 }
 
-async function deleteFile(manuscriptFile: Media) {
+async function deleteFile(manuscriptFile: MediaResource) {
   const m = props.manuscript.data
   const deleted = await ManuscriptRecordService.deletePDF(
     m.id,
-    manuscriptFile.uuid,
+    manuscriptFile.data.uuid,
   )
   if (deleted) {
     $q.notify({
@@ -133,57 +133,25 @@ async function deleteFile(manuscriptFile: Media) {
     <template v-if="manuscriptFiles">
       <q-card outlined class="q-mb-md">
         <q-list separator>
-          <q-item
+          <MediaListItem
             v-for="(m, index) in manuscriptFiles.data"
             :key="m.data.uuid"
-            :class="index === 0 ? '' : 'bg-grey-3'"
+            :media="m"
+            :download-url="`api/manuscript-records/${manuscript.data.id}/files/${m.data.uuid}?download=true`"
+            @delete="confirmDelete"
           >
-            <q-item-section v-if="index !== 0" avatar>
-              <q-icon name="mdi-history" color="secondary">
-                <q-tooltip>
-                  {{
-                    t('common.manuscript-previous-version')
-                  }}
-                </q-tooltip>
-              </q-icon>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>
-                <q-icon
-                  v-if="m.data.locked"
-                  name="mdi-lock-outline"
-                  color="secondary"
-                  class="q-mr-sm"
-                />{{ m.data.file_name }}
-              </q-item-label>
-              <q-item-label caption>
-                {{ m.data.size_bytes / 1000 }}
-                {{ t('common.kb-uploaded-on') }}
-                {{ new Date(m.data.created_at).toLocaleString() }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section v-if="m.data.sensitivity_label === 'Protected A'" side>
-              <SensitivityLabelChip :sensitivity="m.data.sensitivity_label" />
-            </q-item-section>
-            <q-item-section side>
-              <span>
-                <q-btn
-                  v-if="m.can?.delete"
-                  icon="mdi-delete-outline"
-                  color="negative"
-                  class="q-mr-sm"
-                  outline
-                  @click="confirmDelete(m.data)"
-                />
-                <q-btn
-                  v-if="m.can?.download"
-                  icon="mdi-file-download-outline"
-                  color="primary"
-                  :href="`api/manuscript-records/${manuscript.data.id}/files/${m.data.uuid}?download=true`"
-                />
-              </span>
-            </q-item-section>
-          </q-item>
+            <template v-if="index !== 0" #prepend>
+              <q-item-section avatar>
+                <q-icon name="mdi-history" color="secondary">
+                  <q-tooltip>
+                    {{
+                      t('common.manuscript-previous-version')
+                    }}
+                  </q-tooltip>
+                </q-icon>
+              </q-item-section>
+            </template>
+          </MediaListItem>
         </q-list>
       </q-card>
     </template>

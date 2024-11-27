@@ -23,6 +23,19 @@ class PublicationSupplementaryFileController extends Controller
 
         $media = $publication->getMedia('supplementary_file');
 
+        // get publication model and all required relations
+        // for the policies to avoid n+1
+        $publication->load([
+            'manuscriptRecord' => [
+                'manuscriptAuthors.author',
+                'managementReviewSteps',
+                'shareables',
+            ],
+            'publicationAuthors.author',
+        ]);
+
+        $media->each(fn ($media) => $media->setRelation('model', $publication));
+
         return MediaResource::collection($media->sortBy('created_at', SORT_REGULAR, true));
     }
 
@@ -60,6 +73,10 @@ class PublicationSupplementaryFileController extends Controller
         Gate::authorize('view', $publication);
 
         $media = $publication->getSupplementaryFile($uuid);
+
+        if (! $media) {
+            throw new NotFoundHttpException('File not found.');
+        }
 
         $download = $request->query('download', false);
         if ($download && Gate::allows('downloadMedia', [$publication, $media])) {

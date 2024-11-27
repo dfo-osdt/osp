@@ -94,7 +94,7 @@ class PublicationPolicy
 
     public function updateMedia(User $user, Publication $publication, Media $media)
     {
-        return $this->update($user, $publication);
+        return false;
     }
 
     public function deleteMedia(User $user, Publication $publication, Media $media)

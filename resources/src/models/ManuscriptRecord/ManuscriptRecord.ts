@@ -1,10 +1,9 @@
 import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import type { FunctionalArea } from '../FunctionalArea/FunctionalArea'
+import type { MediaResource, MediaResourceList } from '../Media/Media'
 import type { PublicationResource } from '../Publication/Publication'
 import type { Region } from '../Region/Region'
 import type {
-  MediaResource,
-  MediaResourceList,
   Resource,
   ResourceList,
 } from '../Resource'

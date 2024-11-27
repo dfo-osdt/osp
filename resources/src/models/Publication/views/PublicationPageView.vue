@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { MediaResource } from '@/models/Resource'
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import ManagePublicationAuthorsCard from '@/models/PublicationAuthor/components/ManagePublicationAuthorsCard.vue'
-import { QForm, type QRejectedEntry, useQuasar } from 'quasar'
+import { QForm, useQuasar } from 'quasar'
 import DoiInput from '../components/DoiInput.vue'
 import DoiLink from '../components/DoiLink.vue'
 import PublicationFileManagementCard from '../components/PublicationFileManagementCard.vue'
