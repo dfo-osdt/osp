@@ -643,7 +643,7 @@
     "publication-updated-successfully": "Publication updated successfully",
     "title": "Publication",
     "attach-supplementary-files": "Supplementary Files",
-    "attach-supplementary-files-details": "Please upload all relevant supplementary files for your publications. You can choose from any of the following supplementary documents:"
+    "attach-supplementary-files-details": "Please upload all relevant supplementary files for your publications."
   },
   "publications-view": {
     "all-published-publications-details": "All published publications",

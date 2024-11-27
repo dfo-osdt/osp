@@ -71,6 +71,12 @@ async function deleteFile(publicationResource: MediaResource) {
     await getFiles()
   })
 }
+
+watch(publicationFile, () => {
+  if (publicationFile.value) {
+    upload()
+  }
+})
 </script>
 
 <template>

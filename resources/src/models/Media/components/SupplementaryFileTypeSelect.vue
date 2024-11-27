@@ -26,11 +26,22 @@ function syncModel(item: SupplementaryFileOption) {
   <q-select
     v-model="localModel"
     :options="options"
-    :option-label="item => item.label()"
+    :option-label="(item) => item.label()"
     :label="t('common.document-type')"
     outlined
     @update:model-value="syncModel"
-  />
+  >
+    <template #option="{ opt, itemProps }">
+      <q-item v-bind="itemProps">
+        <q-item-section>
+          <q-item-label>{{ opt.label() }}</q-item-label>
+          <q-item-label caption lines="2">
+            {{ opt.description }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+    </template>
+  </q-select>
 </template>
 
 <style scoped />

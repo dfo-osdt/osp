@@ -105,7 +105,7 @@
     "deferred": "Différé",
     "delete": "Supprimer",
     "deleted": "Supprimé",
-    "description": "La description",
+    "description": "Description",
     "dfo-region": "Région MPO",
     "dismiss": "Fermer",
     "division-manager": "Chef de division",
@@ -642,8 +642,8 @@
     "publication-status": "Statut de publication",
     "publication-updated-successfully": "Publication mise à jour avec succès",
     "title": "Publication",
-    "attach-supplementary-files": "Joindre des fichiers supplémentaires",
-    "attach-supplementary-files-details": "Veuillez télécharger tous les fichiers supplémentaires pertinents pour vos publications. \nVous pouvez choisir parmi l’un des documents complémentaires suivants :"
+    "attach-supplementary-files": "Fichiers supplémentaires",
+    "attach-supplementary-files-details": "Veuillez télécharger tous les fichiers supplémentaires pertinents pour vos publications."
   },
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",
