@@ -269,7 +269,10 @@
     "present": "présent",
     "reviewer": "Évaluateur par les pairs",
     "download": "Télécharger",
-    "copy": "Copie"
+    "copy": "Copie",
+    "document-type": "Type de document",
+    "optional": "Facultatif",
+    "select-file": "Sélectionnez ou déposez le fichier ici"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -639,7 +642,8 @@
     "publication-status": "Statut de publication",
     "publication-updated-successfully": "Publication mise à jour avec succès",
     "title": "Publication",
-    "attach-supplementary-files": "Joindre des fichiers supplémentaires"
+    "attach-supplementary-files": "Joindre des fichiers supplémentaires",
+    "attach-supplementary-files-details": "Veuillez télécharger tous les fichiers supplémentaires pertinents pour vos publications. \nVous pouvez choisir parmi l’un des documents complémentaires suivants :"
   },
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",
@@ -778,5 +782,21 @@
   },
   "manuscript-peer-review-dialog": {
     "title": "Ajouter un évaluateur pour ce manuscrit"
+  },
+  "supplementaryFileType": {
+    "authorAgreement": "Accord d'auteur",
+    "authorAgreementDescription": "L'accord signé par les auteurs précisant les conditions de publication",
+    "authorsAcceptedManuscript": "Manuscrit accepté",
+    "authorsAcceptedManuscriptDescription": "Le manuscrit final accepté pour publication après examen par les pairs.",
+    "errata": "Errata",
+    "errataDescription": "Toute correction ou mise à jour d'un travail précédemment publié.",
+    "jointCopyrightAgreement": "Accord conjoint sur les droits d'auteur",
+    "jointCopyrightAgreementDescription": "L'accord concernant la propriété des droits d'auteur et les droits de distribution.",
+    "manuscriptRecordForm": "Formulaire d'enregistrement du manuscrit",
+    "manuscriptRecordFormDescription": "Un formulaire d'enregistrement manuscrit (MRF) signé du MPO rempli à l'extérieur du portail.",
+    "other": "Autre",
+    "otherDescription": "Tout fichier supplémentaire lié à votre publication (veuillez préciser).",
+    "preprint": "Préimpression/Soumis",
+    "preprintDescription": "La version du manuscrit téléchargée sur un serveur de préimpression avant l'examen par les pairs."
   }
 }
