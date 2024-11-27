@@ -272,7 +272,8 @@
     "copy": "Copy",
     "document-type": "Document Type",
     "select-file": "Select or drop file here",
-    "optional": "Optional"
+    "optional": "Optional",
+    "cant-download": "You are not authorized to download this file."
   },
   "create-author-dialog": {
     "title": "Create a new author"

@@ -272,7 +272,8 @@
     "copy": "Copie",
     "document-type": "Type de document",
     "optional": "Facultatif",
-    "select-file": "Sélectionnez ou déposez le fichier ici"
+    "select-file": "Sélectionnez ou déposez le fichier ici",
+    "cant-download": "Vous n'êtes pas autorisé à télécharger ce fichier."
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"

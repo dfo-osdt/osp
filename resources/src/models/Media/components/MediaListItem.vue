@@ -37,12 +37,14 @@ const { t } = useI18n()
         {{ media.data.description }}
       </q-item-label>
     </q-item-section>
-    <q-item-section v-if="media.data.sensitivity_label === 'Protected A'" side>
-      <SensitivityLabelChip :sensitivity="media.data.sensitivity_label" />
+    <q-item-section side>
+      <div>
+        <SensitivityLabelChip v-if="media.data.sensitivity_label === 'Protected A'" :sensitivity="media.data.sensitivity_label" />
+        <SupplementaryFileTypeChip v-if="media.data.supplementary_file_type" outline :type="media.data.supplementary_file_type" />
+        <slot name="side" />
+      </div>
     </q-item-section>
-    <q-item-section v-if="media.data.supplementary_file_type" side>
-      <SupplementaryFileTypeChip outline :type="media.data.supplementary_file_type" />
-    </q-item-section>
+    <q-item-section v-if="media.data.supplementary_file_type" side />
     <q-item-section side>
       <span>
         <q-btn
@@ -54,12 +56,14 @@ const { t } = useI18n()
           @click="emit('delete', media)"
         />
         <q-btn
-          v-if="media.can?.download"
           icon="mdi-file-download-outline"
           color="primary"
-          :href="downloadUrl"
-        />
-      </span>
+          :disabled="!media.can?.download"
+          :href="media.can?.download ? downloadUrl : undefined"
+        >
+          <q-tooltip>
+            {{ t('common.cant-download') }}
+          </q-tooltip></q-btn></span>
     </q-item-section>
   </q-item>
 </template>

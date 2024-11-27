@@ -223,6 +223,7 @@ async function save() {
         secondary
         :publication-id="id"
         class="q-mb-lg"
+        :readonly="!canEdit"
       />
       <ContentCard class="q-mb-lg" secondary>
         <template #title>

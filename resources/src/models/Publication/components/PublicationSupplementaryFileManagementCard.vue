@@ -136,14 +136,13 @@ const disableUpload = computed(() => {
         </q-list>
       </q-card>
     </template>
-    <q-card class="q-pa-md" flat bordered>
+    <q-card v-if="publication.can?.update" class="q-pa-md" flat bordered>
       <p class="text-primary">
         Upload a supplementary file for the publication
       </p>
       <div class="row q-col-gutter-md q-mb-md">
         <SupplementaryFileTypeSelect v-model="fileType" class="col" />
         <q-file
-          v-if="publication?.can?.update"
           v-model="supplementaryFile"
           class="col-lg-8 col-md-12"
           outlined
