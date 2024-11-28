@@ -574,8 +574,8 @@
   },
   "orcid": {
     "already-verified-text": "Your ORCID has been successfully verified with ORCID.org. If you'd like to change it or verify it again, click below.",
-    "error-verifying": "Error verifying with ORCID.org",
-    "verified-with": "Successfully verified with ORCID.org",
+    "error-verifying": "Error authenticating with ORCID.org",
+    "verified-with": "Successfully authentificated with ORCID.org",
     "verify-header-text": "Connect your ORCID iD (or register for an iD)",
     "verifying": "Verifying with ORCID.org",
     "invalid-key": "Invalid key - likely due to timeout - please try again.",
@@ -589,7 +589,8 @@
     "revoke-dialog-message": "This will revoke the portal's access to your ORICD account. You can always reconnected it later. Information we've added to your profile up to this point will remain but you can choose to manually delete it.",
     "employment-title": "Employment",
     "needs_sync": "ORCID synchronization pending",
-    "synced": "Synchronzied with your ORCID profile"
+    "synced": "Synchronzied with your ORCID profile",
+    "error": "ORCID.org retruned an error"
   },
   "organization-select": {
     "add-a-new-organization": "Add a new organization",

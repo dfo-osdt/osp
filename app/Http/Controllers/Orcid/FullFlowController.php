@@ -31,13 +31,15 @@ class FullFlowController
         $frontendUrl = config('app.frontend_url');
 
         $validated = $request->validate([
-            'code' => 'required|string|alpha_num',
+            'code' => 'string|alpha_num',
             'key' => 'required|string|alpha_num',
+            'error' => 'string',
+            'error_description' => 'required_with:error, string',
         ]);
 
         if (! Cache::has($validated['key'])) {
             Log::error('Invalid key for ORCID callback');
-            $url = $frontendUrl.'#/auth/orcid-callback?status=invalid-key';
+            $url = $frontendUrl.'#/auth/orcid-callback?status=invalid_key';
 
             return redirect($url);
         }
@@ -48,9 +50,14 @@ class FullFlowController
 
         if (! $user) {
             Log::error('Invalid user for ORCID callback');
-            $url = $frontendUrl.'#/auth/orcid-callback?status=invalid-user';
-
+            $url = $frontendUrl.'#/auth/orcid-callback?status=invalid_user';
             return redirect($url);
+        }
+
+        if ($validated['error'] ?? false) {
+            Log::error('Error in ORCID callback');
+            Log::debug($validated['error_description']);
+            return redirect($frontendUrl.'#/auth/orcid-callback?status=error&error_type='.$validated['error'].'&error_description='.$validated['error_description']);
         }
 
         Log::info('User found for ORCID callback');
