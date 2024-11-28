@@ -145,10 +145,9 @@ class Publication extends Model implements Fundable, HasMedia
             $properties['description'] = $description;
         }
 
-        if(SupplementaryFileType::isProtectedA($type)) {
+        if (SupplementaryFileType::isProtectedA($type)) {
             $properties['sensitivity_label'] = SensitivityLabel::ProtectedA->value;
         }
-
 
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)

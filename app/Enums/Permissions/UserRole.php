@@ -2,7 +2,7 @@
 
 namespace App\Enums\Permissions;
 
-enum UserRole: string 
+enum UserRole: string
 {
     case AUTHOR = 'author';
     case DIRECTOR = 'director';

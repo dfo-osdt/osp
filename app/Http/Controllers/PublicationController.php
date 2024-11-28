@@ -56,7 +56,7 @@ class PublicationController extends Controller
             'is_open_access' => 'boolean',
         ]);
 
-        if($validated['is_open_access']){
+        if ($validated['is_open_access']) {
             $validated['embargoed_until'] = null;
         }
 
@@ -114,7 +114,7 @@ class PublicationController extends Controller
             'is_open_access' => 'boolean',
         ]);
 
-        if($validated['is_open_access']){
+        if ($validated['is_open_access']) {
             $validated['embargoed_until'] = null;
         }
 
