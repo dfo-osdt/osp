@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
+use Filament\Forms;
 use Filament\Resources\Pages\EditRecord;
 
 class EditUser extends EditRecord
@@ -17,7 +18,14 @@ class EditUser extends EditRecord
         ];
     }
 
-
+    /**
+    * Make email_verified_at visible so the table displays the correct True/False badges.
+    */
+    protected function beforeFill(): void
+    {
+	$this->record->makeVisible(['email_verified_at']);
+	}
+    
     /**
     * Force fill the Active attribute without having to make Active castable.
     */
@@ -28,6 +36,7 @@ class EditUser extends EditRecord
 	])->save();
     }
 
+    
     /**
      * Get the URL to redirect to after performing an action in the EditUser page.
      *
@@ -41,4 +50,14 @@ class EditUser extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+    /**
+    * Set the email_verified_at attribute to the current DateTime.
+    */
+    public function setVerifiedEmail(): void
+    {
+	$this->record->forceFill([
+	    'email_verified_at' => now()
+	])->save();
+    }	 
 }
