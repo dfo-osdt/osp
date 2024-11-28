@@ -17,6 +17,17 @@ class EditUser extends EditRecord
         ];
     }
 
+
+    /**
+    * Force fill the Active attribute without having to make Active castable.
+    */
+    protected function beforeSave(): void
+    {
+	$this->record->forceFill([
+            'active' => $this->data['active'],
+	])->save();
+    }
+
     /**
      * Get the URL to redirect to after performing an action in the EditUser page.
      *

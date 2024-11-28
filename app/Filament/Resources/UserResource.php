@@ -33,8 +33,10 @@ class UserResource extends Resource
                         ->Filled()
                         ->rules(['bail', 'required', 'string', 'email', new AuthorizedEmailDomain]),
                     Forms\Components\CheckboxList::make('roles')
-                        ->relationship(titleAttribute: 'name')
-                        ->label('Roles'),
+						 ->relationship(titleAttribute: 'name')
+						 ->label('Roles'),
+		    Forms\Components\Toggle::make('active')
+					   ->dehydrated(false),
                 ]),
             ]);
     }
