@@ -56,6 +56,10 @@ class PublicationController extends Controller
             'is_open_access' => 'boolean',
         ]);
 
+        if($validated['is_open_access']){
+            $validated['embargoed_until'] = null;
+        }
+
         // create the publication
         $publication = new Publication($validated);
         $publication->user_id = $request->user()->id;
@@ -109,6 +113,10 @@ class PublicationController extends Controller
             'embargoed_until' => 'date|nullable',
             'is_open_access' => 'boolean',
         ]);
+
+        if($validated['is_open_access']){
+            $validated['embargoed_until'] = null;
+        }
 
         // update the publication
         $publication->update($validated);

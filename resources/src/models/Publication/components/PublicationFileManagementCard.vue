@@ -39,7 +39,7 @@ async function upload() {
     props.publication.data.id,
   )
 
-  publicationResourceList.value?.data.push(response)
+  publicationResourceList.value?.data.unshift(response)
 
   uploadingFile.value = false
   // clear file
@@ -93,12 +93,23 @@ watch(publicationFile, () => {
       <q-card outlined class="q-mb-md">
         <q-list separator>
           <MediaListItem
-            v-for="publicationResource in publicationResourceList.data"
+            v-for="(publicationResource, index) in publicationResourceList.data"
             :key="publicationResource.data.uuid"
             :media="publicationResource"
             :download-url="`api/publications/${props.publication.data.id}/files/${publicationResource.data.uuid}?download=true`"
             @delete="deleteFile"
           >
+            <template v-if="index !== 0" #prepend>
+              <q-item-section avatar>
+                <q-icon name="mdi-history" color="secondary">
+                  <q-tooltip>
+                    {{
+                      t('common.publication-previous-version')
+                    }}
+                  </q-tooltip>
+                </q-icon>
+              </q-item-section>
+            </template>
             <template v-if="!publicationResource.can?.download" #side>
               <span class="q-mr-sm">{{
                 $t(
