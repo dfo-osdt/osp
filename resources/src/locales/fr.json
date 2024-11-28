@@ -574,8 +574,8 @@
   },
   "orcid": {
     "already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le modifier ou le vérifier à nouveau, cliquez ci-dessous.",
-    "error-verifying": "Erreur lors de la vérification avec ORCID.org",
-    "verified-with": "Vérifié avec succès avec ORCID.org",
+    "error-verifying": "Erreur d'authentification avec ORCID.org",
+    "verified-with": "Authentifié avec succès avec ORCID.org",
     "verify-header-text": "Connectez votre ORCID iD (ou inscrivez-vous pour un iD)",
     "verifying": "Vérification avec ORCID.org",
     "invalid-key": "Clé non valide - probablement en raison d'un délai d'attente - veuillez réessayer.",
@@ -589,7 +589,8 @@
     "revoke-dialog-title": "Confirmez la déconnexion de votre compte ORCID",
     "employment-title": "Emploi",
     "needs_sync": "ORCID synchronisation en attente",
-    "synced": "Synchronisé avec votre profil ORCID"
+    "synced": "Synchronisé avec votre profil ORCID",
+    "error": "ORCID.org a renvoyé cet erreur"
   },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",
