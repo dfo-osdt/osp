@@ -273,7 +273,8 @@
     "document-type": "Type de document",
     "optional": "Facultatif",
     "select-file": "Sélectionnez ou déposez le fichier ici",
-    "cant-download": "Vous n'êtes pas autorisé à télécharger ce fichier."
+    "cant-download": "Vous n'êtes pas autorisé à télécharger ce fichier.",
+    "publication-previous-version": "Ceci est une version précédente de la publication"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -636,7 +637,7 @@
   },
   "publication-page": {
     "attach-pub-details": "Veuillez télécharger la version la plus récente de votre publication au format PDF. \nLes fichiers de cette section sont soumis à la période d'embargo applicable et ne sont accessibles qu'aux utilisateurs autorisés, tels que les auteurs et les gestionnaires, jusqu'à l'expiration de l'embargo.",
-    "attach-publication": "Joindre la publication",
+    "attach-publication": "Travail publié",
     "go-to-manuscript-record": "Aller au registre du manuscrit",
     "mark-as-published": "Marquer comme publié",
     "publication-date-pending": "Date de publication en attente",

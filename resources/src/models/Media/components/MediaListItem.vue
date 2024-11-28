@@ -58,10 +58,10 @@ const { t } = useI18n()
         <q-btn
           icon="mdi-file-download-outline"
           color="primary"
-          :disabled="!media.can?.download"
+          :disable="!media.can?.download"
           :href="media.can?.download ? downloadUrl : undefined"
         >
-          <q-tooltip>
+          <q-tooltip v-if="!media.can?.download">
             {{ t('common.cant-download') }}
           </q-tooltip></q-btn></span>
     </q-item-section>

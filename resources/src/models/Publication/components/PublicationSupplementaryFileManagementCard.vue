@@ -58,7 +58,7 @@ async function upload() {
     description.value,
   )
 
-  supplementaryFileResourceList.value?.data.push(response)
+  supplementaryFileResourceList.value?.data.unshift(response)
 
   uploadingFile.value = false
   // clear file

@@ -273,7 +273,8 @@
     "document-type": "Document Type",
     "select-file": "Select or drop file here",
     "optional": "Optional",
-    "cant-download": "You are not authorized to download this file."
+    "cant-download": "You are not authorized to download this file.",
+    "publication-previous-version": "This is a previous version of the publication"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -636,7 +637,7 @@
   },
   "publication-page": {
     "attach-pub-details": "Please upload the most recent version of your publication in PDF format. Files in this section are subject to the applicable embargo period and can only be accessed by authorized users, such as the authors and managers, until the embargo has expired.",
-    "attach-publication": "Attach Publication",
+    "attach-publication": "Published Work",
     "go-to-manuscript-record": "Go to Manuscript Record",
     "mark-as-published": "Mark as Published",
     "publication-date-pending": "Publication Date Pending",

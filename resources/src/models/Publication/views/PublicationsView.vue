@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import PublicationList from '../components/PublicationList.vue'
 import type {
   PublicationResourceList,
 } from '../Publication'
+import ContentCard from '@/components/ContentCard.vue'
+import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
+import PaginationDiv from '@/components/PaginationDiv.vue'
+import SearchInput from '@/components/SearchInput.vue'
+import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
+import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
+import PublicationList from '../components/PublicationList.vue'
 import {
   PublicationQuery,
   PublicationService,
 } from '../Publication'
-import ContentCard from '@/components/ContentCard.vue'
-import SearchInput from '@/components/SearchInput.vue'
-import MainPageLayout from '@/layouts/MainPageLayout.vue'
-import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
-import PaginationDiv from '@/components/PaginationDiv.vue'
-import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
-import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
 
 const publications = ref<PublicationResourceList>()
 const { t } = useI18n()
