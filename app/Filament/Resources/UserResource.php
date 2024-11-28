@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources;
 
-
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use App\Rules\AuthorizeEmailDomain;
-use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -24,19 +22,19 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('first_name')
-					  ->disabledOn('edit')
-					  ->Filled()
-					  ->required(),
+                    ->disabledOn('edit')
+                    ->Filled()
+                    ->required(),
                 Forms\Components\TextInput::make('last_name')
                     ->disabledOn('edit')
                     ->Filled(),
                 Forms\Components\Section::make([
                     Forms\Components\TextInput::make('email')
-					      ->Filled()
-					      ->rules(['required', 'string', 'email', new AuthorizeEmailDomain]),
+                        ->Filled()
+                        ->rules(['required', 'string', 'email', new AuthorizeEmailDomain]),
                     Forms\Components\CheckboxList::make('roles')
-						 ->relationship(titleAttribute: 'name')
-						 ->label('Roles'),
+                        ->relationship(titleAttribute: 'name')
+                        ->label('Roles'),
                 ]),
             ]);
     }
@@ -46,53 +44,53 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('first_name')
-					 ->searchable()
-					 ->sortable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('last_name')
-					 ->searchable()
-					 ->sortable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-					 ->searchable(),
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('email_verified_at')
-					 ->boolean()
-					 ->sortable(),
+                    ->boolean()
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('active')
-					 ->boolean()
-					 ->sortable(),
+                    ->boolean()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')
-					 ->badge()
-					 ->color(fn (string $state): string => match ($state) {
-					     'author' => 'success',
-					     'director' => 'warning',
-					     'admin' => 'danger',
-					     'default' => 'info',
-					 })
-					 ->searchable(),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'author' => 'success',
+                        'director' => 'warning',
+                        'admin' => 'danger',
+                        'default' => 'info',
+                    })
+                    ->searchable(),
             ])
             ->filters([
-		Tables\Filters\TernaryFilter::make('email_verified_at')
-					    ->label('Verified')
-					    ->nullable()
-					    ->placeholder('All'),
-		Tables\Filters\SelectFilter::make('active')
-					   ->options([
-					       true => 'Active',
-					       false => 'Inactive',
-					   ]),
-		Tables\Filters\Filter::make('no_roles')
-				     ->label('No Roles')
-				     ->query(fn ($query) => $query->whereDoesntHave('roles')),
-		Tables\Filters\SelectFilter::make('roles')
-					   ->relationship('roles','name')
-					   ->label('Role')
+                Tables\Filters\TernaryFilter::make('email_verified_at')
+                    ->label('Verified')
+                    ->nullable()
+                    ->placeholder('All'),
+                Tables\Filters\SelectFilter::make('active')
+                    ->options([
+                        true => 'Active',
+                        false => 'Inactive',
+                    ]),
+                Tables\Filters\Filter::make('no_roles')
+                    ->label('No Roles')
+                    ->query(fn ($query) => $query->whereDoesntHave('roles')),
+                Tables\Filters\SelectFilter::make('roles')
+                    ->relationship('roles', 'name')
+                    ->label('Role'),
             ])
             ->actions([
-		Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-		Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\BulkActionGroup::make([
                     // Placeholder
-		]),
+                ]),
             ])
             ->defaultSort('first_name');
     }
