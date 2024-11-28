@@ -121,14 +121,19 @@ const removable = computed(() => {
         </q-item>
         <q-item v-if="manuscriptAuthor.data.author?.data.orcid">
           <q-item-section avatar>
-            <OrcidAvatar />
+            <OrcidAvatar :unauthenticated="!manuscriptAuthor.data.author.data.orcid_verified" />
           </q-item-section>
           <q-item-section>
-            <a
-              class="text-primary"
-              :href="manuscriptAuthor.data.author?.data.orcid"
-              target="_blank"
-            >{{ manuscriptAuthor.data.author?.data.orcid }}</a>
+            <q-item-label>
+              <a
+                class="text-primary"
+                :href="manuscriptAuthor.data.author?.data.orcid"
+                target="_blank"
+              >{{ manuscriptAuthor.data.author?.data.orcid }}</a>
+            </q-item-label>
+            <q-item-label v-if="!manuscriptAuthor.data.author.data.orcid_verified" caption>
+              {{ $t('common.unauthenticated-orcid-id') }}
+            </q-item-label>
           </q-item-section>
         </q-item>
         <q-item>

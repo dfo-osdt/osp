@@ -49,6 +49,7 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
               >
                 <OrcidIcon
                   v-if="item.data.author?.data.orcid"
+                  :unauthenticated="!item.data.author.data.orcid_verified"
                 />
                 {{ item.data.author?.data.last_name }},
                 {{ item.data.author?.data.first_name }}

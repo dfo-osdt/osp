@@ -274,7 +274,8 @@
     "select-file": "Select or drop file here",
     "optional": "Optional",
     "cant-download": "You are not authorized to download this file.",
-    "publication-previous-version": "This is a previous version of the publication"
+    "publication-previous-version": "This is a previous version of the publication",
+    "unauthenticated-orcid-id": "Unauthenticated ORCID iD"
   },
   "create-author-dialog": {
     "title": "Create a new author"
