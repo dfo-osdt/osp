@@ -28,7 +28,7 @@ test('a user can get a list of all dfo journals', function () {
     Journal::factory()->count(5)->create();
 
     // authenticated user can get a list of journals
-    $response = $this->actingAs($user)->getJson('/api/journals?filter[dfo_series]=1')->assertOk();
+    $response = $this->actingAs($user)->getJson('/api/journals?filter[dfo_series]=1&limit=20')->assertOk();
 
     expect($response->json('data'))->toHaveCount(6);
 });
@@ -56,7 +56,7 @@ test('a user can find these specific journals by title', function (string $title
     $this->seed(JournalsTableSeeder::class);
 
     // make sure that title is in the database
-    $this->assertDatabaseHas('journals', ['title_en' => $title]);
+    $this->assertDatabaseHas('journals', ['title' => $title]);
 
     // create a user
     $user = User::factory()->create();
@@ -64,7 +64,7 @@ test('a user can find these specific journals by title', function (string $title
     // search for a journal by title
     $response = $this->actingAs($user)->getJson('/api/journals?filter[search]='.$title.'&sort=title-length')->assertOk();
 
-    $returnedTitles = collect($response->json('data'))->pluck('data.title_en');
+    $returnedTitles = collect($response->json('data'))->pluck('data.title');
 
     expect($returnedTitles)->toContain($title);
 
