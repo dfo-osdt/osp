@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { QSelect } from 'quasar'
 import type {
   JournalResource,
   JournalResourceList,
 } from '../Journal'
+import { SpatieQuery } from '@/api/SpatieQuery'
+import { QSelect } from 'quasar'
 import {
   JournalService,
 } from '../Journal'
-import { SpatieQuery } from '@/api/SpatieQuery'
 
 const props = defineProps<{
   modelValue: number | null
@@ -52,7 +52,7 @@ async function filterJournals(val: string, update: (arg: () => Promise<void>) =>
       query
         .filter('search', needle)
         .sort('title-length', 'asc')
-        .sort('title_en', 'asc')
+        .sort('title', 'asc')
         .paginate(1, 10)
 
       journals.value = await JournalService.list(query)
@@ -65,8 +65,8 @@ function optionValue(item: JournalResource) {
   return item.data.id
 }
 function optionLabel(item: JournalResource) {
-  const { title_en, publisher } = item.data
-  return `${title_en} (${publisher})`
+  const { title, issn } = item.data
+  return `${title} (ISSN:${issn})`
 }
 
 defineExpose({
@@ -74,14 +74,6 @@ defineExpose({
 })
 
 // locale
-const localeStore = useLocaleStore()
-function getJournalName(journal: JournalResource) {
-  const { title_en, title_fr } = journal.data
-  if (localeStore.locale === 'fr') {
-    return title_fr ?? title_en
-  }
-  return title_en
-}
 </script>
 
 <template>
@@ -124,9 +116,9 @@ function getJournalName(journal: JournalResource) {
     <template #option="{ itemProps, opt }">
       <q-item v-bind="itemProps">
         <q-item-section>
-          <q-item-label>{{ getJournalName(opt) }}</q-item-label>
+          <q-item-label>{{ opt.data.title }}</q-item-label>
           <q-item-label caption>
-            {{ opt.data.publisher }}
+            {{ opt.data.publisher }} - {{ opt.data.issn }}
           </q-item-label>
         </q-item-section>
       </q-item>

@@ -19,7 +19,6 @@ class LocalTestDataSeeder extends Seeder
         activity()->disableLogging();
 
         $this->call([
-            JournalsTableSeeder::class,
             ExpertisesTableSeeder::class,
         ]);
 

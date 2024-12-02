@@ -403,7 +403,7 @@
   },
   "journal-select": {
     "not-found-msg": "Vous ne trouvez pas le journal que vous cherchez ? \nVeuillez nous contacter afin que nous puissions l'ajouter.",
-    "search-hint": "Commencez à taper pour rechercher un journal"
+    "search-hint": "Commencez à taper pour rechercher un journal (titre or ISSN)"
   },
   "login-card": {
     "dont-have-an-account": "Vous n'avez pas de compte?",

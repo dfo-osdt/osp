@@ -15,16 +15,17 @@ class DfoSeriesJournalSeeder extends Seeder
      */
     public function run()
     {
-        // get full system path to dfo_regions.csv file
+        // get full system path to dfo_report_series.csv file
         $path = database_path('seeders/data/dfo_report_series.csv');
 
-        $regions = SimpleExcelReader::create($path)->getRows();
+        $series = SimpleExcelReader::create($path)->getRows();
 
-        $regions->each(function ($region) {
+        $series->each(function ($serie) {
             Journal::firstOrCreate([
-                'title_en' => $region['title_en'],
-                'title_fr' => $region['title_fr'],
-                'publisher' => $region['publisher'],
+                'issn' => $serie['issn'],
+            ], [
+                'title' => $serie['title'],
+                'publisher' => $serie['publisher'],
             ]);
         });
     }

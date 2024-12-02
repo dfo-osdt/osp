@@ -132,25 +132,33 @@ class UpdateScopusJournals extends Command
             $asjcCodesInRow = array_map('intval', explode(';', $row['All Science Journal Classification Codes (ASJC)']));
 
             if ($asjcCodes->intersect($asjcCodesInRow)->isNotEmpty()) {
-                $title_en = $row['Source Title'];
+                $title = $row['Source Title'];
                 $publisher = $row['Publisher Imprints Grouped to Main Publisher'];
+
+                $issn = !empty($row['EISSN']) ? $row['EISSN'] : (!empty($row['ISSN']) ? $row['ISSN'] : null);
+                if ($issn) {
+                    $issn = $this->formatIssn($issn);
+                }
+
 
                 $action = 0;
 
                 if ($journal) {
                     // update the title and publisher if they have changed
-                    if ($journal->title_en != $title_en || $journal->publisher != $publisher) {
-                        $journal->title_en = $title_en;
+                    if ($journal->title != $title || $journal->publisher != $publisher || $journal->issn != $issn) {
+                        $journal->title = $title;
                         $journal->publisher = $publisher;
+                        $journal->issn = $issn;
                         $journal->save();
                         $action = 1;
                     }
                 } else {
                     // create a new journal
                     Journal::forceCreate([
-                        'title_en' => $title_en,
+                        'title' => $title,
                         'publisher' => $publisher,
                         'scopus_source_record_id' => $id,
+                        'issn' => $issn,
                     ]);
                     $action = 2;
                 }
@@ -167,5 +175,10 @@ class UpdateScopusJournals extends Command
         $this->table(['Action', 'Count'], $actionRegister);
 
         return Command::SUCCESS;
+    }
+
+    private function formatIssn(string $issn): string
+    {
+        return substr($issn, 0, 4).'-'.substr($issn, 4);
     }
 }

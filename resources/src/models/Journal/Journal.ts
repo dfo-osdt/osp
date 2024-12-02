@@ -1,12 +1,12 @@
+import type { SpatieQuery } from '@/api/SpatieQuery'
 import type { Resource, ResourceList } from '../Resource'
 import { http } from '@/api/http'
-import type { SpatieQuery } from '@/api/SpatieQuery'
 
 export interface Journal {
   readonly id: number
-  title_en: string
-  title_fr: string | null
+  title: string
   publisher: string
+  issn: string | null
 }
 
 export type JournalResource = Resource<Journal>

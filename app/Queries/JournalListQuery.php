@@ -15,18 +15,16 @@ class JournalListQuery extends QueryBuilder
         parent::__construct(Journal::query());
 
         $this
-            ->defaultSort('title_en')
+            ->defaultSort('title')
             ->allowedSorts([
-                'title_en',
-                'title_fr',
+                'title',
                 'publisher',
-                AllowedSort::custom('title-length', new StringLengthSort, 'title_en'),
+                AllowedSort::custom('title-length', new StringLengthSort, 'title'),
             ])
             ->allowedFilters([
                 AllowedFilter::exact('id'),
-                AllowedFilter::partial('title_en'),
-                AllowedFilter::partial('title_fr'),
-                AllowedFilter::custom('search', new MultiColumnFilter('title_en', 'title_fr')),
+                AllowedFilter::partial('title'),
+                AllowedFilter::custom('search', new MultiColumnFilter('title','issn')),
                 AllowedFilter::scope('dfo_series'),
             ]);
     }
