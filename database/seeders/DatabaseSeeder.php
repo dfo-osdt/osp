@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             FunderSeeder::class,
             RoleAndPermissionSeeder::class,
             FunctionalAreaSeeder::class,
+            DfoSeriesJournalSeeder::class,
         ]);
 
         if (config('app.env') === 'local') {

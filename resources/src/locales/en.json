@@ -403,7 +403,7 @@
   },
   "journal-select": {
     "not-found-msg": "Can't find the journal you're looking for? Please contact us so we can add it.",
-    "search-hint": "Start typing to search for a journal"
+    "search-hint": "Start typing to search for a journal (title or ISSN)"
   },
   "login-card": {
     "dont-have-an-account": "Don't have an account?",

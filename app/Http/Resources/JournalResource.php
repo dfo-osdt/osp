@@ -17,9 +17,9 @@ class JournalResource extends JsonResource
         return [
             'data' => [
                 'id' => $this->id,
-                'title_en' => $this->title_en,
-                'title_fr' => $this->title_fr,
+                'title' => $this->title,
                 'publisher' => $this->publisher,
+                'issn' => $this->issn,
             ],
             'can' => [
                 'update' => false,
