@@ -18,8 +18,9 @@ class JournalFactory extends Factory
     public function definition()
     {
         return [
-            'title_en' => $this->faker->sentence(),
+            'title' => $this->faker->sentence(),
             'publisher' => $this->faker->company(),
+            'issn' => $this->faker->randomNumber(4)."-".$this->faker->randomNumber(4),
         ];
     }
 
@@ -29,7 +30,6 @@ class JournalFactory extends Factory
     public function dfoSeries()
     {
         return $this->state([
-            'title_fr' => $this->faker->sentence(),
             'publisher' => Journal::$dfoPublisher,
         ]);
     }
