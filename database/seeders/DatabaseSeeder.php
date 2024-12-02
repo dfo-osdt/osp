@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             FunderSeeder::class,
             RoleAndPermissionSeeder::class,
             FunctionalAreaSeeder::class,
-            DfoSeriesJournalSeeder::class,
         ]);
 
         if (config('app.env') === 'local') {
@@ -31,7 +30,8 @@ class DatabaseSeeder extends Seeder
                 $this->call([
                     LocalTestDataSeeder::class,
                 ]);
-            }
+                $this->call(JournalsTableSeeder::class);
+    }
         }
     }
 }
