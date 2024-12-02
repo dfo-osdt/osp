@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Auth\Traits\AuthorizedDomainTrait;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Rules\AuthorizedEmailDomain;
 use App\Traits\LocaleTrait;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +15,6 @@ use Illuminate\Validation\ValidationException;
 
 class RegisteredUserController extends Controller
 {
-    use AuthorizedDomainTrait;
     use LocaleTrait;
 
     /**
@@ -30,16 +29,13 @@ class RegisteredUserController extends Controller
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['bail', 'required', 'string', 'email', 'max:255', new AuthorizedEmailDomain],
             'password' => ['required', 'confirmed', Password::min(config('auth.password_min_length'))->uncompromised()],
             'locale' => ['string', 'max:2', 'in:en,fr'],
         ]);
 
         // request email to lowercase - ensure no duplicate emails
         $validated['email'] = strtolower($validated['email']);
-
-        // check if the email domain is part of the allowed domains
-        $this->validateEmailDomain($validated['email']);
 
         // check if the user already exists
         $user = User::where('email', $validated['email'])->first();

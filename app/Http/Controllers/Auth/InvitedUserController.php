@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Events\Auth\Invited;
-use App\Http\Controllers\Auth\Traits\AuthorizedDomainTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\Invitation;
 use App\Models\User;
+use App\Rules\AuthorizedEmailDomain;
 use Hash;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
@@ -16,8 +16,6 @@ use Str;
 
 class InvitedUserController extends Controller
 {
-    use AuthorizedDomainTrait;
-
     public function invite(Request $request): UserResource
     {
 
@@ -25,13 +23,11 @@ class InvitedUserController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'bail|required|email',
+            'email' => ['bail', 'required', 'email', new AuthorizedEmailDomain],
             'locale' => 'string|in:en,fr',
         ]);
 
         $validated['email'] = strtolower($validated['email']);
-
-        $this->validateEmailDomain($validated['email']);
 
         // does the user already exist?
         if (User::where('email', $validated['email'])->exists()) {

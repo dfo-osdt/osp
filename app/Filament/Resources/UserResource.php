@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use App\Rules\AuthorizeEmailDomain;
+use App\Rules\AuthorizedEmailDomain;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -31,7 +31,7 @@ class UserResource extends Resource
                 Forms\Components\Section::make([
                     Forms\Components\TextInput::make('email')
                         ->Filled()
-                        ->rules(['required', 'string', 'email', new AuthorizeEmailDomain]),
+                        ->rules(['bail', 'required', 'string', 'email', new AuthorizedEmailDomain]),
                     Forms\Components\CheckboxList::make('roles')
                         ->relationship(titleAttribute: 'name')
                         ->label('Roles'),
