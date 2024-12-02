@@ -65,7 +65,7 @@ async function createAuthorEmployment() {
           :label="t('orcid-employment-edit.role-title')"
           outlined
           :rules="[(val: string|null) => !!val || t('common.required'),
-                   (val: string) => val.length <= 255 || t('common.validation.must-be-less-than-x-characters', [255]),
+                   (val: string) => val.length <= 125 || t('common.validation.must-be-less-than-x-characters', [125]),
           ]"
           class="q-mb-md"
         />
@@ -74,7 +74,7 @@ async function createAuthorEmployment() {
           :label="t('orcid-employment-edit.department-name')"
           outlined
           :rules="[(val: string|null) => !!val || t('common.required'),
-                   (val: string) => val.length <= 255 || t('common.validation.must-be-less-than-x-characters', [255]),
+                   (val: string) => val.length <= 125 || t('common.validation.must-be-less-than-x-characters', [125]),
           ]"
           class="q-mb-md"
           :hint="t('orcid-employment-edit.department-name-hint')"

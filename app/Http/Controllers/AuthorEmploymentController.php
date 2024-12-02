@@ -33,8 +33,8 @@ class AuthorEmploymentController extends Controller
 
         $validated = $request->validate([
             'organization_id' => 'nullable|exists:organizations,id',
-            'role_title' => 'nullable|string|max:255',
-            'department_name' => 'nullable|string|max:255',
+            'role_title' => 'nullable|string|max:125',
+            'department_name' => 'nullable|string|max:125',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
         ]);
@@ -81,8 +81,8 @@ class AuthorEmploymentController extends Controller
         $this->authorize('update', $authorEmployment);
 
         $validated = $request->validate([
-            'role_title' => 'nullable|string|max:50',
-            'department_name' => 'nullable|string|max:50',
+            'role_title' => 'nullable|string|max:125',
+            'department_name' => 'nullable|string|max:125',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
         ]);

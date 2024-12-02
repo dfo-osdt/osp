@@ -119,3 +119,24 @@ test('a user can delete an author employment record', function () {
     Queue::assertPushed(\App\Jobs\SyncAuthorEmploymentWithOrcid::class);
 
 });
+
+test('adding a 125 char role title is valid', function () {
+    $user = User::factory()->create();
+    $employment = AuthorEmployment::factory()->create([
+        'author_id' => $user->author->id,
+        'organization_id' => Organization::getDefaultOrganization()->id,
+        'start_date' => now()->subYear(),
+    ]);
+
+    $data = AuthorEmployment::factory()->make([
+        'author_id' => $user->author->id,
+        'organization_id' => Organization::getDefaultOrganization()->id,
+        'start_date' => now()->subYear(),
+        'role_title' => str_repeat('a', 125),
+    ])->toArray();
+
+    $response = $this->actingAs($user)->putJson("api/authors/{$user->author->id}/employments/{$employment->id}", $data)->assertOk();
+
+    expect($response->json('data.role_title'))->toBe(str_repeat('a', 125));
+
+});
