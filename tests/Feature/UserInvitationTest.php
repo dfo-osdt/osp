@@ -97,3 +97,16 @@ test('a user can see their sent invitations', function () {
 
     $response->assertOk();
 });
+
+test('a user cannot invite a user unless the domain is in the autorized list', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/users/invite', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => 'super@bad.com',
+    ]);
+
+    $response->assertStatus(422);
+
+});
