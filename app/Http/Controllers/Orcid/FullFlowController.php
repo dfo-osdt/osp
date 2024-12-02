@@ -51,12 +51,14 @@ class FullFlowController
         if (! $user) {
             Log::error('Invalid user for ORCID callback');
             $url = $frontendUrl.'#/auth/orcid-callback?status=invalid_user';
+
             return redirect($url);
         }
 
         if ($validated['error'] ?? false) {
             Log::error('Error in ORCID callback');
             Log::debug($validated['error_description']);
+
             return redirect($frontendUrl.'#/auth/orcid-callback?status=error&error_type='.$validated['error'].'&error_description='.$validated['error_description']);
         }
 
