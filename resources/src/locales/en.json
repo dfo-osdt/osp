@@ -807,10 +807,10 @@
   "authors-view": {
     "all-authors": "All Authors",
     "all-authors-caption": "All portal authors",
-    "dfo-authors": "DFO Authors",
+    "dfo-authors": "Internal Authors",
     "dfo-authors-caption": "Authors that have a DFO affiliation",
     "external-authors": "External Authors",
-    "external-authors-caption": "Authors that do not have a DFO affiliation",
+    "external-authors-caption": "Authors with an external affiliation",
     "with-orcid": "With ORCID",
     "with-orcid-caption": "Authors with an associated ORCID"
   }

@@ -13,6 +13,7 @@ import CreateOrganizationDialog from './CreateOrganizationDialog.vue'
 const props = defineProps<{
   modelValue: number | null
   initialSearchTerm?: string
+  showDefaultOrganization?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
@@ -45,7 +46,7 @@ onMounted(async () => {
   if (props.initialSearchTerm) {
     organizationSelect.value?.filter(props.initialSearchTerm)
   }
-  if (props.modelValue === null) {
+  if (props.modelValue === null && props.showDefaultOrganization) {
     selectedOrganization.value = await OrganizationService.find(
       defaultOrganiztionId,
     )

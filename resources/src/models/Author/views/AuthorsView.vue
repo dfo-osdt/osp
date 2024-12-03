@@ -43,7 +43,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-account-arrow-left-outline',
       active: activeFilter.value === 2,
       filter: (query: AuthorQuery): AuthorQuery => {
-        return query
+        return query.filterInternalAuthor()
       },
     },
     {
@@ -53,7 +53,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-account-arrow-right-outline',
       active: activeFilter.value === 3,
       filter: (query: AuthorQuery): AuthorQuery => {
-        return query
+        return query.filterExternalAuthor()
       },
     },
     {
@@ -63,7 +63,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-account-school-outline',
       active: activeFilter.value === 4,
       filter: (query: AuthorQuery): AuthorQuery => {
-        return query
+        return query.filterWithOrcid()
       },
     },
   ]
@@ -106,6 +106,7 @@ async function getAuthors() {
   }
 
   query.sort('last_name', 'asc')
+  query.include('organization')
   query.paginate(currentPage.value, 10)
 
   loading.value = true
@@ -116,12 +117,18 @@ async function getAuthors() {
 function mainFilterClick(filterId: number) {
   activeFilter.value = filterId
   search.value = ''
+  organizationId.value = null
   currentPage.value = 1
   getAuthors()
 }
 
 // Watchers
 watch(currentPage, () => {
+  getAuthors()
+})
+
+watch(organizationId, () => {
+  currentPage.value = 1
   getAuthors()
 })
 

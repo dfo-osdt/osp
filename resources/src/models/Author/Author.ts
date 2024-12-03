@@ -133,6 +133,21 @@ export class AuthorQuery extends SpatieQuery {
     return this
   }
 
+  public filterInternalAuthor() {
+    this.filter('internal_author', true)
+    return this
+  }
+
+  public filterExternalAuthor() {
+    this.filter('external_author', true)
+    return this
+  }
+
+  public filterWithOrcid() {
+    this.filter('with_orcid', true)
+    return this
+  }
+
   public sort(sort: AuthorQuerySort, direction: 'asc' | 'desc') {
     super.sort(sort, direction)
     return this

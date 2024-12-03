@@ -25,6 +25,9 @@ class AuthorListQuery extends QueryBuilder
                 AllowedFilter::exact('organization_id'),
                 AllowedFilter::exact('orcid'),
                 AllowedFilter::custom('search', new FuzzyFilter('first_name', 'last_name', 'email')),
+                AllowedFilter::scope('internal_author'),
+                AllowedFilter::scope('external_author'),
+                AllowedFilter::scope('with_orcid'),
             ]);
     }
 }
