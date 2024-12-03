@@ -803,5 +803,15 @@
     "otherDescription": "Tout fichier supplémentaire lié à votre publication (veuillez préciser).",
     "preprint": "Préimpression/Soumis",
     "preprintDescription": "La version du manuscrit téléchargée sur un serveur de préimpression avant l'examen par les pairs."
+  },
+  "authors-view": {
+    "all-authors": "Tous les auteurs",
+    "all-authors-caption": "Tous les auteurs du portail",
+    "dfo-authors": "Auteurs internes",
+    "dfo-authors-caption": "Auteurs affiliés au MPO",
+    "external-authors": "Auteurs externes",
+    "external-authors-caption": "Auteurs avec une affiliation externe",
+    "with-orcid": "Avec ORCID",
+    "with-orcid-caption": "Auteurs avec un ORCID associé"
   }
 }
