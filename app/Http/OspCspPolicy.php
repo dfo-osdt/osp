@@ -24,7 +24,8 @@ class OspCspPolicy extends Policy
             ->addDirective(Directive::OBJECT, Keyword::NONE)
             ->addDirective(Directive::SCRIPT, Keyword::SELF)
             ->addDirective(Directive::STYLE, Keyword::SELF)
-            ->addDirective(Directive::SCRIPT_ELEM, Keyword::SELF);
+            ->addDirective(Directive::SCRIPT_ELEM, Keyword::SELF)
+            ->addNonceForDirective(Directive::SCRIPT_ELEM);
 
     }
 
