@@ -121,7 +121,7 @@ test('a user can delete an author employment record', function () {
 
 });
 
-test('adding a 50 char role title is valid', function () {
+test('adding a 75 char role title is valid', function () {
     $user = User::factory()->create();
     $employment = AuthorEmployment::factory()->create([
         'author_id' => $user->author->id,
@@ -133,11 +133,11 @@ test('adding a 50 char role title is valid', function () {
         'author_id' => $user->author->id,
         'organization_id' => Organization::getDefaultOrganization()->id,
         'start_date' => now()->subYear(),
-        'role_title' => str_repeat('a', 50),
+        'role_title' => str_repeat('a', 75),
     ])->toArray();
 
     $response = $this->actingAs($user)->putJson("api/authors/{$user->author->id}/employments/{$employment->id}", $data)->assertOk();
 
-    expect($response->json('data.role_title'))->toBe(str_repeat('a', 50));
+    expect($response->json('data.role_title'))->toBe(str_repeat('a', 75));
 
 });

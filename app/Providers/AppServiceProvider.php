@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Checks\Checks\CacheCheck;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
@@ -37,12 +38,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // prevent lazy loading
-        Model::preventLazyLoading(! App::isProduction());
-        Model::preventSilentlyDiscardingAttributes();
-        Model::preventAccessingMissingAttributes();
-
         $this->configureCommands();
+        $this->configureVite();
+        $this->configureModel();
+        $this->configureHealth();
 
         // https://spatie.be/docs/laravel-permission/v5/prerequisites#content-schema-limitation-in-mysql
         Schema::defaultStringLength(125);
@@ -52,16 +51,6 @@ class AppServiceProvider extends ServiceProvider
             return $user->can(UserPermission::VIEW_PULSE);
         });
 
-        // Add Spatie Health Checks
-        Health::checks([
-            UsedDiskSpaceCheck::new()->warnWhenUsedSpaceIsAbovePercentage(60)->failWhenUsedSpaceIsAbovePercentage(80),
-            DatabaseCheck::new(),
-            CacheCheck::new(),
-            DebugModeCheck::new(),
-            HorizonCheck::new(),
-            PingCheck::new()->url('https://api.orcid.org/')->timeout(2)->name('Orcid Api'),
-            RedisCheck::new(),
-        ]);
     }
 
     /**
@@ -72,5 +61,31 @@ class AppServiceProvider extends ServiceProvider
         DB::prohibitDestructiveCommands(
             App::isProduction()
         );
+    }
+
+    private function configureVite(): void
+    {
+        Vite::useAggressivePrefetching();
+    }
+
+
+    private function configureModel(): void
+    {
+        Model::preventLazyLoading(! App::isProduction());
+        Model::preventSilentlyDiscardingAttributes();
+        Model::preventAccessingMissingAttributes();
+    }
+
+    private function configureHealth(): void
+    {
+        Health::checks([
+            UsedDiskSpaceCheck::new()->warnWhenUsedSpaceIsAbovePercentage(60)->failWhenUsedSpaceIsAbovePercentage(80),
+            DatabaseCheck::new(),
+            CacheCheck::new(),
+            DebugModeCheck::new(),
+            HorizonCheck::new(),
+            PingCheck::new()->url('https://api.orcid.org/')->timeout(2)->name('Orcid Api'),
+            RedisCheck::new(),
+        ]);
     }
 }
