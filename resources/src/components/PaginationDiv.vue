@@ -23,6 +23,7 @@ const currentPage = useVModel(props, 'modelValue', emit)
       v-if="meta.last_page > 1"
       v-model="currentPage"
       :max="meta.last_page"
+      :max-pages="6"
       :disable="disable"
       direction-links
     />

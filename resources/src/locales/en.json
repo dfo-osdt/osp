@@ -802,5 +802,11 @@
     "otherDescription": "Any additional files related to your publication (please specify).",
     "preprintDescription": "The version of the manuscript uploaded to a preprint server before peer review.",
     "manuscriptRecordFormDescription": "A signed DFO manuscript record form (MRF) completed outside of the portal."
+  },
+  "authors-view": {
+    "all-authors": "All Authors",
+    "all-authors-caption": "All portal authors",
+    "dfo-authors": "DFO Authors",
+    "dfo-authors-caption": "Authors that have a DFO affiliation"
   }
 }

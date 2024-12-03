@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PublicationResourceList } from '../Publication'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
@@ -10,20 +9,15 @@ import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import { watchThrottled } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import PublicationList from '../components/PublicationList.vue'
-import { PublicationQuery, PublicationService } from '../Publication'
+import { AuthorQuery, type AuthorResourceList } from '../Author'
 
 // State variables
-const publications = ref<PublicationResourceList>()
+const publications = ref<AuthorResourceList>()
 const loading = ref(false)
 const activeFilter = ref(1)
 const currentPage = ref(1)
 const search = ref<string | null>(null)
 const showFilters = ref(false)
-const journalId = ref<number | null>(null)
-const journalSelect = ref<InstanceType<typeof JournalSelect> | null>(null)
-const authorId = ref<number | null>(null)
-const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null)
 
 // i18n
 const { t } = useI18n()
@@ -33,41 +27,41 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
   return [
     {
       id: 1,
-      label: t('my-publication-view.all-publications'),
-      caption: t('publications-view.all-published-publications-details'),
+      label: t('authors-view.all-authors'),
+      caption: t('authors-view.all-authors-caption'),
       icon: 'mdi-all-inclusive',
       active: activeFilter.value === 1,
-      filter: (query: PublicationQuery): PublicationQuery => {
+      filter: (query: AuthorQuery): AuthorQuery => {
         return query
       },
     },
     {
       id: 2,
-      label: t('common.open-access'),
-      caption: t('publications-view.open-access-filter-details'),
+      label: t('authors-view.dfo-authors'),
+      caption: t('authors-view.dfo-authors-caption'),
       icon: 'mdi-lock-open-outline',
       active: activeFilter.value === 2,
-      filter: (query: PublicationQuery): PublicationQuery => {
+      filter: (query: AuthorQuery): AuthorQuery => {
         return query.filterOpenAccess()
       },
     },
     {
       id: 3,
-      label: t('publications-view.under-embargo'),
-      caption: t('publications-view.under-embargo-caption'),
+      label: t('authors-view.external-authors'),
+      caption: t('authors-view.external-authors-caption'),
       icon: 'mdi-calendar-clock-outline',
       active: activeFilter.value === 3,
-      filter: (query: PublicationQuery): PublicationQuery => {
+      filter: (query: AuthorQuery): AuthorQuery => {
         return query.filterUnderEmbargo()
       },
     },
     {
       id: 4,
-      label: t('publications-view.secondary-publications'),
-      caption: t('publications-view.published-in-dfo-journals'),
+      label: t('authors-view.with-orcid'),
+      caption: t('authors-view.with-orcid-caption'),
       icon: 'mdi-bank-outline',
       active: activeFilter.value === 4,
-      filter: (query: PublicationQuery): PublicationQuery => {
+      filter: (query: AuthorQuery): AuthorQuery => {
         return query.filterSecondaryPublication()
       },
     },
@@ -100,7 +94,7 @@ async function getPublications() {
   if (loading.value)
     return
   // build the query
-  let query = new PublicationQuery()
+  let query = new AuthorQuery()
 
   // apply the active main filters
   mainFilterOptions.value.forEach((f) => {
@@ -173,7 +167,7 @@ interface MainFilterOption {
   caption?: string
   icon: string
   active: boolean
-  filter: (query: PublicationQuery) => PublicationQuery
+  filter: (query: AuthorQuery) => AuthorQuery
 }
 </script>
 
