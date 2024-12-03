@@ -65,6 +65,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function configureVite(): void
     {
+        Vite::useCspNonce(csp_nonce());
         Vite::useAggressivePrefetching();
     }
 
