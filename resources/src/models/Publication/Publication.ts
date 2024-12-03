@@ -1,6 +1,7 @@
 import type { JournalResource } from '../Journal/Journal'
 import type { ManuscriptRecordResource } from '../ManuscriptRecord/ManuscriptRecord'
-import type { MediaResource, MediaResourceList, SupplementaryFileType } from '../Media/Media'
+import type { MediaResource, MediaResourceList } from '../Media/Media'
+import type { SupplementaryFileType } from '../Media/supplementaryFileOptions'
 import type { PublicationAuthorResource } from '../PublicationAuthor/PublicationAuthor'
 import type { Resource, ResourceList } from '../Resource'
 import type { UserResource } from '../User/User'

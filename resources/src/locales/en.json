@@ -275,7 +275,8 @@
     "optional": "Optional",
     "cant-download": "You are not authorized to download this file.",
     "publication-previous-version": "This is a previous version of the publication",
-    "unauthenticated-orcid-id": "Unauthenticated ORCID iD"
+    "unauthenticated-orcid-id": "Unauthenticated ORCID iD",
+    "authors": "Authors"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -807,6 +808,10 @@
     "all-authors": "All Authors",
     "all-authors-caption": "All portal authors",
     "dfo-authors": "DFO Authors",
-    "dfo-authors-caption": "Authors that have a DFO affiliation"
+    "dfo-authors-caption": "Authors that have a DFO affiliation",
+    "external-authors": "External Authors",
+    "external-authors-caption": "Authors that do not have a DFO affiliation",
+    "with-orcid": "With ORCID",
+    "with-orcid-caption": "Authors with an associated ORCID"
   }
 }

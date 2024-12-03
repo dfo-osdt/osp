@@ -4,20 +4,21 @@ import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
-import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
-import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
+import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
 import { watchThrottled } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AuthorQuery, type AuthorResourceList } from '../Author'
+import { AuthorQuery, type AuthorResourceList, AuthorService } from '../Author'
+import AuthorList from '../components/AuthorList.vue'
 
 // State variables
-const publications = ref<AuthorResourceList>()
+const authors = ref<AuthorResourceList>()
 const loading = ref(false)
 const activeFilter = ref(1)
 const currentPage = ref(1)
 const search = ref<string | null>(null)
 const showFilters = ref(false)
+const organizationId = ref<number | null>(null)
 
 // i18n
 const { t } = useI18n()
@@ -39,30 +40,30 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       id: 2,
       label: t('authors-view.dfo-authors'),
       caption: t('authors-view.dfo-authors-caption'),
-      icon: 'mdi-lock-open-outline',
+      icon: 'mdi-account-arrow-left-outline',
       active: activeFilter.value === 2,
       filter: (query: AuthorQuery): AuthorQuery => {
-        return query.filterOpenAccess()
+        return query
       },
     },
     {
       id: 3,
       label: t('authors-view.external-authors'),
       caption: t('authors-view.external-authors-caption'),
-      icon: 'mdi-calendar-clock-outline',
+      icon: 'mdi-account-arrow-right-outline',
       active: activeFilter.value === 3,
       filter: (query: AuthorQuery): AuthorQuery => {
-        return query.filterUnderEmbargo()
+        return query
       },
     },
     {
       id: 4,
       label: t('authors-view.with-orcid'),
       caption: t('authors-view.with-orcid-caption'),
-      icon: 'mdi-bank-outline',
+      icon: 'mdi-account-school-outline',
       active: activeFilter.value === 4,
       filter: (query: AuthorQuery): AuthorQuery => {
-        return query.filterSecondaryPublication()
+        return query
       },
     },
   ]
@@ -75,22 +76,14 @@ const mainFilter = computed(() => {
 
 const filterCaption = computed(() => {
   let caption = ''
-  if (journalId.value) {
-    const { title } = journalSelect?.value?.selectedJournal?.data || {}
-    caption += `${t('common.in')} ${title} `
-  }
-  if (authorId.value) {
-    const { first_name, last_name } = authorSelect?.value?.selectedAuthor?.data || {}
-    caption += `${t('common.by')} ${first_name} ${last_name} `
-  }
   if (caption.length > 0)
-    caption = `${t('common.publications')} ${caption.slice(0, -1)}`
+    caption = `${t('common.authors')} ${caption.slice(0, -1)}`
   else caption = t('common.no-filters-applied')
   return caption
 })
 
 // Methods
-async function getPublications() {
+async function getAuthors() {
   if (loading.value)
     return
   // build the query
@@ -105,22 +98,18 @@ async function getPublications() {
 
   // is there a search term?
   if (search?.value) {
-    query = query.filterTitle(search.value)
+    query = query.filterSearch(search.value)
   }
 
-  if (journalId.value) {
-    query = query.filterJournalID([journalId.value])
+  if (organizationId.value) {
+    query = query.filterOrganizationId(organizationId.value)
   }
 
-  if (authorId.value) {
-    query = query.filterAuthorID([authorId.value])
-  }
-
-  query.sort('title', 'asc')
+  query.sort('last_name', 'asc')
   query.paginate(currentPage.value, 10)
 
   loading.value = true
-  publications.value = await PublicationService.list(query)
+  authors.value = await AuthorService.list(query)
   loading.value = false
 }
 
@@ -128,36 +117,26 @@ function mainFilterClick(filterId: number) {
   activeFilter.value = filterId
   search.value = ''
   currentPage.value = 1
-  getPublications()
+  getAuthors()
 }
 
 // Watchers
 watch(currentPage, () => {
-  getPublications()
+  getAuthors()
 })
 
 watchThrottled(
   search,
   () => {
     currentPage.value = 1
-    getPublications()
+    getAuthors()
   },
   { throttle: 750 },
 )
 
-watch(journalId, () => {
-  currentPage.value = 1
-  getPublications()
-})
-
-watch(authorId, () => {
-  currentPage.value = 1
-  getPublications()
-})
-
 // Lifecycle hooks
 onMounted(() => {
-  getPublications()
+  getAuthors()
 })
 
 // Type definitions
@@ -172,12 +151,12 @@ interface MainFilterOption {
 </script>
 
 <template>
-  <MainPageLayout :title="$t('common.publications')">
+  <MainPageLayout :title="$t('common.authors')">
     <div class="row q-gutter-lg q-col-gutter-lg flex">
       <div class="col-3">
         <ContentCard secondary no-padding>
           <template #title>
-            {{ $t('common.publications') }}
+            {{ $t('common.authors') }}
           </template>
           <q-list class="text-body1">
             <q-item
@@ -223,32 +202,23 @@ interface MainFilterOption {
               :caption="filterCaption"
             >
               <q-card-section class="column q-gutter-md">
-                <JournalSelect
-                  ref="journalSelect"
-                  v-model="journalId"
-                  :label="$t('common.journal')"
-                  :disable="loading"
-                />
-                <AuthorSelect
-                  ref="authorSelect"
-                  v-model="authorId"
-                  :label="$t('common.author')"
-                  :disable="loading"
-                  :hide-create-author-dialog="true"
+                <OrganizationSelect
+                  v-model="organizationId"
+                  :label="$t('common.organization')"
                 />
               </q-card-section>
             </q-expansion-item>
             <q-separator />
           </template>
-          <template v-if="publications?.data.length === 0">
+          <template v-if="authors?.data.length === 0">
             <NoResultFoundDiv />
           </template>
-          <PublicationList :publications="publications?.data ?? []" />
+          <AuthorList :authors="authors?.data ?? []" />
           <q-card-section>
             <q-separator class="q-mb-md" />
             <PaginationDiv
               v-model="currentPage"
-              :meta="publications?.meta ?? null"
+              :meta="authors?.meta ?? null"
               :disable="loading"
             />
           </q-card-section>

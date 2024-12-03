@@ -113,7 +113,7 @@ export class SpatieQuery {
       params.append(
         'sort',
         this.sorts
-          .map(s => (s.direction == 'asc' ? s.name : `-${s.name}`))
+          .map(s => (s.direction === 'asc' ? s.name : `-${s.name}`))
           .join(','),
       )
     }

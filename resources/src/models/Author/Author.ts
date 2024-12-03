@@ -24,7 +24,7 @@ export interface Author {
 }
 
 export type AuthorResource = Resource<Author>
-export type AuthorResourceList = ResourceList<AuthorResource>
+export type AuthorResourceList = ResourceList<Author>
 
 // Author Service
 export class AuthorService {
@@ -32,10 +32,10 @@ export class AuthorService {
    * Get a list of authors
    * @returns author list
    */
-  public static async list(query?: string) {
+  public static async list(query?: AuthorQuery) {
     let url = 'api/authors'
     if (query) {
-      url += `?${query}`
+      url += `?${query.toQueryString()}`
     }
     const response = await http.get<AuthorResourceList>(url)
     return response.data
