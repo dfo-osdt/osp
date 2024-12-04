@@ -54,7 +54,10 @@ class UserResource extends Resource
                             Forms\Components\Actions\Action::make('verify_email')
                                 ->label('Activate & Verify')
                                 ->hidden(fn ($record) => $record && $record->email_verified_at)
-                                ->action('setVerifiedEmail'),
+							   ->action('setVerifiedEmail'),
+			    Forms\Components\Actions\Action::make('reset_password')
+							   ->label('Send Password Reset Email')
+			    ->action('sendPasswordReset'),
                         ]),
                     ]),
             ]);

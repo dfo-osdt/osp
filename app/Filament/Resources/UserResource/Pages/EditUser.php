@@ -5,6 +5,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Password;
 
 class EditUser extends EditRecord
 {
@@ -61,5 +62,10 @@ class EditUser extends EditRecord
         }
         $this->record->markEmailAsVerified();
         $this->refreshFormData(['active']);
+    }
+
+    public function sendPasswordReset(): void
+    {
+	Password::sendResetLink(['email' => $this->data['email']]);
     }
 }
