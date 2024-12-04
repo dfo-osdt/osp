@@ -43,6 +43,8 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            // todo: required for 7.2 support; remove when laravel fixes.
+            'scheme' => 'smtp',
         ],
 
         'ses' => [
