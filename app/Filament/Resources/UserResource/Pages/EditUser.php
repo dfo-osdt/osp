@@ -57,5 +57,6 @@ class EditUser extends EditRecord
     public function setVerifiedEmail(): void
     {
         $this->record->markEmailAsVerified();
+        $this->refreshFormData(['active']);
     }
 }
