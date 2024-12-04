@@ -185,14 +185,12 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     public function markEmailAsVerified(): bool
     {
         if ($this->invitation) {
-            // $this->invitation->invitation_token = '';
             $this->invitation->registered_at = now();
             $this->invitation->save();
         }
 
         return $this->forceFill([
             'email_verified_at' => $this->freshTimestamp(),
-            // 'email_verification_token' => null,
             'active' => true,
         ])->save();
     }
