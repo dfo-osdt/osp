@@ -30,7 +30,6 @@ class DatabaseSeeder extends Seeder
                 $this->call([
                     LocalTestDataSeeder::class,
                 ]);
-                $this->call(JournalsTableSeeder::class);
     }
         }
     }
