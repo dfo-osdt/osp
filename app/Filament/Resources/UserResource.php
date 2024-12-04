@@ -45,6 +45,7 @@ class UserResource extends Resource
                         Forms\Components\Toggle::make('active')
                             ->label('Activate User')
                             ->dehydrated(false)
+							->hidden(fn ($record) => $record && !$record->active)
                             ->onColor('success'),
                         Forms\Components\Actions::make([
                             Forms\Components\Actions\Action::make('verify_email')

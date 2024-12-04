@@ -30,9 +30,11 @@ class EditUser extends EditRecord
      */
     protected function beforeSave(): void
     {
-        $this->record->forceFill([
-            'active' => $this->data['active'],
-        ])->save();
+        // $this->record->forceFill([
+        //     'active' => $this->data['active'],
+        // ])->save();
+        $this->record->active = $this->data['active'];
+        $this->record->save();
     }
 
     /**
@@ -54,8 +56,6 @@ class EditUser extends EditRecord
      */
     public function setVerifiedEmail(): void
     {
-        $this->record->forceFill([
-            'email_verified_at' => now(),
-        ])->save();
+        $this->record->markEmailAsVerified();
     }
 }
