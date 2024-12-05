@@ -212,6 +212,7 @@ interface MainFilterOption {
                 <OrganizationSelect
                   v-model="organizationId"
                   :label="$t('common.organization')"
+                  :disable="mainFilter?.id === 2"
                 />
               </q-card-section>
             </q-expansion-item>

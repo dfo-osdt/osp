@@ -15,7 +15,13 @@ const svgLink = computed(() => {
     :name="svgLink"
     size="16px"
     alt="ORCID iD logo"
-  />
+  >
+    <q-tooltip anchor="top middle" self="bottom middle">
+      <span v-if="unauthenticated">
+        {{ $t('common.unauthenticated-orcid-id') }}
+      </span>
+    </q-tooltip>
+  </q-icon>
 </template>
 
 <style scoped></style>
