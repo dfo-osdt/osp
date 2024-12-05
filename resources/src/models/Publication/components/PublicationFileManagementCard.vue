@@ -132,8 +132,8 @@ watch(publicationFile, () => {
       use-chips
       :label="
         publicationResourceList?.data
-          ? 'Upload a new version of the publication'
-          : 'Upload the publication'
+          ? t('common.upload-a-new-version-of-the-publication')
+          : t('common.upload-the-publication')
       "
       :hint="t('mrf.upload-hint', { max: maxFileSizeMB })"
       accept="application/pdf"

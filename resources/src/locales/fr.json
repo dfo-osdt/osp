@@ -276,7 +276,9 @@
     "cant-download": "Vous n'êtes pas autorisé à télécharger ce fichier.",
     "publication-previous-version": "Ceci est une version précédente de la publication",
     "unauthenticated-orcid-id": "ORCID iD Non authentifié",
-    "authors": "Auteurs"
+    "authors": "Auteurs",
+    "upload-a-new-version-of-the-publication": "Télécharger une nouvelle version de la publication",
+    "upload-the-publication": "Téléchargez la publication"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
