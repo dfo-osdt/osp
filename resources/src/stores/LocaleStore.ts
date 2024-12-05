@@ -35,10 +35,15 @@ export const useLocaleStore = defineStore('LocaleStore', () => {
     })
   }
 
+  function isFr(): boolean {
+    return locale.value === 'fr'
+  }
+
   return {
     toggleLocale,
     otherLocale,
     locale,
+    isFr,
     persistentLocale,
   }
 })
