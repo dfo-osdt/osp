@@ -1,10 +1,11 @@
-import type { OrganizationResource } from '../Organization/Organization'
-import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import type {
   ExpertiseResource,
   ExpertiseResourceList,
 } from '../Expertise/Expertise'
+import type { OrganizationResource } from '../Organization/Organization'
+import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import { http } from '@/api/http'
+import { SpatieQuery } from '@/api/SpatieQuery'
 
 export interface Author {
   readonly id: number
@@ -23,7 +24,7 @@ export interface Author {
 }
 
 export type AuthorResource = Resource<Author>
-export type AuthorResourceList = ResourceList<AuthorResource>
+export type AuthorResourceList = ResourceList<Author>
 
 // Author Service
 export class AuthorService {
@@ -31,10 +32,10 @@ export class AuthorService {
    * Get a list of authors
    * @returns author list
    */
-  public static async list(query?: string) {
+  public static async list(query?: AuthorQuery) {
     let url = 'api/authors'
     if (query) {
-      url += `?${query}`
+      url += `?${query.toQueryString()}`
     }
     const response = await http.get<AuthorResourceList>(url)
     return response.data
@@ -43,7 +44,6 @@ export class AuthorService {
   /**
    * Find an author by author id.
    * @param id
-   * @returns
    */
   public static async find(id: number) {
     const response = await http.get<AuthorResource>(`api/authors/${id}`)
@@ -96,3 +96,68 @@ export class AuthorService {
     return response.data
   }
 }
+
+export class AuthorQuery extends SpatieQuery {
+  public filterId(id: number[]) {
+    this.filter('id', id)
+    return this
+  }
+
+  public filterFirstName(firstName: string) {
+    this.filter('first_name', firstName)
+    return this
+  }
+
+  public filterLastName(lastName: string) {
+    this.filter('last_name', lastName)
+    return this
+  }
+
+  public filterEmail(email: string) {
+    this.filter('email', email)
+    return this
+  }
+
+  public filterOrganizationId(organizationId: number) {
+    this.filter('organization_id', organizationId)
+    return this
+  }
+
+  public filterOrcid(orcid: string) {
+    this.filter('orcid', orcid)
+    return this
+  }
+
+  public filterSearch(search: string) {
+    this.filter('search', search)
+    return this
+  }
+
+  public filterInternalAuthor() {
+    this.filter('internal_author', true)
+    return this
+  }
+
+  public filterExternalAuthor() {
+    this.filter('external_author', true)
+    return this
+  }
+
+  public filterWithOrcid() {
+    this.filter('with_orcid', true)
+    return this
+  }
+
+  public sort(sort: AuthorQuerySort, direction: 'asc' | 'desc') {
+    super.sort(sort, direction)
+    return this
+  }
+
+  public include(name: AuthorQueryInclude) {
+    super.include(name)
+    return this
+  }
+}
+
+type AuthorQuerySort = 'first_name' | 'last_name' | 'email'
+type AuthorQueryInclude = 'organization' | 'expertises'

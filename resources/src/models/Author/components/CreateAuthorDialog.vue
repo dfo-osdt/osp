@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { AxiosResponse } from 'axios'
 import type { Author, AuthorResource } from '../Author'
-import { AuthorService } from '../Author'
-import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
+import { extractErrorMessages } from '@/api/errors'
 import BaseDialog from '@/components/BaseDialog.vue'
 import OrcidInput from '@/components/OrcidInput.vue'
-import { extractErrorMessages } from '@/api/errors'
+import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
+import { AuthorService } from '../Author'
 
 const emit = defineEmits<{
   (event: 'created', payload: AuthorResource): void
@@ -71,6 +71,7 @@ async function createAuthor() {
       />
       <OrganizationSelect
         v-model="organizationId"
+        show-default-organization
         :label="$t('common.affiliation')"
         class="q-ma-md"
         :rules="[

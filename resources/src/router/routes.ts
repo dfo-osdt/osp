@@ -142,7 +142,8 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/authors',
-        component: UnderConstruction,
+        component: () =>
+          import('@/models/Author/views/AuthorsView.vue'),
         meta: { requiresAuth: true },
       },
       {

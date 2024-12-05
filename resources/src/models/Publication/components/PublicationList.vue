@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PublicationResource } from '../Publication'
+import JournalNameSpan from '@/models/Journal/components/JournalNameSpan.vue'
 import DOILink from './DoiLink.vue'
 import PublicationStatusBadge from './PublicationStatusBadge.vue'
-import JournalNameSpan from '@/models/Journal/components/JournalNameSpan.vue'
 
 defineProps<{
   publications: PublicationResource[]

@@ -13,6 +13,7 @@ import CreateOrganizationDialog from './CreateOrganizationDialog.vue'
 const props = defineProps<{
   modelValue: number | null
   initialSearchTerm?: string
+  showDefaultOrganization?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
@@ -29,10 +30,14 @@ const organizationsLoading = ref(false)
 const showCreateOrganizationDialog = ref(false)
 const defaultOrganiztionId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
 
-watch(selectedOrganization, (organization) => {
-  if (organization) {
-    emit('update:modelValue', organization.data.id)
+watch(() => props.modelValue, (value) => {
+  if (value === null) {
+    selectedOrganization.value = null
   }
+})
+
+watch(selectedOrganization, (organization) => {
+  emit('update:modelValue', organization?.data.id || null)
 })
 
 onMounted(async () => {
@@ -45,7 +50,7 @@ onMounted(async () => {
   if (props.initialSearchTerm) {
     organizationSelect.value?.filter(props.initialSearchTerm)
   }
-  if (props.modelValue === null) {
+  if (props.modelValue === null && props.showDefaultOrganization) {
     selectedOrganization.value = await OrganizationService.find(
       defaultOrganiztionId,
     )

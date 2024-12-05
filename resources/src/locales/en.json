@@ -275,7 +275,8 @@
     "optional": "Optional",
     "cant-download": "You are not authorized to download this file.",
     "publication-previous-version": "This is a previous version of the publication",
-    "unauthenticated-orcid-id": "Unauthenticated ORCID iD"
+    "unauthenticated-orcid-id": "Unauthenticated ORCID iD",
+    "authors": "Authors"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -802,5 +803,15 @@
     "otherDescription": "Any additional files related to your publication (please specify).",
     "preprintDescription": "The version of the manuscript uploaded to a preprint server before peer review.",
     "manuscriptRecordFormDescription": "A signed DFO manuscript record form (MRF) completed outside of the portal."
+  },
+  "authors-view": {
+    "all-authors": "All Authors",
+    "all-authors-caption": "All portal authors",
+    "dfo-authors": "Internal Authors",
+    "dfo-authors-caption": "Authors that have a DFO affiliation",
+    "external-authors": "External Authors",
+    "external-authors-caption": "Authors with an external affiliation",
+    "with-orcid": "With ORCID",
+    "with-orcid-caption": "Authors with an associated ORCID"
   }
 }
