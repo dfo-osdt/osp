@@ -19,9 +19,11 @@ const currentPage = ref(1)
 const search = ref<string | null>(null)
 const showFilters = ref(false)
 const organizationId = ref<number | null>(null)
+const organizationSelect = ref<InstanceType<typeof OrganizationSelect> | null>(null)
 
 // i18n
 const { t } = useI18n()
+const localeStore = useLocaleStore()
 
 // Main filter options
 const mainFilterOptions = computed<MainFilterOption[]>(() => {
@@ -76,6 +78,11 @@ const mainFilter = computed(() => {
 
 const filterCaption = computed(() => {
   let caption = ''
+  if (organizationId.value) {
+    const { name_en, name_fr } = organizationSelect?.value?.selectedOrganization?.data || {}
+    const name = localeStore.isFr() ? name_fr : name_en
+    caption += `${t('common.from')} ${name || name_en || 'NA'}`
+  }
   if (caption.length > 0)
     caption = `${t('common.authors')} ${caption.slice(0, -1)}`
   else caption = t('common.no-filters-applied')
@@ -210,6 +217,7 @@ interface MainFilterOption {
             >
               <q-card-section class="column q-gutter-md">
                 <OrganizationSelect
+                  ref="organizationSelect"
                   v-model="organizationId"
                   :label="$t('common.organization')"
                   :disable="mainFilter?.id === 2"

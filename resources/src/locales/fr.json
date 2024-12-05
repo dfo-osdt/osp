@@ -278,7 +278,8 @@
     "unauthenticated-orcid-id": "ORCID iD Non authentifié",
     "authors": "Auteurs",
     "upload-a-new-version-of-the-publication": "Télécharger une nouvelle version de la publication",
-    "upload-the-publication": "Téléchargez la publication"
+    "upload-the-publication": "Téléchargez la publication",
+    "from": "de"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"

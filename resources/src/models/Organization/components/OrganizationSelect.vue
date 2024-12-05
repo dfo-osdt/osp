@@ -30,6 +30,10 @@ const organizationsLoading = ref(false)
 const showCreateOrganizationDialog = ref(false)
 const defaultOrganiztionId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
 
+defineExpose({
+  selectedOrganization,
+})
+
 watch(() => props.modelValue, (value) => {
   if (value === null) {
     selectedOrganization.value = null

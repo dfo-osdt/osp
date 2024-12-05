@@ -83,11 +83,11 @@ const filterCaption = computed(() => {
   let caption = ''
   if (journalId.value) {
     const { title } = journalSelect?.value?.selectedJournal?.data || {}
-    caption += `${t('common.in')} ${title} `
+    caption += `${t('common.in')} ${title || 'NA'} `
   }
   if (authorId.value) {
     const { first_name, last_name } = authorSelect?.value?.selectedAuthor?.data || {}
-    caption += `${t('common.by')} ${first_name} ${last_name} `
+    caption += `${t('common.by')} ${first_name || 'NA'} ${last_name || 'NA'} `
   }
   if (caption.length > 0)
     caption = `${t('common.publications')} ${caption.slice(0, -1)}`
