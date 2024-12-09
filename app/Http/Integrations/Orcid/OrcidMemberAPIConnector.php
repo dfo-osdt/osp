@@ -32,7 +32,7 @@ class OrcidMemberAPIConnector extends Connector
             return 'https://api.sandbox.orcid.org/v3.0/'.$this->orcid;
         }
 
-        return 'https://api.orcid.org/v3.0'.$this->orcid;
+        return 'https://api.orcid.org/v3.0/'.$this->orcid;
     }
 
     /**
