@@ -146,6 +146,16 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
     {
         $putcode = $this->authorEmployment->orcid_putcode;
 
+        // It's possible that the record was never created in ORCID, in this case
+        // we can just delete the record from the database.
+        if(! $putcode) {
+            Log::info('SyncAuthor: Deleting Employment record without a putcode', [
+                'author_employment_id' => $this->authorEmployment->id,
+            ]);
+            $this->authorEmployment->forceDelete();
+            return;
+        }
+
         $request = new DeleteEmploymentRequest($putcode);
         $response = $connector->send($request);
 
