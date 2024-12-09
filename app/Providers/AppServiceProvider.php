@@ -85,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
             CacheCheck::new(),
             DebugModeCheck::new(),
             HorizonCheck::new(),
-            PingCheck::new()->url('https://api.orcid.org/')->timeout(2)->name('Orcid Api'),
+            PingCheck::new()->url('https://api.orcid.org/v3/status')->timeout(3)->name('ORCID Api'),
             RedisCheck::new(),
         ]);
     }
