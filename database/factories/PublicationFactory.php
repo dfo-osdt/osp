@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\PublicationStatus;
+use App\Models\PublicationAuthor;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -73,7 +74,7 @@ class PublicationFactory extends Factory
     {
         return $this->afterCreating(
             function (\App\Models\Publication $publication) {
-                $publication->authors()->saveMany(\App\Models\Author::factory()->count(3)->make());
+                $publication->publicationAuthors()->saveMany(PublicationAuthor::factory()->count(3)->make());
             }
         );
     }
