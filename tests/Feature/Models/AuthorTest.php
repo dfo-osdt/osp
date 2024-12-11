@@ -2,6 +2,7 @@
 
 use App\Models\Author;
 use App\Models\Organization;
+use App\Models\Publication;
 use App\Models\User;
 
 test('a user can get list of authors', function () {
@@ -130,6 +131,20 @@ test('a user can get an author profile', function () {
 
     $response->assertOk();
     expect($response->json('data'))->toHaveKey('id', $author->id);
+});
+
+test('a user can include the list of publications when querying an author profile', function () {
+    $user = User::factory()->create();
+
+    $publication = Publication::factory()->withAuthors()->published()->create();
+    $author = $publication->publicationAuthors()->first()->author;
+
+    $response = $this->actingAs($user)->getJson('api/authors/'.$author->id.'?include=publications');
+
+    $response->assertOk();
+    expect($response->json('data'))->toHaveKey('id', $author->id);
+    expect($response->json('data'))->toHaveKey('publications');
+    expect($response->json('data.publications'))->toHaveCount(1);
 });
 
 test('a user can update an author profile without an owner', function () {

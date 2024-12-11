@@ -32,6 +32,7 @@ class AuthorResource extends JsonResource
                 'sensitivity_label' => SensitivityLabel::ProtectedA,
                 'organization' => OrganizationResource::make($this->whenLoaded('organization')),
                 'expertises' => ExpertiseResource::collection($this->whenLoaded('expertises')),
+                'publications' => PublicationResource::collection($this->whenLoaded('publications')),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

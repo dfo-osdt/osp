@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\PublicationStatus;
 use App\Traits\HasExpertises;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -120,6 +123,12 @@ class Author extends Model
     public function manuscriptAuthors(): HasMany
     {
         return $this->hasMany('App\Models\ManuscriptAuthor');
+    }
+
+    /** Pubslihed publications */
+    public function publications(): BelongsToMany
+    {
+        return $this->belongsToMany(Publication::class, 'publication_authors')->where('status', PublicationStatus::PUBLISHED);
     }
 
     /** Organization */
