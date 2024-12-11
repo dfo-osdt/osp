@@ -36,9 +36,6 @@ class PublicationResource extends JsonResource
                 'user' => UserResource::make($this->whenLoaded('user')),
                 'publication_authors' => PublicationAuthorResource::collection($this->whenLoaded('publicationAuthors')),
                 'funding_sources' => FundingSourceResource::collection($this->whenLoaded('fundingSources')),
-
-                // special model permissions
-                'can_view_pdf' => Auth::user()->can('viewPdf', $this->resource),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),
