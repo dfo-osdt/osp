@@ -29,8 +29,6 @@ export interface Publication {
   manuscript_record?: ManuscriptRecordResource
   user?: UserResource
   publication_authors?: PublicationAuthorResource[]
-  // special permissions
-  can_view_pdf: boolean
 }
 
 export type PublicationCreate = Omit<
