@@ -54,7 +54,7 @@ async function upload() {
   const response = await PublicationService.attachSupplementaryFile(
     supplementaryFile.value,
     props.publication.data.id,
-    fileType.value,
+    fileType.value as SupplementaryFileType,
     description.value,
   )
 
@@ -111,17 +111,21 @@ const disableUpload = computed(() => {
   }
   return false
 })
+
+const hideMrf = computed(() => {
+  return props.publication.data.manuscript_record_id !== null
+})
 </script>
 
 <template>
   <ContentCard class="q-mb-md" secondary>
     <template #title>
       {{
-        $t('publication-page.attach-supplementary-files')
+        t('publication-page.attach-supplementary-files')
       }}
     </template>
-    <p>
-      {{ $t('publication-page.attach-supplementary-files-details') }}
+    <p v-if="publication.can?.update">
+      {{ t('publication-page.attach-supplementary-files-details') }}
     </p>
     <template v-if="supplementaryFileResourceList?.data">
       <q-card outlined class="q-mb-md">
@@ -136,18 +140,25 @@ const disableUpload = computed(() => {
         </q-list>
       </q-card>
     </template>
+    <template v-if="supplementaryFileResourceList?.data.length === 0">
+      <q-card bordered class="q-mb-md">
+        <q-card-section class="text-center">
+          {{ t('publication-page.no-supplementary-files') }}
+        </q-card-section>
+      </q-card>
+    </template>
     <q-card v-if="publication.can?.update" class="q-pa-md" flat bordered>
       <p class="text-primary">
         Upload a supplementary file for the publication
       </p>
       <div class="row q-col-gutter-md q-mb-md">
-        <SupplementaryFileTypeSelect v-model="fileType" class="col" />
+        <SupplementaryFileTypeSelect v-model="fileType" :hide-mrf="hideMrf" class="col" />
         <q-file
           v-model="supplementaryFile"
           class="col-lg-8 col-md-12"
           outlined
           use-chips
-          :label="$t('common.select-file')"
+          :label="t('common.select-file')"
           :hint="t('mrf.upload-hint', { max: maxFileSizeMB })"
           accept="application/pdf"
           :max-file-size="maxFileSizeMB * 1e6"
@@ -176,7 +187,7 @@ const disableUpload = computed(() => {
           color="primary"
           :loading="uploadingFile"
           :disable="disableUpload"
-          :label="$t('common.upload')"
+          :label="t('common.upload')"
           @click="upload"
         />
       </div>

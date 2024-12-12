@@ -4,6 +4,7 @@ import DateInput from '@/components/DateInput.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
+import { type ManuscriptRecordMetadataResource, ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import ManagePublicationAuthorsCard from '@/models/PublicationAuthor/components/ManagePublicationAuthorsCard.vue'
 import { QForm, useQuasar } from 'quasar'
 import DoiInput from '../components/DoiInput.vue'
@@ -23,24 +24,34 @@ const { t } = useI18n()
 // load publication data
 const loading = ref(true)
 const publication = ref<PublicationResource | null>(null)
+const manuscriptMetadata = ref<ManuscriptRecordMetadataResource | null>(null)
+const generalInformationForm = ref<QForm | null>(null)
 
 /**
- * Marks the publication as published, won't take effect
- * until user saves but will be reflected in the UI and validation.
+ * Marks the publication as published, and save the publication.
  */
-function markAsPublished() {
+async function markAsPublished() {
   if (!publication.value)
     return
+
+  const valid = await generalInformationForm.value?.validate()
+  if (!valid)
+    return
+
   publication.value.data.status = 'published'
   publication.value.data.published_on = new Date()
     .toISOString()
     .substring(0, 10)
+  await save()
 }
 
 // on mount load publication data
 onMounted(async () => {
   try {
     publication.value = await PublicationService.find(props.id)
+    if (publication.value.data.manuscript_record_id === null)
+      return
+    manuscriptMetadata.value = await ManuscriptRecordService.metadata(publication.value.data.manuscript_record_id)
   }
   catch (error) {
     console.error(error)
@@ -80,8 +91,6 @@ const publicationYear = computed(() => {
   )
 })
 
-const generalInformationForm = ref<QForm | null>(null)
-
 async function save() {
   if (publication.value === null)
     return
@@ -114,13 +123,13 @@ async function save() {
 </script>
 
 <template>
-  <MainPageLayout :title="$t('publication-page.title')">
+  <MainPageLayout :title="t('publication-page.title')">
     <div v-if="publication" class="q-pa-lg">
       <div class="q-mt-md q-mb-lg row justify-between">
         <div class="col-md-8 col-12 q-mb-md">
           <div class="text-h4 text-primary">
             {{
-              $t('create-publication-dialog.publication-details')
+              t('create-publication-dialog.publication-details')
             }}
           </div>
           <div
@@ -139,7 +148,7 @@ async function save() {
             </div>
             <div>
               {{
-                publication.data.journal?.data.title_en ?? ' - '
+                publication.data.journal?.data.title ?? ' - '
               }}
             </div>
             <div class="q-mx-xs">
@@ -157,7 +166,7 @@ async function save() {
               <div
                 class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
               >
-                {{ $t('publication-page.publication-status') }}
+                {{ t('publication-page.publication-status') }}
               </div>
               <PublicationStatusBadge
                 :status="publication.data.status"
@@ -168,7 +177,7 @@ async function save() {
               <div
                 class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
               >
-                {{ $t('common.contact') }}
+                {{ t('common.contact') }}
               </div>
               <div class="text-body2 text-grey-7 q-py-xs">
                 {{
@@ -184,7 +193,7 @@ async function save() {
               <div
                 class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
               >
-                {{ $t('common.manuscript-record') }}
+                {{ t('common.manuscript-record') }}
               </div>
               <div class="text-body2 text-grey-7 q-py-xs">
                 <div
@@ -195,11 +204,12 @@ async function save() {
                     size="sm"
                     flat
                     :label="
-                      $t(
+                      t(
                         'publication-page.go-to-manuscript-record',
                       )
                     "
                     :to="`/manuscript/${publication.data.manuscript_record_id}/form`"
+                    :disable="!manuscriptMetadata?.can?.view"
                     icon-right="mdi-arrow-right"
                   />
                 </div>
@@ -211,7 +221,7 @@ async function save() {
                     size="xs"
                   />
                   <span class="text-grey-7">{{
-                    $t('common.not-available')
+                    t('common.not-available')
                   }}</span>
                 </div>
               </div>
@@ -227,17 +237,17 @@ async function save() {
       />
       <ContentCard class="q-mb-lg" secondary>
         <template #title>
-          <div>{{ $t('pub.general-information') }}</div>
+          <div>{{ t('pub.general-information') }}</div>
         </template>
         <QForm ref="generalInformationForm">
           <q-input
             v-model="publication.data.title"
-            :label="$t('common.title')"
+            :label="t('common.title')"
             bg-color="white"
             :disable="loading"
             :readonly="!canEdit"
             outlined
-            :rules="[(val) => !!val || $t('common.required')]"
+            :rules="[(val) => !!val || t('common.required')]"
             class="q-mb-md"
           />
           <JournalSelect
@@ -246,7 +256,7 @@ async function save() {
             :readonly="!canEdit"
             :rules="[
               (val: number | null) =>
-                !!val || $t('common.required'),
+                !!val || t('common.required'),
             ]"
             class="q-mb-md"
           />
@@ -257,13 +267,13 @@ async function save() {
             class="q-mb-md"
           />
           <div class="text-body1 text-primary text-weight-medium">
-            {{ $t('create-publication-dialog.publication-dates') }}
+            {{ t('create-publication-dialog.publication-dates') }}
           </div>
           <q-separator class="q-mb-md" />
           <div class="row q-gutter-sm">
             <DateInput
               v-model="publication.data.accepted_on"
-              :label="$t('common.accepted-on')"
+              :label="t('common.accepted-on')"
               :disable="loading"
               :readonly="!canEdit"
               :required="publication.data.status === 'accepted'"
@@ -273,7 +283,7 @@ async function save() {
             <DateInput
               v-if="publication.data.status === 'published'"
               v-model="publication.data.published_on"
-              :label="$t('common.published-on')"
+              :label="t('common.published-on')"
               :disable="loading"
               :readonly="!canEdit"
               :required="publication.data.status === 'published'"
@@ -284,19 +294,19 @@ async function save() {
           <div
             class="text-body1 q-mt-lg text-primary text-weight-medium"
           >
-            {{ $t('create-publication-dialog.publication-access') }}
+            {{ t('create-publication-dialog.publication-access') }}
           </div>
           <q-separator class="q-mb-md" />
           <q-toggle
             v-model="publication.data.is_open_access"
-            :label="$t('common.published-as-open-access')"
+            :label="t('common.published-as-open-access')"
             :disable="loading || !canEdit"
             :readonly="!canEdit"
           />
           <DateInput
             v-if="!publication.data.is_open_access"
             v-model="publication.data.embargoed_until"
-            :label="$t('common.embargoed-until')"
+            :label="t('common.embargoed-until')"
             :required="
               !publication.data.is_open_access
                 && publication.data.status === 'published'
@@ -319,14 +329,14 @@ async function save() {
       <q-card-actions align="right">
         <q-btn
           v-if="publication.data.status === 'accepted' && canEdit"
-          :label="$t('publication-page.mark-as-published')"
+          :label="t('publication-page.mark-as-published')"
           color="primary"
           icon="mdi-flag-checkered"
           @click="markAsPublished"
         />
         <q-btn
           v-if="canEdit"
-          :label="$t('common.save')"
+          :label="t('common.save')"
           color="primary"
           :loading="loading"
           @click="save"

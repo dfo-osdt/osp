@@ -75,9 +75,17 @@ export type ManuscriptRecordSummary = Omit<
   | 'can_attach_manuscript'
 >
 
+export interface ManuscriptRecordMetadata {
+  id: number
+  ulid: string
+  region_id: number
+  reviewed_at: string | null
+}
+
 export type ManuscriptRecordResource = Resource<ManuscriptRecord>
 export type ManuscriptRecordResourceList = ResourceList<ManuscriptRecord>
 export type ManuscriptRecordSummaryResource = Resource<ManuscriptRecordSummary>
+export type ManuscriptRecordMetadataResource = Resource<ManuscriptRecordMetadata>
 export type ManuscriptRecordSummaryResourceList =
     ResourceList<ManuscriptRecordSummary>
 
@@ -92,6 +100,14 @@ export class ManuscriptRecordService {
   public static async find(id: number) {
     const response = await http.get<ManuscriptRecordResource>(
       `${this.baseURL}/${id}`,
+    )
+    return response.data
+  }
+
+  /** Get a manuscript record metadata */
+  public static async metadata(id: number) {
+    const response = await http.get<ManuscriptRecordMetadataResource>(
+      `${this.baseURL}/${id}/metadata`,
     )
     return response.data
   }

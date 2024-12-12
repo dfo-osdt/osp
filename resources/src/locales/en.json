@@ -651,7 +651,8 @@
     "publication-updated-successfully": "Publication updated successfully",
     "title": "Publication",
     "attach-supplementary-files": "Supplementary Files",
-    "attach-supplementary-files-details": "Please upload all relevant supplementary files for your publications."
+    "attach-supplementary-files-details": "Please upload all relevant supplementary files for your publications.",
+    "no-supplementary-files": "No supplementary files attached."
   },
   "publications-view": {
     "all-published-publications-details": "All published publications",

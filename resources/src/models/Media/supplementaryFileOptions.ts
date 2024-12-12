@@ -16,7 +16,7 @@ export interface SupplementaryFileOption {
   description: string
 }
 
-export function useSupplementaryFileOptions() {
+export function useSupplementaryFileOptions(hideMrf = false) {
   const { t } = useI18n()
 
   const options = computed<SupplementaryFileOption[]>(() => [
@@ -28,6 +28,10 @@ export function useSupplementaryFileOptions() {
     { label: () => t('supplementaryFileType.preprint'), value: 'preprint', description: t('supplementaryFileType.preprintDescription') },
     { label: () => t('supplementaryFileType.other'), value: 'other', description: t('supplementaryFileType.otherDescription') },
   ])
+
+  if (hideMrf) {
+    return computed(() => options.value.filter(option => option.value !== 'manuscript_record_form'))
+  }
 
   return options
 }
