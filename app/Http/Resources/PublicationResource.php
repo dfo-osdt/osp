@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 class PublicationResource extends JsonResource
 {
@@ -38,8 +38,8 @@ class PublicationResource extends JsonResource
                 'funding_sources' => FundingSourceResource::collection($this->whenLoaded('fundingSources')),
             ],
             'can' => [
-                'update' => Auth::user()->can('update', $this->resource),
-                'delete' => Auth::user()->can('delete', $this->resource),
+                'update' => Gate::allows('update', $this->resource),
+                'delete' => Gate::allows('delete', $this->resource),
             ],
         ];
     }

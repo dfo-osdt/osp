@@ -344,3 +344,16 @@ test('a user can delete their manuscript record if it is a draft', function () {
     // check that the manuscript has not been deleted
     expect(ManuscriptRecord::find($manuscript->id))->not->toBeNull();
 });
+
+test('an authenticated user can get manuscript metadata', function () {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create();
+
+    $response = $this->actingAs($user)->getJson("/api/manuscript-records/{$manuscript->id}/metadata")->assertOk();
+
+    expect($response->json('data.id'))->toBe($manuscript->id);
+    expect($response->json('data.ulid'))->toBe($manuscript->ulid->toString());
+    expect($response->json('can.view'))->toBe(false);
+    expect($response->json('can.update'))->toBe(false);
+    expect($response->json('can.delete'))->toBe(false);
+});

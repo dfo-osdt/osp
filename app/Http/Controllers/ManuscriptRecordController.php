@@ -10,13 +10,14 @@ use App\Events\ManuscriptRecordAccepted;
 use App\Events\ManuscriptRecordSubmitted;
 use App\Events\ManuscriptRecordToReviewEvent;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
+use App\Http\Resources\ManuscriptRecordMetadataResource;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use App\Rules\UserNotAManuscriptAuthor;
-use Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -193,14 +194,30 @@ class ManuscriptRecordController extends Controller
         return $this->defaultResource($manuscriptRecord);
     }
 
+    /** Returns basic metadata on MRF all users area allowed to see */
+    public function metadata(ManuscriptRecord $manuscriptRecord): JsonResource
+    {
+        return new ManuscriptRecordMetadataResource($this->loadPolicyRelationships($manuscriptRecord));
+    }
+
     /** Default Resource with eager loaded properties */
     private function defaultResource(ManuscriptRecord $manuscriptRecord): JsonResource
+    {
+        return new ManuscriptRecordResource($this->loadPolicyRelationships($manuscriptRecord));
+    }
+
+    /**
+     * Loads the relationships required for the policy checks in order to
+     * avoid N+1 queries.
+     */
+    private function loadPolicyRelationships(ManuscriptRecord $manuscriptRecord): ManuscriptRecord
     {
         $relationships = collect(['user', 'shareables']);
         if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
             $relationships->push('publication');
         }
 
-        return new ManuscriptRecordResource($manuscriptRecord->load($relationships->toArray()));
+        return $manuscriptRecord->load($relationships->toArray());
+
     }
 }
