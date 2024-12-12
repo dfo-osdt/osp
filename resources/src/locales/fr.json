@@ -224,7 +224,7 @@
     "unique-id": "Identifiant unique",
     "unknown": "Inconnue",
     "update": "Mettre à jour",
-    "updated-successfully": "Mis à jour réussie ",
+    "updated-successfully": "mise à jour réussie ",
     "upload": "Télécharger",
     "user": "Utilisateur",
     "validation": {
@@ -651,7 +651,8 @@
     "publication-updated-successfully": "Publication mise à jour avec succès",
     "title": "Publication",
     "attach-supplementary-files": "Fichiers supplémentaires",
-    "attach-supplementary-files-details": "Veuillez télécharger tous les fichiers supplémentaires pertinents pour vos publications."
+    "attach-supplementary-files-details": "Veuillez télécharger tous les fichiers supplémentaires pertinents pour vos publications.",
+    "no-supplementary-files": "Aucun fichier supplémentaire joint."
   },
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",

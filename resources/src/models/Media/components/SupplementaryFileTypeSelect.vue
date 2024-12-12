@@ -2,8 +2,12 @@
 import type { SupplementaryFileOption, SupplementaryFileType } from '../supplementaryFileOptions'
 import { useSupplementaryFileOptions } from '../supplementaryFileOptions'
 
+const props = defineProps<{
+  hideMrf?: boolean
+}>()
+
 const model = defineModel<SupplementaryFileType | null>()
-const options = useSupplementaryFileOptions()
+const options = useSupplementaryFileOptions(props.hideMrf)
 const localModel = ref<SupplementaryFileOption | null>(null)
 const { t } = useI18n()
 

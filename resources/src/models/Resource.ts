@@ -1,4 +1,5 @@
 interface ModelPermissions {
+  view?: boolean
   update?: boolean
   delete?: boolean
   download?: boolean

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Media, MediaResource, MediaResourceList } from '@/models/Media/Media'
+import type { MediaResource, MediaResourceList } from '@/models/Media/Media'
 import ContentCard from '@/components/ContentCard.vue'
 import MediaListItem from '@/models/Media/components/MediaListItem.vue'
 import { useQuasar } from 'quasar'
@@ -83,11 +83,11 @@ watch(publicationFile, () => {
   <ContentCard class="q-mb-md" secondary>
     <template #title>
       {{
-        $t('publication-page.attach-publication')
+        t('publication-page.attach-publication')
       }}
     </template>
-    <p>
-      {{ $t('publication-page.attach-pub-details') }}
+    <p v-if="publication.can?.update">
+      {{ t('publication-page.attach-pub-details') }}
     </p>
     <template v-if="publicationResourceList?.data">
       <q-card outlined class="q-mb-md">
@@ -112,7 +112,7 @@ watch(publicationFile, () => {
             </template>
             <template v-if="!publicationResource.can?.download" #side>
               <span class="q-mr-sm">{{
-                $t(
+                t(
                   'common.publication-under-embargo',
                 )
               }}</span>
@@ -150,7 +150,7 @@ watch(publicationFile, () => {
           color="primary"
           :loading="uploadingFile"
           :disable="!publicationFile"
-          :label="$t('common.upload')"
+          :label="t('common.upload')"
           @click="upload"
         />
       </template>
