@@ -11,9 +11,12 @@ import {
 
 const props = defineProps<{
   modelValue: number | null
+  dfoSeriesOnly?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
+
+const { t } = useI18n()
 
 const journalSelect = ref<QSelect | null>(null)
 
@@ -55,6 +58,10 @@ async function filterJournals(val: string, update: (arg: () => Promise<void>) =>
         .sort('title', 'asc')
         .paginate(1, 10)
 
+      if (props.dfoSeriesOnly) {
+        query.filter('dfo_series', 'true')
+      }
+
       journals.value = await JournalService.list(query)
       journalsLoading.value = false
     }
@@ -84,12 +91,12 @@ defineExpose({
     :option-value="optionValue"
     :option-label="optionLabel"
     clearable
-    :label="$t('common.journal')"
+    :label="t('common.journal')"
     :loading="journalsLoading"
     use-input
     stack-label
     outlined
-    :hint="$t('journal-select.search-hint')"
+    :hint="t('journal-select.search-hint')"
     :hide-hint="isReadOnly"
     @filter="filterJournals"
     @clear="selectedJournal = null"
@@ -98,10 +105,10 @@ defineExpose({
       <q-item>
         <q-item-section class="text-grey">
           <template v-if="lastSearchTerm === ''">
-            {{ $t('journal-select.search-hint') }}
+            {{ t('journal-select.search-hint') }}
           </template>
           <template v-else>
-            {{ $t('common.no-results-found-for') }}
+            {{ t('common.no-results-found-for') }}
             <strong>{{ lastSearchTerm }}</strong>
           </template>
         </q-item-section>
@@ -109,7 +116,7 @@ defineExpose({
       <q-separator />
       <q-item>
         <q-item-section>
-          {{ $t('journal-select.not-found-msg') }}
+          {{ t('journal-select.not-found-msg') }}
         </q-item-section>
       </q-item>
     </template>
