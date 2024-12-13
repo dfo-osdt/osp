@@ -17,10 +17,10 @@ use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use App\Rules\UserNotAManuscriptAuthor;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 

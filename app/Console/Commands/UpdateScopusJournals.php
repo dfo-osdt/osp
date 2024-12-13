@@ -135,11 +135,10 @@ class UpdateScopusJournals extends Command
                 $title = $row['Source Title'];
                 $publisher = $row['Publisher Imprints Grouped to Main Publisher'];
 
-                $issn = !empty($row['EISSN']) ? $row['EISSN'] : (!empty($row['ISSN']) ? $row['ISSN'] : null);
+                $issn = ! empty($row['EISSN']) ? $row['EISSN'] : (! empty($row['ISSN']) ? $row['ISSN'] : null);
                 if ($issn) {
                     $issn = $this->formatIssn($issn);
                 }
-
 
                 $action = 0;
 

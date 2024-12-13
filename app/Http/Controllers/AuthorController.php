@@ -56,7 +56,7 @@ class AuthorController extends Controller
             'include' => [
                 'bail',
                 'string',
-                 new ValidListItems(['publications'])
+                new ValidListItems(['publications']),
             ],
         ]);
 
@@ -67,7 +67,7 @@ class AuthorController extends Controller
                     $query->orderBy('name_en');
                 },
             ]
-            );
+        );
 
         if (isset($validated['include'])) {
             $includes = $includes->merge($validated['include']);
@@ -88,14 +88,14 @@ class AuthorController extends Controller
         $validated = $request->validate([
             'first_name' => 'string',
             'last_name' => 'string',
-            'email' => 'email|unique:authors,email,' . $author->id,
+            'email' => 'email|unique:authors,email,'.$author->id,
             'organization_id' => 'exists:organizations,id',
             'orcid' => [
-                Rule::excludeIf(fn() => $author->orcid_verified),
+                Rule::excludeIf(fn () => $author->orcid_verified),
                 'nullable',
                 'string',
                 new Ocrid,
-                Rule::unique('authors', 'orcid')->ignore($author->id)
+                Rule::unique('authors', 'orcid')->ignore($author->id),
             ],
         ]);
 
