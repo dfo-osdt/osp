@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Enums\ManuscriptRecordStatus;
 use App\Models\ManuscriptAuthor;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class ManuscriptAuthorPolicy
 {
@@ -28,7 +28,7 @@ class ManuscriptAuthorPolicy
      */
     public function view(User $user, ManuscriptAuthor $manuscriptAuthor)
     {
-        return false;
+        return Gate::allows('view', $manuscriptAuthor->manuscriptRecord);
     }
 
     /**
@@ -48,17 +48,7 @@ class ManuscriptAuthorPolicy
      */
     public function update(User $user, ManuscriptAuthor $manuscriptAuthor)
     {
-
-        $manuscriptAuthor->load('manuscriptRecord.managementReviewSteps.user');
-
-        switch ($manuscriptAuthor->manuscriptRecord->status) {
-            case ManuscriptRecordStatus::DRAFT:
-                return $manuscriptAuthor->manuscriptRecord->user_id == $user->id;
-            case ManuscriptRecordStatus::IN_REVIEW:
-                return $manuscriptAuthor->manuscriptRecord->managementReviewSteps->contains('user_id', $user->id);
-            default:
-                return false;
-        }
+        return Gate::allows('update', $manuscriptAuthor->manuscriptRecord);
     }
 
     /**

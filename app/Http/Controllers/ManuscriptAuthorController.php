@@ -6,10 +6,10 @@ use App\Http\Resources\ManuscriptAuthorResource;
 use App\Models\Author;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
-use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class ManuscriptAuthorController extends Controller
@@ -20,7 +20,8 @@ class ManuscriptAuthorController extends Controller
     public function index(ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('view', $manuscriptRecord);
-        $manuscriptAuthors = $manuscriptRecord->manuscriptAuthors()->with('author', 'organization')->orderBy('id')->get();
+
+        $manuscriptAuthors = $manuscriptRecord->manuscriptAuthors()->with($this->getPolicyRelationships())->orderBy('id')->get();
 
         return ManuscriptAuthorResource::collection($manuscriptAuthors);
     }
@@ -33,10 +34,14 @@ class ManuscriptAuthorController extends Controller
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
-            'author_id' => ['required', 'integer', 'exists:authors,id',
+            'author_id' => [
+                'required',
+                'integer',
+                'exists:authors,id',
                 Rule::unique('manuscript_authors')->where(function ($query) use ($manuscriptRecord) {
                     return $query->where('manuscript_record_id', $manuscriptRecord->id);
-                }), ],
+                }),
+            ],
             'is_corresponding_author' => 'boolean',
         ]);
 
@@ -48,7 +53,7 @@ class ManuscriptAuthorController extends Controller
         $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $manuscriptAuthor->organization_id = $author->organization_id;
         $manuscriptAuthor->save();
-        $manuscriptAuthor->load('author', 'organization');
+        $manuscriptAuthor->load($this->getPolicyRelationships());
 
         return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
@@ -60,7 +65,7 @@ class ManuscriptAuthorController extends Controller
     {
         Gate::authorize('view', $manuscriptRecord);
 
-        $manuscriptAuthor->load('author', 'organization');
+        $manuscriptAuthor->load($this->getPolicyRelationships());
 
         return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
@@ -85,7 +90,7 @@ class ManuscriptAuthorController extends Controller
             $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'];
         }
         $manuscriptAuthor->save();
-        $manuscriptAuthor->refresh()->load('author', 'organization');
+        $manuscriptAuthor->refresh()->load($this->getPolicyRelationships());
 
         return ManuscriptAuthorResource::make($manuscriptAuthor);
     }
@@ -101,5 +106,17 @@ class ManuscriptAuthorController extends Controller
 
         // response 204
         return response()->noContent();
+    }
+
+    private function getPolicyRelationships(): array
+    {
+        return [
+            'author',
+            'organization',
+            'manuscriptRecord' => [
+                'user',
+                'shareables',
+            ],
+        ];
     }
 }

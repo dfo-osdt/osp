@@ -6,9 +6,9 @@ use App\Http\Resources\ManuscriptRecordSummaryResource;
 use App\Models\ManuscriptRecord;
 use App\Queries\ManuscriptRecordQuery;
 use App\Traits\PaginationLimitTrait;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class UserManuscriptRecordController extends Controller
 {
@@ -47,8 +47,17 @@ class UserManuscriptRecordController extends Controller
         }
         $manuscriptIds = $manuscriptIds->pluck('id');
 
+        $relationship = [
+            'manuscriptAuthors' => [
+                'author',
+                'organization',
+            ],
+            'shareables',
+            'managementReviewSteps',
+        ];
+
         $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)
-            ->with('manuscriptAuthors.organization', 'manuscriptAuthors.author', 'shareables');
+            ->with($relationship);
 
         $listQuery = new ManuscriptRecordQuery($request, $baseQuery);
 

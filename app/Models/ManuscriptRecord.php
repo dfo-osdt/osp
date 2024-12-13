@@ -96,7 +96,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
      */
     public function manuscriptAuthors(): HasMany
     {
-        return $this->hasMany('App\Models\ManuscriptAuthor');
+        return $this->hasMany('App\Models\ManuscriptAuthor')->chaperone();
     }
 
     /**
