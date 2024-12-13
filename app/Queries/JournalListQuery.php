@@ -24,7 +24,7 @@ class JournalListQuery extends QueryBuilder
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('title'),
-                AllowedFilter::custom('search', new MultiColumnFilter('title','issn')),
+                AllowedFilter::custom('search', new MultiColumnFilter('title', 'issn')),
                 AllowedFilter::scope('dfo_series'),
             ]);
     }

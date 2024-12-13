@@ -69,7 +69,6 @@ class AppServiceProvider extends ServiceProvider
         Vite::useAggressivePrefetching();
     }
 
-
     private function configureModel(): void
     {
         Model::preventLazyLoading(! App::isProduction());

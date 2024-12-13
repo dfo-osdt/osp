@@ -20,7 +20,7 @@ class JournalFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'publisher' => $this->faker->company(),
-            'issn' => $this->faker->randomNumber(4)."-".$this->faker->randomNumber(4),
+            'issn' => $this->faker->randomNumber(4).'-'.$this->faker->randomNumber(4),
         ];
     }
 

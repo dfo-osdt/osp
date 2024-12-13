@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::table('journals', function (Blueprint $table) {
             $table->dropColumn('title_fr');
             $table->renameColumn('title_en', 'title');
-            $table->string('issn',10)->nullable()->index();
+            $table->string('issn', 10)->nullable()->index();
         });
     }
-
 };
