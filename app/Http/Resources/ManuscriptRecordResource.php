@@ -6,6 +6,9 @@ use App\Enums\ManuscriptRecordStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @mixin \App\Models\ManuscriptRecord
+ */
 class ManuscriptRecordResource extends JsonResource
 {
     /**

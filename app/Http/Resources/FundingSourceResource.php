@@ -6,6 +6,9 @@ use Auth;
 use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Models\FundingSource
+ */
 class FundingSourceResource extends JsonResource
 {
     /**

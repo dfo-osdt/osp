@@ -6,7 +6,7 @@ use App\Enums\SensitivityLabel;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @extends JsonResource<\App\Models\User>
+ * @mixin \App\Models\User
  */
 class AuthenticatedUserResource extends JsonResource
 {

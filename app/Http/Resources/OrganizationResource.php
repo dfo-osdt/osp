@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Models\Organization
+ */
 class OrganizationResource extends JsonResource
 {
     /**

@@ -6,6 +6,9 @@ use App\Enums\SensitivityLabel;
 use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Models\ManagementReviewStep
+ */
 class ManagementReviewStepResource extends JsonResource
 {
     /**

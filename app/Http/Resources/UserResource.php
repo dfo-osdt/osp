@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use App\Enums\SensitivityLabel;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Models\User
+ */
 class UserResource extends JsonResource
 {
     /**
