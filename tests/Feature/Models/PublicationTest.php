@@ -292,7 +292,7 @@ test('a user can manage supplementary files for their publication record', funct
     $response->assertForbidden();
 
     $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/supplementary-files', [
-        'pdf' => $file,
+        'file' => $file,
         'supplementary_file_type' => SupplementaryFileType::MANUSCRIPT_RECORD_FORM->value,
         'description' => 'Test Description',
     ]);
@@ -315,5 +315,33 @@ test('a user can manage supplementary files for their publication record', funct
     // delete the file
     $response = $this->actingAs($user)->deleteJson("/api/publications/{$publication->id}/supplementary-files/{$uuid}");
     $response->assertNoContent();
+});
 
+test('a user can upload a word document as a supplementary files', function () {
+    $publication = Publication::factory()->create();
+    $user = $publication->user;
+
+    // upload word document
+    $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
+
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/supplementary-files', [
+        'file' => $file,
+        'supplementary_file_type' => SupplementaryFileType::MANUSCRIPT_RECORD_FORM->value,
+        'description' => 'Test Description',
+    ]);
+
+    $response->assertCreated();
+    $uuid = $response->json('data.uuid');
+
+    // list the files
+    $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id.'/supplementary-files');
+    $response->assertOk();
+    $response->assertJsonCount(1, 'data');
+
+    $response2 = $this->actingAs($user)->get("/api/publications/{$publication->id}/supplementary-files/{$uuid}?download=true");
+    $response2->assertDownload('test.docx');
+
+    // delete the file
+    $response = $this->actingAs($user)->deleteJson("/api/publications/{$publication->id}/supplementary-files/{$uuid}");
+    $response->assertNoContent();
 });

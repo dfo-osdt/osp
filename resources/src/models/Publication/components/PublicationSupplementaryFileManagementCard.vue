@@ -159,15 +159,15 @@ const hideMrf = computed(() => {
           outlined
           use-chips
           :label="t('common.select-file')"
-          :hint="t('mrf.upload-hint', { max: maxFileSizeMB })"
-          accept="application/pdf"
+          :hint="t('publication-supplementary.upload-hint', { max: maxFileSizeMB })"
+          accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           :max-file-size="maxFileSizeMB * 1e6"
           counter
           :loading="uploadingFile"
           @rejected="onFileRejected"
         >
           <template #prepend>
-            <q-icon name="mdi-file-pdf-box" />
+            <q-icon name="mdi-file-document-outline" />
           </template>
         </q-file>
       </div>
