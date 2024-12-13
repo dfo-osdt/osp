@@ -6,6 +6,9 @@ use App\Enums\SensitivityLabel;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 
+/**
+ * @mixin \Spatie\MediaLibrary\MediaCollections\Models\Media
+ */
 class MediaResource extends JsonResource
 {
     /**

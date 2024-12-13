@@ -245,7 +245,6 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             'relevant_to' => 'required',
             'region_id' => 'required|exists:regions,id',
             'functional_area_id' => 'required|exists:functional_areas,id',
-            'relevant_to' => 'required',
             'no_ogl_explanation' => 'required_if:apply_ogl,false',
         ]);
 

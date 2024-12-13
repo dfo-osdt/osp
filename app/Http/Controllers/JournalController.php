@@ -19,7 +19,7 @@ class JournalController extends Controller
     public function index(Request $request): JsonResource
     {
         $limit = $this->getLimitFromRequest($request);
-        $journalListQuery = new JournalListQuery($request);
+        $journalListQuery = new JournalListQuery();
 
         return JournalResource::collection($journalListQuery->paginate($limit));
     }

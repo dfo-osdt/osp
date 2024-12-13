@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -61,7 +62,7 @@ class AuthorEmployment extends Model
      * of the one in the author's profile as the author may
      * have had been employed by a different organization
      */
-    public function organization()
+    public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
     }
