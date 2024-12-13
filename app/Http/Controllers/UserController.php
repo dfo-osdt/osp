@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index(Request $request): ResourceCollection
     {
         $limit = $this->getLimitFromRequest($request);
-        $userListQuery = new UserListQuery($request);
+        $userListQuery = new UserListQuery();
 
         return UserResource::collection($userListQuery->paginate($limit)->appends($request->query()));
     }
