@@ -23,7 +23,7 @@ class AuthorController extends Controller
     public function index(Request $request): JsonResource
     {
         $limit = $this->getLimitFromRequest($request);
-        $authorListQuery = new AuthorListQuery();
+        $authorListQuery = new AuthorListQuery;
 
         return AuthorResource::collection($authorListQuery->paginate($limit)->appends($request->query()));
     }

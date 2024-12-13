@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+
 /**
  * @mixin \Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog
  */
