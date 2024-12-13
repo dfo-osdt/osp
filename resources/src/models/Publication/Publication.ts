@@ -140,7 +140,7 @@ export class PublicationService {
 
   public static async attachSupplementaryFile(file: File, id: number, type: SupplementaryFileType, desc: string | null = null) {
     const formData = new FormData()
-    formData.append('pdf', file)
+    formData.append('file', file)
     formData.append('supplementary_file_type', type)
     if (desc) {
       formData.append('description', desc)

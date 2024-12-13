@@ -47,13 +47,13 @@ class PublicationSupplementaryFileController extends Controller
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
-            'pdf' => 'required|file|mimes:pdf|max:50000',
+            'file' => 'required|file|mimes:pdf,doc,docx|max:50000',
             'supplementary_file_type' => ['required', Rule::enum(SupplementaryFileType::class)],
             'description' => 'nullable|string|max:200',
         ]);
 
         $type = SupplementaryFileType::tryFrom($validated['supplementary_file_type']);
-        $media = $publication->addSupplementaryFile($validated['pdf'], $type, $validated['description'] ?? null);
+        $media = $publication->addSupplementaryFile($validated['file'], $type, $validated['description'] ?? null);
 
         activity()
             ->performedOn($publication)

@@ -817,5 +817,8 @@
     "external-authors-caption": "Authors with an external affiliation",
     "with-orcid": "With ORCID",
     "with-orcid-caption": "Authors with an associated ORCID"
+  },
+  "publication-supplementary": {
+    "upload-hint": "Only PDF or Word files are accepted. Maximum file size is {max}MB."
   }
 }

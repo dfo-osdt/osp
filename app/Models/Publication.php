@@ -91,7 +91,7 @@ class Publication extends Model implements Fundable, HasMedia
             ->acceptsMimeTypes(['application/pdf']);
 
         $this->addMediaCollection(MediaCollection::SUPPLEMENTARY_FILE->value)
-            ->acceptsMimeTypes(['application/pdf']);
+            ->acceptsMimeTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
     }
 
     /**
