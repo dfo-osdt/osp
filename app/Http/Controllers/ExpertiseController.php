@@ -19,7 +19,7 @@ class ExpertiseController extends Controller
     public function index(Request $request): JsonResource
     {
         $limit = $this->getLimitFromRequest($request);
-        $expertiseListQuery = new ExpertiseListQuery();
+        $expertiseListQuery = new ExpertiseListQuery;
 
         return ExpertiseResource::collection($expertiseListQuery->paginate($limit));
     }
