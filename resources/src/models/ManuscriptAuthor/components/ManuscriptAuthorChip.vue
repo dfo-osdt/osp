@@ -19,6 +19,7 @@ const emit = defineEmits([
 ])
 
 const localeStore = useLocaleStore()
+const { t } = useI18n()
 
 const { copy, copied, isSupported } = useClipboard()
 
@@ -110,12 +111,12 @@ const removable = computed(() => {
             >
               <q-tooltip>
                 {{
-                  $t('common.copy-to-clipboard')
+                  t('common.copy-to-clipboard')
                 }}
               </q-tooltip>
             </q-btn>
             <div v-else class="text-caption">
-              {{ $t('common.copied') }}
+              {{ t('common.copied') }}
             </div>
           </q-item-section>
         </q-item>
@@ -132,11 +133,11 @@ const removable = computed(() => {
               >{{ manuscriptAuthor.data.author?.data.orcid }}</a>
             </q-item-label>
             <q-item-label v-if="!manuscriptAuthor.data.author.data.orcid_verified" caption>
-              {{ $t('common.unauthenticated-orcid-id') }}
+              {{ t('common.unauthenticated-orcid-id') }}
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item>
+        <q-item v-if="manuscriptAuthor.data.can?.update">
           <q-item-section avatar>
             <q-avatar icon="mdi-at" text-color="primary" />
           </q-item-section>
@@ -145,7 +146,7 @@ const removable = computed(() => {
               :class="correspondingAuthor ? '' : 'text-grey-5'"
             >
               {{
-                $t('common.corresponding-author')
+                t('common.corresponding-author')
               }}
             </q-item-label>
           </q-item-section>
@@ -153,7 +154,7 @@ const removable = computed(() => {
             <q-toggle v-model="correspondingAuthor">
               <q-tooltip>
                 {{
-                  $t('common.corresponding-author-toggle')
+                  t('common.corresponding-author-toggle')
                 }}
               </q-tooltip>
             </q-toggle>
