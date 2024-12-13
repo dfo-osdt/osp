@@ -137,7 +137,7 @@ const removable = computed(() => {
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="manuscriptAuthor.data.can?.update">
+        <q-item v-if="manuscriptAuthor.can?.update || manuscriptAuthor.data.is_corresponding_author">
           <q-item-section avatar>
             <q-avatar icon="mdi-at" text-color="primary" />
           </q-item-section>
