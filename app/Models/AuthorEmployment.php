@@ -14,6 +14,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $activities_count
  * @property-read \App\Models\Author|null $author
  * @property-read \App\Models\Organization|null $organization
+ * @property-read \Carbon\Carbon $start_date
+ * @property-read \Carbon\Carbon|null $end_date
  *
  * @method static \Database\Factories\AuthorEmploymentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment newModelQuery()
@@ -41,6 +43,15 @@ class AuthorEmployment extends Model
         'orcid_updated_at',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @return array{
+     *  start_date: 'date',
+     *  end_date: 'date',
+     *  orcid_updated_at: 'datetime'
+     * }
+     */
     protected function casts(): array
     {
         return [

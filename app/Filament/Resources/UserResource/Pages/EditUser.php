@@ -30,6 +30,9 @@ class EditUser extends EditRecord
      */
     protected function beforeSave(): void
     {
+        if (! $this->record instanceof \App\Models\User) {
+            return;
+        }
         $this->record->active = $this->data['active'];
         $this->record->save();
     }
@@ -53,6 +56,9 @@ class EditUser extends EditRecord
      */
     public function setVerifiedEmail(): void
     {
+        if (! $this->record instanceof \App\Models\User) {
+            return;
+        }
         $this->record->markEmailAsVerified();
         $this->refreshFormData(['active']);
     }

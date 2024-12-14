@@ -109,8 +109,6 @@ class FullFlowController
 
     /**
      * Returns the link to the ORCID authorization endpoint with the required parameters.
-     *
-     * @return void
      */
     public function redirect(Request $request): RedirectResponse
     {

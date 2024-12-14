@@ -12,19 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('manuscript_records', function (Blueprint $table) {
-            $table->ulid('ulid')->after('id');
+            $table->ulid('ulid')->after('id')->unique();
         });
 
-        // all models, including those that are soft deleted
-        $models = \App\Models\ManuscriptRecord::withTrashed()->get();
-
-        foreach ($models as $model) {
-            $model->ulid = \Illuminate\Support\Str::ulid(Carbon\Carbon::parse($model->created_at));
-            $model->save();
-        }
-
-        Schema::table('manuscript_records', function (Blueprint $table) {
-            $table->unique('ulid')->index();
-        });
     }
 };
