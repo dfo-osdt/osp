@@ -9,6 +9,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\Author|null $author
+ * @property-read \App\Models\Organization|null $organization
+ *
+ * @method static \Database\Factories\AuthorEmploymentFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment withoutTrashed()
+ *
+ * @mixin \Eloquent
+ */
 class AuthorEmployment extends Model
 {
     /** @use HasFactory<\Database\Factories\AuthorEmploymentFactory> */

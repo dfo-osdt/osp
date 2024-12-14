@@ -14,6 +14,63 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $first_name
+ * @property string $last_name
+ * @property string|null $orcid
+ * @property bool|null $orcid_verified
+ * @property mixed|null $orcid_access_token
+ * @property string|null $orcid_token_scope
+ * @property mixed|null $orcid_refresh_token
+ * @property \Illuminate\Support\Carbon|null $orcid_expires_at
+ * @property string $email
+ * @property int $organization_id
+ * @property int|null $user_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AuthorEmployment> $employments
+ * @property-read int|null $employments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expertise> $expertises
+ * @property-read int|null $expertises_count
+ * @property-read string $apa_name
+ * @property-read string $full_name
+ * @property-read string $orcid_number
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptAuthor> $manuscriptAuthors
+ * @property-read int|null $manuscript_authors_count
+ * @property-read \App\Models\Organization $organization
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptPeerReviewer> $peerReviews
+ * @property-read int|null $peer_reviews_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Publication> $publications
+ * @property-read int|null $publications_count
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static Builder<static>|Author externalAuthor()
+ * @method static \Database\Factories\AuthorFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Author internalAuthor()
+ * @method static Builder<static>|Author newModelQuery()
+ * @method static Builder<static>|Author newQuery()
+ * @method static Builder<static>|Author query()
+ * @method static Builder<static>|Author whereCreatedAt($value)
+ * @method static Builder<static>|Author whereEmail($value)
+ * @method static Builder<static>|Author whereFirstName($value)
+ * @method static Builder<static>|Author whereId($value)
+ * @method static Builder<static>|Author whereLastName($value)
+ * @method static Builder<static>|Author whereOrcid($value)
+ * @method static Builder<static>|Author whereOrcidAccessToken($value)
+ * @method static Builder<static>|Author whereOrcidExpiresAt($value)
+ * @method static Builder<static>|Author whereOrcidRefreshToken($value)
+ * @method static Builder<static>|Author whereOrcidTokenScope($value)
+ * @method static Builder<static>|Author whereOrcidVerified($value)
+ * @method static Builder<static>|Author whereOrganizationId($value)
+ * @method static Builder<static>|Author whereUpdatedAt($value)
+ * @method static Builder<static>|Author whereUserId($value)
+ * @method static Builder<static>|Author withOrcid()
+ *
+ * @mixin \Eloquent
+ */
 class Author extends Model
 {
     use HasExpertises;

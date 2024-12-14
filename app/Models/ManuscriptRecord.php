@@ -27,6 +27,79 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * App\Models\ManuscriptRecord
+ *
+ * @property int $id
+ * @property string $ulid
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property ManuscriptRecordType $type primary, secondary, etc.
+ * @property ManuscriptRecordStatus $status draft, submitted, etc.
+ * @property string $title
+ * @property int $region_id
+ * @property int $user_id
+ * @property string|null $abstract
+ * @property string|null $pls Plain Language Summary
+ * @property string|null $relevant_to
+ * @property string|null $additional_information
+ * @property string|null $sent_for_review_at
+ * @property string|null $reviewed_at
+ * @property string|null $submitted_to_journal_on
+ * @property string|null $accepted_on
+ * @property string|null $withdrawn_on
+ * @property bool $potential_public_interest
+ * @property int|null $functional_area_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\FunctionalArea|null $functionalArea
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FundingSource> $fundingSources
+ * @property-read int|null $funding_sources_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagementReviewStep> $managementReviewSteps
+ * @property-read int|null $management_review_steps_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptAuthor> $manuscriptAuthors
+ * @property-read int|null $manuscript_authors_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptPeerReviewer> $peerReviewers
+ * @property-read int|null $peer_reviewers_count
+ * @property-read \App\Models\Publication|null $publication
+ * @property-read \App\Models\Region $region
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shareable> $shareables
+ * @property-read int|null $shareables_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $sharedWithUsers
+ * @property-read int|null $shared_with_users_count
+ * @property-read \App\Models\User $user
+ *
+ * @method static \Database\Factories\ManuscriptRecordFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereAbstract($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereAcceptedOn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereAdditionalInformation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereFunctionalAreaId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePls($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePotentialPublicInterest($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereRegionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereRelevantTo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereReviewedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereSentForReviewAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereSubmittedToJournalOn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereUlid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereWithdrawnOn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord withoutTrashed()
+ *
+ * @mixin \Eloquent
  */
 class ManuscriptRecord extends Model implements Fundable, HasMedia
 {

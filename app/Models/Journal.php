@@ -6,6 +6,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $title_en
+ * @property string|null $title_fr
+ * @property string|null $scopus_source_record_id Scopus source record ID
+ * @property string $publisher
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Publication> $publications
+ * @property-read int|null $publications_count
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal dfoSeries()
+ * @method static \Database\Factories\JournalFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal wherePublisher($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereScopusSourceRecordId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereTitleEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereTitleFr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereUpdatedAt($value)
+ *
+ * @mixin \Eloquent
+ */
 class Journal extends Model
 {
     use HasFactory;

@@ -11,20 +11,16 @@ class VerifyEmailController extends Controller
 {
     /**
      * Mark the authenticated user's email address as verified.
-     *
-     * @param  \Illuminate\Foundation\Auth\EmailVerificationRequest  $request
      */
     public function __invoke(Request $request): \Illuminate\Http\RedirectResponse
     {
-        // if user does not exist redirect to invalid signature
-        if (! User::exists('id', $request->route('id'))) {
+        try {
+            $user = User::findOrFail($request->route('id'));
+        } catch (\Exception $e) {
             return redirect()->intended(
                 config('app.frontend_url').'#/invalid-signature'
             );
         }
-
-        // get user
-        $user = User::findOrFail($request->route('id'));
 
         if (! hash_equals(sha1($user->getEmailForVerification()), (string) $request->route('hash'))) {
             return redirect()->intended(

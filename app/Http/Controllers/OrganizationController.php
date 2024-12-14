@@ -20,7 +20,7 @@ class OrganizationController extends Controller
     public function index(Request $request): ResourceCollection
     {
         $limit = $this->getLimitFromRequest($request);
-        $organizationListQuery = new OrganizationListQuery($request);
+        $organizationListQuery = new OrganizationListQuery;
 
         return OrganizationResource::collection($organizationListQuery->paginate($limit));
     }

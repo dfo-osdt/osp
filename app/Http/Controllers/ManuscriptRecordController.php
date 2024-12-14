@@ -160,7 +160,7 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->submitted_to_journal_on = $validated['submitted_to_journal_on'];
         $manuscriptRecord->save();
 
-        ManuscriptRecordSubmitted::dispatch($manuscriptRecord);
+        ManuscriptRecordSubmitted::dispatch();
 
         return $this->defaultResource($manuscriptRecord);
     }
@@ -189,7 +189,7 @@ class ManuscriptRecordController extends Controller
         $journal = Journal::findOrFail($validated['journal_id']);
         CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
 
-        ManuscriptRecordAccepted::dispatch($manuscriptRecord);
+        ManuscriptRecordAccepted::dispatch();
 
         return $this->defaultResource($manuscriptRecord);
     }

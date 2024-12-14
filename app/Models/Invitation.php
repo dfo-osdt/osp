@@ -10,6 +10,33 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Str;
 use URL;
 
+/**
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $invitation_token
+ * @property int $user_id
+ * @property int|null $invited_by
+ * @property \Illuminate\Support\Carbon|null $registered_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\User|null $invitedByUser
+ * @property-read \App\Models\User $user
+ *
+ * @method static \Database\Factories\InvitationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation whereInvitationToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation whereInvitedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation whereRegisteredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Invitation whereUserId($value)
+ *
+ * @mixin \Eloquent
+ */
 class Invitation extends Model
 {
     use HasFactory;
