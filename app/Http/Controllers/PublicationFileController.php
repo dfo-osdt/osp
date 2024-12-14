@@ -82,7 +82,7 @@ class PublicationFileController extends Controller
 
         $media->setRelation('model', $publication);
 
-        $download = $request->query('download', false);
+        $download = $request->query('download');
         if ($download && Gate::allows('downloadMedia', [$publication, $media])) {
             return $media;
         }

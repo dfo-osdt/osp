@@ -11,11 +11,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property-read int|null $activities_count
- * @property-read \App\Models\Author|null $author
- * @property-read \App\Models\Organization|null $organization
- * @property-read \Carbon\Carbon $start_date
- * @property-read \Carbon\Carbon|null $end_date
+ * @property \App\Models\Author|null $author
+ * @property \App\Models\Organization|null $organization
+ * @property \Carbon\Carbon $start_date
+ * @property \Carbon\Carbon|null $end_date
+ * @property \Carbon\Carbon|null $orcid_updated_at
+ * @property int|null $orcid_putcode
  *
  * @method static \Database\Factories\AuthorEmploymentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment newModelQuery()

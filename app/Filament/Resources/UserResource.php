@@ -84,7 +84,7 @@ class UserResource extends Resource
                         'author' => 'success',
                         'director' => 'warning',
                         'admin' => 'danger',
-                        'default' => 'info',
+                        default => 'info',
                     })
                     ->searchable(),
             ])

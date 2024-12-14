@@ -20,7 +20,6 @@ class DateData extends Data
 
     /**
      * @param  string  $date  Example: 2021-01-01
-     * @return static
      */
     public static function fromString(string $date): self
     {

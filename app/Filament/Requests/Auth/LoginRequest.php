@@ -66,11 +66,10 @@ class LoginRequest extends BaseAuth
     /**
      * Ensure the login request is not rate limited.
      *
-     * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws TooManyRequestsException
      */
-    public function ensureIsNotRateLimited()
+    public function ensureIsNotRateLimited(): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), $this->maxAttempts)) {
             return;

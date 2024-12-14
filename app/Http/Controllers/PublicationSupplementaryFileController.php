@@ -78,7 +78,7 @@ class PublicationSupplementaryFileController extends Controller
             throw new NotFoundHttpException('File not found.');
         }
 
-        $download = $request->query('download', false);
+        $download = $request->query('download');
         if ($download && Gate::allows('downloadMedia', [$publication, $media])) {
             return $media;
         }
