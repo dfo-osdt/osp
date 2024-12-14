@@ -8,6 +8,38 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @property string $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $user_id
+ * @property int|null $shared_by
+ * @property string $shareable_type
+ * @property int $shareable_id
+ * @property bool $can_edit
+ * @property bool $can_delete
+ * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property-read Model|\Eloquent $shareable
+ * @property-read \App\Models\User|null $sharingUser
+ * @property-read \App\Models\User $user
+ *
+ * @method static \Database\Factories\ShareableFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereCanDelete($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereCanEdit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereShareableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereShareableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereSharedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable whereUserId($value)
+ *
+ * @mixin \Eloquent
+ */
 class Shareable extends Model
 {
     use HasFactory;

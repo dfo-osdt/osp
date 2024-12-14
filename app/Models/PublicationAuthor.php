@@ -8,6 +8,34 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $publication_id
+ * @property int $author_id
+ * @property int $organization_id
+ * @property bool $is_corresponding_author
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \App\Models\Author $author
+ * @property-read \App\Models\Organization $organization
+ * @property-read \App\Models\Publication $publication
+ *
+ * @method static \Database\Factories\PublicationAuthorFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereIsCorrespondingAuthor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereOrganizationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor wherePublicationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereUpdatedAt($value)
+ *
+ * @mixin \Eloquent
+ */
 class PublicationAuthor extends Model
 {
     use HasFactory;

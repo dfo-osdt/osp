@@ -22,6 +22,61 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property PublicationStatus $status accepted, published, etc.
+ * @property string $title
+ * @property string|null $doi
+ * @property \Illuminate\Support\Carbon|null $accepted_on
+ * @property \Illuminate\Support\Carbon|null $published_on
+ * @property \Illuminate\Support\Carbon|null $embargoed_until
+ * @property bool $is_open_access
+ * @property int|null $manuscript_record_id
+ * @property int $journal_id
+ * @property int $user_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FundingSource> $fundingSources
+ * @property-read int|null $funding_sources_count
+ * @property-read \App\Models\Journal $journal
+ * @property-read \App\Models\ManuscriptRecord|null $manuscriptRecord
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PublicationAuthor> $publicationAuthors
+ * @property-read int|null $publication_authors_count
+ * @property-read \App\Models\User $user
+ *
+ * @method static \Database\Factories\PublicationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication notUnderEmbargo()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication openAccess()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication secondaryPublication()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication underEmbargo()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereAcceptedOn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereDoi($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereEmbargoedUntil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereIsOpenAccess($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereJournalId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereManuscriptRecordId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication wherePublishedOn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication withoutTrashed()
+ *
+ * @mixin \Eloquent
+ */
 class Publication extends Model implements Fundable, HasMedia
 {
     use FundableTrait;

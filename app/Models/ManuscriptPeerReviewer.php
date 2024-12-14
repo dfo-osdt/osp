@@ -8,6 +8,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property PeerReviewType $type
+ * @property PeerReviewRole $role
+ * @property-read \App\Models\Author|null $author
+ * @property-read \App\Models\ManuscriptRecord|null $manuscriptRecord
+ *
+ * @method static \Database\Factories\ManuscriptPeerReviewerFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer query()
+ *
+ * @mixin \Eloquent
+ */
 class ManuscriptPeerReviewer extends Model
 {
     /** @use HasFactory<\Database\Factories\ManuscriptPeerReviewerFactory> */
