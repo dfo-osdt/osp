@@ -40,8 +40,6 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function update(Request $request, User $user): JsonResource
     {

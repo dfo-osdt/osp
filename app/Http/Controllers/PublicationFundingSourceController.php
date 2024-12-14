@@ -83,8 +83,6 @@ class PublicationFundingSourceController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function destroy(Publication $publication, FundingSource $fundingSource): Response
     {

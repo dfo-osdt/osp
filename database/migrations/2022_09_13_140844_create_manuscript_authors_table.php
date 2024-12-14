@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('manuscript_record_id')->constrained();
             $table->foreignId('author_id')->constrained();
-            $table->foreignId('organization_id')->constrained()->comment('The organization of the author at the time of submission.');
+            $table->foreignId('organization_id')->constrained();
             $table->boolean('is_corresponding_author')->default(false);
         });
     }

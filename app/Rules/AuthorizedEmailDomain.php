@@ -9,8 +9,6 @@ class AuthorizedEmailDomain implements ValidationRule
 {
     /**
      * Determine if the email is a valid domain.
-     *
-     * @return Closure
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

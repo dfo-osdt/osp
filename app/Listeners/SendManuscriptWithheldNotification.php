@@ -24,11 +24,8 @@ class SendManuscriptWithheldNotification implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @param  App\Events\ManuscriptRecordWithheldByManagement  $event
-     * @return void
      */
-    public function handle(ManuscriptRecordWithheldByManagement $event)
+    public function handle(ManuscriptRecordWithheldByManagement $event): void
     {
         Mail::queue(new ManuscriptWithheldMail($event->manuscriptRecord));
     }

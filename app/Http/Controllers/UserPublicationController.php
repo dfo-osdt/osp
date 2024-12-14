@@ -16,8 +16,6 @@ class UserPublicationController extends Controller
 
     /**
      * Return all management review steps associated with the logged int user.
-     *
-     * @return void
      */
     public function index(Request $request): ResourceCollection
     {

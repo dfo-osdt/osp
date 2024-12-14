@@ -11,7 +11,6 @@ trait LocaleTrait
      * Set the Laravel locale from the given local value
      * string $locale where the locale is a valid Laravel locale
      *
-     * @param Request request with "locale" value
      * @return void
      *
      * @throws ValidationException if the locale is not valid

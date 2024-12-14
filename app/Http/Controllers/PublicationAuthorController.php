@@ -68,8 +68,6 @@ class PublicationAuthorController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return Illuminate\Http\Resources\Json\JsonResource
      */
     public function update(Request $request, Publication $publication, PublicationAuthor $publicationAuthor): JsonResource
     {

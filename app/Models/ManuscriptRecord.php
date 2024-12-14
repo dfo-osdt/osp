@@ -7,7 +7,6 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\MediaCollection;
 use App\Enums\SensitivityLabel;
-use App\Models\Concerns\HasUlid;
 use App\Traits\FundableTrait;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -20,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -29,7 +29,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * App\Models\ManuscriptRecord
  *
  * @property int $id
- * @property string $ulid
+ * @property \Ramsey\Uuid\UuidInterface|string $ulid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -105,10 +105,11 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
 {
     use FundableTrait;
     use HasFactory;
-    use HasUlid;
     use InteractsWithMedia;
     use LogsActivity;
     use SoftDeletes;
+
+    protected $ulid;
 
     public $guarded = [
         'id',
@@ -137,6 +138,20 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
         'public_interest_information' => '',
         'no_ogl_explanation' => '',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (ManuscriptRecord $manuscript) {
+            $manuscript->generateUlid();
+        });
+    }
+
+    protected function generateUlid(): void
+    {
+        $this->attributes['ulid'] = Str::ulid();
+    }
 
     // logging options
     public function getActivitylogOptions(): LogOptions
@@ -262,7 +277,6 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             ])
             ->preservingOriginal($preserveOriginal)
             ->toMediaCollection(MediaCollection::MANUSCRIPT->value);
-
     }
 
     public function getManuscriptFile($uuid)
@@ -305,7 +319,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
      * Validate this manuscript record is filled and can be
      * submitted for internal review.
      *
-     * @param bool noException If true, return false instead of throwing a ValidationException on failure.
+     * @param  bool  $noExceptions  If true, return false instead of throwing a ValidationException on failure.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
