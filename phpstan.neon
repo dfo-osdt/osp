@@ -12,6 +12,8 @@ parameters:
     # Level 9 is the highest level
     level: 5
 
+    checkModelProperties: true
+
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
