@@ -49,7 +49,7 @@ class EmploymentData extends Data
             putCode: $authorEmployment->orcid_putcode ? $authorEmployment->orcid_putcode : Optional::create(),
             departmentName: $authorEmployment->department_name,
             roleTitle: $authorEmployment->role_title,
-            startDate: $authorEmployment->start_date ? DateData::from($authorEmployment->start_date->format('Y-m-d')) : null,
+            startDate: DateData::from($authorEmployment->start_date->format('Y-m-d')),
             endDate: $authorEmployment->end_date ? DateData::from($authorEmployment->end_date->format('Y-m-d')) : null,
             organization: OrganizationData::fromModel($authorEmployment->organization),
             url: Optional::create(),

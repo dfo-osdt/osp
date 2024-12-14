@@ -60,14 +60,13 @@ class GeneratePLSController extends Controller
 
         $result = OpenAILaravel::completions()->create($this->buildOpenAiPrompt($abstract));
 
-        // does result contain an error?
-        if (isset($result['error'])) {
-            return $this->error();
+        if (isset($result['choices'][0]['text'])) {
+            $pls = $result['choices'][0]['text'];
+
+            return $this->respond($pls);
         }
 
-        $pls = $result['choices'][0]['text'];
-
-        return $this->respond($pls);
+        return $this->error();
 
     }
 

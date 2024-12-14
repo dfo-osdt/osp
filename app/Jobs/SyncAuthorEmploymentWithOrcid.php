@@ -160,7 +160,7 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
         $request = new DeleteEmploymentRequest($putcode);
         $response = $connector->send($request);
 
-        if ($response->failed() || $response->status() !== 204 || $response->status() !== 404) {
+        if ($response->failed()) {
             Log::error('SyncAuthor: Error deleting employment record in ORCID', [
                 'status' => $response->status(),
                 'headers' => $response->headers()->all(),
