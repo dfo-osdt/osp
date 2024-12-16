@@ -16,7 +16,7 @@
     "dompurify": "^3.2.3",
     "pinia": "^2.3.0",
     "quasar": "^2.17.4",
-    "sass-embedded": "^1.82.0",
+    "sass-embedded": "^1.83.0",
     "vite-plugin-manifest-sri": "^0.2.0",
     "vue": "^3.5.13",
     "vue-i18n": "^10.0.5",
