@@ -146,7 +146,7 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
             {{ publication.data.title }}
           </div>
           <div
-            class="text-caption text-uppercase text-weight-medium text-grey-7 ellipsis flex"
+            class="text-caption text-weight-medium text-grey-7 ellipsis flex"
           >
             <div>
               {{ publicationYear }}
@@ -154,18 +154,20 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
             <div class="q-mx-xs">
               |
             </div>
-            <div>
+            <div class="text-uppercase">
               {{
                 publication.data.journal?.data.title ?? ' - '
               }}
             </div>
-            <div class="q-mx-xs">
-              |
-            </div>
-            <div>
-              <span>DOI: </span>
-              <DoiLink :doi="publication.data.doi" />
-            </div>
+            <template v-if="publication.data.doi">
+              <div class="q-mx-xs">
+                |
+              </div>
+              <div>
+                <span>DOI: </span>
+                <DoiLink :doi="publication.data.doi" />
+              </div>
+            </template>
           </div>
         </div>
         <div class="col-grow">
