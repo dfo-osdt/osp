@@ -60,6 +60,7 @@ test('a user can create a new publication without a manuscript attached', functi
         'accepted_on' => '2021-01-01',
         'published_on' => '2021-03-01',
         'embargoed_until' => '2021-12-31',
+        'region_id' => 1,
     ]);
 
     $response->assertCreated();
@@ -81,6 +82,7 @@ test('a user cannot create a publication with an invalid DOI', function () {
         'accepted_on' => '2021-01-01',
         'published_on' => '2021-03-01',
         'embargoed_until' => '2021-12-31',
+        'region_id' => 1,
     ]);
 
     $response->assertStatus(422);
