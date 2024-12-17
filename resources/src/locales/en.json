@@ -639,7 +639,8 @@
   },
   "publication": {
     "accepted": "Accepted",
-    "published": "Published"
+    "published": "Published",
+    "lead-region-hint": "Select the lead DFO region for this publication."
   },
   "publication-page": {
     "attach-pub-details": "Please upload the most recent version of your publication in PDF format. Files in this section are subject to the applicable embargo period and can only be accessed by authorized users, such as the authors and managers, until the embargo has expired.",

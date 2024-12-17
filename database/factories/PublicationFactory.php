@@ -25,6 +25,7 @@ class PublicationFactory extends Factory
             'journal_id' => \App\Models\Journal::factory(),
             'accepted_on' => $this->faker->date(),
             'user_id' => \App\Models\User::factory(),
+            'region_id' => rand(1, 5),
         ];
     }
 

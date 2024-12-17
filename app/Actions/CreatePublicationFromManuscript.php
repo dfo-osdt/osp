@@ -21,6 +21,7 @@ class CreatePublicationFromManuscript
                 'status' => PublicationStatus::ACCEPTED,
                 'accepted_on' => $manuscriptRecord->accepted_on,
                 'user_id' => $manuscriptRecord->user_id,
+                'region_id' => $manuscriptRecord->region_id,
             ]);
 
             // attach the manuscript's authors to the publication

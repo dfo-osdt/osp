@@ -33,12 +33,14 @@ class PublicationResource extends JsonResource
                 'manuscript_record_id' => $this->manuscript_record_id,
                 'journal_id' => $this->journal_id,
                 'user_id' => $this->user_id,
+                'region_id' => $this->region_id,
                 // relationships - if loaded
                 'manuscript_record' => ManuscriptRecordResource::make($this->whenLoaded('manuscriptRecord')),
                 'journal' => JournalResource::make($this->whenLoaded('journal')),
                 'user' => UserResource::make($this->whenLoaded('user')),
                 'publication_authors' => PublicationAuthorResource::collection($this->whenLoaded('publicationAuthors')),
                 'funding_sources' => FundingSourceResource::collection($this->whenLoaded('fundingSources')),
+                'region' => RegionResource::make($this->whenLoaded('region')),
             ],
             'can' => [
                 'update' => Gate::allows('update', $this->resource),

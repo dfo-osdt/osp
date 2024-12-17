@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
+import SavePageSticky from '@/components/SavePageSticky.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import { type ManuscriptRecordMetadataResource, ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import ManagePublicationAuthorsCard from '@/models/PublicationAuthor/components/ManagePublicationAuthorsCard.vue'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import { QForm, useQuasar } from 'quasar'
 import DoiInput from '../components/DoiInput.vue'
 import DoiLink from '../components/DoiLink.vue'
@@ -70,6 +72,7 @@ const canEdit = computed(() => {
 // watch if there is a change
 const isDirty = ref(false)
 const disableDirtyWatcher = ref(false)
+
 watch(
   publication,
   (newVal, oldValue) => {
@@ -120,6 +123,10 @@ async function save() {
       isDirty.value = false
     })
 }
+
+// scroll save logic
+const saveButton = ref<HTMLButtonElement | null>(null)
+const saveButtonIsVisible = useElementVisibility(saveButton)
 </script>
 
 <template>
@@ -250,6 +257,15 @@ async function save() {
             :rules="[(val) => !!val || t('common.required')]"
             class="q-mb-md"
           />
+          <RegionSelect
+            v-model="publication.data.region_id"
+            :label="$t('common.lead-region')"
+            outlined
+            :disable="loading"
+            :readonly="!canEdit"
+            :hint="$t('publication.lead-region-hint')"
+            class="q-mb-md"
+          />
           <JournalSelect
             v-model="publication.data.journal_id"
             :disable="loading"
@@ -336,6 +352,7 @@ async function save() {
         />
         <q-btn
           v-if="canEdit"
+          ref="saveButton"
           :label="t('common.save')"
           color="primary"
           :loading="loading"
@@ -344,6 +361,13 @@ async function save() {
       </q-card-actions>
     </div>
     <WarnOnUnsavedChanges :is-dirty="isDirty" />
+    <SavePageSticky
+      v-if="canEdit && !saveButtonIsVisible"
+      :is-dirty="isDirty"
+      :loading="loading"
+      hide-on-scroll
+      @save="save"
+    />
   </MainPageLayout>
 </template>
 

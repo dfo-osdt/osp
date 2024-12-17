@@ -639,7 +639,8 @@
   },
   "publication": {
     "accepted": "Acceptée",
-    "published": "Publiée"
+    "published": "Publiée",
+    "lead-region-hint": "Sélectionnez la région principale du MPO pour cette publication."
   },
   "publication-page": {
     "attach-pub-details": "Veuillez télécharger la version la plus récente de votre publication au format PDF. \nLes fichiers de cette section sont soumis à la période d'embargo applicable et ne sont accessibles qu'aux utilisateurs autorisés, tels que les auteurs et les gestionnaires, jusqu'à l'expiration de l'embargo.",
