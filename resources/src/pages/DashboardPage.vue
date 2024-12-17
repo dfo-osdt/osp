@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import ContentCard from '../components/ContentCard.vue'
 import MetricCard from '@/components/MetricCard.vue'
-import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateManuscriptDialog.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
-import ManuscriptList from '@/models/ManuscriptRecord/components/ManuscriptList.vue'
 import RecentManagementReviewStepsView from '@/models/ManagementReviewStep/views/RecentManagementReviewStepsView.vue'
-import PublicationList from '@/models/Publication/components/PublicationList.vue'
-import CreatePublicationDialog from '@/models/Publication/components/CreatePublicationDialog.vue'
-import type { PublicationResource } from '@/models/Publication/Publication'
+import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateManuscriptDialog.vue'
+import ManuscriptList from '@/models/ManuscriptRecord/components/ManuscriptList.vue'
 import NoManuscriptExistsDiv from '@/models/ManuscriptRecord/components/NoManuscriptExistsDiv.vue'
+import CreatePublicationDialog from '@/models/Publication/components/CreatePublicationDialog.vue'
 import NoPublicationExistDiv from '@/models/Publication/components/NoPublicationExistDiv.vue'
+import PublicationList from '@/models/Publication/components/PublicationList.vue'
+import ContentCard from '../components/ContentCard.vue'
 
 const { t } = useI18n()
 const manuscripts = useManuscriptStore()
@@ -51,18 +50,6 @@ const showCreateManuscript = ref(false)
 
 // publication section
 const showCreatePublication = ref(false)
-
-/**
- * Closes the dialog and adds the created publication
- * to the publication store.
- *
- * @param publication the publication that was created
- */
-function publicationCreated(publication: PublicationResource) {
-  if (publications.publications)
-    publications.publications.push(publication)
-  showCreatePublication.value = false
-}
 </script>
 
 <template>
@@ -199,7 +186,6 @@ function publicationCreated(publication: PublicationResource) {
               <CreatePublicationDialog
                 v-if="showCreatePublication"
                 v-model="showCreatePublication"
-                @created="publicationCreated"
               />
             </q-tab-panel>
           </q-tab-panels>

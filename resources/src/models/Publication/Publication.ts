@@ -25,13 +25,13 @@ export interface Publication {
   journal_id: number
   manuscript_record_id: number
   user_id: number
-  region_id: number | null
+  region_id: number
   // relationships
   journal?: JournalResource
   manuscript_record?: ManuscriptRecordResource
   user?: UserResource
   publication_authors?: PublicationAuthorResource[]
-  region: Region
+  region?: Region
 }
 
 export type PublicationCreate = Omit<

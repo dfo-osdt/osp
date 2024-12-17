@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import NoPublicationsExistDiv from '../components/NoPublicationExistDiv.vue'
-import PublicationList from '../components/PublicationList.vue'
 import type {
   PublicationResourceList,
 } from '../Publication'
+import ContentCard from '@/components/ContentCard.vue'
+import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
+import PaginationDiv from '@/components/PaginationDiv.vue'
+import SearchInput from '@/components/SearchInput.vue'
+import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import CreatePublicationDialog from '../components/CreatePublicationDialog.vue'
+import NoPublicationsExistDiv from '../components/NoPublicationExistDiv.vue'
+import PublicationList from '../components/PublicationList.vue'
 import {
   PublicationQuery,
   PublicationService,
 } from '../Publication'
-import CreatePublicationDialog from '../components/CreatePublicationDialog.vue'
-import ContentCard from '@/components/ContentCard.vue'
-import SearchInput from '@/components/SearchInput.vue'
-import MainPageLayout from '@/layouts/MainPageLayout.vue'
-import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
-import PaginationDiv from '@/components/PaginationDiv.vue'
 
 const { t } = useI18n()
 
@@ -24,6 +24,7 @@ onMounted(() => {
 })
 
 const loading = ref(false)
+
 async function getPublications() {
   if (loading.value)
     return
@@ -52,11 +53,6 @@ async function getPublications() {
 
 // create publication dialog
 const showCreatePublicationDialog = ref(false)
-
-function publicationCreated() {
-  showCreatePublicationDialog.value = false
-  getPublications()
-}
 
 // user store
 const authorStore = useAuthStore()
@@ -273,7 +269,6 @@ watchThrottled(
     </div>
     <CreatePublicationDialog
       v-model="showCreatePublicationDialog"
-      @created="publicationCreated"
     />
   </MainPageLayout>
 </template>

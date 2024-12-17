@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { QForm, QStepper } from 'quasar'
 import type { Ref } from 'vue'
 import type {
   BaseManuscriptRecord,
   ManuscriptRecordType,
 } from '../ManuscriptRecord'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
+import { QForm, QStepper } from 'quasar'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
-import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 
 // router
 const router = useRouter()
@@ -55,7 +55,7 @@ async function create() {
       })
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
 }
 </script>

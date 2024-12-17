@@ -54,7 +54,7 @@ class PublicationController extends Controller
             'published_on' => 'date|required',
             'embargoed_until' => 'date|nullable',
             'is_open_access' => 'boolean',
-            'region_id' => 'nullable|exists:regions,id',
+            'region_id' => 'required|exists:regions,id',
         ]);
 
         if (isset($validated['is_open_access']) && $validated['is_open_access']) {
@@ -113,7 +113,7 @@ class PublicationController extends Controller
             'published_on' => ['date', 'nullable', 'after_or_equal:accepted_on', Rule::requiredIf($publication->status === PublicationStatus::PUBLISHED)],
             'embargoed_until' => 'date|nullable',
             'is_open_access' => 'boolean',
-            'region_id' => 'nullable|exists:regions,id',
+            'region_id' => 'required|exists:regions,id',
         ]);
 
         if (isset($validated['is_open_access']) && $validated['is_open_access']) {
