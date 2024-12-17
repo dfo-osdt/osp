@@ -119,7 +119,6 @@ onMounted(async () => {
   loading.value = false
 })
 
-const { isScrolling } = useScroll(window)
 const actionsSection = ref<HTMLElement | null>(null)
 const actionSectionVisible = useElementVisibility(actionsSection)
 
