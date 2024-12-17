@@ -18,55 +18,22 @@ import {
 const { t } = useI18n()
 
 const publications = ref<PublicationResourceList>()
-
-onMounted(() => {
-  getPublications()
-})
-
 const loading = ref(false)
-
-async function getPublications() {
-  if (loading.value)
-    return
-  // build the query
-  let query = new PublicationQuery()
-
-  // apply the active main filters
-  mainFilterOptions.value.forEach((f) => {
-    if (f.active) {
-      query = f.filter(query)
-    }
-  })
-
-  // is there a search term?
-  if (search?.value) {
-    query = query.filterTitle(search.value)
-  }
-
-  query.sort('title', 'asc')
-  query.paginate(currentPage.value, 5)
-
-  loading.value = true
-  publications.value = await PublicationService.getMyPublications(query)
-  loading.value = false
-}
-
-// create publication dialog
 const showCreatePublicationDialog = ref(false)
-
-// user store
 const authorStore = useAuthStore()
-
-// publication store - used to determine if the user has any publications
 const publicationStore = usePublicationStore()
+const activeFilterId = ref(2)
+const currentPage = ref(1)
+const search = ref<string | null>(null)
+
 publicationStore.getMyPublications()
+
 const hasAnyPublications = computed(() => {
   if (!publicationStore.publications)
     return false
   return publicationStore.publications?.length > 0
 })
 
-// type for main filter options
 interface MainFilterOption {
   id: number
   label: string
@@ -76,8 +43,6 @@ interface MainFilterOption {
   filter: (query: PublicationQuery) => PublicationQuery
 }
 
-// content filter - sidebar
-const activeFilterId = ref(2)
 const mainFilterOptions = computed((): MainFilterOption[] => [
   {
     id: 1,
@@ -125,6 +90,40 @@ const mainFilterOptions = computed((): MainFilterOption[] => [
   },
 ])
 
+const mainFilter = computed(() => {
+  return mainFilterOptions.value.find(f => f.active)
+})
+
+onMounted(() => {
+  getPublications()
+})
+
+async function getPublications() {
+  if (loading.value)
+    return
+  // build the query
+  let query = new PublicationQuery()
+
+  // apply the active main filters
+  mainFilterOptions.value.forEach((f) => {
+    if (f.active) {
+      query = f.filter(query)
+    }
+  })
+
+  // is there a search term?
+  if (search?.value) {
+    query = query.filterTitle(search.value)
+  }
+
+  query.sort('title', 'asc')
+  query.paginate(currentPage.value, 5)
+
+  loading.value = true
+  publications.value = await PublicationService.getMyPublications(query)
+  loading.value = false
+}
+
 function mainFilterClick(filterId: number) {
   activeFilterId.value = filterId
   search.value = ''
@@ -132,18 +131,9 @@ function mainFilterClick(filterId: number) {
   getPublications()
 }
 
-const mainFilter = computed(() => {
-  return mainFilterOptions.value.find(f => f.active)
-})
-
-// pagination
-const currentPage = ref(1)
 watch(currentPage, () => {
   getPublications()
 })
-
-// search
-const search = ref<string | null>(null)
 
 watchThrottled(
   search,
