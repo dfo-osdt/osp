@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Region } from '@/models/Region/Region'
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
@@ -263,6 +264,7 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
             outlined
             :disable="loading"
             :readonly="!canEdit"
+            :rules="[(val: number) => !!val || t('common.required')]"
             :hint="$t('publication.lead-region-hint')"
             class="q-mb-md"
           />

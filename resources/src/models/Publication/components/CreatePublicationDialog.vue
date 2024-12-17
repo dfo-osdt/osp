@@ -1,22 +1,19 @@
 <script setup lang="ts">
-import { QForm, QStepper } from 'quasar'
 import type { Ref } from 'vue'
 import type {
   PublicationCreate,
   PublicationResource,
 } from '../Publication'
+import BaseDialog from '@/components/BaseDialog.vue'
+import DateInput from '@/components/DateInput.vue'
+import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
+import { Router } from '@/plugins/router'
+import { QForm, QStepper } from 'quasar'
 import {
   PublicationService,
 } from '../Publication'
 import DoiInput from './DoiInput.vue'
-import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
-import DateInput from '@/components/DateInput.vue'
-import BaseDialog from '@/components/BaseDialog.vue'
-
-// define the created emit
-const emit = defineEmits<{
-  (e: 'created', publication: PublicationResource): void
-}>()
 
 const today = new Date().toISOString().split('T')[0].replace(/-/g, '/')
 
@@ -27,6 +24,7 @@ const acceptedOn = ref('')
 const publishedOn = ref(today)
 const embargoedUntil = ref('')
 const isOpenAccess = ref(false)
+const regionId = ref<number | null>(null)
 
 // form validation
 const detailsForm: Ref<QForm | null> = ref(null)
@@ -80,6 +78,8 @@ async function next() {
   stepper.value?.next()
 }
 
+const router = useRouter()
+
 /** Create the publication */
 async function create() {
   const publication: PublicationCreate = {
@@ -91,11 +91,17 @@ async function create() {
     published_on: publishedOn.value,
     embargoed_until: embargoedUntil.value,
     journal_id: journalId.value ?? 0,
+    region_id: regionId.value ?? 0,
   }
 
   try {
-    const pub = await PublicationService.create(publication)
-    emit('created', pub)
+    await PublicationService.create(publication)
+      .then((response) => {
+        router.push({
+          name: 'publication',
+          params: { id: response.data.id },
+        })
+      })
   }
   catch (e) {
     console.error(e)
@@ -172,6 +178,14 @@ async function create() {
             ]"
           />
           <DoiInput v-model="doi" class="q-mb-md" />
+          <RegionSelect
+            v-model="regionId"
+            :label="$t('common.lead-region')"
+            outlined
+            :rules="[(val: number) => !!val || $t('common.required')]"
+            :hint="$t('publication.lead-region-hint')"
+            class="q-mb-md"
+          />
         </QForm>
       </q-step>
       <q-step
