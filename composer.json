@@ -14,7 +14,7 @@
     "filament/filament": "^3.2",
     "guzzlehttp/guzzle": "^7.8.1",
     "laracasts/cypress": "^3.0.2",
-    "laravel/framework": "^11.6",
+    "laravel/framework": "11.35.1",
     "laravel/horizon": "^5.24.3",
     "laravel/pail": "^1.1.2",
     "laravel/prompts": "^0.3.1",
