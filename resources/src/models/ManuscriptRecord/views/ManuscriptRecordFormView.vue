@@ -8,6 +8,7 @@ import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
 import QuestionEditor from '@/components/QuestionEditor.vue'
 import RequiredSpan from '@/components/RequiredSpan.vue'
+import SavePageSticky from '@/components/SavePageSticky.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
 import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue'
@@ -645,25 +646,13 @@ async function generatePLS() {
       />
     </q-card-actions>
     <WarnOnUnsavedChanges :is-dirty="isDirty" />
-    <q-page-sticky
-      v-if="
-        !isScrolling && !isManuscriptReadOnly && !actionSectionVisible
-      "
-      position="bottom-right"
-      :offset="[18, 18]"
-    >
-      <q-btn
-        fab
-        :icon="
-          isDirty
-            ? 'mdi-content-save-alert-outline'
-            : 'mdi-content-save-outline'
-        "
-        color="primary"
-        :loading="loading"
-        @click="save"
-      />
-    </q-page-sticky>
+    <SavePageSticky
+      v-if="!isManuscriptReadOnly && !actionSectionVisible"
+      :is-dirty="isDirty"
+      :loading="loading"
+      hide-on-scroll
+      @save="save"
+    />
   </div>
 </template>
 

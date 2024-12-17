@@ -3,6 +3,7 @@ import type { ManuscriptRecordResource } from '../ManuscriptRecord/ManuscriptRec
 import type { MediaResource, MediaResourceList } from '../Media/Media'
 import type { SupplementaryFileType } from '../Media/supplementaryFileOptions'
 import type { PublicationAuthorResource } from '../PublicationAuthor/PublicationAuthor'
+import type { Region } from '../Region/Region'
 import type { Resource, ResourceList } from '../Resource'
 import type { UserResource } from '../User/User'
 import { http } from '@/api/http'
@@ -24,11 +25,13 @@ export interface Publication {
   journal_id: number
   manuscript_record_id: number
   user_id: number
+  region_id: number | null
   // relationships
   journal?: JournalResource
   manuscript_record?: ManuscriptRecordResource
   user?: UserResource
   publication_authors?: PublicationAuthorResource[]
+  region: Region
 }
 
 export type PublicationCreate = Omit<

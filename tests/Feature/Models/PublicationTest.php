@@ -111,10 +111,12 @@ test('a user can update their publication', function () {
         'accepted_on' => '2021-01-01',
         'published_on' => '2021-03-01',
         'embargoed_until' => '2021-12-31',
+        'region_id' => 1,
     ]);
 
     $response->assertOk();
     $response->assertJsonPath('data.title', 'Updated Publication');
+    $response->assertJsonPath('data.region_id', 1);
 });
 
 test('a user can update their publication to be published from accepted', function () {

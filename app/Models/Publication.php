@@ -37,6 +37,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property int|null $manuscript_record_id
  * @property int $journal_id
  * @property int $user_id
+ * @property int $region_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FundingSource> $fundingSources
@@ -48,6 +49,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PublicationAuthor> $publicationAuthors
  * @property-read int|null $publication_authors_count
  * @property-read \App\Models\User $user
+ * @property-read \App\Models\Region $region
  *
  * @method static \Database\Factories\PublicationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication newModelQuery()
@@ -132,6 +134,14 @@ class Publication extends Model implements Fundable, HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The Lead region for which the publication is associated with.
+     */
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
     }
 
     public function publicationAuthors(): HasMany

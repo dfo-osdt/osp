@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { Region } from '@/models/Region/Region'
+import { type Region, type RegionResource, RegionService } from '@/models/Region/Region'
 
 /**
  * This store will be used to store the application's regions, as
@@ -19,10 +19,12 @@ export const useRegionStore = defineStore('RegionStore', () => {
   async function getRegions(force = false) {
     if (regions.value === undefined || force) {
       loading.value = true
-      await fetch('/api/regions')
-        .then(res => res.json())
+      await RegionService.list()
         .then(({ data }) => {
-          regions.value = data
+          const regionsData = data.map((region: RegionResource) => {
+            return region.data
+          })
+          regions.value = regionsData
         })
         .catch((err) => {
           console.error(err)
