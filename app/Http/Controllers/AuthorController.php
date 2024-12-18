@@ -8,9 +8,9 @@ use App\Queries\AuthorListQuery;
 use App\Rules\Ocrid;
 use App\Rules\ValidListItems;
 use App\Traits\PaginationLimitTrait;
-use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class AuthorController extends Controller
@@ -41,7 +41,7 @@ class AuthorController extends Controller
             'orcid' => ['nullable', 'string', new Ocrid, 'unique:authors,orcid'],
         ]);
 
-        $author = Author::create($validated);
+        $author = (new Author)->create($validated);
 
         return new AuthorResource($author);
     }
