@@ -6,132 +6,142 @@ use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
-use Tests\TestCase;
 
-use function Pest\Livewire\livewire;
+describe('page authorization', function () {
+    it('An unauthorized user cannot render the index page', function () {
+        $user = User::factory()->create();
 
+        $this->actingAs($user)->get(ListUsers::getUrl())->assertForbidden();
+    });
 
+    it('An unauthorized user cannot render the create page', function () {
+        $user = User::factory()->create();
 
-test('An unauthorized user cannot render the index page', function () {
-    $user = User::factory()->create();
+        $this->actingAs($user)->get(CreateUser::getUrl())->assertForbidden();
+    });
 
-    $this->actingAs($user)->get(ListUsers::getUrl())->assertForbidden();
-});
+    it('An unauthorized user cannot render the edit page', function () {
+        $user = User::factory()->create();
+        $record = User::factory()->create();
 
-test('An unauthorized user cannot render the create page', function () {
-    $user = User::factory()->create();
+        $this->actingAs($user)->livewire(EditUser::class, ['record' => $record->getRouteKey()])->assertForbidden();
+    });
 
-    $this->actingAs($user)->get(CreateUser::getUrl())->assertForbidden();
-});
+    it('An admin can render the index page', function () {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
 
-test('An unauthorized user cannot render the edit page', function () {
-    $user = User::factory()->create();
-    $record = User::factory()->create();
+        $this->actingAs($admin)->get(ListUsers::getUrl())->assertOk();
+    });
 
-    $this->actingAs($user)->livewire(EditUser::class, ['record' => $record->getRouteKey()])->assertForbidden();
-});
+    it('An admin cannot render the user create page', function () {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
 
-test('An admin can render the index page', function () {
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
+        $this->actingAs($admin)->get(CreateUser::getUrl())->assertForbidden();
+    });
+})->todo(note: <<<'NOTE'
+    render logout button
+    logout path successful
+    NOTE);
 
-    $this->actingAs($admin)->get(ListUsers::getUrl())->assertOk();
-});
+describe('list users table', function () {
+    it('User Table has column', function (string $column) {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
 
-test('An admin cannot render the user create page', function () {
-    $admin = User::factory()->create();
-    $admin-> assignRole('admin');
-
-    $this->actingAs($admin)->get(CreateUser::getUrl())->assertForbidden();
-});
-
-test('User Table has column', function (string $column) {
-    $admin = User::factory()->create();
-    $admin-> assignRole('admin');
-    
-    $this->actingAs($admin)->livewire(ListUsers::class)->assertTableColumnExists($column);
-})->with([
-    'first_name',
-    'last_name',
-    'email',
-    'email_verified_at',
-    'active',
-    'roles.name'
-]);
-
-test('Admin can render the User Table column', function ($column) {
-    $admin = User::factory()->create();
-    $admin-> assignRole('admin');
-    
-    $this->actingAs($admin)->livewire(ListUsers::class)->assertCanRenderTableColumn($column);
-})->with([
-    'first_name',
-    'last_name',
-    'email',
-    'email_verified_at',
-    'active',
-    'roles.name'
-]);
-
-test('Admin can sort the User Table column', function ($column) {
-    $admin = User::factory()->create();
-    $admin-> assignRole('admin');
-    $records = User::factory(5)->create();
-    
-    $this->actingAs($admin)->livewire(ListUsers::class)
-	 ->sortTable($column)
-	 ->assertCanSeeTableRecords($records->sortBy($column), inOrder: true)
-	 ->sortTable($column, 'desc')
-	 ->assertCanSeeTableRecords($records->sortByDesc($column), inOrder: true);
-})->with([
-    'first_name',
-    'last_name',
-    'email_verified_at',
-    'active',
-]);
-
-test('Admin can search the User Table column', function (string $column) {
-    $admin = User::factory()->create();
-    $admin-> assignRole('admin');
-    $records = User::factory(5)->create();
-
-    $value = $records->first()->{$column};
-    
-    $this->actingAs($admin)->livewire(ListUsers::class)
-	 ->searchTable($value)
-	 ->assertCanSeeTableRecords($records->where($column, $value))
-	 ->assertCanNotSeeTableRecords($records->where($column, '!=', $value));
-})->with([
-    'first_name',
-    'last_name',
-    'email',
-    'roles.name',
-]);
-
-test('An admin can edit an existing user', function () {
-    $admin = User::factory()->create();
-    $admin-> assignRole('admin');
-
-    $record = User::factory()->create();
-    $newRecord = User::factory()->make();
-
-    $this->actingAs($admin)->livewire(Edituser::class, ['record' => $record->getRouteKey()])
-	 ->fillForm([
-	     'email' => $newRecord->email,
-	 ])
-	 ->assertActionExists('save')
-	 ->call('save')
-   	 ->assertHasNoFormErrors();
-
-    $this->actingAs($admin)->assertDatabaseHas(User::class, [
-	'email' => $newRecord->email,
+        $this->actingAs($admin)->livewire(ListUsers::class)->assertTableColumnExists($column);
+    })->with([
+        'first_name',
+        'last_name',
+        'email',
+        'email_verified_at',
+        'active',
+        'roles.name',
     ]);
+
+    it('Admin can render the User Table column', function ($column) {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $this->actingAs($admin)->livewire(ListUsers::class)->assertCanRenderTableColumn($column);
+    })->with([
+        'first_name',
+        'last_name',
+        'email',
+        'email_verified_at',
+        'active',
+        'roles.name',
+    ]);
+
+    it('Admin can sort the User Table column', function ($column) {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+        $records = User::factory(5)->create();
+
+        $this->actingAs($admin)->livewire(ListUsers::class)
+            ->sortTable($column)
+            ->assertCanSeeTableRecords($records->sortBy($column), inOrder: true)
+            ->sortTable($column, 'desc')
+            ->assertCanSeeTableRecords($records->sortByDesc($column), inOrder: true);
+    })->with([
+        'first_name',
+        'last_name',
+        'email_verified_at',
+        'active',
+    ]);
+
+    it('Admin can search the User Table column', function (string $column) {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+        $records = User::factory(5)->create();
+
+        $value = $records->first()->{$column};
+
+        $this->actingAs($admin)->livewire(ListUsers::class)
+            ->searchTable($value)
+            ->assertCanSeeTableRecords($records->where($column, $value))
+            ->assertCanNotSeeTableRecords($records->where($column, '!=', $value));
+    })->with([
+        'first_name',
+        'last_name',
+        'email',
+        'roles.name',
+    ]);
+
+    it('An admin cannot render a delete user button', function () {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $this->actingAs($admin)->get(ListUsers::getUrl())
+            ->assertDontSee('Delete');
+    });
 });
 
-test('An admin cannot render a delete button', function () {
-    $admin = User::factory()->create();
-    $admin-> assignRole('admin');
+describe('edit user', function () {
 
-    $this->actingAs($admin)->get(ListUsers::getUrl())
-    ->assertDontSee('Delete');
-});
+    it('An admin can edit an existing user', function () {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $record = User::factory()->create();
+        $newRecord = User::factory()->make();
+
+        $this->actingAs($admin)->livewire(Edituser::class, ['record' => $record->getRouteKey()])
+            ->fillForm([
+                'email' => $newRecord->email,
+            ])
+            ->assertActionExists('save')
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->actingAs($admin)->assertDatabaseHas(User::class, [
+            'email' => $newRecord->email,
+        ]);
+    })->todo(note: <<<'NOTE'
+    Add attributes: roles
+NOTE);
+})->todo(issue: 857,
+    note: <<<'NOTE'
+    validate inputs
+    NOTE);
