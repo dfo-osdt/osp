@@ -17,4 +17,6 @@ enum UserPermission: string
     case VIEW_PULSE = 'view_pulse';
     case VIEW_ANY_USERS = 'view_any_users';
     case ADMINISTER_USERS = 'administer_users';
+    case PUBLISH_INTERNAL_REPORTS = 'publish_internal_reports';
+    case UPDATE_PUBLICATIONS = 'update_publications';
 }
