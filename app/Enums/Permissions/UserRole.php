@@ -4,9 +4,11 @@ namespace App\Enums\Permissions;
 
 enum UserRole: string
 {
+    case ADMIN = 'admin';
     case AUTHOR = 'author';
     case DIRECTOR = 'director';
-    case ADMIN = 'admin';
+    case EDITOR = 'editor';
+    case CHIEF_EDITOR = 'chief_editor';
 
     public function permissions(): array
     {
@@ -15,7 +17,6 @@ enum UserRole: string
                 UserPermission::CREATE_MANUSCRIPT_RECORDS->value,
                 UserPermission::CREATE_PUBLICATIONS->value,
                 UserPermission::CREATE_AUTHORS->value,
-                UserPermission::UPDATE_AUTHORS->value,
                 UserPermission::CREATE_ORGANIZATIONS->value,
                 UserPermission::CREATE_AUTHOR_EMPLOYMENTS->value,
             ],
@@ -32,6 +33,15 @@ enum UserRole: string
                 UserPermission::VIEW_ANY_USERS->value,
                 UserPermission::ADMINISTER_USERS->value,
             ],
+            self::EDITOR => [
+                UserPermission::UPDATE_AUTHORS->value,
+                UserPermission::UPDATE_PUBLICATIONS->value,
+            ],
+            self::CHIEF_EDITOR => [
+                UserPermission::PUBLISH_INTERNAL_REPORTS->value,
+                // Merge editor permissions
+                ...self::EDITOR->permissions(),
+            ],
         };
     }
 
@@ -41,6 +51,8 @@ enum UserRole: string
             self::AUTHOR => 'Author',
             self::DIRECTOR => 'Director',
             self::ADMIN => 'Admin',
+            self::EDITOR => 'Editor',
+            self::CHIEF_EDITOR => 'Chief Editor',
         };
     }
 }
