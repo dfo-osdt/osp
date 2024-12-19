@@ -121,4 +121,17 @@ class UserFactory extends Factory
             $user->assignRole($roles);
         });
     }
+
+    /**
+     * User is an editor
+     */
+    public function editor()
+    {
+        return $this->withRoles([UserRole::EDITOR]);
+    }
+
+    public function chiefEditor()
+    {
+        return $this->withRoles([UserRole::CHIEF_EDITOR]);
+    }
 }

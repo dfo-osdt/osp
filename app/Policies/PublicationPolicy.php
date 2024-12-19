@@ -37,6 +37,10 @@ class PublicationPolicy
             return true;
         }
 
+        if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
+            return true;
+        }
+
         // if they are the owner, then they can view it
         if ($publication->user_id == $user->id) {
             return true;
@@ -61,6 +65,10 @@ class PublicationPolicy
      */
     public function downloadMedia(User $user, Publication $publication, Media $media): bool
     {
+
+        if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
+            return true;
+        }
 
         if ($publication->user_id == $user->id) {
             return true;
@@ -119,6 +127,10 @@ class PublicationPolicy
      */
     public function update(User $user, Publication $publication)
     {
+        if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
+            return true;
+        }
+
         // is the user the owner of the publication
         if ($user->id === $publication->user_id) {
             return true;
@@ -138,6 +150,10 @@ class PublicationPolicy
         // it can't be deleted.
         if ($publication->manuscript_record_id) {
             return false;
+        }
+
+        if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
+            return true;
         }
 
         // is the user the owner of the publication

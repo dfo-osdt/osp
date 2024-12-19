@@ -88,7 +88,6 @@ class UserResource extends Resource
                         UserRole::AUTHOR => 'success',
                         UserRole::DIRECTOR, UserRole::EDITOR, UserRole::CHIEF_EDITOR => 'warning',
                         UserRole::ADMIN => 'danger',
-                        default => 'info',
                     })
                     ->searchable(),
             ])

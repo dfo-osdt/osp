@@ -349,3 +349,46 @@ test('a user can upload a word document as a supplementary files', function () {
     $response = $this->actingAs($user)->deleteJson("/api/publications/{$publication->id}/supplementary-files/{$uuid}");
     $response->assertNoContent();
 });
+
+test('an editor can edit any publication', function () {
+    $publication = Publication::factory()->create();
+    $editor = User::factory()->editor()->create();
+
+    $response = $this->actingAs($editor)->putJson('/api/publications/'.$publication->id, [
+        'title' => 'Updated Publication',
+        'doi' => 'https://doi.org/10.1234/1234',
+        'is_open_access' => true,
+        'accepted_on' => '2021-01-01',
+        'published_on' => '2021-03-01',
+        'embargoed_until' => '2021-12-31',
+        'region_id' => 1,
+    ]);
+
+    $response->assertOk();
+    $response->assertJsonPath('data.title', 'Updated Publication');
+    $response->assertJsonPath('data.region_id', 1);
+});
+
+test("an editor can view and download a publication's files", function () {
+    $publication = Publication::factory()->published()->create();
+    $editor = User::factory()->editor()->create();
+
+    $response = $this->actingAs($editor)->getJson('/api/publications/'.$publication->id.'/supplementary-files');
+    $response->assertOk();
+    $uuid = $response->json('data.0.data.uuid');
+    $filename = $response->json('data.0.data.file_name');
+
+    $response = $this->actingAs($editor)->get("/api/publications/{$publication->id}/supplementary-files/{$uuid}?download=true");
+    $response->assertDownload($filename);
+
+    $response = $this->actingAs($editor)->getJson('/api/publications/'.$publication->id.'/files');
+    $response->assertOk();
+    $uuid = $response->json('data.0.data.uuid');
+    $filename = $response->json('data.0.data.file_name');
+
+    $response = $this->actingAs($editor)->get("/api/publications/{$publication->id}/files/{$uuid}?download=true");
+    $response->assertDownload($filename);
+
+});
+
+test('only a chief editor can publish a secondary publication', function () {})->todo();
