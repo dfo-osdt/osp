@@ -14,8 +14,8 @@ describe('page authorization', function () {
 
         $this->actingAs($user)->get($url)->assertForbidden();
     })->with([
-        'ListUsers' => [fn() => ListUsers::getUrl()],
-        'CreateUser' => [fn() => CreateUser::getUrl()]
+        'ListUsers' => [fn () => ListUsers::getUrl()],
+        'CreateUser' => [fn () => CreateUser::getUrl()],
     ]);
 
     it('An unauthorized user cannot render the edit page', function () {
@@ -39,10 +39,9 @@ describe('page authorization', function () {
         $this->actingAs($admin)->get(CreateUser::getUrl())->assertForbidden();
     });
 
-    it('render logout button', function(){})->todo();
-    it('logout path successful', function(){})->todo();
+    it('render logout button', function () {})->todo();
+    it('logout path successful', function () {})->todo();
 });
-
 
 describe('list users table', function () {
     it('User Table has required columns', function () {
@@ -56,7 +55,7 @@ describe('list users table', function () {
             'email_verified_at',
             'active',
             'roles.name',
-        ])->each(fn($column) => $this->actingAs($admin)->livewire(ListUsers::class)->assertTableColumnExists($column));
+        ])->each(fn ($column) => $this->actingAs($admin)->livewire(ListUsers::class)->assertTableColumnExists($column));
     });
 
     it('Admin can render the User Table column', function () {
@@ -70,7 +69,7 @@ describe('list users table', function () {
             'email_verified_at',
             'active',
             'roles.name',
-        ])->each(fn($column) => $this->actingAs($admin)->livewire(ListUsers::class)->assertCanRenderTableColumn($column));
+        ])->each(fn ($column) => $this->actingAs($admin)->livewire(ListUsers::class)->assertCanRenderTableColumn($column));
     });
 
     it('Admin can sort the User Table column', function () {
