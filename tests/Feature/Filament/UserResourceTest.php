@@ -46,68 +46,72 @@ describe('page authorization', function () {
     NOTE);
 
 describe('list users table', function () {
-    it('User Table has column', function (string $column) {
+    it('User Table has required columns', function () {
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $this->actingAs($admin)->livewire(ListUsers::class)->assertTableColumnExists($column);
-    })->with([
-        'first_name',
-        'last_name',
-        'email',
-        'email_verified_at',
-        'active',
-        'roles.name',
-    ]);
+        collect([
+            'first_name',
+            'last_name',
+            'email',
+            'email_verified_at',
+            'active',
+            'roles.name',
+        ])->each(fn ($column) => $this->actingAs($admin)->livewire(ListUsers::class)->assertTableColumnExists($column));
+    });
 
-    it('Admin can render the User Table column', function ($column) {
+    it('Admin can render the User Table column', function () {
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $this->actingAs($admin)->livewire(ListUsers::class)->assertCanRenderTableColumn($column);
-    })->with([
-        'first_name',
-        'last_name',
-        'email',
-        'email_verified_at',
-        'active',
-        'roles.name',
-    ]);
+        collect([
+            'first_name',
+            'last_name',
+            'email',
+            'email_verified_at',
+            'active',
+            'roles.name',
+        ])->each(fn ($column) => $this->actingAs($admin)->livewire(ListUsers::class)->assertCanRenderTableColumn($column));
+    });
 
-    it('Admin can sort the User Table column', function ($column) {
-        $admin = User::factory()->create();
-        $admin->assignRole('admin');
-        $records = User::factory(5)->create();
-
-        $this->actingAs($admin)->livewire(ListUsers::class)
-            ->sortTable($column)
-            ->assertCanSeeTableRecords($records->sortBy($column), inOrder: true)
-            ->sortTable($column, 'desc')
-            ->assertCanSeeTableRecords($records->sortByDesc($column), inOrder: true);
-    })->with([
-        'first_name',
-        'last_name',
-        'email_verified_at',
-        'active',
-    ]);
-
-    it('Admin can search the User Table column', function (string $column) {
+    it('Admin can sort the User Table column', function () {
         $admin = User::factory()->create();
         $admin->assignRole('admin');
         $records = User::factory(5)->create();
 
-        $value = $records->first()->{$column};
+        collect([
+            'first_name',
+            'last_name',
+            'email_verified_at',
+            'active',
+        ])->each(function ($column) use ($admin, $records) {
+            $this->actingAs($admin)->livewire(ListUsers::class)
+                ->sortTable($column)
+                ->assertCanSeeTableRecords($records->sortBy($column), inOrder: true)
+                ->sortTable($column, 'desc')
+                ->assertCanSeeTableRecords($records->sortByDesc($column), inOrder: true);
+        });
+    });
 
-        $this->actingAs($admin)->livewire(ListUsers::class)
-            ->searchTable($value)
-            ->assertCanSeeTableRecords($records->where($column, $value))
-            ->assertCanNotSeeTableRecords($records->where($column, '!=', $value));
-    })->with([
-        'first_name',
-        'last_name',
-        'email',
-        'roles.name',
-    ]);
+    it('Admin can search the User Table column', function () {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+        $records = User::factory(5)->create();
+
+        collect([
+            'first_name',
+            'last_name',
+            'email',
+            'roles.name',
+        ])->each(function ($column) use ($admin, $records) {
+            $value = $records->first()->{$column};
+
+            $this->actingAs($admin)->livewire(ListUsers::class)
+                ->searchTable($value)
+                ->assertCanSeeTableRecords($records->where($column, $value))
+                ->assertCanNotSeeTableRecords($records->where($column, '!=', $value));
+        });
+    });
 
     it('An admin cannot render a delete user button', function () {
         $admin = User::factory()->create();
