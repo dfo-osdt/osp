@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Permissions\UserRole;
 use App\Models\Author;
 use App\Models\Expertise;
 use App\Models\User;
@@ -104,6 +105,20 @@ class UserFactory extends Factory
                 'password' => Str::random(20),
                 'new_password_required' => true,
             ];
+        });
+    }
+
+    /**
+     * Assign roles to the user
+     *
+     * @param  UserRole[]  $roles
+     */
+    public function withRoles(array $roles)
+    {
+        $roleValues = collect($roles)->map(fn (UserRole $role) => $role->value)->toArray();
+
+        return $this->afterCreating(function (User $user) use ($roles) {
+            $user->assignRole($roles);
         });
     }
 }

@@ -70,12 +70,16 @@ export type AuthenticatedUserPermissions =
   | 'create_authors'
   | 'update_authors'
   | 'create_organizations'
+  | 'create_author_employments'
   | 'withhold_and_complete_management_review'
+  | 'view_any_users'
+  | 'publish_internal_reports'
+  | 'update_publications'
 
 /**
  * List of available roles
  */
-export type AuthenticatedUserRoles = 'author' | 'director' | 'admin'
+export type AuthenticatedUserRoles = 'author' | 'director' | 'admin' | 'editor' | 'chief_editor'
 
 export class AuthenticatedUser implements IAuthenticatedUser {
   public id!: number
