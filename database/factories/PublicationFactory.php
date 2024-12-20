@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\PublicationStatus;
+use App\Enums\SupplementaryFileType;
 use App\Models\PublicationAuthor;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -27,6 +28,15 @@ class PublicationFactory extends Factory
             'user_id' => \App\Models\User::factory(),
             'region_id' => rand(1, 5),
         ];
+    }
+
+    public function dfoSeries()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'journal_id' => \App\Models\Journal::factory()->dfoSeries(),
+            ];
+        });
     }
 
     /**
@@ -56,7 +66,8 @@ class PublicationFactory extends Factory
                 'published_on' => $publishedOn,
             ];
         })->afterCreating(function ($publication) {
-            $publication->addMedia(getcwd().'/database/factories/files/BieberFever.pdf')->preservingOriginal()->toMediaCollection('publication');
+            $publication->addPublicationFile(getcwd().'/database/factories/files/BieberFever.pdf', true);
+            $publication->addSupplementaryFile(getcwd().'/database/factories/files/BieberFever.pdf', SupplementaryFileType::AUTHOR_AGREEMENT, 'Supplementary file', true);
         });
     }
 

@@ -321,7 +321,8 @@
       "p1": "Cet assistant vous permet d'ajouter au portail des manuscrits publiées ; \nvous permettant de partager des publications passées ou d'ajouter des publications où le Formulaire du Registre des Manuscrits (FRM) a été fait par d'autres moyens.",
       "warning": "Si vous êtes ici pour faire réviser votre manuscrit par la gestion avant de le soumettre à une revue, ne continuez pas, créez plutôt un nouveau registre de manuscrit."
     },
-    "title": "Créer une publication"
+    "title": "Créer une publication",
+    "published-on-hint": "Si laissé vide, la publication sera créée comme « acceptée »"
   },
   "dashboard": {
     "add-publication": "Ajouter une publication",

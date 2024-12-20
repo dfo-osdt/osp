@@ -4,7 +4,7 @@ import type { MediaResource, MediaResourceList } from '../Media/Media'
 import type { SupplementaryFileType } from '../Media/supplementaryFileOptions'
 import type { PublicationAuthorResource } from '../PublicationAuthor/PublicationAuthor'
 import type { Region } from '../Region/Region'
-import type { Resource, ResourceList } from '../Resource'
+import type { ModelPermissions, Resource, ResourceList } from '../Resource'
 import type { UserResource } from '../User/User'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
@@ -44,8 +44,12 @@ export type PublicationCreate = Omit<
   | 'publication_pdf'
 >
 
-export type PublicationResource = Resource<Publication>
-export type PublicationResourceList = ResourceList<Publication>
+export type PublicationPermissions = ModelPermissions & {
+  publish?: boolean
+}
+
+export type PublicationResource = Resource<Publication, PublicationPermissions>
+export type PublicationResourceList = ResourceList<Publication, PublicationPermissions>
 
 export type R = PublicationResource
 export type RList = PublicationResourceList

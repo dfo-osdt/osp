@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Permissions\UserRole;
 use App\Models\Author;
 use App\Models\Organization;
 use App\Models\Publication;
@@ -147,8 +148,8 @@ test('a user can include the list of publications when querying an author profil
     expect($response->json('data.publications'))->toHaveCount(1);
 });
 
-test('a user can update an author profile without an owner', function () {
-    $user = User::factory()->create();
+test('an editor can update an author profile without an owner', function () {
+    $user = User::factory()->withRoles([UserRole::EDITOR])->create();
 
     $author = Author::factory()->create();
 

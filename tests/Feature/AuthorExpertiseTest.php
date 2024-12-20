@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Permissions\UserRole;
 use App\Models\Author;
 use App\Models\Expertise;
 use App\Models\User;
@@ -20,13 +21,13 @@ test('we can get a list of an authors expertise', function () {
     expect($response->json('data'))->toHaveCount(5);
 });
 
-test('we can sync an authors expertise', function () {
+test('an editor can sync an authors expertise', function () {
 
     $expertise = Expertise::factory()->count(10)->create();
 
     $author = Author::factory()->hasExpertises(5)->create();
 
-    $user = User::factory()->create();
+    $user = User::factory()->withRoles([UserRole::EDITOR])->create();
 
     // can only get when logged in
     $response = $this->postJson('/api/authors/'.$author->id.'/expertises');

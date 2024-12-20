@@ -69,6 +69,35 @@ test('a user can create a new publication without a manuscript attached', functi
     $response->assertJsonPath('data.manuscript_id', null);
 });
 
+test('a user can create an accepted publication without a published date', function () {
+    $user = User::factory()->create();
+    $journal = Journal::factory()->create();
+
+    $values = [
+        'status' => PublicationStatus::PUBLISHED,
+        'title' => 'Test Publication',
+        'doi' => 'https://doi.org/10.1234/1234',
+        'is_open_access' => true,
+        'journal_id' => $journal->id,
+        'accepted_on' => '',
+        'published_on' => '',
+        'region_id' => 1,
+    ];
+
+    // no published date but published status - should fail
+    $response = $this->actingAs($user)->postJson('/api/publications', $values);
+    $response->assertStatus(422);
+
+    // change status - should pass
+    $values['status'] = PublicationStatus::ACCEPTED;
+    $response = $this->actingAs($user)->postJson('/api/publications', $values);
+
+    $response->assertCreated();
+    $response->assertJsonPath('data.title', 'Test Publication');
+    $response->assertJsonPath('data.is_open_access', true);
+    $response->assertJsonPath('data.manuscript_id', null);
+});
+
 /** Test a user can't create a publication with an invalid DOI */
 test('a user cannot create a publication with an invalid DOI', function () {
     $user = User::factory()->create();
@@ -348,4 +377,67 @@ test('a user can upload a word document as a supplementary files', function () {
     // delete the file
     $response = $this->actingAs($user)->deleteJson("/api/publications/{$publication->id}/supplementary-files/{$uuid}");
     $response->assertNoContent();
+});
+
+test('an editor can edit any publication', function () {
+    $publication = Publication::factory()->create();
+    $editor = User::factory()->editor()->create();
+
+    $response = $this->actingAs($editor)->putJson('/api/publications/'.$publication->id, [
+        'title' => 'Updated Publication',
+        'doi' => 'https://doi.org/10.1234/1234',
+        'is_open_access' => true,
+        'accepted_on' => '2021-01-01',
+        'published_on' => '2021-03-01',
+        'embargoed_until' => '2021-12-31',
+        'region_id' => 1,
+    ]);
+
+    $response->assertOk();
+    $response->assertJsonPath('data.title', 'Updated Publication');
+    $response->assertJsonPath('data.region_id', 1);
+});
+
+test("an editor can view and download a publication's files", function () {
+    $publication = Publication::factory()->published()->create();
+    $editor = User::factory()->editor()->create();
+
+    $response = $this->actingAs($editor)->getJson('/api/publications/'.$publication->id.'/supplementary-files');
+    $response->assertOk();
+    $uuid = $response->json('data.0.data.uuid');
+    $filename = $response->json('data.0.data.file_name');
+
+    $response = $this->actingAs($editor)->get("/api/publications/{$publication->id}/supplementary-files/{$uuid}?download=true");
+    $response->assertDownload($filename);
+
+    $response = $this->actingAs($editor)->getJson('/api/publications/'.$publication->id.'/files');
+    $response->assertOk();
+    $uuid = $response->json('data.0.data.uuid');
+    $filename = $response->json('data.0.data.file_name');
+
+    $response = $this->actingAs($editor)->get("/api/publications/{$publication->id}/files/{$uuid}?download=true");
+    $response->assertDownload($filename);
+
+});
+
+test('only a chief editor can publish a secondary publication', function () {
+    $chiefEditor = User::factory()->chiefEditor()->create();
+
+    $publication = Publication::factory()->dfoSeries()->create();
+    $pubUser = $publication->user;
+
+    // try with user, it should be forbidden
+    $response = $this->actingAs($pubUser)->putJson('/api/publications/'.$publication->id, [
+        'status' => PublicationStatus::PUBLISHED,
+        'published_on' => now()->format('Y-m-d'),
+    ]);
+    $response->assertForbidden();
+
+    $response = $this->actingAs($chiefEditor)->putJson('/api/publications/'.$publication->id, [
+        'status' => PublicationStatus::PUBLISHED,
+        'published_on' => now()->format('Y-m-d'),
+    ]);
+
+    $response->assertOk();
+    expect($publication->fresh()->status)->toBe(PublicationStatus::PUBLISHED);
 });

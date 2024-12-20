@@ -1,4 +1,4 @@
-interface ModelPermissions {
+export interface ModelPermissions {
   view?: boolean
   update?: boolean
   delete?: boolean
@@ -28,13 +28,13 @@ interface Links {
   next: string | null
 }
 
-export interface Resource<T> {
+export interface Resource<T, P = ModelPermissions> {
   data: T
-  can?: Readonly<ModelPermissions>
+  can?: Readonly<P>
 }
 
-export interface ResourceList<T> {
-  data: Resource<T>[]
+export interface ResourceList<T, P = ModelPermissions> {
+  data: Resource<T, P>[]
   meta?: Readonly<Meta>
   links?: Readonly<Links>
 }

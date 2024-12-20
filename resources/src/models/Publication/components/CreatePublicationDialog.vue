@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type {
   PublicationCreate,
-  PublicationResource,
 } from '../Publication'
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
-import { Router } from '@/plugins/router'
 import { QForm, QStepper } from 'quasar'
+import { hydrateOnInteraction, type Ref } from 'vue'
 import {
   PublicationService,
 } from '../Publication'
@@ -83,7 +81,7 @@ const router = useRouter()
 /** Create the publication */
 async function create() {
   const publication: PublicationCreate = {
-    status: 'published',
+    status: publishedOn.value === '' ? 'accepted' : 'published',
     title: title.value,
     doi: doi.value,
     is_open_access: isOpenAccess.value,
@@ -212,7 +210,7 @@ async function create() {
             v-model="publishedOn"
             :label="$t('create-publication-dialog.published-on')"
             class="q-mb-md"
-            required
+            :hint="$t('create-publication-dialog.published-on-hint')"
           />
           <div
             class="text-body1 q-mt-lg text-primary text-weight-medium"

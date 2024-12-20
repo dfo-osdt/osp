@@ -79,9 +79,13 @@ class PublicationSupplementaryFileController extends Controller
         }
 
         $download = $request->query('download');
-        if ($download && Gate::allows('downloadMedia', [$publication, $media])) {
+        if ($download) {
+            Gate::authorize('downloadMedia', [$publication, $media])->denyAsNotFound();
+
             return $media;
         }
+
+        $media->setRelation('model', $publication);
 
         return MediaResource::make($media);
 

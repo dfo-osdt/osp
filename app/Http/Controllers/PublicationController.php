@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
 use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
+use App\Models\User;
 use App\Queries\PublicationListQuery;
 use App\Rules\Doi;
 use App\Traits\PaginationLimitTrait;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -23,13 +26,17 @@ class PublicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): ResourceCollection
+    public function index(#[CurrentUser] User $user, Request $request): ResourceCollection
     {
         $limit = $this->getLimitFromRequest($request);
 
-        // We should only show published publications
-        $baseQuery = Publication::where('status', PublicationStatus::PUBLISHED->value)
+        $baseQuery = Publication::query()
             ->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization');
+
+        // if user does not have permission to update all publications, only show published publications
+        if (! $user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
+            $baseQuery->where('status', PublicationStatus::PUBLISHED);
+        }
 
         $publicationListQuery = new PublicationListQuery($request, $baseQuery);
 
@@ -51,7 +58,7 @@ class PublicationController extends Controller
             'journal_id' => 'required|exists:journals,id',
             'doi' => ['nullable', 'string', new Doi],
             'accepted_on' => 'date|nullable',
-            'published_on' => 'date|required',
+            'published_on' => 'date|nullable|required_if:status,'.PublicationStatus::PUBLISHED->value,
             'embargoed_until' => 'date|nullable',
             'is_open_access' => 'boolean',
             'region_id' => 'required|exists:regions,id',
@@ -94,6 +101,7 @@ class PublicationController extends Controller
             if ($validatedStatus['status'] !== $publication->status->value) {
                 switch ($validatedStatus['status']) {
                     case PublicationStatus::PUBLISHED->value:
+                        Gate::authorize('publish', $publication);
                         $publication->status = PublicationStatus::PUBLISHED;
                         ! isset($request['accepted_on']) ? $request['accepted_on'] = $publication->accepted_on : null;
                         break;

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Enums\Permissions\UserPermission;
+use App\Policies\MediaPolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ use Spatie\Health\Checks\Checks\PingCheck;
 use Spatie\Health\Checks\Checks\RedisCheck;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Spatie\Health\Facades\Health;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,10 +44,16 @@ class AppServiceProvider extends ServiceProvider
         $this->configureVite();
         $this->configureModel();
         $this->configureHealth();
+        $this->configureGates();
 
         // https://spatie.be/docs/laravel-permission/v5/prerequisites#content-schema-limitation-in-mysql
         Schema::defaultStringLength(125);
 
+    }
+
+    private function configureGates(): void
+    {
+        Gate::policy(Media::class, MediaPolicy::class);
         // Laravel Pulse view gate
         Gate::define('viewPulse', function ($user) {
             return $user->can(UserPermission::VIEW_PULSE);

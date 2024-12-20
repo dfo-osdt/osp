@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Permissions\UserPermission;
 use App\Enums\Permissions\UserRole;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -20,25 +21,12 @@ class RoleAndPermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create author permissions
-        $authorPermissions = collect(UserRole::AUTHOR->permissions())
-            ->map(fn ($permission) => Permission::findOrCreate($permission));
+        collect(UserPermission::cases())
+            ->each(fn ($permission) => Permission::findOrCreate($permission->value));
 
-        $authorRole = Role::findOrCreate(UserRole::AUTHOR->value);
-        $authorRole->syncPermissions($authorPermissions);
-
-        // create director permissions
-        $directorPermissions = collect(UserRole::DIRECTOR->permissions())
-            ->map(fn ($permission) => Permission::findOrCreate($permission));
-
-        $directorRole = Role::findOrCreate(UserRole::DIRECTOR->value);
-        $directorRole->syncPermissions($directorPermissions);
-
-        // create admin permissions
-        $adminPermissions = collect(UserRole::ADMIN->permissions())
-            ->map(fn ($permission) => Permission::findOrCreate($permission));
-
-        $adminRole = Role::findOrCreate(UserRole::ADMIN->value);
-        $adminRole->syncPermissions($adminPermissions);
+        collect(UserRole::cases())->each(function ($userRole) {
+            $role = Role::findOrCreate($userRole->value);
+            $role->syncPermissions($userRole->permissionValues());
+        });
     }
 }

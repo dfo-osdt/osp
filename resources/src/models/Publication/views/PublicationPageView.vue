@@ -348,7 +348,7 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
       />
       <q-card-actions align="right">
         <q-btn
-          v-if="publication.data.status === 'accepted' && canEdit"
+          v-if="publication.data.status === 'accepted' && canEdit && publication.can?.publish"
           :label="t('publication-page.mark-as-published')"
           color="primary"
           icon="mdi-flag-checkered"

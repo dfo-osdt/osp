@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Permissions\UserRole;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use App\Rules\AuthorizedEmailDomain;
@@ -10,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Spatie\Permission\Contracts\Role;
 
 class UserResource extends Resource
 {
@@ -36,6 +38,7 @@ class UserResource extends Resource
                             ->rules(['bail', 'required', 'string', 'email', new AuthorizedEmailDomain]),
                         Forms\Components\CheckboxList::make('roles')
                             ->relationship(titleAttribute: 'name')
+                            ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
                             ->label('Roles'),
                     ]),
 
@@ -80,11 +83,11 @@ class UserResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'author' => 'success',
-                        'director' => 'warning',
-                        'admin' => 'danger',
-                        default => 'info',
+                    ->formatStateUsing(fn (string $state) => UserRole::from($state)->label())
+                    ->color(fn (string $state): string => match (UserRole::from($state)) {
+                        UserRole::AUTHOR => 'success',
+                        UserRole::DIRECTOR, UserRole::EDITOR, UserRole::CHIEF_EDITOR => 'warning',
+                        UserRole::ADMIN => 'danger',
                     })
                     ->searchable(),
             ])
@@ -103,6 +106,7 @@ class UserResource extends Resource
                     ->query(fn ($query) => $query->whereDoesntHave('roles')),
                 Tables\Filters\SelectFilter::make('roles')
                     ->relationship('roles', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
                     ->label('Role'),
             ])
             ->actions([
