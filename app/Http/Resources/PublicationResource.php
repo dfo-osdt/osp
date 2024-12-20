@@ -45,6 +45,7 @@ class PublicationResource extends JsonResource
             'can' => [
                 'update' => Gate::allows('update', $this->resource),
                 'delete' => Gate::allows('delete', $this->resource),
+                'publish' => Gate::allows('publish', $this->resource),
             ],
         ];
     }

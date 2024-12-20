@@ -6,6 +6,7 @@ use App\Enums\MediaCollection;
 use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
 use App\Enums\SupplementaryFileType;
+use App\Models\Journal;
 use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -133,6 +134,28 @@ class PublicationPolicy
 
         // is the user the owner of the publication
         if ($user->id === $publication->user_id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /** Can the user publish this publication */
+    public function publish(User $user, Publication $publication)
+    {
+
+        $isDfoSeries = $publication->journal->publisher == Journal::$dfoPublisher;
+
+        if ($user->hasPermissionTo(UserPermission::PUBLISH_INTERNAL_REPORTS)) {
+            return true;
+        }
+
+        // is the user the owner of the publication
+        if ($user->id === $publication->user_id) {
+            if ($isDfoSeries) {
+                return false;
+            }
+
             return true;
         }
 

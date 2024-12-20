@@ -321,7 +321,8 @@
       "p1": "This wizard lets you add published manuscripts to the portal; allowing you to share past publications or to add publications where the manuscript record form (MRF) was done through other means.",
       "warning": "If you are here to get your manuscript reviewed by management prior to submission to a journal, do not continue, create a new manuscript record instead."
     },
-    "title": "Create a Publication"
+    "title": "Create a Publication",
+    "published-on-hint": "If left blank, publication will be created as \"accepted\""
   },
   "dashboard": {
     "add-publication": "Add Publication",

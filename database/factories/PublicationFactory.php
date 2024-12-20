@@ -30,6 +30,15 @@ class PublicationFactory extends Factory
         ];
     }
 
+    public function dfoSeries()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'journal_id' => \App\Models\Journal::factory()->dfoSeries(),
+            ];
+        });
+    }
+
     /**
      * Indicate that the publication is open access.
      *
