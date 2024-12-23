@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useQuasar } from 'quasar'
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import { useQuasar } from 'quasar'
+import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue'
+import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
+import SubmittedToJournalDialog from '../components/SubmittedToJournalDialog.vue'
+import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
-import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
-import SubmittedToJournalDialog from '../components/SubmittedToJournalDialog.vue'
-import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue'
-import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
 
 const props = defineProps<{
   id: number
 }>()
 const emit = defineEmits<{
-  (e: 'update-manuscript', manuscript: ManuscriptRecordResource): void
+  (e: 'updateManuscript', manuscript: ManuscriptRecordResource): void
 }>()
 const $q = useQuasar()
 const { t } = useI18n()
@@ -29,8 +29,8 @@ const createdSubtitle = computed(() => {
   }
   return (
     `${t('common.created-on')
-         } ${
-         useLocaleDate(manuscriptRecord.value.data.created_at).value}`
+    } ${
+      useLocaleDate(manuscriptRecord.value.data.created_at).value}`
   )
 })
 
@@ -50,8 +50,8 @@ const submittedReviewSubtitle = computed(() => {
   }
   return (
     `${t('common.submitted-on')
-         } ${
-         useLocaleDate(manuscriptRecord.value.data.sent_for_review_at).value}`
+    } ${
+      useLocaleDate(manuscriptRecord.value.data.sent_for_review_at).value}`
   )
 })
 
@@ -75,8 +75,8 @@ const managementReviewSubtitle = computed(() => {
   }
   return (
     `${t('common.completed-on')
-         } ${
-         useLocaleDate(manuscriptRecord.value.data.reviewed_at).value}`
+    } ${
+      useLocaleDate(manuscriptRecord.value.data.reviewed_at).value}`
   )
 })
 
@@ -111,8 +111,8 @@ const submittedToJournalSubtitle = computed(() => {
   }
   return (
     `${t('common.submitted-on')
-         } ${
-         useLocaleDate(manuscriptRecord.value.data.submitted_to_journal_on).value}`
+    } ${
+      useLocaleDate(manuscriptRecord.value.data.submitted_to_journal_on).value}`
   )
 })
 
@@ -133,8 +133,8 @@ const acceptedToJournalSubtitle = computed(() => {
   }
   return (
     `${t('common.accepted-on')
-         } ${
-         useLocaleDate(manuscriptRecord.value.data.accepted_on).value}`
+    } ${
+      useLocaleDate(manuscriptRecord.value.data.accepted_on).value}`
   )
 })
 
@@ -155,8 +155,8 @@ const withdrawnSubtitle = computed(() => {
   }
   return (
     `${t('common.withdrawn-on')
-         } ${
-         useLocaleDate(manuscriptRecord.value.data.withdrawn_on).value}`
+    } ${
+      useLocaleDate(manuscriptRecord.value.data.withdrawn_on).value}`
   )
 })
 
@@ -164,10 +164,10 @@ async function getManuscriptRecord() {
   await ManuscriptRecordService.find(props.id)
     .then((response) => {
       manuscriptRecord.value = response
-      emit('update-manuscript', manuscriptRecord.value)
+      emit('updateManuscript', manuscriptRecord.value)
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
 }
 
@@ -200,7 +200,7 @@ function withdrawManuscript(record: ManuscriptRecordResource) {
 }
 
 function showUpdatedNotification(record: ManuscriptRecordResource) {
-  emit('update-manuscript', record)
+  emit('updateManuscript', record)
   $q.notify({
     message: t('manuscript-progress-view.manuscript-status-updated'),
     color: 'positive',
