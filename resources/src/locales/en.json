@@ -279,7 +279,8 @@
     "authors": "Authors",
     "upload-a-new-version-of-the-publication": "Upload a new version of the publication",
     "upload-the-publication": "Upload the publication",
-    "from": "from"
+    "from": "from",
+    "form-invalid": "There are errors in the form, please fix them to be able to save this form."
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -654,7 +655,8 @@
     "title": "Publication",
     "attach-supplementary-files": "Supplementary Files",
     "attach-supplementary-files-details": "Please upload all relevant supplementary files for your publications.",
-    "no-supplementary-files": "No supplementary files attached."
+    "no-supplementary-files": "No supplementary files attached.",
+    "mark-as-published-tooltip": "Only a DFO Chief Editor can mark a DFO publication as published."
   },
   "publications-view": {
     "all-published-publications-details": "All published publications",

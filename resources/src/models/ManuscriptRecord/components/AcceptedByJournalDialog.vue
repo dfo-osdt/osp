@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { QBtn, QCardActions, QForm } from 'quasar'
 import type {
   ManuscriptRecord,
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
-import {
-  ManuscriptRecordService,
-} from '../ManuscriptRecord'
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
+import { QBtn, QCardActions, QForm } from 'quasar'
+import {
+  ManuscriptRecordService,
+} from '../ManuscriptRecord'
 
 const props = defineProps<{
   manuscriptRecord: ManuscriptRecord
@@ -33,7 +33,6 @@ async function submit() {
       props.manuscriptRecord.id,
       submittedOn.value,
       acceptedOn.value,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       journalId.value!, // should not be null because of validation
     )
     emit('updated', resource)
@@ -75,6 +74,7 @@ async function submit() {
           v-model="journalId"
           class="q-mx-sm"
           :label="$t('common.journal')"
+          :hide-dfo-series="true"
           :rules="[(val: number|null) => val !== null || 'Journal is required']"
         />
         <QCardActions align="right">

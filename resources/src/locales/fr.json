@@ -279,7 +279,8 @@
     "authors": "Auteurs",
     "upload-a-new-version-of-the-publication": "Télécharger une nouvelle version de la publication",
     "upload-the-publication": "Téléchargez la publication",
-    "from": "de"
+    "from": "de",
+    "form-invalid": "Il y a des erreurs dans le formulaire, merci de les corriger pour pouvoir sauvegarder ce formulaire."
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -654,7 +655,8 @@
     "title": "Publication",
     "attach-supplementary-files": "Fichiers supplémentaires",
     "attach-supplementary-files-details": "Veuillez télécharger tous les fichiers supplémentaires pertinents pour vos publications.",
-    "no-supplementary-files": "Aucun fichier supplémentaire joint."
+    "no-supplementary-files": "Aucun fichier supplémentaire joint.",
+    "mark-as-published-tooltip": "Seul un rédacteur en chef du MPO peut marquer une publication du MPO comme publiée."
   },
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",

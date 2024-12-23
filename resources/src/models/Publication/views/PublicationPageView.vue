@@ -37,14 +37,21 @@ async function markAsPublished() {
   if (!publication.value)
     return
 
-  const valid = await generalInformationForm.value?.validate()
-  if (!valid)
-    return
-
   publication.value.data.status = 'published'
   publication.value.data.published_on = new Date()
     .toISOString()
     .substring(0, 10)
+
+  const valid = await generalInformationForm.value?.validate()
+  if (!valid) {
+    $q.notify({
+      type: 'negative',
+      message: t('common.form-invalid'),
+    })
+    publication.value.data.status = 'accepted'
+    return
+  }
+
   await save()
 }
 
@@ -101,8 +108,13 @@ async function save() {
 
   const valid = await generalInformationForm.value?.validate()
 
-  if (!valid)
+  if (!valid) {
+    $q.notify({
+      type: 'negative',
+      message: t('common.form-invalid'),
+    })
     return
+  }
 
   loading.value = true
   await PublicationService.update(
@@ -273,6 +285,8 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
           <JournalSelect
             v-model="publication.data.journal_id"
             :disable="loading"
+            :hide-dfo-series="manuscriptMetadata?.data?.type === 'primary'"
+            :dfo-series-only="manuscriptMetadata?.data?.type === 'secondary'"
             :readonly="!canEdit"
             :rules="[
               (val: number | null) =>
@@ -348,12 +362,19 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
       />
       <q-card-actions align="right">
         <q-btn
-          v-if="publication.data.status === 'accepted' && canEdit && publication.can?.publish"
+          v-if="publication.data.status === 'accepted' && canEdit"
+          :disable="!publication.can?.publish"
           :label="t('publication-page.mark-as-published')"
           color="primary"
           icon="mdi-flag-checkered"
           @click="markAsPublished"
-        />
+        >
+          <q-tooltip v-if="!publication.can?.publish">
+            {{
+              t('publication-page.mark-as-published-tooltip')
+            }}
+          </q-tooltip>
+        </q-btn>
         <q-btn
           v-if="canEdit"
           ref="saveButton"

@@ -26,6 +26,7 @@ class JournalListQuery extends QueryBuilder
                 AllowedFilter::partial('title'),
                 AllowedFilter::custom('search', new MultiColumnFilter('title', 'issn')),
                 AllowedFilter::scope('dfo_series'),
+                AllowedFilter::scope('not_dfo_series'),
             ]);
     }
 }

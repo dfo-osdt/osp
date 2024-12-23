@@ -12,6 +12,7 @@ import {
 const props = defineProps<{
   modelValue: number | null
   dfoSeriesOnly?: boolean
+  hideDfoSeries?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
@@ -60,6 +61,10 @@ async function filterJournals(val: string, update: (arg: () => Promise<void>) =>
 
       if (props.dfoSeriesOnly) {
         query.filter('dfo_series', 'true')
+      }
+
+      if (props.hideDfoSeries) {
+        query.filter('not_dfo_series', 'true')
       }
 
       journals.value = await JournalService.list(query)

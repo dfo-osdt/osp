@@ -46,8 +46,19 @@ class Journal extends Model
         return $query->where('publisher', Journal::$dfoPublisher);
     }
 
+    /** Create a scope for DFO series */
+    public function scopeNotDfoSeries($query)
+    {
+        return $query->where('publisher', '!=', Journal::$dfoPublisher);
+    }
+
     public function publications(): HasMany
     {
         return $this->hasMany(Publication::class);
+    }
+
+    public function isDfoSeries(): bool
+    {
+        return $this->publisher === Journal::$dfoPublisher;
     }
 }

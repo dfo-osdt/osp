@@ -23,6 +23,7 @@ class ManuscriptRecordMetadataResource extends JsonResource
                 'id' => $this->id,
                 'ulid' => $this->ulid,
                 'region_id' => $this->region_id,
+                'type' => $this->type,
                 'reviewed_at' => $this->reviewed_at,
             ],
             'can' => [

@@ -177,6 +177,14 @@ class ManuscriptRecordController extends Controller
             'journal_id' => 'required|exists:journals,id',
         ]);
 
+        // Ensure the journal type matches the manuscript record type
+        $journal = Journal::find($validated['journal_id']);
+        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && !$journal->isDfoSeries()) {
+            abort(422, 'Secondary MRFs must be published in a DFO series journal.');
+        } elseif ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY && $journal->isDfoSeries()) {
+            abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
+        }
+
         $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
         // if the submitted to journal date is given, set it.
         if ($validated['submitted_to_journal_on']) {
@@ -186,7 +194,6 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->save();
 
         // create the accepted publication
-        $journal = Journal::findOrFail($validated['journal_id']);
         CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
 
         ManuscriptRecordAccepted::dispatch();
