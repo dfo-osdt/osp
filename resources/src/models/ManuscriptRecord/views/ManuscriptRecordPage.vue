@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import ContentCard from '@/components/ContentCard.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
-import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import PublicationStatusSpan from '@/models/Publication/components/PublicationStatusSpan.vue'
 
 defineProps<{

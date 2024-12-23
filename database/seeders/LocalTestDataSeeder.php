@@ -23,6 +23,20 @@ class LocalTestDataSeeder extends Seeder
             JournalsTableSeeder::class,
         ]);
 
+        // create an editor user
+        \App\Models\User::factory()->editor()->create([
+            'first_name' => 'Editor',
+            'last_name' => 'User',
+            'email' => 'editor@test.local'
+        ]);
+
+        // create an chief editor user
+        \App\Models\User::factory()->chiefEditor()->create([
+            'first_name' => 'Chief Editor',
+            'last_name' => 'User',
+            'email' => 'chief.editor@test.local'
+        ]);
+
         // create a blank slate user
         \App\Models\User::factory()->create([
             'email' => 'new@test.local',
