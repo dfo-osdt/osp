@@ -283,5 +283,4 @@ class Publication extends Model implements Fundable, HasMedia
     {
         return $query->whereIn('journal_id', Journal::dfoSeries()->pluck('id'));
     }
-
 }

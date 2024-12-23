@@ -179,7 +179,7 @@ class ManuscriptRecordController extends Controller
 
         // Ensure the journal type matches the manuscript record type
         $journal = Journal::find($validated['journal_id']);
-        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && !$journal->isDfoSeries()) {
+        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $journal->isDfoSeries()) {
             abort(422, 'Secondary MRFs must be published in a DFO series journal.');
         } elseif ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY && $journal->isDfoSeries()) {
             abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
