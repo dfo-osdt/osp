@@ -63,21 +63,21 @@ class EditUser extends EditRecord
         }
         $this->record->markEmailAsVerified();
         $this->refreshFormData(['active']);
-	Notification::make()
-		    ->title('User\'s email is verified!')
-		    ->success()
-		    ->send();
+        Notification::make()
+            ->title('User\'s email is verified!')
+            ->success()
+            ->send();
     }
 
     /**
-    * Call the Reset Password Email process
-    */
+     * Call the Reset Password Email process
+     */
     public function sendPasswordReset(): void
     {
-	Password::sendResetLink(['email' => $this->data['email']]);
-	Notification::make()
-		    ->title('Reset password email sent!')
-		    ->success()
-		    ->send();
+        Password::sendResetLink(['email' => $this->data['email']]);
+        Notification::make()
+            ->title('Reset password email sent!')
+            ->success()
+            ->send();
     }
 }
