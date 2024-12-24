@@ -95,31 +95,31 @@ class UserResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-            Tables\Filters\TernaryFilter::make('email_verified_at')
+                Tables\Filters\TernaryFilter::make('email_verified_at')
                     ->label('Verified')
                     ->nullable()
                     ->placeholder('All'),
-            Tables\Filters\SelectFilter::make('active')
+                Tables\Filters\SelectFilter::make('active')
                     ->options([
                         true => 'Active',
                         false => 'Inactive',
                     ]),
-            Tables\Filters\Filter::make('no_roles')
+                Tables\Filters\Filter::make('no_roles')
                     ->label('No Roles')
                     ->query(fn ($query) => $query->whereDoesntHave('roles')),
-            Tables\Filters\SelectFilter::make('roles')
+                Tables\Filters\SelectFilter::make('roles')
                     ->relationship('roles', 'name')
                     ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
                     ->label('Role'),
-        ])
+            ])
             ->actions([
-            Tables\Actions\EditAction::make(),
-        ])
+                Tables\Actions\EditAction::make(),
+            ])
             ->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\BulkActionGroup::make([
                     // Placeholder
-            ]),
-        ])
+                ]),
+            ])
             ->defaultSort('first_name');
     }
 
