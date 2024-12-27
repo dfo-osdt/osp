@@ -79,6 +79,7 @@ export interface ManuscriptRecordMetadata {
   id: number
   ulid: string
   region_id: number
+  type: ManuscriptRecordType
   reviewed_at: string | null
 }
 

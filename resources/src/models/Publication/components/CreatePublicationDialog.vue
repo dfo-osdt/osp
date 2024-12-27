@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import type {
   PublicationCreate,
 } from '../Publication'
@@ -7,7 +8,6 @@ import DateInput from '@/components/DateInput.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import { QForm, QStepper } from 'quasar'
-import { hydrateOnInteraction, type Ref } from 'vue'
 import {
   PublicationService,
 } from '../Publication'

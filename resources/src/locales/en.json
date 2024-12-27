@@ -16,7 +16,8 @@
     "user-roles-description": "Each user role gives different permissions within the portal. If you think you should have additional roles, please contact us."
   },
   "accepted-by-journal-dialog": {
-    "text": "You can now mark this manuscript as having been accepted for publication by a journal. This step will create a new publication to your profile allowing you to update the publication details. Once you know the publication details, please remember to update publication record and mark it as published so that we can help share it within the DFO community."
+    "text": "You can now mark this manuscript as having been accepted for publication by a journal. This step will create a new publication to your profile allowing you to update the publication details. Once you know the publication details, please remember to update publication record and mark it as published so that we can help share it within the DFO community.",
+    "title": "Journal accepted for publication"
   },
   "add-pub-author-dialog": {
     "dialog-help": "Search for the author you'd want to add using their name or professional email. If you cannot find the author you are looking for, or their affiliation or email has changed, you can create a new author record.",
@@ -279,7 +280,8 @@
     "authors": "Authors",
     "upload-a-new-version-of-the-publication": "Upload a new version of the publication",
     "upload-the-publication": "Upload the publication",
-    "from": "from"
+    "from": "from",
+    "form-invalid": "There are errors in the form, please fix them to be able to save this form."
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -498,7 +500,10 @@
     "title": "Manuscript Progress",
     "withdraw-manuscript": "Withdraw Manuscript",
     "withdrawn-by-applicant": "Withdrawn by Applicant",
-    "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days."
+    "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days.",
+    "submisison-to-dfo-title": "Submit to the EOS publication group",
+    "submit-title": "Submit manuscript",
+    "submission-to-dfo-details": "Following your submission to the EOS publication group, your manuscript will be marked as accepted in the portal. Your work will then undergo a technical edit before a final proof is sent to the corresponding author(s) for review. Once this is completed, the publication group will make arrangements to have the manuscript published in the appropriate series."
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
@@ -521,7 +526,7 @@
     "pls-text": "Plain Language Summary (PLS) of the manuscript to explain the relevance of the science to the Department and to promote the value of science through outreach and communication. It is intended for internal use to identify linkages to programs, policies and stakeholders and for use in the plain language promotion of science.",
     "potential-media-interest-question": "Is this manuscript of potential public interest?",
     "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest.",
-    "ready-to-marked-published": "This manuscript has been reviewed but still needs to be marked as published by the applicant.",
+    "ready-to-marked-published": "This manuscript has completed its management review but still needs to be marked as submitted and accepted to a thrid-party Journal by the applicant.",
     "relevant-text": "Describe how this manuscript is relevant to the program that funded it, how it supports the department's mandate, strategic plan and or/regional priorities. ",
     "relevant-title": "Relevance to programs/initiatives/client sector",
     "replace-manuscript": "Upload a new version of the manuscript",
@@ -543,7 +548,8 @@
     "no-ogl-explanation-text-field-text": "DFO is committed to the \"Open by Design and by Default\" principle of Open Science, ensuring that all DFO publications are made available under the latest version of the \"{url}\" whenever possible. The Open Government Licence - Canada should not be applied if there are conflicting Licensing obligations.",
     "ogl-link": "Open Government Licence - Canada",
     "apply_ogl": "Should this report be licensed under the Open Government Licence - Canada?",
-    "ogl-provide-explanation": "Since you answered \"No,\" please provide an explanation of why an Open Government License cannot be applied to your report."
+    "ogl-provide-explanation": "Since you answered \"No,\" please provide an explanation of why an Open Government License cannot be applied to your report.",
+    "ready-to-submit": "This manuscript has completed its management review and is now ready for submission to the EOS publication team."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",
@@ -654,7 +660,8 @@
     "title": "Publication",
     "attach-supplementary-files": "Supplementary Files",
     "attach-supplementary-files-details": "Please upload all relevant supplementary files for your publications.",
-    "no-supplementary-files": "No supplementary files attached."
+    "no-supplementary-files": "No supplementary files attached.",
+    "mark-as-published-tooltip": "Only a DFO Chief Editor can mark a DFO publication as published."
   },
   "publications-view": {
     "all-published-publications-details": "All published publications",
@@ -822,5 +829,9 @@
   },
   "publication-supplementary": {
     "upload-hint": "Only PDF or Word files are accepted. Maximum file size is {max}MB."
+  },
+  "submit-to-pub-team-dialog": {
+    "title": "Submit to the EOS Publication Team",
+    "text": "Congratulations! The EOS publication team will be in touch with you and/or the corresponding author(s) shortly after the submission."
   }
 }

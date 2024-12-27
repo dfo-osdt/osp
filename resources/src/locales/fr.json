@@ -279,7 +279,8 @@
     "authors": "Auteurs",
     "upload-a-new-version-of-the-publication": "Télécharger une nouvelle version de la publication",
     "upload-the-publication": "Téléchargez la publication",
-    "from": "de"
+    "from": "de",
+    "form-invalid": "Il y a des erreurs dans le formulaire, merci de les corriger pour pouvoir sauvegarder ce formulaire."
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -498,7 +499,10 @@
     "title": "Progrès du manuscrit",
     "withdraw-manuscript": "Retirer le manuscrit",
     "withdrawn-by-applicant": "Retiré par le demandeur",
-    "withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe régistre du manuscrit sera archivé après 30 jours."
+    "withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe régistre du manuscrit sera archivé après 30 jours.",
+    "submisison-to-dfo-title": "Soumettre au groupe de publication du SEO",
+    "submit-title": "Soumettre le manuscrit",
+    "submission-to-dfo-details": "Suite à votre soumission au groupe de publication EOS, votre manuscrit sera marqué comme accepté dans le portail. Votre travail subira ensuite une révision technique avant qu'une épreuve finale ne soit envoyée à l'auteur(e) correspondant(e) pour révision. Une fois cette étape terminée, le groupe de publication prendra des dispositions pour publier le manuscrit dans la série appropriée."
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250caractères",
@@ -521,7 +525,7 @@
     "pls-text": "Résumé en langage clair du manuscrit pour expliquer la pertinence de la science pour le Département et promouvoir la valeur de la science par la sensibilisation et la communication. \nIl est destiné à un usage interne pour identifier les liens avec les programmes, les politiques et les intervenants et à être utilisé dans la promotion de la science en langage clair.",
     "potential-media-interest-question": "Ce manuscrit présente-t-il un intérêt public potentiel?",
     "potential-media-interest-text-field-text": "Facultativement, veuillez fournir toute information pertinente concernant l'intérêt public potentiel.",
-    "ready-to-marked-published": "Ce manuscrit a été révisé mais doit encore être marqué comme publié par le candidat.",
+    "ready-to-marked-published": "Ce manuscrit a terminé sa revue par la gestion mais doit encore être marqué comme soumis et accepté dans une revue tierce par le demandeur.",
     "relevant-text": "Décrivez comment ce manuscrit est pertinent pour le programme qui l'a financé, comment il supporte le mandat du ministère, le plan stratégique du département et/ou les priorités régionales. ",
     "relevant-title": "Pertinence par rapport aux programmes/initiatives/clients ",
     "replace-manuscript": "Télécharger une nouvelle version du manuscrit",
@@ -543,7 +547,8 @@
     "ogl-link": "Licence du gouvernement ouvert – Canada",
     "apply_ogl": "Ce rapport devrait-il être licencié sous la Licence du gouvernement ouvert - Canada ?",
     "no-ogl-explanation": "Licence de rapport",
-    "ogl-provide-explanation": "Puisque vous avez répondu « Non », veuillez fournir une explication des raisons pour lesquelles une Licence du gouvernement ouvert ne peut pas être appliquée à votre rapport."
+    "ogl-provide-explanation": "Puisque vous avez répondu « Non », veuillez fournir une explication des raisons pour lesquelles une Licence du gouvernement ouvert ne peut pas être appliquée à votre rapport.",
+    "ready-to-submit": "Ce manuscrit a terminé sa révision par la gestion et est maintenant prêt à être soumis à l'équipe de publication du SEO."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",
@@ -654,7 +659,8 @@
     "title": "Publication",
     "attach-supplementary-files": "Fichiers supplémentaires",
     "attach-supplementary-files-details": "Veuillez télécharger tous les fichiers supplémentaires pertinents pour vos publications.",
-    "no-supplementary-files": "Aucun fichier supplémentaire joint."
+    "no-supplementary-files": "Aucun fichier supplémentaire joint.",
+    "mark-as-published-tooltip": "Seul un rédacteur en chef du MPO peut marquer une publication du MPO comme publiée."
   },
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",
@@ -822,5 +828,9 @@
   },
   "publication-supplementary": {
     "upload-hint": "Seuls les fichiers PDF ou Word sont acceptés. \nLa taille maximale du fichier est de {max} Mo."
+  },
+  "submit-to-pub-team-dialog": {
+    "text": "Félicitations! L'équipe de publication du SEO prendra contact avec vous et/ou les auteurs correspondants peu après la soumission.",
+    "title": "Soumettre à l'équipe de publication du SEO"
   }
 }

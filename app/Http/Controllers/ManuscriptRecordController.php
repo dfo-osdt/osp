@@ -6,12 +6,11 @@ use App\Actions\CreatePublicationFromManuscript;
 use App\Actions\DeleteManuscriptRecord;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
-use App\Events\ManuscriptRecordAccepted;
-use App\Events\ManuscriptRecordSubmitted;
 use App\Events\ManuscriptRecordToReviewEvent;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Http\Resources\ManuscriptRecordMetadataResource;
 use App\Http\Resources\ManuscriptRecordResource;
+use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -21,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -160,8 +160,6 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->submitted_to_journal_on = $validated['submitted_to_journal_on'];
         $manuscriptRecord->save();
 
-        ManuscriptRecordSubmitted::dispatch();
-
         return $this->defaultResource($manuscriptRecord);
     }
 
@@ -177,6 +175,14 @@ class ManuscriptRecordController extends Controller
             'journal_id' => 'required|exists:journals,id',
         ]);
 
+        // Ensure the journal selected matches the manuscript record type.
+        $journal = Journal::find($validated['journal_id']);
+        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $journal->isDfoSeries()) {
+            abort(422, 'Secondary MRFs must be published in a DFO series journal.');
+        } elseif ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY && $journal->isDfoSeries()) {
+            abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
+        }
+
         $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
         // if the submitted to journal date is given, set it.
         if ($validated['submitted_to_journal_on']) {
@@ -186,10 +192,12 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->save();
 
         // create the accepted publication
-        $journal = Journal::findOrFail($validated['journal_id']);
         CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
 
-        ManuscriptRecordAccepted::dispatch();
+        // if the manuscript is a secondary, send an email to the submissions team
+        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
+            Mail::queue(new ManuscriptRecordSubmittedToDFO($manuscriptRecord));
+        }
 
         return $this->defaultResource($manuscriptRecord);
     }

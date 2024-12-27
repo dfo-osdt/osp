@@ -40,11 +40,14 @@ class UserFactory extends Factory
     /**
      * A factory for a user with a DFO email address
      */
-    public function isFromDFO()
+    public function isFromAuthorizedDomain()
     {
-        return $this->state(function (array $attributes) {
+        $domains = config('osp.allowed_registration_email_domains');
+        $domain = $domains[0];
+
+        return $this->state(function (array $attributes) use ($domain) {
             return [
-                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
+                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@'.$domain,
             ];
         });
     }

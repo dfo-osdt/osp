@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { QBtn, QCardActions, QForm } from 'quasar'
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import BaseDialog from '@/components/BaseDialog.vue'
+import DateInput from '@/components/DateInput.vue'
+import { QBtn, QCardActions, QForm } from 'quasar'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
-import BaseDialog from '@/components/BaseDialog.vue'
-import DateInput from '@/components/DateInput.vue'
 
 const props = defineProps<{
   manuscriptRecordId: number

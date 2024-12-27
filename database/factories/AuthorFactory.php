@@ -18,7 +18,7 @@ class AuthorFactory extends Factory
     {
         $fistName = $this->faker->firstName();
         $lastName = $this->faker->lastName();
-        $email = $fistName.'.'.$lastName.'@'.$this->faker->safeEmailDomain();
+        $email = $fistName.'.'.$lastName.'@'.$this->faker->domainWord().'.dev';
         $hasOrcid = $this->faker->boolean(70);
         $orcid = $hasOrcid ? 'https://sandbox.orcid.org/'.$this->faker->numerify('####-####-####-####') : null;
 
@@ -34,11 +34,14 @@ class AuthorFactory extends Factory
     /**
      * A factory for an author with a user account
      */
-    public function isFromDFO()
+    public function isFromAuthorizedDomain()
     {
-        return $this->state(function (array $attributes) {
+        $domains = config('osp.allowed_registration_email_domains');
+        $domain = $domains[0];
+
+        return $this->state(function (array $attributes) use ($domain) {
             return [
-                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@dfo-mpo.gc.ca',
+                'email' => $attributes['first_name'].'.'.$attributes['last_name'].'@'.$domain,
                 'organization_id' => 1,
             ];
         });

@@ -12,6 +12,7 @@ import {
 const props = defineProps<{
   modelValue: number | null
   dfoSeriesOnly?: boolean
+  hideDfoSeries?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
@@ -42,6 +43,13 @@ onMounted(async () => {
     const journal = await JournalService.get(props.modelValue)
     selectedJournal.value = journal
   }
+
+  if (props.dfoSeriesOnly) {
+    const query = new SpatieQuery()
+    query.filter('dfo_series', 'true')
+    query.paginate(1, 30)
+    journals.value = await JournalService.list(query)
+  }
 })
 
 async function filterJournals(val: string, update: (arg: () => Promise<void>) => void) {
@@ -60,6 +68,10 @@ async function filterJournals(val: string, update: (arg: () => Promise<void>) =>
 
       if (props.dfoSeriesOnly) {
         query.filter('dfo_series', 'true')
+      }
+
+      if (props.hideDfoSeries) {
+        query.filter('not_dfo_series', 'true')
       }
 
       journals.value = await JournalService.list(query)

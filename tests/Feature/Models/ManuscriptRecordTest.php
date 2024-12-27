@@ -3,7 +3,6 @@
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
-use App\Events\ManuscriptRecordSubmitted;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptRecordToReviewMail;
 use App\Models\Journal;
@@ -265,8 +264,6 @@ test('a user can mark their manuscript as submitted', function () {
     $this->actingAs(User::factory()->create())->putJson("/api/manuscript-records/{$manuscript->id}/submitted", $data)->assertForbidden();
 
     $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submitted", $data)->assertOk();
-
-    Event::assertDispatched(ManuscriptRecordSubmitted::class);
 
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::SUBMITTED);
 });
