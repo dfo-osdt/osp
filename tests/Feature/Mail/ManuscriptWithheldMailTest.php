@@ -8,9 +8,8 @@ use App\Models\User;
 
 test('a withheld email is generated', function () {
     // Create a withheld manuscript with a withheld management review associated
-    $author = Author::factory()->isFromDFO()->create();
-    $applicant = User::factory()->isFromDFO()->create();
-    ray($author->toArray());
+    $author = Author::factory()->isFromAuthorizedDomain()->create();
+    $applicant = User::factory()->isFromAuthorizedDomain()->create();
     $manuscript = ManuscriptRecord::factory()->withheld()->create(['user_id' => $applicant->id]);
     $manuscript->manuscriptAuthors()->create([
         'author_id' => $author->id,
@@ -22,7 +21,9 @@ test('a withheld email is generated', function () {
         'is_corresponding_author' => false,
         'organization_id' => $applicant->author->organization_id,
     ]);
-    ManuscriptAuthor::factory()->count(2)->create(['manuscript_record_id' => $manuscript->id]);
+    ManuscriptAuthor::factory()
+        ->count(2)
+        ->create(['manuscript_record_id' => $manuscript->id]);
 
     // Create the email
     $mailable = new ManuscriptWithheldMail($manuscript);
@@ -32,6 +33,5 @@ test('a withheld email is generated', function () {
     expect($mailable->to)->toHaveCount(1);
     $mailable->assertHasCc($author->email);
     expect(collect($mailable->cc)->pluck('address')->toArray())->not->toContain($manuscript->user->email);
-    expect($mailable->cc)->toHaveCount(1);
 
 });

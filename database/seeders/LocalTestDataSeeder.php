@@ -21,6 +21,7 @@ class LocalTestDataSeeder extends Seeder
         $this->call([
             ExpertisesTableSeeder::class,
             JournalsTableSeeder::class,
+            DfoSeriesJournalSeeder::class,
         ]);
 
         // create an editor user
@@ -74,7 +75,7 @@ class LocalTestDataSeeder extends Seeder
         ]);
 
         // create 1 filled out secondary manuscript record for the test user
-        \App\Models\ManuscriptRecord::factory()->secondary()->filled()->create([
+        \App\Models\ManuscriptRecord::factory()->secondary()->reviewed()->create([
             'user_id' => $user->id,
         ]);
 
@@ -136,7 +137,7 @@ class LocalTestDataSeeder extends Seeder
             'user_id' => $markUser->id,
         ]);
 
-        $marksManuscript->manuscriptAuthors()->save(\App\Models\ManuscriptAuthor::create([
+        $marksManuscript->manuscriptAuthors()->save(\App\Models\ManuscriptAuthor::factory()->create([
             'author_id' => $markAuthor->id,
             'is_corresponding_author' => true,
             'manuscript_record_id' => $marksManuscript->id,

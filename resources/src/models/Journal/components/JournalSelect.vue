@@ -43,6 +43,13 @@ onMounted(async () => {
     const journal = await JournalService.get(props.modelValue)
     selectedJournal.value = journal
   }
+
+  if (props.dfoSeriesOnly) {
+    const query = new SpatieQuery()
+    query.filter('dfo_series', 'true')
+    query.paginate(1, 30)
+    journals.value = await JournalService.list(query)
+  }
 })
 
 async function filterJournals(val: string, update: (arg: () => Promise<void>) => void) {

@@ -4,7 +4,6 @@ import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
 import BaseDialog from '@/components/BaseDialog.vue'
-import DateInput from '@/components/DateInput.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import { QBtn, QCardActions, QForm } from 'quasar'
 import {
@@ -20,7 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const now = new Date().toISOString().substring(0, 10)
-const submittedOn = ref(props.manuscriptRecord.submitted_to_journal_on || now)
+const submittedOn = ref(now)
 const acceptedOn = ref(now)
 const journalId = ref<number | null>(null)
 
@@ -47,34 +46,17 @@ async function submit() {
 </script>
 
 <template>
-  <BaseDialog :title="$t('accepted-by-journal-dialog.title')">
+  <BaseDialog :title="$t('submit-to-pub-team-dialog.title')">
     <div class="q-pa-md q">
-      <div class="text-primary text-h6 q-mb-sm">
-        {{ $t('common.congratulations') }}
-      </div>
       <p>
-        {{ $t('accepted-by-journal-dialog.text') }}
+        {{ $t('submit-to-pub-team-dialog.text') }}
       </p>
       <QForm class="q-gutter-y-md q-mt-md" @submit="submit">
-        <DateInput
-          v-model="submittedOn"
-          class="q-mx-sm"
-          :label="$t('common.submitted-to-journal-on')"
-          required
-          :max-date="acceptedOn"
-        />
-        <DateInput
-          v-model="acceptedOn"
-          class="q-mx-sm"
-          :label="$t('common.accepted-for-publication-on')"
-          required
-          :min-date="submittedOn"
-        />
         <JournalSelect
           v-model="journalId"
           class="q-mx-sm"
           :label="$t('common.journal')"
-          :hide-dfo-series="true"
+          :dfo-series-only="true"
           :rules="[(val: number|null) => val !== null || $t('common.required')]"
         />
         <QCardActions align="right">
@@ -86,7 +68,7 @@ async function submit() {
           />
           <QBtn
             color="primary"
-            :label="$t('common.update')"
+            :label="$t('common.submit')"
             type="submit"
             :loading="loading"
           />

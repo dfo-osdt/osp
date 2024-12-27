@@ -7,6 +7,7 @@ import { useQuasar } from 'quasar'
 import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue'
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
 import SubmittedToJournalDialog from '../components/SubmittedToJournalDialog.vue'
+import SubmitToPubTeamDialog from '../components/SubmitToPubTeamDialog.vue'
 import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
 import {
   ManuscriptRecordService,
@@ -199,6 +200,15 @@ function withdrawManuscript(record: ManuscriptRecordResource) {
   showUpdatedNotification(record)
 }
 
+// submit to publication team
+const showSubmitToPubTeamDialog = ref(false)
+
+function submitToPubTeam(record: ManuscriptRecordResource) {
+  manuscriptRecord.value = record
+  showSubmitToPubTeamDialog.value = false
+  showUpdatedNotification(record)
+}
+
 function showUpdatedNotification(record: ManuscriptRecordResource) {
   emit('updateManuscript', record)
   $q.notify({
@@ -261,89 +271,146 @@ onMounted(() => {
         {{ $t('manuscript-progress-view.completed-details') }}
       </p>
     </q-timeline-entry>
-    <q-timeline-entry
-      v-if="
-        manuscriptRecord.data.status !== 'withheld'
-          && manuscriptRecord.data.status !== 'withdrawn'
-      "
-      class="q-mx-lg"
-      icon="mdi-send-check-outline"
-      :title="$t('manuscript-progress-view.submit-pub-title')"
-      :subtitle="submittedToJournalSubtitle"
-      :color="submittedToJournalColor"
-    >
-      <p>
-        {{ $t('manuscript-progress-view.submit-pub-details') }}
-      </p>
-      <div>
-        <q-btn
-          v-if="
-            manuscriptRecord.data.submitted_to_journal_on
-              === null && manuscriptRecord.data.can_attach_manuscript
-          "
-          color="primary"
-          :label="$t('manuscript-progress-view.mark-as-submitted')"
-          :disable="
-            manuscriptRecord.data.status === 'in_review'
-              || manuscriptRecord.data.status === 'draft'
-          "
-          @click="showSubmittedToJournalDialog = true"
-        />
-      </div>
-    </q-timeline-entry>
-    <q-timeline-entry
-      v-if="
-        manuscriptRecord.data.status !== 'withheld'
-          && manuscriptRecord.data.status !== 'withdrawn'
-      "
-      class="q-mx-lg"
-      icon="mdi-check-all"
-      :title="$t('manuscript-progress-view.accepted-title')"
-      :subtitle="acceptedToJournalSubtitle"
-      :color="acceptedToJournalColor"
-    >
-      <p>
-        {{ $t('manuscript-progress-view.accepted-details') }}
-      </p>
-      <div class="row q-gutter-md">
-        <q-btn
-          v-if="
-            manuscriptRecord.data.status !== 'accepted'
-              && manuscriptRecord.data.can_attach_manuscript
-          "
-          color="primary"
-          :label="$t('manuscript-progress-view.accepted-title')"
-          :disable="
-            manuscriptRecord.data.status === 'draft'
-              || manuscriptRecord.data.status === 'in_review'
-          "
-          @click="showAcceptedByJournalDialog = true"
-        />
-        <q-btn
-          v-if="
-            manuscriptRecord.data.status !== 'accepted'
-              && manuscriptRecord.data.can_attach_manuscript
-          "
-          color="negative"
-          outline
-          :label="$t('manuscript-progress-view.withdraw-manuscript')"
-          :disable="
-            manuscriptRecord.data.status === 'draft'
-              || manuscriptRecord.data.status === 'in_review'
-          "
-          @click="showWithdrawManuscriptDialog = true"
-        />
-        <q-btn
-          v-if="manuscriptRecord.data.publication"
-          color="primary"
-          :label="
-            $t('manuscript-progress-view.go-to-the-publication')
-          "
-          :to="`/publication/${manuscriptRecord.data.publication?.data.id}`"
-          icon-right="mdi-arrow-right"
-        />
-      </div>
-    </q-timeline-entry>
+    <template v-if="manuscriptRecord.data.type === 'primary'">
+      <q-timeline-entry
+        v-if="
+          manuscriptRecord.data.status !== 'withheld'
+            && manuscriptRecord.data.status !== 'withdrawn'
+        "
+        class="q-mx-lg"
+        icon="mdi-send-check-outline"
+        :title="$t('manuscript-progress-view.submit-pub-title')"
+        :subtitle="submittedToJournalSubtitle"
+        :color="submittedToJournalColor"
+      >
+        <p>
+          {{ $t('manuscript-progress-view.submit-pub-details') }}
+        </p>
+        <div>
+          <q-btn
+            v-if="
+              manuscriptRecord.data.submitted_to_journal_on
+                === null && manuscriptRecord.data.can_attach_manuscript
+            "
+            color="primary"
+            :label="$t('manuscript-progress-view.mark-as-submitted')"
+            :disable="
+              manuscriptRecord.data.status === 'in_review'
+                || manuscriptRecord.data.status === 'draft'
+            "
+            @click="showSubmittedToJournalDialog = true"
+          />
+        </div>
+      </q-timeline-entry>
+      <q-timeline-entry
+        v-if="
+          manuscriptRecord.data.status !== 'withheld'
+            && manuscriptRecord.data.status !== 'withdrawn'
+        "
+        class="q-mx-lg"
+        icon="mdi-check-all"
+        :title="$t('manuscript-progress-view.accepted-title')"
+        :subtitle="acceptedToJournalSubtitle"
+        :color="acceptedToJournalColor"
+      >
+        <p>
+          {{ $t('manuscript-progress-view.accepted-details') }}
+        </p>
+        <div class="row q-gutter-md">
+          <q-btn
+            v-if="
+              manuscriptRecord.data.status !== 'accepted'
+                && manuscriptRecord.data.can_attach_manuscript
+            "
+            color="primary"
+            :label="$t('manuscript-progress-view.accepted-title')"
+            :disable="
+              manuscriptRecord.data.status === 'draft'
+                || manuscriptRecord.data.status === 'in_review'
+            "
+            @click="showAcceptedByJournalDialog = true"
+          />
+          <q-btn
+            v-if="
+              manuscriptRecord.data.status !== 'accepted'
+                && manuscriptRecord.data.can_attach_manuscript
+            "
+            color="negative"
+            outline
+            :label="$t('manuscript-progress-view.withdraw-manuscript')"
+            :disable="
+              manuscriptRecord.data.status === 'draft'
+                || manuscriptRecord.data.status === 'in_review'
+            "
+            @click="showWithdrawManuscriptDialog = true"
+          />
+          <q-btn
+            v-if="manuscriptRecord.data.publication"
+            color="primary"
+            :label="
+              $t('manuscript-progress-view.go-to-the-publication')
+            "
+            :to="`/publication/${manuscriptRecord.data.publication?.data.id}`"
+            icon-right="mdi-arrow-right"
+          />
+        </div>
+      </q-timeline-entry>
+    </template>
+    <template v-if="manuscriptRecord.data.type === 'secondary'">
+      <q-timeline-entry
+        v-if="
+          manuscriptRecord.data.status !== 'withheld'
+            && manuscriptRecord.data.status !== 'withdrawn'
+        "
+        class="q-mx-lg"
+        icon="mdi-check-all"
+        :title="$t('manuscript-progress-view.submisison-to-dfo-title')"
+        :subtitle="acceptedToJournalSubtitle"
+        :color="acceptedToJournalColor"
+      >
+        <p>
+          {{ $t('manuscript-progress-view.submission-to-dfo-details') }}
+        </p>
+        <div class="row q-gutter-md">
+          <q-btn
+            v-if="
+              manuscriptRecord.data.status !== 'accepted'
+                && manuscriptRecord.data.can_attach_manuscript
+            "
+            color="primary"
+            :label="$t('manuscript-progress-view.submit-title')"
+            :disable="
+              manuscriptRecord.data.status === 'draft'
+                || manuscriptRecord.data.status === 'in_review'
+            "
+            @click="showSubmitToPubTeamDialog = true"
+          />
+          <q-btn
+            v-if="
+              manuscriptRecord.data.status !== 'accepted'
+                && manuscriptRecord.data.can_attach_manuscript
+            "
+            color="negative"
+            outline
+            :label="$t('manuscript-progress-view.withdraw-manuscript')"
+            :disable="
+              manuscriptRecord.data.status === 'draft'
+                || manuscriptRecord.data.status === 'in_review'
+            "
+            @click="showWithdrawManuscriptDialog = true"
+          />
+          <q-btn
+            v-if="manuscriptRecord.data.publication"
+            color="primary"
+            :label="
+              $t('manuscript-progress-view.go-to-the-publication')
+            "
+            :to="`/publication/${manuscriptRecord.data.publication?.data.id}`"
+            icon-right="mdi-arrow-right"
+          />
+        </div>
+      </q-timeline-entry>
+    </template>
     <q-timeline-entry
       v-if="manuscriptRecord.data.status === 'withdrawn'"
       class="q-mx-lg"
@@ -373,6 +440,12 @@ onMounted(() => {
       v-model="showWithdrawManuscriptDialog"
       :manuscript-record-id="manuscriptRecord.data.id"
       @updated="withdrawManuscript"
+    />
+    <SubmitToPubTeamDialog
+      v-if="showSubmitToPubTeamDialog"
+      v-model="showSubmitToPubTeamDialog"
+      :manuscript-record="manuscriptRecord.data"
+      @updated="submitToPubTeam"
     />
   </q-timeline>
 </template>
