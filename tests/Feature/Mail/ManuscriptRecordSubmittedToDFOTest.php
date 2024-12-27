@@ -22,6 +22,7 @@ test('a manuscript submitted email is generated', function () {
 
     $mailable->assertTo(config('osp.manuscript_submission_email'));
     expect($mailable->to)->toHaveCount(1);
-    expect($mailable->cc)->toHaveCount(1);
+    // the author and application user should be cc'd in this test
+    expect($mailable->cc)->toHaveCount(2);
 
 });
