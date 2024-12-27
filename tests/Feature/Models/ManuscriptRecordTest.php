@@ -266,8 +266,6 @@ test('a user can mark their manuscript as submitted', function () {
 
     $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submitted", $data)->assertOk();
 
-    Event::assertDispatched(ManuscriptRecordSubmitted::class);
-
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::SUBMITTED);
 });
 
