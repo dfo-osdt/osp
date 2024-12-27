@@ -24,5 +24,4 @@ test('a manuscript submitted email is generated', function () {
     expect($mailable->to)->toHaveCount(1);
     expect($mailable->cc)->toHaveCount(1);
 
-
 });

@@ -5,7 +5,6 @@ namespace App\Mail;
 use App\Models\ManuscriptRecord;
 use App\Models\Publication;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -40,7 +39,7 @@ class ManuscriptRecordSubmittedToDFO extends Mailable
         $cc = collect($this->manuscriptRecord->manuscriptAuthors)
             ->pluck('author.email')
             ->add($this->manuscriptRecord->user->email)
-            ->filter(fn ($email) =>  Str::of($email)->endsWith(config('osp.allowed_registration_email_domains')))
+            ->filter(fn ($email) => Str::of($email)->endsWith(config('osp.allowed_registration_email_domains')))
             ->unique()->toArray();
 
         return new Envelope(

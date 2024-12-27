@@ -195,7 +195,7 @@ class ManuscriptRecordController extends Controller
         CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
 
         // if the manuscript is a secondary, send an email to the submissions team
-        if($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
+        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
             Mail::queue(new ManuscriptRecordSubmittedToDFO($manuscriptRecord));
         }
 

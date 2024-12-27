@@ -7,7 +7,6 @@ return [
      */
     'allowed_registration_email_domains' => explode(',', strtolower(env('ALLOWED_REGISTRATION_EMAIL_DOMAINS', 'dfo-mpo.gc.ca'))),
 
-
     /**
      * The email address to send manuscript submissions
      */
