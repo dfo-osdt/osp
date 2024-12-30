@@ -44,7 +44,12 @@ class PublicationFileController extends Controller
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
-            'pdf' => 'required|file|mimes:pdf|max:50000',
+            'pdf' => [
+                'required',
+                'file',
+                'mimes:pdf',
+                'max:'.(config('media-library.max_file_size') / 1024),
+            ],
         ]);
 
         $media = $publication->addPublicationFile($validated['pdf']);

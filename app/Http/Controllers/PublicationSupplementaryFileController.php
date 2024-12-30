@@ -47,7 +47,12 @@ class PublicationSupplementaryFileController extends Controller
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
-            'file' => 'required|file|mimes:pdf,doc,docx|max:50000',
+            'file' => [
+                'required',
+                'file',
+                'mimes:pdf,doc,docx',
+                'max:'.(config('media-library.max_file_size') / 1024),
+            ],
             'supplementary_file_type' => ['required', Rule::enum(SupplementaryFileType::class)],
             'description' => 'nullable|string|max:200',
         ]);

@@ -13,7 +13,7 @@ const props = defineProps<{
 }>()
 const $q = useQuasar()
 const { t } = useI18n()
-const maxFileSizeMB = 50
+const maxFileSizeMB = import.meta.env.VITE_MAX_UPLOAD_SIZE_MB || 4
 
 const supplementaryFileResourceList = ref<MediaResourceList | null>(null)
 

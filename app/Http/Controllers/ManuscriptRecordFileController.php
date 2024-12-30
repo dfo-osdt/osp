@@ -36,7 +36,12 @@ class ManuscriptRecordFileController extends Controller
         Gate::authorize('attachManuscript', $manuscriptRecord);
 
         $validated = $request->validate([
-            'pdf' => 'required|file|mimes:pdf|max:50000',
+            'pdf' => [
+                'required',
+                'file',
+                'mimes:pdf',
+                'max:'.(config('media-library.max_file_size') / 1024),
+            ],
         ]);
 
         $media = $manuscriptRecord->addManuscriptFile($validated['pdf']);

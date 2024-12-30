@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 const $q = useQuasar()
 const { t } = useI18n()
-const maxFileSizeMB = 50
+const maxFileSizeMB = import.meta.env.VITE_MAX_UPLOAD_SIZE_MB || 4
 
 const publicationResourceList = ref<MediaResourceList | null>(null)
 const publicationFile = ref<File | null>(null)
@@ -144,15 +144,6 @@ watch(publicationFile, () => {
     >
       <template #prepend>
         <q-icon name="mdi-file-pdf-box" />
-      </template>
-      <template #append>
-        <q-btn
-          color="primary"
-          :loading="uploadingFile"
-          :disable="!publicationFile"
-          :label="t('common.upload')"
-          @click="upload"
-        />
       </template>
     </q-file>
   </ContentCard>
