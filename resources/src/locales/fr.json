@@ -707,7 +707,8 @@
     "can-delete": "Peut supprimer",
     "can-edit": "Peut éditer",
     "edit-dialog-title": "Modifier les autorisations de partage",
-    "expires-at": "Expire à"
+    "expires-at": "Expire à",
+    "not-shared-yet": "Pas encore partagé avec personne"
   },
   "shareable-dialog": {
     "abilities-text": "Par défaut, l'utilisateur a la possibilité de visualiser la ressource. \nVous pouvez également autoriser l'utilisateur à modifier et supprimer cette ressource.",
