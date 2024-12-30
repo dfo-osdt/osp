@@ -708,7 +708,8 @@
     "can-delete": "Can Delete",
     "can-edit": "Can Edit",
     "edit-dialog-title": "Modify Sharing Permissions",
-    "expires-at": "Expires At"
+    "expires-at": "Expires At",
+    "not-shared-yet": "Not shared with anyone yet"
   },
   "shareable-dialog": {
     "abilities-text": "By default, the user has the ability to view the resource. You can also allow the user to edit and delete this resource.",

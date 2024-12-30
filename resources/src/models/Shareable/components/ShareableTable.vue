@@ -28,7 +28,7 @@ const columns = computed<QTableColumnProps>(() => {
       label: t('common.user'),
       align: 'left',
       field: (row: ShareableResource) =>
-                `${row.data.user.data.first_name} ${row.data.user.data.last_name}`,
+        `${row.data.user.data.first_name} ${row.data.user.data.last_name}`,
     },
     {
       name: 'email',
@@ -130,6 +130,21 @@ function editShareable(shareable: ShareableResource) {
           @click="deleteShareable(props.row)"
         />
       </q-td>
+    </template>
+    <template #no-data>
+      <div class="col-12 flex row justify-center q-ma-lg">
+        <div class="flex column text-center">
+          <div>
+            <q-img
+              src="/assets/splash_images/undraw_shared-goals_jn0a.svg"
+              width="250px"
+            />
+          </div>
+          <div class="text-h5 text-weight-light text-primary q-mt-sm">
+            {{ $t('shareable.not-shared-yet') }}
+          </div>
+        </div>
+      </div>
     </template>
   </q-table>
 </template>
