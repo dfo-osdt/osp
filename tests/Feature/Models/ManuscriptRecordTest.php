@@ -110,7 +110,9 @@ startxref
 PDF;
 
     // upload pdf
-    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(51000);
+    $kbLimit = config('media-library.max_file_size') / 1024;
+
+    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size($kbLimit + 100);
 
     $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
         'pdf' => $file,
@@ -118,9 +120,9 @@ PDF;
 
     // expect response to be 422, file too big
     $response->assertStatus(422);
-    expect($response->json('errors.pdf'))->toContain('The pdf must not be greater than 50000 kilobytes.');
+    expect($response->json('errors.pdf.0'))->toContain('The pdf must not be greater than');
 
-    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(15000);
+    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size($kbLimit);
 
     $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
         'pdf' => $file,
