@@ -74,7 +74,7 @@ class PublicationAuthorController extends Controller
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
-            //'author_id' => 'integer|exists:authors,id',
+            // 'author_id' => 'integer|exists:authors,id',
             'is_corresponding_author' => 'boolean',
             'organization_id' => 'integer|exists:organizations,id',
         ]);

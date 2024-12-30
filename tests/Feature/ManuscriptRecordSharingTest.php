@@ -258,7 +258,7 @@ test('the share email is properly formatted', function () {
     $mailable->assertSeeInHtml($shareable->shareable->title);
     $mailable->assertSeeInHtml(now()->addDays(5)->format('Y-m-d'));
 
-    //check with null expires_at
+    // check with null expires_at
     $shareable->update(['expires_at' => null]);
 
     ray($mailable);

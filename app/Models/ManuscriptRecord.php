@@ -351,5 +351,5 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
         return $validator->passes();
     }
 
-    /// Scope methods
+    // / Scope methods
 }

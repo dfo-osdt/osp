@@ -78,7 +78,7 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
 
         // there should be no putcode here; the only scneario where this
         // is usefull is when the record is being updated after being
-        //mistakenly deleted in ORCID profile by user.
+        // mistakenly deleted in ORCID profile by user.
         $employmentData->putCode = Optional::create();
 
         $request = new PostEmploymentRequest($employmentData);

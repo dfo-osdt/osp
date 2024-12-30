@@ -48,7 +48,7 @@ class ManuscriptRecordResource extends JsonResource
                 'accepted_on' => $this->accepted_on,
                 'withdrawn_on' => $this->withdrawn_on,
 
-                //relationships - if loaded
+                // relationships - if loaded
                 'region' => RegionResource::make($this->whenLoaded('region')),
                 'functional_area' => FunctionalAreaResource::make($this->whenLoaded('functionalArea')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),

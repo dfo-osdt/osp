@@ -29,7 +29,7 @@ class UserPolicy
     {
         // a user can view their own profile
         return true;
-        //return $user->id === $model->id;
+        // return $user->id === $model->id;
     }
 
     /**

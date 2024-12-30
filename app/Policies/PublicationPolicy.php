@@ -93,7 +93,7 @@ class PublicationPolicy
             return $user->can('view', $publication->manuscriptRecord);
         }
 
-        //if it's a publication file and not under embargo, then it can be downloaded
+        // if it's a publication file and not under embargo, then it can be downloaded
         if ($media->collection_name === MediaCollection::PUBLICATION->value) {
             return ! $publication->isUnderEmbargo();
         }

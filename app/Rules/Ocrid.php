@@ -19,7 +19,7 @@ class Ocrid implements ValidationRule
             $fail(__('validation.orcid.prefix', ['attribute' => $attribute]));
         }
 
-        //check remainder against only the ORCID part
+        // check remainder against only the ORCID part
         $orcid = Str::substr($value, -19);
 
         // check value against regex

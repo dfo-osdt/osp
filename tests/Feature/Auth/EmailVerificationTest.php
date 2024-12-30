@@ -66,7 +66,7 @@ class EmailVerificationTest extends TestCase
 
         $this->assertNotNull($user->invitation->registered_at);
         $this->assertTrue($user->hasVerifiedEmail());
-        //$this->assertNull($user->email_verification_token); //disabled because of MS SafeLink
+        // $this->assertNull($user->email_verification_token); //disabled because of MS SafeLink
         $this->assertTrue($user->active);
         $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
 
