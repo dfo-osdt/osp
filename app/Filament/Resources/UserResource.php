@@ -51,9 +51,12 @@ class UserResource extends Resource
                             ->hidden(fn ($record) => $record && ! $record->email_verified_at)
                             ->onColor('success'),
                         Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('reset_password')
+                                ->label('Send Password Reset Email')
+                                ->action('sendPasswordReset'),
                             Forms\Components\Actions\Action::make('verify_email')
-                                ->label('Activate & Verify')
-                                ->hidden(fn ($record) => $record && $record->email_verified_at)
+                                ->label('Activate User & Verify Email')
+                                ->disabled(fn ($record) => isset($record->email_verified_at))
                                 ->action('setVerifiedEmail'),
                         ]),
                     ]),
