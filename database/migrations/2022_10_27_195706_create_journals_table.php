@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('publisher', 255);
 
             // add index for title_en
-            //$table->index('title_en');
+            // $table->index('title_en');
         });
     }
 };

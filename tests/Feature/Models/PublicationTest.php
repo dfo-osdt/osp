@@ -241,7 +241,7 @@ test('a user can attach a new publication pdf to their publication', function ()
     $response->assertCreated();
     expect($response->json('data.file_name'))->toBe('test.pdf');
     expect($response->json('data.uuid'))->toBeString();
-    //expect($response->json('data.publication_pdf'))->not()->toBeNull();
+    // expect($response->json('data.publication_pdf'))->not()->toBeNull();
 
     $uuid = $response->json('data.uuid');
 

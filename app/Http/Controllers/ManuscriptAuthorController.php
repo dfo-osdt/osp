@@ -78,7 +78,7 @@ class ManuscriptAuthorController extends Controller
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
-            //'author_id' => 'integer|exists:authors,id',
+            // 'author_id' => 'integer|exists:authors,id',
             'is_corresponding_author' => 'boolean',
             'organization_id' => 'integer|exists:organizations,id',
         ]);

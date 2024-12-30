@@ -51,18 +51,18 @@ test('a user can see all their manuscript and filter them', function () {
     $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?include-reviews=true')->assertOk();
     expect($response->json('data'))->toHaveCount(3);
 
-    //filter by status - just draft
+    // filter by status - just draft
     $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?filter[status]='.ManuscriptRecordStatus::DRAFT->value)->assertOk();
     expect($response->json('data'))->toHaveCount(2);
 
     $manuscript2->status = ManuscriptRecordStatus::ACCEPTED;
     $manuscript2->save();
 
-    //filter by status - just in review
+    // filter by status - just in review
     $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?include-reviews=true&filter[status]='.ManuscriptRecordStatus::IN_REVIEW->value)->assertOk();
     expect($response->json('data'))->toHaveCount(1);
 
-    //filter by status - just accepted
+    // filter by status - just accepted
     $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?include-reviews=true&filter[status]='.ManuscriptRecordStatus::ACCEPTED->value)->assertOk();
     expect($response->json('data'))->toHaveCount(1);
 });
