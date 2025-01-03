@@ -1,7 +1,7 @@
-import type { Resource, ResourceList } from '../Resource'
-import { SpatieQuery } from '@/api/SpatieQuery'
-import { http } from '@/api/http'
 import type { Locale } from '@/stores/LocaleStore'
+import type { Resource, ResourceList } from '../Resource'
+import { http } from '@/api/http'
+import { SpatieQuery } from '@/api/SpatieQuery'
 
 export interface Expertise {
   id: string // ulid

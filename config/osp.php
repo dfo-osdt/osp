@@ -46,11 +46,6 @@ return [
         'redirect_uri' => env('ORCID_REDIRECT_URI'),
     ],
 
-    'ohdear' => [
-        'enabled' => env('OHDEAR_ENABLED', false),
-        'url' => env('OHDEAR_URL'),
-    ],
-
     'ollama' => [
         'enabled' => env('USE_OLLAMA', false),
         'url' => env('OLLAMA_URL'),
