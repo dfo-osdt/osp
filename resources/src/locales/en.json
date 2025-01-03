@@ -281,7 +281,9 @@
     "upload-a-new-version-of-the-publication": "Drop the file or click to automatically upload a new version of the publication",
     "upload-the-publication": "Drop the file or click to automatically to upload the publication",
     "from": "from",
-    "form-invalid": "There are errors in the form, please fix them to be able to save this form."
+    "form-invalid": "There are errors in the form, please fix them to be able to save this form.",
+    "no_announcements": "There are no general announcements at this time.",
+    "announcements": "Click here to show the muted announcement | Click here to show the {count} muted announcements"
   },
   "create-author-dialog": {
     "title": "Create a new author"

@@ -64,10 +64,30 @@ function notify(announcement: AnnouncementResource) {
     ],
   })
 }
+
+function unmutedAnnouncement() {
+  muted.value = []
+  updateStatus()
+}
 </script>
 
 <template>
-  <div />
+  <q-btn
+    flat
+    round
+    dense
+    size="sm"
+    :color="announcements?.data.length ? 'secondary' : 'grey-7'"
+    :disable="!announcements"
+    :icon="announcements?.data.length ? 'mdi-bell-badge' : 'mdi-bell-outline'"
+    class="q-mb-xs"
+    @click="unmutedAnnouncement"
+  >
+    <q-tooltip anchor="top left" self="bottom right">
+      <span v-if="!announcements">{{ $t('common.no_announcements') }}</span>
+      <span v-else>{{ $t('common.announcements', { count: announcements.data.length }) }}</span>
+    </q-tooltip>
+  </q-btn>
 </template>
 
 <style scoped></style>

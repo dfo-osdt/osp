@@ -2,7 +2,7 @@
 
 use App\Models\Announcement;
 
-test('an unauthenticated use can query the announcment page', function () {
+test('an unauthenticated use can query the announcement page', function () {
 
     $response = $this->get('/api/announcements');
     $response->assertStatus(204);
