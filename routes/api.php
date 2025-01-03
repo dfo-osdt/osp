@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Announcement\CheckAnnouncementController;
 use App\Http\Controllers\Auth\InvitedUserController;
 use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
@@ -16,7 +17,6 @@ use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\ManuscriptRecordFileController;
 use App\Http\Controllers\ManuscriptRecordFundingSourceController;
 use App\Http\Controllers\ManuscriptRecordSharingController;
-use App\Http\Controllers\OhDear\CheckStatusPageController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\FullFlowController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/status', CheckStatusPageController::class);
+Route::get('/announcements', CheckAnnouncementController::class);
 Route::get('/orcid/callback', [FullFlowController::class, 'callback']);
 
 // Need to ben authenticated to access these routes

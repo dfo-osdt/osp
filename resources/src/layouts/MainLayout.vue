@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
-import MainHeader from '@/components/MainHeader.vue'
 import MainDrawer from '@/components/MainDrawer.vue'
 import MainFooter from '@/components/MainFooter.vue'
-import OhDearStatusMonitor from '@/components/OhDearStatusMonitor.vue'
+import MainHeader from '@/components/MainHeader.vue'
+import AnnouncementMonitor from '@/models/Announcement/components/AnnouncementMonitor.vue'
+import { useQuasar } from 'quasar'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -59,7 +59,7 @@ watch(
 
 <template>
   <q-layout view="hHh Lpr lff">
-    <OhDearStatusMonitor />
+    <AnnouncementMonitor />
     <MainHeader @toggle-left-drawer="toggleLeftDrawer" />
     <MainDrawer
       v-if="authStore.isAuthenticated"
