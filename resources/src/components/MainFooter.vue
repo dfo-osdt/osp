@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const year = new Date().getFullYear()
+import AnnouncementMonitor from '@/models/Announcement/components/AnnouncementMonitor.vue'
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const year = new Date().getFullYear()
         >{{ $t('common.contact-us') }}</a>
       </div>
       <div class="text-caption">
-        &copy; {{ year }} OSP-PSO
+        <AnnouncementMonitor />
       </div>
     </div>
   </q-footer>

@@ -280,7 +280,8 @@
     "upload-a-new-version-of-the-publication": "Déposez le fichier ou cliquez pour automatiquement télécharger une nouvelle version de la publication",
     "upload-the-publication": "Déposez le fichier ou cliquez pour automatiquement télécharger une publication",
     "from": "de",
-    "form-invalid": "Il y a des erreurs dans le formulaire, merci de les corriger pour pouvoir sauvegarder ce formulaire."
+    "form-invalid": "Il y a des erreurs dans le formulaire, merci de les corriger pour pouvoir sauvegarder ce formulaire.",
+    "no_announcements": "Il n’y a pas d’annonces générales pour le moment."
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
