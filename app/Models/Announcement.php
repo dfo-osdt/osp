@@ -39,15 +39,6 @@ class Announcement extends Model
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    /* protected $hidden = [
-       'created_at',
-     * ]; */
-
-    /**
      * Return active announcements
      */
     public function scopeActive(Builder $query)
