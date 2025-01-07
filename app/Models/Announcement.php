@@ -30,12 +30,12 @@ class Announcement extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-	'title_en',
-	'title_fr',
-	'text_en',
-	'text_fr',
-	'start_at',
-	'end_at',
+        'title_en',
+        'title_fr',
+        'text_en',
+        'text_fr',
+        'start_at',
+        'end_at',
     ];
 
     /**
@@ -44,6 +44,6 @@ class Announcement extends Model
     public function scopeActive(Builder $query)
     {
         return $query->where('start_at', '<=', now())
-		     ->where('end_at', '>=', now());
+            ->where('end_at', '>=', now());
     }
 }

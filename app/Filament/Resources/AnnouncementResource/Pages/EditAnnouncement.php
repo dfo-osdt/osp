@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\AnnouncementResource\Pages;
 
-use App\Models\Announcement;
 use App\Filament\Resources\AnnouncementResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
