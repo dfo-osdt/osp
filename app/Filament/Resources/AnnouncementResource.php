@@ -18,7 +18,7 @@ class AnnouncementResource extends Resource
 {
     protected static ?string $model = Announcement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bell';
 
     public static function form(Form $form): Form
     {
@@ -47,21 +47,18 @@ class AnnouncementResource extends Resource
                             ->maxLength(500),
                     ]),
                 Forms\Components\Section::make('Dates')
-                    ->description('All announcements will start at 00:00:00 UTC and end at 23:59:59 UTC of the dates selected!')
+                    ->description('Announcements times are in UTC')
                     ->schema([
                         Forms\Components\DateTimePicker::make('start_at')
                             ->label('Start Date')
-                            ->Time(false)
-                            ->default(fn () => now()->startOfDay())
+                            ->default(fn () => now())
                             ->required()
-                            ->afterOrEqual('yesterday')
-                            ->beforeOrEqual('end_at'),
+                            ->before('end_at'),
                         Forms\Components\DateTimePicker::make('end_at')
                             ->label('End Date')
-                            ->Time(false)
-                            ->default(fn () => now()->endOfDay())
+                            ->default(fn () => now()->addDay()->endOfDay())
                             ->required()
-                            ->afterOrEqual('start_at'),
+                            ->after('start_at'),
                     ]),
             ]);
     }
@@ -89,9 +86,10 @@ class AnnouncementResource extends Resource
                     ->label('End (UTC)')
                     ->datetime('M d, Y H:i')
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge(true)
                     ->label('Status')
-                    ->getStateUsing(function ($record) {
+                    ->getStateUsing(function (Announcement $record) {
                         $now = Carbon::now();
                         if ($record->start_at > $now) {
                             return 'Upcoming';
@@ -115,12 +113,7 @@ class AnnouncementResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
-                        $data['end_at'] = $data['end_at'].'T23:59:59';
-
-                        return $data;
-                    }),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -199,7 +192,7 @@ class AnnouncementResource extends Resource
         return [
             'index' => Pages\ListAnnouncements::route('/'),
             'create' => Pages\CreateAnnouncement::route('/create'),
-            //	    'edit' => Pages\EditAnnouncement::route('/{record}/edit'),
+            'edit' => Pages\EditAnnouncement::route('/{record}/edit'),
         ];
     }
 }
