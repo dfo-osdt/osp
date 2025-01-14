@@ -6,7 +6,6 @@ use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\AuthorEmploymentController;
 use App\Http\Controllers\AuthorExpertiseController;
-use App\Http\Controllers\Azure\AzureOAuthController;
 use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunctionalAreaController;
 use App\Http\Controllers\FunderController;
@@ -47,7 +46,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/announcements', CheckAnnouncementController::class);
 Route::get('/orcid/callback', [FullFlowController::class, 'callback']);
-
 
 // Need to be authenticated to access these routes
 Route::middleware(['auth:sanctum'])->group(function () {

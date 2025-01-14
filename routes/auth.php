@@ -48,7 +48,7 @@ Route::get('/verify-invitation/{id}/{hash}', [InvitedUserController::class, 'acc
     ->name('invitation.verify');
 
 // Azure OAuth integration routes
-if(config('osp.azure.enable_auth')) {
+if (config('osp.azure.enable_auth')) {
     Route::get('/oauth/azure/redirect', [AzureOAuthController::class, 'redirect']);
     Route::get('/oauth/azure/callback', [AzureOAuthController::class, 'callback']);
 }

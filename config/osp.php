@@ -54,6 +54,6 @@ return [
 
     'azure' => [
         'enable_auth' => env('AZURE_ENABLE_AUTH', false),
-    ]
+    ],
 
 ];
