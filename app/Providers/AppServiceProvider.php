@@ -7,6 +7,7 @@ use App\Policies\MediaPolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Vite;
@@ -45,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureModel();
         $this->configureHealth();
         $this->configureGates();
+        $this->configureEvents();
 
         // https://spatie.be/docs/laravel-permission/v5/prerequisites#content-schema-limitation-in-mysql
         Schema::defaultStringLength(125);
@@ -95,5 +97,12 @@ class AppServiceProvider extends ServiceProvider
             PingCheck::new()->url('https://api.orcid.org/v3/status')->timeout(3)->name('ORCID Api'),
             RedisCheck::new(),
         ]);
+    }
+
+    private function configureEvents(): void
+    {
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('azure', \SocialiteProviders\Azure\Provider::class);
+        });
     }
 }

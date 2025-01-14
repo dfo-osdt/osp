@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { useQuasar } from 'quasar'
 import type { ErrorResponse } from '@/api/errors'
+import type { Ref } from 'vue'
 import { extractErrorMessages } from '@/api/errors'
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue'
+import { useQuasar } from 'quasar'
 
 const authStore = useAuthStore()
 const localeStore = useLocaleStore()
@@ -214,6 +214,14 @@ function notifyUserLastLogin() {
         </div>
       </q-form>
     </q-card-section>
+  </q-card>
+  <q-card>
+    <q-btn
+      :label="t('login-card.login-with-microsoft')"
+      color="white"
+      text-color="primary"
+      href="/api/azure/redirect"
+    />
   </q-card>
 </template>
 

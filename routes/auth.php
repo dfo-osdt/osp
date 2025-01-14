@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Azure\AzureOAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
@@ -45,3 +46,9 @@ Route::post('/change-password', [ChangePasswordController::class, '__invoke'])
 Route::get('/verify-invitation/{id}/{hash}', [InvitedUserController::class, 'accept'])
     ->middleware(['signed', 'throttle:6,1'])
     ->name('invitation.verify');
+
+// Azure OAuth integration routes
+if(config('osp.azure.enable_auth')) {
+    Route::get('/oauth/azure/redirect', [AzureOAuthController::class, 'redirect']);
+    Route::get('/oauth/azure/callback', [AzureOAuthController::class, 'callback']);
+}

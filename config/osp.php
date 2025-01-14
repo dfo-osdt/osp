@@ -52,4 +52,8 @@ return [
         'model' => env('OLLAMA_MODEL', 'llama3.2'),
     ],
 
+    'azure' => [
+        'enable_auth' => env('AZURE_ENABLE_AUTH', false),
+    ]
+
 ];
