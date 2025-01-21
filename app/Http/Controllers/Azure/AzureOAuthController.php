@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
-
+use Illuminate\Support\Str;
 class AzureOAuthController extends Controller
 {
     public function redirect()
@@ -44,9 +44,8 @@ class AzureOAuthController extends Controller
         }
 
         $azureUser = Socialite::driver('azure')->user();
-        // dd($azureUser);
 
-        $email = strtolower($azureUser->email);
+        $email = strtolower($azureUser->getEmail());
 
         $user = User::where('email', $email)->first();
 
@@ -71,12 +70,16 @@ class AzureOAuthController extends Controller
         } else {
 
             // User does not exist in the system, let's create them.
+            $givenName = $azureUser->user['givenName'] ?? Str::of($azureUser->getName())->before(' ');
+            $surname = $azureUser->user['surname'] ?? Str::of($azureUser->getName())->after(' ');
+            $preferredLanguage = $azureUser->user['preferredLanguage'] ?? 'en';
+
             $userData = new RegisterUserData(
-                $azureUser->user['givenName'],
-                $azureUser->user['surname'],
+                $givenName,
+                $surname,
                 $email,
                 null,
-                $azureUser->user['preferredLanguage'] == 'fr-CA' ? 'fr' : 'en'
+                $preferredLanguage
             );
 
             $user = RegisterUser::registerAzureUser($userData);
