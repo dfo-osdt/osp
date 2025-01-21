@@ -22,6 +22,12 @@ class AzureOAuthController extends Controller
 
     public function callback(Request $request)
     {
+
+        // is user aleady logged in?
+        if (Auth::check()) {
+            return redirect()->intended('/#/auth/login');
+        }
+
         // handle possible errors
         if ($request->has('error')) {
             $errorDescription = urlencode($request->query('error_description') ?? 'Unknown error');

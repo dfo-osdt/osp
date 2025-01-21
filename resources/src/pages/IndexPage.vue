@@ -43,6 +43,7 @@ const authStore = useAuthStore()
                 :to="{ name: 'login' }"
               />
               <q-btn
+                v-if="!authStore.openAuthOnly"
                 size="lg"
                 class="q-ml-md"
                 outline
