@@ -23,7 +23,7 @@ class AzureOAuthController extends Controller
     public function callback(Request $request)
     {
         // handle possible errors
-        if($request->has('error')) {
+        if ($request->has('error')) {
             $errorDescription = urlencode($request->query('error_description') ?? 'Unknown error');
 
             activity()
@@ -31,7 +31,7 @@ class AzureOAuthController extends Controller
                     'ip' => request()->ip(),
                     'error' => $request->query('error'),
                     'error_description' => $errorDescription,
-                    ])
+                ])
                 ->log('Azure OAuth error');
 
             return redirect("/#/auth/login?error=oauth_error&error_description=$errorDescription");
@@ -44,13 +44,13 @@ class AzureOAuthController extends Controller
 
         $user = User::where('email', $email)->first();
 
-        if($user) {
-            if(! $user->active) {
+        if ($user) {
+            if (! $user->active) {
 
                 // if email is already verified but user is not active,
                 // then this user is effectively banned from the system
                 // as this state can only be set by an admin.
-                if($user->hasVerifiedEmail()) {
+                if ($user->hasVerifiedEmail()) {
                     throw ValidationException::withMessages(
                         ['account' => __('Problem with registration, please contact support'),
                         ]);
@@ -70,7 +70,7 @@ class AzureOAuthController extends Controller
                 $azureUser->user['surname'],
                 $email,
                 null,
-                $azureUser->user['preferredLanguage'] == "fr-CA" ? "fr" : "en"
+                $azureUser->user['preferredLanguage'] == 'fr-CA' ? 'fr' : 'en'
             );
 
             $user = RegisterUser::registerAzureUser($userData);
@@ -84,12 +84,12 @@ class AzureOAuthController extends Controller
                 'ip' => request()->ip(),
                 'azure_user_id' => $azureUser->getId(),
                 'azure_user_email' => $azureUser->getEmail(),
-                ])
+            ])
             ->log('Azure OAuth login');
-
 
         // login the user
         Auth::login($user);
+
         return redirect()->intended('/#/auth/login?callback=true');
 
     }

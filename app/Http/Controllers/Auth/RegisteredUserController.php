@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Actions\Accounts\RegisterUser;
 use App\DTOs\RegisterUserData;
+use App\Http\Controllers\Controller;
 use App\Rules\AuthorizedEmailDomain;
 use App\Traits\LocaleTrait;
 use Illuminate\Auth\Events\Registered;
