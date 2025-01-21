@@ -11,7 +11,11 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Azure\AzureOAuthController;
 use Illuminate\Support\Facades\Route;
 
-// These routes are only available if the Azure OAuth integration is disabled
+/**
+ * These routes are only available if the Azure OAuth integration is disabled
+ * They could be used at the same time but this would likely cause confusion
+ * so it is recommended to only use one or the other.
+ */
 if (! config('osp.azure.enable_auth')) {
 
     Route::post('/register', [RegisteredUserController::class, 'store'])
