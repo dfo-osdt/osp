@@ -11,7 +11,6 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Azure\AzureOAuthController;
 use Illuminate\Support\Facades\Route;
 
-
 // These routes are only available if the Azure OAuth integration is disabled
 if (! config('osp.azure.enable_auth')) {
 
