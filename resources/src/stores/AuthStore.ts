@@ -16,6 +16,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
   const { login: sanctumLogin, logout: sanctumLogout } = useSanctum()
   const localeStore = useLocaleStore()
   const idleTimerMin: number = import.meta.env.VITE_IDLE_TIMER_MIN || 30
+  const openAuthOnly = import.meta.env.VITE_AZURE_ENABLE_AUTH === 'true'
   const { t } = i18n.global
 
   // initial state
@@ -177,6 +178,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
   const leftDrawerOpen = useStorage('leftDrawerOpen', true)
 
   return {
+    openAuthOnly,
     user,
     isAuthenticated,
     login,
