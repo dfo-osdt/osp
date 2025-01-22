@@ -25,6 +25,7 @@ class AzureOAuthController extends Controller
     {
 
         // is user aleady logged in?
+        // this happens when a user uses the back button after logging in
         if (Auth::check()) {
             return redirect()->intended('/#/auth/login');
         }

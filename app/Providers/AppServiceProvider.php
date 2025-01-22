@@ -47,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureHealth();
         $this->configureGates();
         $this->configureEvents();
+        $this->configureServices();
 
         // https://spatie.be/docs/laravel-permission/v5/prerequisites#content-schema-limitation-in-mysql
         Schema::defaultStringLength(125);
@@ -104,5 +105,20 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
             $event->extendSocialite('azure', \SocialiteProviders\Azure\Provider::class);
         });
+    }
+
+    private function configureServices(): void
+    {
+        // Microsoft Graph Service
+        if (config('osp.azure.enable_auth')) {
+            $this->app->singleton(\App\Services\MicrosoftGraphService::class, function ($app) {
+                return new \App\Services\MicrosoftGraphService(
+                    config('services.azure.tenant'),
+                    config('services.azure.client_id'),
+                    config('services.azure.client_secret')
+                );
+            });
+        }
+
     }
 }

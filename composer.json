@@ -24,6 +24,7 @@
     "laravel/telescope": "^5.0.4",
     "laravel/tinker": "^2.9.0",
     "league/flysystem-aws-s3-v3": "^3.27",
+    "microsoft/microsoft-graph": "^2.23",
     "openai-php/laravel": "^0.10.1",
     "predis/predis": "^2.2.2",
     "rappasoft/laravel-authentication-log": "^4.0",
@@ -122,7 +123,8 @@
     "sort-packages": true,
     "allow-plugins": {
       "pestphp/pest-plugin": true,
-      "php-http/discovery": true
+      "php-http/discovery": true,
+      "tbachert/spi": true
     },
     "platform": {
       "php": "8.3"
