@@ -1,23 +1,39 @@
 <script setup lang="ts">
-import type { UserResource } from '../User'
-import { UserService } from '../User'
 import type { ErrorResponse } from '@/api/errors'
+import type { Locale } from '@/stores/LocaleStore'
+import type { AzureDirectoryUserResource } from '../AzureDirectoryUser'
+import type { UserResource } from '../User'
 import { extractErrorMessages } from '@/api/errors'
 import BaseDialog from '@/components/BaseDialog.vue'
 import LocaleSelect from '@/components/LocaleSelect.vue'
-import type { Locale } from '@/stores/LocaleStore'
+import { UserService } from '../User'
+import AzureUserSelect from './AzureUserSelect.vue'
 
 const emits = defineEmits<{
   (event: 'created', user: UserResource): void
 }>()
 const localStore = useLocaleStore()
+const authStore = useAuthStore()
 const { t } = useI18n()
+
+// azure directory integration
+const enableAzureDirectory = ref(authStore.openAuthOnly)
+const selectedAzureUser = ref<AzureDirectoryUserResource | null>(null)
 
 // data
 const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
 const locale = ref<Locale>(localStore.locale)
+
+watch(() => selectedAzureUser.value, (user) => {
+  if (user) {
+    firstName.value = user.data.first_name
+    lastName.value = user.data.last_name
+    email.value = user.data.email
+    locale.value = user.data.locale
+  }
+})
 
 // invitation logic
 const loading = ref(false)
@@ -54,8 +70,8 @@ const emailRules = [
 
 <template>
   <BaseDialog :title="$t('invite-user-dialog.invite-a-user')">
-    <q-card-section>
-      <p class="q-ma-md">
+    <q-card-section class="q-mx-md">
+      <p>
         {{ $t('invite-user-dialog.help') }}
       </p>
     </q-card-section>
@@ -65,23 +81,33 @@ const emailRules = [
       </template>
       <div>{{ errorMessage.message }}</div>
     </q-banner>
+    <q-card-section v-if="enableAzureDirectory" class="q-mx-md">
+      <div class="text-primary text-weight-bold">
+        Search the DFO Directory
+      </div>
+      <p>Search the DFO user directory by email to invite the selected user.</p>
+      <AzureUserSelect v-model="selectedAzureUser" />
+    </q-card-section>
     <q-card-section class="q-mx-md">
       <q-form @submit.prevent="onSubmit">
         <q-input
           v-model="firstName"
           :label="$t('common.first-name')"
+          :readonly="enableAzureDirectory"
           outlined
           :rules="nameRules"
         />
         <q-input
           v-model="lastName"
           :label="$t('common.last-name')"
+          :readonly="enableAzureDirectory"
           outlined
           :rules="nameRules"
         />
         <q-input
           v-model="email"
           :label="$t('common.email')"
+          :readonly="enableAzureDirectory"
           type="email"
           outlined
           :rules="emailRules"

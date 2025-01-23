@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Exception;
+use Microsoft\Graph\Generated\Models\User;
 use Microsoft\Graph\Generated\Users\UsersRequestBuilderGetRequestConfiguration;
 use Microsoft\Graph\GraphServiceClient;
 use Microsoft\Kiota\Authentication\Oauth\ClientCredentialContext;
@@ -25,7 +27,14 @@ class MicrosoftGraphService
         $this->client = new GraphServiceClient($tokenRequestContext);
     }
 
-    public function searchForUserByEmail(string $needle, string $emailDomain = 'dfo-mpo.gc.ca')
+    /**
+     * Search for a user by email
+     *
+     * @return User[]
+     *
+     * @throws Exception
+     */
+    public function searchForUserByEmail(string $needle, string $emailDomain = 'dfo-mpo.gc.ca'): array
     {
 
         $config = new UsersRequestBuilderGetRequestConfiguration;
@@ -37,15 +46,15 @@ class MicrosoftGraphService
         $params->top = 20;
         $params->filter = "endswith(mail, '{$emailDomain}')";
         $params->filter .= " and startswith(mail, '{$needle}')";
-        $params->count = true; // Add this line
+        $params->count = true;
         $config->queryParameters = $params;
         try {
             $users = $this->client->users()->get($config)->wait();
+
+            return $users->getValue();
         } catch (\Exception $e) {
             throw $e;
         }
-
-        return $users;
 
     }
 }

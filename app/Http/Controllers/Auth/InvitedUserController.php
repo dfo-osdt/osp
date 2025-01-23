@@ -11,8 +11,8 @@ use App\Rules\AuthorizedEmailDomain;
 use Hash;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Str;
 
 class InvitedUserController extends Controller
 {

@@ -11,17 +11,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AzureOAuthController extends Controller
 {
-    public function redirect()
+    public function redirect(): RedirectResponse
     {
 
         return Socialite::driver('azure')->redirect();
 
     }
 
-    public function callback(Request $request)
+    public function callback(Request $request): RedirectResponse
     {
 
         // is user aleady logged in?
@@ -74,7 +75,7 @@ class AzureOAuthController extends Controller
             // User does not exist in the system, let's create them.
             $givenName = $azureUser->user['givenName'] ?? Str::of($azureUser->getName())->before(' ');
             $surname = $azureUser->user['surname'] ?? Str::of($azureUser->getName())->after(' ');
-            $preferredLanguage = $azureUser->user['preferredLanguage'] ?? 'en';
+            $preferredLanguage = ($azureUser->user['preferredLanguage'] ?? 'en') == 'fr-CA' ? 'fr' : 'en';
 
             $userData = new RegisterUserData(
                 $givenName,
