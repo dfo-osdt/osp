@@ -81,7 +81,7 @@ function optionLabel(item: AzureDirectoryUserResource) {
     :readonly="props.readonly"
     :rules="rules"
     :hide-hint="props.readonly"
-    hint="Start typing an email to search for a DFO user"
+    :hint="t('azure-user-select.search-hint')"
     @filter="filterUsers"
     @clear="modelValue = null"
   >

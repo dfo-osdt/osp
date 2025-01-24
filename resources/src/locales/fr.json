@@ -839,5 +839,8 @@
   "submit-to-pub-team-dialog": {
     "text": "Félicitations! L'équipe de publication du SEO prendra contact avec vous et/ou les auteurs correspondants peu après la soumission.",
     "title": "Soumettre à l'équipe de publication du SEO"
+  },
+  "azure-user-select": {
+    "search-hint": "Commencez à taper un courriel pour rechercher un utilisateur du MPO"
   }
 }
