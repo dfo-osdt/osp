@@ -151,6 +151,15 @@ class LocalTestDataSeeder extends Seeder
         ]);
         $adminUser->assignRole('admin');
 
+        // add an announcement
+
+        \App\Models\Announcement::factory()->create([
+            'title_en' => 'Test Announcement',
+            'title_fr' => 'Annonce de test',
+            'text_en' => 'This is a test announcement.',
+            'text_fr' => 'Ceci est une annonce de test.',
+        ]);
+
         activity()->enableLogging();
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\AuthorEmploymentController;
 use App\Http\Controllers\AuthorExpertiseController;
+use App\Http\Controllers\Azure\AzureDirectorySearchController;
 use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunctionalAreaController;
 use App\Http\Controllers\FunderController;
@@ -47,7 +48,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/announcements', CheckAnnouncementController::class);
 Route::get('/orcid/callback', [FullFlowController::class, 'callback']);
 
-// Need to ben authenticated to access these routes
+// Need to be authenticated to access these routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(AuthenticatedUserController::class)->group(function () {
         Route::get('/user', 'user');
@@ -58,6 +59,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes for 3-legged OAuth flow
     Route::get('/user/orcid/verify', [FullFlowController::class, 'redirect']);
     Route::post('/user/orcid/revoke', RevokeTokenController::class);
+
+    // Look for AAD users to invite
+    Route::post('/azure-directory/users', [AzureDirectorySearchController::class, '__invoke']);
 
     Route::controller(AuthorController::class)->group(function () {
         Route::get('/authors', 'index');

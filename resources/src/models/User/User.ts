@@ -1,7 +1,7 @@
+import type { Locale } from '@/stores/LocaleStore'
 import type { AuthorResource } from '../Author/Author'
 import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import { http } from '@/api/http'
-import type { Locale } from '@/stores/LocaleStore'
 
 export interface User {
   readonly id: number
@@ -13,7 +13,7 @@ export interface User {
   author?: AuthorResource
 }
 
-type InviteUserRequest = Omit<User, 'id' | 'author'>
+type InviteUserRequest = Omit<User, 'id' | 'author' | 'sensitivity_label'>
 
 export type UserResource = Resource<User>
 export type UserResourceList = ResourceList<UserResource>

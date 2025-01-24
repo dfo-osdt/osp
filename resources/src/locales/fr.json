@@ -417,7 +417,12 @@
     "email-verified-text": "Courriel verifié. \nVous pouvez maintenant vous connecter.",
     "forgot-your-password": "Mot de passe oublié?",
     "new-password-required": "Vous avez été redirigé car votre compte nécessite un nouveau mot de passe.",
-    "remember-me": "Se souvenir de moi"
+    "remember-me": "Se souvenir de moi",
+    "login-with-microsoft": "Connectez-vous avec Microsoft - Compte professionnel du MPO",
+    "login-with-oauth": "Pour accéder au portail, veuillez vous connecter en utilisant vos identifiants du MPO. En cliquant sur le bouton \"Connectez-vous avec Microsoft\", vous serez redirigé vers la page de connexion sécurisée de DFO. Il s'agit du même système que vous utilisez pour accéder aux services Microsoft 365. Une fois authentifié, vous serez redirigé vers le portail.",
+    "login-with-oauth-2": "Si vous avez des questions ou rencontrez des problèmes, veuillez contacter notre équipe de support pour obtenir de l'aide.",
+    "login-with-oauth-header": "Bienvenue !",
+    "oauth-error": "Il y a eu un problème avec l'authentification, veuillez réessayer."
   },
   "logout-card": {
     "text": "Merci d'utiliser le portail science ouverte.",
@@ -834,5 +839,8 @@
   "submit-to-pub-team-dialog": {
     "text": "Félicitations! L'équipe de publication du SEO prendra contact avec vous et/ou les auteurs correspondants peu après la soumission.",
     "title": "Soumettre à l'équipe de publication du SEO"
+  },
+  "azure-user-select": {
+    "search-hint": "Commencez à taper un courriel pour rechercher un utilisateur du MPO"
   }
 }

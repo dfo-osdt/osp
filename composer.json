@@ -20,14 +20,17 @@
     "laravel/prompts": "^0.3.1",
     "laravel/pulse": "^1.2",
     "laravel/sanctum": "^4.0.2",
+    "laravel/socialite": "^5.16",
     "laravel/telescope": "^5.0.4",
     "laravel/tinker": "^2.9.0",
     "league/flysystem-aws-s3-v3": "^3.27",
+    "microsoft/microsoft-graph": "^2.23",
     "openai-php/laravel": "^0.10.1",
     "predis/predis": "^2.2.2",
     "rappasoft/laravel-authentication-log": "^4.0",
     "saloonphp/laravel-plugin": "^3.5",
     "saloonphp/saloon": "^3.8.1",
+    "socialiteproviders/microsoft-azure": "^5.2",
     "spatie/laravel-activitylog": "^4.8",
     "spatie/laravel-backup": "^9.0",
     "spatie/laravel-csp": "^2.10",
@@ -88,7 +91,7 @@
     ],
     "dev": [
       "Composer\\Config::disableProcessTimeout",
-      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan horizon\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
+      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve --host localhost\" \"php artisan horizon\" \"php artisan pail --timeout=0\" \"pnpm run dev\" --names=server,queue,logs,vite"
     ],
     "lint": [
       "pint"
@@ -120,7 +123,8 @@
     "sort-packages": true,
     "allow-plugins": {
       "pestphp/pest-plugin": true,
-      "php-http/discovery": true
+      "php-http/discovery": true,
+      "tbachert/spi": true
     },
     "platform": {
       "php": "8.3"

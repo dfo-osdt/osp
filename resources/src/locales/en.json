@@ -419,7 +419,12 @@
     "email-verified-text": "Email verified. You may now login.",
     "forgot-your-password": "Forgot your password?",
     "new-password-required": "You've been redirected because your account requires a new password.",
-    "remember-me": "Remember me"
+    "remember-me": "Remember me",
+    "login-with-microsoft": "Sign-in with Microsoft - DFO Work Account",
+    "login-with-oauth": "To access the portal, please sign in using your DFO credentials. By clicking the \"Sign-in with Microsoft\" button, you will be redirected to DFO's secure login page. This is the same system you use to access Microsoft 365 services. Once authenticated, you will redirected to the portal.",
+    "login-with-oauth-2": "If you have any questions or encounter any issues, please contact our support team for assistance.",
+    "login-with-oauth-header": "Welcome!",
+    "oauth-error": "There was a problem with the authentication, please try again."
   },
   "logout-card": {
     "text": "Thank you for using the Open Science Portal.",
@@ -836,5 +841,8 @@
   "submit-to-pub-team-dialog": {
     "title": "Submit to the EOS Publication Team",
     "text": "Congratulations! The EOS publication team will be in touch with you and/or the corresponding author(s) shortly after the submission."
+  },
+  "azure-user-select": {
+    "search-hint": "Start typing an email to search for a DFO user"
   }
 }

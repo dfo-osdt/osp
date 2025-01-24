@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { useQuasar } from 'quasar'
 import type { ErrorResponse } from '@/api/errors'
+import type { Ref } from 'vue'
 import { extractErrorMessages } from '@/api/errors'
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue'
+import { useQuasar } from 'quasar'
 
 const authStore = useAuthStore()
 const localeStore = useLocaleStore()
@@ -66,11 +66,18 @@ onMounted(async () => {
       router.push(router.currentRoute.value.query.redirect as string)
     }
     else {
-      $q.notify({
-        message: t('auth.redirected'),
-        type: 'info',
-        icon: 'mdi-information-outline',
-      })
+      // someone trying to access login page while already logged in
+      // or a callback from a social login
+      if (!router.currentRoute.value.query?.callback) {
+        $q.notify({
+          message: t('auth.redirected'),
+          type: 'info',
+          icon: 'mdi-information-outline',
+        })
+      }
+      else {
+        notifyUserLastLogin()
+      }
       router.push({ name: 'dashboard' })
     }
   }
@@ -80,6 +87,21 @@ onMounted(async () => {
       message: t('login-card.email-verified-text'),
       type: 'info',
       icon: 'mdi-information-outline',
+    })
+  }
+
+  // handle OAuth callback error
+  if (router.currentRoute.value.query?.error === 'oauth_error') {
+    const errorDescription = router.currentRoute.value.query?.error_description as string
+    errorMessage.value = {
+      code: 403,
+      message: errorDescription,
+      errors: [],
+    }
+    $q.notify({
+      message: t('login-card.oauth-error'),
+      type: 'negative',
+      icon: 'mdi-alert-circle-outline',
     })
   }
 })
@@ -141,7 +163,7 @@ function notifyUserLastLogin() {
 </script>
 
 <template>
-  <q-card>
+  <q-card v-if="!authStore.openAuthOnly">
     <q-card-section class="bg-primary text-white">
       <div class="text-h5">
         {{ t('common.login') }}
@@ -213,6 +235,35 @@ function notifyUserLastLogin() {
           </router-link>
         </div>
       </q-form>
+    </q-card-section>
+  </q-card>
+  <q-card v-if="authStore.openAuthOnly" bordered>
+    <q-banner v-if="errorMessage" dark class="bg-negative">
+      <template #avatar>
+        <q-icon name="mdi-alert-circle-outline" />
+      </template>
+      <div>{{ errorMessage.message }}</div>
+    </q-banner>
+    <q-card-section class="flex justify-center">
+      <h6 class="q-my-sm text-primary">
+        {{ t('login-card.login-with-oauth-header') }}
+      </h6>
+      <p class="text-grey-7">
+        {{ t('login-card.login-with-oauth') }}
+      </p>
+      <p class="text-grey-7">
+        {{ t('login-card.login-with-oauth-2') }}
+      </p>
+    </q-card-section>
+    <q-card-section class="flex justify-center q-mb-lg">
+      <q-btn
+        :label="t('login-card.login-with-microsoft')"
+        color="white"
+        text-color="primary"
+        icon="img:/assets/mssymbol_19.svg"
+        href="/oauth/azure/redirect"
+        class="text-capitalize"
+      />
     </q-card-section>
   </q-card>
 </template>

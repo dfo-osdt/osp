@@ -81,6 +81,7 @@ function unmutedAnnouncement() {
     :disable="!announcements"
     :icon="announcements?.data.length ? 'mdi-bell-badge' : 'mdi-bell-outline'"
     class="q-mb-xs"
+    aria-label="Announcements"
     @click="unmutedAnnouncement"
   >
     <q-tooltip anchor="top left" self="bottom right">
