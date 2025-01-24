@@ -27,7 +27,7 @@
         "@quasar/vite-plugin": "^1.9.0",
         "@types/node": "^22.10.10",
         "axios": "^1.7.9",
-        "cypress": "^13.17.0",
+        "cypress": "^14.0.0",
         "eslint": "^9.18.0",
         "eslint-plugin-quasar": "^1.1.0",
         "globals": "^15.14.0",
