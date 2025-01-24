@@ -64,7 +64,7 @@ async function filterJournals(val: string, update: (arg: () => Promise<void>) =>
         .filter('search', needle)
         .sort('title-length', 'asc')
         .sort('title', 'asc')
-        .paginate(1, 10)
+        .paginate(1, 12)
 
       if (props.dfoSeriesOnly) {
         query.filter('dfo_series', 'true')
