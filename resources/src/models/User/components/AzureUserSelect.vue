@@ -33,7 +33,7 @@ const search = useDebounceFn(async (val: string) => {
   }
 }, 200)
 
-async function filterUsers(val: string, update, abort) {
+async function filterUsers(val: string, update: any) {
   lastSearchTerm.value = val
   update(async () => {
     if (val === '') {
