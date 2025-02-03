@@ -16,7 +16,7 @@ importers:
         version: 1.16.16
       '@vitejs/plugin-vue':
         specifier: ^5.2.1
-        version: 5.2.1(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+        version: 5.2.1(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@vueuse/core':
         specifier: ^12.5.0
         version: 12.5.0(typescript@5.7.3)
@@ -50,10 +50,10 @@ importers:
         version: 3.16.0(@typescript-eslint/utils@8.22.0(eslint@9.19.0)(typescript@5.7.3))(@vue/compiler-sfc@3.5.13)(eslint@9.19.0)(typescript@5.7.3)
       '@quasar/vite-plugin':
         specifier: ^1.9.0
-        version: 1.9.0(@vitejs/plugin-vue@5.2.1(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3)))(quasar@2.17.7)(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+        version: 1.9.0(@vitejs/plugin-vue@5.2.1(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3)))(quasar@2.17.7)(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@types/node':
-        specifier: ^22.12.0
-        version: 22.12.0
+        specifier: ^22.13.0
+        version: 22.13.0
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -71,7 +71,7 @@ importers:
         version: 15.14.0
       laravel-vite-plugin:
         specifier: ^1.2.0
-        version: 1.2.0(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))
+        version: 1.2.0(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -86,7 +86,7 @@ importers:
         version: 19.0.0(@vueuse/core@12.5.0(typescript@5.7.3))(rollup@4.32.1)
       vite:
         specifier: ^6.0.11
-        version: 6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)
+        version: 6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)
       vue-tsc:
         specifier: ^2.2.0
         version: 2.2.0(typescript@5.7.3)
@@ -724,8 +724,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@22.12.0':
-    resolution: {integrity: sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==}
+  '@types/node@22.13.0':
+    resolution: {integrity: sha512-ClIbNe36lawluuvq3+YYhnIN2CELi+6q8NpnM7PYp4hBn/TatfboPgVSm2rwKRfnV2M+Ty9GWDFI64KEe+kysA==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -3295,11 +3295,11 @@ snapshots:
 
   '@quasar/extras@1.16.16': {}
 
-  '@quasar/vite-plugin@1.9.0(@vitejs/plugin-vue@5.2.1(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3)))(quasar@2.17.7)(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))':
+  '@quasar/vite-plugin@1.9.0(@vitejs/plugin-vue@5.2.1(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3)))(quasar@2.17.7)(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
-      '@vitejs/plugin-vue': 5.2.1(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@vitejs/plugin-vue': 5.2.1(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       quasar: 2.17.7
-      vite: 6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)
+      vite: 6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)
       vue: 3.5.13(typescript@5.7.3)
 
   '@rollup/pluginutils@5.1.4(rollup@4.32.1)':
@@ -3400,7 +3400,7 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@22.12.0':
+  '@types/node@22.13.0':
     dependencies:
       undici-types: 6.20.0
 
@@ -3419,7 +3419,7 @@ snapshots:
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 22.12.0
+      '@types/node': 22.13.0
     optional: true
 
   '@typescript-eslint/eslint-plugin@8.22.0(@typescript-eslint/parser@8.22.0(eslint@9.19.0)(typescript@5.7.3))(eslint@9.19.0)(typescript@5.7.3)':
@@ -3499,9 +3499,9 @@ snapshots:
       '@typescript-eslint/types': 8.22.0
       eslint-visitor-keys: 4.2.0
 
-  '@vitejs/plugin-vue@5.2.1(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))':
+  '@vitejs/plugin-vue@5.2.1(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
-      vite: 6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)
+      vite: 6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)
       vue: 3.5.13(typescript@5.7.3)
 
   '@vitest/eslint-plugin@1.1.25(@typescript-eslint/utils@8.22.0(eslint@9.19.0)(typescript@5.7.3))(eslint@9.19.0)(typescript@5.7.3)':
@@ -4600,10 +4600,10 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  laravel-vite-plugin@1.2.0(vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)):
+  laravel-vite-plugin@1.2.0(vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)):
     dependencies:
       picocolors: 1.1.1
-      vite: 6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)
+      vite: 6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0)
       vite-plugin-full-reload: 1.2.0
 
   lazy-ass@1.6.0: {}
@@ -5682,13 +5682,13 @@ snapshots:
 
   vite-plugin-manifest-sri@0.2.0: {}
 
-  vite@6.0.11(@types/node@22.12.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0):
+  vite@6.0.11(@types/node@22.13.0)(sass-embedded@1.83.4)(sass@1.80.3)(yaml@2.7.0):
     dependencies:
       esbuild: 0.24.2
       postcss: 8.5.1
       rollup: 4.32.1
     optionalDependencies:
-      '@types/node': 22.12.0
+      '@types/node': 22.13.0
       fsevents: 2.3.3
       sass: 1.80.3
       sass-embedded: 1.83.4
