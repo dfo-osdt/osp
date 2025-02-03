@@ -3292,16 +3292,16 @@
         },
         {
             "name": "guzzlehttp/uri-template",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/uri-template.git",
-                "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c"
+                "reference": "30e286560c137526eccd4ce21b2de477ab0676d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/ecea8feef63bd4fef1f037ecb288386999ecc11c",
-                "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c",
+                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/30e286560c137526eccd4ce21b2de477ab0676d2",
+                "reference": "30e286560c137526eccd4ce21b2de477ab0676d2",
                 "shasum": ""
             },
             "require": {
@@ -3358,7 +3358,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/uri-template/issues",
-                "source": "https://github.com/guzzle/uri-template/tree/v1.0.3"
+                "source": "https://github.com/guzzle/uri-template/tree/v1.0.4"
             },
             "funding": [
                 {
@@ -3374,7 +3374,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-03T19:50:20+00:00"
+            "time": "2025-02-03T10:55:03+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -11146,16 +11146,16 @@
         },
         {
             "name": "staudenmeir/laravel-adjacency-list",
-            "version": "v1.23.2",
+            "version": "v1.23.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/laravel-adjacency-list.git",
-                "reference": "3518f87e840fcdcbd2d958eb9c0f402f003bd7cd"
+                "reference": "9c0945dcd8311a54858c90d09fee6316943aa387"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/laravel-adjacency-list/zipball/3518f87e840fcdcbd2d958eb9c0f402f003bd7cd",
-                "reference": "3518f87e840fcdcbd2d958eb9c0f402f003bd7cd",
+                "url": "https://api.github.com/repos/staudenmeir/laravel-adjacency-list/zipball/9c0945dcd8311a54858c90d09fee6316943aa387",
+                "reference": "9c0945dcd8311a54858c90d09fee6316943aa387",
                 "shasum": ""
             },
             "require": {
@@ -11204,7 +11204,7 @@
             "description": "Recursive Laravel Eloquent relationships with CTEs",
             "support": {
                 "issues": "https://github.com/staudenmeir/laravel-adjacency-list/issues",
-                "source": "https://github.com/staudenmeir/laravel-adjacency-list/tree/v1.23.2"
+                "source": "https://github.com/staudenmeir/laravel-adjacency-list/tree/v1.23.3"
             },
             "funding": [
                 {
@@ -11212,7 +11212,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-01-25T13:09:10+00:00"
+            "time": "2025-02-02T11:58:57+00:00"
         },
         {
             "name": "staudenmeir/laravel-cte",
@@ -18746,5 +18746,5 @@
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
