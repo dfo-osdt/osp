@@ -105,6 +105,9 @@
     "test:feature": [
       "pest --parallel --ci"
     ],
+    "test:cy:open": [
+      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"pnpm run dev\" \"php artisan serve --env=ci\" \"php artisan pail --timeout=0\" \"pnpm run cy:open\"  --names=vite,server,logs,cypress"
+    ],
     "test": [
       "@test:lint",
       "@test:types",
