@@ -71,7 +71,7 @@ class PublicationAuthorController extends Controller
      */
     public function update(Request $request, Publication $publication, PublicationAuthor $publicationAuthor): JsonResource
     {
-        Gate::authorize('update', $publication);
+        Gate::authorize('update', $publicationAuthor);
 
         $validated = $request->validate([
             // 'author_id' => 'integer|exists:authors,id',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Publication;
 use App\Models\PublicationAuthor;
 
 test('a user can get the publication authors associated with a publication', function () {
@@ -67,4 +68,40 @@ test('a user cannot add the same author twice on a publication', function () {
     $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
         'author_id' => $author->id,
     ])->assertInvalid('author_id');
+});
+
+test('an editor or chief editor can manage publication authors', function () {
+    // create a publication with 3 authors
+    $publication = Publication::factory()->has(PublicationAuthor::factory()->count(3))->create();
+    $chiefEditor = \App\Models\User::factory()->chiefEditor()->create();
+
+    // chief editor can edit any publication author
+    $response = $this->actingAs($chiefEditor)->putJson('/api/publications/'.$publication->id.'/publication-authors/'.$publication->publicationAuthors()->first()->id, [
+        'is_corresponding_author' => true,
+    ])->assertOk();
+
+    // try to remove an author
+    $response = $this->actingAs($chiefEditor)
+        ->deleteJson('/api/publications/'.$publication->id.'/publication-authors/'.$publication->publicationAuthors()->first()->id)
+        ->assertStatus(204);
+
+    // check that publication has only 2 authors
+    expect($publication->publicationAuthors()->count())->toBe(2);
+
+    // try again with an editor
+    $editor = \App\Models\User::factory()->editor()->create();
+
+    // editor can edit any publication author
+    $response = $this->actingAs($editor)->putJson('/api/publications/'.$publication->id.'/publication-authors/'.$publication->publicationAuthors()->first()->id, [
+        'is_corresponding_author' => true,
+    ])->assertOk();
+
+    // try to remove an author
+    $response = $this->actingAs($editor)
+        ->deleteJson('/api/publications/'.$publication->id.'/publication-authors/'.$publication->publicationAuthors()->first()->id)
+        ->assertStatus(204);
+
+    // check that publication has only 1 author
+    expect($publication->publicationAuthors()->count())->toBe(1);
+
 });

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Permissions\UserPermission;
 use App\Models\PublicationAuthor;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -47,6 +48,11 @@ class PublicationAuthorPolicy
      */
     public function update(User $user, PublicationAuthor $publicationAuthor)
     {
+
+        if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
+            return true;
+        }
+
         $publicationAuthor->load('publication');
 
         return $user->id === $publicationAuthor->publication->user_id;
@@ -59,6 +65,10 @@ class PublicationAuthorPolicy
      */
     public function delete(User $user, PublicationAuthor $publicationAuthor)
     {
+        if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
+            return true;
+        }
+
         $publicationAuthor->load('publication');
 
         return $user->id === $publicationAuthor->publication->user_id;
