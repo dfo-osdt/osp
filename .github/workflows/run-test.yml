@@ -53,4 +53,3 @@ jobs:
           CYPRESS_baseUrl: http://127.0.0.1:8000
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CYPRESS_RUN_BINARY: /home/actions/.cache/Cypress/13.17.0/Cypress/Cypress
