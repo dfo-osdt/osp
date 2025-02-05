@@ -34,11 +34,11 @@ jobs:
       - name: pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: latest
-      - name: Use Node.js 21.x
+          version: 10
+      - name: Use Node.js 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: '21'
+          node-version: '22'
       - name: Execute Cypress tests
         uses: cypress-io/github-action@v6
         with:
