@@ -1,4 +1,113 @@
 {
+  "filament.exports.download": {
+    "name": "filament.exports.download",
+    "domain": null,
+    "action": "Filament\\Actions\\Exports\\Http\\Controllers\\DownloadExport",
+    "uri": "filament/exports/{export}/download",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.imports.failed-rows.download": {
+    "name": "filament.imports.failed-rows.download",
+    "domain": null,
+    "action": "Filament\\Actions\\Imports\\Http\\Controllers\\DownloadImportFailureCsv",
+    "uri": "filament/imports/{import}/failed-rows/download",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.auth.login": {
+    "name": "filament.librarium.auth.login",
+    "domain": null,
+    "action": "App\\Filament\\Requests\\Auth\\LoginRequest",
+    "uri": "librarium/login",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.auth.logout": {
+    "name": "filament.librarium.auth.logout",
+    "domain": null,
+    "action": "Filament\\Http\\Controllers\\Auth\\LogoutController",
+    "uri": "librarium/logout",
+    "method": [
+      "POST"
+    ]
+  },
+  "filament.librarium.pages.dashboard": {
+    "name": "filament.librarium.pages.dashboard",
+    "domain": null,
+    "action": "Filament\\Pages\\Dashboard",
+    "uri": "librarium",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.announcements.index": {
+    "name": "filament.librarium.resources.announcements.index",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\AnnouncementResource\\Pages\\ListAnnouncements",
+    "uri": "librarium/announcements",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.announcements.create": {
+    "name": "filament.librarium.resources.announcements.create",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\AnnouncementResource\\Pages\\CreateAnnouncement",
+    "uri": "librarium/announcements/create",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.announcements.edit": {
+    "name": "filament.librarium.resources.announcements.edit",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\AnnouncementResource\\Pages\\EditAnnouncement",
+    "uri": "librarium/announcements/{record}/edit",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.users.index": {
+    "name": "filament.librarium.resources.users.index",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\UserResource\\Pages\\ListUsers",
+    "uri": "librarium/users",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.users.create": {
+    "name": "filament.librarium.resources.users.create",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\UserResource\\Pages\\CreateUser",
+    "uri": "librarium/users/create",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.users.edit": {
+    "name": "filament.librarium.resources.users.edit",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\UserResource\\Pages\\EditUser",
+    "uri": "librarium/users/{record}/edit",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
   "cypress.factory": {
     "name": "cypress.factory",
     "domain": null,
@@ -439,15 +548,6 @@
       "POST"
     ]
   },
-  "logout": {
-    "name": "logout",
-    "domain": null,
-    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
-    "uri": "logout",
-    "method": [
-      "POST"
-    ]
-  },
   "change.password": {
     "name": "change.password",
     "domain": null,
@@ -465,6 +565,15 @@
     "method": [
       "GET",
       "HEAD"
+    ]
+  },
+  "logout": {
+    "name": "logout",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
+    "uri": "logout",
+    "method": [
+      "POST"
     ]
   }
 }
