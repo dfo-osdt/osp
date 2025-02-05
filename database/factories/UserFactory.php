@@ -133,6 +133,11 @@ class UserFactory extends Factory
         return $this->withRoles([UserRole::EDITOR]);
     }
 
+    /**
+     * User is a chief editor
+     *
+     * @return static
+     */
     public function chiefEditor()
     {
         return $this->withRoles([UserRole::CHIEF_EDITOR]);
