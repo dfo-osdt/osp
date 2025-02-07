@@ -106,7 +106,7 @@ The commit message should be structured as follows:
 ### Backend Tests
 
 ```sh
-php artisan test
+composer run test
 ```
 
 ### Frontend Tests
@@ -116,11 +116,11 @@ We use Cypress for the front-end E2E tests. It must run with the
 
 Before starting the test, start the dev server. For the frontend,
 you can either use `pnpnm dev` or `pnmp build`. In most cases, `dev`
-is better as changes to the code can instantently be tested again.
+is better as changes to the code can instantly be tested again.
 
 ```sh
 pnpm dev
-php artisan server --env=ci
+php artisan serve --env=ci
 ```
 
 Once the local server is up and running, you can launch Cypress
