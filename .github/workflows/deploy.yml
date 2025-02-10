@@ -13,6 +13,11 @@ on:
 jobs:
   build-release:
     runs-on: self-hosted
+    env:
+      VITE_IDLE_TIMER_MIN: 30
+      VITE_OSP_DEFAULT_ORG: 1
+      VITE_OSP_MAX_UPLOAD_SIZE_MB: 200
+      VITE_AZURE_ENABLE_AUTH: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,9 +34,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-
-      - name: Create .env file (required for VITE env variables)
-        run: cp .env.example .env
 
       - name: Build
         run: pnpm run build
