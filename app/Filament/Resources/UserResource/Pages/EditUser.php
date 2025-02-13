@@ -28,16 +28,25 @@ class EditUser extends EditRecord
     }
 
     /**
-     * Force fill the Active attribute without having to make Active castable.
+     * Execute actions before applying changes to the database.
      */
     protected function beforeSave(): void
     {
         if (! $this->record instanceof \App\Models\User) {
             return;
         }
-        $this->record->active = $this->data['active'];
-        $this->record->save();
+        
+        // log password change
+        if ($this->record->password != $this->data['password'] and $this->data['password']) {
+            $this->logPasswordChange();
+        };
+        // update active status
+        if ($this->record->active != $this->data['active']) {
+            $this->saveActiveStatus();
+        };
+        
     }
+
 
     /**
      * Get the URL to redirect to after performing an action in the EditUser page.
@@ -51,6 +60,49 @@ class EditUser extends EditRecord
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
+    }
+
+    /**
+     * Log password change and create success notification
+     */
+    public function logPasswordChange(): void
+    {
+        activity()
+            ->causedBy(request()->user())
+            ->performedOn($this->record)
+            ->withProperties([
+                'target_email' => $this->record['email'],
+                'actor_email' => request()->user()->email,
+                'ip' => request()->ip(),
+            ])
+            ->event('password.changed')
+            ->log("Password changed for {$this->record['email']} by " . request()->user()->email);
+
+            Notification::make()
+            ->title('Password Changed')
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Save change in status to the database and log status change 
+     */
+    public function saveActiveStatus(): void
+    {
+        $this->record->active = $this->data['active'];
+        $this->record->save();
+
+        // log active status change
+        activity()
+            ->causedBy(request()->user())
+            ->performedOn($this->record)
+            ->withProperties([
+                'target_email' => $this->record['email'],
+                'actor_email' => request()->user()->email,
+                'ip' => request()->ip(),
+            ])
+            ->event('active.status.changed')
+            ->log("Active status changed for {$this->record['email']} by " . request()->user()->email . ": ". (! $this->record['active'] ? 'active' : 'inactive') . " -> " . ($this->record['active'] ? 'active' : 'inactive'));
     }
 
     /**

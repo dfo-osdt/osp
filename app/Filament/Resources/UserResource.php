@@ -11,6 +11,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Contracts\Role;
 
 class UserResource extends Resource
@@ -35,12 +37,22 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('email')
                             ->filled()
-                            ->rules(['bail', 'required', 'string', 'email', new AuthorizedEmailDomain]),
+                            ->rules(['bail', 'required', 'string', 'email', new AuthorizedEmailDomain])
+                            ->disabled(fn() => config('osp.azure.enable_auth', false)),
                         Forms\Components\CheckboxList::make('roles')
                             ->relationship(titleAttribute: 'name')
-                            ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
+                            ->getOptionLabelFromRecordUsing(fn(Role $record) => UserRole::from($record->name)->label())
                             ->label('Roles'),
                     ]),
+                Forms\Components\Section::make('Change Password')
+                ->schema([
+                    Forms\Components\TextInput::make('password')
+                            ->label('Change Password')
+                            ->password()
+                            ->rules([Password::min(config('auth.password_min_length'))->uncompromised()])
+                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                            ->dehydrated(fn (?string $state): bool => filled($state)),
+                ]),
 
                 Forms\Components\Section::make('Available Actions')
                     ->description('Actions are instantaneous and may disappear once applied!')
@@ -48,18 +60,19 @@ class UserResource extends Resource
                         Forms\Components\Toggle::make('active')
                             ->label('Activate User')
                             ->dehydrated(false)
-                            ->hidden(fn ($record) => $record && ! $record->email_verified_at)
+                            ->hidden(fn($record) => $record && ! $record->email_verified_at)
                             ->onColor('success'),
                         Forms\Components\Actions::make([
                             Forms\Components\Actions\Action::make('reset_password')
                                 ->label('Send Password Reset Email')
+                                ->disabled(fn() => config('osp.azure.enable_auth', false))
                                 ->action('sendPasswordReset'),
                             Forms\Components\Actions\Action::make('verify_email')
                                 ->label('Activate User & Verify Email')
-                                ->disabled(fn ($record) => isset($record->email_verified_at))
+                                ->disabled(fn($record) => isset($record->email_verified_at))
                                 ->action('setVerifiedEmail'),
                         ]),
-                    ]),
+                    ])
             ]);
     }
 
@@ -78,16 +91,16 @@ class UserResource extends Resource
                 Tables\Columns\IconColumn::make('email_verified_at')
                     ->label('Email Verified')
                     ->default('heroicon-o-x-circle')
-                    ->icon(fn ($state) => $state instanceof \DateTime ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
-                    ->color(fn ($state) => $state instanceof \DateTime ? 'success' : 'danger')
+                    ->icon(fn($state) => $state instanceof \DateTime ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
+                    ->color(fn($state) => $state instanceof \DateTime ? 'success' : 'danger')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')
                     ->badge()
-                    ->formatStateUsing(fn (string $state) => UserRole::from($state)->label())
-                    ->color(fn (string $state): string => match (UserRole::from($state)) {
+                    ->formatStateUsing(fn(string $state) => UserRole::from($state)->label())
+                    ->color(fn(string $state): string => match (UserRole::from($state)) {
                         UserRole::AUTHOR => 'success',
                         UserRole::DIRECTOR, UserRole::EDITOR, UserRole::CHIEF_EDITOR => 'warning',
                         UserRole::ADMIN => 'danger',
@@ -106,10 +119,10 @@ class UserResource extends Resource
                     ]),
                 Tables\Filters\Filter::make('no_roles')
                     ->label('No Roles')
-                    ->query(fn ($query) => $query->whereDoesntHave('roles')),
+                    ->query(fn($query) => $query->whereDoesntHave('roles')),
                 Tables\Filters\SelectFilter::make('roles')
                     ->relationship('roles', 'name')
-                    ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
+                    ->getOptionLabelFromRecordUsing(fn(Role $record) => UserRole::from($record->name)->label())
                     ->label('Role'),
             ])
             ->actions([
