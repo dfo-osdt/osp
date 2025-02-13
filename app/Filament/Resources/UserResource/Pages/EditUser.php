@@ -35,18 +35,16 @@ class EditUser extends EditRecord
         if (! $this->record instanceof \App\Models\User) {
             return;
         }
-        
+
         // log password change
         if ($this->record->password != $this->data['password'] and $this->data['password']) {
             $this->logPasswordChange();
-        };
+        }
         // update active status
-        if ($this->record->active != $this->data['active']) {
+        if ($this->record['active'] != $this->data['active']) {
             $this->saveActiveStatus();
-        };
-        
+        }
     }
-
 
     /**
      * Get the URL to redirect to after performing an action in the EditUser page.
@@ -76,20 +74,20 @@ class EditUser extends EditRecord
                 'ip' => request()->ip(),
             ])
             ->event('password.changed')
-            ->log("Password changed for {$this->record['email']} by " . request()->user()->email);
+            ->log("Password changed for {$this->record['email']} by ".request()->user()->email);
 
-            Notification::make()
+        Notification::make()
             ->title('Password Changed')
             ->success()
             ->send();
     }
 
     /**
-     * Save change in status to the database and log status change 
+     * Save change in status to the database and log status change
      */
     public function saveActiveStatus(): void
     {
-        $this->record->active = $this->data['active'];
+        $this->record['active'] = $this->data['active'];
         $this->record->save();
 
         // log active status change
@@ -102,7 +100,7 @@ class EditUser extends EditRecord
                 'ip' => request()->ip(),
             ])
             ->event('active.status.changed')
-            ->log("Active status changed for {$this->record['email']} by " . request()->user()->email . ": ". (! $this->record['active'] ? 'active' : 'inactive') . " -> " . ($this->record['active'] ? 'active' : 'inactive'));
+            ->log("Active status changed for {$this->record['email']} by ".request()->user()->email.': '.(! $this->record['active'] ? 'active' : 'inactive').' -> '.($this->record['active'] ? 'active' : 'inactive'));
     }
 
     /**
