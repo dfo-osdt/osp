@@ -3557,16 +3557,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.42.0",
+            "version": "v11.42.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "006375ba67e830e87daa7b52ab65163ba3508d26"
+                "reference": "ff392f42f6c55cc774ce75553a11c6b031da67f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/006375ba67e830e87daa7b52ab65163ba3508d26",
-                "reference": "006375ba67e830e87daa7b52ab65163ba3508d26",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ff392f42f6c55cc774ce75553a11c6b031da67f8",
+                "reference": "ff392f42f6c55cc774ce75553a11c6b031da67f8",
                 "shasum": ""
             },
             "require": {
@@ -3768,7 +3768,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-02-11T17:17:56+00:00"
+            "time": "2025-02-12T20:58:18+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -10121,16 +10121,16 @@
         },
         {
             "name": "spatie/laravel-health",
-            "version": "1.32.0",
+            "version": "1.32.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-health.git",
-                "reference": "812d35ff4edd991e1f35eebca898f43854689fa5"
+                "reference": "83939a55961001d5dc31379ff9353d0ea1ad56fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-health/zipball/812d35ff4edd991e1f35eebca898f43854689fa5",
-                "reference": "812d35ff4edd991e1f35eebca898f43854689fa5",
+                "url": "https://api.github.com/repos/spatie/laravel-health/zipball/83939a55961001d5dc31379ff9353d0ea1ad56fb",
+                "reference": "83939a55961001d5dc31379ff9353d0ea1ad56fb",
                 "shasum": ""
             },
             "require": {
@@ -10203,7 +10203,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-health/tree/1.32.0"
+                "source": "https://github.com/spatie/laravel-health/tree/1.32.1"
             },
             "funding": [
                 {
@@ -10211,7 +10211,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-13T11:00:12+00:00"
+            "time": "2025-02-14T13:12:17+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
@@ -18745,5 +18745,5 @@
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
