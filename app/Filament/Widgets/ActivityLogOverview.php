@@ -1,34 +1,26 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Widgets;
 
-use App\Filament\Resources\ActivityLogResource\Pages;
-use App\Models\ActivityLog;
-use Filament\Forms\Form;
+use App\Filament\Resources\ActivityLogResource;
 use Filament\Infolists;
 use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Widgets\TableWidget as BaseWidget;
 
-class ActivityLogResource extends Resource
+class ActivityLogOverview extends BaseWidget
 {
-    protected static ?string $model = ActivityLog::class;
+    protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $sort = 2;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                //
-            ]);
-    }
-
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->query(ActivityLogResource::getEloquentQuery())
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Date'),
@@ -37,22 +29,16 @@ class ActivityLogResource extends Resource
                 Tables\Columns\TextColumn::make('subject.email'),
                 Tables\Columns\TextColumn::make('log_name'),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    // ,
-                ]),
+                Tables\Actions\ViewAction::make()
+                    ->modalHeading('Activity Log Details')
+                    ->modalContent(fn ($record) => $this->infolist($record)),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist($record): Infolist
     {
-        return $infolist
+        return Infolists\Infolist::make()
             ->schema([
                 Components\Section::make()
                     ->schema([
@@ -72,27 +58,7 @@ class ActivityLogResource extends Resource
                     ->schema([
                         Infolists\Components\KeyValueEntry::make('properties'),
                     ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    protected static bool $shouldRegisterNavigation = false;
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListActivityLogs::route('/'),
-        ];
+            ])
+            ->record($record);
     }
 }
