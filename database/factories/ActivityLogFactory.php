@@ -2,16 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\ActivityLog;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Activitylog\Models\Activity;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ActivityLog>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Spatie\Activitylog\Models\Activity>
  */
 class ActivityLogFactory extends Factory
 {
-    protected $model = ActivityLog::class;
+    protected $model = Activity::class;
 
     /**
      * Define the model's default state.
@@ -27,11 +27,6 @@ class ActivityLogFactory extends Factory
             'subject_id' => User::factory(),
             'causer_type' => User::class,
             'causer_id' => User::factory(),
-            'properties' => [
-                'subject_email' => $this->faker->safeEmail(),
-                'causer_email' => $this->faker->safeEmail(),
-                'ip' => $this->faker->ipv4(),
-            ],
             'event' => $this->faker->randomElement(['created', 'updated', 'deleted', 'logged.in']),
             'created_at' => $this->faker->dateTimeBetween('-10 minute', '-1 minute'),
             'updated_at' => $this->faker->dateTimeBetween('now'),

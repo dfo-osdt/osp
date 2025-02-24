@@ -8,8 +8,11 @@ use App\Models\User;
 use App\Rules\AuthorizedEmailDomain;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -20,6 +23,8 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Form $form): Form
     {
@@ -65,11 +70,11 @@ class UserResource extends Resource
                         Forms\Components\Actions::make([
                             Forms\Components\Actions\Action::make('reset_password')
                                 ->label('Send Password Reset Email')
-                                ->disabled(fn () => config('osp.azure.enable_auth', false))
+                                ->disabled(fn () => config('osp.azure.enable_auth', false) || ! request()->routeIs('filament.librarium.resources.users.edit'))
                                 ->action('sendPasswordReset'),
                             Forms\Components\Actions\Action::make('verify_email')
                                 ->label('Activate User & Verify Email')
-                                ->disabled(fn ($record) => isset($record->email_verified_at))
+                                ->disabled(fn ($record) => isset($record->email_verified_at) || ! request()->routeIs('filament.librarium.resources.users.edit'))
                                 ->action('setVerifiedEmail'),
                         ]),
                     ]),
@@ -124,8 +129,9 @@ class UserResource extends Resource
                     ->relationship('roles', 'name')
                     ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
                     ->label('Role'),
-            ])
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -139,7 +145,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // ...
         ];
     }
 
@@ -147,8 +153,26 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
+            'view' => Pages\ViewUser::route('/{record}'),
+            'log' => Pages\LogUser::route('/{record}/log'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewUser::class,
+            Pages\EditUser::class,
+            Pages\LogUser::class,
+        ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            UserResource\Widgets\ActivityLogView::class,
         ];
     }
 }
