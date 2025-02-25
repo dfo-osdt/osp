@@ -48,8 +48,8 @@ class ActivityLogView extends BaseWidget
             ])
             ->filters([
                 Filter::make('subject_id')
-                    ->query(fn (Builder $query): Builder => $query->where('subject_id', $this->record->id)
-                        ->orwhere('causer_id', $this->record->id))
+                    ->query(fn (Builder $query): Builder => $query->where('subject_id', $this->record['id'])
+                        ->orwhere('causer_id', $this->record['id']))
                     ->default(),
             ])
             ->hiddenFilterIndicators()

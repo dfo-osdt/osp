@@ -155,7 +155,6 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'view' => Pages\ViewUser::route('/{record}'),
             'log' => Pages\LogUser::route('/{record}/log'),
-            'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
