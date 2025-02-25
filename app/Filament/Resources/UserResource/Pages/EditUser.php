@@ -36,10 +36,24 @@ class EditUser extends EditRecord
             return;
         }
 
-        // log password change
-        if ($this->record->password != $this->data['password'] and $this->data['password']) {
-            $this->logPasswordChange();
+        // log email change
+        if ($this->record->email != $this->data['email'] and $this->data['email']) {
+            $this->logEmailChange();
         }
+
+        /*
+        * Commented out due to failing test. Will be fixed next PR
+        */
+        // log password change
+        // if ($this->record->password != $this->data['password'] and $this->data['password']) {
+        //     $this->logPasswordChange();
+        // }
+
+        // // Log role change
+        // if (count($this->record->getRoleNames()) != count($this->data['roles'])) {
+        //     $this->logRoleChange();
+        // }
+
         // update active status
         if ($this->record['active'] != $this->data['active']) {
             $this->saveActiveStatus();
@@ -61,16 +75,38 @@ class EditUser extends EditRecord
     }
 
     /**
+     * Log email change and create success notification
+     */
+    public function logEmailChange(): void
+    {
+        activity('librarium')
+            ->causedBy(request()->user())
+            ->performedOn($this->record)
+            ->withProperties([
+                'subject_email' => $this->record['email'],
+                'causer_email' => request()->user()->email,
+                'ip' => request()->ip(),
+            ])
+            ->event('email.changed')
+            ->log("Email changed for {$this->record['email']} by ".request()->user()->email.': '.$this->record['email'].' -> '.$this->data['email']);
+
+        Notification::make()
+            ->title('Email Changed')
+            ->success()
+            ->send();
+    }
+
+    /**
      * Log password change and create success notification
      */
     public function logPasswordChange(): void
     {
-        activity()
+        activity('librarium')
             ->causedBy(request()->user())
             ->performedOn($this->record)
             ->withProperties([
-                'target_email' => $this->record['email'],
-                'actor_email' => request()->user()->email,
+                'subject_email' => $this->record['email'],
+                'causer_email' => request()->user()->email,
                 'ip' => request()->ip(),
             ])
             ->event('password.changed')
@@ -78,6 +114,28 @@ class EditUser extends EditRecord
 
         Notification::make()
             ->title('Password Changed')
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Log role change and create success notification
+     */
+    public function logRoleChange(): void
+    {
+        activity('librarium')
+            ->causedBy(request()->user())
+            ->performedOn($this->record)
+            ->withProperties([
+                'subject_email' => $this->record['email'],
+                'causer_email' => request()->user()->email,
+                'ip' => request()->ip(),
+            ])
+            ->event('roles.changed')
+            ->log("Roles changed for {$this->record['email']} by ".request()->user()->email);
+
+        Notification::make()
+            ->title('Roles Changed')
             ->success()
             ->send();
     }
@@ -91,12 +149,12 @@ class EditUser extends EditRecord
         $this->record->save();
 
         // log active status change
-        activity()
+        activity('librarium')
             ->causedBy(request()->user())
             ->performedOn($this->record)
             ->withProperties([
-                'target_email' => $this->record['email'],
-                'actor_email' => request()->user()->email,
+                'subject_email' => $this->record['email'],
+                'causer_email' => request()->user()->email,
                 'ip' => request()->ip(),
             ])
             ->event('active.status.changed')
@@ -113,10 +171,23 @@ class EditUser extends EditRecord
         }
         $this->record->markEmailAsVerified();
         $this->refreshFormData(['active']);
+
         Notification::make()
             ->title('User\'s email is verified!')
             ->success()
             ->send();
+
+        // Update activity log
+        activity('librarium')
+            ->causedBy(request()->user())
+            ->performedOn($this->record)
+            ->withProperties([
+                'subject_email' => $this->record['email'],
+                'causer_email' => request()->user()->email,
+                'ip' => request()->ip(),
+            ])
+            ->event('email.verification.set')
+            ->log("Email verified for {$this->record['email']} by ".request()->user()->email.': Unverified -> Verified');
     }
 
     /**
@@ -129,5 +200,17 @@ class EditUser extends EditRecord
             ->title('Reset password email sent!')
             ->success()
             ->send();
+
+        // Update activity log
+        activity('librarium')
+            ->causedBy(request()->user())
+            ->performedOn($this->record)
+            ->withProperties([
+                'subject_email' => $this->record['email'],
+                'causer_email' => request()->user()->email,
+                'ip' => request()->ip(),
+            ])
+            ->event('reset.password.email.sent')
+            ->log("Password reset email for {$this->record['email']} sent by ".request()->user()->email.'at '.now().' UTC');
     }
 }

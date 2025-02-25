@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Librarium;
 
-use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
@@ -20,7 +19,6 @@ describe('Access control for User Resources', function () {
         $this->actingAs($this->user)->get($url)->assertForbidden();
     })->with([
         'ListUsers' => [fn () => ListUsers::getUrl()],
-        'CreateUser' => [fn () => CreateUser::getUrl()],
     ]);
 
     it('An unauthorized user cannot render the edit page', function () {
@@ -29,10 +27,6 @@ describe('Access control for User Resources', function () {
 
     it('Can render the index page', function () {
         $this->actingAs($this->admin)->get(ListUsers::getUrl())->assertOk();
-    });
-
-    it('Cannot render the user create page', function () {
-        $this->actingAs($this->admin)->get(CreateUser::getUrl())->assertForbidden();
     });
 
     it('Can render logout button', function () {})->todo();
