@@ -43,7 +43,9 @@
       "esbuild"
     ],
     "onlyBuiltDependencies": [
-      "esbuild"
+      "esbuild",
+      "cypress",
+      "@parcel/watcher"
     ]
   }
 }
