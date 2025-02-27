@@ -25,7 +25,7 @@
     "laravel/tinker": "^2.9.0",
     "league/flysystem-aws-s3-v3": "^3.27",
     "microsoft/microsoft-graph": "^2.23",
-    "openai-php/laravel": "^0.10.1",
+    "openai-php/laravel": "^0.11.0",
     "predis/predis": "^2.2.2",
     "rappasoft/laravel-authentication-log": "^4.0",
     "saloonphp/laravel-plugin": "^3.5",
