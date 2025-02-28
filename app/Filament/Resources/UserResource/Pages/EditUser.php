@@ -41,18 +41,15 @@ class EditUser extends EditRecord
             $this->logEmailChange();
         }
 
-        /*
-        * Commented out due to failing test. Will be fixed next PR
-        */
         // log password change
-        // if ($this->record->password != $this->data['password'] and $this->data['password']) {
-        //     $this->logPasswordChange();
-        // }
+        if ($this->record['password'] != $this->data['password'] and $this->data['password']) {
+            $this->logPasswordChange();
+        }
 
         // // Log role change
-        // if (count($this->record->getRoleNames()) != count($this->data['roles'])) {
-        //     $this->logRoleChange();
-        // }
+        if (count($this->record->getRoleNames()) != count($this->data['roles'])) {
+            $this->logRoleChange();
+        }
 
         // update active status
         if ($this->record['active'] != $this->data['active']) {
