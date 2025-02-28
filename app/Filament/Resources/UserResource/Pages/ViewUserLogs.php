@@ -1,28 +1,36 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Filament\Resources\ActivityLogResource\Pages;
+use App\Filament\Resources\UserResource;
 use Filament\Forms;
 use Filament\Infolists;
 use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
+use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Models\Activity;
 
-class ActivityLogResource extends Resource
+class ViewUserLogs extends ManageRelatedRecords
 {
-    protected static ?string $model = Activity::class;
+    protected static string $resource = UserResource::class;
+
+    protected static string $relationship = 'actions';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function table(Table $table): Table
+    public static function getNavigationLabel(): string
+    {
+        return 'View Logs';
+    }
+
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('causer_id')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
@@ -30,21 +38,17 @@ class ActivityLogResource extends Resource
                 Tables\Columns\TextColumn::make('event')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('causer.email')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('subject_type')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('subject_id')
+                ->searchable()
+                ->sortable(),
                 Tables\Columns\TextColumn::make('log_name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('subject_id')
-                    ->hidden()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('causer_id')
-                    ->hidden()
-                    ->searchable(),
+                    ->hidden(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
@@ -72,13 +76,6 @@ class ActivityLogResource extends Resource
                             ->pluck('event','event')
                             ->toArray()
                 ),
-                    Tables\Filters\SelectFilter::make('causer_type')
-                    ->options(fn () => Activity::query()
-                        ->whereNotNull('causer_type')
-                        ->distinct()
-                        ->pluck('causer_type','causer_type')
-                        ->toArray()
-                    ),
                     Tables\Filters\SelectFilter::make('subject_type')
                         ->options(fn () => Activity::query()
                             ->whereNotNull('subject_type')
@@ -97,7 +94,7 @@ class ActivityLogResource extends Resource
             ->defaultSort('created_at', $direction = 'desc');
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public function infolist(Infolist $infolist): Infolist
     {
         return $infolist
             ->schema([
@@ -121,15 +118,13 @@ class ActivityLogResource extends Resource
                         Infolists\Components\TextEntry::make('causer.email')
                             ->label('Email'),
                     ])
-                    ->columns(2),
+                    ->columns(3),
                 Components\Section::make('Subject Details')
                     ->schema([
                         Infolists\Components\TextEntry::make('subject_id')
                             ->label('Id'),
                         Infolists\Components\TextEntry::make('subject_type')
                             ->label('Type'),
-                        Infolists\Components\TextEntry::make('subject.email')
-                            ->label('Email'),
                     ])
                     ->columns(3),
                 Components\Section::make()
@@ -143,18 +138,5 @@ class ActivityLogResource extends Resource
                         ->default(fn ($record) => $record->getAttributes()),
                     ]),
             ]);
-    }
-
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListActivityLogs::route('/'),
-            'view' => Pages\ViewActivityLog::route('/{record}'),
-        ];
     }
 }

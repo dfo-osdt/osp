@@ -122,31 +122,19 @@ class UserResource extends Resource
                         true => 'Active',
                         false => 'Inactive',
                     ]),
-                Tables\Filters\Filter::make('no_roles')
-                    ->label('No Roles')
-                    ->query(fn ($query) => $query->whereDoesntHave('roles')),
                 Tables\Filters\SelectFilter::make('roles')
                     ->relationship('roles', 'name')
                     ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
                     ->label('Role'),
-            ], layout: FiltersLayout::AboveContent)
+                    Tables\Filters\Filter::make('no_roles')
+                    ->label('No Roles')
+                    ->query(fn ($query) => $query->whereDoesntHave('roles')),
+            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(4)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    // Placeholder
-                ]),
-            ])
             ->defaultSort('first_name');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            // ...
-        ];
     }
 
     public static function getPages(): array
@@ -154,7 +142,7 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'view' => Pages\ViewUser::route('/{record}'),
-            'log' => Pages\LogUser::route('/{record}/log'),
+            'log' => Pages\ViewUserLogs::route('/{record}/log'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
@@ -164,14 +152,7 @@ class UserResource extends Resource
         return $page->generateNavigationItems([
             Pages\ViewUser::class,
             Pages\EditUser::class,
-            Pages\LogUser::class,
+            Pages\ViewUserLogs::class,
         ]);
-    }
-
-    public static function getWidgets(): array
-    {
-        return [
-            UserResource\Widgets\ActivityLogView::class,
-        ];
     }
 }
