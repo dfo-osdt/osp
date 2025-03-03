@@ -78,14 +78,16 @@ class ViewUserLogs extends ManageRelatedRecords
                     })
                     ->columns(2),
                 Tables\Filters\SelectFilter::make('event')
-                    ->options(fn () => Activity::query()
-                        ->whereNotNull('event')
-                        ->distinct()
-                        ->pluck('event', 'event')
-                        ->toArray()
+                    ->options(
+                        fn () => Activity::query()
+                            ->whereNotNull('event')
+                            ->distinct()
+                            ->pluck('event', 'event')
+                            ->toArray()
                     ),
                 Tables\Filters\SelectFilter::make('subject_type')
-                    ->options(fn () => Activity::query()
+                    ->options(
+                        fn () => Activity::query()
                             ->whereNotNull('subject_type')
                             ->distinct()
                             ->pluck('subject_type', 'subject_type')

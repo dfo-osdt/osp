@@ -68,25 +68,28 @@ class ActivityLogResource extends Resource
                     })
                     ->columns(2),
                 Tables\Filters\SelectFilter::make('event')
-                    ->options(fn () => Activity::query()
-                        ->whereNotNull('event')
-                        ->distinct()
-                        ->pluck('event', 'event')
-                        ->toArray()
+                    ->options(
+                        fn () => Activity::query()
+                            ->whereNotNull('event')
+                            ->distinct()
+                            ->pluck('event', 'event')
+                            ->toArray()
                     ),
                 Tables\Filters\SelectFilter::make('causer_type')
-                    ->options(fn () => Activity::query()
+                    ->options(
+                        fn () => Activity::query()
                             ->whereNotNull('causer_type')
                             ->distinct()
                             ->pluck('causer_type', 'causer_type')
                             ->toArray()
                     ),
                 Tables\Filters\SelectFilter::make('subject_type')
-                    ->options(fn () => Activity::query()
-                        ->whereNotNull('subject_type')
-                        ->distinct()
-                        ->pluck('subject_type', 'subject_type')
-                        ->toArray()
+                    ->options(
+                        fn () => Activity::query()
+                            ->whereNotNull('subject_type')
+                            ->distinct()
+                            ->pluck('subject_type', 'subject_type')
+                            ->toArray()
                     ),
                 Tables\Filters\Filter::make('no_event')
                     ->label('No Event')

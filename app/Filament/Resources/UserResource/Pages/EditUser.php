@@ -8,6 +8,10 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Password;
 
+/**
+ * @property \App\Models\User $record
+ * @property array<string, mixed> $data
+ */
 class EditUser extends EditRecord
 {
     protected static string $resource = UserResource::class;
@@ -42,17 +46,17 @@ class EditUser extends EditRecord
         }
 
         // log password change
-        if ($this->record['password'] != $this->data['password'] and $this->data['password']) {
+        if ($this->record->password != $this->data['password'] and $this->data['password']) {
             $this->logPasswordChange();
         }
 
-        // // Log role change
+        // Log role change
         if (count($this->record->getRoleNames()) != count($this->data['roles'])) {
             $this->logRoleChange();
         }
 
         // update active status
-        if ($this->record['active'] != $this->data['active']) {
+        if ($this->record->active != $this->data['active']) {
             $this->saveActiveStatus();
         }
     }
