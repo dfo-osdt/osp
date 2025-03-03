@@ -126,7 +126,7 @@ class UserResource extends Resource
                     ->relationship('roles', 'name')
                     ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
                     ->label('Role'),
-                    Tables\Filters\Filter::make('no_roles')
+                Tables\Filters\Filter::make('no_roles')
                     ->label('No Roles')
                     ->query(fn ($query) => $query->whereDoesntHave('roles')),
             ], layout: FiltersLayout::AboveContent)->filtersFormColumns(4)
@@ -143,6 +143,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'view' => Pages\ViewUser::route('/{record}'),
             'log' => Pages\ViewUserLogs::route('/{record}/log'),
+            'logins' => Pages\ViewUserLogins::route('/{record}/login'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
@@ -153,6 +154,7 @@ class UserResource extends Resource
             Pages\ViewUser::class,
             Pages\EditUser::class,
             Pages\ViewUserLogs::class,
+            Pages\ViewUserLogins::class,
         ]);
     }
 }

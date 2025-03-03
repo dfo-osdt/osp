@@ -18,6 +18,8 @@ class ActivityLogResource extends Resource
 {
     protected static ?string $model = Activity::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function table(Table $table): Table
@@ -65,28 +67,28 @@ class ActivityLogResource extends Resource
                             );
                     })
                     ->columns(2),
-                    Tables\Filters\SelectFilter::make('event')
-                        ->options(fn () => Activity::query()
-                            ->whereNotNull('event')
-                            ->distinct()
-                            ->pluck('event','event')
-                            ->toArray()
-                ),
-                    Tables\Filters\SelectFilter::make('causer_type')
+                Tables\Filters\SelectFilter::make('event')
                     ->options(fn () => Activity::query()
-                        ->whereNotNull('causer_type')
+                        ->whereNotNull('event')
                         ->distinct()
-                        ->pluck('causer_type','causer_type')
+                        ->pluck('event', 'event')
                         ->toArray()
                     ),
-                    Tables\Filters\SelectFilter::make('subject_type')
-                        ->options(fn () => Activity::query()
-                            ->whereNotNull('subject_type')
+                Tables\Filters\SelectFilter::make('causer_type')
+                    ->options(fn () => Activity::query()
+                            ->whereNotNull('causer_type')
                             ->distinct()
-                            ->pluck('subject_type','subject_type')
+                            ->pluck('causer_type', 'causer_type')
                             ->toArray()
-                        ),
-                    Tables\Filters\Filter::make('no_event')
+                    ),
+                Tables\Filters\SelectFilter::make('subject_type')
+                    ->options(fn () => Activity::query()
+                        ->whereNotNull('subject_type')
+                        ->distinct()
+                        ->pluck('subject_type', 'subject_type')
+                        ->toArray()
+                    ),
+                Tables\Filters\Filter::make('no_event')
                     ->label('No Event')
                     ->query(fn ($query) => $query->whereNull('event')),
             ], layout: FiltersLayout::AboveContent)
@@ -101,46 +103,11 @@ class ActivityLogResource extends Resource
     {
         return $infolist
             ->schema([
-                Components\Section::make('Event Details')
-                    ->schema([
-                        Infolists\Components\TextEntry::make('id')
-                            ->label('Event Id'),
-                        Infolists\Components\TextEntry::make('created_at'),
-                        Infolists\Components\TextEntry::make('updated_at'),
-                        Infolists\Components\TextEntry::make('event')
-                            ->label('Event type'),
-                        Infolists\Components\TextEntry::make('log_name'),
-                    ])
-                    ->columns(3),
-                Components\Section::make('Causer Details')
-                    ->schema([
-                        Infolists\Components\TextEntry::make('causer_id')
-                            ->label('Id'),
-                        Infolists\Components\TextEntry::make('causer_type')
-                            ->label('Type'),
-                        Infolists\Components\TextEntry::make('causer.email')
-                            ->label('Email'),
-                    ])
-                    ->columns(2),
-                Components\Section::make('Subject Details')
-                    ->schema([
-                        Infolists\Components\TextEntry::make('subject_id')
-                            ->label('Id'),
-                        Infolists\Components\TextEntry::make('subject_type')
-                            ->label('Type'),
-                        Infolists\Components\TextEntry::make('subject.email')
-                            ->label('Email'),
-                    ])
-                    ->columns(3),
                 Components\Section::make()
                     ->schema([
-                        Infolists\Components\TextEntry::make('description'),
-                    ]),
-                Components\Section::make()
-                ->schema([
-                    Infolists\Components\KeyValueEntry::make('attributes')
-                        ->label('Log Entry (JSON)')
-                        ->default(fn ($record) => $record->getAttributes()),
+                        Infolists\Components\KeyValueEntry::make('attributes')
+                            ->label('Log Entry (JSON)')
+                            ->default(fn ($record) => $record->getAttributes()),
                     ]),
             ]);
     }

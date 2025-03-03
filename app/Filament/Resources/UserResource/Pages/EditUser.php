@@ -15,7 +15,7 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\Action::make('Back')->url(fn () => UserResource::getUrl('index')),
         ];
     }
 
