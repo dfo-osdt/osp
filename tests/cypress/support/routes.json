@@ -48,6 +48,26 @@
       "HEAD"
     ]
   },
+  "filament.librarium.resources.activity-logs.index": {
+    "name": "filament.librarium.resources.activity-logs.index",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\ActivityLogResource\\Pages\\ListActivityLogs",
+    "uri": "librarium/activity-logs",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.activity-logs.view": {
+    "name": "filament.librarium.resources.activity-logs.view",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\ActivityLogResource\\Pages\\ViewActivityLog",
+    "uri": "librarium/activity-logs/{record}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
   "filament.librarium.resources.announcements.index": {
     "name": "filament.librarium.resources.announcements.index",
     "domain": null,
@@ -78,6 +98,26 @@
       "HEAD"
     ]
   },
+  "filament.librarium.resources.authentications.index": {
+    "name": "filament.librarium.resources.authentications.index",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\AuthenticationResource\\Pages\\ListAuthentications",
+    "uri": "librarium/authentications",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.authentications.view": {
+    "name": "filament.librarium.resources.authentications.view",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\AuthenticationResource\\Pages\\ViewAuthentication",
+    "uri": "librarium/authentications/{record}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
   "filament.librarium.resources.users.index": {
     "name": "filament.librarium.resources.users.index",
     "domain": null,
@@ -88,11 +128,31 @@
       "HEAD"
     ]
   },
-  "filament.librarium.resources.users.create": {
-    "name": "filament.librarium.resources.users.create",
+  "filament.librarium.resources.users.view": {
+    "name": "filament.librarium.resources.users.view",
     "domain": null,
-    "action": "App\\Filament\\Resources\\UserResource\\Pages\\CreateUser",
-    "uri": "librarium/users/create",
+    "action": "App\\Filament\\Resources\\UserResource\\Pages\\ViewUser",
+    "uri": "librarium/users/{record}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.users.log": {
+    "name": "filament.librarium.resources.users.log",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\UserResource\\Pages\\ViewUserLogs",
+    "uri": "librarium/users/{record}/log",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "filament.librarium.resources.users.logins": {
+    "name": "filament.librarium.resources.users.logins",
+    "domain": null,
+    "action": "App\\Filament\\Resources\\UserResource\\Pages\\ViewUserLogins",
+    "uri": "librarium/users/{record}/login",
     "method": [
       "GET",
       "HEAD"

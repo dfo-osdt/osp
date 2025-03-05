@@ -27,7 +27,7 @@
     "@quasar/vite-plugin": "^1.9.0",
     "@types/node": "^22.13.9",
     "axios": "^1.8.1",
-    "cypress": "^13.17.0",
+    "cypress": "^14.1.0",
     "eslint": "^9.21.0",
     "eslint-plugin-quasar": "^1.1.0",
     "laravel-vite-plugin": "^1.2.0",
