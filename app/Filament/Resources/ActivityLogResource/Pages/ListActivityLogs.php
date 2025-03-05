@@ -14,7 +14,9 @@ class ListActivityLogs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Authentication Log')->url(fn () => AuthenticationResource::getUrl('index')),
+            Actions\Action::make('Authentication Log')
+                ->url(fn () => AuthenticationResource::getUrl('index'))
+                ->icon('heroicon-o-arrow-small-left'),
         ];
     }
 }

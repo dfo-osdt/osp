@@ -13,7 +13,9 @@ class ViewActivityLog extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Back')->url(fn () => ActivityLogResource::getUrl('index')),
+            Actions\Action::make('Back')
+                ->url(fn () => ActivityLogResource::getUrl('index'))
+                ->icon('heroicon-o-arrow-small-left'),
         ];
     }
 }
