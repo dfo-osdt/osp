@@ -18,7 +18,9 @@ class AuthenticationResource extends Resource
 {
     protected static ?string $model = AuthenticationLog::class;
 
-    protected static ?string $navigationLabel = 'Audit Logs';
+    protected static ?string $navigationGroup = 'Audit Logs';
+
+    protected static ?string $navigationLabel = 'Authentications';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

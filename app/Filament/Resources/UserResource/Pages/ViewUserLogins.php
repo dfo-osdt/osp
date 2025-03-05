@@ -30,7 +30,9 @@ class ViewUserLogins extends ManageRelatedRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Back')->url(fn () => UserResource::getUrl('index')),
+            Actions\Action::make('Back')
+                ->url(fn () => UserResource::getUrl('index'))
+                ->icon('heroicon-o-arrow-small-left'),
         ];
     }
 
