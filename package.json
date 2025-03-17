@@ -1,51 +1,51 @@
 {
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint --ext .ts,.vue resources/src",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run"
-  },
-  "dependencies": {
-    "@intlify/unplugin-vue-i18n": "^6.0.3",
-    "@quasar/extras": "^1.16.17",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vueuse/core": "^12.8.2",
-    "dompurify": "^3.2.4",
-    "pinia": "^3.0.1",
-    "quasar": "^2.18.0",
-    "sass-embedded": "^1.85.1",
-    "vite-plugin-manifest-sri": "^0.2.0",
-    "vue": "^3.5.13",
-    "vue-i18n": "^11.1.1",
-    "vue-router": "^4.5.0"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "^4.5.1",
-    "@quasar/vite-plugin": "^1.9.0",
-    "@types/node": "^22.13.9",
-    "axios": "^1.8.1",
-    "cypress": "^14.1.0",
-    "eslint": "^9.21.0",
-    "eslint-plugin-quasar": "^1.1.0",
-    "laravel-vite-plugin": "^1.2.0",
-    "lodash": "^4.17.21",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.2",
-    "unplugin-auto-import": "^19.1.1",
-    "vite": "^6.2.0",
-    "vue-tsc": "^2.2.8"
-  },
-  "pnpm": {
-    "ignoredBuiltDependencies": [
-      "esbuild"
-    ],
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "cypress",
-      "@parcel/watcher"
-    ]
-  }
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint --ext .ts,.vue resources/src",
+        "cy:open": "cypress open",
+        "cy:run": "cypress run"
+    },
+    "dependencies": {
+        "@intlify/unplugin-vue-i18n": "^6.0.4",
+        "@quasar/extras": "^1.16.17",
+        "@vitejs/plugin-vue": "^5.2.3",
+        "@vueuse/core": "^13.0.0",
+        "dompurify": "^3.2.4",
+        "pinia": "^3.0.1",
+        "quasar": "^2.18.1",
+        "sass-embedded": "^1.85.1",
+        "vite-plugin-manifest-sri": "^0.2.0",
+        "vue": "^3.5.13",
+        "vue-i18n": "^11.1.2",
+        "vue-router": "^4.5.0"
+    },
+    "devDependencies": {
+        "@antfu/eslint-config": "^4.10.1",
+        "@quasar/vite-plugin": "^1.9.0",
+        "@types/node": "^22.13.10",
+        "axios": "^1.8.3",
+        "cypress": "^14.2.0",
+        "eslint": "^9.22.0",
+        "eslint-plugin-quasar": "^1.1.0",
+        "laravel-vite-plugin": "^1.2.0",
+        "lodash": "^4.17.21",
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.2",
+        "unplugin-auto-import": "^19.1.1",
+        "vite": "^6.2.2",
+        "vue-tsc": "^2.2.8"
+    },
+    "pnpm": {
+        "ignoredBuiltDependencies": [
+            "esbuild"
+        ],
+        "onlyBuiltDependencies": [
+            "esbuild",
+            "cypress",
+            "@parcel/watcher"
+        ]
+    }
 }
