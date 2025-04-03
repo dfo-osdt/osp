@@ -125,12 +125,12 @@ class ExportEmails extends Command
     private function exportFile($fileName, $content)
     {
         $outputPath = $this->option('output');
-        $outputFile = $outputPath . '/' . $fileName;
-        if (!is_dir($outputPath)) {
+        $outputFile = $outputPath.'/'.$fileName;
+        if (! is_dir($outputPath)) {
             mkdir($outputPath, 0755, true);
         }
 
         file_put_contents($outputFile, $content);
-        $this->info('Exported email template to ' . $outputFile);
+        $this->info('Exported email template to '.$outputFile);
     }
 }
