@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-As a Division Manager, you have received a new manuscript record submission from {{ $manuscriptRecord->user->fullname }}.
+In accordance with the DFO publication policy, you have received a new manuscript record submission from {{ $manuscriptRecord->user->fullname }}.
 
 Please click on the button below or login to your [Open Science Portal]({{config('app.frontend_url')}}#/auth/login?email={{$user->email}}) account to complete the Management Review of the manuscript.
 
@@ -27,7 +27,7 @@ Review Manuscript
 
 # Bonjour {{ $user->first_name }},
 
-En tant que chef de division, vous avez reçu une nouvelle soumission de registre de manuscrit de la part de {{ $manuscriptRecord->user->fullname }}.
+Conformément à la politique de publication du MPO, vous avez reçu une nouvelle soumission de registre de manuscrit de la part de {{ $manuscriptRecord->user->fullname }}.
 
 Veuillez cliquer sur le bouton ci-dessous ou vous connecter à votre compte sur le [Portail Science Ouverte]({{config('app.frontend_url')}}#/auth/login?email={{$user->email}}) pour compléter la révision par le gestionaire.
 

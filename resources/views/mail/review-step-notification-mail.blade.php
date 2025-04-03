@@ -3,10 +3,17 @@
 
 *(le français suit)*
 
+@if($previousStep->decision == App\Enums\ManagementReviewStepDecision::FLAGGED)
+{{ $previousStep->user->fullName }} has flagged the manuscript titled "{{ $manuscriptRecord->title }}". Please review and address the comments below.
+<p>When ready, please click the button below to restart the management review. Please note that you can upload a revised version of the manuscript record in the portal.</p>
+@else
 {{ $previousStep->user->fullName }} has identified you as the next management reviewer for the manuscript titled "{{ $manuscriptRecord->title }}".
+@endif
 
 @if($managementReviewStep->status == App\Enums\ManagementReviewStepStatus::PENDING)
 A decision on this review is expected to be reached by {{ $managementReviewStep->decision_expected_by->locale('en_CA')->isoFormat('LL') }}.
+@elseif($managementReviewStep->status == App\Enums\ManagementReviewStepStatus::ON_HOLD)
+A decision on this review is currently on hold until the comments are addressed by the authors.
 @endif
 
 <x-mail::panel>
@@ -39,11 +46,17 @@ Review Manuscript
 
 # Bonjour {{ $managementReviewStep->user->first_name }},
 
+@if($previousStep->decision == App\Enums\ManagementReviewStepDecision::FLAGGED)
+{{ $previousStep->user->fullName }} a signalé le manuscrit intitulé "{{ $manuscriptRecord->title }}". Veuillez examiner et traiter les commentaires ci-dessous.
+<p>Lorsque vous êtes prêt, veuillez cliquer sur le bouton ci-dessous pour redémarrer la révision de gestion. Veuillez noter que vous pouvez télécharger une version révisée du registre de manuscrit dans le portail.</p>
+@else
 {{ $previousStep->user->fullName }} vous a identifié comme le prochain gestionnaire de la révision pour le manuscrit intitulé "{{ $manuscriptRecord->title }}".
-
+@endif
 
 @if($managementReviewStep->status == App\Enums\ManagementReviewStepStatus::PENDING)
 Une décision sur cette révision est attendue d'ici le {{ $managementReviewStep->decision_expected_by->locale('fr_CA')->isoFormat('LL') }}.
+@elseif($managementReviewStep->status == App\Enums\ManagementReviewStepStatus::ON_HOLD)
+Une décision sur cette révision est actuellement en attente jusqu'à ce que les commentaires soient traités par les auteurs.
 @endif
 
 <x-mail::panel>
@@ -53,7 +66,6 @@ Une décision sur cette révision est attendue d'ici le {{ $managementReviewStep
 
 **Commentaires:** <br />
 {!! $previousStep->comments !!}
-
 </x-mail::panel>
 
 Veuillez cliquer sur le bouton ci-dessous ou vous connecter à votre compte sur le [Portail Science Ouverte]({{config('app.frontend_url')}}#/auth/login?email={{$managementReviewStep->user->email}}) pour réviser ce registre de manuscrit.
