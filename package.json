@@ -33,7 +33,7 @@
         "laravel-vite-plugin": "^1.2.0",
         "lodash": "^4.17.21",
         "prettier": "^3.5.3",
-        "typescript": "^5.8.2",
+        "typescript": "^5.8.3",
         "unplugin-auto-import": "^19.1.2",
         "vite": "^6.2.4",
         "vue-tsc": "^2.2.8"
