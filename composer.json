@@ -8,13 +8,13 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^8.3",
+    "php": "^8.4",
     "cerbero/json-parser": "^1.1",
     "cmixin/business-day": "^1.18.2",
     "filament/filament": "^3.2",
     "guzzlehttp/guzzle": "^7.8.1",
     "laracasts/cypress": "^3.0.2",
-    "laravel/framework": "^11.36.1",
+    "laravel/framework": "^12.0",
     "laravel/horizon": "^5.24.3",
     "laravel/pail": "^1.1.2",
     "laravel/prompts": "^0.3.1",
@@ -27,7 +27,7 @@
     "microsoft/microsoft-graph": "^2.23",
     "openai-php/laravel": "^0.11.0",
     "predis/predis": "^2.2.2",
-    "rappasoft/laravel-authentication-log": "^4.0",
+    "rappasoft/laravel-authentication-log": "^5.0",
     "saloonphp/laravel-plugin": "^3.5",
     "saloonphp/saloon": "^3.8.1",
     "socialiteproviders/microsoft-azure": "^5.2",
@@ -47,9 +47,8 @@
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^3.0.0",
-    "enlightn/enlightn": "^2.10",
     "fakerphp/faker": "^1.23.1",
-    "larastan/larastan": "^2.9.5",
+    "larastan/larastan": "^3.0",
     "laravel/breeze": "^2.0.3",
     "laravel/pint": "^1.15.3",
     "laravel/sail": "^1.29.1",
@@ -129,7 +128,7 @@
       "tbachert/spi": true
     },
     "platform": {
-      "php": "8.3"
+      "php": "8.4"
     }
   },
   "minimum-stability": "stable",
