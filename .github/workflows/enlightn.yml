@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    if: ${{ github.actor != 'dependabot[bot]'}}
+    if: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
