@@ -6,7 +6,6 @@ use App\Models\User;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
-use Filament\Models\Contracts\FilamentUser;
 use Filament\Pages\Auth\Login as BaseAuth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
