@@ -2,6 +2,7 @@
 
 namespace App\Http\Integrations\Orcid\Data;
 
+use Illuminate\Support\Carbon;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 
@@ -25,10 +26,14 @@ class DateData extends Data
     {
         $dateParts = explode('-', $date);
 
+        if (count($dateParts) !== 3) {
+            throw new \InvalidArgumentException('Invalid date format. Expected YYYY-MM-DD.');
+        }
+
         return new self(
-            year: $dateParts[0] ?? null,
-            month: $dateParts[1] ?? null,
-            day: $dateParts[2] ?? null
+            year: $dateParts[0],
+            month: $dateParts[1],
+            day: $dateParts[2]
         );
     }
 }
