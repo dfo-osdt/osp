@@ -50,6 +50,9 @@ class FundingSource extends Model
         return $this->morphTo();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Funder, $this>
+     */
     public function funder(): BelongsTo
     {
         return $this->belongsTo(Funder::class);

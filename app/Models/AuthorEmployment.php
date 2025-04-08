@@ -89,6 +89,7 @@ class AuthorEmployment extends Model
      * Note that we allow a different organization here instead
      * of the one in the author's profile as the author may
      * have had been employed by a different organization
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this>
      */
     public function organization(): BelongsTo
     {

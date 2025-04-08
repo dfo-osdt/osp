@@ -46,11 +46,17 @@ class ManuscriptPeerReviewer extends Model
         ];
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManuscriptRecord, $this>
+     */
     public function manuscriptRecord(): BelongsTo
     {
         return $this->belongsTo(ManuscriptRecord::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Author, $this>
+     */
     public function author(): BelongsTo
     {
         return $this->belongsTo(Author::class);

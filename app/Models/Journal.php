@@ -52,6 +52,9 @@ class Journal extends Model
         return $query->where('publisher', '!=', Journal::$dfoPublisher);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Publication, $this>
+     */
     public function publications(): HasMany
     {
         return $this->hasMany(Publication::class);

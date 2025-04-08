@@ -117,6 +117,9 @@ class Publication extends Model implements Fundable, HasMedia
     }
 
     // Relationships
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Journal, $this>
+     */
     public function journal(): BelongsTo
     {
         return $this->belongsTo(Journal::class);
@@ -125,12 +128,16 @@ class Publication extends Model implements Fundable, HasMedia
     /**
      * Manuscript record - can be null as we allow creation of
      * publications without a manuscript record.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManuscriptRecord, $this>
      */
     public function manuscriptRecord(): BelongsTo
     {
         return $this->belongsTo(ManuscriptRecord::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -138,12 +145,16 @@ class Publication extends Model implements Fundable, HasMedia
 
     /**
      * The Lead region for which the publication is associated with.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Region, $this>
      */
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PublicationAuthor, $this>
+     */
     public function publicationAuthors(): HasMany
     {
         return $this->hasMany(PublicationAuthor::class);

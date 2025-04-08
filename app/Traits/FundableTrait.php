@@ -9,6 +9,7 @@ trait FundableTrait
 {
     /**
      * Get the FundingSources that fund this Fundable.
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\FundingSource, $this>
      */
     public function fundingSources(): MorphMany
     {
