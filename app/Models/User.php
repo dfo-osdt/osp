@@ -147,17 +147,20 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     // relationships
-
     /**
      * Get the invitation record associated with the user. Only users
      * that were invited to join the application will have one.
      * This record will not be erased when the user joins.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\Invitation, $this>
      */
     public function invitation(): HasOne
     {
         return $this->hasOne(Invitation::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Shareable, $this>
+     */
     public function sharedWith(): HasMany
     {
         return $this->hasMany(Shareable::class, 'user_id');
@@ -165,6 +168,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
 
     /**
      * Get the invitations sent by the user.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Invitation, $this>
      */
     public function sentInvitations(): HasMany
     {
@@ -174,6 +178,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     /**
      * All users should have an author profile created for them
      * upon registration.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\Author, $this>
      */
     public function author(): HasOne
     {

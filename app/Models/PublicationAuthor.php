@@ -63,22 +63,24 @@ class PublicationAuthor extends Model
     }
 
     // Relationships
-
     /**
      * A publication author belongs to a publication.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Publication, $this>
      */
     public function publication(): BelongsTo
     {
         return $this->belongsTo('App\Models\Publication');
     }
 
-    /** Organization */
+    /** Organization
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this> */
     public function organization(): BelongsTo
     {
         return $this->belongsTo('App\Models\Organization');
     }
 
-    /** Author */
+    /** Author
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Author, $this> */
     public function author(): BelongsTo
     {
         return $this->belongsTo('App\Models\Author');

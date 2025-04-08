@@ -81,16 +81,25 @@ class ManagementReviewStep extends Model
             ->logOnlyDirty();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManuscriptRecord, $this>
+     */
     public function manuscriptRecord(): BelongsTo
     {
         return $this->belongsTo('App\Models\ManuscriptRecord');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManagementReviewStep, $this>
+     */
     public function previousStep(): BelongsTo
     {
         return $this->belongsTo('App\Models\ManagementReviewStep', 'previous_step_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');

@@ -64,9 +64,9 @@ class Invitation extends Model
     }
 
     // relationships
-
     /**
      * Get the user that owns the invitation.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
     {
@@ -75,6 +75,7 @@ class Invitation extends Model
 
     /**
      * Get the user that invited the user.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function invitedByUser(): BelongsTo
     {

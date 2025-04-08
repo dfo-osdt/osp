@@ -174,35 +174,46 @@ class Author extends Model
     }
 
     // Relationships
-
-    /** ManuscriptAuthors */
+    /** ManuscriptAuthors
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptAuthor, $this> */
     public function manuscriptAuthors(): HasMany
     {
         return $this->hasMany('App\Models\ManuscriptAuthor');
     }
 
-    /** Pubslihed publications */
+    /** Pubslihed publications
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Publication, $this> */
     public function publications(): BelongsToMany
     {
         return $this->belongsToMany(Publication::class, 'publication_authors')->where('status', PublicationStatus::PUBLISHED);
     }
 
-    /** Organization */
+    /** Organization
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this> */
     public function organization(): BelongsTo
     {
         return $this->belongsTo('App\Models\Organization');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\AuthorEmployment, $this>
+     */
     public function employments(): HasMany
     {
         return $this->hasMany('App\Models\AuthorEmployment');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptPeerReviewer, $this>
+     */
     public function peerReviews(): HasMany
     {
         return $this->hasMany('App\Models\ManuscriptPeerReviewer');

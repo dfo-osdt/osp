@@ -31,6 +31,9 @@ class FunctionalArea extends Model
 {
     use HasFactory;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptRecord, $this>
+     */
     public function manuscriptRecords(): HasMany
     {
         return $this->hasMany('App\Models\ManuscriptRecord');
