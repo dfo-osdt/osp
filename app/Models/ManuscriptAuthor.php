@@ -65,6 +65,7 @@ class ManuscriptAuthor extends Model
     // Relationships
     /**
      * A manuscript author belongs to a manuscript.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManuscriptRecord, $this>
      */
     public function manuscriptRecord(): BelongsTo

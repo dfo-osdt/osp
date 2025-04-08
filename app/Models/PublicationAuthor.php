@@ -65,6 +65,7 @@ class PublicationAuthor extends Model
     // Relationships
     /**
      * A publication author belongs to a publication.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Publication, $this>
      */
     public function publication(): BelongsTo

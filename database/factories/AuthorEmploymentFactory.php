@@ -13,7 +13,6 @@ class AuthorEmploymentFactory extends Factory
 {
     /**
      * Define the model's default state.
-     *
      */
     public function definition(): array
     {

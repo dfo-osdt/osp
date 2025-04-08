@@ -59,6 +59,7 @@ class Shareable extends Model
 
     /**
      * User with whom the shareable is shared.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
@@ -68,6 +69,7 @@ class Shareable extends Model
 
     /**
      * User who shared the shareable.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function sharingUser(): BelongsTo
