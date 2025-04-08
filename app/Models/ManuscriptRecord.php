@@ -164,6 +164,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     // Relationships
     /**
      * A manuscript has a lead region.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Region, $this>
      */
     public function region(): BelongsTo
@@ -173,6 +174,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
 
     /**
      * A manuscript has a functional area.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\FunctionalArea, $this>
      */
     public function functionalArea(): BelongsTo
@@ -182,6 +184,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
 
     /**
      * A manuscripts has several ManuscriptAuthors
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptAuthor, $this>
      */
     public function manuscriptAuthors(): HasMany
@@ -191,6 +194,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
 
     /**
      * A manuscript has a user.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
      */
     public function user(): BelongsTo
@@ -200,6 +204,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
 
     /**
      * Sharing relationships.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\Shareable, $this>
      */
     public function shareables(): MorphMany
@@ -222,6 +227,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
 
     /**
      * A manuscript has many management review steps.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManagementReviewStep, $this>
      */
     public function managementReviewSteps(): HasMany
@@ -232,6 +238,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     /**
      * A manuscript has no to many peer reviewers. Only
      * internal publications have peer reviewers.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptPeerReviewer, $this>
      */
     public function peerReviewers(): HasMany
@@ -241,6 +248,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
 
     /**
      * A manuscript can have one publication
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\Publication, $this>
      */
     public function publication(): HasOne
