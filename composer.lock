@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ec85618665ffb8c412b610fb8efc755",
+    "content-hash": "8ddd11dae4bf767f867947a636680d0c",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1938,26 +1938,29 @@
         },
         {
             "name": "doctrine/deprecations",
-            "version": "1.1.4",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "31610dbb31faa98e6b5447b62340826f54fbc4e9"
+                "reference": "459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/31610dbb31faa98e6b5447b62340826f54fbc4e9",
-                "reference": "31610dbb31faa98e6b5447b62340826f54fbc4e9",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38",
+                "reference": "459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
             },
+            "conflict": {
+                "phpunit/phpunit": "<=7.5 || >=13"
+            },
             "require-dev": {
-                "doctrine/coding-standard": "^9 || ^12",
-                "phpstan/phpstan": "1.4.10 || 2.0.3",
+                "doctrine/coding-standard": "^9 || ^12 || ^13",
+                "phpstan/phpstan": "1.4.10 || 2.1.11",
                 "phpstan/phpstan-phpunit": "^1.0 || ^2",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6 || ^10.5 || ^11.5 || ^12",
                 "psr/log": "^1 || ^2 || ^3"
             },
             "suggest": {
@@ -1977,9 +1980,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-                "source": "https://github.com/doctrine/deprecations/tree/1.1.4"
+                "source": "https://github.com/doctrine/deprecations/tree/1.1.5"
             },
-            "time": "2024-12-07T21:18:45+00:00"
+            "time": "2025-04-07T20:06:18+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -9939,28 +9942,28 @@
         },
         {
             "name": "spatie/laravel-csp",
-            "version": "2.10.3",
+            "version": "3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-csp.git",
-                "reference": "15e40c28d46076b3d5a4268b63040b3900cc05d3"
+                "reference": "395ec40d2e7aa9713af1d45096b73a3a57c7b2c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-csp/zipball/15e40c28d46076b3d5a4268b63040b3900cc05d3",
-                "reference": "15e40c28d46076b3d5a4268b63040b3900cc05d3",
+                "url": "https://api.github.com/repos/spatie/laravel-csp/zipball/395ec40d2e7aa9713af1d45096b73a3a57c7b2c4",
+                "reference": "395ec40d2e7aa9713af1d45096b73a3a57c7b2c4",
                 "shasum": ""
             },
             "require": {
-                "illuminate/http": "^9.0|^10.0|^11.36.1|^12",
-                "illuminate/support": "^9.0|^10.0|^11.36.1|^12",
-                "php": "^8.1",
+                "illuminate/http": "^11.36.1|^12.0",
+                "illuminate/support": "^11.36.1|^12.0",
+                "php": "^8.3",
                 "spatie/laravel-package-tools": "^1.17"
             },
             "require-dev": {
-                "mockery/mockery": "^1.6.12",
-                "orchestra/testbench": "^7.0|^8.0|^9.9|^10",
-                "pestphp/pest": "^1.23.0|^2.36.0|^3",
+                "mockery/mockery": "^1.6",
+                "orchestra/testbench": "^9.9|^10.0",
+                "pestphp/pest": "^3.0",
                 "roave/security-advisories": "dev-master"
             },
             "type": "library",
@@ -9972,9 +9975,6 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
                 "psr-4": {
                     "Spatie\\Csp\\": "src"
                 }
@@ -9995,6 +9995,12 @@
                     "email": "freek@spatie.be",
                     "homepage": "https://spatie.be",
                     "role": "Developer"
+                },
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Add CSP headers to the responses of a Laravel app",
@@ -10009,7 +10015,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-csp/tree/2.10.3"
+                "source": "https://github.com/spatie/laravel-csp/tree/3.8.0"
             },
             "funding": [
                 {
@@ -10017,7 +10023,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-02-14T13:23:32+00:00"
+            "time": "2025-04-08T13:13:05+00:00"
         },
         {
             "name": "spatie/laravel-data",
@@ -18300,15 +18306,15 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.4"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
