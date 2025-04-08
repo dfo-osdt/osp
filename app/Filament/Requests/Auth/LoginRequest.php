@@ -50,7 +50,7 @@ class LoginRequest extends BaseAuth
          * @throws \Illuminate\Validation\ValidationException
          */
         if (
-            (($user instanceof FilamentUser) && (! $user->canAccessPanel(Filament::getCurrentPanel()))) ||
+            (! $user->canAccessPanel(Filament::getCurrentPanel())) ||
             (! $user->hasVerifiedEmail()) ||
             (! $user->active)
         ) {
