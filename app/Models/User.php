@@ -91,7 +91,6 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
 
     /**
      * The attributes that are mass assignable.
-     *
      */
     protected $fillable = [
         'first_name',
@@ -103,7 +102,6 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
 
     /**
      * The attributes that should be hidden for serialization.
-     *
      */
     protected $hidden = [
         'password',
