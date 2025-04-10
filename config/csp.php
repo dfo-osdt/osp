@@ -9,6 +9,7 @@ return [
      * any class that extends `Spatie\Csp\Policies\Policy`
      */
     'presets' => [
+        App\Http\OspCspPolicy::class,
     ],
 
     /*
@@ -16,7 +17,6 @@ return [
      * a new policy or changes to existing csp policy without breaking anything.
      */
     'report_only_presets' => [
-        App\Http\OspCspPolicy::class,
         //
     ],
 
