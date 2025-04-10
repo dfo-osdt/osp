@@ -1,18 +1,24 @@
 <?php
 
+use App\Http\LaravelViteNonceGenerator;
+
 return [
 
     /*
      * A policy will determine which CSP headers will be set. A valid CSP policy is
      * any class that extends `Spatie\Csp\Policies\Policy`
      */
-    'policy' => App\Http\OspCspPolicy::class,
+    'presets' => [
+    ],
 
     /*
      * This policy which will be put in report only mode. This is great for testing out
      * a new policy or changes to existing csp policy without breaking anything.
      */
-    'report_only_policy' => '',
+    'report_only_presets' => [
+        App\Http\OspCspPolicy::class,
+        //
+    ],
 
     /*
      * All violations against the policy will be reported to this url.
@@ -30,5 +36,12 @@ return [
     /*
      * The class responsible for generating the nonces used in inline tags and headers.
      */
-    'nonce_generator' => Spatie\Csp\Nonce\RandomString::class,
+    'nonce_generator' => LaravelViteNonceGenerator::class,
+
+    /*
+     * Set false to disable automatic nonce generation and handling.
+     * This is useful when you want to use 'unsafe-inline' for scripts/styles
+     * and cannot add inline nonces. Note that this will make your CSP policy less secure.
+     */
+    'nonce_enabled' => env('CSP_NONCE_ENABLED', true),
 ];
