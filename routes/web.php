@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Spatie\Csp\AddCspHeaders;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 /*
@@ -16,7 +17,7 @@ use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 Route::get('/', function () {
     return view('app');
-});
+})->middleware(AddCspHeaders::class);
 
 // Spatie Health Check
 Route::get('health', HealthCheckResultsController::class);
