@@ -9,7 +9,7 @@
         "cy:run": "cypress run"
     },
     "dependencies": {
-        "@intlify/unplugin-vue-i18n": "^6.0.5",
+        "@intlify/unplugin-vue-i18n": "^6.0.8",
         "@quasar/extras": "^1.16.17",
         "@vitejs/plugin-vue": "^5.2.3",
         "@vueuse/core": "^13.1.0",
