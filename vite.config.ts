@@ -8,9 +8,13 @@ import laravel from 'laravel-vite-plugin'
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
 import manifestSRI from 'vite-plugin-manifest-sri'
+import vueDevtools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
   plugins: [
+    vueDevtools({
+      appendTo: 'resources/src/main.ts',
+    }),
     laravel(['resources/src/main.ts']),
     manifestSRI(),
     vue({
