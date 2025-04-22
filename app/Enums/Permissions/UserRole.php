@@ -26,7 +26,7 @@ enum UserRole: string
                 UserPermission::CREATE_AUTHOR_EMPLOYMENTS,
             ],
             self::DIRECTOR => [
-                UserPermission::WITHHOLD_AND_COMPLETE_MANAGEMENT_REVIEW,
+                UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW,
                 // Merge author permissions
                 ...self::AUTHOR->permissions(),
             ],

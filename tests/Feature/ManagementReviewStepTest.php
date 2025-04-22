@@ -5,11 +5,12 @@ use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptManagementReviewComplete;
-use App\Mail\ManuscriptWithheldMail;
 use App\Mail\ReviewStepNotificationMail;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 
 test('a reviewer can view all review steps associated with manuscript', function () {
     $owner = User::factory()->create();
@@ -62,7 +63,7 @@ test('a reviewer can update their review comments', function () {
     expect($manuscript->managementReviewSteps->first()->refresh()->comments)->toBe('test comments');
 });
 
-test('a reviewer can approve and send to the next reviewer', function () {
+test('a reviewer can refer the review to the next reviewer', function () {
     Mail::fake();
 
     // to send to the next step, a comment is required
@@ -70,25 +71,27 @@ test('a reviewer can approve and send to the next reviewer', function () {
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment here'))->create();
     $reviewer2 = User::factory()->create();
 
-    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/approve', [
-        'next_user_id' => $reviewer2->id,
-    ])->assertOk();
+    $response = $this->actingAs($reviewer)
+        ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/refer', [
+            'next_user_id' => $reviewer2->id,
+            'comments' => 'a comment here',
+        ])->assertOk();
 
     // assert email to next reviewer queued
     Mail::assertQueued(ReviewStepNotificationMail::class);
 });
 
-test('a reviwer can flag and send back to the author for clarifications and can reply to continue management review', function () {
+test('a reviewer can ask for revision and send back to the author for clarifications and can reply to continue management review', function () {
 
     Mail::fake();
 
     $reviewer = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required'))->create();
 
-    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/flag')
+    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/revision')
         ->assertOk();
 
-    expect($response->json('data.decision'))->toBe(ManagementReviewStepDecision::FLAGGED->value);
+    expect($response->json('data.decision'))->toBe(ManagementReviewStepDecision::REVISION->value);
     expect($response->json('data.status'))->toBe(ManagementReviewStepStatus::COMPLETED->value);
 
     $nextReviewSteps = $manuscript->refresh()->managementReviewSteps->last();
@@ -108,10 +111,10 @@ test('a reviwer can flag and send back to the author for clarifications and can 
     expect($response->json('data.comments'))->toBe('response to reviewer');
 
     // make sure the author cannot complete the review
-    $response = $this->actingAs($manuscript->user)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$nextReviewSteps->id.'/approve')
+    $response = $this->actingAs($manuscript->user)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$nextReviewSteps->id.'/complete')
         ->assertForbidden();
 
-    $response = $this->actingAs($manuscript->user)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$nextReviewSteps->id.'/flagged-response')
+    $response = $this->actingAs($manuscript->user)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$nextReviewSteps->id.'/revision-response')
         ->assertOK();
 
     expect($manuscript->refresh()->managementReviewSteps->last()->user_id)->toBe($reviewer->id);
@@ -119,13 +122,13 @@ test('a reviwer can flag and send back to the author for clarifications and can 
     Mail::assertQueued(ReviewStepNotificationMail::class, 2);
 });
 
-test('a author can withdraw their manuscript when their manuscript is flagged', function () {
+test('an author can withdraw their manuscript when revision are required on their manuscript', function () {
     Mail::fake();
 
     $reviewer = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required'))->create();
 
-    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/flag')
+    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/revision')
         ->assertOk();
 
     Mail::assertQueued(ReviewStepNotificationMail::class);
@@ -153,7 +156,7 @@ test('a reviewer can approve and complete the review', function () {
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create();
 
     $response = $this->actingAs($reviewer)
-        ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/approve')
+        ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete')
         ->assertOk();
 
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
@@ -177,48 +180,6 @@ test('a reviewer can reassign and send to the next reviewer', function () {
 
     // assert email to next reviewer queued
     Mail::assertQueued(ReviewStepNotificationMail::class);
-});
-
-test('a reviewer can withhold and send to the next reviewer', function () {
-    Mail::fake();
-
-    // to send to the next step, a comment is required
-    $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required'))->create();
-    $reviewer2 = User::factory()->create();
-
-    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/withhold', [
-        'next_user_id' => $reviewer2->id,
-    ])->assertOk();
-
-    expect($response->json('data.decision'))->toBe(ManagementReviewStepDecision::WITHHELD->value);
-    expect($response->json('data.status'))->toBe(ManagementReviewStepStatus::COMPLETED->value);
-
-    // assert email to next reviewer queued
-    Mail::assertQueued(ReviewStepNotificationMail::class);
-});
-
-test('a reviewer that has director permission can withhold and complete the review', function () {
-    Mail::fake();
-    $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment is required here'))->create();
-
-    // user does not have director permission, should be forbidden
-    $response = $this->actingAs($reviewer)
-        ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/withhold')
-        ->assertForbidden();
-
-    Mail::assertNothingQueued();
-
-    // add director permission
-    $reviewer->assignRole('director');
-
-    // should succeed
-    $response = $this->actingAs($reviewer)
-        ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/withhold')
-        ->assertOk();
-
-    Mail::assertQueued(ManuscriptWithheldMail::class);
 });
 
 test('a reviewer can list their reviews', function () {
