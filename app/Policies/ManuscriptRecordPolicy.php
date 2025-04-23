@@ -119,11 +119,6 @@ class ManuscriptRecordPolicy
      */
     public function attachManuscript(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        // cannot attach a manuscript if the manuscript has been withheld so that
-        // so that we keep version of the manuscript that was "withheld".
-        if ($manuscriptRecord->status === ManuscriptRecordStatus::WITHHELD) {
-            return false;
-        }
 
         // cannot attach a manuscript if the manuscript has been accepted to a publication
         // user should update the publication instead

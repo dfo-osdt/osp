@@ -79,7 +79,7 @@ class ExportEmails extends Command
         // Next reviwer: approved - forward to another reviewer
         $mrf = ManagementReviewStep::factory([
             'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::APPROVED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
             'comments' => 'I reviewed this manuscript and it is ready for publication',
         ])->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
@@ -88,19 +88,6 @@ class ExportEmails extends Command
         $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
         $markdownContent = $reviewStepNotification->render();
         $this->exportFile('review-step-notification-approved.html', $markdownContent);
-
-        // Next reviwer: withheld - forward to another reviewer
-        $mrf = ManagementReviewStep::factory([
-            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::WITHHELD,
-            'comments' => 'I recommend that this manuscript be withheld based on the following reasons: X, Y and Z',
-        ])->create()->manuscriptRecord;
-        $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
-            'previous_step_id' => $mrf->managementReviewSteps()->first()->id,
-        ]));
-        $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
-        $markdownContent = $reviewStepNotification->render();
-        $this->exportFile('review-step-notification-withheld.html', $markdownContent);
 
         // user invited email
         $invitation = \App\Models\Invitation::factory()->create();

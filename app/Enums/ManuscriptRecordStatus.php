@@ -11,7 +11,6 @@ namespace App\Enums;
  * Submitted: The manuscript record is submitted to the journal for review.
  * Accepted: The manuscript record is accepted by the journal.
  * Withdrawn: The manuscript record is withdrawn by the user either at the in-review or submitted stage.
- * Withheld: The manuscript record is withheld by a director.
  */
 enum ManuscriptRecordStatus: string
 {
@@ -21,6 +20,4 @@ enum ManuscriptRecordStatus: string
     case SUBMITTED = 'submitted';
     case ACCEPTED = 'accepted';
     case WITHDRAWN = 'withdrawn';
-    // Withheld is a special case of withdrawn - it is withdrawn by a director, not the user
-    case WITHHELD = 'withheld';
 }

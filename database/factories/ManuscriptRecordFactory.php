@@ -94,23 +94,10 @@ class ManuscriptRecordFactory extends Factory
         ])->afterCreating(function ($manuscript) {
             $manuscript->managementReviewSteps()->update([
                 'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-                'decision' => \App\Enums\ManagementReviewStepDecision::APPROVED,
+                'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
                 'comments' => 'This manuscript is approved - great job!',
                 'completed_at' => now(),
             ]);
-        });
-    }
-
-    /**
-     * A manuscript record that has been withheld by the management review
-     */
-    public function withheld()
-    {
-        return $this->in_review()->state([
-            'title' => 'A manuscript record that has been withheld by the management review',
-            'status' => ManuscriptRecordStatus::WITHHELD,
-        ])->afterCreating(function ($manuscript) {
-            $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->withheld()->make());
         });
     }
 

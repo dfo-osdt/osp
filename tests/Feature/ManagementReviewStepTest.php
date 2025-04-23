@@ -3,6 +3,7 @@
 use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
+use App\Enums\Permissions\UserRole;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptManagementReviewComplete;
 use App\Mail\ReviewStepNotificationMail;
@@ -71,7 +72,7 @@ test('a reviewer can refer the review to the next reviewer', function () {
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer)->set('comments', 'a comment here'))->create();
     $reviewer2 = User::factory()->create();
 
-    $response = $this->actingAs($reviewer)
+    $this->actingAs($reviewer)
         ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/refer', [
             'next_user_id' => $reviewer2->id,
             'comments' => 'a comment here',
@@ -150,12 +151,12 @@ test('an author can withdraw their manuscript when revision are required on thei
     Event::assertDispatched(ManuscriptRecordWithdrawnByAuthor::class);
 });
 
-test('a reviewer can approve and complete the review', function () {
+test('a reviewer can approve and complete the review of a third-party manuscript', function () {
     Mail::fake();
     $reviewer = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create();
 
-    $response = $this->actingAs($reviewer)
+    $this->actingAs($reviewer)
         ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete')
         ->assertOk();
 
@@ -174,7 +175,7 @@ test('a reviewer can reassign and send to the next reviewer', function () {
     $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/reassign')
         ->assertStatus(422);
 
-    $response = $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/reassign', [
+    $this->actingAs($reviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/reassign', [
         'next_user_id' => $reviewer2->id,
     ])->assertOk();
 
@@ -192,4 +193,28 @@ test('a reviewer can list their reviews', function () {
     expect($response->json('data'))->toHaveCount(1);
     expect($response->json('data.0.data.id'))->toBe($manuscript->managementReviewSteps->first()->id);
     expect($response->json('data.0.data.manuscript_record'))->toBeTruthy();
+});
+
+test('only a director can complete an internal managment reviw', function () {
+    $regularReviewer = User::factory()->create();
+    $director = User::factory()->withRoles([UserRole::DIRECTOR])->create();
+
+    $manuscript = ManuscriptRecord::factory()
+        ->in_review()->secondary()
+        ->has(ManagementReviewStep::factory()
+            ->for($regularReviewer))->create();
+
+    // this regular user should not be able to complete the review
+    $this->actingAs($regularReviewer)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete')
+        ->assertForbidden();
+
+    $manuscript = ManuscriptRecord::factory()
+        ->in_review()->secondary()
+        ->has(ManagementReviewStep::factory()
+            ->for($director))->create();
+
+    // but a director should be able to complete the review
+    $this->actingAs($director)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete')
+        ->assertOk();
+
 });

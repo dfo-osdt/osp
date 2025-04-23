@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
+use App\Enums\ManuscriptRecordType;
+use App\Enums\Permissions\UserPermission;
 use App\Events\ManagementReviewStepCreated;
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
@@ -52,7 +54,9 @@ class ManagementReviewStepController extends Controller
     {
         Gate::authorize('decide', $managementReviewStep);
 
-        // TODO: : Check if this is an internal mrf and if so, that user has ability to complete it.
+        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
+            Gate::authorize(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
+        }
 
         $validated = $request->validate([
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
