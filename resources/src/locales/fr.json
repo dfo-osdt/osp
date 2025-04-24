@@ -281,7 +281,9 @@
     "upload-the-publication": "Déposez le fichier ou cliquez pour automatiquement télécharger une publication",
     "from": "de",
     "form-invalid": "Il y a des erreurs dans le formulaire, merci de les corriger pour pouvoir sauvegarder ce formulaire.",
-    "no_announcements": "Il n’y a pas d’annonces générales pour le moment."
+    "no_announcements": "Il n’y a pas d’annonces générales pour le moment.",
+    "preprint-publication": "Un manuscrit destiné à un serveur de prépublications",
+    "preprint-manuscript": "Manuscrit prépublicaiton"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -299,7 +301,8 @@
       "title": "Détails du manuscrit"
     },
     "title": "Créer un nouveau formulaire du registre de manuscrit",
-    "what-is-the-working-title-of-your-manuscript": "Quel est le titre provisoire de votre manuscrit?"
+    "what-is-the-working-title-of-your-manuscript": "Quel est le titre provisoire de votre manuscrit?",
+    "prerint-pub-desc": "Document scientifique ou technique destiné à être diffusé via un serveur de prépublications, avant ou indépendamment d'une publication formelle avec comité de lecture dans une revue, un ouvrage ou les actes d'une conférence."
   },
   "create-organization-dialog": {
     "abbreviation-english": "Abréviation (anglais)",
@@ -337,18 +340,14 @@
     "hint": "Format de date ISO (AAAA-MM-JJ)"
   },
   "decision": {
-    "approve-and-complete": "Approuver et compléter",
-    "approve-and-complete-desc": "Vous approuvez la publication de ce manuscrit et vous mettez fin au processus de revue par la gestion.",
-    "approve-and-forward": "Approuver et transmettre",
-    "approve-and-forward-desc": "Vous recommandez l'approbation de ce manuscrit pour publication et vous le transmettez au prochain examinateur.",
-    "flag": "Signalé un suivi",
-    "flag-desc": "Signalez des commentaires liés à la revision par la gestion qui devraient être résolus par l’auteur avant de donner votre approbation.",
+    "refer": "Référer au prochain responsable",
+    "refer-desc": "Vous avez examiné le manuscrit et vous le transmettez au prochain responsable (généralement un RDS ou un DG) pour examen.",
+    "revision": "Révisions requises",
+    "revision-desc": "Signalez les commentaires de gestion qui doivent être pris en compte par l'auteur avant de completer l'évaluation.",
     "reassign": "Réassigner",
-    "reassign-desc": "Vous n'êtes pas le gestionnaire approprié pour examiner ce manuscrit et vous réassignez cet examen au gestionnaire approprié sans faire de recommandation.",
-    "withhold-and-complete": "Retenir et compléter le processus de révision",
-    "withhold-and-complete-desc": "Vous retenez ce manuscrit pour publication et vous mettez fin au processus de revue par la gestion. \nSeul un RDS ou un DG peut prendre cette décision.",
-    "withhold-and-forward": "Retenir et transférer",
-    "withhold-and-forward-desc": "Vous recommandez que ce manuscrit ne soit pas publié et vous le transmettez a un gestionnaire de niveau supérieur"
+    "reassign-desc": "Vous n'êtes pas le responsable approprié pour examiner ce manuscrit et vous réattribuez cet examen au responsable compétent sans faire de recommandation.",
+    "complete": "Terminer",
+    "complete-desc": "L'examen de ce manuscrit pour publication est terminé et vous mettez fin au processus de révision de gestion."
   },
   "dialog": {
     "delete-manuscript": {
@@ -481,7 +480,8 @@
     "secondary": "Publication du MPO",
     "submitted": "Soumis",
     "withdrawn": "Retiré",
-    "withheld": "Retenu"
+    "withheld": "Retenu",
+    "preprint": "Prépublication"
   },
   "manuscript-author-dialog": {
     "instructions": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse courriel a changé, vous pouvez créer une nouvelle fiche d'auteur.",
@@ -696,7 +696,7 @@
     "response-by": "Réponse par {0}",
     "review-by": "Révision par {0}",
     "save-comments": "Enregistrer les commentaires",
-    "submit-decision": "Soumettre la décision",
+    "submit-decision": "Soumettre l'évaluation",
     "your-response": "Votre réponse : {0}",
     "your-review": "Votre révision: {0}",
     "comments-required": "Un commentaire s'impose."
@@ -706,7 +706,7 @@
     "list-of-all-my-reviews": "Liste de toutes mes revues"
   },
   "reviewer-comments": {
-    "description": "Les commentaires sont obligatoires, sauf si vous approuvez et terminez la revue par la gestion sans l'envoyer à un autre gestionnaire. \nLes commentaires saisis ici doivent appuyer votre décision et, le cas échéant, fournir des commentaires aux prochain gestionnaire. \nVos commentaires seront visibles par toute personne ayant accès à ce registre de manuscrit.",
+    "description": "Des commentaires sont requis, sauf si vous terminez l'examen de la direction sans l'envoyer à un autre gestionnaire. Les commentaires entrés ici doivent fournir des commentaires au réviseur ou auteur de gestion ultérieure. Vos commentaires seront visibles à toute personne ayant accès à ce dossier manuscrit.",
     "title": "Commentaires du gestionnaire"
   },
   "shareable": {
@@ -722,15 +722,15 @@
     "user-create-text": "L'utilisateur avec lequel vous souhaitez partager. \nL'utilisateur recevra une notification par e-mail une fois que vous partagerez cette ressource."
   },
   "submit-decision-dialog": {
-    "certify-text": "Je certifie qu'à ma connaissance, ma décision est fondée sur les lignes directrices énoncées dans la Politique nationale pour les publications scientifiques du MPO. \nLe cas échéant, j'ai lu les commentaires fournis par le gestionnaire précédent et les ai pris en compte dans ma décision.",
-    "confirm-decision": "Confirmer la décision",
+    "certify-text": "Je certifie qu'à ma connaissance, ma revue est fondée sur les lignes directrices énoncées dans la Politique nationale pour les publications scientifiques du MPO. \nLe cas échéant, j'ai lu les commentaires fournis par le gestionnaire précédent et les ai pris en compte dans ma décision.",
+    "confirm-decision": "Confirmer la revue",
     "next-reviewer": "Réviseur de gestion suivant",
     "next-reviewer-hint": "Recherchez la personne appropriée pour mener la révision par la gestion dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
     "no-comments-warning": "Votre avis n'a pas de commentaires. \nPar conséquent, vous ne pouvez qu'approuver et compléter cet examen de gestion. \nVeuillez ajouter des commentaires pour appuyer votre décision si vous souhaitez sélectionner parmi les autres options.",
-    "select-decision": "Sélectionnez votre décision",
+    "select-decision": "Sélectionnez votre résultat de revue",
     "select-next-reviewer": "Prochain gestionnaire",
-    "subsequent-reviewer-is-required": "Compte tenu de votre décision, un gestionnaire ultérieur est requis pour compléter la révision ",
-    "your-decision": "Votre décision"
+    "subsequent-reviewer-is-required": "Compte tenu de votre revue, un gestionnaire ultérieur est requis pour compléter la révision ",
+    "your-decision": "Votre revue"
   },
   "submit-manuscript-dialog": {
     "step1": {

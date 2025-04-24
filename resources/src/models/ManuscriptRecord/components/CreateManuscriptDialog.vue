@@ -137,6 +137,30 @@ async function create() {
                     </q-item-label>
                   </q-item-section>
                 </q-item>
+                <q-item v-ripple tag="label">
+                  <q-item-section avatar top>
+                    <q-radio
+                      v-model="type"
+                      val="preprint"
+                    />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-body1">
+                      {{
+                        $t('common.preprint-publication')
+                      }}
+                    </q-item-label>
+                    <q-item-label
+                      class="text-body2 text-grey-8"
+                    >
+                      {{
+                        $t(
+                          'create-manuscript-record-dialog.prerint-pub-desc',
+                        )
+                      }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
               </q-list>
             </div>
           </q-step>

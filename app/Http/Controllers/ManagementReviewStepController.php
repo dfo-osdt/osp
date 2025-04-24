@@ -13,11 +13,14 @@ use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Throwable;
 
 class ManagementReviewStepController extends Controller
 {
@@ -59,7 +62,6 @@ class ManagementReviewStepController extends Controller
         }
 
         $validated = $request->validate([
-            'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
             'comments' => 'string|nullable',
         ]);
 
@@ -84,6 +86,10 @@ class ManagementReviewStepController extends Controller
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
+    /**
+     * Refer the manuscript to another user, if revisions are also required by the author, it will stop the
+     * 10 days clock.
+     */
     public function refer(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
         Gate::authorize('decide', $managementReviewStep);
@@ -91,7 +97,10 @@ class ManagementReviewStepController extends Controller
         $validated = $request->validate([
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
             'comments' => 'string|nullable',
+            'with_revisions' => 'boolean'
         ]);
+
+        $revisionRequested = $validated['with_revisions'] ?? false;
 
         $nextReviewStep = new ManagementReviewStep;
         $nextReviewStep->user_id = $validated['next_user_id'];
@@ -99,7 +108,8 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
         $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
-        $nextReviewStep->decision_expected_by = $managementReviewStep->decision_expected_by;
+        // stop the clock if revisions are requested.
+        $nextReviewStep->decision_expected_by = $revisionRequested ? null : $managementReviewStep->decision_expected_by;
 
         $nextReviewStep->saveOrFail();
 

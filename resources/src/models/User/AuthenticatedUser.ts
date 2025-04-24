@@ -71,7 +71,7 @@ export type AuthenticatedUserPermissions =
   | 'update_authors'
   | 'create_organizations'
   | 'create_author_employments'
-  | 'withhold_and_complete_management_review'
+  | 'complete_interntal_management_review'
   | 'view_any_users'
   | 'publish_internal_reports'
   | 'update_publications'
@@ -135,7 +135,6 @@ export class AuthenticatedUser implements IAuthenticatedUser {
    * Does this user have the given permission?
    *
    * @param permission
-   * @returns
    */
   can(permission: AuthenticatedUserPermissions): boolean {
     return this.permissions.includes(permission)

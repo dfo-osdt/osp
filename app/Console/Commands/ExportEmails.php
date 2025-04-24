@@ -64,7 +64,7 @@ class ExportEmails extends Command
         // Next reviwer: flagged - return to author
         $mrf = ManagementReviewStep::factory([
             'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::FLAGGED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::REVISION,
             'comments' => 'This manuscript is not ready for publication, please change X, Y and Z',
         ])->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([

@@ -11,7 +11,7 @@ import type { UserResource } from '../User/User'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
 
-export type ManuscriptRecordType = 'primary' | 'secondary'
+export type ManuscriptRecordType = 'primary' | 'secondary' | 'preprint'
 
 export type ManuscriptRecordStatus =
   | 'draft'
@@ -20,7 +20,6 @@ export type ManuscriptRecordStatus =
   | 'submitted'
   | 'accepted'
   | 'withdrawn'
-  | 'withheld'
 
 /**
  * The minimum set of data required to create a new manuscript record.

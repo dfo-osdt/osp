@@ -1,19 +1,19 @@
 <script setup lang="ts">
+import type {
+  ManuscriptRecordResource,
+} from '@/models/ManuscriptRecord/ManuscriptRecord'
 import type { Ref } from 'vue'
 import type {
   ManagementReviewStepResourceList,
 } from '../ManagementReviewStep'
-import {
-  ManagementReviewStepService,
-} from '../ManagementReviewStep'
-import ManagementReviewStepTimelineEntry from '../components/ManagementReviewStepTimelineEntry.vue'
-import type {
-  ManuscriptRecordResource,
-} from '@/models/ManuscriptRecord/ManuscriptRecord'
+import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 import {
   ManuscriptRecordService,
 } from '@/models/ManuscriptRecord/ManuscriptRecord'
-import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
+import ManagementReviewStepTimelineEntry from '../components/ManagementReviewStepTimelineEntry.vue'
+import {
+  ManagementReviewStepService,
+} from '../ManagementReviewStep'
 
 const props = defineProps<{
   id: number
@@ -112,7 +112,7 @@ async function getManagementReviewSteps() {
       managementReviewSteps.value = response
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
 }
 
@@ -123,7 +123,7 @@ async function getManuscriptRecord() {
       emit('update-manuscript', manuscriptRecord.value)
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
 }
 
@@ -217,6 +217,7 @@ async function decisionSubmitted() {
         ) in managementReviewSteps.data"
         :key="managementReviewStep.data.id"
         v-model="managementReviewSteps.data[index]"
+        :manuscript-record="manuscriptRecord"
         @decision="decisionSubmitted"
       />
     </template>

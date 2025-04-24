@@ -13,6 +13,10 @@ const typeLabel = computed(() => {
       return t('manuscript.primary')
     case 'secondary':
       return t('manuscript.secondary')
+    case 'preprint':
+      return t('manuscript.preprint')
+    default:
+      return 'N/A'
   }
 })
 </script>

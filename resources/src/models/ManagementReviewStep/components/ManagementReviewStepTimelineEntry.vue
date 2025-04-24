@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import DOMPurify from 'dompurify'
-import { useQuasar } from 'quasar'
+import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import type {
   ManagementReviewStepResource,
 } from '../ManagementReviewStep'
+import QuestionEditor from '@/components/QuestionEditor.vue'
+import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
+import { useLocaleDate } from '@/composables/useLocaleDate'
+import DOMPurify from 'dompurify'
+import { useQuasar } from 'quasar'
+import ManagementReviewStepStatusSpan from '../components/ManagementReviewStepStatusSpan.vue'
 import {
   ManagementReviewStepService,
 } from '../ManagementReviewStep'
-import ManagementReviewStepStatusSpan from '../components/ManagementReviewStepStatusSpan.vue'
 import ManagementReviewStepDecisionSpan from './ManagementReviewStepDecisionSpan.vue'
 import SubmitDecisionDialog from './SubmitDecisionDialog.vue'
 import WithdrawManuscriptReplyDialog from './WithdrawManuscriptReplyDialog.vue'
-import QuestionEditor from '@/components/QuestionEditor.vue'
-import { useLocaleDate } from '@/composables/useLocaleDate'
-import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 
 const props = defineProps<{
   modelValue: ManagementReviewStepResource
+  manuscriptRecord: ManuscriptRecordResource | null
 }>()
 const emit = defineEmits<{
   (event: 'update:modelValue', value: ManagementReviewStepResource): void
@@ -58,11 +60,9 @@ const color = computed(() => {
   switch (managementStep.value.data.status) {
     case 'completed':
       switch (managementStep.value.data.decision) {
-        case 'approved':
+        case 'complete':
           return 'primary'
-        case 'withheld':
-          return 'red'
-        case 'flagged':
+        case 'revision':
           return 'orange-8'
         case 'withdrawn':
           return 'red'
@@ -276,6 +276,7 @@ function withdrawManuscript() {
             v-if="submitDecisionDialog"
             v-model="submitDecisionDialog"
             :management-review-step="managementStep.data"
+            :manuscript-type="props.manuscriptRecord?.data.type || 'primary'"
             @decision="decisionSubmitted"
           />
         </q-card-actions>

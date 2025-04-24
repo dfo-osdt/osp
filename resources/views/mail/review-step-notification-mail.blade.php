@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-@if($previousStep->decision == App\Enums\ManagementReviewStepDecision::FLAGGED)
+@if($previousStep->decision == App\Enums\ManagementReviewStepDecision::REVISION)
 {{ $previousStep->user->fullName }} has flagged the manuscript titled "{{ $manuscriptRecord->title }}". Please review and address the comments below.
 <p>When ready, please click the button below to restart the management review. Please note that you can upload a revised version of the manuscript record in the portal.</p>
 @else
@@ -46,8 +46,8 @@ Review Manuscript
 
 # Bonjour {{ $managementReviewStep->user->first_name }},
 
-@if($previousStep->decision == App\Enums\ManagementReviewStepDecision::FLAGGED)
-{{ $previousStep->user->fullName }} a signalé le manuscrit intitulé "{{ $manuscriptRecord->title }}". Veuillez examiner et traiter les commentaires ci-dessous.
+@if($previousStep->decision == App\Enums\ManagementReviewStepDecision::REVISION)
+{{ $previousStep->user->fullName }} a signalé des révisions nécessaires sur le manuscrit intitulé "{{ $manuscriptRecord->title }}". Veuillez examiner et traiter les commentaires ci-dessous.
 <p>Lorsque vous êtes prêt, veuillez cliquer sur le bouton ci-dessous pour redémarrer la révision de gestion. Veuillez noter que vous pouvez télécharger une version révisée du registre de manuscrit dans le portail.</p>
 @else
 {{ $previousStep->user->fullName }} vous a identifié comme le prochain gestionnaire de la révision pour le manuscrit intitulé "{{ $manuscriptRecord->title }}".

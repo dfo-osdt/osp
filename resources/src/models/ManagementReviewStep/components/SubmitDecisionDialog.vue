@@ -1,21 +1,23 @@
 <script setup lang="ts">
+import type { ManuscriptRecordType } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import type { QDialog } from 'quasar'
-import { QForm, QStepper } from 'quasar'
 import type { Ref } from 'vue'
 import type {
   ManagementReviewStep,
   ManagementReviewStepResource,
 } from '../ManagementReviewStep'
-import {
-  ManagementReviewStepService,
-} from '../ManagementReviewStep'
 import BaseDialog from '@/components/BaseDialog.vue'
 import { ManuscriptAuthorService } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import { ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import UserSelect from '@/models/User/components/UserSelect.vue'
+import { QForm, QStepper } from 'quasar'
+import {
+  ManagementReviewStepService,
+} from '../ManagementReviewStep'
 
 const props = defineProps<{
   managementReviewStep: ManagementReviewStep
+  manuscriptType: ManuscriptRecordType
 }>()
 const emit = defineEmits<{
   (event: 'decision', arg: ManagementReviewStepResource): void
@@ -30,11 +32,10 @@ const step = ref(1)
 const validationError = ref(false)
 
 type Decision =
-  | 'approveAndComplete'
-  | 'approveAndForward'
-  | 'withholdAndComplete'
-  | 'withholdAndForward'
-  | 'flag'
+  | 'complete'
+  | 'refer'
+  | 'referWithRevision'
+  | 'revision'
   | 'reassign'
 
 interface DecisionOption {
@@ -44,7 +45,7 @@ interface DecisionOption {
   disabled: boolean
 }
 
-const decision: Ref<Decision> = ref('approveAndComplete')
+const decision: Ref<Decision> = ref('complete')
 const nextUserId = ref<number | null>(null)
 
 /** Decision flow variables */
@@ -62,9 +63,8 @@ const agreeToTermsOptions = ref([
 
 const nextReviewerStepDisabled = computed(() => {
   return (
-    decision.value === 'approveAndComplete'
-    || decision.value === 'withholdAndComplete'
-    || decision.value === 'flag'
+    decision.value === 'complete'
+    || decision.value === 'revision'
   )
 })
 
@@ -78,6 +78,7 @@ const nextDisabled = computed(() => {
   else if (step.value === 3) {
     return !agreeToTerms.value
   }
+  return true
 })
 
 /**
@@ -88,12 +89,13 @@ const stepHasNoComments = computed(() => {
 })
 
 /**
- * Checks that the user has permission to withhold a manuscript.
+ * Checks that the user has permission to complete a secondary review.
  */
-const userCanWithholdAndComplete = computed(() => {
-  return (
-    authStore.user?.can('withhold_and_complete_management_review') ?? false
-  )
+const userCanCompleteReview = computed(() => {
+  if (props.manuscriptType === 'secondary') {
+    return authStore.user?.can('complete_interntal_management_review') ?? false
+  }
+  return true
 })
 
 /**
@@ -101,33 +103,21 @@ const userCanWithholdAndComplete = computed(() => {
  */
 const options = ref<DecisionOption[]>([
   {
-    label: t('decision.approve-and-complete'),
-    value: 'approveAndComplete',
-    description: t('decision.approve-and-complete-desc'),
-    disabled: false,
+    label: t('decision.complete'),
+    value: 'complete',
+    description: t('decision.complete-desc'),
+    disabled: !userCanCompleteReview.value,
   },
   {
-    label: t('decision.approve-and-forward'),
-    value: 'approveAndForward',
-    description: t('decision.approve-and-forward-desc'),
+    label: t('decision.refer'),
+    value: 'refer',
+    description: t('decision.refer-desc'),
     disabled: stepHasNoComments.value,
   },
   {
-    label: t('decision.flag'),
-    value: 'flag',
-    description: t('decision.flag-desc'),
-    disabled: stepHasNoComments.value,
-  },
-  {
-    label: t('decision.withhold-and-complete'),
-    value: 'withholdAndComplete',
-    description: t('decision.withhold-and-complete-desc'),
-    disabled: stepHasNoComments.value || !userCanWithholdAndComplete.value,
-  },
-  {
-    label: t('decision.withhold-and-forward'),
-    value: 'withholdAndForward',
-    description: t('decision.withhold-and-forward-desc'),
+    label: t('decision.revision'),
+    value: 'revision',
+    description: t('decision.revision-desc'),
     disabled: stepHasNoComments.value,
   },
   {
@@ -173,33 +163,26 @@ const loading = ref(false)
 async function submit() {
   let response: ManagementReviewStepResource | null = null
   switch (decision.value) {
-    case 'approveAndComplete':
-      response = await ManagementReviewStepService.approve(
+    case 'complete':
+      response = await ManagementReviewStepService.complete(
         props.managementReviewStep,
       )
       break
-    case 'approveAndForward':
+    case 'referWithRevision':
       if (nextUserId.value === null) {
         throw new Error('nextUserId is null')
       }
-      response = await ManagementReviewStepService.approve(
+      response = await ManagementReviewStepService.refer(
         props.managementReviewStep,
         nextUserId.value,
+        true,
       )
       break
-    case 'withholdAndComplete':
-      if (!userCanWithholdAndComplete.value) {
-        throw new Error('User cannot withhold and complete')
-      }
-      response = await ManagementReviewStepService.withhold(
-        props.managementReviewStep,
-      )
-      break
-    case 'withholdAndForward':
+    case 'refer':
       if (nextUserId.value === null) {
         throw new Error('nextUserId is null')
       }
-      response = await ManagementReviewStepService.withhold(
+      response = await ManagementReviewStepService.refer(
         props.managementReviewStep,
         nextUserId.value,
       )
@@ -213,8 +196,8 @@ async function submit() {
         nextUserId.value,
       )
       break
-    case 'flag':
-      response = await ManagementReviewStepService.flag(
+    case 'revision':
+      response = await ManagementReviewStepService.revision(
         props.managementReviewStep,
       )
       break

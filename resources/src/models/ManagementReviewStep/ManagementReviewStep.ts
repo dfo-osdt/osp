@@ -1,14 +1,13 @@
 import type { ManuscriptRecordSummaryResource } from '../ManuscriptRecord/ManuscriptRecord'
 import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import type { UserResource } from '../User/User'
-import { SpatieQuery } from '@/api/SpatieQuery'
 import { http } from '@/api/http'
+import { SpatieQuery } from '@/api/SpatieQuery'
 
 export type ManagementReviewStepDecision =
   | 'none'
-  | 'approved'
-  | 'withheld'
-  | 'flagged'
+  | 'complete'
+  | 'revision'
   | 'withdrawn'
 export type ManagementReviewStepStatus =
   | 'pending'
@@ -19,6 +18,7 @@ export type UpdateStep = Pick<ManagementReviewStep, 'comments'>
 export interface DecisionStep {
   comments?: string
   next_user_id?: number
+  with_revisions?: boolean
 }
 
 export interface ManagementReviewStep {
@@ -42,7 +42,7 @@ export interface ManagementReviewStep {
 
 export type ManagementReviewStepResource = Resource<ManagementReviewStep>
 export type ManagementReviewStepResourceList =
-    ResourceList<ManagementReviewStep>
+  ResourceList<ManagementReviewStep>
 
 type R = ManagementReviewStepResource
 type RList = ManagementReviewStepResourceList
@@ -86,48 +86,20 @@ export class ManagementReviewStepService {
   }
 
   /**
-   * Approve the management review step
+   * Complete the management review step
    *
-   * @param step the management review step to approve
+   * @param step the management review step to complete
    * @param nextUserId the user id of the next user in the workflow - if null, the workflow will be completed
    */
-  public static async approve(
+  public static async complete(
     step: ManagementReviewStep,
-    nextUserId?: number,
   ) {
-    // if user exists, add it to the data object
     const data: DecisionStep = {
       comments: step.comments,
     }
-    if (nextUserId)
-      data.next_user_id = nextUserId
 
     const response = await http.put<DecisionStep, R>(
-      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/approve`,
-      data,
-    )
-    return response.data
-  }
-
-  /**
-   * Withhold the management review step
-   *
-   * @param step the management review step to withhold
-   * @param nextUserId the user id of the next user in the workflow - if null, the workflow will be completed
-   */
-  public static async withhold(
-    step: ManagementReviewStep,
-    nextUserId?: number,
-  ) {
-    // if user exists, add it to the data object
-    const data: DecisionStep = {
-      comments: step.comments,
-    }
-    if (nextUserId)
-      data.next_user_id = nextUserId
-
-    const response = await http.put<DecisionStep, R>(
-      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/withhold`,
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/complete`,
       data,
     )
     return response.data
@@ -156,13 +128,37 @@ export class ManagementReviewStepService {
   }
 
   /**
+   * Refer the management review step to the next manager.
+   *
+   * @param step the management review step to reassign
+   * @param nextUserId the user id of the next user in the workflow.
+   */
+  public static async refer(
+    step: ManagementReviewStep,
+    nextUserId: number,
+    withRevisions: boolean = false,
+  ) {
+    const data: DecisionStep = {
+      comments: step.comments,
+      next_user_id: nextUserId,
+      with_revisions: withRevisions,
+    }
+
+    const response = await http.put<DecisionStep, R>(
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/refer`,
+      data,
+    )
+    return response.data
+  }
+
+  /**
    * Flag the management review and send it back to the author.
    *
    * @param step the management review step to flag
    */
-  public static async flag(step: ManagementReviewStep) {
+  public static async revision(step: ManagementReviewStep) {
     const response = await http.put<DecisionStep, R>(
-      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flag`,
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/revision`,
       { comments: step.comments },
     )
     return response.data
@@ -170,13 +166,10 @@ export class ManagementReviewStepService {
 
   /**
    * Response the management review flag
-   *
-   * @param step the management review step to response
-   * @param nextUserId the user id of the next user in the workflow
    */
   public static async response(step: ManagementReviewStep) {
     const response = await http.put<DecisionStep, R>(
-      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/flagged-response`,
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/revision-response`,
       { comments: step.comments },
     )
     return response.data
