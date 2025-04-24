@@ -13,14 +13,11 @@ use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Throwable;
 
 class ManagementReviewStepController extends Controller
 {
@@ -97,7 +94,7 @@ class ManagementReviewStepController extends Controller
         $validated = $request->validate([
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
             'comments' => 'string|nullable',
-            'with_revisions' => 'boolean'
+            'with_revisions' => 'boolean',
         ]);
 
         $revisionRequested = $validated['with_revisions'] ?? false;
