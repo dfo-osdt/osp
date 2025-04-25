@@ -28,7 +28,7 @@ class ManagementReviewStepController extends Controller
     {
         Gate::authorize('view', $manuscriptRecord);
 
-        $managementReviewSteps = $manuscriptRecord->managementReviewSteps()->with('user')->orderBy('id')->get();
+        $managementReviewSteps = $manuscriptRecord->managementReviewSteps()->with('user','manuscriptRecord')->orderBy('id')->get();
 
         return ManagementReviewStepResource::collection($managementReviewSteps);
     }
@@ -52,11 +52,7 @@ class ManagementReviewStepController extends Controller
     // actions
     public function complete(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
-        Gate::authorize('decide', $managementReviewStep);
-
-        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
-            Gate::authorize(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
-        }
+        Gate::authorize('complete', $managementReviewStep);
 
         $validated = $request->validate([
             'comments' => 'string|nullable',

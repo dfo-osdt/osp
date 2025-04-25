@@ -80,7 +80,7 @@
     "cancel": "Annuler",
     "close": "Fermer",
     "comments": "Commentaires",
-    "complete": "Compléter",
+    "complete": "Complété",
     "completed": "Complété",
     "completed-on": "Terminé le",
     "confirm-email": "Confirmez votre courriel",
@@ -101,7 +101,7 @@
     "current-password": "Mot de passe actuel",
     "dashboard": "Tableau de bord",
     "decision": "Décision",
-    "decision-expected-by": "Décision attendue par le",
+    "decision-expected-by": "Révision attendue par le",
     "deferred": "Différé",
     "delete": "Supprimer",
     "deleted": "Supprimé",
@@ -283,7 +283,9 @@
     "form-invalid": "Il y a des erreurs dans le formulaire, merci de les corriger pour pouvoir sauvegarder ce formulaire.",
     "no_announcements": "Il n’y a pas d’annonces générales pour le moment.",
     "preprint-publication": "Un manuscrit destiné à un serveur de prépublications",
-    "preprint-manuscript": "Manuscrit prépublicaiton"
+    "preprint-manuscript": "Manuscrit prépublicaiton",
+    "revision": "Révision demandée",
+    "review-outcome": "Résultat de la revue"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -347,7 +349,9 @@
     "reassign": "Réassigner",
     "reassign-desc": "Vous n'êtes pas le responsable approprié pour examiner ce manuscrit et vous réattribuez cet examen au responsable compétent sans faire de recommandation.",
     "complete": "Terminer",
-    "complete-desc": "L'examen de ce manuscrit pour publication est terminé et vous mettez fin au processus de révision de gestion."
+    "complete-desc": "L'examen de ce manuscrit pour publication est terminé et vous mettez fin au processus de révision de gestion.",
+    "revision-revision-desc": "Vous avez examiné le manuscrit et pensez que des modifications peuvent être nécessaires avant de terminer l'examen. Vous le référez maintenant à un RDS ou à une DG pour un examen plus approfondi.",
+    "refer-revision": "Référer avec des révisions"
   },
   "dialog": {
     "delete-manuscript": {
@@ -490,7 +494,7 @@
   "manuscript-progress-view": {
     "accepted-details": "Le manuscrit a été accepté pour publication par la revue ciblée et entre dans le processus de production. \nLa confirmation de cette étape créera un nouvel registre de publication dans lequel vous pourrez télécharger le manuscrit final et mettre à jour les détails de la publication.",
     "accepted-title": "Accepté pour publication",
-    "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est approuvé par la gestion du MPO. \nÀ ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
+    "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est revisé par la gestion du MPO. À ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
     "completed-title": "Fin de la révision par la gestion",
     "completed-withheld-details": "Le manuscrit n'est pas conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est retenu par la gestion du MPO.",
     "created-details": "À ce stade, seuls le demandeur et les auteurs peuvent voir et modifier le registre du manuscrit.",
@@ -726,11 +730,12 @@
     "confirm-decision": "Confirmer la revue",
     "next-reviewer": "Réviseur de gestion suivant",
     "next-reviewer-hint": "Recherchez la personne appropriée pour mener la révision par la gestion dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
-    "no-comments-warning": "Votre avis n'a pas de commentaires. \nPar conséquent, vous ne pouvez qu'approuver et compléter cet examen de gestion. \nVeuillez ajouter des commentaires pour appuyer votre décision si vous souhaitez sélectionner parmi les autres options.",
+    "no-comments-warning": "Votre examen de la gestion n'a aucun commentaire. Par conséquent, vous ne pouvez que terminer cette revue. Veuillez ajouter des commentaires pour prendre en charge votre avis si vous souhaitez sélectionner parmi les autres options.",
     "select-decision": "Sélectionnez votre résultat de revue",
     "select-next-reviewer": "Prochain gestionnaire",
     "subsequent-reviewer-is-required": "Compte tenu de votre revue, un gestionnaire ultérieur est requis pour compléter la révision ",
-    "your-decision": "Votre revue"
+    "your-decision": "Votre revue",
+    "no-comments-warning-cant-complete": "Un commentaire de révision est nécessaire pour continuer."
   },
   "submit-manuscript-dialog": {
     "step1": {

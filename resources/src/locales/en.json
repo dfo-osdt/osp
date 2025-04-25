@@ -102,7 +102,7 @@
     "current-password": "Current Password",
     "dashboard": "Dashboard",
     "decision": "Decision",
-    "decision-expected-by": "Decision Expected By",
+    "decision-expected-by": "Review Expected By",
     "deferred": "Deferred",
     "delete": "Delete",
     "deleted": "Deleted",
@@ -285,7 +285,9 @@
     "no_announcements": "There are no general announcements at this time.",
     "announcements": "Click here to show the muted announcement | Click here to show the {count} muted announcements",
     "preprint-publication": "A manuscript to be published on a preprint server",
-    "preprint-manuscript": "Preprint Manuscript"
+    "preprint-manuscript": "Preprint Manuscript",
+    "revision": "Revision Requested",
+    "review-outcome": "Review Outcome"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -349,7 +351,9 @@
     "reassign": "Reassign",
     "reassign-desc": "You are not the correct manager to review this manuscript and reassign this review to the proper manager without making a recommendation.",
     "complete": "Complete",
-    "complete-desc": "Review of this manuscript for publication is complete and you are ending the management review process."
+    "complete-desc": "Review of this manuscript for publication is complete and you are ending the management review process.",
+    "refer-revision": "Refer with Revisions",
+    "revision-revision-desc": "You have reviewed the manuscript and believe that changes may be required before completing the review. You are now refering it to a RDS or DG for further review."
   },
   "dialog": {
     "delete-manuscript": {
@@ -492,7 +496,7 @@
   "manuscript-progress-view": {
     "accepted-details": "The manuscript was accepted for publication by the target journal and is entering the production process. Confirming this step will create a new publication record where you can upload the final manuscript and update the publication details.",
     "accepted-title": "Accepted for Publication",
-    "completed-details": "The manuscript complies with Fisheries and Oceans Canada National Policy for Science Publications and is approved by DFO management. At this stage, you may now submit the manuscript to your target journal.",
+    "completed-details": "The manuscript complies with Fisheries and Oceans Canada National Policy for Science Publications and has been reviewed by DFO management. At this stage, you may now submit the manuscript to your target journal.",
     "completed-title": "Completion of Management Review",
     "completed-withheld-details": "The manuscript does not comply with Fisheries and Oceans Canada National Policy for Science Publications and is withheld by DFO management.",
     "created-details": "At this stage, only the applicant and authors can see and edit the manuscript record.",
@@ -728,11 +732,12 @@
     "confirm-decision": "Confirm Review",
     "next-reviewer": "Next Management Reviewer",
     "next-reviewer-hint": "Search for the appropriate person to complete the management review within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
-    "no-comments-warning": "Your management review has no comments. Therefore, you can only approve and complete this review. Please add comments to support your decision if you want to select from the other options.",
+    "no-comments-warning": "Your management review has no comments. Therefore, you can only complete this review. Please add comments to support your review if you want to select from the other options.",
     "select-decision": "Select your review outcome",
     "select-next-reviewer": "Select Next Manger",
     "subsequent-reviewer-is-required": "Given your review, a subsequent manager is required to complete the review",
-    "your-decision": "Your Review"
+    "your-decision": "Your Review",
+    "no-comments-warning-cant-complete": "A review comment is required to proceed."
   },
   "submit-manuscript-dialog": {
     "step1": {

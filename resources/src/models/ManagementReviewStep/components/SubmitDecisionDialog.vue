@@ -45,7 +45,14 @@ interface DecisionOption {
   disabled: boolean
 }
 
-const decision: Ref<Decision> = ref('complete')
+const canComplete = computed(() => {
+  return props.managementReviewStep.can_complete
+})
+
+const decision: Ref<Decision> = canComplete.value
+  ? ref('complete')
+  : ref('refer')
+
 const nextUserId = ref<number | null>(null)
 
 /** Decision flow variables */
@@ -109,15 +116,21 @@ const options = ref<DecisionOption[]>([
     disabled: !userCanCompleteReview.value,
   },
   {
+    label: t('decision.revision'),
+    value: 'revision',
+    description: t('decision.revision-desc'),
+    disabled: stepHasNoComments.value,
+  },
+  {
     label: t('decision.refer'),
     value: 'refer',
     description: t('decision.refer-desc'),
     disabled: stepHasNoComments.value,
   },
   {
-    label: t('decision.revision'),
-    value: 'revision',
-    description: t('decision.revision-desc'),
+    label: t('decision.refer-revision'),
+    value: 'referWithRevision',
+    description: t('decision.revision-revision-desc'),
     disabled: stepHasNoComments.value,
   },
   {
@@ -356,7 +369,8 @@ async function submit() {
                 size="md"
               />
             </template>
-            {{ $t('submit-decision-dialog.no-comments-warning') }}
+            <span v-if="!canComplete">{{ $t('submit-decision-dialog.no-comments-warning-cant-complete') }}</span>
+            <span v-else>{{ $t('submit-decision-dialog.no-comments-warning') }}</span>
           </q-banner>
         </template>
       </QStepper>

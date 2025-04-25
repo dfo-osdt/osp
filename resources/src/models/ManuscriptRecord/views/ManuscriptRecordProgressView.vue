@@ -88,15 +88,10 @@ const managementReviewColor = computed(() => {
     return 'yellow-8'
   if (manuscriptRecord.value.data.reviewed_at === null)
     return 'secondary'
-  if (manuscriptRecord.value.data.status === 'withheld')
-    return 'red'
   return 'primary'
 })
 
 const managementReviewIcon = computed(() => {
-  if (manuscriptRecord.value?.data.status === 'withheld') {
-    return 'mdi-alert-octagon'
-  }
   if (manuscriptRecord.value?.data.status === 'in_review') {
     return 'mdi-progress-check'
   }
@@ -264,19 +259,13 @@ onMounted(() => {
       :subtitle="managementReviewSubtitle"
       :color="managementReviewColor"
     >
-      <p v-if="manuscriptRecord.data.status === 'withheld'">
-        {{ $t('manuscript-progress-view.completed-withheld-details') }}
-      </p>
-      <p v-else>
+      <p>
         {{ $t('manuscript-progress-view.completed-details') }}
       </p>
     </q-timeline-entry>
     <template v-if="manuscriptRecord.data.type === 'primary'">
       <q-timeline-entry
-        v-if="
-          manuscriptRecord.data.status !== 'withheld'
-            && manuscriptRecord.data.status !== 'withdrawn'
-        "
+        v-if="manuscriptRecord.data.status !== 'withdrawn'"
         class="q-mx-lg"
         icon="mdi-send-check-outline"
         :title="$t('manuscript-progress-view.submit-pub-title')"
@@ -303,10 +292,7 @@ onMounted(() => {
         </div>
       </q-timeline-entry>
       <q-timeline-entry
-        v-if="
-          manuscriptRecord.data.status !== 'withheld'
-            && manuscriptRecord.data.status !== 'withdrawn'
-        "
+        v-if="manuscriptRecord.data.status !== 'withdrawn'"
         class="q-mx-lg"
         icon="mdi-check-all"
         :title="$t('manuscript-progress-view.accepted-title')"
@@ -358,10 +344,7 @@ onMounted(() => {
     </template>
     <template v-if="manuscriptRecord.data.type === 'secondary'">
       <q-timeline-entry
-        v-if="
-          manuscriptRecord.data.status !== 'withheld'
-            && manuscriptRecord.data.status !== 'withdrawn'
-        "
+        v-if="manuscriptRecord.data.status !== 'withdrawn'"
         class="q-mx-lg"
         icon="mdi-check-all"
         :title="$t('manuscript-progress-view.submisison-to-dfo-title')"

@@ -190,7 +190,7 @@ async function decisionSubmitted() {
       <p>
         {{ t('policy.message.p2') }}
       </p>
-      <p>
+      <p v-if="manuscriptRecord?.data.type === 'primary'">
         {{ t('policy.p2') }}
       </p>
       <i18n-t keypath="policy.for-more-info" tag="p" scope="global">

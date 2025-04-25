@@ -38,6 +38,7 @@ export interface ManagementReviewStep {
   manuscript_record?: ManuscriptRecordSummaryResource
   user?: UserResource
   previous_step?: ManagementReviewStepResource
+  can_complete: boolean
 }
 
 export type ManagementReviewStepResource = Resource<ManagementReviewStep>

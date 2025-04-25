@@ -3,6 +3,8 @@
 namespace App\Policies;
 
 use App\Enums\ManagementReviewStepStatus;
+use App\Enums\ManuscriptRecordType;
+use App\Enums\Permissions\UserPermission;
 use App\Models\ManagementReviewStep;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -62,6 +64,20 @@ class ManagementReviewStepPolicy
 
         // is the user the owner of the manuscript step?
         return $user->id === $managementReviewStep->user_id;
+    }
+
+    public function complete(User $user, ManagementReviewStep $managementReviewStep)
+    {
+        if($this->decide($user, $managementReviewStep) === false) {
+            return false;
+        }
+
+        switch($managementReviewStep->manuscriptRecord->type) {
+            case ManuscriptRecordType::SECONDARY:
+                return $user->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
+            default:
+                return true;
+        }
     }
 
     public function withdraw(User $user, ManagementReviewStep $managementReviewStep)

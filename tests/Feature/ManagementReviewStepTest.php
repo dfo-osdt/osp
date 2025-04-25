@@ -160,6 +160,8 @@ test('a reviewer can approve and complete the review of a third-party manuscript
         ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete')
         ->assertOk();
 
+    expect($manuscript->refresh()->status)->toBe(ManuscriptRecordStatus::REVIEWED);
+
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
 });
 

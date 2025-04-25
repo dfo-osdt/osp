@@ -161,7 +161,7 @@ function withdrawManuscript() {
         :status="managementStep.data.status"
       />
       <span v-if="completedAtDate"> - {{ completedAtDate }}</span>
-      <span v-else-if="managementStep.data.status === 'pending'">-
+      <span v-else-if="managementStep.data.status === 'pending' && decisionExpectedByDate !== ''">-
         {{
           `${t('common.decision-expected-by')}: ${decisionExpectedByDate}`
         }}</span>
@@ -298,7 +298,7 @@ function withdrawManuscript() {
         >
           <span
             class="text-weight-bold text-uppercase text-grey-8 q-mr-md"
-          >{{ t('common.decision') }}</span>
+          >{{ t('common.review-outcome') }}</span>
           <ManagementReviewStepDecisionSpan
             class="text-weight-bold text-uppercase text-primary"
             :class="`text-${color}`"
