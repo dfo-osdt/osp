@@ -68,11 +68,11 @@ class ManagementReviewStepPolicy
 
     public function complete(User $user, ManagementReviewStep $managementReviewStep)
     {
-        if($this->decide($user, $managementReviewStep) === false) {
+        if ($this->decide($user, $managementReviewStep) === false) {
             return false;
         }
 
-        switch($managementReviewStep->manuscriptRecord->type) {
+        switch ($managementReviewStep->manuscriptRecord->type) {
             case ManuscriptRecordType::SECONDARY:
                 return $user->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
             default:

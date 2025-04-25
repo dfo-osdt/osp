@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
-use App\Enums\ManuscriptRecordType;
-use App\Enums\Permissions\UserPermission;
 use App\Events\ManagementReviewStepCreated;
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
@@ -28,7 +26,7 @@ class ManagementReviewStepController extends Controller
     {
         Gate::authorize('view', $manuscriptRecord);
 
-        $managementReviewSteps = $manuscriptRecord->managementReviewSteps()->with('user','manuscriptRecord')->orderBy('id')->get();
+        $managementReviewSteps = $manuscriptRecord->managementReviewSteps()->with('user', 'manuscriptRecord')->orderBy('id')->get();
 
         return ManagementReviewStepResource::collection($managementReviewSteps);
     }

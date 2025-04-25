@@ -117,7 +117,7 @@ class LocalTestDataSeeder extends Seeder
         ManagementReviewStep::factory()->create([
             'user_id' => $dmUser->id,
             'manuscript_record_id' => $toReviewSec->id,
-            'decision_expected_by' => null
+            'decision_expected_by' => null,
         ]);
 
         // create a rds user
