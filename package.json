@@ -36,7 +36,7 @@
         "typescript": "^5.8.3",
         "unplugin-auto-import": "^19.1.2",
         "vite": "^6.3.2",
-        "vue-tsc": "^2.2.8"
+        "vue-tsc": "^2.2.10"
     },
     "pnpm": {
         "ignoredBuiltDependencies": [
