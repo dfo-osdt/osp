@@ -35,7 +35,7 @@
         "prettier": "^3.5.3",
         "typescript": "^5.8.3",
         "unplugin-auto-import": "^19.1.2",
-        "vite": "^6.3.2",
+        "vite": "^6.3.3",
         "vue-tsc": "^2.2.8"
     },
     "pnpm": {
