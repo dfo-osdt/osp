@@ -1387,16 +1387,16 @@
         },
         {
             "name": "cmixin/business-day",
-            "version": "1.19.3",
+            "version": "1.19.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kylekatarnls/business-day.git",
-                "reference": "9528fa5ba4a1bde20a25292c55d266d074af3715"
+                "reference": "f504fa96120835814530b96acbcdbd8a8aa79c2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/9528fa5ba4a1bde20a25292c55d266d074af3715",
-                "reference": "9528fa5ba4a1bde20a25292c55d266d074af3715",
+                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/f504fa96120835814530b96acbcdbd8a8aa79c2c",
+                "reference": "f504fa96120835814530b96acbcdbd8a8aa79c2c",
                 "shasum": ""
             },
             "require": {
@@ -1435,7 +1435,7 @@
             "description": "Carbon mixin to handle business days",
             "support": {
                 "issues": "https://github.com/kylekatarnls/business-day/issues",
-                "source": "https://github.com/kylekatarnls/business-day/tree/1.19.3"
+                "source": "https://github.com/kylekatarnls/business-day/tree/1.19.4"
             },
             "funding": [
                 {
@@ -1447,7 +1447,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-04T12:45:41+00:00"
+            "time": "2025-04-28T19:35:10+00:00"
         },
         {
             "name": "composer/semver",
@@ -18300,15 +18300,15 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.4"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
