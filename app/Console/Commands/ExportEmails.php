@@ -52,7 +52,7 @@ class ExportEmails extends Command
         $markdownContent = $manuscriptRecordToReview->render();
         $this->exportFile('manuscript-record-to-review-external.html', $markdownContent);
 
-        $manuscriptRecordToReview = new \App\Mail\ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->secondary()->in_review(true,true)->create(), User::factory()->create());
+        $manuscriptRecordToReview = new \App\Mail\ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->secondary()->in_review(true, true)->create(), User::factory()->create());
         $markdownContent = $manuscriptRecordToReview->render();
         $this->exportFile('manuscript-record-to-review-internal.html', $markdownContent);
 
@@ -92,12 +92,11 @@ class ExportEmails extends Command
         ])->has(ManuscriptRecord::factory()->secondary())->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
             'previous_step_id' => $mrf->managementReviewSteps()->first()->id,
-            'decision_expected_by' => null
+            'decision_expected_by' => null,
         ]));
         $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
         $markdownContent = $reviewStepNotification->render();
         $this->exportFile('review-step-notification-secondary-refer.html', $markdownContent);
-
 
         // user invited email
         $invitation = \App\Models\Invitation::factory()->create();
