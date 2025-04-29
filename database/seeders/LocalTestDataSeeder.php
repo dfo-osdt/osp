@@ -86,6 +86,7 @@ class LocalTestDataSeeder extends Seeder
 
         // create 1 secondary manuscript record for the test user with a review step
         $toReviewSec = \App\Models\ManuscriptRecord::factory()->secondary()->in_review(false)->create([
+            'title' => 'Secondary Manuscript ready to review',
             'user_id' => $user->id,
         ]);
 

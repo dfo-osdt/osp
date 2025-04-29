@@ -58,7 +58,7 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->manuscriptAuthors()->save(ManuscriptAuthor::factory()->make(['is_corresponding_author' => true])); // create a corresponding author
             $manuscript->manuscriptAuthors()->saveMany(ManuscriptAuthor::factory()->count(3)->make()); // create 3 other authors
             $manuscript->fundingSources()->saveMany(FundingSource::factory()->count(3)->make()); // create 3 funding sources
-            $manuscript->addManuscriptFile(getcwd().'/database/factories/files/BieberFever.pdf', true); // add a manuscript file
+            $manuscript->addManuscriptFile(getcwd() . '/database/factories/files/BieberFever.pdf', true); // add a manuscript file
             if ($manuscript->type == ManuscriptRecordType::SECONDARY) {
                 $manuscript->peerReviewers()->saveMany(\App\Models\ManuscriptPeerReviewer::factory()->count(2)->make()); // add 2 peer reviewers for secondary manuscripts
             }
@@ -68,16 +68,20 @@ class ManuscriptRecordFactory extends Factory
     /**
      * A manuscript record that has been submitted for internal review
      */
-    public function in_review(bool $withAreviewstep = true)
+    public function in_review(bool $withAreviewstep = true, bool $secondary = false)
     {
         return $this->filled()->state([
             'title' => 'A manuscript record that has been submitted for internal review',
             'status' => ManuscriptRecordStatus::IN_REVIEW,
             'sent_for_review_at' => now(),
-        ])->afterCreating(function ($manuscript) use ($withAreviewstep) {
+        ])->afterCreating(function ($manuscript) use ($withAreviewstep, $secondary) {
             $manuscript->lockManuscriptFiles();
             if ($withAreviewstep) {
-                $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->make());
+                $step = $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->make());
+                if($secondary) {
+                    $step->decision_expected_by = null;
+                    $step->save();
+                }
             }
         });
     }

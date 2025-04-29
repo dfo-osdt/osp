@@ -728,7 +728,7 @@
     "user-create-text": "User with whom you want to share. The user will receive an email notification once you share this resource."
   },
   "submit-decision-dialog": {
-    "certify-text": "I certify that, to the best of my knowledge, my review is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous manager and have considered them in my decision.",
+    "certify-text": "I certify that, to the best of my knowledge, my review is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous manager and have considered them in my review.",
     "confirm-decision": "Confirm Review",
     "next-reviewer": "Next Management Reviewer",
     "next-reviewer-hint": "Search for the appropriate person to complete the management review within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",

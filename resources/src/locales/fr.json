@@ -726,7 +726,7 @@
     "user-create-text": "L'utilisateur avec lequel vous souhaitez partager. \nL'utilisateur recevra une notification par e-mail une fois que vous partagerez cette ressource."
   },
   "submit-decision-dialog": {
-    "certify-text": "Je certifie qu'à ma connaissance, ma revue est fondée sur les lignes directrices énoncées dans la Politique nationale pour les publications scientifiques du MPO. \nLe cas échéant, j'ai lu les commentaires fournis par le gestionnaire précédent et les ai pris en compte dans ma décision.",
+    "certify-text": "Je certifie qu'à ma connaissance, ma revue est fondée sur les lignes directrices énoncées dans la Politique nationale pour les publications scientifiques du MPO. \nLe cas échéant, j'ai lu les commentaires fournis par le gestionnaire précédent et les ai pris en compte dans ma révision.",
     "confirm-decision": "Confirmer la revue",
     "next-reviewer": "Réviseur de gestion suivant",
     "next-reviewer-hint": "Recherchez la personne appropriée pour mener la révision par la gestion dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
