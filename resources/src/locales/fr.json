@@ -512,7 +512,10 @@
     "withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe régistre du manuscrit sera archivé après 30 jours.",
     "submisison-to-dfo-title": "Soumettre au groupe de publication du SEO",
     "submit-title": "Soumettre le manuscrit",
-    "submission-to-dfo-details": "Suite à votre soumission au groupe de publication EOS, votre manuscrit sera marqué comme accepté dans le portail. Votre travail subira ensuite une révision technique avant qu'une épreuve finale ne soit envoyée à l'auteur(e) correspondant(e) pour révision. Une fois cette étape terminée, le groupe de publication prendra des dispositions pour publier le manuscrit dans la série appropriée."
+    "submission-to-dfo-details": "Suite à votre soumission au groupe de publication EOS, votre manuscrit sera marqué comme accepté dans le portail. Votre travail subira ensuite une révision technique avant qu'une épreuve finale ne soit envoyée à l'auteur(e) correspondant(e) pour révision. Une fois cette étape terminée, le groupe de publication prendra des dispositions pour publier le manuscrit dans la série appropriée.",
+    "completed-preprint-details": "Le manuscrit s'aligne avec la politique nationale des publications scientifiques du MPO et a été examinée par DFO Management. \nÀ ce stade, vous pouvez désormais soumettre le manuscrit à un serveur de prépublication.",
+    "submitted-to-preprint": "Soumettez votre manuscrit à un serveur de prépublication",
+    "submitted-to-preprint-details": "Vous avez soumis votre manuscrit à un serveur de prépublication. \nSi le serveur attribue un DOI (identifiant d'objet numérique), veuillez vous assurer qu'il est fourni dans votre soumission. \nSi aucun DOI n'est disponible, une URL stable liée directement à la préparation doit être incluse."
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250caractères",
