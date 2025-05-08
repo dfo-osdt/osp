@@ -161,9 +161,9 @@ function withdrawManuscript() {
         :status="managementStep.data.status"
       />
       <span v-if="completedAtDate"> - {{ completedAtDate }}</span>
-      <span v-else-if="managementStep.data.status === 'pending' && decisionExpectedByDate !== ''">-
+      <span v-else-if="managementStep.data.status === 'pending' && decisionExpectedByDate !== ''">
         {{
-          `${t('common.decision-expected-by')}: ${decisionExpectedByDate}`
+          ` - ${t('common.decision-expected-by')}: ${decisionExpectedByDate}`
         }}</span>
     </template>
     <template v-if="canUpdate">
