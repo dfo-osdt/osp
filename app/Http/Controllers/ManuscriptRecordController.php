@@ -175,15 +175,18 @@ class ManuscriptRecordController extends Controller
         $validated = $request->validate([
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => 'required|date|after_or_equal:submitted_to_journal_on',
-            'journal_id' => 'required|exists:journals,id',
+            'journal_id' => ['exists:journals,id', Rule::requiredIf($manuscriptRecord->type !== ManuscriptRecordType::PREPRINT)],
+            'preprint_url' => ['url', Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::PREPRINT)],
         ]);
 
-        // Ensure the journal selected matches the manuscript record type.
-        $journal = Journal::find($validated['journal_id']);
-        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $journal->isDfoSeries()) {
-            abort(422, 'Secondary MRFs must be published in a DFO series journal.');
-        } elseif ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY && $journal->isDfoSeries()) {
-            abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
+        if ($manuscriptRecord->type !== ManuscriptRecordType::PREPRINT) {
+            // Ensure the journal selected matches the manuscript record type.
+            $journal = Journal::find($validated['journal_id']);
+            if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $journal->isDfoSeries()) {
+                abort(422, 'Secondary MRFs must be published in a DFO series journal.');
+            } elseif ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY && $journal->isDfoSeries()) {
+                abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
+            }
         }
 
         $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
@@ -194,8 +197,10 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
         $manuscriptRecord->save();
 
-        // create the accepted publication
-        CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
+        // create the accepted publication if the manuscript is not a preprint
+        if ($manuscriptRecord->type !== ManuscriptRecordType::PREPRINT) {
+            CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
+        }
 
         // if the manuscript is a secondary, send an email to the submissions team
         if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
@@ -229,6 +234,5 @@ class ManuscriptRecordController extends Controller
         }
 
         return $manuscriptRecord->load($relationships->toArray());
-
     }
 }

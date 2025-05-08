@@ -38,6 +38,9 @@ class ManuscriptRecordResource extends JsonResource
                 'public_interest_information' => $this->public_interest_information ?? '',
                 'apply_ogl' => $this->apply_ogl,
                 'no_ogl_explanation' => $this->no_ogl_explanation ?? '',
+                'intends_open_access' => $this->intends_open_access,
+                'open_access_rationale' => $this->open_access_rationale ?? '',
+                'preprint_url' => $this->preprint_url ?? '',
 
                 // dates and times
                 'created_at' => $this->created_at,

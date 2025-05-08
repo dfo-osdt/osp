@@ -48,6 +48,9 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   public_interest_information: string
   apply_ogl: boolean
   no_ogl_explanation: string
+  intends_open_access: boolean
+  open_access_rationale: string
+  preprint_url: string
   readonly sent_for_review_at: string | null
   readonly reviewed_at: string | null
   submitted_to_journal_on: string | null

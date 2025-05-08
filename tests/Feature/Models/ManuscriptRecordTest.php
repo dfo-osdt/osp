@@ -356,3 +356,29 @@ test('an authenticated user can get manuscript metadata', function () {
     expect($response->json('can.update'))->toBe(false);
     expect($response->json('can.delete'))->toBe(false);
 });
+
+test('a user can mark a reviewed preprint manuscript as accepted', function () {
+
+    $manuscript = ManuscriptRecord::factory()->reviewed()->create();
+    $manuscript->type = ManuscriptRecordType::PREPRINT;
+    $manuscript->save();
+
+    $user = $manuscript->user;
+
+    $data = [
+        'submitted_to_journal_on' => now()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+    ];
+
+    // we're missing the preprint url, it should give us a 422
+    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertStatus(422);
+
+    // add a bad url
+    $data['preprint_url'] = 'exampdle.com32w';
+    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertStatus(422);
+
+    // add a good url
+    $data['preprint_url'] = 'https://example.com';
+    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
+
+});
