@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\ManuscriptRecordStatus;
+use App\Enums\ManuscriptRecordType;
 use App\Enums\Permissions\UserPermission;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
@@ -203,6 +204,25 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
+    }
+
+    public function submitToPreprint(User $user, ManuscriptRecord $manuscriptRecord)
+    {
+
+        // make sure it's a preprrint
+        if ($manuscriptRecord->type !== ManuscriptRecordType::PREPRINT) {
+            return false;
+        }
+
+        // A user can do this multiple times, for example, if they made a mistake in the URL or date.
+        if ($user->id === $manuscriptRecord->user_id) {
+            return true;
+        }
+        if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

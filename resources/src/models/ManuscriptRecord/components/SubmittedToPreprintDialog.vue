@@ -27,7 +27,7 @@ const loading = ref(false)
 async function submit() {
   loading.value = true
   try {
-    const resource = await ManuscriptRecordService.publishedToPreprint(
+    const resource = await ManuscriptRecordService.submittedToPreprint(
       props.manuscriptRecordId,
       submittedOn.value,
       url.value,

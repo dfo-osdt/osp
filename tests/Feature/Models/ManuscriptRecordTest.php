@@ -366,22 +366,28 @@ test('a user can mark a reviewed preprint manuscript as accepted', function () {
     $user = $manuscript->user;
 
     $data = [
-        'submitted_to_journal_on' => now()->toDateTimeString(),
         'accepted_on' => now()->toDateTimeString(),
     ];
 
     // we're missing the preprint url, it should give us a 422
-    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertStatus(422);
+    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/submitted-to-preprint", $data)->assertStatus(422);
 
     // add a bad url
     $data['preprint_url'] = 'exampdle.com32w';
-    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertStatus(422);
+    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/submitted-to-preprint", $data)->assertStatus(422);
 
     // add a good url
     $data['preprint_url'] = 'https://example.com';
-    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
+    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/submitted-to-preprint", $data)->assertOk();
 
     // make sure the preprint url is saved
     expect($manuscript->fresh()->preprint_url)->toBe('https://example.com');
+
+    // can do it again, with new URL
+    $data['preprint_url'] = 'https://example2.com';
+    $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/submitted-to-preprint", $data)->assertOk();
+
+    // make sure the preprint url is saved
+    expect($manuscript->fresh()->preprint_url)->toBe('https://example2.com');
 
 });

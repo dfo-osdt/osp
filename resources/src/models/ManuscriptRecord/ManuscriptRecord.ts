@@ -230,18 +230,17 @@ export class ManuscriptRecordService {
   }
 
   /** Mark as published to preprint - only works with preprint manuscripts */
-  public static async publishedToPreprint(
+  public static async submittedToPreprint(
     id: number,
-    submittedOn: string,
+    acceptedOn: string,
     preprintUrl: string,
   ) {
     const data = {
-      submitted_to_journal_on: submittedOn,
-      accepted_on: submittedOn,
+      accepted_on: acceptedOn,
       preprint_url: preprintUrl,
     }
     const response = await http.put<any, ManuscriptRecordResource>(
-      `${this.baseURL}/${id}/accepted`,
+      `${this.baseURL}/${id}/submitted-to-preprint`,
       data,
     )
     return response.data
