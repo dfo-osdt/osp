@@ -8,8 +8,17 @@ import { ManuscriptRecordService } from '../ManuscriptRecord'
 
 const props = defineProps<{ id: number }>()
 
+const emit = defineEmits<{
+  (event: 'updateManuscript', arg: ManuscriptRecordResource): void
+}>()
 const loading = ref(true)
 const manuscriptRecord = ref<ManuscriptRecordResource | undefined>(undefined)
+
+watch(manuscriptRecord, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    emit('updateManuscript', newValue as ManuscriptRecordResource)
+  }
+}, { deep: true })
 
 onMounted(() => {
   getManuscriptRecord()
@@ -20,6 +29,7 @@ async function getManuscriptRecord() {
     .then((response) => {
       manuscriptRecord.value = response
       loading.value = false
+      emit('updateManuscript', response)
     })
     .catch((error) => {
       console.error(error)

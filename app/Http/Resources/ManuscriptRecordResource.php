@@ -62,6 +62,7 @@ class ManuscriptRecordResource extends JsonResource
                 // if this manuscript is accepted, include the publication id
                 // special model permissions
                 'can_attach_manuscript' => Auth::user()->can('attachManuscript', $this->resource),
+                'can_resubmit_preprint' => Auth::user()->can('submitToPreprint', $this->resource),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

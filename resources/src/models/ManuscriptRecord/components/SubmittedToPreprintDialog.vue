@@ -12,6 +12,8 @@ import {
 
 const props = defineProps<{
   manuscriptRecordId: number
+  submittedOn?: string
+  url?: string
 }>()
 
 const emit = defineEmits<{
@@ -19,8 +21,8 @@ const emit = defineEmits<{
 }>()
 
 const now = new Date().toISOString().substring(0, 10)
-const submittedOn = ref(now)
-const url = ref('')
+const submittedOn = ref(props.submittedOn ?? now)
+const url = ref(props.url ?? '')
 
 const loading = ref(false)
 

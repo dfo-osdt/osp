@@ -2,6 +2,7 @@
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import CopyToClipboardButton from '@/components/CopyToClipboardButton.vue'
 import { useQuasar } from 'quasar'
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
 import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
@@ -187,7 +188,13 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       <p>
         {{ $t('manuscript-progress-view.submitted-to-preprint-details') }}
       </p>
-      <div class="row q-gutter-md">
+      <p v-if="manuscriptRecord.data.preprint_url !== ''">
+        <span class="text-primary">
+          {{ $t('manuscript-progress-view.preprint-url') }}:
+        </span>
+        <span><a :href="manuscriptRecord.data.preprint_url" target="_blank">{{ manuscriptRecord.data.preprint_url }}</a></span>
+        <span class="q-ml-sm"><CopyToClipboardButton :text="manuscriptRecord.data.preprint_url" size="sm" /></span>
+      </p><div class="row q-gutter-md">
         <q-btn
           v-if="
             manuscriptRecord.data.status !== 'accepted'
@@ -225,6 +232,17 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
           target="_blank"
           icon="mdi-web"
         />
+        <q-btn
+          v-if="
+            manuscriptRecord.data.status === 'accepted'
+              && manuscriptRecord.data.can_resubmit_preprint
+          "
+          color="primary"
+          outline
+          :label="$t('manuscript-progress-view.edit-preprint-title')"
+          icon="mdi-pencil"
+          @click="showSubmitToPreprintDialog = true"
+        />
       </div>
     </q-timeline-entry>
     <q-timeline-entry
@@ -249,6 +267,8 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       v-if="showSubmitToPreprintDialog"
       v-model="showSubmitToPreprintDialog"
       :manuscript-record-id="manuscriptRecord.data.id"
+      :url="manuscriptRecord.data.preprint_url ?? undefined"
+      :submitted-on="manuscriptRecord.data.submitted_to_journal_on ?? undefined"
       @updated="submitToPreprint"
     />
   </q-timeline>

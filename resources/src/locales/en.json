@@ -527,7 +527,9 @@
     "submit-preprint-title": "Mark as Published",
     "completed-preprint-details": "The manuscript aligns with Fisheries and Oceans Canada National Policy for Science Publications and has been reviewed by DFO management. At this stage, you may now submit the manuscript to a preprint server.",
     "submitted-to-preprint-details": "You've submitted your manuscript to a preprint server. If the server assigns a DOI (Digital Object Identifier), please ensure that it is provided in your submission. If no DOI is available, a stable URL linking directly to the preprint should be included.",
-    "go-to-the-preprint": "View preprint (external)"
+    "go-to-the-preprint": "View preprint (external)",
+    "edit-preprint-title": "Edit Preprint Submission",
+    "preprint-url": "Preprint URL"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
