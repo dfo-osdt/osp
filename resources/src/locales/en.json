@@ -249,7 +249,8 @@
       "password-length": "Password must be at least 12 characters",
       "password-required": "Password is required",
       "passwords-different": "Your current and new password should be different",
-      "passwords-match": "Passwords do not match"
+      "passwords-match": "Passwords do not match",
+      "url-invalid": "URL is invalid"
     },
     "withdraw": "Withdraw",
     "withdrawn": "Withdrawn",
@@ -287,7 +288,14 @@
     "preprint-publication": "A manuscript to be published on a preprint server",
     "preprint-manuscript": "Preprint Manuscript",
     "revision": "Revision Requested",
-    "review-outcome": "Review Outcome"
+    "review-outcome": "Review Outcome",
+    "url": "URL",
+    "preprint-url": "Preprint DOI or URL",
+    "preprint-url-placeholder": "https://doi.org/..",
+    "preprint-url-hint": "The DOI or a URL linking directly to the preprint",
+    "submitted-to-preprint-on": "Date submitted to preprint server",
+    "preprint": "Preprint",
+    "view-preprint": "External Link"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -516,9 +524,10 @@
     "submit-title": "Submit manuscript",
     "submission-to-dfo-details": "Following your submission to the EOS publication group, your manuscript will be marked as accepted in the portal. Your work will then undergo a technical edit before a final proof is sent to the corresponding author(s) for review. Once this is completed, the publication group will make arrangements to have the manuscript published in the appropriate series.",
     "submitted-to-preprint": "Submit your Manuscript to a Preprint Server",
-    "submit-preprint-title": "Mark as Submitted",
+    "submit-preprint-title": "Mark as Published",
     "completed-preprint-details": "The manuscript aligns with Fisheries and Oceans Canada National Policy for Science Publications and has been reviewed by DFO management. At this stage, you may now submit the manuscript to a preprint server.",
-    "submitted-to-preprint-details": "You've submitted your manuscript to a preprint server. If the server assigns a DOI (Digital Object Identifier), please ensure that it is provided in your submission. If no DOI is available, a stable URL linking directly to the preprint should be included."
+    "submitted-to-preprint-details": "You've submitted your manuscript to a preprint server. If the server assigns a DOI (Digital Object Identifier), please ensure that it is provided in your submission. If no DOI is available, a stable URL linking directly to the preprint should be included.",
+    "go-to-the-preprint": "View preprint (external)"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
@@ -854,5 +863,8 @@
   },
   "azure-user-select": {
     "search-hint": "Start typing an email to search for a DFO user"
+  },
+  "submitted-to-preprint-dialog": {
+    "title": "Mark as published to a preprint server"
   }
 }

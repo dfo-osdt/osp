@@ -248,7 +248,8 @@
       "password-length": "Le mot de passe doit comporter au moins 12 caractères",
       "password-required": "Mot de passe requis",
       "passwords-different": "Votre mot de passe actuel et votre nouveau mot de passe doivent être différents",
-      "passwords-match": "Les mots de passe ne correspondent pas"
+      "passwords-match": "Les mots de passe ne correspondent pas",
+      "url-invalid": "L'URL n'est pas valide"
     },
     "withdraw": "Retirer",
     "withdrawn": "Retiré",
@@ -285,7 +286,12 @@
     "preprint-publication": "Un manuscrit destiné à un serveur de prépublications",
     "preprint-manuscript": "Manuscrit prépublicaiton",
     "revision": "Révision demandée",
-    "review-outcome": "Résultat de la revue"
+    "review-outcome": "Résultat de la revue",
+    "url": "URL",
+    "preprint-url-hint": "Le doi ou une URL liant directement à la prépublication",
+    "preprint-url": "DOI ou URL de la prépublication",
+    "preprint": "Prépublication",
+    "view-preprint": "Lien externe"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -515,7 +521,8 @@
     "submission-to-dfo-details": "Suite à votre soumission au groupe de publication EOS, votre manuscrit sera marqué comme accepté dans le portail. Votre travail subira ensuite une révision technique avant qu'une épreuve finale ne soit envoyée à l'auteur(e) correspondant(e) pour révision. Une fois cette étape terminée, le groupe de publication prendra des dispositions pour publier le manuscrit dans la série appropriée.",
     "completed-preprint-details": "Le manuscrit s'aligne avec la politique nationale des publications scientifiques du MPO et a été examinée par DFO Management. \nÀ ce stade, vous pouvez désormais soumettre le manuscrit à un serveur de prépublication.",
     "submitted-to-preprint": "Soumettez votre manuscrit à un serveur de prépublication",
-    "submitted-to-preprint-details": "Vous avez soumis votre manuscrit à un serveur de prépublication. \nSi le serveur attribue un DOI (identifiant d'objet numérique), veuillez vous assurer qu'il est fourni dans votre soumission. \nSi aucun DOI n'est disponible, une URL stable liée directement à la préparation doit être incluse."
+    "submitted-to-preprint-details": "Vous avez soumis votre manuscrit à un serveur de prépublication. \nSi le serveur attribue un DOI (identifiant d'objet numérique), veuillez vous assurer qu'il est fourni dans votre soumission. \nSi aucun DOI n'est disponible, une URL stable liée directement à la préparation doit être incluse.",
+    "submit-preprint-title": "Marquez comme publié"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250caractères",
@@ -851,5 +858,8 @@
   },
   "azure-user-select": {
     "search-hint": "Commencez à taper un courriel pour rechercher un utilisateur du MPO"
+  },
+  "submitted-to-preprint-dialog": {
+    "title": "Marquez comme publié sur un serveur de prépublication"
   }
 }

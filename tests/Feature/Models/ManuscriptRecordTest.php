@@ -381,4 +381,7 @@ test('a user can mark a reviewed preprint manuscript as accepted', function () {
     $data['preprint_url'] = 'https://example.com';
     $this->actingAs($user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
 
+    // make sure the preprint url is saved
+    expect($manuscript->fresh()->preprint_url)->toBe('https://example.com');
+
 });

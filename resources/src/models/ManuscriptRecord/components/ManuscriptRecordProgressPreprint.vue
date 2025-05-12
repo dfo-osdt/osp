@@ -216,13 +216,14 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
           @click="showWithdrawManuscriptDialog = true"
         />
         <q-btn
-          v-if="manuscriptRecord.data.publication"
+          v-if="manuscriptRecord.data.preprint_url !== ''"
           color="primary"
           :label="
-            $t('manuscript-progress-view.go-to-the-publication')
+            $t('manuscript-progress-view.go-to-the-preprint')
           "
-          :to="`/publication/${manuscriptRecord.data.publication?.data.id}`"
-          icon-right="mdi-arrow-right"
+          :href="manuscriptRecord.data.preprint_url"
+          target="_blank"
+          icon="mdi-web"
         />
       </div>
     </q-timeline-entry>

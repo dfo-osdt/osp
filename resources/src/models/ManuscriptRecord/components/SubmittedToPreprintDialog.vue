@@ -4,6 +4,7 @@ import type {
 } from '../ManuscriptRecord'
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
+import UrlInput from '@/components/UrlInput.vue'
 import { QBtn, QCardActions, QForm } from 'quasar'
 import {
   ManuscriptRecordService,
@@ -19,15 +20,17 @@ const emit = defineEmits<{
 
 const now = new Date().toISOString().substring(0, 10)
 const submittedOn = ref(now)
+const url = ref('')
 
 const loading = ref(false)
 
 async function submit() {
   loading.value = true
   try {
-    const resource = await ManuscriptRecordService.submitted(
+    const resource = await ManuscriptRecordService.publishedToPreprint(
       props.manuscriptRecordId,
       submittedOn.value,
+      url.value,
     )
     emit('updated', resource)
   }
@@ -44,14 +47,24 @@ async function submit() {
   <BaseDialog :title="$t('submitted-to-preprint-dialog.title')">
     <div class="q-pa-md text-body1">
       <p>
-        {{ $t('submitted-to-journal-dialog.text') }}
+        {{ $t('submitted-to-preprint-dialog.text') }}
       </p>
       <QForm @submit="submit">
         <DateInput
           v-model="submittedOn"
           class="q-mx-sm"
-          :label="$t('common.submitted-to-journal-on')"
+          :label="$t('common.submitted-to-preprint-on')"
           required
+        />
+        <p class="q-mt-md q-ml-sm text-body2">
+          {{ $t('common.preprint-url-hint') }}
+        </p>
+        <UrlInput
+          v-model="url"
+          required
+          class="q-mt-sm"
+          :label="$t('common.preprint-url')"
+          :placeholder="$t('common.preprint-url-placeholder')"
         />
         <QCardActions align="right">
           <QBtn

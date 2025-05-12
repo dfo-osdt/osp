@@ -138,6 +138,7 @@ const showPublishBanner = computed(() => {
             </q-item>
             <q-separator inset class="q-my-md" />
             <q-item
+              v-if="manuscript?.data.type !== 'preprint'"
               clickable
               :disable="
                 manuscript?.data.publication === undefined
@@ -168,6 +169,40 @@ const showPublishBanner = computed(() => {
                         .status
                     "
                   />
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="manuscript?.data.type === 'preprint'"
+              clickable
+              :disable="
+                manuscript?.data.preprint_url === ''
+              "
+              :href="
+                manuscript?.data.preprint_url"
+              target="_blank"
+            >
+              <q-item-section avatar>
+                <q-icon name="mdi-web" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  {{
+                    $t('common.preprint')
+                  }}
+                </q-item-label>
+                <q-item-label caption>
+                  <span
+                    v-if="
+                      manuscript?.data.preprint_url
+                        === ''
+                    "
+                  >{{ $t('common.pending') }}
+                  </span>
+                  <span
+                    v-else
+                  >{{ $t('common.view-preprint') }}
+                  </span>
                 </q-item-label>
               </q-item-section>
             </q-item>

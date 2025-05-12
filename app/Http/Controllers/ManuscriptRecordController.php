@@ -197,6 +197,12 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
         $manuscriptRecord->save();
 
+        // save the preprint url if it is a preprint
+        if ($manuscriptRecord->type === ManuscriptRecordType::PREPRINT) {
+            $manuscriptRecord->preprint_url = $validated['preprint_url'];
+            $manuscriptRecord->save();
+        }
+
         // create the accepted publication if the manuscript is not a preprint
         if ($manuscriptRecord->type !== ManuscriptRecordType::PREPRINT) {
             CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);

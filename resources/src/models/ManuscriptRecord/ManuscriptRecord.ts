@@ -229,6 +229,24 @@ export class ManuscriptRecordService {
     return response.data
   }
 
+  /** Mark as published to preprint - only works with preprint manuscripts */
+  public static async publishedToPreprint(
+    id: number,
+    submittedOn: string,
+    preprintUrl: string,
+  ) {
+    const data = {
+      submitted_to_journal_on: submittedOn,
+      accepted_on: submittedOn,
+      preprint_url: preprintUrl,
+    }
+    const response = await http.put<any, ManuscriptRecordResource>(
+      `${this.baseURL}/${id}/accepted`,
+      data,
+    )
+    return response.data
+  }
+
   // Withdraw the manuscript
   public static async withdraw(id: number) {
     const response = await http.put<any, ManuscriptRecordResource>(
