@@ -3,6 +3,7 @@ import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/Manuscr
 import ContentCard from '@/components/ContentCard.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import PublicationStatusSpan from '@/models/Publication/components/PublicationStatusSpan.vue'
+import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue'
 
 defineProps<{
   id: number
@@ -35,12 +36,17 @@ const showPublishBanner = computed(() => {
 <template>
   <MainPageLayout :title="$t('common.manuscript-record')">
     <template #toolbar>
-      <div class="text-subtitle2 text-grey-7 q-pl-md q-py-sm">
-        <span class="text-primary text-uppercase">{{ $t('common.unique-id') }}:
-        </span>
-        <span class="text-weight-medium">{{
-          manuscript?.data.ulid
-        }}</span>
+      <div class="fit row justify-between">
+        <div class="text-subtitle2 text-grey-7 q-pl-md q-py-sm">
+          <span class="text-primary text-uppercase">{{ $t('common.unique-id') }}:
+          </span>
+          <span class="text-weight-medium">{{
+            manuscript?.data.ulid
+          }}</span>
+        </div>
+        <div>
+          <ManuscriptTypeBadge v-if="manuscript?.data.type" :type="manuscript.data.type" class="text-subtitle2 q-my-xs q-mr-md" />
+        </div>
       </div>
       <q-separator />
     </template>
