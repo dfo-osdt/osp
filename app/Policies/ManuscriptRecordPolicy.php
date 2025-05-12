@@ -214,6 +214,11 @@ class ManuscriptRecordPolicy
             return false;
         }
 
+        // can only mark as accepted if the manuscript is reviewed, submitted, or accepted (correction)
+        if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED, ManuscriptRecordStatus::ACCEPTED])) {
+            return false;
+        }
+
         // A user can do this multiple times, for example, if they made a mistake in the URL or date.
         if ($user->id === $manuscriptRecord->user_id) {
             return true;

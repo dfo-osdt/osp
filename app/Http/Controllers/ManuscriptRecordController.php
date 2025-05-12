@@ -194,7 +194,6 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
         $manuscriptRecord->save();
 
-
         CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
 
         // if the manuscript is a secondary, send an email to the submissions team
