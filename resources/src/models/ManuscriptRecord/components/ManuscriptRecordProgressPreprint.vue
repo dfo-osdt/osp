@@ -3,11 +3,9 @@ import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
 import { useQuasar } from 'quasar'
-import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue'
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
-import SubmittedToJournalDialog from '../components/SubmittedToJournalDialog.vue'
-import SubmitToPubTeamDialog from '../components/SubmitToPubTeamDialog.vue'
 import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
+import SubmittedToPreprintDialog from './SubmittedToPreprintDialog.vue'
 
 const manuscriptRecord = defineModel<ManuscriptRecordResource>({ required: true })
 
@@ -74,8 +72,6 @@ const managementReviewIcon = computed(() => {
   return 'mdi-thumb-up-outline'
 })
 
-const showSubmitToPreprintDialog = ref(false)
-
 const submittedToPreprintSubtitle = computed(() => {
   if (manuscriptRecord.value.data.submitted_to_journal_on === null) {
     return t('common.pending')
@@ -109,6 +105,13 @@ const withdrawnSubtitle = computed(() => {
 })
 
 // action dialogs and methods
+
+const showSubmitToPreprintDialog = ref(false)
+
+function submitToPreprint(record: ManuscriptRecordResource) {
+  showSubmitToPreprintDialog.value = false
+  updateManuscriptandNotify(record)
+}
 
 // withdraw manuscript
 const showWithdrawManuscriptDialog = ref(false)
@@ -241,11 +244,11 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       :manuscript-record-id="manuscriptRecord.data.id"
       @updated="withdrawManuscript"
     />
-    <SubmitToPubTeamDialog
-      v-if="showSubmitToPubTeamDialog"
-      v-model="showSubmitToPubTeamDialog"
-      :manuscript-record="manuscriptRecord.data"
-      @updated="submitToPubTeam"
+    <SubmittedToPreprintDialog
+      v-if="showSubmitToPreprintDialog"
+      v-model="showSubmitToPreprintDialog"
+      :manuscript-record-id="manuscriptRecord.data.id"
+      @updated="submitToPreprint"
     />
   </q-timeline>
 </template>

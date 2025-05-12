@@ -41,7 +41,7 @@ async function submit() {
 </script>
 
 <template>
-  <BaseDialog :title="$t('submitted-to-journal-dialog.title')">
+  <BaseDialog :title="$t('submitted-to-preprint-dialog.title')">
     <div class="q-pa-md text-body1">
       <p>
         {{ $t('submitted-to-journal-dialog.text') }}

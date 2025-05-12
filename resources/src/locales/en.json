@@ -564,7 +564,8 @@
     "ogl-link": "Open Government Licence - Canada",
     "apply_ogl": "Should this report be licensed under the Open Government Licence - Canada?",
     "ogl-provide-explanation": "Since you answered \"No,\" please provide an explanation of why an Open Government License cannot be applied to your report.",
-    "ready-to-submit": "This manuscript has completed its management review and is now ready for submission to the EOS publication team."
+    "ready-to-submit": "This manuscript has completed its management review and is now ready for submission to the EOS publication team.",
+    "ready-to-submit-preprint": "This manuscript has completed its management review and is now ready for submission to a preprint server."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",

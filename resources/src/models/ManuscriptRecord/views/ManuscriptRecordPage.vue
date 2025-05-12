@@ -58,8 +58,11 @@ const showPublishBanner = computed(() => {
           <span v-if="manuscript?.data.type === 'primary'">
             {{ $t('mrf.ready-to-marked-published') }}
           </span>
-          <span v-else>
+          <span v-if="manuscript?.data.type === 'secondary'">
             {{ $t('mrf.ready-to-submit') }}
+          </span>
+          <span v-if="manuscript?.data.type === 'preprint'">
+            {{ $t('mrf.ready-to-submit-preprint') }}
           </span>
         </div>
         <div>
