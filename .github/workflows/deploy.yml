@@ -108,6 +108,7 @@ jobs:
             sudo chown -R osp.www-data $ACTIVE_RELEASE_PATH/
             sudo chown -R osp.www-data $STORAGE_PATH
             sudo chmod -R 771 $STORAGE_PATH
+            php artisan horizon:terminate
 
   deploy-on-production:
     runs-on: self-hosted
@@ -172,3 +173,4 @@ jobs:
             sudo chown -R osp.www-data $ACTIVE_RELEASE_PATH/
             sudo chown -R osp.www-data $STORAGE_PATH
             sudo chmod -R 771 $STORAGE_PATH
+            php artisan horizon:terminate
