@@ -161,8 +161,12 @@ export class AuthenticatedUser implements IAuthenticatedUser {
         return locale === 'en' ? 'Director' : 'Directeur'
       case 'admin':
         return locale === 'en' ? 'Admin' : 'Administrateur'
+      case 'chief_editor':
+        return locale === 'en' ? 'Chief Editor' : 'Rédacteur en chef'
+      case 'editor':
+        return locale === 'en' ? 'Editor' : 'Éditeur'
       default:
-        return ''
+        return 'N/A'
     }
   }
 }
