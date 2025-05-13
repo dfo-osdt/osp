@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\PublicationStatus;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
+use App\Models\ManuscriptRecord;
 use App\Models\PublicationAuthor;
 use App\Models\Shareable;
 use Illuminate\Database\Seeder;
@@ -171,6 +172,10 @@ class LocalTestDataSeeder extends Seeder
             'text_en' => 'This is a test announcement.',
             'text_fr' => 'Ceci est une annonce de test.',
         ]);
+
+
+        // let's add a few preprints
+        ManuscriptRecord::factory()->publishedPreprint()->count(5)->create();
 
         activity()->enableLogging();
     }

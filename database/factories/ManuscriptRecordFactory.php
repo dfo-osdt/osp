@@ -124,7 +124,7 @@ class ManuscriptRecordFactory extends Factory
     public function publishedPreprint()
     {
         return $this->accepted()->state([
-            'title' => 'A preprint' . $this->faker->text(50),
+            'title' => 'A preprint: ' . $this->faker->text(50),
             'submitted_to_journal_on' => now(),
             'accepted_on' => now(),
             'type' => ManuscriptRecordType::PREPRINT,

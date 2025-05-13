@@ -28,7 +28,7 @@ class PreprintListQuery extends QueryBuilder
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('user_id'),
                 AllowedFilter::partial('title'),
-                AllowedFilter::exact('manuscriptAuthor.author_id')
+                AllowedFilter::exact('manuscriptAuthors.author_id')
             ]);
     }
 }

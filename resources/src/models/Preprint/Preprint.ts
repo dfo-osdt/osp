@@ -1,5 +1,4 @@
 import type { ManuscriptAuthorResource } from '../ManuscriptAuthor/ManuscriptAuthor'
-import type { PublicationResource } from '../Publication/Publication'
 import type { Resource, ResourceList } from '../Resource'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
