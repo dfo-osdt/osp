@@ -173,7 +173,6 @@ class LocalTestDataSeeder extends Seeder
             'text_fr' => 'Ceci est une annonce de test.',
         ]);
 
-
         // let's add a few preprints
         ManuscriptRecord::factory()->publishedPreprint()->count(5)->create();
 

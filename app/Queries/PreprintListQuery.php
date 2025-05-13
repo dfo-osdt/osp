@@ -16,19 +16,19 @@ class PreprintListQuery extends QueryBuilder
             ManuscriptRecord::query()
                 ->where('type', ManuscriptRecordType::PREPRINT)
                 ->where('status', ManuscriptRecordStatus::ACCEPTED)
-                ->with('manuscriptAuthors.author','manuscriptAuthors.organization')
+                ->with('manuscriptAuthors.author', 'manuscriptAuthors.organization')
         );
 
         $this
             ->defaultSort('accepted_on')
             ->allowedSorts([
-                'title'
+                'title',
             ])
             ->allowedFilters([
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('user_id'),
                 AllowedFilter::partial('title'),
-                AllowedFilter::exact('manuscriptAuthors.author_id')
+                AllowedFilter::exact('manuscriptAuthors.author_id'),
             ]);
     }
 }
