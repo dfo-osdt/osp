@@ -88,11 +88,16 @@ const generalSectionStatus = computed(() => {
       return 'incomplete'
   }
 
+  if (manuscript.type === 'primary') {
+    if (manuscript.open_access_rationale === '' && !manuscript.intends_open_access)
+      return 'incomplete'
+  }
+
   const complete
         = manuscript.title !== ''
-        && manuscript.abstract !== ''
-        && manuscript.pls !== ''
-        && manuscript.relevant_to
+          && manuscript.abstract !== ''
+          && manuscript.pls !== ''
+          && manuscript.relevant_to
 
   return complete ? 'complete' : 'incomplete'
 })
@@ -582,6 +587,36 @@ async function generatePLS() {
             />
             <p v-if="!manuscriptResource.data.apply_ogl">
               {{ $t('mrf.ogl-provide-explanation') }}
+            </p>
+          </QuestionEditor>
+          <QuestionEditor
+            v-if="manuscriptResource.data.type === 'primary'"
+            v-model="manuscriptResource.data.open_access_rationale"
+            :title="$t('mrf.open-access-rationale')"
+            :disable="loading"
+            :readonly="isManuscriptReadOnly"
+            :hide-editor="manuscriptResource.data.intends_open_access"
+            required
+            class="q-mb-md"
+          >
+            {{ $t('mrf.intends_open_access') }}
+            <p class="q-mt-md text-primary text-weight-medium">
+              {{
+                $t(
+                  'mrf.open-access-rationale-text-field-text',
+                )
+              }}
+            </p>
+            <YesNoBooleanOptionGroup
+              v-model="
+                manuscriptResource.data
+                  .intends_open_access
+              "
+              class="q-mb-md"
+              :disable="isManuscriptReadOnly"
+            />
+            <p v-if="!manuscriptResource.data.intends_open_access">
+              {{ $t('mrf.open-access-rationale-text') }}
             </p>
           </QuestionEditor>
         </QForm>

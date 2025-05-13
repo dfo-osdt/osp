@@ -78,6 +78,8 @@ class ManuscriptRecordController extends Controller
             'potential_public_interest' => 'boolean',
             'apply_ogl' => 'boolean',
             'no_ogl_explanation' => 'nullable|string',
+            'intends_open_access' => 'boolean',
+            'open_access_rationale' => 'nullable|string',
         ]);
 
         $manuscriptRecord->update($validated);
