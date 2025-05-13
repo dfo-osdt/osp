@@ -291,7 +291,8 @@
     "preprint-url-hint": "Le doi ou une URL liant directement à la prépublication",
     "preprint-url": "DOI ou URL de la prépublication",
     "preprint": "Prépublication",
-    "view-preprint": "Lien externe"
+    "view-preprint": "Lien externe",
+    "preprints": "Prépublications"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"

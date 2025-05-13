@@ -28,7 +28,7 @@ const filterCaption = computed(() => {
     caption += `${t('common.by')} ${first_name || 'NA'} ${last_name || 'NA'} `
   }
   if (caption.length > 0)
-    caption = `${t('common.preprint')} ${caption.slice(0, -1)}`
+    caption = `${t('common.preprints')} ${caption.slice(0, -1)}`
   else caption = t('common.no-filters-applied')
   return caption
 })
@@ -79,7 +79,7 @@ watch(authorId, () => {
 </script>
 
 <template>
-  <MainPageLayout title="Preprints">
+  <MainPageLayout :title="$t('common.preprints')">
     <div class="row q-gutter-lg q-col-gutter-lg flex">
       <div class="col q-pr-lg">
         <ContentCard secondary>

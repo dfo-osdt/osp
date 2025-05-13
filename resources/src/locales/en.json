@@ -295,7 +295,8 @@
     "preprint-url-hint": "The DOI or a URL linking directly to the preprint",
     "submitted-to-preprint-on": "Date submitted to preprint server",
     "preprint": "Preprint",
-    "view-preprint": "External Link"
+    "view-preprint": "External Link",
+    "preprints": "Preprints"
   },
   "create-author-dialog": {
     "title": "Create a new author"
