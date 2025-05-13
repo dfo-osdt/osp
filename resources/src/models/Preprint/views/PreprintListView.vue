@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { PreprintResourceList } from '../Preprint'
-import { sharpWaterfallChart } from '@quasar/extras/material-icons-sharp'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultsFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
