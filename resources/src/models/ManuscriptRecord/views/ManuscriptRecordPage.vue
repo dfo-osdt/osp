@@ -44,8 +44,8 @@ const showPublishBanner = computed(() => {
             manuscript?.data.ulid
           }}</span>
         </div>
-        <div>
-          <ManuscriptTypeBadge v-if="manuscript?.data.type" :type="manuscript.data.type" class="text-subtitle2 q-my-xs q-mr-md" />
+        <div class="flex items-center">
+          <ManuscriptTypeBadge v-if="manuscript?.data.type" :type="manuscript.data.type" class="text-subtitle2 q-mr-md" />
         </div>
       </div>
       <q-separator />
