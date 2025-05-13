@@ -10,7 +10,7 @@ enum UserPermission: string
     case UPDATE_AUTHORS = 'update_authors';
     case CREATE_ORGANIZATIONS = 'create_organizations';
     case CREATE_AUTHOR_EMPLOYMENTS = 'create_author_employments';
-    case WITHHOLD_AND_COMPLETE_MANAGEMENT_REVIEW = 'withhold_and_complete_management_review';
+    case COMPLETE_INTERNTAL_MANAGEMENT_REVIEW = 'complete_interntal_management_review';
     case VIEW_LIBRARIUM = 'view_librarium';
     case VIEW_TELESCOPE = 'view_telescope';
     case VIEW_HORIZON = 'view_horizon';

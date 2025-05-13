@@ -84,6 +84,12 @@ class LocalTestDataSeeder extends Seeder
             'user_id' => $user->id,
         ]);
 
+        // create 1 secondary manuscript record for the test user with a review step
+        $toReviewSec = \App\Models\ManuscriptRecord::factory()->secondary()->in_review(false)->create([
+            'title' => 'Secondary Manuscript ready to review',
+            'user_id' => $user->id,
+        ]);
+
         // create 2 publications without a manuscript record for the test user
         \App\Models\Publication::factory()->count(2)
             ->has(PublicationAuthor::factory([
@@ -107,6 +113,12 @@ class LocalTestDataSeeder extends Seeder
         ManagementReviewStep::factory()->create([
             'user_id' => $dmUser->id,
             'manuscript_record_id' => $toReview->id,
+        ]);
+
+        ManagementReviewStep::factory()->create([
+            'user_id' => $dmUser->id,
+            'manuscript_record_id' => $toReviewSec->id,
+            'decision_expected_by' => null,
         ]);
 
         // create a rds user

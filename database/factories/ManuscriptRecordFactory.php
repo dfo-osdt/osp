@@ -68,16 +68,20 @@ class ManuscriptRecordFactory extends Factory
     /**
      * A manuscript record that has been submitted for internal review
      */
-    public function in_review(bool $withAreviewstep = true)
+    public function in_review(bool $withAreviewstep = true, bool $secondary = false)
     {
         return $this->filled()->state([
             'title' => 'A manuscript record that has been submitted for internal review',
             'status' => ManuscriptRecordStatus::IN_REVIEW,
             'sent_for_review_at' => now(),
-        ])->afterCreating(function ($manuscript) use ($withAreviewstep) {
+        ])->afterCreating(function ($manuscript) use ($withAreviewstep, $secondary) {
             $manuscript->lockManuscriptFiles();
             if ($withAreviewstep) {
-                $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->make());
+                $step = $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->make());
+                if ($secondary) {
+                    $step->decision_expected_by = null;
+                    $step->save();
+                }
             }
         });
     }
@@ -94,23 +98,10 @@ class ManuscriptRecordFactory extends Factory
         ])->afterCreating(function ($manuscript) {
             $manuscript->managementReviewSteps()->update([
                 'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-                'decision' => \App\Enums\ManagementReviewStepDecision::APPROVED,
+                'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
                 'comments' => 'This manuscript is approved - great job!',
                 'completed_at' => now(),
             ]);
-        });
-    }
-
-    /**
-     * A manuscript record that has been withheld by the management review
-     */
-    public function withheld()
-    {
-        return $this->in_review()->state([
-            'title' => 'A manuscript record that has been withheld by the management review',
-            'status' => ManuscriptRecordStatus::WITHHELD,
-        ])->afterCreating(function ($manuscript) {
-            $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->withheld()->make());
         });
     }
 
