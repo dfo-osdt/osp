@@ -11,7 +11,7 @@ import type { UserResource } from '../User/User'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
 
-export type ManuscriptRecordType = 'primary' | 'secondary'
+export type ManuscriptRecordType = 'primary' | 'secondary' | 'preprint'
 
 export type ManuscriptRecordStatus =
   | 'draft'
@@ -20,7 +20,6 @@ export type ManuscriptRecordStatus =
   | 'submitted'
   | 'accepted'
   | 'withdrawn'
-  | 'withheld'
 
 /**
  * The minimum set of data required to create a new manuscript record.
@@ -49,6 +48,9 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   public_interest_information: string
   apply_ogl: boolean
   no_ogl_explanation: string
+  intends_open_access: boolean
+  open_access_rationale: string
+  preprint_url: string
   readonly sent_for_review_at: string | null
   readonly reviewed_at: string | null
   submitted_to_journal_on: string | null
@@ -62,6 +64,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   publication?: PublicationResource
   // special model permissions
   can_attach_manuscript: boolean
+  can_resubmit_preprint: boolean
 }
 
 export type ManuscriptRecordSummary = Omit<
@@ -222,6 +225,23 @@ export class ManuscriptRecordService {
     }
     const response = await http.put<any, ManuscriptRecordResource>(
       `${this.baseURL}/${id}/accepted`,
+      data,
+    )
+    return response.data
+  }
+
+  /** Mark as published to preprint - only works with preprint manuscripts */
+  public static async submittedToPreprint(
+    id: number,
+    acceptedOn: string,
+    preprintUrl: string,
+  ) {
+    const data = {
+      accepted_on: acceptedOn,
+      preprint_url: preprintUrl,
+    }
+    const response = await http.put<any, ManuscriptRecordResource>(
+      `${this.baseURL}/${id}/submitted-to-preprint`,
       data,
     )
     return response.data

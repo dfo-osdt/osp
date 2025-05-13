@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Enums\ManuscriptRecordStatus;
+use App\Enums\ManuscriptRecordType;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,6 +39,9 @@ class ManuscriptRecordResource extends JsonResource
                 'public_interest_information' => $this->public_interest_information ?? '',
                 'apply_ogl' => $this->apply_ogl,
                 'no_ogl_explanation' => $this->no_ogl_explanation ?? '',
+                'intends_open_access' => $this->intends_open_access,
+                'open_access_rationale' => $this->open_access_rationale ?? '',
+                'preprint_url' => $this->preprint_url ?? '',
 
                 // dates and times
                 'created_at' => $this->created_at,
@@ -53,11 +57,12 @@ class ManuscriptRecordResource extends JsonResource
                 'functional_area' => FunctionalAreaResource::make($this->whenLoaded('functionalArea')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
                 'user' => UserResource::make($this->whenLoaded('user')),
-                'publication' => $this->when($this->status === ManuscriptRecordStatus::ACCEPTED, PublicationResource::make($this->whenLoaded('publication'))),
+                'publication' => $this->when($this->status === ManuscriptRecordStatus::ACCEPTED && $this->type !== ManuscriptRecordType::PREPRINT, PublicationResource::make($this->whenLoaded('publication'))),
                 'funding_sources' => FundingSourceResource::collection($this->whenLoaded('fundingSources')),
                 // if this manuscript is accepted, include the publication id
                 // special model permissions
                 'can_attach_manuscript' => Auth::user()->can('attachManuscript', $this->resource),
+                'can_resubmit_preprint' => Auth::user()->can('submitToPreprint', $this->resource),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

@@ -21,7 +21,7 @@ const color = computed(() => {
       return 'green'
     case 'withdrawn':
       return 'red'
-    case 'withheld':
+    default:
       return 'red'
   }
 })

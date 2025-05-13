@@ -108,11 +108,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/manuscript-records/{manuscriptRecord}/management-review-steps', 'store');
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}', 'update');
         // actions
-        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/approve', 'approve');
-        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withhold', 'withhold');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/complete', 'complete');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/refer', 'refer');
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/reassign', 'reassign');
-        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/flag', 'flag');
-        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/flagged-response', 'flaggedResponse');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/revision', 'revision');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/revision-response', 'revisionResponse');
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withdraw', 'withdraw');
     });
 
@@ -126,6 +126,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('manuscript-records/{manuscriptRecord}/submit-for-review', 'submitForReview');
         Route::put('manuscript-records/{manuscriptRecord}/withdraw', 'withdraw');
         Route::put('manuscript-records/{manuscriptRecord}/submitted', 'submitted');
+        Route::put('manuscript-records/{manuscriptRecord}/submitted-to-preprint', 'submittedToPreprint');
         Route::put('manuscript-records/{manuscriptRecord}/accepted', 'accepted');
     });
 

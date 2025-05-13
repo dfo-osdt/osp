@@ -102,7 +102,7 @@
     "current-password": "Current Password",
     "dashboard": "Dashboard",
     "decision": "Decision",
-    "decision-expected-by": "Decision Expected By",
+    "decision-expected-by": "Review Expected By",
     "deferred": "Deferred",
     "delete": "Delete",
     "deleted": "Deleted",
@@ -249,7 +249,8 @@
       "password-length": "Password must be at least 12 characters",
       "password-required": "Password is required",
       "passwords-different": "Your current and new password should be different",
-      "passwords-match": "Passwords do not match"
+      "passwords-match": "Passwords do not match",
+      "url-invalid": "URL is invalid"
     },
     "withdraw": "Withdraw",
     "withdrawn": "Withdrawn",
@@ -283,7 +284,18 @@
     "from": "from",
     "form-invalid": "There are errors in the form, please fix them to be able to save this form.",
     "no_announcements": "There are no general announcements at this time.",
-    "announcements": "Click here to show the muted announcement | Click here to show the {count} muted announcements"
+    "announcements": "Click here to show the muted announcement | Click here to show the {count} muted announcements",
+    "preprint-publication": "A manuscript to be published on a preprint server",
+    "preprint-manuscript": "Preprint Manuscript",
+    "revision": "Revision Requested",
+    "review-outcome": "Review Outcome",
+    "url": "URL",
+    "preprint-url": "Preprint DOI or URL",
+    "preprint-url-placeholder": "https://doi.org/..",
+    "preprint-url-hint": "The DOI or a URL linking directly to the preprint",
+    "submitted-to-preprint-on": "Date submitted to preprint server",
+    "preprint": "Preprint",
+    "view-preprint": "External Link"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -301,7 +313,8 @@
       "title": "Manuscript Details"
     },
     "title": "Create a New Manuscript Record Form",
-    "what-is-the-working-title-of-your-manuscript": "What is the working title of your manuscript?"
+    "what-is-the-working-title-of-your-manuscript": "What is the working title of your manuscript?",
+    "prerint-pub-desc": "Scientific or technical document intended for dissemination via a preprint server prior to, or independent of, formal peer-reviewed publication in a journal, book, or conference proceeding."
   },
   "create-organization-dialog": {
     "abbreviation-english": "Abbreviation (English)",
@@ -339,18 +352,16 @@
     "hint": "ISO Date Format (YYYY-MM-DD)"
   },
   "decision": {
-    "approve-and-complete": "Approve and Complete",
-    "approve-and-complete-desc": "You approve this manuscript for publication and are ending the management review process.",
-    "approve-and-forward": "Approve and Forward",
-    "approve-and-forward-desc": "You recommend approval of this manuscript for publication and are forwarding it to the next reviewer.",
-    "flag": "Flag for Follow-up",
-    "flag-desc": "Flag management review comments that should be addressed by the author prior to providing your approval.",
+    "refer": "Refer to next manager",
+    "refer-desc": "You have reviewed the manuscript and are referring it to the next manager (usually a RDS or DG) for review.",
+    "revision": "Revisions required",
+    "revision-desc": "Flag management review comments that should be addressed by the author before completing the review.",
     "reassign": "Reassign",
     "reassign-desc": "You are not the correct manager to review this manuscript and reassign this review to the proper manager without making a recommendation.",
-    "withhold-and-complete": "Withhold and Complete the review process",
-    "withhold-and-complete-desc": "You withhold this manuscript for publication and are ending the management review process. Only an RDS or DG can make this decision.",
-    "withhold-and-forward": "Withhold and Forward",
-    "withhold-and-forward-desc": "You recommend this manuscript be withheld for publication and are forwarding it to a higher level manager."
+    "complete": "Complete",
+    "complete-desc": "Review of this manuscript for publication is complete and you are ending the management review process.",
+    "refer-revision": "Refer with Revisions",
+    "revision-revision-desc": "You have reviewed the manuscript and believe that changes may be required before completing the review. You are now refering it to a RDS or DG for further review."
   },
   "dialog": {
     "delete-manuscript": {
@@ -483,7 +494,8 @@
     "secondary": "DFO Publication",
     "submitted": "Submitted",
     "withdrawn": "Withdrawn",
-    "withheld": "Withheld"
+    "withheld": "Withheld",
+    "preprint": "Preprint"
   },
   "manuscript-author-dialog": {
     "instructions": "Search for the author you'd want to add using their name or professional email. If you cannot find the author you are looking for, or their affiliation or email has changed, you can create a new author record.",
@@ -492,7 +504,7 @@
   "manuscript-progress-view": {
     "accepted-details": "The manuscript was accepted for publication by the target journal and is entering the production process. Confirming this step will create a new publication record where you can upload the final manuscript and update the publication details.",
     "accepted-title": "Accepted for Publication",
-    "completed-details": "The manuscript complies with Fisheries and Oceans Canada National Policy for Science Publications and is approved by DFO management. At this stage, you may now submit the manuscript to your target journal.",
+    "completed-details": "The manuscript complies with Fisheries and Oceans Canada National Policy for Science Publications and has been reviewed by DFO management. At this stage, you may now submit the manuscript to your target journal.",
     "completed-title": "Completion of Management Review",
     "completed-withheld-details": "The manuscript does not comply with Fisheries and Oceans Canada National Policy for Science Publications and is withheld by DFO management.",
     "created-details": "At this stage, only the applicant and authors can see and edit the manuscript record.",
@@ -510,7 +522,14 @@
     "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days.",
     "submisison-to-dfo-title": "Submit to the EOS publication group",
     "submit-title": "Submit manuscript",
-    "submission-to-dfo-details": "Following your submission to the EOS publication group, your manuscript will be marked as accepted in the portal. Your work will then undergo a technical edit before a final proof is sent to the corresponding author(s) for review. Once this is completed, the publication group will make arrangements to have the manuscript published in the appropriate series."
+    "submission-to-dfo-details": "Following your submission to the EOS publication group, your manuscript will be marked as accepted in the portal. Your work will then undergo a technical edit before a final proof is sent to the corresponding author(s) for review. Once this is completed, the publication group will make arrangements to have the manuscript published in the appropriate series.",
+    "submitted-to-preprint": "Submit your Manuscript to a Preprint Server",
+    "submit-preprint-title": "Mark as Published",
+    "completed-preprint-details": "The manuscript aligns with Fisheries and Oceans Canada National Policy for Science Publications and has been reviewed by DFO management. At this stage, you may now submit the manuscript to a preprint server.",
+    "submitted-to-preprint-details": "You've submitted your manuscript to a preprint server. If the server assigns a DOI (Digital Object Identifier), please ensure that it is provided in your submission. If no DOI is available, a stable URL linking directly to the preprint should be included.",
+    "go-to-the-preprint": "View preprint (external)",
+    "edit-preprint-title": "Edit Preprint Submission",
+    "preprint-url": "Preprint URL"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
@@ -555,8 +574,13 @@
     "no-ogl-explanation-text-field-text": "DFO is committed to the \"Open by Design and by Default\" principle of Open Science, ensuring that all DFO publications are made available under the latest version of the \"{url}\" whenever possible. The Open Government Licence - Canada should not be applied if there are conflicting Licensing obligations.",
     "ogl-link": "Open Government Licence - Canada",
     "apply_ogl": "Should this report be licensed under the Open Government Licence - Canada?",
-    "ogl-provide-explanation": "Since you answered \"No,\" please provide an explanation of why an Open Government License cannot be applied to your report.",
-    "ready-to-submit": "This manuscript has completed its management review and is now ready for submission to the EOS publication team."
+    "ogl-provide-explanation": "Since you answered \"No\", please provide an explanation of why an Open Government License cannot be applied to your report.",
+    "ready-to-submit": "This manuscript has completed its management review and is now ready for submission to the EOS publication team.",
+    "ready-to-submit-preprint": "This manuscript has completed its management review and is now ready for submission to a preprint server.",
+    "open-access-rationale": "Open Publication",
+    "intends_open_access": "All publications must follow the open by design and by default approach. Unless an exception applies, your publications must be freely and publicly accessible upon release. Exceptions may include situations where information, data or code are sensitive for reasons of research security, proprietary interests, third-party restrictions, or are governed by legal, ethical, or confidentiality agreements. ",
+    "open-access-rationale-text": "Since you answered \"No\", please provide your rationale.",
+    "open-access-rationale-text-field-text": "Do you intend to make your publication open access (e.g., by publishing in an open access journal, selecting open access options in a hybrid journal, or depositing in an open repository)?"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",
@@ -698,7 +722,7 @@
     "response-by": "Response by {0}",
     "review-by": "Review by {0}",
     "save-comments": "Save Comments",
-    "submit-decision": "Submit Decision",
+    "submit-decision": "Submit Review",
     "your-response": "Your Response : {0}",
     "your-review": "Your Review : {0}",
     "comments-required": "A comment is required."
@@ -708,7 +732,7 @@
     "list-of-all-my-reviews": "List of all my reviews"
   },
   "reviewer-comments": {
-    "description": "Comments are required unless you approve and complete the management review without sending it to another manager. Comments entered here should support your decision and, if applicable, provide feedback to the subsequent management reviewer. Your comments will be visible to anyone with access to this manuscript record.",
+    "description": "Comments are required unless you complete the management review without sending it to another manager. Comments entered here should provide feedback to the subsequent management reviewer or author. Your comments will be visible to anyone with access to this manuscript record.",
     "title": "Manager Comments"
   },
   "shareable": {
@@ -724,15 +748,16 @@
     "user-create-text": "User with whom you want to share. The user will receive an email notification once you share this resource."
   },
   "submit-decision-dialog": {
-    "certify-text": "I certify that, to the best of my knowledge, my decision is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous manager and have considered them in my decision.",
-    "confirm-decision": "Confirm Decision",
+    "certify-text": "I certify that, to the best of my knowledge, my review is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous manager and have considered them in my review.",
+    "confirm-decision": "Confirm Review",
     "next-reviewer": "Next Management Reviewer",
     "next-reviewer-hint": "Search for the appropriate person to complete the management review within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
-    "no-comments-warning": "Your management review has no comments. Therefore, you can only approve and complete this review. Please add comments to support your decision if you want to select from the other options.",
-    "select-decision": "Select your decision",
+    "no-comments-warning": "Your management review has no comments. Therefore, you can only complete this review. Please add comments to support your review if you want to select from the other options.",
+    "select-decision": "Select your review outcome",
     "select-next-reviewer": "Select Next Manger",
-    "subsequent-reviewer-is-required": "Given your decision, a subsequent manager is required to complete the review",
-    "your-decision": "Your Decision"
+    "subsequent-reviewer-is-required": "Given your review, a subsequent manager is required to complete the review",
+    "your-decision": "Your Review",
+    "no-comments-warning-cant-complete": "A review comment is required to proceed."
   },
   "submit-manuscript-dialog": {
     "step1": {
@@ -844,5 +869,8 @@
   },
   "azure-user-select": {
     "search-hint": "Start typing an email to search for a DFO user"
+  },
+  "submitted-to-preprint-dialog": {
+    "title": "Mark as published to a preprint server"
   }
 }

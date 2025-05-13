@@ -21,8 +21,8 @@ const statusLabel = computed(() => {
       return t('manuscript.accepted')
     case 'withdrawn':
       return t('manuscript.withdrawn')
-    case 'withheld':
-      return t('manuscript.withheld')
+    default:
+      return 'N/A'
   }
 })
 </script>

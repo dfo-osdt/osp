@@ -59,12 +59,15 @@ class ManagementReviewStep extends Model
         'previous_step_id',
     ];
 
-    protected $casts = [
-        'completed_at' => 'datetime',
-        'decision_expected_by' => 'datetime',
-        'status' => \App\Enums\ManagementReviewStepStatus::class,
-        'decision' => \App\Enums\ManagementReviewStepDecision::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'completed_at' => 'datetime',
+            'decision_expected_by' => 'datetime',
+            'status' => \App\Enums\ManagementReviewStepStatus::class,
+            'decision' => \App\Enums\ManagementReviewStepDecision::class,
+        ];
+    }
 
     // Default attributes
     protected $attributes = [

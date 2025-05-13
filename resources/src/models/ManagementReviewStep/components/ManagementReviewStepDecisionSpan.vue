@@ -10,13 +10,11 @@ const { t } = useI18n()
 
 const decision = computed(() => {
   switch (props.decision) {
-    case 'approved':
-      return t('common.approved')
+    case 'complete':
+      return t('common.complete')
     case 'none':
       return t('common.none')
-    case 'withheld':
-      return t('common.withheld')
-    case 'flagged':
+    case 'revision':
       return t('common.flagged')
     case 'withdrawn':
       return t('common.withdrawn')
@@ -27,7 +25,7 @@ const decision = computed(() => {
 
 const value = computed(() => {
   if (props.showLabel)
-    return `${t('common.decision')}: ${decision.value}`
+    return `${t('common.review')}: ${decision.value}`
   return decision.value
 })
 </script>

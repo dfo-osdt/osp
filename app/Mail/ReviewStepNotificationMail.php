@@ -38,7 +38,7 @@ class ReviewStepNotificationMail extends Mailable
         $this->subject('Manuscript Management Review [action required] / Révision par la gestion [action requise]: '.$this->managementReviewStep->manuscriptRecord->title);
         $this->to($this->managementReviewStep->user->email, $this->managementReviewStep->user->fullName);
         $this->cc($this->previousStep->user->email, $this->previousStep->user->fullName);
-        if ($this->previousStep->decision !== ManagementReviewStepDecision::FLAGGED) {
+        if ($this->previousStep->decision !== ManagementReviewStepDecision::REVISION) {
             // This would be redundant if the previous step is on hold as this step is being sent back to the proponent.
             $this->cc($this->managementReviewStep->manuscriptRecord->user->email, $this->managementReviewStep->manuscriptRecord->user->fullName);
         }

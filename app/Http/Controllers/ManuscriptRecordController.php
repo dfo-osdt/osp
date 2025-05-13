@@ -78,6 +78,8 @@ class ManuscriptRecordController extends Controller
             'potential_public_interest' => 'boolean',
             'apply_ogl' => 'boolean',
             'no_ogl_explanation' => 'nullable|string',
+            'intends_open_access' => 'boolean',
+            'open_access_rationale' => 'nullable|string',
         ]);
 
         $manuscriptRecord->update($validated);
@@ -117,7 +119,10 @@ class ManuscriptRecordController extends Controller
         // create the first management review step for this record
         $reviewStep = new ManagementReviewStep;
         $reviewStep->manuscript_record_id = $manuscriptRecord->id;
-        $reviewStep->decision_expected_by = now()->addBusinessDays(config('osp.management_review.decision_expected_business_days'));
+
+        // is there an expected decision date for this manuscript type? Only primary for now.
+        $decisionExpected = $manuscriptRecord->type === ManuscriptRecordType::PRIMARY;
+        $reviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
         $reviewStep->user_id = $reviewUser->id;
         $reviewStep->save();
 
@@ -172,7 +177,7 @@ class ManuscriptRecordController extends Controller
         $validated = $request->validate([
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => 'required|date|after_or_equal:submitted_to_journal_on',
-            'journal_id' => 'required|exists:journals,id',
+            'journal_id' => ['required', 'exists:journals,id'],
         ]);
 
         // Ensure the journal selected matches the manuscript record type.
@@ -191,13 +196,33 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
         $manuscriptRecord->save();
 
-        // create the accepted publication
         CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
 
         // if the manuscript is a secondary, send an email to the submissions team
         if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
             Mail::queue(new ManuscriptRecordSubmittedToDFO($manuscriptRecord));
         }
+
+        return $this->defaultResource($manuscriptRecord);
+    }
+
+    /** Submit to a preprint server / only works with preprint manuscripts */
+    public function submittedToPreprint(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
+    {
+        Gate::authorize('submitToPreprint', $manuscriptRecord);
+
+        // validate the request has the preprint url
+        $validated = $request->validate([
+            'accepted_on' => 'required|date',
+            'preprint_url' => 'required|url',
+        ]);
+
+        $manuscriptRecord->submitted_to_journal_on = $validated['accepted_on'];
+        $manuscriptRecord->accepted_on = $validated['accepted_on'];
+        $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
+
+        $manuscriptRecord->preprint_url = $validated['preprint_url'];
+        $manuscriptRecord->save();
 
         return $this->defaultResource($manuscriptRecord);
     }
@@ -226,6 +251,5 @@ class ManuscriptRecordController extends Controller
         }
 
         return $manuscriptRecord->load($relationships->toArray());
-
     }
 }

@@ -128,6 +128,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
         'status' => ManuscriptRecordStatus::class,
         'potential_public_interest' => 'boolean',
         'apply_ogl' => 'boolean',
+        'intends_open_access' => 'boolean',
     ];
 
     // default values for optional fields
@@ -137,6 +138,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
         'relevant_to' => '',
         'public_interest_information' => '',
         'no_ogl_explanation' => '',
+        'open_access_rationale' => '',
     ];
 
     protected static function boot()
@@ -351,6 +353,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
             'region_id' => 'required|exists:regions,id',
             'functional_area_id' => 'required|exists:functional_areas,id',
             'no_ogl_explanation' => 'required_if:apply_ogl,false',
+            'open_access_rationale' => 'required_if:intends_open_access,false',
         ]);
 
         $validator->after(function ($validator) {

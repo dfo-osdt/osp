@@ -3,6 +3,7 @@ import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/Manuscr
 import ContentCard from '@/components/ContentCard.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import PublicationStatusSpan from '@/models/Publication/components/PublicationStatusSpan.vue'
+import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue'
 
 defineProps<{
   id: number
@@ -35,12 +36,17 @@ const showPublishBanner = computed(() => {
 <template>
   <MainPageLayout :title="$t('common.manuscript-record')">
     <template #toolbar>
-      <div class="text-subtitle2 text-grey-7 q-pl-md q-py-sm">
-        <span class="text-primary text-uppercase">{{ $t('common.unique-id') }}:
-        </span>
-        <span class="text-weight-medium">{{
-          manuscript?.data.ulid
-        }}</span>
+      <div class="fit row justify-between">
+        <div class="text-subtitle2 text-grey-7 q-pl-md q-py-sm">
+          <span class="text-primary text-uppercase">{{ $t('common.unique-id') }}:
+          </span>
+          <span class="text-weight-medium">{{
+            manuscript?.data.ulid
+          }}</span>
+        </div>
+        <div class="flex items-center">
+          <ManuscriptTypeBadge v-if="manuscript?.data.type" :type="manuscript.data.type" class="text-subtitle2 q-mr-md" />
+        </div>
       </div>
       <q-separator />
     </template>
@@ -58,8 +64,11 @@ const showPublishBanner = computed(() => {
           <span v-if="manuscript?.data.type === 'primary'">
             {{ $t('mrf.ready-to-marked-published') }}
           </span>
-          <span v-else>
+          <span v-if="manuscript?.data.type === 'secondary'">
             {{ $t('mrf.ready-to-submit') }}
+          </span>
+          <span v-if="manuscript?.data.type === 'preprint'">
+            {{ $t('mrf.ready-to-submit-preprint') }}
           </span>
         </div>
         <div>
@@ -135,6 +144,7 @@ const showPublishBanner = computed(() => {
             </q-item>
             <q-separator inset class="q-my-md" />
             <q-item
+              v-if="manuscript?.data.type !== 'preprint'"
               clickable
               :disable="
                 manuscript?.data.publication === undefined
@@ -165,6 +175,40 @@ const showPublishBanner = computed(() => {
                         .status
                     "
                   />
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="manuscript?.data.type === 'preprint'"
+              clickable
+              :disable="
+                manuscript?.data.preprint_url === ''
+              "
+              :href="
+                manuscript?.data.preprint_url"
+              target="_blank"
+            >
+              <q-item-section avatar>
+                <q-icon name="mdi-web" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  {{
+                    $t('common.preprint')
+                  }}
+                </q-item-label>
+                <q-item-label caption>
+                  <span
+                    v-if="
+                      manuscript?.data.preprint_url
+                        === ''
+                    "
+                  >{{ $t('common.pending') }}
+                  </span>
+                  <span
+                    v-else
+                  >{{ $t('common.view-preprint') }}
+                  </span>
                 </q-item-label>
               </q-item-section>
             </q-item>

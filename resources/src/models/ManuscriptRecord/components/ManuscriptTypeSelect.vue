@@ -14,6 +14,10 @@ const options = ref([
     label: t('common.secondary-manuscript'),
     value: 'secondary',
   },
+  {
+    label: t('common.preprint-manuscript'),
+    value: 'preprint',
+  },
 ])
 
 const value = useVModel(props, 'modelValue')

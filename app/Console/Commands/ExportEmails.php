@@ -52,19 +52,14 @@ class ExportEmails extends Command
         $markdownContent = $manuscriptRecordToReview->render();
         $this->exportFile('manuscript-record-to-review-external.html', $markdownContent);
 
-        $manuscriptRecordToReview = new \App\Mail\ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->secondary()->in_review()->create(), User::factory()->create());
+        $manuscriptRecordToReview = new \App\Mail\ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->secondary()->in_review(true, true)->create(), User::factory()->create());
         $markdownContent = $manuscriptRecordToReview->render();
         $this->exportFile('manuscript-record-to-review-internal.html', $markdownContent);
-        // rollback the transaction to leave the database clean
-
-        $manuscriptWithheld = new \App\Mail\ManuscriptWithheldMail(ManuscriptRecord::factory()->withheld()->create());
-        $markdownContent = $manuscriptWithheld->render();
-        $this->exportFile('manuscript-withheld.html', $markdownContent);
 
         // Next reviwer: flagged - return to author
         $mrf = ManagementReviewStep::factory([
             'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::FLAGGED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::REVISION,
             'comments' => 'This manuscript is not ready for publication, please change X, Y and Z',
         ])->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
@@ -74,12 +69,12 @@ class ExportEmails extends Command
 
         $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
         $markdownContent = $reviewStepNotification->render();
-        $this->exportFile('review-step-notification-flagged.html', $markdownContent);
+        $this->exportFile('review-step-notification-revision.html', $markdownContent);
 
         // Next reviwer: approved - forward to another reviewer
         $mrf = ManagementReviewStep::factory([
             'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::APPROVED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
             'comments' => 'I reviewed this manuscript and it is ready for publication',
         ])->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
@@ -87,20 +82,21 @@ class ExportEmails extends Command
         ]));
         $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
         $markdownContent = $reviewStepNotification->render();
-        $this->exportFile('review-step-notification-approved.html', $markdownContent);
+        $this->exportFile('review-step-notification-primary-refer.html', $markdownContent);
 
-        // Next reviwer: withheld - forward to another reviewer
+        // next reviewer: secondary manuscript
         $mrf = ManagementReviewStep::factory([
             'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::WITHHELD,
-            'comments' => 'I recommend that this manuscript be withheld based on the following reasons: X, Y and Z',
-        ])->create()->manuscriptRecord;
+            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+            'comments' => 'I reviewed this manuscript and it is ready for publication',
+        ])->has(ManuscriptRecord::factory()->secondary())->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
             'previous_step_id' => $mrf->managementReviewSteps()->first()->id,
+            'decision_expected_by' => null,
         ]));
         $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
         $markdownContent = $reviewStepNotification->render();
-        $this->exportFile('review-step-notification-withheld.html', $markdownContent);
+        $this->exportFile('review-step-notification-secondary-refer.html', $markdownContent);
 
         // user invited email
         $invitation = \App\Models\Invitation::factory()->create();

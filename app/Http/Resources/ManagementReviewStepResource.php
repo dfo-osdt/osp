@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Enums\SensitivityLabel;
-use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @mixin \App\Models\ManagementReviewStep
@@ -37,6 +37,7 @@ class ManagementReviewStepResource extends JsonResource
                 'manuscript_record' => ManuscriptRecordSummaryResource::make($this->whenLoaded('manuscriptRecord')),
                 'previous_step' => ManagementReviewStepResource::make($this->whenLoaded('previousStep')),
                 'user' => UserResource::make($this->whenLoaded('user')),
+                'can_complete' => Auth::user()->can('complete', $this->resource),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),
