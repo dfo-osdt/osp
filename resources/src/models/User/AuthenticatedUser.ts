@@ -144,7 +144,6 @@ export class AuthenticatedUser implements IAuthenticatedUser {
    * Does this user have the given role?
    *
    * @param role
-   * @returns
    */
   hasRole(role: AuthenticatedUserRoles): boolean {
     return this.roles.includes(role)
