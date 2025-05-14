@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { PublicationResourceList } from '../Publication'
+import { watchThrottled } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
@@ -7,9 +10,6 @@ import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
-import { watchThrottled } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 import PublicationList from '../components/PublicationList.vue'
 import { PublicationQuery, PublicationService } from '../Publication'
 

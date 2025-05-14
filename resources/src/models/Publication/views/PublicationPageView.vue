@@ -1,21 +1,23 @@
 <script setup lang="ts">
+import type { PublicationResource } from '../Publication'
+import type { ManuscriptRecordMetadataResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import type { Region } from '@/models/Region/Region'
+import { QForm, useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
-import { type ManuscriptRecordMetadataResource, ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
+import { ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import ManagePublicationAuthorsCard from '@/models/PublicationAuthor/components/ManagePublicationAuthorsCard.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
-import { QForm, useQuasar } from 'quasar'
 import DoiInput from '../components/DoiInput.vue'
 import DoiLink from '../components/DoiLink.vue'
 import PublicationFileManagementCard from '../components/PublicationFileManagementCard.vue'
 import PublicationStatusBadge from '../components/PublicationStatusBadge.vue'
 import PublicationSupplementaryFileManagementCard from '../components/PublicationSupplementaryFileManagementCard.vue'
-import { type PublicationResource, PublicationService } from '../Publication'
+import { PublicationService } from '../Publication'
 
 const props = defineProps<{
   id: number

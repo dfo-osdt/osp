@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { QDrawer, QItemLabel, QList, QSeparator } from 'quasar'
 import type { MenuItem } from './DrawerMenuItem.vue'
+import { QDrawer, QItemLabel, QList, QSeparator } from 'quasar'
 import DrawerMenuItem from './DrawerMenuItem.vue'
 
 const authStore = useAuthStore()
@@ -45,6 +45,13 @@ const exploreMenuItems = computed<MenuItem[]>(() => {
       icon: 'mdi-newspaper-variant-multiple-outline',
       label: t('common.publications'),
       to: '/publications',
+      visible: true,
+      tooltipVisible: authStore.isDrawerMini,
+    },
+    {
+      icon: 'mdi-cloud-print-outline',
+      label: t('common.preprints'),
+      to: '/preprints',
       visible: true,
       tooltipVisible: authStore.isDrawerMini,
     },

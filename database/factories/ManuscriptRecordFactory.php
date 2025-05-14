@@ -117,4 +117,18 @@ class ManuscriptRecordFactory extends Factory
             'accepted_on' => now(),
         ]);
     }
+
+    /**
+     * A published preprint - accepted with url.
+     */
+    public function publishedPreprint()
+    {
+        return $this->accepted()->state([
+            'title' => 'A preprint: '.$this->faker->text(50),
+            'submitted_to_journal_on' => now(),
+            'accepted_on' => now(),
+            'type' => ManuscriptRecordType::PREPRINT,
+            'preprint_url' => $this->faker->url(),
+        ]);
+    }
 }

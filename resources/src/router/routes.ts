@@ -147,6 +147,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        path: '/preprints',
+        component: () =>
+          import('@/models/Preprint/views/PreprintListView.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: '/sensitive-issues',
         component: UnderConstruction,
         meta: { requiresAuth: true },

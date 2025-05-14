@@ -21,6 +21,8 @@ class ManuscriptRecordPolicy
      */
     public function viewAny(User $user)
     {
+        // this should stay false as the "draft" MRF should
+        // never be seen by "anyone".
         return false;
     }
 
@@ -31,6 +33,10 @@ class ManuscriptRecordPolicy
      */
     public function view(User $user, ManuscriptRecord $manuscriptRecord)
     {
+
+        if ($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD)) {
+            return $manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT;
+        }
 
         // owners can view their own manuscripts
         if ($user->id === $manuscriptRecord->user_id) {

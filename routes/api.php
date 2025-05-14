@@ -22,6 +22,7 @@ use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\FullFlowController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PreprintController;
 use App\Http\Controllers\PublicationAuthorController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicationFileController;
@@ -128,6 +129,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('manuscript-records/{manuscriptRecord}/submitted', 'submitted');
         Route::put('manuscript-records/{manuscriptRecord}/submitted-to-preprint', 'submittedToPreprint');
         Route::put('manuscript-records/{manuscriptRecord}/accepted', 'accepted');
+    });
+
+    Route::controller(PreprintController::class)->group(function () {
+        Route::get('/preprints', 'index');
     });
 
     Route::controller(ManuscriptRecordSharingController::class)->group(function () {

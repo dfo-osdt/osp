@@ -27,6 +27,7 @@ enum UserRole: string
             ],
             self::DIRECTOR => [
                 UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW,
+                UserPermission::VIEW_ANY_MANUSCRIPT_RECORD,
                 // Merge author permissions
                 ...self::AUTHOR->permissions(),
             ],
@@ -41,6 +42,7 @@ enum UserRole: string
             self::EDITOR => [
                 UserPermission::UPDATE_AUTHORS,
                 UserPermission::UPDATE_PUBLICATIONS,
+                UserPermission::VIEW_ANY_MANUSCRIPT_RECORD,
             ],
             self::CHIEF_EDITOR => [
                 UserPermission::PUBLISH_INTERNAL_REPORTS,
