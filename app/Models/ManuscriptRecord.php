@@ -134,7 +134,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     // default values for optional fields
     protected $attributes = [
         'abstract' => '',
-        'pls' => '',
+        'pls_en' => '',
+        'pls_fr' => '',
         'relevant_to' => '',
         'public_interest_information' => '',
         'no_ogl_explanation' => '',

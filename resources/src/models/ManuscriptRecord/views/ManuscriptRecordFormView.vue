@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import { QForm, useQuasar } from 'quasar'
 import { UtilityService } from '@/api/utils'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
@@ -15,7 +16,6 @@ import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFu
 import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue'
 import ManageManuscriptPeerReviewersCard from '@/models/ManuscriptPeerReviewer/components/ManageManuscriptPeerReviewersCard.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
-import { QForm, useQuasar } from 'quasar'
 import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue'
 import ManuscriptFileManagementCard from '../components/ManuscriptFileManagementCard.vue'
 import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue'
@@ -96,7 +96,8 @@ const generalSectionStatus = computed(() => {
   const complete
         = manuscript.title !== ''
           && manuscript.abstract !== ''
-          && manuscript.pls !== ''
+          && manuscript.pls_en !== ''
+          && manuscript.pls_fr !== ''
           && manuscript.relevant_to
 
   return complete ? 'complete' : 'incomplete'
@@ -219,7 +220,8 @@ const enablePLSPrompt = computed(() => {
 
   return (
     !isManuscriptReadOnly.value
-    && (manuscriptResource.value.data.pls === '' || PLSLoading)
+    && (manuscriptResource.value.data.pls_en === '' || PLSLoading)
+    && (manuscriptResource.value.data.pls_fr === '' || PLSLoading)
     && manuscriptResource.value.data.abstract.length > 250
   )
 })
@@ -229,7 +231,7 @@ const plsDisabledTooltip = computed(() => {
     return ''
   }
 
-  if (manuscriptResource.value.data.pls !== '') {
+  if (manuscriptResource.value.data.pls_en !== '' || manuscriptResource.value.data.pls_fr) {
     return t('mrf.pls-already-generated-erase-it-to-generate-a-new-one')
   }
 
@@ -246,14 +248,17 @@ async function generatePLS() {
     return
   if (manuscriptResource.value?.data.abstract === '')
     return
-  manuscriptResource.value.data.pls = t(
+  manuscriptResource.value.data.pls_en = t(
     'mrf.generating-pls-please-be-patient',
   )
   await UtilityService.generatePls(manuscriptResource.value.data.abstract)
     .then((response) => {
       if (!manuscriptResource.value)
         return
-      manuscriptResource.value.data.pls = response.data.pls
+
+      manuscriptResource.value.data.pls_en = response.data.pls_en
+      manuscriptResource.value.data.pls_fr = response.data.pls_fr
+
       $q.notify({
         type: 'positive',
         color: 'primary',
@@ -449,14 +454,10 @@ async function generatePLS() {
               {{ $t('mrf.copy-your-manuscripts-abstract-here') }}
             </p>
           </QuestionEditor>
-          <QuestionEditor
-            v-model="manuscriptResource.data.pls"
-            :title="$t('common.plain-language-summary')"
-            :disable="loading || PLSLoading"
-            :readonly="isManuscriptReadOnly"
-            required
-            class="q-mb-md"
-          >
+          <div>
+            <div class="text-body1 text-primary text-weight-medium">
+              {{ $t('common.plain-language-summary') }}
+            </div>
             <p>
               {{ $t('mrf.pls-text') }}
             </p>
@@ -486,7 +487,23 @@ async function generatePLS() {
                 </q-tooltip>
               </div>
             </div>
-          </QuestionEditor>
+          </div>
+          <QuestionEditor
+            v-model="manuscriptResource.data.pls_en"
+            :title="$t('common.plain-language-summary-en')"
+            :disable="loading || PLSLoading"
+            :readonly="isManuscriptReadOnly"
+            required
+            class="q-mb-md"
+          />
+          <QuestionEditor
+            v-model="manuscriptResource.data.pls_fr"
+            :title="$t('common.plain-language-summary-fr')"
+            :disable="loading || PLSLoading"
+            :readonly="isManuscriptReadOnly"
+            required
+            class="q-mb-md"
+          />
           <div class="q-mb-lg">
             <div class="q-ml-xs">
               <div

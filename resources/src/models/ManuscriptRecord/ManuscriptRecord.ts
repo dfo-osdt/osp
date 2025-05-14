@@ -1,4 +1,3 @@
-import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import type { FunctionalArea } from '../FunctionalArea/FunctionalArea'
 import type { MediaResource, MediaResourceList } from '../Media/Media'
 import type { PublicationResource } from '../Publication/Publication'
@@ -8,6 +7,7 @@ import type {
   ResourceList,
 } from '../Resource'
 import type { UserResource } from '../User/User'
+import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
 
@@ -42,7 +42,8 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   user_id: number
   functional_area_id: number | null
   abstract: string
-  pls: string
+  pls_en: string
+  pls_fr: string
   relevant_to: string
   potential_public_interest: boolean
   public_interest_information: string
@@ -91,7 +92,7 @@ export type ManuscriptRecordResourceList = ResourceList<ManuscriptRecord>
 export type ManuscriptRecordSummaryResource = Resource<ManuscriptRecordSummary>
 export type ManuscriptRecordMetadataResource = Resource<ManuscriptRecordMetadata>
 export type ManuscriptRecordSummaryResourceList =
-    ResourceList<ManuscriptRecordSummary>
+  ResourceList<ManuscriptRecordSummary>
 
 export class ManuscriptRecordService {
   private static baseURL = 'api/manuscript-records'
@@ -262,7 +263,7 @@ export class ManuscriptRecordService {
       url += `?${query.toQueryString()}`
     }
     const response
-            = await http.get<ManuscriptRecordSummaryResourceList>(url)
+      = await http.get<ManuscriptRecordSummaryResourceList>(url)
     return response.data
   }
 }

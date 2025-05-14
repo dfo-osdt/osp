@@ -296,7 +296,9 @@
     "submitted-to-preprint-on": "Date submitted to preprint server",
     "preprint": "Preprint",
     "view-preprint": "External Link",
-    "preprints": "Preprints"
+    "preprints": "Preprints",
+    "plain-language-summary-en": "Plan Language Summary - English",
+    "plain-language-summary-fr": "Plain Language Summary - French"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -547,10 +549,10 @@
     "manuscript-submitted-successfully": "The manuscript record was successfully submitted.",
     "manuscripts-working-title": "Manuscript's Working Title",
     "not-authorized-text": "You do not have permission to view this manuscript record",
-    "pls-already-generated-erase-it-to-generate-a-new-one": "PLS already generated - erase it to generate a new one",
+    "pls-already-generated-erase-it-to-generate-a-new-one": "A PLS already exists - erase it to generate a new one",
     "pls-generated-successfully": "PLS generated successfully",
     "pls-help-ai-text": "Need some help? Using your manuscript's abstract, we can generate a draft PLS. Make sure to review/edit the generated PLS! ",
-    "pls-text": "Plain Language Summary (PLS) of the manuscript to explain the relevance of the science to the Department and to promote the value of science through outreach and communication. It is intended for internal use to identify linkages to programs, policies and stakeholders and for use in the plain language promotion of science.",
+    "pls-text": "A concise Plain Language Summary (PLS), in both official languages, is required for every scientific and technical publication. PLS should incorporate Indigenous place names and species, where appropriate. ",
     "potential-media-interest-question": "Is this manuscript of potential public interest?",
     "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest.",
     "ready-to-marked-published": "This manuscript has completed its management review but still needs to be marked as submitted and accepted to a thrid-party Journal by the applicant.",
