@@ -34,7 +34,7 @@ class ManuscriptRecordPolicy
     public function view(User $user, ManuscriptRecord $manuscriptRecord)
     {
 
-        if($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD)){
+        if ($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD)) {
             return $manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT;
         }
 

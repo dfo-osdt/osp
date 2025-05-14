@@ -20,8 +20,8 @@ class PreprintListQuery extends QueryBuilder
                     'manuscriptAuthors.author',
                     'manuscriptAuthors.organization',
                     'managementReviewSteps',
-                    'shareables'
-                    ])
+                    'shareables',
+                ])
 
         );
 
