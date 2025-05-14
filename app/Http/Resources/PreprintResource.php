@@ -31,7 +31,7 @@ class PreprintResource extends JsonResource
             ],
             'can' => [
                 'view' => Auth::user()->can('view', $this->resource),
-                'udpate' => false,
+                'update' => false,
                 'delete' => false,
             ],
         ];
