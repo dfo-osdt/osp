@@ -8,9 +8,9 @@ defineProps<{
 
 const { t } = useI18n()
 
-function publishedYear(preprint: PreprintResource) {
+function publishedDate(preprint: PreprintResource) {
   if (preprint.data.accepted_on) {
-    return new Date(preprint.data.accepted_on).getFullYear()
+    return useLocaleDate(preprint.data.accepted_on)
   }
   return t('common.pending-publication')
 }
@@ -66,7 +66,7 @@ function publishedYear(preprint: PreprintResource) {
         <q-item-label caption class="text-uppercase">
           <div class="q-pt-sm flex">
             <div>
-              {{ publishedYear(preprint) }}
+              {{ publishedDate(preprint) }}
             </div>
             <div class="q-mx-sm">
               |
@@ -74,6 +74,20 @@ function publishedYear(preprint: PreprintResource) {
             <div>URL/DOI: <DoiLink :doi="preprint.data.preprint_url" /></div>
           </div>
         </q-item-label>
+      </q-item-section>
+      <q-item-section v-if="preprint.can?.view" side top>
+        <q-btn
+          size="sm"
+          outline
+          round
+          icon="mdi-file-document-arrow-right"
+          :to="{
+            name: 'manuscript.form',
+            params: { id: preprint.data.manuscript_record_id },
+          }"
+        >
+          <q-tooltip>{{ $t('common.go-to-manuscript-form') }}</q-tooltip>
+        </q-btn>
       </q-item-section>
     </q-item>
   </q-list>

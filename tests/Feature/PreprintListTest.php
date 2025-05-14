@@ -17,7 +17,7 @@ test('a user can list the published preprints', function () {
     $response->assertStatus(200);
     expect($response->json('data'))->toHaveCount(5);
 
-    //limit to 2..
+    // limit to 2..
     $response = $this->actingAs($user)->getJson('/api/preprints?limit=2');
     $response->assertStatus(200);
     expect($response->json('data'))->toHaveCount(2);

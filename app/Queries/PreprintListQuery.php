@@ -16,7 +16,13 @@ class PreprintListQuery extends QueryBuilder
             ManuscriptRecord::query()
                 ->where('type', ManuscriptRecordType::PREPRINT)
                 ->where('status', ManuscriptRecordStatus::ACCEPTED)
-                ->with('manuscriptAuthors.author', 'manuscriptAuthors.organization')
+                ->with([
+                    'manuscriptAuthors.author',
+                    'manuscriptAuthors.organization',
+                    'managementReviewSteps',
+                    'shareables'
+                    ])
+
         );
 
         $this

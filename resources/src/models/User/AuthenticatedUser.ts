@@ -1,7 +1,7 @@
+import type { UserResource } from './User'
 import type { AuthorResource } from '@/models/Author/Author'
 import type { Resource, ResourceList, SensitivityLabel } from '@/models/Resource'
 import type { Locale } from '@/stores/LocaleStore'
-import type { UserResource } from './User'
 import { http } from '@/api/http'
 
 export type AuthenticatedUserResource = Resource<IAuthenticatedUser>
@@ -73,6 +73,7 @@ export type AuthenticatedUserPermissions =
   | 'create_author_employments'
   | 'complete_interntal_management_review'
   | 'view_any_users'
+  | 'view_any_manuscript_record'
   | 'publish_internal_reports'
   | 'update_publications'
 

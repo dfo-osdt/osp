@@ -81,8 +81,11 @@ watch(authorId, () => {
 <template>
   <MainPageLayout :title="$t('common.preprints')">
     <div class="row q-gutter-lg q-col-gutter-lg flex">
-      <div class="col q-pr-lg">
+      <div class="col q-pr-lg q-pb-lg">
         <ContentCard secondary>
+          <template #title>
+            {{ $t('common.preprints') }}
+          </template>
           <template #title-right>
             <SearchInput
               v-model="search"

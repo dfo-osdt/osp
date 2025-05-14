@@ -131,7 +131,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('manuscript-records/{manuscriptRecord}/accepted', 'accepted');
     });
 
-    Route::controller(PreprintController::class)->group(function() {
+    Route::controller(PreprintController::class)->group(function () {
         Route::get('/preprints', 'index');
     });
 

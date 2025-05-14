@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\ManuscriptAuthor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @mixin \App\Models\ManuscriptRecord
@@ -27,12 +27,13 @@ class PreprintResource extends JsonResource
                 'accepted_on' => $this->accepted_on,
                 // relationships
                 'authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
-                'user' => UserResource::make($this->whenLoaded('user'))
+                'user' => UserResource::make($this->whenLoaded('user')),
             ],
             'can' => [
+                'view' => Auth::user()->can('view', $this->resource),
                 'udpate' => false,
-                'delete' => false
-            ]
+                'delete' => false,
+            ],
         ];
     }
 }
