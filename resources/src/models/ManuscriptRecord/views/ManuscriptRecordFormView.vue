@@ -220,9 +220,10 @@ const enablePLSPrompt = computed(() => {
 
   return (
     !isManuscriptReadOnly.value
-    && (manuscriptResource.value.data.pls_en === '' || PLSLoading)
-    && (manuscriptResource.value.data.pls_fr === '' || PLSLoading)
+    && (manuscriptResource.value.data.pls_en === '')
+    && (manuscriptResource.value.data.pls_fr === '')
     && manuscriptResource.value.data.abstract.length > 250
+    && !PLSLoading.value
   )
 })
 
@@ -231,7 +232,7 @@ const plsDisabledTooltip = computed(() => {
     return ''
   }
 
-  if (manuscriptResource.value.data.pls_en !== '' || manuscriptResource.value.data.pls_fr) {
+  if (manuscriptResource.value.data.pls_en !== '' || manuscriptResource.value.data.pls_fr !== '') {
     return t('mrf.pls-already-generated-erase-it-to-generate-a-new-one')
   }
 
