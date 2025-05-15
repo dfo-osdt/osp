@@ -90,7 +90,6 @@ class ManagementReviewStepController extends Controller
             'comments' => 'string|nullable',
         ]);
 
-
         $nextReviewStep = new ManagementReviewStep;
         $nextReviewStep->user_id = $validated['next_user_id'];
         $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
