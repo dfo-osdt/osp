@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { t } = useI18n()
 
-const modelValue = defineModel<boolean>()
+const modelValue = defineModel<boolean | null>()
 
 const options = computed(() => [
   {

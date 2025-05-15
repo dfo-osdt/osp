@@ -9,6 +9,7 @@ import type { ManuscriptRecordType } from '@/models/ManuscriptRecord/ManuscriptR
 import { QForm, QStepper } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import { ManuscriptAuthorService } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
+import YesNoBooleanOptionGroup from '@/models/ManuscriptRecord/components/YesNoBooleanOptionGroup.vue'
 import { ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import UserSelect from '@/models/User/components/UserSelect.vue'
 import {
@@ -54,18 +55,9 @@ const decision: Ref<Decision> = canComplete.value
 
 const nextUserId = ref<number | null>(null)
 
+const submitToBinder = ref<boolean | null>(null)
 /** Decision flow variables */
 const agreeToTerms = ref(false)
-const agreeToTermsOptions = ref([
-  {
-    label: t('common.yes'),
-    value: true,
-  },
-  {
-    label: t('common.no'),
-    value: false,
-  },
-])
 
 const nextReviewerStepDisabled = computed(() => {
   return (
@@ -79,6 +71,9 @@ const nextDisabled = computed(() => {
     return false
   }
   else if (step.value === 2) {
+    if (decision.value === 'complete') {
+      return submitToBinder.value === null
+    }
     return nextUserId.value === null
   }
   else if (step.value === 3) {
@@ -281,6 +276,7 @@ async function submit() {
           </q-list>
         </q-step>
         <q-step
+          v-if="decision !== 'complete'"
           :name="2"
           :title="$t('submit-decision-dialog.select-next-reviewer')"
           icon="mdi-account-search"
@@ -313,6 +309,22 @@ async function submit() {
           />
         </q-step>
         <q-step
+          v-if="decision === 'complete'"
+          :name="2"
+          :title="$t('submit-decision-dialog.confirm-planning-binder')"
+          icon="mdi-file-document-check-outline"
+          :done="step > 2"
+        >
+          <p class="q-ma-md">
+            {{ $t('submit-decision-dialog.planning-binder-tex') }}
+          </p>
+          <YesNoBooleanOptionGroup
+            v-model="submitToBinder"
+            class="q-mr-lg"
+            align="right"
+          />
+        </q-step>
+        <q-step
           :name="3"
           :title="$t('submit-decision-dialog.confirm-decision')"
           icon="mdi-check-decagram"
@@ -321,12 +333,10 @@ async function submit() {
           <p class="q-ma-md">
             {{ $t('submit-decision-dialog.certify-text') }}
           </p>
-          <q-option-group
+          <YesNoBooleanOptionGroup
             v-model="agreeToTerms"
             class="q-mr-lg"
             align="right"
-            :options="agreeToTermsOptions"
-            inline
           />
         </q-step>
         <template #navigation>
