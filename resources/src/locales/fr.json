@@ -360,7 +360,8 @@
     "complete": "Terminer",
     "complete-desc": "L'examen de ce manuscrit pour publication est terminé et vous mettez fin au processus de révision de gestion.",
     "revision-revision-desc": "Vous avez examiné le manuscrit et pensez que des modifications peuvent être nécessaires avant de terminer l'examen. Vous le référez maintenant à un RDS ou à une DG pour un examen plus approfondi.",
-    "refer-revision": "Référer avec des révisions"
+    "refer-revision": "Référer avec des révisions",
+    "refer-desc-2": "Un examen final par un DRS ou une DG est requis pour cette revue de gestion."
   },
   "dialog": {
     "delete-manuscript": {

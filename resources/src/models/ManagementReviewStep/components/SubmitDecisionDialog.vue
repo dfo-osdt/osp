@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { ManuscriptRecordType } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import type { QDialog } from 'quasar'
 import type { Ref } from 'vue'
 import type {
   ManagementReviewStep,
   ManagementReviewStepResource,
 } from '../ManagementReviewStep'
+import type { ManuscriptRecordType } from '@/models/ManuscriptRecord/ManuscriptRecord'
+import { QForm, QStepper } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import { ManuscriptAuthorService } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import { ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import UserSelect from '@/models/User/components/UserSelect.vue'
-import { QForm, QStepper } from 'quasar'
 import {
   ManagementReviewStepService,
 } from '../ManagementReviewStep'
@@ -34,7 +34,6 @@ const validationError = ref(false)
 type Decision =
   | 'complete'
   | 'refer'
-  | 'referWithRevision'
   | 'revision'
   | 'reassign'
 
@@ -105,6 +104,22 @@ const userCanCompleteReview = computed(() => {
   return true
 })
 
+const completeDescription = computed(() => {
+  let text = t('decision.complete-desc')
+  if (!userCanCompleteReview.value) {
+    text += ` ${t('decision.refer-desc-2')}`
+  }
+  return text
+})
+
+const referDescription = computed(() => {
+  let text = t('decision.refer-desc')
+  if (!userCanCompleteReview.value) {
+    text += ` ${t('decision.refer-desc-2')}`
+  }
+  return text
+})
+
 /**
  * The options available to the user for their decision.
  */
@@ -112,7 +127,7 @@ const options = ref<DecisionOption[]>([
   {
     label: t('decision.complete'),
     value: 'complete',
-    description: t('decision.complete-desc'),
+    description: completeDescription.value,
     disabled: !userCanCompleteReview.value,
   },
   {
@@ -124,13 +139,7 @@ const options = ref<DecisionOption[]>([
   {
     label: t('decision.refer'),
     value: 'refer',
-    description: t('decision.refer-desc'),
-    disabled: stepHasNoComments.value,
-  },
-  {
-    label: t('decision.refer-revision'),
-    value: 'referWithRevision',
-    description: t('decision.revision-revision-desc'),
+    description: referDescription.value,
     disabled: stepHasNoComments.value,
   },
   {
@@ -179,16 +188,6 @@ async function submit() {
     case 'complete':
       response = await ManagementReviewStepService.complete(
         props.managementReviewStep,
-      )
-      break
-    case 'referWithRevision':
-      if (nextUserId.value === null) {
-        throw new Error('nextUserId is null')
-      }
-      response = await ManagementReviewStepService.refer(
-        props.managementReviewStep,
-        nextUserId.value,
-        true,
       )
       break
     case 'refer':

@@ -88,10 +88,8 @@ class ManagementReviewStepController extends Controller
         $validated = $request->validate([
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
             'comments' => 'string|nullable',
-            'with_revisions' => 'boolean',
         ]);
 
-        $revisionRequested = $validated['with_revisions'] ?? false;
 
         $nextReviewStep = new ManagementReviewStep;
         $nextReviewStep->user_id = $validated['next_user_id'];
@@ -99,8 +97,8 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
         $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
-        // stop the clock if revisions are requested.
-        $nextReviewStep->decision_expected_by = $revisionRequested ? null : $managementReviewStep->decision_expected_by;
+        // stop the clock if a review is refered to another user. (as per new guidance)
+        $nextReviewStep->decision_expected_by = null;
 
         $nextReviewStep->saveOrFail();
 

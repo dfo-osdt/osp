@@ -364,7 +364,8 @@
     "complete": "Complete",
     "complete-desc": "Review of this manuscript for publication is complete and you are ending the management review process.",
     "refer-revision": "Refer with Revisions",
-    "revision-revision-desc": "You have reviewed the manuscript and believe that changes may be required before completing the review. You are now refering it to a RDS or DG for further review."
+    "revision-revision-desc": "You have reviewed the manuscript and believe that changes may be required before completing the review. You are now refering it to a RDS or DG for further review.",
+    "refer-desc-2": "Final review by a RDS or DG is required for this management review."
   },
   "dialog": {
     "delete-manuscript": {

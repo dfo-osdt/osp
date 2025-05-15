@@ -18,7 +18,6 @@ export type UpdateStep = Pick<ManagementReviewStep, 'comments'>
 export interface DecisionStep {
   comments?: string
   next_user_id?: number
-  with_revisions?: boolean
 }
 
 export interface ManagementReviewStep {
@@ -137,12 +136,10 @@ export class ManagementReviewStepService {
   public static async refer(
     step: ManagementReviewStep,
     nextUserId: number,
-    withRevisions: boolean = false,
   ) {
     const data: DecisionStep = {
       comments: step.comments,
       next_user_id: nextUserId,
-      with_revisions: withRevisions,
     }
 
     const response = await http.put<DecisionStep, R>(
