@@ -754,8 +754,8 @@
     "subsequent-reviewer-is-required": "Compte tenu de votre revue, un gestionnaire ultérieur est requis pour compléter la révision ",
     "your-decision": "Votre revue",
     "no-comments-warning-cant-complete": "Un commentaire de révision est nécessaire pour continuer.",
-    "confirm-planning-binder": "Dossier de planification",
-    "planning-binder-tex": "Veuillez indiquer si cette publication doit être ajoutée à la section des publications scientifiques du dossier de planification envoyé au SMA."
+    "confirm-planning-binder": "Classeur de planification",
+    "planning-binder-tex": "Veuillez indiquer si cette publication doit être ajoutée à la section des publications scientifiques du classeur de planification envoyé au SMA."
   },
   "submit-manuscript-dialog": {
     "step1": {
