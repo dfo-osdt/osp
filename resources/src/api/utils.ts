@@ -6,7 +6,8 @@ export interface PlsRequest {
 
 export interface PlsResponse {
   data: {
-    pls: string
+    pls_en: string
+    pls_fr: string
   }
 }
 
@@ -16,8 +17,8 @@ export class UtilityService {
    */
   public static async generatePls(abstract: string): Promise<PlsResponse> {
     const response = await http.post<PlsRequest, PlsResponse>(
-            `api/utils/generate-pls`,
-            { abstract },
+      `api/utils/generate-pls`,
+      { abstract },
     )
 
     return response.data

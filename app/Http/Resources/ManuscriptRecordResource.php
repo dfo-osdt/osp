@@ -33,7 +33,8 @@ class ManuscriptRecordResource extends JsonResource
 
                 // text fields / send empty string if null.
                 'abstract' => $this->abstract ?? '',
-                'pls' => $this->pls ?? '',
+                'pls_en' => $this->pls_en ?? '',
+                'pls_fr' => $this->pls_fr ?? '',
                 'relevant_to' => $this->relevant_to ?? '',
                 'potential_public_interest' => $this->potential_public_interest,
                 'public_interest_information' => $this->public_interest_information ?? '',

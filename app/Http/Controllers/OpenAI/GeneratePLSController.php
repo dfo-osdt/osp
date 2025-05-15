@@ -21,8 +21,6 @@ class GeneratePLSController extends Controller
     // When working on this prompt refer to this article:
     // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-openai-api
 
-    private static string $basePrompt = 'The text below is a scientific paper abstract. It is written in a way that is difficult for most people to understand. Summarize it so that an 8th grader can understand. If the abstract is in french, summarize it in french. If it is in english, summarize it in english.';
-
     private bool $useOllama = false;
 
     private ?string $ollamaModel = null;
@@ -63,11 +61,10 @@ class GeneratePLSController extends Controller
         if (isset($result['choices'][0]['text'])) {
             $pls = $result['choices'][0]['text'];
 
-            return $this->respond($pls);
+            return $this->respond($pls, $pls);
         }
 
         return $this->error();
-
     }
 
     /**
@@ -76,7 +73,7 @@ class GeneratePLSController extends Controller
     private function queryOllama(string $abstract): JsonResponse
     {
         $connector = new OllamaConnector;
-        $request = new CompletionRequest($this->buildOllamaRequest($abstract));
+        $request = new CompletionRequest($this->buildOllamaRequest($abstract, 'English'));
         $response = $connector->send($request);
 
         if ($response->failed()) {
@@ -86,16 +83,53 @@ class GeneratePLSController extends Controller
         }
 
         $completion = $request->createDtoFromResponse($response);
-        $pls = $completion->response;
+        $pls_en = $completion->response;
 
-        return $this->respond($pls);
+        $connector = new OllamaConnector;
+        $request = new CompletionRequest($this->buildOllamaTranslateRequest($pls_en));
+        $response = $connector->send($request);
 
+        if ($response->failed()) {
+            Log::error('Ollama request failed', ['response' => $response]);
+
+            return $this->error();
+        }
+
+        $completion = $request->createDtoFromResponse($response);
+        $pls_fr = $completion->response;
+
+        return $this->respond($pls_en, $pls_fr);
     }
 
-    private function buildOllamaRequest(string $abstract): CompletionRequestData
+    private function buildOllamaRequest(string $abstract, string $locale): CompletionRequestData
     {
 
-        $prompt = "Give me a 150 to 250 word plain language summary for this text. It is written in a way that is difficult for most people to understand. Summarize it so that someone with a high-school education can understand. Please respond only with the answer, without any introductory or concluding phrases\n\n Text: ###\n".$abstract."\n###";
+        $prompt = 'Give me plain language summary in '.$locale." for this
+        abstract. The scientific abstract is written in a way that is difficult
+        for most people to understand. Summarize it so that someone with a grade
+        7 to 9 education can understand. Do not include introductory phrases in
+        either french or english, your output must contain only the exact
+        abstract from the paper. The plain language summary should be around 250
+        words, do not exceed 350 words. Be very careful when using quantitative
+        language that it keeps the original meaning.\n\n Abstract:
+        ###\n".$abstract."\n###";
+
+        return CompletionRequestData::from([
+            'model' => $this->ollamaModel,
+            'prompt' => $prompt,
+            'options' => [
+                'temperature' => 0.3,
+            ],
+            'stream' => false,
+        ]);
+    }
+
+    private function buildOllamaTranslateRequest(string $abstract): CompletionRequestData
+    {
+        $prompt = "Translate the following plain language summary to French. Do
+        not include introductory phrases in either french or english, your
+        output must contain only the exact translation from this text:
+        ###\n".$abstract."\n###";
 
         return CompletionRequestData::from([
             'model' => $this->ollamaModel,
@@ -114,7 +148,13 @@ class GeneratePLSController extends Controller
      */
     private function buildOpenAiPrompt($abstract): array
     {
-        $prompt = self::$basePrompt."\n\n Text: ###\n".$abstract."\n###";
+        $basePrompt = 'Give me a 150 to 250 word plain language summary in both
+        english and french for this text. It is written in a way that is
+        difficult for most people to understand. Summarize it so that someone
+        with a high-school education can understand. Do not include any other
+        text.';
+
+        $prompt = $basePrompt."\n\n Text: ###\n".$abstract."\n###";
         $model = 'gpt-3.5-turbo-instruct';
 
         return [
@@ -123,20 +163,17 @@ class GeneratePLSController extends Controller
             'temperature' => 0.3,
             'max_tokens' => 500,
         ];
-
     }
 
     /**
      * Respond with the PLS.
      */
-    private function respond(string $pls): JsonResponse
+    private function respond(string $pls_en, string $pls_fr): JsonResponse
     {
-        // clean up the PLS - remove newlines and extra spaces
-        $pls = str_replace("\n", ' ', $pls);
-
         return response()->json([
             'data' => [
-                'pls' => $pls,
+                'pls_en' => $pls_en,
+                'pls_fr' => $pls_fr,
             ],
         ]);
     }

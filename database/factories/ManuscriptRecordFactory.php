@@ -49,7 +49,8 @@ class ManuscriptRecordFactory extends Factory
         return $this->state([
             'title' => 'A fully filled out manuscript record, ready to be submitted for internal review',
             'abstract' => $this->faker->paragraph(),
-            'pls' => $this->faker->paragraph(),
+            'pls_en' => $this->faker->paragraph(),
+            'pls_fr' => $this->faker->paragraph(),
             'relevant_to' => $this->faker->paragraph(),
             'potential_public_interest' => $this->faker->boolean(),
             'public_interest_information' => $this->faker->paragraph(),

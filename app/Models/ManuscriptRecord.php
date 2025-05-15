@@ -82,7 +82,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereFunctionalAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePls($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePotentialPublicInterest($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereRegionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereRelevantTo($value)
@@ -134,7 +133,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
     // default values for optional fields
     protected $attributes = [
         'abstract' => '',
-        'pls' => '',
+        'pls_en' => '',
+        'pls_fr' => '',
         'relevant_to' => '',
         'public_interest_information' => '',
         'no_ogl_explanation' => '',
@@ -348,7 +348,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia
         $validator = Validator::make($this->toArray(), [
             'title' => 'required',
             'abstract' => 'required',
-            'pls' => 'required',
+            'pls_en' => 'required',
+            'pls_fr' => 'required',
             'relevant_to' => 'required',
             'region_id' => 'required|exists:regions,id',
             'functional_area_id' => 'required|exists:functional_areas,id',
