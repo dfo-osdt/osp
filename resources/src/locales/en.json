@@ -551,7 +551,7 @@
     "not-authorized-text": "You do not have permission to view this manuscript record",
     "pls-already-generated-erase-it-to-generate-a-new-one": "A PLS already exists - erase it to generate a new one",
     "pls-generated-successfully": "PLS generated successfully",
-    "pls-help-ai-text": "Need some help? Using your manuscript's abstract, we can generate a draft PLS. Make sure to review/edit the generated PLS! ",
+    "pls-help-ai-text": "Need some help? Using your manuscript's abstract, we can generate a draft PLS. Make sure to review/edit the generated PLS! A PLS will be generated in both official languages. If you'd like to try again, simply delete both PLS and click \"Generate PLS\" again.",
     "pls-text": "A concise Plain Language Summary (PLS), in both official languages, is required for every scientific and technical publication. PLS should incorporate Indigenous place names and species, where appropriate. ",
     "potential-media-interest-question": "Is this manuscript of potential public interest?",
     "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest.",

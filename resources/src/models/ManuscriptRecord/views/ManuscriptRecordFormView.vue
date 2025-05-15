@@ -252,6 +252,9 @@ async function generatePLS() {
   manuscriptResource.value.data.pls_en = t(
     'mrf.generating-pls-please-be-patient',
   )
+  manuscriptResource.value.data.pls_fr = t(
+    'mrf.generating-pls-please-be-patient',
+  )
   await UtilityService.generatePls(manuscriptResource.value.data.abstract)
     .then((response) => {
       if (!manuscriptResource.value)
@@ -455,22 +458,24 @@ async function generatePLS() {
               {{ $t('mrf.copy-your-manuscripts-abstract-here') }}
             </p>
           </QuestionEditor>
-          <div>
-            <div class="text-body1 text-primary text-weight-medium">
-              {{ $t('common.plain-language-summary') }}
+          <div class="q-mb-lg">
+            <div class="q-ml-xs">
+              <div class="text-body1 text-primary text-weight-medium">
+                {{ $t('common.plain-language-summary') }}
+              </div>
+              <div class="q-my-xs">
+                <p>
+                  {{ $t('mrf.pls-text') }}
+                </p>
+              </div>
             </div>
-            <p>
-              {{ $t('mrf.pls-text') }}
-            </p>
-            <div class="row justify-end q-mr-sm">
-              <div
-                class="text-body1 text-primary q-pt-sm q-pr-md"
-              >
+            <div class="row items-center justify-between q-mt-sm">
+              <div class="col text-body2 text-grey-8">
+                <q-icon name="mdi-information-outline" class="q-mr-xs" />
                 {{ $t('mrf.pls-help-ai-text') }}
               </div>
-              <div>
+              <div class="col-auto">
                 <q-btn
-                  class="q-mb-md"
                   color="primary"
                   :label="$t('mrf.generate-pls')"
                   icon="mdi-brain"
@@ -478,14 +483,13 @@ async function generatePLS() {
                   rounded
                   :disable="!enablePLSPrompt"
                   :loading="PLSLoading"
+                  class="q-ml-sm"
                   @click="generatePLS"
-                />
-                <q-tooltip
-                  v-if="!enablePLSPrompt"
-                  class="text-body2"
                 >
-                  {{ plsDisabledTooltip }}
-                </q-tooltip>
+                  <q-tooltip v-if="!enablePLSPrompt" class="text-body2">
+                    {{ plsDisabledTooltip }}
+                  </q-tooltip>
+                </q-btn>
               </div>
             </div>
           </div>

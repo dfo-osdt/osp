@@ -82,7 +82,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereFunctionalAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePls($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePotentialPublicInterest($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereRegionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereRelevantTo($value)
