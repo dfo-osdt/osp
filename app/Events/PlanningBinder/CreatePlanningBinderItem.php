@@ -16,27 +16,25 @@ class CreatePlanningBinderItem extends Event
         public int $item_model_type,
         public int $item_model_id,
         $planning_binder_item_id = null,
+        //todo; think about the state - media lines, notes, etc.
     ) {
         $this->planning_binder_item_id = $planning_binder_item_id ?? snowflake_id();
     }
 
     public function validate(): bool
     {
-        // make sure the polymorphic relation is valid and is a Publication or ManuscriptRecord
-        switch ($this->item_model_type) {
-            case 'App\Models\Publication':
-                $this->assert(\App\Models\Publication::exists($this->item_model_id),
-                    'Publication does not exist');
+        // Validate the polymorphic relation and ensure it's a Publication or ManuscriptRecord
+        $validTypes = [
+            \App\Models\Publication::class,
+            \App\Models\ManuscriptRecord::class,
+        ];
 
-                return true;
-            case 'App\Models\ManuscriptRecord':
-                $this->assert(\App\Models\ManuscriptRecord::exists($this->item_model_id),
-                    'Manuscript record form does not exist');
+        $this->assert(in_array($this->item_model_type, $validTypes, true), 'Invalid item model type');
 
-                return true;
-            default:
-                throw new \Exception('Invalid item model type');
-        }
+        $modelClass = $this->item_model_type;
+        $this->assert($modelClass::exists($this->item_model_id), class_basename($modelClass) . ' does not exist');
+
+        return true;
 
         // make sure the user exists
         $this->assert(\App\Models\User::exists($this->user_id), 'User does not exist');
