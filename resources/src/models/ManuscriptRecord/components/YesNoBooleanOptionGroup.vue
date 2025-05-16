@@ -1,4 +1,14 @@
 <script setup lang="ts">
+import type { QOptionGroupProps } from 'quasar'
+
+type Props = Omit<QOptionGroupProps, 'modelValue' | 'options'> & {
+  modelValue: boolean | null
+}
+
+defineProps<Props>()
+
+const attrs = useAttrs()
+
 const { t } = useI18n()
 
 const modelValue = defineModel<boolean | null>()
@@ -16,5 +26,5 @@ const options = computed(() => [
 </script>
 
 <template>
-  <q-option-group v-model="modelValue" :options="options" inline />
+  <q-option-group v-model="modelValue" :options="options" inline v-bind="attrs" />
 </template>
