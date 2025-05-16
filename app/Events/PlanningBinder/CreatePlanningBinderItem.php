@@ -3,15 +3,11 @@
 namespace App\Events\PlanningBinder;
 
 use App\States\PlanningBinder\PlanningBinderItemState;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use PHPUnit\Framework\Attributes\TestDox;
-use Thunk\Verbs\Attributes\Autodiscovery\AppliesToState;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
 
 class CreatePlanningBinderItem extends Event
 {
-
     #[StateId(PlanningBinderItemState::class)]
     public int $planning_binder_item_id;
 
@@ -20,7 +16,7 @@ class CreatePlanningBinderItem extends Event
         public int $item_model_type,
         public int $item_model_id,
         $planning_binder_item_id = null,
-    ){
+    ) {
         $this->planning_binder_item_id = $planning_binder_item_id ?? snowflake_id();
     }
 
@@ -31,10 +27,12 @@ class CreatePlanningBinderItem extends Event
             case 'App\Models\Publication':
                 $this->assert(\App\Models\Publication::exists($this->item_model_id),
                     'Publication does not exist');
+
                 return true;
             case 'App\Models\ManuscriptRecord':
                 $this->assert(\App\Models\ManuscriptRecord::exists($this->item_model_id),
                     'Manuscript record form does not exist');
+
                 return true;
             default:
                 throw new \Exception('Invalid item model type');
@@ -45,9 +43,8 @@ class CreatePlanningBinderItem extends Event
 
     }
 
-
-
-    public function fired(){
+    public function fired()
+    {
         // send a notification here
     }
 
