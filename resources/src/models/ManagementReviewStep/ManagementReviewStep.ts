@@ -18,6 +18,7 @@ export type UpdateStep = Pick<ManagementReviewStep, 'comments'>
 export interface DecisionStep {
   comments?: string
   next_user_id?: number
+  add_to_planning_binder?: boolean
 }
 
 export interface ManagementReviewStep {
