@@ -16,7 +16,7 @@ class CreatePlanningBinderItem extends Event
         public int $item_model_type,
         public int $item_model_id,
         $planning_binder_item_id = null,
-        //todo; think about the state - media lines, notes, etc.
+        // todo; think about the state - media lines, notes, etc.
     ) {
         $this->planning_binder_item_id = $planning_binder_item_id ?? snowflake_id();
     }
@@ -32,7 +32,7 @@ class CreatePlanningBinderItem extends Event
         $this->assert(in_array($this->item_model_type, $validTypes, true), 'Invalid item model type');
 
         $modelClass = $this->item_model_type;
-        $this->assert($modelClass::exists($this->item_model_id), class_basename($modelClass) . ' does not exist');
+        $this->assert($modelClass::exists($this->item_model_id), class_basename($modelClass).' does not exist');
 
         return true;
 
