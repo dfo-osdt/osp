@@ -112,6 +112,31 @@ class ExportEmails extends Command
         $markdownContent = $userInvitedWelcome->render();
         $this->exportFile('user-invited-welcome.html', $markdownContent);
 
+        // item flagged for planning binder - mrf
+        $mrf = ManagementReviewStep::factory([
+            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+            'comments' => 'I reviewed this manuscript and it is ready for publication',
+        ])->create()->manuscriptRecord;
+        $mrf->title = 'A important manuscript the ADM should know about';
+        $mrf->save();
+
+        $user = $mrf->managementReviewSteps()->first()->user;
+        $flaggedEmail = new \App\Mail\PlanningBinder\ItemFlaggedForPlanningBinder($user, $mrf);
+        $markdownContent = $flaggedEmail->render();
+        $this->exportFile('item-flagged-for-planning-binder-mrf.html', $markdownContent);
+
+        // item flagged for planning binder - publication
+        $pub = Publication::factory()->withManuscript()->create();
+        $pub->title = 'A important publication the ADM should know about';
+        $pub->save();
+        $user = $pub->manuscriptRecord->managementReviewSteps()->first()->user;
+
+        $flaggedEmail = new \App\Mail\PlanningBinder\ItemFlaggedForPlanningBinder($user, $pub);
+        $markdownContent = $flaggedEmail->render();
+        $this->exportFile('item-flagged-for-planning-binder-publication.html', $markdownContent);
+
+
         \DB::rollBack();
 
         return 0;
