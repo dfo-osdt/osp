@@ -18,7 +18,9 @@ class ItemFlaggedForPlanningBinder extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public User $user;
+
     public ?ManuscriptRecord $manuscriptRecord = null;
+
     public ?Publication $publication = null;
 
     /**

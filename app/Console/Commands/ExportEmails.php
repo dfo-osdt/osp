@@ -136,7 +136,6 @@ class ExportEmails extends Command
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('item-flagged-for-planning-binder-publication.html', $markdownContent);
 
-
         \DB::rollBack();
 
         return 0;
