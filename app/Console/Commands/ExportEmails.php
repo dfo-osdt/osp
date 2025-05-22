@@ -9,6 +9,7 @@ use App\Models\ManuscriptRecord;
 use App\Models\Publication;
 use App\Models\Shareable;
 use App\Models\User;
+use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Console\Command;
 
 class ExportEmails extends Command
@@ -122,19 +123,14 @@ class ExportEmails extends Command
         $mrf->save();
 
         $user = $mrf->managementReviewSteps()->first()->user;
-        $flaggedEmail = new \App\Mail\PlanningBinder\ItemFlaggedForPlanningBinder($user, $mrf);
+
+        $state = PlanningBinderItemState::factory()->state([
+            'manuscript_record_ulid' => $mrf->ulid,
+            'manuscript_record_type' => $mrf->type,
+        ])->create();
+        $flaggedEmail = new \App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinder($user, $state);
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('item-flagged-for-planning-binder-mrf.html', $markdownContent);
-
-        // item flagged for planning binder - publication
-        $pub = Publication::factory()->withManuscript()->create();
-        $pub->title = 'A important publication the ADM should know about';
-        $pub->save();
-        $user = $pub->manuscriptRecord->managementReviewSteps()->first()->user;
-
-        $flaggedEmail = new \App\Mail\PlanningBinder\ItemFlaggedForPlanningBinder($user, $pub);
-        $markdownContent = $flaggedEmail->render();
-        $this->exportFile('item-flagged-for-planning-binder-publication.html', $markdownContent);
 
         \DB::rollBack();
 

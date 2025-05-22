@@ -5,15 +5,16 @@ namespace App\Mail\PlanningBinder;
 use App\Models\ManuscriptRecord;
 use App\Models\Publication;
 use App\Models\User;
+use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use InvalidArgumentException;
 
-class ItemFlaggedForPlanningBinder extends Mailable implements ShouldQueue
+class ManuscriptFlaggedForPlanningBinder extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -21,22 +22,16 @@ class ItemFlaggedForPlanningBinder extends Mailable implements ShouldQueue
 
     public ?ManuscriptRecord $manuscriptRecord = null;
 
-    public ?Publication $publication = null;
+    public PlanningBinderItemState $planningBinderItemState;
 
     /**
      * Create a new message instance.
      */
-    public $item;
-
-    public function __construct(User $user, Model $item)
+    public function __construct(User $user, PlanningBinderItemState $planningBinderItemState)
     {
+        $this->planningBinderItemState = $planningBinderItemState;
         $this->user = $user;
-
-        if ($item instanceof ManuscriptRecord) {
-            $this->manuscriptRecord = $item;
-        } elseif ($item instanceof Publication) {
-            $this->publication = $item;
-        }
+        $this->manuscriptRecord = ManuscriptRecord::where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail();
     }
 
     /**
@@ -49,13 +44,7 @@ class ItemFlaggedForPlanningBinder extends Mailable implements ShouldQueue
             throw new \Exception('The manuscript submission email address is not set.');
         }
 
-        if ($this->manuscriptRecord) {
-            $subject = 'Manuscript Record Flagged for Planning Binder - Manuscrit identifié pour le classeur de planification';
-        } elseif ($this->publication) {
-            $subject = 'Publication Flagged for Planning Binder - Publication identifiée pour le classeur de planification';
-        } else {
-            throw new \Exception('Unknown item type for Planning Binder email.');
-        }
+        $subject = 'Manuscript Record Flagged for Planning Binder - Manuscrit identifié pour le classeur de planification';
 
         return new Envelope(
             subject: $subject,
@@ -73,7 +62,7 @@ class ItemFlaggedForPlanningBinder extends Mailable implements ShouldQueue
             with: [
                 'user' => $this->user,
                 'manuscript' => $this->manuscriptRecord,
-                'publication' => $this->publication,
+                'state' => $this->planningBinderItemState,
             ]
         );
     }

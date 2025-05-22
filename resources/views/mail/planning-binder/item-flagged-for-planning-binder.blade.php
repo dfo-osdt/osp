@@ -3,16 +3,17 @@
 
 *(le français suit)*
 
-@if($manuscript)
 The manuscript titled "**{{ $manuscript->title }}**" has been flagged for
 consideration in the planning binder by {{ $user->full_name }} via the
 management review process. You will get another email when the publication
-is created in the Open Science Portal.
-@else
-The publication titled "**{{ $publication->title }}**" has been flagged for
-consideration in the planning binder by {{ $user->full_name }} via the
-management review process.
-@endif
+or preprint is created in the Open Science Portal.
+
+<x-mail::panel>
+**Manuscript ID**: {{ $manuscript->ulid }}<br/>
+**Title**: {{ $manuscript->title}}<br/>
+**Type**: {{ $state->manuscript_record_type->label('en') }}<br/>
+**Region**: {{ $manuscript->region->name_en }}
+</x-mail::panel>
 
 <x-email.regards locale="en" />
 
@@ -20,16 +21,17 @@ management review process.
 
 # Bonjour Équipe de publication,
 
-@if($manuscript)
 Le manuscrit intitulé "**{{ $manuscript->title }}**" a été signalé pour
 examen dans le classeur de planification par {{ $user->full_name }} via le
 processus d'examen de gestion. Vous recevrez un autre courriel lorsque la
-publication sera créée dans le Portail de la science ouverte.
-@else
-La publication intitulée "**{{ $publication->title }}**" a été signalée pour
-examen dans le classeur de planification par {{ $user->full_name }} via le
-processus d'examen de gestion.
-@endif
+publication ou prépubilication sera créée dans le Portail de la science ouverte.
+
+<x-mail::panel>
+**ID du manuscrit**: {{ $manuscript->ulid }}<br/>
+**Titre**: {{ $manuscript->title}}<br/>
+**Type**: {{ $state->manuscript_record_type->label('fr') }}<br/>
+**Région**: {{ $manuscript->region->name_fr }}
+</x-mail::panel>
 
 <x-email.regards locale="fr" />
 

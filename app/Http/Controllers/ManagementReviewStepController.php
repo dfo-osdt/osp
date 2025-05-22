@@ -8,6 +8,7 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Events\ManagementReviewStepCreated;
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
+use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinder;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -54,6 +55,7 @@ class ManagementReviewStepController extends Controller
 
         $validated = $request->validate([
             'comments' => 'string|nullable',
+            'flag_for_planning_binder' => 'boolean',
         ]);
 
         if (isset($validated['comments'])) {
@@ -73,6 +75,12 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->completed_at = now();
         $managementReviewStep->decision = ManagementReviewStepDecision::COMPLETE;
         $managementReviewStep->saveOrFail();
+
+        // should this MRF be flagged for planning binder?
+        if($validated['flag_for_planning_binder']) {
+            FlagManuscriptRecordForPlanningBinder::commit(user_id: $managementReviewStep->user->id, manuscript_record_ulid: $manuscriptRecord->ulid);
+
+        }
 
         return new ManagementReviewStepResource($managementReviewStep);
     }

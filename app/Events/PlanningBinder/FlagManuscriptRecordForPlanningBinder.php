@@ -2,8 +2,8 @@
 
 namespace App\Events\PlanningBinder;
 
-use App\Enums\ManuscriptRecordStatus;
-use App\Mail\PlanningBinder\ItemFlaggedForPlanningBinder;
+use App\Enums\PlanningBinder\PlanningBinderItemStatus;
+use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinder;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
@@ -17,8 +17,8 @@ class FlagManuscriptRecordForPlanningBinder extends Event
     public int $planning_binder_item_id;
 
     public function __construct(
-        public User $user,
-        public ManuscriptRecord $manuscript_record,
+        public int $user_id,
+        public string $manuscript_record_ulid,
         $planning_binder_item_id = null,
     ) {
         $this->planning_binder_item_id = $planning_binder_item_id ?? snowflake_id();
@@ -26,22 +26,31 @@ class FlagManuscriptRecordForPlanningBinder extends Event
 
     public function validate(): bool
     {
-        // the manuscript record must have passed the management review
-        $this->assert(
-            $this->manuscript_record->status === ManuscriptRecordStatus::REVIEWED,
-            'The manuscript record must have passed the management review'
-        );
-
         return true;
 
     }
 
-    public function fired()
+    public function apply(PlanningBinderItemState $state)
+    {
+        // set the status to flagged
+        $state->status = PlanningBinderItemStatus::FLAGGED;
+
+        $mrf = ManuscriptRecord::where('ulid', $this->manuscript_record_ulid)->firstOrFail();
+
+        // set the type to manuscript record
+        $state->manuscript_record_type = $mrf->type;
+
+        // set the ulid to the manuscript record ulid
+        $state->manuscript_record_ulid = $this->manuscript_record_ulid;
+
+    }
+
+    public function fired(PlanningBinderItemState $state)
     {
         // send notification to the user
-        Mail::queue(new ItemFlaggedForPlanningBinder(
-            $this->user,
-            $this->manuscript_record,
+        Mail::queue(new ManuscriptFlaggedForPlanningBinder(
+            User::findOrFail($this->user_id),
+            $state
         ));
 
     }
