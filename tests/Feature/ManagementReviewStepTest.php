@@ -7,6 +7,7 @@ use App\Enums\Permissions\UserRole;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinder;
 use App\Mail\ManuscriptManagementReviewComplete;
+use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinder;
 use App\Mail\ReviewStepNotificationMail;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -160,16 +161,19 @@ test('a reviewer can approve and complete the review of a third-party manuscript
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create();
 
     $this->actingAs($reviewer)
-        ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete',
+        ->putJson(
+            '/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete',
             [
                 'flag_for_planning_binder' => true,
                 'comments' => 'a comment here',
-            ])
+            ]
+        )
         ->assertOk();
 
     Verbs::assertCommitted(FlagManuscriptRecordForPlanningBinder::class);
     expect($manuscript->refresh()->status)->toBe(ManuscriptRecordStatus::REVIEWED);
 
+    Mail::assertQueued(ManuscriptFlaggedForPlanningBinder::class);
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
 });
 
@@ -182,11 +186,13 @@ test('a reviewer can approve and complete the review of a third-party manuscript
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create();
 
     $this->actingAs($reviewer)
-        ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete',
+        ->putJson(
+            '/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete',
             [
                 'flag_for_planning_binder' => false,
                 'comments' => 'a comment here',
-            ])
+            ]
+        )
         ->assertOk();
 
     Verbs::assertNotCommitted(FlagManuscriptRecordForPlanningBinder::class);
@@ -248,5 +254,4 @@ test('only a director can complete an internal managment reviw', function () {
     // but a director should be able to complete the review
     $this->actingAs($director)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete')
         ->assertOk();
-
 });
