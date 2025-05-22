@@ -161,10 +161,10 @@ test('a reviewer can approve and complete the review of a third-party manuscript
 
     $this->actingAs($reviewer)
         ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete',
-        [
-            'flag_for_planning_binder' => true,
-            'comments' => 'a comment here',
-        ])
+            [
+                'flag_for_planning_binder' => true,
+                'comments' => 'a comment here',
+            ])
         ->assertOk();
 
     Verbs::assertCommitted(FlagManuscriptRecordForPlanningBinder::class);
@@ -183,10 +183,10 @@ test('a reviewer can approve and complete the review of a third-party manuscript
 
     $this->actingAs($reviewer)
         ->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete',
-        [
-            'flag_for_planning_binder' => false,
-            'comments' => 'a comment here',
-        ])
+            [
+                'flag_for_planning_binder' => false,
+                'comments' => 'a comment here',
+            ])
         ->assertOk();
 
     Verbs::assertNotCommitted(FlagManuscriptRecordForPlanningBinder::class);

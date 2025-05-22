@@ -3,7 +3,6 @@
 namespace App\Mail\PlanningBinder;
 
 use App\Models\ManuscriptRecord;
-use App\Models\Publication;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Bus\Queueable;
@@ -12,7 +11,6 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use InvalidArgumentException;
 
 class ManuscriptFlaggedForPlanningBinder extends Mailable implements ShouldQueue
 {

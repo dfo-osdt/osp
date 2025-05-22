@@ -77,7 +77,7 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->saveOrFail();
 
         // should this MRF be flagged for planning binder?
-        if($validated['flag_for_planning_binder']) {
+        if ($validated['flag_for_planning_binder']) {
             FlagManuscriptRecordForPlanningBinder::commit(user_id: $managementReviewStep->user->id, manuscript_record_ulid: $manuscriptRecord->ulid);
 
         }
