@@ -252,6 +252,9 @@ test('only a director can complete an internal managment reviw', function () {
             ->for($director))->create();
 
     // but a director should be able to complete the review
-    $this->actingAs($director)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete')
+    $this->actingAs($director)->putJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete',
+        [
+            'flag_for_planning_binder' => false,
+        ])
         ->assertOk();
 });
