@@ -8,6 +8,8 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Events\ManuscriptRecordToReviewEvent;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
+use App\Events\PlanningBinder\FlaggedManuscriptAcceptedInJournal;
+use App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint;
 use App\Http\Resources\ManuscriptRecordMetadataResource;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
@@ -204,6 +206,14 @@ class ManuscriptRecordController extends Controller
             Mail::queue(new ManuscriptRecordSubmittedToDFO($manuscriptRecord));
         }
 
+        // has this manuscript been flaged for the planning binder?
+        $planningBinderItem = $manuscriptRecord->planningBinderItem;
+        if ($planningBinderItem) {
+            FlaggedManuscriptAcceptedInJournal::commit(
+                planning_binder_item_id: $planningBinderItem->id
+            );
+        }
+
         return $this->defaultResource($manuscriptRecord);
     }
 
@@ -224,6 +234,14 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord->preprint_url = $validated['preprint_url'];
         $manuscriptRecord->save();
+
+        // has this manuscript been flaged for the planning binder?
+        $planningBinderItem = $manuscriptRecord->planningBinderItem;
+        if ($planningBinderItem) {
+            FlaggedManuscriptSubmittedToPrepint::commit(
+                planning_binder_item_id: $planningBinderItem->id->id()
+            );
+        }
 
         return $this->defaultResource($manuscriptRecord);
     }
