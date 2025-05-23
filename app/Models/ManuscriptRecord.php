@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Contracts\Fundable;
+use App\Contracts\Plannable;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\MediaCollection;
 use App\Enums\SensitivityLabel;
 use App\Traits\FundableTrait;
+use App\Traits\PlannableTrait;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -100,12 +102,13 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  *
  * @mixin \Eloquent
  */
-class ManuscriptRecord extends Model implements Fundable, HasMedia
+class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
 {
     use FundableTrait;
     use HasFactory;
     use InteractsWithMedia;
     use LogsActivity;
+    use PlannableTrait;
     use SoftDeletes;
 
     protected $ulid;

@@ -181,8 +181,12 @@ async function submit() {
   let response: ManagementReviewStepResource | null = null
   switch (decision.value) {
     case 'complete':
+      if (submitToBinder.value === null) {
+        throw new Error('submitToBinder is null')
+      }
       response = await ManagementReviewStepService.complete(
         props.managementReviewStep,
+        submitToBinder.value,
       )
       break
     case 'refer':

@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Contracts\Fundable;
+use App\Contracts\Plannable;
 use App\Enums\MediaCollection;
 use App\Enums\PublicationStatus;
 use App\Enums\SensitivityLabel;
 use App\Enums\SupplementaryFileType;
 use App\Traits\FundableTrait;
+use App\Traits\PlannableTrait;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -79,12 +81,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @mixin \Eloquent
  */
-class Publication extends Model implements Fundable, HasMedia
+class Publication extends Model implements Fundable, HasMedia, Plannable
 {
     use FundableTrait;
     use HasFactory;
     use InteractsWithMedia;
     use LogsActivity;
+    use PlannableTrait;
     use SoftDeletes;
 
     public $guarded = [

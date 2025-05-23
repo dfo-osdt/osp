@@ -5,6 +5,7 @@ namespace App\Events\PlanningBinder;
 use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinder;
 use App\Models\ManuscriptRecord;
+use App\Models\PlanningBinderItem;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Support\Facades\Mail;
@@ -55,8 +56,25 @@ class FlagManuscriptRecordForPlanningBinder extends Event
 
     }
 
-    public function handle()
+    public function handle(PlanningBinderItemState $state)
     {
-        // Real G's move in silence like Lasagna - Lil Wayne
+
+        $mrf = ManuscriptRecord::where('ulid', $this->manuscript_record_ulid)->firstOrFail();
+
+        $item = PlanningBinderItem::find($this->planning_binder_item_id);
+
+        if (! $item) {
+            $item = new PlanningBinderItem;
+            $item->id = $this->planning_binder_item_id;
+            $item->created_at = now();
+        }
+
+        $item->plannable()->associate($mrf);
+        $item->type = $state->manuscript_record_type;
+        $item->status = $state->status;
+        $item->region_id = $mrf->region_id;
+        $item->updated_at = now();
+        $item->save();
+
     }
 }
