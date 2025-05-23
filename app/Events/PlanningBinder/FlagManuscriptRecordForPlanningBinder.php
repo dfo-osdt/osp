@@ -8,6 +8,7 @@ use App\Models\ManuscriptRecord;
 use App\Models\PlanningBinderItem;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
+use Glhd\Bits\Snowflake;
 use Illuminate\Support\Facades\Mail;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
@@ -20,15 +21,13 @@ class FlagManuscriptRecordForPlanningBinder extends Event
     public function __construct(
         public int $user_id,
         public string $manuscript_record_ulid,
-        $planning_binder_item_id = null,
     ) {
-        $this->planning_binder_item_id = $planning_binder_item_id ?? snowflake_id();
+        $this->planning_binder_item_id = snowflake_id();
     }
 
     public function validate(): bool
     {
         return true;
-
     }
 
     public function apply(PlanningBinderItemState $state)
@@ -43,7 +42,6 @@ class FlagManuscriptRecordForPlanningBinder extends Event
 
         // set the ulid to the manuscript record ulid
         $state->manuscript_record_ulid = $this->manuscript_record_ulid;
-
     }
 
     public function fired(PlanningBinderItemState $state)
@@ -53,7 +51,6 @@ class FlagManuscriptRecordForPlanningBinder extends Event
             User::findOrFail($this->user_id),
             $state
         ));
-
     }
 
     public function handle(PlanningBinderItemState $state)
@@ -65,7 +62,7 @@ class FlagManuscriptRecordForPlanningBinder extends Event
 
         if (! $item) {
             $item = new PlanningBinderItem;
-            $item->id = $this->planning_binder_item_id;
+            $item->id = Snowflake::fromId($this->planning_binder_item_id);
             $item->created_at = now();
         }
 
@@ -75,6 +72,5 @@ class FlagManuscriptRecordForPlanningBinder extends Event
         $item->region_id = $mrf->region_id;
         $item->updated_at = now();
         $item->save();
-
     }
 }

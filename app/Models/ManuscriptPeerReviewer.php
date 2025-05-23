@@ -19,6 +19,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer query()
  *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $manuscript_record_id
+ * @property int $author_id
+ * @property \Illuminate\Support\Carbon|null $review_date
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereManuscriptRecordId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereReviewDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ManuscriptPeerReviewer extends Model

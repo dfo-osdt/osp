@@ -79,6 +79,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication withoutTrashed()
  *
+ * @property-read \App\Models\PlanningBinderItem|null $planningBinderItem
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereRegionId($value)
+ *
  * @mixin \Eloquent
  */
 class Publication extends Model implements Fundable, HasMedia, Plannable

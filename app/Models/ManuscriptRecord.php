@@ -100,6 +100,25 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord withoutTrashed()
  *
+ * @property string|null $pls_en Plain Language Summary
+ * @property string|null $public_interest_information
+ * @property bool $apply_ogl
+ * @property string|null $no_ogl_explanation
+ * @property string|null $preprint_url
+ * @property bool $intends_open_access
+ * @property string|null $open_access_rationale
+ * @property string|null $pls_fr
+ * @property-read \App\Models\PlanningBinderItem|null $planningBinderItem
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereApplyOgl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereIntendsOpenAccess($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereNoOglExplanation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereOpenAccessRationale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePlsEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePlsFr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePreprintUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePublicInterestInformation($value)
+ *
  * @mixin \Eloquent
  */
 class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
