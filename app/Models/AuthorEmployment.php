@@ -35,7 +35,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string|null $role_title
  * @property string|null $department_name
  * @property-read int|null $activities_count
- * @property strint|null $orcid_putcode
+ * @property int|null $orcid_putcode
  * @property \Illuminate\Support\Carbon|null $orcid_updated_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereAuthorId($value)
