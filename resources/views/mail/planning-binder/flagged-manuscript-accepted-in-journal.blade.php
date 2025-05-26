@@ -10,7 +10,7 @@ You are receiving this email because {{ $referrer->full_name }} has flagged this
 **Title**: {{ $publication->title}}<br/>
 **Journal**: {{ $publication->journal->title }}<br/>
 **Type**: {{ $state->manuscript_record_type->label('en') }}<br/>
-**Region**: {{ $publication->region->name_en }}
+**Region**: {{ $publication->region->name_en }}<br />
 **Potential Public Interest**: {{ $publication->manuscriptRecord->potential_public_interest ? 'Yes' : 'No' }}<br/>
 @if ($publication->manuscriptRecord->potential_public_interest)
 **Potential Public Interest Details**: {{ $publication->manuscriptRecord->public_interest_information }}<br/>
@@ -35,7 +35,7 @@ Vous recevez ce courriel parce que {{ $referrer->full_name }} a signalé ce manu
 **Titre**: {{ $publication->title}}<br/>
 **Revue**: {{ $publication->journal->title }}<br/>
 **Type**: {{ $state->manuscript_record_type->label('fr') }}<br/>
-**Région**: {{ $publication->region->name_fr }}
+**Région**: {{ $publication->region->name_fr }}<br/>
 **Intérêt public potentiel**: {{ $publication->manuscriptRecord->potential_public_interest ? 'Oui' : 'Non' }}<br/>
 @if ($publication->manuscriptRecord->potential_public_interest)
 **Détails sur l'intérêt public potentiel**: {{ $publication->manuscriptRecord->public_interest_information }}<br/>

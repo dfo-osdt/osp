@@ -210,7 +210,8 @@ class ManuscriptRecordController extends Controller
         $planningBinderItem = $manuscriptRecord->planningBinderItem;
         if ($planningBinderItem) {
             FlaggedManuscriptAcceptedInJournal::commit(
-                planning_binder_item_id: $planningBinderItem->id
+                planning_binder_item_id: $planningBinderItem->id->id(),
+                user_id: Auth::user()->id
             );
         }
 
@@ -239,7 +240,8 @@ class ManuscriptRecordController extends Controller
         $planningBinderItem = $manuscriptRecord->planningBinderItem;
         if ($planningBinderItem) {
             FlaggedManuscriptSubmittedToPrepint::commit(
-                planning_binder_item_id: $planningBinderItem->id->id()
+                planning_binder_item_id: $planningBinderItem->id->id(),
+                user_id: Auth::user()->id
             );
         }
 

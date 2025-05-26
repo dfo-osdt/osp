@@ -72,6 +72,7 @@ class FlaggedManuscriptAcceptedInJournal extends Event
         $item = PlanningBinderItem::findOrFail($state->id);
         $item->status = $state->status;
         $item->plannable()->associate(Publication::findOrFail($state->publication_id));
+        $item->save();
 
     }
 }

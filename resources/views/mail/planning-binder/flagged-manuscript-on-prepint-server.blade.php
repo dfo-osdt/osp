@@ -9,7 +9,7 @@ You are receiving this email because {{ $referrer->full_name }} has flagged this
 <x-mail::panel>
 **Manuscript ID**: {{ $manuscript->ulid }}<br/>
 **Title**: {{ $manuscript->title}}<br/>
-**Region**: {{ $manuscript->region->name_en }}
+**Region**: {{ $manuscript->region->name_en }}<br />
 **Preprint URL**: {{ $manuscript->preprint_url }}<br/>
 **Potential Public Interest**: {{ $manuscript->potential_public_interest ? 'Yes' : 'No' }}<br/>
 @if ($manuscript->potential_public_interest)

@@ -57,7 +57,7 @@ class FlaggedManuscriptOnPrepintServerMail extends Mailable
         return new Content(
             markdown: 'mail.planning-binder.flagged-manuscript-on-prepint-server',
             with: [
-                'manuscriptRecord' => $this->manuscriptRecord,
+                'manuscript' => $this->manuscriptRecord,
                 'state' => $this->planningBinderItemState,
                 'referrer' => $this->referrer,
             ]

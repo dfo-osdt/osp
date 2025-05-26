@@ -38,7 +38,7 @@ class FlaggedManuscriptSubmittedToPrepint extends Event
 
         // mrf should have no publication id
         $mrf = ManuscriptRecord::where('ulid', $state->manuscript_record_ulid)->firstOrFail();
-        if ($mrf->publication->id !== null) {
+        if ($mrf->publication?->id !== null) {
             return false;
         }
 
@@ -68,6 +68,7 @@ class FlaggedManuscriptSubmittedToPrepint extends Event
 
         $item = PlanningBinderItem::findOrFail($state->id);
         $item->status = $state->status;
+        $item->save();
 
     }
 }

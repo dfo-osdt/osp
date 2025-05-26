@@ -57,7 +57,7 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
             with: [
                 'publication' => $this->publication,
                 'state' => $this->planningBinderItemState,
-                'referer' => $this->referrer,
+                'referrer' => $this->referrer,
             ]
         );
     }
