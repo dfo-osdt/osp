@@ -56,7 +56,7 @@ class ManuscriptFlaggedForPlanningBinder extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.planning-binder.item-flagged-for-planning-binder',
+            markdown: 'mail.planning-binder.manuscript-flagged-for-planning-binder',
             with: [
                 'user' => $this->user,
                 'manuscript' => $this->manuscriptRecord,
