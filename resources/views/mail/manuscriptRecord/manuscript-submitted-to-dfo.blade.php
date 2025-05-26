@@ -1,5 +1,5 @@
 <x-mail::message>
-# Hello ESO Publication Team,
+# Hello Science Publication Team,
 
 *(le français suit)*
 

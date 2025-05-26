@@ -42,7 +42,6 @@ class ReviewStepNotificationMail extends Mailable
             // This would be redundant if the previous step is on hold as this step is being sent back to the proponent.
             $this->cc($this->managementReviewStep->manuscriptRecord->user->email, $this->managementReviewStep->manuscriptRecord->user->fullName);
         }
-        $this->attach($this->managementReviewStep->manuscriptRecord->getLastManuscriptFile());
 
         return $this->markdown('mail.review-step-notification-mail');
     }

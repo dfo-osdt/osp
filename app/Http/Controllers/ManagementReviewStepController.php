@@ -8,6 +8,7 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Events\ManagementReviewStepCreated;
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
+use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinderMail;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -54,6 +55,7 @@ class ManagementReviewStepController extends Controller
 
         $validated = $request->validate([
             'comments' => 'string|nullable',
+            'flag_for_planning_binder' => 'boolean',
         ]);
 
         if (isset($validated['comments'])) {
@@ -74,6 +76,12 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->decision = ManagementReviewStepDecision::COMPLETE;
         $managementReviewStep->saveOrFail();
 
+        // should this MRF be flagged for planning binder?
+        if ($validated['flag_for_planning_binder']) {
+            FlagManuscriptRecordForPlanningBinderMail::commit(user_id: $managementReviewStep->user->id, manuscript_record_ulid: $manuscriptRecord->ulid);
+
+        }
+
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
@@ -88,10 +96,7 @@ class ManagementReviewStepController extends Controller
         $validated = $request->validate([
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
             'comments' => 'string|nullable',
-            'with_revisions' => 'boolean',
         ]);
-
-        $revisionRequested = $validated['with_revisions'] ?? false;
 
         $nextReviewStep = new ManagementReviewStep;
         $nextReviewStep->user_id = $validated['next_user_id'];
@@ -99,8 +104,8 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
         $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
-        // stop the clock if revisions are requested.
-        $nextReviewStep->decision_expected_by = $revisionRequested ? null : $managementReviewStep->decision_expected_by;
+        // stop the clock if a review is refered to another user. (as per new guidance)
+        $nextReviewStep->decision_expected_by = null;
 
         $nextReviewStep->saveOrFail();
 

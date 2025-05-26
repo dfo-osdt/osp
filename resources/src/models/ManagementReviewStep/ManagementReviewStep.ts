@@ -18,7 +18,11 @@ export type UpdateStep = Pick<ManagementReviewStep, 'comments'>
 export interface DecisionStep {
   comments?: string
   next_user_id?: number
-  with_revisions?: boolean
+}
+
+export interface CompleteDecisionStep {
+  comments?: string
+  flag_for_planning_binder: boolean
 }
 
 export interface ManagementReviewStep {
@@ -90,13 +94,15 @@ export class ManagementReviewStepService {
    * Complete the management review step
    *
    * @param step the management review step to complete
-   * @param nextUserId the user id of the next user in the workflow - if null, the workflow will be completed
+   * @param flag_for_planning_binder whether to flag the step for planning binder
    */
   public static async complete(
     step: ManagementReviewStep,
+    flag_for_planning_binder: boolean,
   ) {
-    const data: DecisionStep = {
+    const data: CompleteDecisionStep = {
       comments: step.comments,
+      flag_for_planning_binder,
     }
 
     const response = await http.put<DecisionStep, R>(
@@ -137,12 +143,10 @@ export class ManagementReviewStepService {
   public static async refer(
     step: ManagementReviewStep,
     nextUserId: number,
-    withRevisions: boolean = false,
   ) {
     const data: DecisionStep = {
       comments: step.comments,
       next_user_id: nextUserId,
-      with_revisions: withRevisions,
     }
 
     const response = await http.put<DecisionStep, R>(

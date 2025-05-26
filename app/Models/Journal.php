@@ -30,6 +30,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereTitleFr($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereUpdatedAt($value)
  *
+ * @property string $title
+ * @property string|null $issn
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal notDfoSeries()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereIssn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereTitle($value)
+ *
  * @mixin \Eloquent
  */
 class Journal extends Model

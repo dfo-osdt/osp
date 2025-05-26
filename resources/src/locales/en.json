@@ -364,7 +364,8 @@
     "complete": "Complete",
     "complete-desc": "Review of this manuscript for publication is complete and you are ending the management review process.",
     "refer-revision": "Refer with Revisions",
-    "revision-revision-desc": "You have reviewed the manuscript and believe that changes may be required before completing the review. You are now refering it to a RDS or DG for further review."
+    "revision-revision-desc": "You have reviewed the manuscript and believe that changes may be required before completing the review. You are now refering it to a RDS or DG for further review.",
+    "refer-desc-2": "Final review by a RDS or DG is required for this management review."
   },
   "dialog": {
     "delete-manuscript": {
@@ -760,7 +761,9 @@
     "select-next-reviewer": "Select Next Manger",
     "subsequent-reviewer-is-required": "Given your review, a subsequent manager is required to complete the review",
     "your-decision": "Your Review",
-    "no-comments-warning-cant-complete": "A review comment is required to proceed."
+    "no-comments-warning-cant-complete": "A review comment is required to proceed.",
+    "confirm-planning-binder": "Planning Binder",
+    "planning-binder-tex": "Please indicate whether this publication should be added to the scientific publications section of the planning binder that is sent to the ADM."
   },
   "submit-manuscript-dialog": {
     "step1": {

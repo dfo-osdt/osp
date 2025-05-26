@@ -6,6 +6,7 @@ use App\Models\ManuscriptRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class ManuscriptManagementReviewComplete extends Mailable
 {
@@ -36,6 +37,7 @@ class ManuscriptManagementReviewComplete extends Mailable
 
         $cc = $reviewers->merge($authors)->unique()->
             filter(fn ($email) => $email !== $this->manuscriptRecord->user->email)->
+            filter(fn ($email) => Str::of($email)->endsWith(config('osp.allowed_registration_email_domains')))->
             toArray();
         $this->cc($cc);
 

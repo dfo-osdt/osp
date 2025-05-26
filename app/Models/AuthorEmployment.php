@@ -26,6 +26,31 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment withoutTrashed()
  *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int $author_id
+ * @property int $organization_id
+ * @property string|null $role_title
+ * @property string|null $department_name
+ * @property-read int|null $activities_count
+ * @property int|null $orcid_putcode
+ * @property \Illuminate\Support\Carbon|null $orcid_updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereDepartmentName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereOrcidPutcode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereOrcidUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereOrganizationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereRoleTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class AuthorEmployment extends Model

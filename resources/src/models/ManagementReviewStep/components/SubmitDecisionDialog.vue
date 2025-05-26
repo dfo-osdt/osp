@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import type { ManuscriptRecordType } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import type { QDialog } from 'quasar'
 import type { Ref } from 'vue'
 import type {
   ManagementReviewStep,
   ManagementReviewStepResource,
 } from '../ManagementReviewStep'
+import type { ManuscriptRecordType } from '@/models/ManuscriptRecord/ManuscriptRecord'
+import { QForm, QStepper } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import { ManuscriptAuthorService } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
+import YesNoBooleanOptionGroup from '@/models/ManuscriptRecord/components/YesNoBooleanOptionGroup.vue'
 import { ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import UserSelect from '@/models/User/components/UserSelect.vue'
-import { QForm, QStepper } from 'quasar'
 import {
   ManagementReviewStepService,
 } from '../ManagementReviewStep'
@@ -34,7 +35,6 @@ const validationError = ref(false)
 type Decision =
   | 'complete'
   | 'refer'
-  | 'referWithRevision'
   | 'revision'
   | 'reassign'
 
@@ -55,18 +55,9 @@ const decision: Ref<Decision> = canComplete.value
 
 const nextUserId = ref<number | null>(null)
 
+const submitToBinder = ref<boolean | null>(null)
 /** Decision flow variables */
 const agreeToTerms = ref(false)
-const agreeToTermsOptions = ref([
-  {
-    label: t('common.yes'),
-    value: true,
-  },
-  {
-    label: t('common.no'),
-    value: false,
-  },
-])
 
 const nextReviewerStepDisabled = computed(() => {
   return (
@@ -80,6 +71,9 @@ const nextDisabled = computed(() => {
     return false
   }
   else if (step.value === 2) {
+    if (decision.value === 'complete') {
+      return submitToBinder.value === null
+    }
     return nextUserId.value === null
   }
   else if (step.value === 3) {
@@ -105,6 +99,22 @@ const userCanCompleteReview = computed(() => {
   return true
 })
 
+const completeDescription = computed(() => {
+  let text = t('decision.complete-desc')
+  if (!userCanCompleteReview.value) {
+    text += ` ${t('decision.refer-desc-2')}`
+  }
+  return text
+})
+
+const referDescription = computed(() => {
+  let text = t('decision.refer-desc')
+  if (!userCanCompleteReview.value) {
+    text += ` ${t('decision.refer-desc-2')}`
+  }
+  return text
+})
+
 /**
  * The options available to the user for their decision.
  */
@@ -112,7 +122,7 @@ const options = ref<DecisionOption[]>([
   {
     label: t('decision.complete'),
     value: 'complete',
-    description: t('decision.complete-desc'),
+    description: completeDescription.value,
     disabled: !userCanCompleteReview.value,
   },
   {
@@ -124,13 +134,7 @@ const options = ref<DecisionOption[]>([
   {
     label: t('decision.refer'),
     value: 'refer',
-    description: t('decision.refer-desc'),
-    disabled: stepHasNoComments.value,
-  },
-  {
-    label: t('decision.refer-revision'),
-    value: 'referWithRevision',
-    description: t('decision.revision-revision-desc'),
+    description: referDescription.value,
     disabled: stepHasNoComments.value,
   },
   {
@@ -177,18 +181,12 @@ async function submit() {
   let response: ManagementReviewStepResource | null = null
   switch (decision.value) {
     case 'complete':
+      if (submitToBinder.value === null) {
+        throw new Error('submitToBinder is null')
+      }
       response = await ManagementReviewStepService.complete(
         props.managementReviewStep,
-      )
-      break
-    case 'referWithRevision':
-      if (nextUserId.value === null) {
-        throw new Error('nextUserId is null')
-      }
-      response = await ManagementReviewStepService.refer(
-        props.managementReviewStep,
-        nextUserId.value,
-        true,
+        submitToBinder.value,
       )
       break
     case 'refer':
@@ -282,6 +280,7 @@ async function submit() {
           </q-list>
         </q-step>
         <q-step
+          v-if="decision !== 'complete'"
           :name="2"
           :title="$t('submit-decision-dialog.select-next-reviewer')"
           icon="mdi-account-search"
@@ -314,6 +313,22 @@ async function submit() {
           />
         </q-step>
         <q-step
+          v-if="decision === 'complete'"
+          :name="2"
+          :title="$t('submit-decision-dialog.confirm-planning-binder')"
+          icon="mdi-file-document-check-outline"
+          :done="step > 2"
+        >
+          <p class="q-ma-md">
+            {{ $t('submit-decision-dialog.planning-binder-tex') }}
+          </p>
+          <YesNoBooleanOptionGroup
+            v-model="submitToBinder"
+            class="q-mr-lg"
+            align="right"
+          />
+        </q-step>
+        <q-step
           :name="3"
           :title="$t('submit-decision-dialog.confirm-decision')"
           icon="mdi-check-decagram"
@@ -322,12 +337,10 @@ async function submit() {
           <p class="q-ma-md">
             {{ $t('submit-decision-dialog.certify-text') }}
           </p>
-          <q-option-group
+          <YesNoBooleanOptionGroup
             v-model="agreeToTerms"
             class="q-mr-lg"
             align="right"
-            :options="agreeToTermsOptions"
-            inline
           />
         </q-step>
         <template #navigation>

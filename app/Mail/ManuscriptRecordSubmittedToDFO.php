@@ -5,13 +5,14 @@ namespace App\Mail;
 use App\Models\ManuscriptRecord;
 use App\Models\Publication;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
 
-class ManuscriptRecordSubmittedToDFO extends Mailable
+class ManuscriptRecordSubmittedToDFO extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

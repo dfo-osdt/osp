@@ -9,6 +9,7 @@ use App\Models\ManuscriptRecord;
 use App\Models\Publication;
 use App\Models\Shareable;
 use App\Models\User;
+use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Console\Command;
 
 class ExportEmails extends Command
@@ -111,6 +112,59 @@ class ExportEmails extends Command
         $userInvitedWelcome = new \App\Mail\UserInvitedWelomeMail($invitedEvent);
         $markdownContent = $userInvitedWelcome->render();
         $this->exportFile('user-invited-welcome.html', $markdownContent);
+
+        // item flagged for planning binder - mrf
+        $mrf = ManagementReviewStep::factory([
+            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+            'comments' => 'I reviewed this manuscript and it is ready for publication',
+        ])->create()->manuscriptRecord;
+        $mrf->title = 'A important manuscript the ADM should know about';
+        $mrf->save();
+
+        $user = $mrf->managementReviewSteps()->first()->user;
+
+        $state = PlanningBinderItemState::factory()->state([
+            'manuscript_record_ulid' => $mrf->ulid,
+            'manuscript_record_type' => $mrf->type,
+            'referrer_user_id' => $mrf->managementReviewSteps()->first()->user->id,
+        ])->create();
+        $flaggedEmail = new \App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail($user, $state);
+        $markdownContent = $flaggedEmail->render();
+        $this->exportFile('item-flagged-for-planning-binder-mrf.html', $markdownContent);
+
+        // flagged item for planning binder - preprint
+        $mrf = ManagementReviewStep::factory([
+            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
+            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+            'comments' => 'I reviewed this manuscript and it is ready for publication',
+        ])->create()->manuscriptRecord;
+        $mrf->title = 'A important preprint the ADM should know about';
+        $mrf->type = \App\Enums\ManuscriptRecordType::PREPRINT;
+        $mrf->preprint_url = 'https://example.com/preprint-url';
+        $mrf->save();
+
+        $state = PlanningBinderItemState::factory()->state([
+            'manuscript_record_ulid' => $mrf->ulid,
+            'manuscript_record_type' => $mrf->type,
+            'referrer_user_id' => $mrf->managementReviewSteps()->first()->user->id,
+        ])->create();
+
+        $flaggedEmail = new \App\Mail\PlanningBinder\FlaggedManuscriptOnPrepintServerMail($state);
+        $markdownContent = $flaggedEmail->render();
+        $this->exportFile('flagged-manuscript-on-preprint-server.html', $markdownContent);
+
+        $publication = Publication::factory()->withManuscript()->create();
+        $state = PlanningBinderItemState::factory()->state([
+            'manuscript_record_ulid' => $publication->manuscriptRecord->ulid,
+            'manuscript_record_type' => $publication->manuscriptRecord->type,
+            'publication_id' => $publication->id,
+            'referrer_user_id' => User::factory()->create()->id,
+        ])->create();
+
+        $flaggedEmail = new \App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail($state);
+        $markdownContent = $flaggedEmail->render();
+        $this->exportFile('flagged-manuscript-accepted-in-journal.html', $markdownContent);
 
         \DB::rollBack();
 
