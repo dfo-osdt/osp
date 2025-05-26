@@ -5,9 +5,9 @@ use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\Permissions\UserRole;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
-use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinder;
+use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinderMail;
 use App\Mail\ManuscriptManagementReviewComplete;
-use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinder;
+use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail;
 use App\Mail\ReviewStepNotificationMail;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -170,10 +170,10 @@ test('a reviewer can approve and complete the review of a third-party manuscript
         )
         ->assertOk();
 
-    Verbs::assertCommitted(FlagManuscriptRecordForPlanningBinder::class);
+    Verbs::assertCommitted(FlagManuscriptRecordForPlanningBinderMail::class);
     expect($manuscript->refresh()->status)->toBe(ManuscriptRecordStatus::REVIEWED);
 
-    Mail::assertQueued(ManuscriptFlaggedForPlanningBinder::class);
+    Mail::assertQueued(ManuscriptFlaggedForPlanningBinderMail::class);
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
 });
 
@@ -195,7 +195,7 @@ test('a reviewer can approve and complete the review of a third-party manuscript
         )
         ->assertOk();
 
-    Verbs::assertNotCommitted(FlagManuscriptRecordForPlanningBinder::class);
+    Verbs::assertNotCommitted(FlagManuscriptRecordForPlanningBinderMail::class);
     expect($manuscript->refresh()->status)->toBe(ManuscriptRecordStatus::REVIEWED);
 
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);

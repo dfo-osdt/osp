@@ -128,7 +128,7 @@ class ExportEmails extends Command
             'manuscript_record_ulid' => $mrf->ulid,
             'manuscript_record_type' => $mrf->type,
         ])->create();
-        $flaggedEmail = new \App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinder($user, $state);
+        $flaggedEmail = new \App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail($user, $state);
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('item-flagged-for-planning-binder-mrf.html', $markdownContent);
 

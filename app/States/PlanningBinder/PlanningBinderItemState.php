@@ -12,6 +12,8 @@ class PlanningBinderItemState extends State
 
     public ManuscriptRecordType $manuscript_record_type;
 
+    public int $referrer_user_id;
+
     public ?string $manuscript_record_ulid = null;
 
     public ?int $publication_id = null;

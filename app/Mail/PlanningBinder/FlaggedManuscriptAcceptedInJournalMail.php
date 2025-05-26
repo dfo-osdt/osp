@@ -2,34 +2,31 @@
 
 namespace App\Mail\PlanningBinder;
 
-use App\Models\ManuscriptRecord;
+use App\Models\Publication;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ManuscriptFlaggedForPlanningBinder extends Mailable implements ShouldQueue
+class FlaggedManuscriptAcceptedInJournalMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public User $user;
+    protected Publication $publication;
 
-    public ?ManuscriptRecord $manuscriptRecord = null;
-
-    public PlanningBinderItemState $planningBinderItemState;
+    protected User $referrer;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, PlanningBinderItemState $planningBinderItemState)
-    {
-        $this->planningBinderItemState = $planningBinderItemState;
-        $this->user = $user;
-        $this->manuscriptRecord = ManuscriptRecord::where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail();
+    public function __construct(
+        protected PlanningBinderItemState $planningBinderItemState
+    ) {
+        $this->publication = Publication::findOrFail($this->planningBinderItemState->publication_id)->load(['manuscriptRecord', 'journal', 'region']);
+        $this->referrer = User::findOrFail($this->planningBinderItemState->referrer_user_id);
     }
 
     /**
@@ -37,16 +34,16 @@ class ManuscriptFlaggedForPlanningBinder extends Mailable implements ShouldQueue
      */
     public function envelope(): Envelope
     {
+
         $to = config('osp.manuscript_submission_email');
         if (empty($to)) {
             throw new \Exception('The manuscript submission email address is not set.');
         }
 
-        $subject = 'Manuscript Record Flagged for Planning Binder - Manuscrit identifié pour le classeur de planification';
-
         return new Envelope(
-            subject: $subject,
+            subject: 'Manuscript Flagged for Planning Binder Accepted In Journal - Manuscrit identifié pour le classeur de planification accepté dans un journal',
             to: [$to],
+            cc: [$this->referrer->email],
         );
     }
 
@@ -56,11 +53,11 @@ class ManuscriptFlaggedForPlanningBinder extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.planning-binder.manuscript-flagged-for-planning-binder',
+            markdown: 'mail.planning-binder.flagged-manuscript-accepted-in-journal',
             with: [
-                'user' => $this->user,
-                'manuscript' => $this->manuscriptRecord,
+                'publication' => $this->publication,
                 'state' => $this->planningBinderItemState,
+                'referer' => $this->referrer,
             ]
         );
     }

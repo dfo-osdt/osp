@@ -8,7 +8,7 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Events\ManagementReviewStepCreated;
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
-use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinder;
+use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinderMail;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -78,7 +78,7 @@ class ManagementReviewStepController extends Controller
 
         // should this MRF be flagged for planning binder?
         if ($validated['flag_for_planning_binder']) {
-            FlagManuscriptRecordForPlanningBinder::commit(user_id: $managementReviewStep->user->id, manuscript_record_ulid: $manuscriptRecord->ulid);
+            FlagManuscriptRecordForPlanningBinderMail::commit(user_id: $managementReviewStep->user->id, manuscript_record_ulid: $manuscriptRecord->ulid);
 
         }
 

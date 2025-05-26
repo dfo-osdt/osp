@@ -6,25 +6,29 @@ use App\Models\ManuscriptRecord;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class FlaggedManuscriptOnPrepintServer extends Mailable
+class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    protected ManuscriptRecord $manuscriptRecord;
+    public User $user;
+
+    public ?ManuscriptRecord $manuscriptRecord = null;
+
+    public PlanningBinderItemState $planningBinderItemState;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(
-        protected User $referer,
-        protected PlanningBinderItemState $planningBinderItemState
-
-    ) {
+    public function __construct(User $user, PlanningBinderItemState $planningBinderItemState)
+    {
+        $this->planningBinderItemState = $planningBinderItemState;
+        $this->user = $user;
         $this->manuscriptRecord = ManuscriptRecord::where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail();
     }
 
@@ -33,17 +37,16 @@ class FlaggedManuscriptOnPrepintServer extends Mailable
      */
     public function envelope(): Envelope
     {
-
         $to = config('osp.manuscript_submission_email');
         if (empty($to)) {
             throw new \Exception('The manuscript submission email address is not set.');
         }
 
-        return new Envelope(
-            subject: 'Manuscript Flagged for Planning Binder posted on Prepint Server - Manuscrit identifié pour le classeur de planification publié un serveur de prépublication',
+        $subject = 'Manuscript Record Flagged for Planning Binder - Manuscrit identifié pour le classeur de planification';
 
+        return new Envelope(
+            subject: $subject,
             to: [$to],
-            cc: [$this->referer->email],
         );
     }
 
@@ -53,7 +56,12 @@ class FlaggedManuscriptOnPrepintServer extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.planning-binder.flagged-manuscript-on-prepint-server',
+            markdown: 'mail.planning-binder.manuscript-flagged-for-planning-binder',
+            with: [
+                'user' => $this->user,
+                'manuscript' => $this->manuscriptRecord,
+                'state' => $this->planningBinderItemState,
+            ]
         );
     }
 

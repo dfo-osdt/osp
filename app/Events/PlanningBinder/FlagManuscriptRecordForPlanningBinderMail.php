@@ -3,7 +3,7 @@
 namespace App\Events\PlanningBinder;
 
 use App\Enums\PlanningBinder\PlanningBinderItemStatus;
-use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinder;
+use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail;
 use App\Models\ManuscriptRecord;
 use App\Models\PlanningBinderItem;
 use App\Models\User;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
 
-class FlagManuscriptRecordForPlanningBinder extends Event
+class FlagManuscriptRecordForPlanningBinderMail extends Event
 {
     #[StateId(PlanningBinderItemState::class)]
     public int $planning_binder_item_id;
@@ -40,6 +40,9 @@ class FlagManuscriptRecordForPlanningBinder extends Event
         // set the type to manuscript record
         $state->manuscript_record_type = $mrf->type;
 
+        // set the referrer user id
+        $state->referrer_user_id = $this->user_id;
+
         // set the ulid to the manuscript record ulid
         $state->manuscript_record_ulid = $this->manuscript_record_ulid;
     }
@@ -47,7 +50,7 @@ class FlagManuscriptRecordForPlanningBinder extends Event
     public function fired(PlanningBinderItemState $state)
     {
         // send notification to the user
-        Mail::queue(new ManuscriptFlaggedForPlanningBinder(
+        Mail::queue(new ManuscriptFlaggedForPlanningBinderMail(
             User::findOrFail($this->user_id),
             $state
         ));

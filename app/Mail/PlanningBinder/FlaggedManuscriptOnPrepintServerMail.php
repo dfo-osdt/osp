@@ -2,7 +2,7 @@
 
 namespace App\Mail\PlanningBinder;
 
-use App\Models\Publication;
+use App\Models\ManuscriptRecord;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Bus\Queueable;
@@ -11,20 +11,23 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class FlaggedManuscriptAcceptedInJournal extends Mailable
+class FlaggedManuscriptOnPrepintServerMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected Publication $publication;
+    protected ManuscriptRecord $manuscriptRecord;
+
+    protected User $referrer;
 
     /**
      * Create a new message instance.
      */
     public function __construct(
-        protected User $referer,
         protected PlanningBinderItemState $planningBinderItemState
+
     ) {
-        $this->publication = Publication::findOrFail($this->planningBinderItemState->publication_id);
+        $this->manuscriptRecord = ManuscriptRecord::where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail()->load(['region']);
+        $this->referrer = User::findOrFail($this->planningBinderItemState->referrer_user_id);
     }
 
     /**
@@ -39,9 +42,10 @@ class FlaggedManuscriptAcceptedInJournal extends Mailable
         }
 
         return new Envelope(
-            subject: 'Manuscript Flagged for Planning Binder Accepted In Journal - Manuscrit identifié pour le classeur de planification accepté dans un journal',
+            subject: 'Manuscript Flagged for Planning Binder posted on Prepint Server - Manuscrit identifié pour le classeur de planification publié un serveur de prépublication',
+
             to: [$to],
-            cc: [$this->referer->email],
+            cc: [$this->referrer->email],
         );
     }
 
@@ -51,7 +55,12 @@ class FlaggedManuscriptAcceptedInJournal extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.planning-binder.flagged-manuscript-accepted-in-journal',
+            markdown: 'mail.planning-binder.flagged-manuscript-on-prepint-server',
+            with: [
+                'manuscriptRecord' => $this->manuscriptRecord,
+                'state' => $this->planningBinderItemState,
+                'referrer' => $this->referrer,
+            ]
         );
     }
 
