@@ -6,7 +6,7 @@ use App\Models\ManuscriptRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Str;
+use Illuminate\Support\Str;
 
 class ManuscriptManagementReviewComplete extends Mailable
 {
