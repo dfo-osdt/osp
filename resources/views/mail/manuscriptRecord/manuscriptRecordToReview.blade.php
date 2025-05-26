@@ -31,7 +31,7 @@ Review Manuscript
 
 Conformément à la politique de publication du MPO, vous avez reçu une nouvelle soumission de registre de manuscrit de la part de {{ $manuscriptRecord->user->fullname }}.
 
-Veuillez cliquer sur le bouton ci-dessous ou vous connecter à votre compte sur le [Portail Science Ouverte]({{config('app.frontend_url')}}#/auth/login?email={{$user->email}}) pour compléter la révision par le gestionaire.
+Veuillez cliquer sur le bouton ci-dessous ou vous connecter à votre compte sur le [Portail Science Ouverte]({{config('app.frontend_url')}}#/auth/login?email={{$user->email}}) pour compléter la révision par le gestionnaire.
 
 <x-email.decision-expected-by locale="fr" :managementReviewStep="$manuscriptRecord->managementReviewSteps->first()" />
 

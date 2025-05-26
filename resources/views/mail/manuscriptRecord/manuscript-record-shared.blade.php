@@ -30,7 +30,7 @@ View Manuscript
 Veuillez cliquer sur le bouton ci-dessous ou vous connecter à votre compte sur le [Portail Science Ouverte]({{config('app.frontend_url')}}#/auth/login?email={{$user->email}}) pour voir le manuscrit.
 
 <x-mail::button :url="config('app.frontend_url').'#/auth/login?email='.$user->email.'&redirect=/manuscript/'.$manuscriptRecord->id">
-Visioner le manuscrit
+Voir le manuscrit
 </x-mail::button>
 
 <x-mail::panel>

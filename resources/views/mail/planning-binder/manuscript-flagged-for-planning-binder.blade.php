@@ -24,7 +24,7 @@ or preprint is created in the Open Science Portal.
 Le manuscrit intitulé "**{{ $manuscript->title }}**" a été signalé pour
 examen dans le classeur de planification par {{ $user->full_name }} via le
 processus d'examen de gestion. Vous recevrez un autre courriel lorsque la
-publication ou prépubilication sera créée dans le Portail de la science ouverte.
+publication ou prépublication sera créée dans le Portail de la science ouverte.
 
 <x-mail::panel>
 **ID du manuscrit**: {{ $manuscript->ulid }}<br/>
