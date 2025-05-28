@@ -90,6 +90,20 @@ const plsDisabledTooltip = computed(() => {
   return ''
 })
 
+// Author approval logic
+const hasCompletedPLS = computed(() => {
+  if (!manuscriptData.value) {
+    return false
+  }
+
+  const sourceLanguage = manuscriptData.value.pls_source_language
+  return manuscriptData.value[`pls_${sourceLanguage}`] !== ''
+})
+
+const showApprovalRequired = computed(() => {
+  return hasCompletedPLS.value && !manuscriptData.value?.pls_approved_by_author && !props.readonly
+})
+
 async function generatePLS() {
   PLSLoading.value = true
   if (!manuscriptData.value?.abstract)
@@ -171,7 +185,7 @@ async function translatePLS() {
         <div class="text-h6 text-primary text-weight-medium">
           {{ $t('common.plain-language-summary') }}
         </div>
-        <div class="text-body2 text-grey-7 q-mt-xs">
+        <div class="text-body2  q-mt-xs">
           {{ $t('mrf.pls-text') }}
         </div>
       </div>
@@ -184,7 +198,7 @@ async function translatePLS() {
           <q-icon name="mdi-translate" class="q-mr-xs" />
           {{ $t('mrf.pls-source-language-title') }}<RequiredSpan />
         </div>
-        <div class="text-body2 text-grey-7 q-mb-md">
+        <div class="text-body2  q-mb-md">
           {{ $t('mrf.pls-source-language-description') }}
         </div>
         <LocaleSelect
@@ -247,147 +261,182 @@ async function translatePLS() {
       </q-card-section>
     </q-card>
   </div>
-  <!-- PLS Editors with Better Visual Indicators -->
-  <div class="q-mb-lg">
+
+  <!-- Main PLS Content and Approval Section (Consolidated) -->
+  <q-card flat bordered class="q-mb-lg">
+    <!-- Content Section Header -->
+    <q-card-section class="q-pb-sm">
+      <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-xs">
+        <q-icon name="mdi-text-box-outline" class="q-mr-xs" />
+        {{ $t('common.content') }}
+      </div>
+      <div class="text-body2 text-grey-6">
+        {{ $t('mrf.pls-content-description') }}
+      </div>
+    </q-card-section>
+
+    <q-separator />
+
     <!-- Dynamic Editor Order Based on Source Language -->
     <template v-if="manuscriptData.pls_source_language === 'en'">
       <!-- English (Primary) -->
-      <q-card flat bordered class="q-mb-md">
-        <q-card-section class="q-pb-sm">
-          <div class="row items-center">
-            <div class="col">
-              <div class="text-subtitle2 text-primary">
-                <q-icon name="mdi-star" color="primary" size="xs" class="q-mr-xs" />
-                {{ $t('common.plain-language-summary-en') }}
-                <q-chip dense color="primary" text-color="white" size="sm" class="q-ml-sm">
-                  {{ $t('common.required') }}
-                </q-chip>
-              </div>
-            </div>
-            <div class="col-auto">
-              <q-badge v-if="manuscriptData.pls_en" color="positive" outline>
-                <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
-                {{ $t('common.completed') }}
-              </q-badge>
+      <q-card-section class="q-pb-sm">
+        <div class="row items-center q-mb-sm">
+          <div class="col">
+            <div class="text-subtitle2 text-primary">
+              <q-icon name="mdi-star" color="primary" size="xs" class="q-mr-xs" />
+              {{ $t('common.plain-language-summary-en') }}
+              <q-chip dense color="primary" text-color="white" size="sm" class="q-ml-sm">
+                {{ $t('common.required') }}
+              </q-chip>
             </div>
           </div>
-        </q-card-section>
-        <q-separator />
-        <q-card-section>
-          <QuestionEditor
-            v-model="manuscriptData.pls_en"
-            :title="$t('common.plain-language-summary-en')"
-            :disable="loading || PLSLoading"
-            :readonly="readonly"
-            :required="true"
-            hide-title
-          />
-        </q-card-section>
-      </q-card>
+          <div class="col-auto">
+            <q-badge v-if="manuscriptData.pls_en" color="positive" outline>
+              <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
+              {{ $t('common.completed') }}
+            </q-badge>
+          </div>
+        </div>
+        <QuestionEditor
+          v-model="manuscriptData.pls_en"
+          :title="$t('common.plain-language-summary-en')"
+          :disable="loading || PLSLoading"
+          :readonly="readonly"
+          :required="true"
+          hide-title
+        />
+      </q-card-section>
+
+      <q-separator />
 
       <!-- French (Optional) -->
-      <q-card flat bordered class="q-mb-md">
-        <q-card-section class="q-pb-sm">
-          <div class="row items-center">
-            <div class="col">
-              <div class="text-subtitle2 text-grey-7">
-                <q-icon name="mdi-circle-outline" color="grey-5" size="xs" class="q-mr-xs" />
-                {{ $t('common.plain-language-summary-fr') }}
-                <q-chip dense color="grey-5" text-color="white" size="sm" class="q-ml-sm">
-                  {{ $t('common.optional') }}
-                </q-chip>
-              </div>
-            </div>
-            <div class="col-auto">
-              <q-badge v-if="manuscriptData.pls_fr" color="positive" outline>
-                <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
-                {{ $t('common.completed') }}
-              </q-badge>
+      <q-card-section class="q-pb-sm">
+        <div class="row items-center q-mb-sm">
+          <div class="col">
+            <div class="text-subtitle2 text-grey-7">
+              <q-icon name="mdi-circle-outline" color="grey-5" size="xs" class="q-mr-xs" />
+              {{ $t('common.plain-language-summary-fr') }}
+              <q-chip dense color="grey-5" text-color="white" size="sm" class="q-ml-sm">
+                {{ $t('common.optional') }}
+              </q-chip>
             </div>
           </div>
-        </q-card-section>
-        <q-separator />
-        <q-card-section>
-          <QuestionEditor
-            v-model="manuscriptData.pls_fr"
-            :title="$t('common.plain-language-summary-fr')"
-            :disable="loading || PLSLoading"
-            :readonly="readonly"
-            :required="false"
-            hide-title
-          />
-        </q-card-section>
-      </q-card>
+          <div class="col-auto">
+            <q-badge v-if="manuscriptData.pls_fr" color="positive" outline>
+              <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
+              {{ $t('common.completed') }}
+            </q-badge>
+          </div>
+        </div>
+        <QuestionEditor
+          v-model="manuscriptData.pls_fr"
+          :title="$t('common.plain-language-summary-fr')"
+          :disable="loading || PLSLoading"
+          :readonly="readonly"
+          :required="false"
+          hide-title
+        />
+      </q-card-section>
     </template>
 
     <template v-else>
       <!-- French (Primary) -->
-      <q-card flat bordered class="q-mb-md">
-        <q-card-section class="q-pb-sm">
-          <div class="row items-center">
-            <div class="col">
-              <div class="text-subtitle2 text-primary">
-                <q-icon name="mdi-star" color="primary" size="xs" class="q-mr-xs" />
-                {{ $t('common.plain-language-summary-fr') }}
-                <q-chip dense color="primary" text-color="white" size="sm" class="q-ml-sm">
-                  {{ $t('common.required') }}
-                </q-chip>
-              </div>
-            </div>
-            <div class="col-auto">
-              <q-badge v-if="manuscriptData.pls_fr" color="positive" outline>
-                <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
-                {{ $t('common.completed') }}
-              </q-badge>
+      <q-card-section class="q-pb-sm">
+        <div class="row items-center q-mb-sm">
+          <div class="col">
+            <div class="text-subtitle2 text-primary">
+              <q-icon name="mdi-star" color="primary" size="xs" class="q-mr-xs" />
+              {{ $t('common.plain-language-summary-fr') }}
+              <q-chip dense color="primary" text-color="white" size="sm" class="q-ml-sm">
+                {{ $t('common.required') }}
+              </q-chip>
             </div>
           </div>
-        </q-card-section>
-        <q-separator />
-        <q-card-section>
-          <QuestionEditor
-            v-model="manuscriptData.pls_fr"
-            :title="$t('common.plain-language-summary-fr')"
-            :disable="loading || PLSLoading"
-            :readonly="readonly"
-            :required="true"
-            hide-title
-          />
-        </q-card-section>
-      </q-card>
+          <div class="col-auto">
+            <q-badge v-if="manuscriptData.pls_fr" color="positive" outline>
+              <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
+              {{ $t('common.completed') }}
+            </q-badge>
+          </div>
+        </div>
+        <QuestionEditor
+          v-model="manuscriptData.pls_fr"
+          :title="$t('common.plain-language-summary-fr')"
+          :disable="loading || PLSLoading"
+          :readonly="readonly"
+          :required="true"
+          hide-title
+        />
+      </q-card-section>
+
+      <q-separator />
 
       <!-- English (Optional) -->
-      <q-card flat bordered class="q-mb-md">
-        <q-card-section class="q-pb-sm">
-          <div class="row items-center">
-            <div class="col">
-              <div class="text-subtitle2 text-grey-7">
-                <q-icon name="mdi-circle-outline" color="grey-5" size="xs" class="q-mr-xs" />
-                {{ $t('common.plain-language-summary-en') }}
-                <q-chip dense color="grey-5" text-color="white" size="sm" class="q-ml-sm">
-                  {{ $t('common.optional') }}
-                </q-chip>
-              </div>
-            </div>
-            <div class="col-auto">
-              <q-badge v-if="manuscriptData.pls_en" color="positive" outline>
-                <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
-                {{ $t('common.completed') }}
-              </q-badge>
+      <q-card-section class="q-pb-sm">
+        <div class="row items-center q-mb-sm">
+          <div class="col">
+            <div class="text-subtitle2 text-grey-7">
+              <q-icon name="mdi-circle-outline" color="grey-5" size="xs" class="q-mr-xs" />
+              {{ $t('common.plain-language-summary-en') }}
+              <q-chip dense color="grey-5" text-color="white" size="sm" class="q-ml-sm">
+                {{ $t('common.optional') }}
+              </q-chip>
             </div>
           </div>
-        </q-card-section>
-        <q-separator />
-        <q-card-section>
-          <QuestionEditor
-            v-model="manuscriptData.pls_en"
-            :title="$t('common.plain-language-summary-en')"
-            :disable="loading || PLSLoading"
-            :readonly="readonly"
-            :required="false"
-            hide-title
-          />
-        </q-card-section>
-      </q-card>
+          <div class="col-auto">
+            <q-badge v-if="manuscriptData.pls_en" color="positive" outline>
+              <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
+              {{ $t('common.completed') }}
+            </q-badge>
+          </div>
+        </div>
+        <QuestionEditor
+          v-model="manuscriptData.pls_en"
+          :title="$t('common.plain-language-summary-en')"
+          :disable="loading || PLSLoading"
+          :readonly="readonly"
+          :required="false"
+          hide-title
+        />
+      </q-card-section>
     </template>
-  </div>
+
+    <q-separator />
+
+    <!-- Author Approval Section (integrated within the same card) -->
+    <q-card-section>
+      <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-xs">
+        <q-icon name="mdi-check-circle-outline" class="q-mr-xs" />
+        {{ $t('mrf.pls-author-approval-title') }}
+      </div>
+      <div class="text-body2 text-grey-6 q-mb-md">
+        {{ $t('mrf.pls-author-approval-description') }}
+      </div>
+
+      <q-checkbox
+        v-model="manuscriptData.pls_approved_by_author"
+        :label="$t('mrf.pls-approved-by-author-label')"
+        :disable="readonly || loading || !hasCompletedPLS"
+        color="primary"
+        size="md"
+        class="q-mb-sm"
+      />
+
+      <div v-if="manuscriptData.pls_approved_by_author && hasCompletedPLS" class="row items-center q-mt-sm">
+        <q-icon name="mdi-check-circle" color="positive" size="sm" class="q-mr-sm" />
+        <span class="text-body2 text-positive">{{ $t('mrf.pls-approved-confirmation') }}</span>
+      </div>
+
+      <div v-else-if="!hasCompletedPLS" class="row items-center q-mt-sm">
+        <q-icon name="mdi-information-outline" color="grey-6" size="sm" class="q-mr-sm" />
+        <span class="text-body2 text-grey-6">{{ $t('mrf.pls-approval-disabled-no-content') }}</span>
+      </div>
+
+      <div v-else-if="showApprovalRequired" class="row items-center q-mt-sm">
+        <q-icon name="mdi-alert-circle" color="warning" size="sm" class="q-mr-sm" />
+        <span class="text-body2 text-warning">{{ $t('mrf.pls-approval-required-warning') }}</span>
+      </div>
+    </q-card-section>
+  </q-card>
 </template>

@@ -585,7 +585,14 @@
     "pls-locale": "Langue source du résumé en language clair",
     "pls-source-language-title": "Langage source pour le RLC",
     "pls-source-language-description": "Veuillez sélectionner la langue officielle que vous utiliserez pour votre résumé de la langue claire. \nVous pouvez fournir des résumés en anglais et en français, mais seule la langue sélectionnée est nécessaire pour soumettre votre manuscrit.",
-    "ai-powered-tools": "Outils alimentés par AI"
+    "ai-powered-tools": "Outils alimentés par AI",
+    "pls-author-approval-title": "Approbation de l'auteur",
+    "pls-author-approval-description": "Veuillez confirmer que vous avez examiné et approuvé le résumé en langage clair dans votre langue source sélectionnée avant de soumettre votre manuscrit.",
+    "pls-approved-by-author-label": "Je confirme que j'ai examiné et approuvé le résumé en langage clair",
+    "pls-approved-confirmation": "RLC approuvé par l'auteur",
+    "pls-approval-required-warning": "L'approbation de l'auteur est requise avant la soumission",
+    "pls-approval-disabled-no-content": "Complétez le résumé en langage clair avant l'approbation",
+    "pls-content-description": "Rédigez votre résumé en langage clair dans la langue que vous avez sélectionnée ci-dessus. Vous pouvez également fournir une traduction optionnelle dans l'autre langue officielle."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",

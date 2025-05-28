@@ -103,6 +103,7 @@ const generalSectionStatus = computed(() => {
         (manuscript.pls_source_language === 'en' && manuscript.pls_en !== '')
         || (manuscript.pls_source_language === 'fr' && manuscript.pls_fr !== '')
       )
+      && manuscript.pls_approved_by_author
 
   return complete ? 'complete' : 'incomplete'
 })

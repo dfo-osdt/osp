@@ -593,7 +593,14 @@
     "pls-locale": "Plain Language Summary Source Language",
     "pls-source-language-title": "Source Language for the PLS",
     "pls-source-language-description": "Please select the official language you will use for your plain language summary. You may provide both English and French summaries, but only the selected language is required to submit your manuscript.",
-    "ai-powered-tools": "AI-Powered Tools"
+    "ai-powered-tools": "AI-Powered Tools",
+    "pls-author-approval-title": "Author Approval",
+    "pls-author-approval-description": "Please confirm that you have reviewed and approve the Plain Language Summary in your selected source language before submitting your manuscript.",
+    "pls-approved-by-author-label": "I confirm that I have reviewed and approve the Plain Language Summary",
+    "pls-approved-confirmation": "PLS approved by author",
+    "pls-approval-required-warning": "Author approval is required before submission",
+    "pls-approval-disabled-no-content": "Complete the Plain Language Summary before approval",
+    "pls-content-description": "Write your Plain Language Summary in the language you selected above. You may also provide an optional translation in the other official language."
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",
