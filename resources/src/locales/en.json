@@ -590,7 +590,10 @@
     "intends_open_access": "All publications must follow the open by design and by default approach. Unless an exception applies, your publications must be freely and publicly accessible upon release. Exceptions may include situations where information, data or code are sensitive for reasons of research security, proprietary interests, third-party restrictions, or are governed by legal, ethical, or confidentiality agreements. ",
     "open-access-rationale-text": "Since you answered \"No\", please provide your rationale.",
     "open-access-rationale-text-field-text": "Do you intend to make your publication open access (e.g., by publishing in an open access journal, selecting open access options in a hybrid journal, or depositing in an open repository)?",
-    "pls-locale": "Plain Language Summary Source Language"
+    "pls-locale": "Plain Language Summary Source Language",
+    "pls-source-language-title": "Source Language for the PLS",
+    "pls-source-language-description": "Please select the official language you will use for your plain language summary. You may provide both English and French summaries, but only the selected language is required to submit your manuscript.",
+    "ai-powered-tools": "AI-Powered Tools"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",

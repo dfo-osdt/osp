@@ -379,7 +379,7 @@
       "title": "Modifications non enregistrées"
     },
     "delete-publication-pdf": {
-      "message": "Cela supprimera le fichier de publication joint suivant : {file}",
+      "message": "Cela supprimera le fichier de publication joint suivant: {file}",
       "title": "Veuillez confirmer la suppression de ce fichier",
       "success": "Le fichier de publication a été supprimé."
     }
@@ -582,7 +582,10 @@
     "open-access-rationale-text-field-text": "Avez-vous l’intention de rendre votre publication en libre accès (p. ex. en publiant dans une revue en libre accès, en choisissant l’option libre accès dans une revue hybride ou en déposant dans un dépôt institutionnel ou disciplinaire)?",
     "open-access-rationale-text": "Puisque vous avez répondu \"non\", veuillez fournir votre justification.",
     "intends_open_access": "Toutes les publications doivent suivre l'ouverture par conception et par défaut. À moins qu'une exception ne s'applique, vos publications doivent être accessibles librement et publiquement lors de la publication. \nLes exceptions peuvent inclure des situations où les informations, les données ou le code sont sensibles pour des raisons de sécurité de la recherche, des intérêts propriétaires, des restrictions tierces ou sont régis par des accords juridiques, éthiques ou de confidentialité.",
-    "pls-locale": "Langue source du résumé en language clair"
+    "pls-locale": "Langue source du résumé en language clair",
+    "pls-source-language-title": "Langage source pour le RLC",
+    "pls-source-language-description": "Veuillez sélectionner la langue officielle que vous utiliserez pour votre résumé de la langue claire. \nVous pouvez fournir des résumés en anglais et en français, mais seule la langue sélectionnée est nécessaire pour soumettre votre manuscrit.",
+    "ai-powered-tools": "Outils alimentés par AI"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",
@@ -827,7 +830,7 @@
     "peer-reviewer": "Évaluateurs",
     "no-reviewers": "Aucun évaluateur. \nVeuillez en ajouter au moins deux, si applicable pour votre rapport.",
     "add-peer-reviewer": "Ajouté un évaluateur",
-    "delete-peer-reviewer-confirm": "Êtes-vous sûr de vouloir supprimer cet évaluateur ?"
+    "delete-peer-reviewer-confirm": "Êtes-vous sûr de vouloir supprimer cet évaluateur?"
   },
   "manuscript-peer-reviewer-dialog": {
     "instructions": "Recherchez l'évaluateur que vous souhaitez ajouter en utilisant son nom ou son adresse e-mail professionnelle. Si vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse électronique a changé, vous pouvez créer une nouvelle fiche d'auteur."
@@ -865,7 +868,7 @@
     "with-orcid-caption": "Auteurs avec un ORCID associé"
   },
   "publication-supplementary": {
-    "upload-hint": "Seuls les fichiers PDF ou Word sont acceptés. \nLa taille maximale du fichier est de {max} Mo."
+    "upload-hint": "Seuls les fichiers PDF ou Word sont acceptés. \nLa taille maximale du fichier est de {max} Mo."
   },
   "submit-to-pub-team-dialog": {
     "text": "Félicitations! L'équipe de publication du SEO prendra contact avec vous et/ou les auteurs correspondants peu après la soumission.",

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ManuscriptRecord } from '../ManuscriptRecord'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 import { UtilityService } from '@/api/utils'
 import LocaleSelect from '@/components/LocaleSelect.vue'
 import QuestionEditor from '@/components/QuestionEditor.vue'
@@ -163,100 +164,230 @@ async function translatePLS() {
 </script>
 
 <template>
+  <!-- Section Header -->
   <div class="q-mb-lg">
-    <div class="q-ml-xs">
-      <div class="text-body1 text-primary text-weight-medium">
-        {{ $t('common.plain-language-summary') }}
-      </div>
-      <div class="q-my-xs">
-        <p>
+    <div class="row items-center q-mb-md">
+      <div class="col">
+        <div class="text-h6 text-primary text-weight-medium">
+          {{ $t('common.plain-language-summary') }}
+        </div>
+        <div class="text-body2 text-grey-7 q-mt-xs">
           {{ $t('mrf.pls-text') }}
-        </p>
+        </div>
       </div>
     </div>
-    <div>
-      <div class="text-body2 text-primary">
-        Source Language for the PLS<RequiredSpan />
-      </div>
-      <p>
-        Please select the official language you will use for your plain language summary. You may provide both English and French summaries, but only the selected language is required to submit your manuscript.
-      </p>
-      <LocaleSelect v-model="manuscriptData.pls_source_language" :label="t('mrf.pls-locale')" />
-    </div>
-    <div class="row items-center justify-between q-mt-lg">
-      <div class="col text-body2 text-grey-8">
-        <q-icon name="mdi-information-outline" class="q-mr-xs" />
-        {{ $t('mrf.pls-help-ai-text') }}
-      </div>
-      <div class="col-auto row">
-        <q-btn
-          color="primary"
-          :label="$t('mrf.generate-pls')"
-          icon="mdi-brain"
-          outline
-          rounded
-          :disable="!enablePLSPrompt"
-          :loading="PLSLoading"
-          class="q-ml-sm"
-          @click="generatePLS"
-        >
-          <q-tooltip v-if="!enablePLSPrompt" class="text-body2">
-            {{ plsDisabledTooltip }}
-          </q-tooltip>
-        </q-btn>
-        <q-btn
-          color="secondary"
-          :label="$t('mrf.translate-pls')"
-          icon="mdi-translate"
-          outline
-          rounded
-          :disable="!enableTranslatePLS"
-          :loading="translateLoading"
-          class="q-ml-sm"
-          @click="translatePLS"
-        >
-          <q-tooltip v-if="!enableTranslatePLS" class="text-body2">
-            {{ translateDisabledTooltip }}
-          </q-tooltip>
-        </q-btn>
-      </div>
-    </div>
+
+    <!-- Source Language Selection Card -->
+    <q-card flat bordered class="q-mb-lg">
+      <q-card-section>
+        <div class="text-subtitle2 text-primary q-mb-xs">
+          <q-icon name="mdi-translate" class="q-mr-xs" />
+          {{ $t('mrf.pls-source-language-title') }}<RequiredSpan />
+        </div>
+        <div class="text-body2 text-grey-7 q-mb-md">
+          {{ $t('mrf.pls-source-language-description') }}
+        </div>
+        <LocaleSelect
+          v-model="manuscriptData.pls_source_language"
+          :label="t('mrf.pls-locale')"
+          outlined
+          dense
+          class="q-mb-md"
+        />
+      </q-card-section>
+    </q-card>
+
+    <!-- AI Tools Section -->
+    <q-card flat bordered class="q-mb-lg">
+      <q-card-section>
+        <div class="row items-center justify-between">
+          <div class="col">
+            <div class="text-subtitle2 text-primary q-mb-xs">
+              <q-icon name="mdi-robot" class="q-mr-xs" />
+              {{ $t('mrf.ai-powered-tools') }}
+            </div>
+            <div class="text-body2 text-grey-7">
+              <q-icon name="mdi-information-outline" size="xs" class="q-mr-xs" />
+              {{ $t('mrf.pls-help-ai-text') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="row q-gutter-sm q-mt-md">
+          <q-btn
+            color="primary"
+            :label="PLSLoading ? $t('mrf.generating-pls-please-be-patient') : $t('mrf.generate-pls')"
+            :icon="PLSLoading ? 'mdi-loading mdi-spin' : 'mdi-brain'"
+            unelevated
+            :disable="!enablePLSPrompt"
+            :loading="PLSLoading"
+            class="q-px-lg"
+            @click="generatePLS"
+          >
+            <q-tooltip v-if="!enablePLSPrompt" class="text-body2">
+              {{ plsDisabledTooltip }}
+            </q-tooltip>
+          </q-btn>
+
+          <q-btn
+            color="secondary"
+            :label="translateLoading ? $t('mrf.translating-pls-please-be-patient') : $t('mrf.translate-pls')"
+            :icon="translateLoading ? 'mdi-loading mdi-spin' : 'mdi-translate'"
+            unelevated
+            :disable="!enableTranslatePLS"
+            :loading="translateLoading"
+            class="q-px-lg"
+            @click="translatePLS"
+          >
+            <q-tooltip v-if="!enableTranslatePLS" class="text-body2">
+              {{ translateDisabledTooltip }}
+            </q-tooltip>
+          </q-btn>
+        </div>
+      </q-card-section>
+    </q-card>
   </div>
-  <!-- Display the source language PLS editor first -->
-  <template v-if="manuscriptData.pls_source_language === 'en'">
-    <QuestionEditor
-      v-model="manuscriptData.pls_en"
-      :title="$t('common.plain-language-summary-en')"
-      :disable="loading || PLSLoading"
-      :readonly="readonly"
-      :required="true"
-      class="q-mb-md"
-    />
-    <QuestionEditor
-      v-model="manuscriptData.pls_fr"
-      :title="$t('common.plain-language-summary-fr')"
-      :disable="loading || PLSLoading"
-      :readonly="readonly"
-      :required="false"
-      class="q-mb-md"
-    />
-  </template>
-  <template v-else>
-    <QuestionEditor
-      v-model="manuscriptData.pls_fr"
-      :title="$t('common.plain-language-summary-fr')"
-      :disable="loading || PLSLoading"
-      :readonly="readonly"
-      :required="true"
-      class="q-mb-md"
-    />
-    <QuestionEditor
-      v-model="manuscriptData.pls_en"
-      :title="$t('common.plain-language-summary-en')"
-      :disable="loading || PLSLoading"
-      :readonly="readonly"
-      :required="false"
-      class="q-mb-md"
-    />
-  </template>
+  <!-- PLS Editors with Better Visual Indicators -->
+  <div class="q-mb-lg">
+    <!-- Dynamic Editor Order Based on Source Language -->
+    <template v-if="manuscriptData.pls_source_language === 'en'">
+      <!-- English (Primary) -->
+      <q-card flat bordered class="q-mb-md">
+        <q-card-section class="q-pb-sm">
+          <div class="row items-center">
+            <div class="col">
+              <div class="text-subtitle2 text-primary">
+                <q-icon name="mdi-star" color="primary" size="xs" class="q-mr-xs" />
+                {{ $t('common.plain-language-summary-en') }}
+                <q-chip dense color="primary" text-color="white" size="sm" class="q-ml-sm">
+                  {{ $t('common.required') }}
+                </q-chip>
+              </div>
+            </div>
+            <div class="col-auto">
+              <q-badge v-if="manuscriptData.pls_en" color="positive" outline>
+                <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
+                {{ $t('common.completed') }}
+              </q-badge>
+            </div>
+          </div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section>
+          <QuestionEditor
+            v-model="manuscriptData.pls_en"
+            :title="$t('common.plain-language-summary-en')"
+            :disable="loading || PLSLoading"
+            :readonly="readonly"
+            :required="true"
+            hide-title
+          />
+        </q-card-section>
+      </q-card>
+
+      <!-- French (Optional) -->
+      <q-card flat bordered class="q-mb-md">
+        <q-card-section class="q-pb-sm">
+          <div class="row items-center">
+            <div class="col">
+              <div class="text-subtitle2 text-grey-7">
+                <q-icon name="mdi-circle-outline" color="grey-5" size="xs" class="q-mr-xs" />
+                {{ $t('common.plain-language-summary-fr') }}
+                <q-chip dense color="grey-5" text-color="white" size="sm" class="q-ml-sm">
+                  {{ $t('common.optional') }}
+                </q-chip>
+              </div>
+            </div>
+            <div class="col-auto">
+              <q-badge v-if="manuscriptData.pls_fr" color="positive" outline>
+                <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
+                {{ $t('common.completed') }}
+              </q-badge>
+            </div>
+          </div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section>
+          <QuestionEditor
+            v-model="manuscriptData.pls_fr"
+            :title="$t('common.plain-language-summary-fr')"
+            :disable="loading || PLSLoading"
+            :readonly="readonly"
+            :required="false"
+            hide-title
+          />
+        </q-card-section>
+      </q-card>
+    </template>
+
+    <template v-else>
+      <!-- French (Primary) -->
+      <q-card flat bordered class="q-mb-md">
+        <q-card-section class="q-pb-sm">
+          <div class="row items-center">
+            <div class="col">
+              <div class="text-subtitle2 text-primary">
+                <q-icon name="mdi-star" color="primary" size="xs" class="q-mr-xs" />
+                {{ $t('common.plain-language-summary-fr') }}
+                <q-chip dense color="primary" text-color="white" size="sm" class="q-ml-sm">
+                  {{ $t('common.required') }}
+                </q-chip>
+              </div>
+            </div>
+            <div class="col-auto">
+              <q-badge v-if="manuscriptData.pls_fr" color="positive" outline>
+                <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
+                {{ $t('common.completed') }}
+              </q-badge>
+            </div>
+          </div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section>
+          <QuestionEditor
+            v-model="manuscriptData.pls_fr"
+            :title="$t('common.plain-language-summary-fr')"
+            :disable="loading || PLSLoading"
+            :readonly="readonly"
+            :required="true"
+            hide-title
+          />
+        </q-card-section>
+      </q-card>
+
+      <!-- English (Optional) -->
+      <q-card flat bordered class="q-mb-md">
+        <q-card-section class="q-pb-sm">
+          <div class="row items-center">
+            <div class="col">
+              <div class="text-subtitle2 text-grey-7">
+                <q-icon name="mdi-circle-outline" color="grey-5" size="xs" class="q-mr-xs" />
+                {{ $t('common.plain-language-summary-en') }}
+                <q-chip dense color="grey-5" text-color="white" size="sm" class="q-ml-sm">
+                  {{ $t('common.optional') }}
+                </q-chip>
+              </div>
+            </div>
+            <div class="col-auto">
+              <q-badge v-if="manuscriptData.pls_en" color="positive" outline>
+                <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
+                {{ $t('common.completed') }}
+              </q-badge>
+            </div>
+          </div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section>
+          <QuestionEditor
+            v-model="manuscriptData.pls_en"
+            :title="$t('common.plain-language-summary-en')"
+            :disable="loading || PLSLoading"
+            :readonly="readonly"
+            :required="false"
+            hide-title
+          />
+        </q-card-section>
+      </q-card>
+    </template>
+  </div>
 </template>
