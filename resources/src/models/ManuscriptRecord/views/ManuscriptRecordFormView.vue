@@ -4,7 +4,6 @@ import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
 import { QForm, useQuasar } from 'quasar'
-import manifestSRI from 'vite-plugin-manifest-sri'
 import { UtilityService } from '@/api/utils'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
@@ -96,11 +95,15 @@ const generalSectionStatus = computed(() => {
   }
 
   const complete
-        = manuscript.title !== ''
-          && manuscript.abstract !== ''
-          && manuscript.pls_en !== ''
-          && manuscript.pls_fr !== ''
-          && manuscript.relevant_to
+    = manuscript.title !== ''
+      && manuscript.abstract !== ''
+      && manuscript.relevant_to
+      && manuscript.functional_area_id
+      && manuscript.region_id
+      && (
+        (manuscript.pls_source_language === 'en' && manuscript.pls_en !== '')
+        || (manuscript.pls_source_language === 'fr' && manuscript.pls_fr !== '')
+      )
 
   return complete ? 'complete' : 'incomplete'
 })
@@ -479,7 +482,9 @@ async function generatePLS() {
               <div class="text-body2 text-primary">
                 Source Language for the PLS<RequiredSpan />
               </div>
-              <p>The author is responsible to provide a plain language summary in one of the official language. Please select the language you would like to use here. You will be able to fill both languages but only the chosen language will be required to submit the manuscript for review.</p>
+              <p>
+                Please select the official language you will use for your plain language summary. You may provide both English and French summaries, but only the selected language is required to submit your manuscript.
+              </p>
               <LocaleSelect v-model="manuscriptResource.data.pls_source_language" :label="t('mrf.pls-locale')" />
             </div>
             <div class="row items-center justify-between q-mt-lg">
