@@ -4,10 +4,8 @@ import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
 import { QForm, useQuasar } from 'quasar'
-import { UtilityService } from '@/api/utils'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
-import LocaleSelect from '@/components/LocaleSelect.vue'
 import QuestionEditor from '@/components/QuestionEditor.vue'
 import RequiredSpan from '@/components/RequiredSpan.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
@@ -21,6 +19,7 @@ import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue'
 import ManuscriptFileManagementCard from '../components/ManuscriptFileManagementCard.vue'
 import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue'
 import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue'
+import PlainLanguageSummarySection from '../components/PlainLanguageSummarySection.vue'
 import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue'
 import YesNoBooleanOptionGroup from '../components/YesNoBooleanOptionGroup.vue'
 import {
@@ -214,77 +213,6 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
     dirtyWatcherDisabled.value = false
   }, 2000)
 }
-
-// PLS generation
-const PLSLoading = ref(false)
-
-const enablePLSPrompt = computed(() => {
-  if (!manuscriptResource.value?.data) {
-    return false
-  }
-
-  const locale = manuscriptResource.value.data.pls_source_language
-
-  return (
-    !isManuscriptReadOnly.value
-    && (manuscriptResource.value.data[`pls_${locale}`] === '')
-    && manuscriptResource.value.data.abstract.length > 250
-    && !PLSLoading.value
-  )
-})
-
-const plsDisabledTooltip = computed(() => {
-  if (!manuscriptResource.value?.data) {
-    return ''
-  }
-
-  const locale = manuscriptResource.value.data.pls_source_language
-
-  if (manuscriptResource.value.data[`pls_${locale}`] !== '') {
-    return t('mrf.pls-already-generated-erase-it-to-generate-a-new-one')
-  }
-
-  if (manuscriptResource.value.data.abstract.length < 250) {
-    return t('mrf.abstract-must-be-at-least-250-characters')
-  }
-
-  return ''
-})
-
-async function generatePLS() {
-  PLSLoading.value = true
-  if (!manuscriptResource.value?.data.abstract)
-    return
-  if (manuscriptResource.value?.data.abstract === '')
-    return
-
-  // which pls are we generating - this is based on
-  const locale = manuscriptResource.value?.data.pls_source_language
-
-  manuscriptResource.value.data[`pls_${locale}`] = t(
-    'mrf.generating-pls-please-be-patient',
-  )
-
-  await UtilityService.generatePls(manuscriptResource.value.data.abstract, locale)
-    .then((response) => {
-      if (!manuscriptResource.value)
-        return
-
-      manuscriptResource.value.data[`pls_${locale}`] = response.data.pls
-
-      $q.notify({
-        type: 'positive',
-        color: 'primary',
-        message: t('mrf.pls-generated-successfully'),
-      })
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-    .finally(() => {
-      PLSLoading.value = false
-    })
-}
 </script>
 
 <template>
@@ -467,65 +395,10 @@ async function generatePLS() {
               {{ $t('mrf.copy-your-manuscripts-abstract-here') }}
             </p>
           </QuestionEditor>
-          <div class="q-mb-lg">
-            <div class="q-ml-xs">
-              <div class="text-body1 text-primary text-weight-medium">
-                {{ $t('common.plain-language-summary') }}
-              </div>
-              <div class="q-my-xs">
-                <p>
-                  {{ $t('mrf.pls-text') }}
-                </p>
-              </div>
-            </div>
-            <div>
-              <div class="text-body2 text-primary">
-                Source Language for the PLS<RequiredSpan />
-              </div>
-              <p>
-                Please select the official language you will use for your plain language summary. You may provide both English and French summaries, but only the selected language is required to submit your manuscript.
-              </p>
-              <LocaleSelect v-model="manuscriptResource.data.pls_source_language" :label="t('mrf.pls-locale')" />
-            </div>
-            <div class="row items-center justify-between q-mt-lg">
-              <div class="col text-body2 text-grey-8">
-                <q-icon name="mdi-information-outline" class="q-mr-xs" />
-                {{ $t('mrf.pls-help-ai-text') }}
-              </div>
-              <div class="col-auto">
-                <q-btn
-                  color="primary"
-                  :label="$t('mrf.generate-pls')"
-                  icon="mdi-brain"
-                  outline
-                  rounded
-                  :disable="!enablePLSPrompt"
-                  :loading="PLSLoading"
-                  class="q-ml-sm"
-                  @click="generatePLS"
-                >
-                  <q-tooltip v-if="!enablePLSPrompt" class="text-body2">
-                    {{ plsDisabledTooltip }}
-                  </q-tooltip>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-          <QuestionEditor
-            v-model="manuscriptResource.data.pls_en"
-            :title="$t('common.plain-language-summary-en')"
-            :disable="loading || PLSLoading"
+          <PlainLanguageSummarySection
+            v-model="manuscriptResource.data"
+            :loading="loading"
             :readonly="isManuscriptReadOnly"
-            :required="manuscriptResource.data.pls_source_language === 'en'"
-            class="q-mb-md"
-          />
-          <QuestionEditor
-            v-model="manuscriptResource.data.pls_fr"
-            :title="$t('common.plain-language-summary-fr')"
-            :disable="loading || PLSLoading"
-            :readonly="isManuscriptReadOnly"
-            :required="manuscriptResource.data.pls_source_language === 'fr'"
-            class="q-mb-md"
           />
           <div class="q-mb-lg">
             <div class="q-ml-xs">
