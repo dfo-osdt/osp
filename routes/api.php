@@ -231,6 +231,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/functional-areas', [FunctionalAreaController::class, 'index']);
 
     Route::prefix('utils')->group(function () {
-        Route::post('/generate-pls', GeneratePLSController::class);
+        Route::post('/generate-pls', [GeneratePLSController::class, 'generate']);
+        Route::post('/translate-pls', [GeneratePLSController::class, 'translate']);
     });
 });

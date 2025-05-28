@@ -51,6 +51,8 @@ class ManuscriptRecordFactory extends Factory
             'abstract' => $this->faker->paragraph(),
             'pls_en' => $this->faker->paragraph(),
             'pls_fr' => $this->faker->paragraph(),
+            'pls_source_language' => 'en',
+            'pls_approved_by_author' => true,
             'relevant_to' => $this->faker->paragraph(),
             'potential_public_interest' => $this->faker->boolean(),
             'public_interest_information' => $this->faker->paragraph(),

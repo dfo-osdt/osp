@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use OpenAI;
-use OpenAI\Laravel\Facades\OpenAI as OpenAILaravel;
 
 /**
  * This controller will use the the OpenAI API to summarize scientific
@@ -18,9 +17,6 @@ use OpenAI\Laravel\Facades\OpenAI as OpenAILaravel;
  */
 class GeneratePLSController extends Controller
 {
-    // When working on this prompt refer to this article:
-    // https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-openai-api
-
     private bool $useOllama = false;
 
     private ?string $ollamaModel = null;
@@ -34,46 +30,53 @@ class GeneratePLSController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request): JsonResponse
+    public function generate(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'abstract' => 'required|string|max:3000',
+            'locale' => 'required|string|in:en,fr',
         ]);
+
+        $locale = match ($validated['locale']) {
+            'fr' => 'French',
+            default => 'English',
+        };
 
         // clean up the abstract - it could have html tags we don't want
         $validated['abstract'] = strip_tags($validated['abstract']);
 
-        if ($this->useOllama) {
-            return $this->queryOllama($validated['abstract']);
-        } else {
-            return $this->queryOpenAi($validated['abstract']);
-        }
+        return $this->generateWithOllama($validated['abstract'], $locale);
     }
 
-    /**
-     * Query the OpenAI API to generate a PLS.
-     */
-    private function queryOpenAi(string $abstract): JsonResponse
+    public function translate(Request $request): JsonResponse
     {
+        $validated = $request->validate([
+            'abstract' => 'required|string|max:3000',
+            'locale' => 'required|string|in:en,fr',
+        ]);
 
-        $result = OpenAILaravel::completions()->create($this->buildOpenAiPrompt($abstract));
+        $locale = match ($validated['locale']) {
+            'fr' => 'French',
+            default => 'English',
+        };
 
-        if (isset($result['choices'][0]['text'])) {
-            $pls = $result['choices'][0]['text'];
+        // clean up the PLS - it could have html tags we don't want
+        $validated['abstract'] = strip_tags($validated['abstract']);
 
-            return $this->respond($pls, $pls);
+        if ($this->useOllama) {
+            return $this->translateWithOllama($validated['abstract'], $locale);
+        } else {
+            return $this->error('Feature temporarily unavailable.');
         }
-
-        return $this->error();
     }
 
     /**
      * Query the a local Ollama API to generate a PLS.
      */
-    private function queryOllama(string $abstract): JsonResponse
+    private function generateWithOllama(string $abstract, string $locale): JsonResponse
     {
         $connector = new OllamaConnector;
-        $request = new CompletionRequest($this->buildOllamaRequest($abstract, 'English'));
+        $request = new CompletionRequest($this->buildPlsGenerationOllamaRequest($abstract, $locale));
         $response = $connector->send($request);
 
         if ($response->failed()) {
@@ -83,25 +86,33 @@ class GeneratePLSController extends Controller
         }
 
         $completion = $request->createDtoFromResponse($response);
-        $pls_en = $completion->response;
+        $pls = $completion->response;
 
-        $connector = new OllamaConnector;
-        $request = new CompletionRequest($this->buildOllamaTranslateRequest($pls_en));
-        $response = $connector->send($request);
-
-        if ($response->failed()) {
-            Log::error('Ollama request failed', ['response' => $response]);
-
-            return $this->error();
-        }
-
-        $completion = $request->createDtoFromResponse($response);
-        $pls_fr = $completion->response;
-
-        return $this->respond($pls_en, $pls_fr);
+        return $this->respond($pls);
     }
 
-    private function buildOllamaRequest(string $abstract, string $locale): CompletionRequestData
+    /**
+     * Translate with Ollama
+     */
+    private function translateWithOllama(string $pls, string $locale): JsonResponse
+    {
+        $connector = new OllamaConnector;
+        $request = new CompletionRequest($this->buildOllamaTranslateRequest($pls, $locale));
+        $response = $connector->send($request);
+
+        if ($response->failed()) {
+            Log::error('Ollama request failed', ['response' => $response]);
+
+            return $this->error();
+        }
+
+        $completion = $request->createDtoFromResponse($response);
+        $pls = $completion->response;
+
+        return $this->respond($pls);
+    }
+
+    private function buildPlsGenerationOllamaRequest(string $abstract, string $locale): CompletionRequestData
     {
 
         $prompt = 'Give me plain language summary in '.$locale." for this
@@ -124,11 +135,11 @@ class GeneratePLSController extends Controller
         ]);
     }
 
-    private function buildOllamaTranslateRequest(string $abstract): CompletionRequestData
+    private function buildOllamaTranslateRequest(string $abstract, string $locale): CompletionRequestData
     {
-        $prompt = "Translate the following plain language summary to French. Do
-        not include introductory phrases in either french or english, your
-        output must contain only the exact translation from this text:
+        $prompt = "Translate the following plain language summary to {$locale}.
+        Do not include introductory phrases, your output must contain only the
+        exact translation from this text:
         ###\n".$abstract."\n###";
 
         return CompletionRequestData::from([
@@ -142,38 +153,13 @@ class GeneratePLSController extends Controller
     }
 
     /**
-     * Build the OpenAI query options.
-     *
-     * @param  string  $abstract
-     */
-    private function buildOpenAiPrompt($abstract): array
-    {
-        $basePrompt = 'Give me a 150 to 250 word plain language summary in both
-        english and french for this text. It is written in a way that is
-        difficult for most people to understand. Summarize it so that someone
-        with a high-school education can understand. Do not include any other
-        text.';
-
-        $prompt = $basePrompt."\n\n Text: ###\n".$abstract."\n###";
-        $model = 'gpt-3.5-turbo-instruct';
-
-        return [
-            'model' => $model,
-            'prompt' => $prompt,
-            'temperature' => 0.3,
-            'max_tokens' => 500,
-        ];
-    }
-
-    /**
      * Respond with the PLS.
      */
-    private function respond(string $pls_en, string $pls_fr): JsonResponse
+    private function respond(string $pls): JsonResponse
     {
         return response()->json([
             'data' => [
-                'pls_en' => $pls_en,
-                'pls_fr' => $pls_fr,
+                'pls' => $pls,
             ],
         ]);
     }

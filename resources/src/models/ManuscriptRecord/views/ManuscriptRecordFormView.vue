@@ -4,9 +4,11 @@ import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
 import { QForm, useQuasar } from 'quasar'
+import manifestSRI from 'vite-plugin-manifest-sri'
 import { UtilityService } from '@/api/utils'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
+import LocaleSelect from '@/components/LocaleSelect.vue'
 import QuestionEditor from '@/components/QuestionEditor.vue'
 import RequiredSpan from '@/components/RequiredSpan.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
@@ -218,10 +220,11 @@ const enablePLSPrompt = computed(() => {
     return false
   }
 
+  const locale = manuscriptResource.value.data.pls_source_language
+
   return (
     !isManuscriptReadOnly.value
-    && (manuscriptResource.value.data.pls_en === '')
-    && (manuscriptResource.value.data.pls_fr === '')
+    && (manuscriptResource.value.data[`pls_${locale}`] === '')
     && manuscriptResource.value.data.abstract.length > 250
     && !PLSLoading.value
   )
@@ -232,7 +235,9 @@ const plsDisabledTooltip = computed(() => {
     return ''
   }
 
-  if (manuscriptResource.value.data.pls_en !== '' || manuscriptResource.value.data.pls_fr !== '') {
+  const locale = manuscriptResource.value.data.pls_source_language
+
+  if (manuscriptResource.value.data[`pls_${locale}`] !== '') {
     return t('mrf.pls-already-generated-erase-it-to-generate-a-new-one')
   }
 
@@ -249,19 +254,20 @@ async function generatePLS() {
     return
   if (manuscriptResource.value?.data.abstract === '')
     return
-  manuscriptResource.value.data.pls_en = t(
+
+  // which pls are we generating - this is based on
+  const locale = manuscriptResource.value?.data.pls_source_language
+
+  manuscriptResource.value.data[`pls_${locale}`] = t(
     'mrf.generating-pls-please-be-patient',
   )
-  manuscriptResource.value.data.pls_fr = t(
-    'mrf.generating-pls-please-be-patient',
-  )
-  await UtilityService.generatePls(manuscriptResource.value.data.abstract)
+
+  await UtilityService.generatePls(manuscriptResource.value.data.abstract, locale)
     .then((response) => {
       if (!manuscriptResource.value)
         return
 
-      manuscriptResource.value.data.pls_en = response.data.pls_en
-      manuscriptResource.value.data.pls_fr = response.data.pls_fr
+      manuscriptResource.value.data[`pls_${locale}`] = response.data.pls
 
       $q.notify({
         type: 'positive',
@@ -469,7 +475,14 @@ async function generatePLS() {
                 </p>
               </div>
             </div>
-            <div class="row items-center justify-between q-mt-sm">
+            <div>
+              <div class="text-body2 text-primary">
+                Source Language for the PLS<RequiredSpan />
+              </div>
+              <p>The author is responsible to provide a plain language summary in one of the official language. Please select the language you would like to use here. You will be able to fill both languages but only the chosen language will be required to submit the manuscript for review.</p>
+              <LocaleSelect v-model="manuscriptResource.data.pls_source_language" :label="t('mrf.pls-locale')" />
+            </div>
+            <div class="row items-center justify-between q-mt-lg">
               <div class="col text-body2 text-grey-8">
                 <q-icon name="mdi-information-outline" class="q-mr-xs" />
                 {{ $t('mrf.pls-help-ai-text') }}
@@ -498,7 +511,7 @@ async function generatePLS() {
             :title="$t('common.plain-language-summary-en')"
             :disable="loading || PLSLoading"
             :readonly="isManuscriptReadOnly"
-            required
+            :required="manuscriptResource.data.pls_source_language === 'en'"
             class="q-mb-md"
           />
           <QuestionEditor
@@ -506,7 +519,7 @@ async function generatePLS() {
             :title="$t('common.plain-language-summary-fr')"
             :disable="loading || PLSLoading"
             :readonly="isManuscriptReadOnly"
-            required
+            :required="manuscriptResource.data.pls_source_language === 'fr'"
             class="q-mb-md"
           />
           <div class="q-mb-lg">

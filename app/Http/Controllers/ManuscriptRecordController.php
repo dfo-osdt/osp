@@ -76,6 +76,7 @@ class ManuscriptRecordController extends Controller
             'abstract' => 'nullable|string',
             'pls_en' => 'nullable|string',
             'pls_fr' => 'nullable|string',
+            'pls_source_language' => 'in:en,fr',
             'relevant_to' => 'nullable|string',
             'public_interest_information' => 'nullable|string',
             'potential_public_interest' => 'boolean',

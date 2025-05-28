@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useQuasar } from 'quasar'
 import type { User } from '../User'
-import { UserService } from '../User'
+import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import LocaleSelect from '@/components/LocaleSelect.vue'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
+import { UserService } from '../User'
 
 const props = defineProps<{
   userId: number
@@ -83,7 +83,7 @@ async function save() {
           :disable="true"
           :hint="t('user-profile.email-hint')"
         />
-        <LocaleSelect v-model="user.locale" />
+        <LocaleSelect v-model="user.locale" class="col-12 col-md-6" />
       </div>
       <q-card-actions align="right">
         <q-btn

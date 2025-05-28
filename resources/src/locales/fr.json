@@ -576,7 +576,8 @@
     "ready-to-submit-preprint": "Ce manuscrit a terminé son examen de la gestion et est maintenant prêt à se soumettre à un serveur de prépublication.",
     "open-access-rationale-text-field-text": "Avez-vous l’intention de rendre votre publication en libre accès (p. ex. en publiant dans une revue en libre accès, en choisissant l’option libre accès dans une revue hybride ou en déposant dans un dépôt institutionnel ou disciplinaire)?",
     "open-access-rationale-text": "Puisque vous avez répondu \"non\", veuillez fournir votre justification.",
-    "intends_open_access": "Toutes les publications doivent suivre l'ouverture par conception et par défaut. À moins qu'une exception ne s'applique, vos publications doivent être accessibles librement et publiquement lors de la publication. \nLes exceptions peuvent inclure des situations où les informations, les données ou le code sont sensibles pour des raisons de sécurité de la recherche, des intérêts propriétaires, des restrictions tierces ou sont régis par des accords juridiques, éthiques ou de confidentialité."
+    "intends_open_access": "Toutes les publications doivent suivre l'ouverture par conception et par défaut. À moins qu'une exception ne s'applique, vos publications doivent être accessibles librement et publiquement lors de la publication. \nLes exceptions peuvent inclure des situations où les informations, les données ou le code sont sensibles pour des raisons de sécurité de la recherche, des intérêts propriétaires, des restrictions tierces ou sont régis par des accords juridiques, éthiques ou de confidentialité.",
+    "pls-locale": "Langue source du résumé en language clair"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",

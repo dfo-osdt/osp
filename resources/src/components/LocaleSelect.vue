@@ -3,6 +3,7 @@ import type { Locale } from '@/stores/LocaleStore'
 
 const props = defineProps<{
   modelValue: Locale
+  label?: string
 }>()
 
 const emit = defineEmits<{
@@ -12,6 +13,8 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 const locale = useVModel(props, 'modelValue', emit)
+
+const label = computed(() => props.label || t('LocaleSelect.label'))
 
 const options = computed(() => [
   { label: t('common.english'), value: 'en' },
@@ -24,8 +27,7 @@ const options = computed(() => [
     v-model="locale"
     emit-value
     map-options
-    class="col-12 col-md-6"
-    :label="$t('LocaleSelect.label')"
+    :label="label"
     outlined
     :options="options"
   />
