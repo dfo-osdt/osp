@@ -251,7 +251,6 @@ class ManuscriptRecordController extends Controller
         return $this->defaultResource($manuscriptRecord);
     }
 
-
     public function clone(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('view', $manuscriptRecord);
