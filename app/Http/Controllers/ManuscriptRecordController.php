@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CloneManuscriptRecord;
 use App\Actions\CreatePublicationFromManuscript;
 use App\Actions\DeleteManuscriptRecord;
 use App\Enums\ManuscriptRecordStatus;
@@ -248,6 +249,26 @@ class ManuscriptRecordController extends Controller
         }
 
         return $this->defaultResource($manuscriptRecord);
+    }
+
+
+    public function clone(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
+    {
+        Gate::authorize('view', $manuscriptRecord);
+
+        $validated = $request->validate([
+            'type' => ['required', new Enum(ManuscriptRecordType::class)],
+        ]);
+
+        $type = ManuscriptRecordType::tryFrom($validated['type']);
+
+        $clone = CloneManuscriptRecord::handle(
+            manuscriptRecord: $manuscriptRecord,
+            user: Auth::user(),
+            type: $type
+        );
+
+        return $this->defaultResource($clone);
     }
 
     /** Returns basic metadata on MRF all users area allowed to see */
