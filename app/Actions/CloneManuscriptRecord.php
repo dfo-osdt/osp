@@ -46,6 +46,7 @@ class CloneManuscriptRecord
         $clone = $manuscriptRecord->replicate($exceptedAttributes);
         $clone->user_id = $user->id; // applicant will be changed to the current user
         $clone->type = $type; // Allow changing the type
+        $clone->title = $manuscriptRecord->title . ' (Clone)'; // Append "(Clone)" to the title
         $clone->status = ManuscriptRecordStatus::DRAFT; // Reset status to Draft
         $clone->save();
 
