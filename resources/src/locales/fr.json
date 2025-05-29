@@ -16,7 +16,8 @@
     "user-roles-description": "Chaque rôle d'utilisateur accorde des autorisations différentes au sein du portail. \nSi vous pensez que vous devriez avoir des rôles supplémentaires, veuillez nous contacter."
   },
   "accepted-by-journal-dialog": {
-    "text": "Vous pouvez maintenant marquer ce manuscrit comme ayant été accepté pour publication par une revue. \nCette étape créera une nouvelle publication sur votre profil vous permettant de mettre à jour les détails de la publication. \nUne fois que vous connaissez les détails de la publication, n'oubliez pas de mettre à jour le dossier de publication et de le marquer comme publié afin que nous puissions aider à le partager au sein de la communauté du MPO."
+    "text": "Vous pouvez maintenant marquer ce manuscrit comme ayant été accepté pour publication par une revue. \nCette étape créera une nouvelle publication sur votre profil vous permettant de mettre à jour les détails de la publication. \nUne fois que vous connaissez les détails de la publication, n'oubliez pas de mettre à jour le dossier de publication et de le marquer comme publié afin que nous puissions aider à le partager au sein de la communauté du MPO.",
+    "title": "Journal accepté pour publication"
   },
   "add-pub-author-dialog": {
     "dialog-help": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse e-mail a changé, vous pouvez créer une nouvelle fiche d'auteur.",
@@ -294,7 +295,10 @@
     "view-preprint": "Lien externe",
     "preprints": "Prépublications",
     "plain-language-summary-en": "Résumé en langage clair - Anglais",
-    "plain-language-summary-fr": "Résumé en langage clair - Français"
+    "plain-language-summary-fr": "Résumé en langage clair - Français",
+    "announcements": "Cliquez ici pour afficher l'annonce en sourdine | \nCliquez ici pour afficher les annonces {count} en mourti",
+    "preprint-url-placeholder": "https://doi.org/ ..",
+    "submitted-to-preprint-on": "Date soumise au serveur préalable"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -526,7 +530,10 @@
     "completed-preprint-details": "Le manuscrit s'aligne avec la politique nationale des publications scientifiques du MPO et a été examiné par la gestion du MPO. \nÀ ce stade, vous pouvez désormais soumettre le manuscrit à un serveur de prépublication.",
     "submitted-to-preprint": "Soumettez votre manuscrit à un serveur de prépublication",
     "submitted-to-preprint-details": "Vous avez soumis votre manuscrit à un serveur de prépublication. \nSi le serveur attribue un DOI (identifiant d'objet numérique), veuillez vous assurer qu'il est fourni dans votre soumission. \nSi aucun DOI n'est disponible, une URL stable liée directement à la préparation doit être incluse.",
-    "submit-preprint-title": "Marquez comme publié"
+    "submit-preprint-title": "Marquez comme publié",
+    "edit-preprint-title": "Modifier la soumission de préparation",
+    "go-to-the-preprint": "Afficher la préimpression (externe)",
+    "preprint-url": "URL de préimpression"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",
@@ -593,7 +600,8 @@
     "pls-approval-required-warning": "L'approbation de l'auteur est requise avant la soumission",
     "pls-approval-disabled-no-content": "Complétez le résumé en langage clair avant l'approbation",
     "pls-content-description": "Rédigez votre résumé en langage clair dans la langue que vous avez sélectionnée ci-dessus. Vous pouvez également fournir une traduction optionnelle dans l'autre langue officielle.",
-    "pls-content-title": "Résumés en langage clair"
+    "pls-content-title": "Résumés en langage clair",
+    "open-access-rationale": "Publication ouverte"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",

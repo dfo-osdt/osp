@@ -4,8 +4,8 @@ import type {
   BaseManuscriptRecord,
   ManuscriptRecordType,
 } from '../ManuscriptRecord'
-import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import { QForm, QStepper } from 'quasar'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
@@ -240,7 +240,7 @@ async function create() {
                 :label="
                   step === 3
                     ? $t('common.create')
-                    : $t('common.contiue')
+                    : $t('common.continue')
                 "
                 class="q-mr-sm"
                 @click="next()"
