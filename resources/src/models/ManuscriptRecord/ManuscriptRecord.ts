@@ -1,3 +1,4 @@
+import type { StringOptions } from 'sass-embedded'
 import type { FunctionalArea } from '../FunctionalArea/FunctionalArea'
 import type { MediaResource, MediaResourceList } from '../Media/Media'
 import type { PublicationResource } from '../Publication/Publication'
@@ -8,6 +9,7 @@ import type {
 } from '../Resource'
 import type { UserResource } from '../User/User'
 import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
+import type { Locale } from '@/stores/LocaleStore'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
 
@@ -44,6 +46,9 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   abstract: string
   pls_en: string
   pls_fr: string
+  pls_source_language: Locale
+  pls_approved_by_author: boolean
+  pls_translation_approved: boolean
   relevant_to: string
   potential_public_interest: boolean
   public_interest_information: string

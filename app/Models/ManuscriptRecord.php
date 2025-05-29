@@ -50,6 +50,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property string|null $accepted_on
  * @property string|null $withdrawn_on
  * @property bool $potential_public_interest
+ * @property string|null $pls_source_language
+ * @property bool $pls_approved_by_author
+ * @property bool $pls_translation_approved
  * @property int|null $functional_area_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
@@ -150,6 +153,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         'potential_public_interest' => 'boolean',
         'apply_ogl' => 'boolean',
         'intends_open_access' => 'boolean',
+        'pls_approved_by_author' => 'boolean',
+        'pls_translation_approved' => 'boolean',
     ];
 
     // default values for optional fields
@@ -370,8 +375,10 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         $validator = Validator::make($this->toArray(), [
             'title' => 'required',
             'abstract' => 'required',
-            'pls_en' => 'required',
-            'pls_fr' => 'required',
+            'pls_en' => 'required_if:pls_source_language,en',
+            'pls_fr' => 'required_if:pls_source_language,fr',
+            'pls_source_language' => 'required|in:en,fr',
+            'pls_approved_by_author' => 'required|accepted',
             'relevant_to' => 'required',
             'region_id' => 'required|exists:regions,id',
             'functional_area_id' => 'required|exists:functional_areas,id',

@@ -209,6 +209,15 @@ test('a user can submit a filled manuscript record', function () {
     // random user cannot submit manuscript
     $this->actingAs($radomUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertForbidden();
 
+    // test the author must have approved the pls
+    $manuscript->pls_approved_by_author = false;
+    $manuscript->save();
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertStatus(422);
+
+    // approve the pls
+    $manuscript->pls_approved_by_author = true;
+    $manuscript->save();
+
     $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data);
     $response->assertOk();
 
