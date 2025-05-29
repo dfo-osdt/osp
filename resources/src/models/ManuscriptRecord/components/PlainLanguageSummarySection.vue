@@ -12,7 +12,7 @@ const props = defineProps<{
   readonly?: boolean
 }>()
 
-const manuscriptData = defineModel<ManuscriptRecord>({ required: true })
+const manuscript = defineModel<ManuscriptRecord>({ required: true })
 
 const { t } = useI18n()
 const $q = useQuasar()
@@ -22,50 +22,50 @@ const PLSLoading = ref(false)
 const translateLoading = ref(false)
 
 const enablePLSPrompt = computed(() => {
-  if (!manuscriptData.value) {
+  if (!manuscript.value) {
     return false
   }
 
-  const locale = manuscriptData.value.pls_source_language
+  const locale = manuscript.value.pls_source_language
 
   return (
     !props.readonly
-    && (manuscriptData.value[`pls_${locale}`] === '')
-    && manuscriptData.value.abstract.length > 250
+    && (manuscript.value[`pls_${locale}`] === '')
+    && manuscript.value.abstract.length > 250
     && !PLSLoading.value
   )
 })
 
 const enableTranslatePLS = computed(() => {
-  if (!manuscriptData.value) {
+  if (!manuscript.value) {
     return false
   }
 
-  const sourceLanguage = manuscriptData.value.pls_source_language
+  const sourceLanguage = manuscript.value.pls_source_language
   const targetLanguage = sourceLanguage === 'en' ? 'fr' : 'en'
 
   return (
     !props.readonly
-    && (manuscriptData.value[`pls_${sourceLanguage}`] !== '')
-    && (manuscriptData.value[`pls_${targetLanguage}`] === '')
+    && (manuscript.value[`pls_${sourceLanguage}`] !== '')
+    && (manuscript.value[`pls_${targetLanguage}`] === '')
     && !translateLoading.value
     && !PLSLoading.value
   )
 })
 
 const translateDisabledTooltip = computed(() => {
-  if (!manuscriptData.value) {
+  if (!manuscript.value) {
     return ''
   }
 
-  const sourceLanguage = manuscriptData.value.pls_source_language
+  const sourceLanguage = manuscript.value.pls_source_language
   const targetLanguage = sourceLanguage === 'en' ? 'fr' : 'en'
 
-  if (manuscriptData.value[`pls_${sourceLanguage}`] === '') {
+  if (manuscript.value[`pls_${sourceLanguage}`] === '') {
     return t('mrf.source-pls-required-for-translation')
   }
 
-  if (manuscriptData.value[`pls_${targetLanguage}`] !== '') {
+  if (manuscript.value[`pls_${targetLanguage}`] !== '') {
     return t('mrf.target-pls-already-exists-erase-to-translate')
   }
 
@@ -73,17 +73,17 @@ const translateDisabledTooltip = computed(() => {
 })
 
 const plsDisabledTooltip = computed(() => {
-  if (!manuscriptData.value) {
+  if (!manuscript.value) {
     return ''
   }
 
-  const locale = manuscriptData.value.pls_source_language
+  const locale = manuscript.value.pls_source_language
 
-  if (manuscriptData.value[`pls_${locale}`] !== '') {
+  if (manuscript.value[`pls_${locale}`] !== '') {
     return t('mrf.pls-already-generated-erase-it-to-generate-a-new-one')
   }
 
-  if (manuscriptData.value.abstract.length < 250) {
+  if (manuscript.value.abstract.length < 250) {
     return t('mrf.abstract-must-be-at-least-250-characters')
   }
 
@@ -92,38 +92,38 @@ const plsDisabledTooltip = computed(() => {
 
 // Author approval logic
 const hasCompletedPLS = computed(() => {
-  if (!manuscriptData.value) {
+  if (!manuscript.value) {
     return false
   }
 
-  const sourceLanguage = manuscriptData.value.pls_source_language
-  return manuscriptData.value[`pls_${sourceLanguage}`] !== ''
+  const sourceLanguage = manuscript.value.pls_source_language
+  return manuscript.value[`pls_${sourceLanguage}`] !== ''
 })
 
 const showApprovalRequired = computed(() => {
-  return hasCompletedPLS.value && !manuscriptData.value?.pls_approved_by_author && !props.readonly
+  return hasCompletedPLS.value && !manuscript.value?.pls_approved_by_author && !props.readonly
 })
 
 async function generatePLS() {
   PLSLoading.value = true
-  if (!manuscriptData.value?.abstract)
+  if (!manuscript.value?.abstract)
     return
-  if (manuscriptData.value?.abstract === '')
+  if (manuscript.value?.abstract === '')
     return
 
   // which pls are we generating - this is based on
-  const locale = manuscriptData.value?.pls_source_language
+  const locale = manuscript.value?.pls_source_language
 
-  manuscriptData.value[`pls_${locale}`] = t(
+  manuscript.value[`pls_${locale}`] = t(
     'mrf.generating-pls-please-be-patient',
   )
 
-  await UtilityService.generatePls(manuscriptData.value.abstract, locale)
+  await UtilityService.generatePls(manuscript.value.abstract, locale)
     .then((response) => {
-      if (!manuscriptData.value)
+      if (!manuscript.value)
         return
 
-      manuscriptData.value[`pls_${locale}`] = response.data.pls
+      manuscript.value[`pls_${locale}`] = response.data.pls
 
       $q.notify({
         type: 'positive',
@@ -141,26 +141,26 @@ async function generatePLS() {
 
 async function translatePLS() {
   translateLoading.value = true
-  if (!manuscriptData.value)
+  if (!manuscript.value)
     return
 
-  const sourceLanguage = manuscriptData.value.pls_source_language
+  const sourceLanguage = manuscript.value.pls_source_language
   const targetLanguage = sourceLanguage === 'en' ? 'fr' : 'en'
-  const sourcePLS = manuscriptData.value[`pls_${sourceLanguage}`]
+  const sourcePLS = manuscript.value[`pls_${sourceLanguage}`]
 
   if (!sourcePLS || sourcePLS === '')
     return
 
-  manuscriptData.value[`pls_${targetLanguage}`] = t(
+  manuscript.value[`pls_${targetLanguage}`] = t(
     'mrf.translating-pls-please-be-patient',
   )
 
   await UtilityService.translatePls(sourcePLS, targetLanguage)
     .then((response) => {
-      if (!manuscriptData.value)
+      if (!manuscript.value)
         return
 
-      manuscriptData.value[`pls_${targetLanguage}`] = response.data.pls
+      manuscript.value[`pls_${targetLanguage}`] = response.data.pls
 
       $q.notify({
         type: 'positive',
@@ -202,7 +202,7 @@ async function translatePLS() {
           {{ $t('mrf.pls-source-language-description') }}
         </div>
         <LocaleSelect
-          v-model="manuscriptData.pls_source_language"
+          v-model="manuscript.pls_source_language"
           :label="t('mrf.pls-locale')"
           outlined
           dense
@@ -221,7 +221,6 @@ async function translatePLS() {
               {{ $t('mrf.ai-powered-tools') }}
             </div>
             <div class="text-body2 text-grey-7">
-              <q-icon name="mdi-information-outline" size="xs" class="q-mr-xs" />
               {{ $t('mrf.pls-help-ai-text') }}
             </div>
           </div>
@@ -233,6 +232,8 @@ async function translatePLS() {
             :label="PLSLoading ? $t('mrf.generating-pls-please-be-patient') : $t('mrf.generate-pls')"
             :icon="PLSLoading ? 'mdi-loading mdi-spin' : 'mdi-brain'"
             unelevated
+            outline
+            rounded
             :disable="!enablePLSPrompt"
             :loading="PLSLoading"
             class="q-px-lg"
@@ -248,6 +249,8 @@ async function translatePLS() {
             :label="translateLoading ? $t('mrf.translating-pls-please-be-patient') : $t('mrf.translate-pls')"
             :icon="translateLoading ? 'mdi-loading mdi-spin' : 'mdi-translate'"
             unelevated
+            outline
+            rounded
             :disable="!enableTranslatePLS"
             :loading="translateLoading"
             class="q-px-lg"
@@ -268,38 +271,18 @@ async function translatePLS() {
     <q-card-section class="q-pb-sm">
       <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-xs">
         <q-icon name="mdi-text-box-outline" class="q-mr-xs" />
-        {{ $t('common.content') }}
+        {{ $t('mrf.pls-content-title') }}
       </div>
       <div class="text-body2 text-grey-6">
         {{ $t('mrf.pls-content-description') }}
       </div>
     </q-card-section>
-
-    <q-separator />
-
     <!-- Dynamic Editor Order Based on Source Language -->
-    <template v-if="manuscriptData.pls_source_language === 'en'">
+    <template v-if="manuscript.pls_source_language === 'en'">
       <!-- English (Primary) -->
       <q-card-section class="q-pb-sm">
-        <div class="row items-center q-mb-sm">
-          <div class="col">
-            <div class="text-subtitle2 text-primary">
-              <q-icon name="mdi-star" color="primary" size="xs" class="q-mr-xs" />
-              {{ $t('common.plain-language-summary-en') }}
-              <q-chip dense color="primary" text-color="white" size="sm" class="q-ml-sm">
-                {{ $t('common.required') }}
-              </q-chip>
-            </div>
-          </div>
-          <div class="col-auto">
-            <q-badge v-if="manuscriptData.pls_en" color="positive" outline>
-              <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
-              {{ $t('common.completed') }}
-            </q-badge>
-          </div>
-        </div>
         <QuestionEditor
-          v-model="manuscriptData.pls_en"
+          v-model="manuscript.pls_en"
           :title="$t('common.plain-language-summary-en')"
           :disable="loading || PLSLoading"
           :readonly="readonly"
@@ -308,29 +291,10 @@ async function translatePLS() {
         />
       </q-card-section>
 
-      <q-separator />
-
       <!-- French (Optional) -->
       <q-card-section class="q-pb-sm">
-        <div class="row items-center q-mb-sm">
-          <div class="col">
-            <div class="text-subtitle2 text-grey-7">
-              <q-icon name="mdi-circle-outline" color="grey-5" size="xs" class="q-mr-xs" />
-              {{ $t('common.plain-language-summary-fr') }}
-              <q-chip dense color="grey-5" text-color="white" size="sm" class="q-ml-sm">
-                {{ $t('common.optional') }}
-              </q-chip>
-            </div>
-          </div>
-          <div class="col-auto">
-            <q-badge v-if="manuscriptData.pls_fr" color="positive" outline>
-              <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
-              {{ $t('common.completed') }}
-            </q-badge>
-          </div>
-        </div>
         <QuestionEditor
-          v-model="manuscriptData.pls_fr"
+          v-model="manuscript.pls_fr"
           :title="$t('common.plain-language-summary-fr')"
           :disable="loading || PLSLoading"
           :readonly="readonly"
@@ -343,25 +307,8 @@ async function translatePLS() {
     <template v-else>
       <!-- French (Primary) -->
       <q-card-section class="q-pb-sm">
-        <div class="row items-center q-mb-sm">
-          <div class="col">
-            <div class="text-subtitle2 text-primary">
-              <q-icon name="mdi-star" color="primary" size="xs" class="q-mr-xs" />
-              {{ $t('common.plain-language-summary-fr') }}
-              <q-chip dense color="primary" text-color="white" size="sm" class="q-ml-sm">
-                {{ $t('common.required') }}
-              </q-chip>
-            </div>
-          </div>
-          <div class="col-auto">
-            <q-badge v-if="manuscriptData.pls_fr" color="positive" outline>
-              <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
-              {{ $t('common.completed') }}
-            </q-badge>
-          </div>
-        </div>
         <QuestionEditor
-          v-model="manuscriptData.pls_fr"
+          v-model="manuscript.pls_fr"
           :title="$t('common.plain-language-summary-fr')"
           :disable="loading || PLSLoading"
           :readonly="readonly"
@@ -370,29 +317,10 @@ async function translatePLS() {
         />
       </q-card-section>
 
-      <q-separator />
-
       <!-- English (Optional) -->
       <q-card-section class="q-pb-sm">
-        <div class="row items-center q-mb-sm">
-          <div class="col">
-            <div class="text-subtitle2 text-grey-7">
-              <q-icon name="mdi-circle-outline" color="grey-5" size="xs" class="q-mr-xs" />
-              {{ $t('common.plain-language-summary-en') }}
-              <q-chip dense color="grey-5" text-color="white" size="sm" class="q-ml-sm">
-                {{ $t('common.optional') }}
-              </q-chip>
-            </div>
-          </div>
-          <div class="col-auto">
-            <q-badge v-if="manuscriptData.pls_en" color="positive" outline>
-              <q-icon name="mdi-check" size="xs" class="q-mr-xs" />
-              {{ $t('common.completed') }}
-            </q-badge>
-          </div>
-        </div>
         <QuestionEditor
-          v-model="manuscriptData.pls_en"
+          v-model="manuscript.pls_en"
           :title="$t('common.plain-language-summary-en')"
           :disable="loading || PLSLoading"
           :readonly="readonly"
@@ -402,20 +330,18 @@ async function translatePLS() {
       </q-card-section>
     </template>
 
-    <q-separator />
-
     <!-- Author Approval Section (integrated within the same card) -->
-    <q-card-section>
-      <div class="text-subtitle1 text-weight-medium text-grey-8 q-mb-xs">
+    <q-card-section class="q-pl-lg">
+      <div class="text-subtitle1 text-primary text-weight-medium text-grey-8 q-mb-xs">
         <q-icon name="mdi-check-circle-outline" class="q-mr-xs" />
         {{ $t('mrf.pls-author-approval-title') }}
       </div>
-      <div class="text-body2 text-grey-6 q-mb-md">
+      <div class="text-body2  q-mb-md">
         {{ $t('mrf.pls-author-approval-description') }}
       </div>
 
       <q-checkbox
-        v-model="manuscriptData.pls_approved_by_author"
+        v-model="manuscript.pls_approved_by_author"
         :label="$t('mrf.pls-approved-by-author-label')"
         :disable="readonly || loading || !hasCompletedPLS"
         color="primary"
@@ -423,7 +349,7 @@ async function translatePLS() {
         class="q-mb-sm"
       />
 
-      <div v-if="manuscriptData.pls_approved_by_author && hasCompletedPLS" class="row items-center q-mt-sm">
+      <div v-if="manuscript.pls_approved_by_author && hasCompletedPLS" class="row items-center q-mt-sm">
         <q-icon name="mdi-check-circle" color="positive" size="sm" class="q-mr-sm" />
         <span class="text-body2 text-positive">{{ $t('mrf.pls-approved-confirmation') }}</span>
       </div>

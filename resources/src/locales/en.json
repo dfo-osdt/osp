@@ -600,7 +600,8 @@
     "pls-approved-confirmation": "PLS approved by author",
     "pls-approval-required-warning": "Author approval is required before submission",
     "pls-approval-disabled-no-content": "Complete the Plain Language Summary before approval",
-    "pls-content-description": "Write your Plain Language Summary in the language you selected above. You may also provide an optional translation in the other official language."
+    "pls-content-description": "Write your Plain Language Summary in the language you selected above. You may also provide an optional translation in the other official language.",
+    "pls-content-title": "Plain Language Summaries"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions still required",

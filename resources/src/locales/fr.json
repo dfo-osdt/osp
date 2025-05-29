@@ -592,7 +592,8 @@
     "pls-approved-confirmation": "RLC approuvé par l'auteur",
     "pls-approval-required-warning": "L'approbation de l'auteur est requise avant la soumission",
     "pls-approval-disabled-no-content": "Complétez le résumé en langage clair avant l'approbation",
-    "pls-content-description": "Rédigez votre résumé en langage clair dans la langue que vous avez sélectionnée ci-dessus. Vous pouvez également fournir une traduction optionnelle dans l'autre langue officielle."
+    "pls-content-description": "Rédigez votre résumé en langage clair dans la langue que vous avez sélectionnée ci-dessus. Vous pouvez également fournir une traduction optionnelle dans l'autre langue officielle.",
+    "pls-content-title": "Résumés en language clair"
   },
   "my-manuscript-records": {
     "actions-still-required": "Actions encore nécessaires",
