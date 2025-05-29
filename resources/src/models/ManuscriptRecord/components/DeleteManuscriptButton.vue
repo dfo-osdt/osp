@@ -5,12 +5,14 @@
         M extends ManuscriptRecordResource | ManuscriptRecordSummaryResource
     "
 >
+import type { QBtnProps } from 'quasar'
+import type { ManuscriptRecordResource, ManuscriptRecordSummaryResource } from '../ManuscriptRecord'
+import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import { type QBtnProps, useQuasar } from 'quasar'
 import {
-  type ManuscriptRecordResource,
+
   ManuscriptRecordService,
-  type ManuscriptRecordSummaryResource,
+
 } from '../ManuscriptRecord'
 
 const props = defineProps<
