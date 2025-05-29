@@ -1,4 +1,3 @@
-import type { StringOptions } from 'sass-embedded'
 import type { FunctionalArea } from '../FunctionalArea/FunctionalArea'
 import type { MediaResource, MediaResourceList } from '../Media/Media'
 import type { PublicationResource } from '../Publication/Publication'
@@ -10,7 +9,6 @@ import type {
 import type { UserResource } from '../User/User'
 import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import type { Locale } from '@/stores/LocaleStore'
-import { data } from 'node_modules/cypress/types/jquery'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
 
