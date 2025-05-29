@@ -411,13 +411,13 @@ test('a user can clone a manuscript record', function () {
         'type' => ManuscriptRecordType::SECONDARY->value,
     ])->assertCreated();
 
-    expect($response->json('data.title'))->toBe($manuscript->title);
+    expect($response->json('data.title'))->toBe($manuscript->title.' (Clone)');
     expect($response->json('data.type'))->toBe(ManuscriptRecordType::SECONDARY->value);
     expect($response->json('data.user_id'))->toBe($user->id);
 
     $clonedManuscript = ManuscriptRecord::find($response->json('data.id'));
     expect($clonedManuscript)->not->toBeNull();
-    expect($clonedManuscript->title)->toBe($manuscript->title);
+    expect($clonedManuscript->title)->toBe($manuscript->title.' (Clone)');
     expect($clonedManuscript->type)->toBe(ManuscriptRecordType::SECONDARY);
     expect($clonedManuscript->status)->toBe(ManuscriptRecordStatus::DRAFT);
     expect($clonedManuscript->user_id)->toBe($user->id);

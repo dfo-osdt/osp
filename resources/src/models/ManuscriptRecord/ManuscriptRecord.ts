@@ -10,6 +10,7 @@ import type {
 import type { UserResource } from '../User/User'
 import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import type { Locale } from '@/stores/LocaleStore'
+import { data } from 'node_modules/cypress/types/jquery'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
 
@@ -269,6 +270,18 @@ export class ManuscriptRecordService {
     }
     const response
       = await http.get<ManuscriptRecordSummaryResourceList>(url)
+    return response.data
+  }
+
+  /** Clone a manuscript */
+  public static async clone(id: number, type: ManuscriptRecordType) {
+    const data = {
+      type,
+    }
+    const response = await http.post<any, ManuscriptRecordResource>(
+      `${this.baseURL}/${id}/clone`,
+      data,
+    )
     return response.data
   }
 }
