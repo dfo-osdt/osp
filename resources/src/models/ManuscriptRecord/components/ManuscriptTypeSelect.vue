@@ -1,11 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
-  modelValue: string
-}>()
+const value = defineModel<string>()
 
 const { t } = useI18n()
 
-const options = ref([
+const options = computed(() => [
   {
     label: t('common.primary-manuscript'),
     value: 'primary',
@@ -19,8 +17,6 @@ const options = ref([
     value: 'preprint',
   },
 ])
-
-const value = useVModel(props, 'modelValue')
 </script>
 
 <template>

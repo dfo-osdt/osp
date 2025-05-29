@@ -9,6 +9,7 @@ import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
+import ManuscriptTypeRadioSelection from './ManuscriptTypeRadioSelection.vue'
 
 // router
 const router = useRouter()
@@ -84,85 +85,10 @@ async function create() {
             :done="step > 1"
             style="min-height: 275px"
           >
-            <div>
-              {{
-                $t('create-manuscript-record-dialog.step1.text')
-              }}
+            <div class="q-mb-md">
+              {{ $t('create-manuscript-record-dialog.step1.text') }}
             </div>
-            <div class="q-pa-md">
-              <q-list>
-                <q-item v-ripple tag="label">
-                  <q-item-section avatar>
-                    <q-radio v-model="type" val="primary" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-body1">
-                      {{
-                        $t('common.primary-publication')
-                      }}
-                    </q-item-label>
-                    <q-item-label
-                      class="text-body2 text-grey-8"
-                    >
-                      {{
-                        $t(
-                          'create-manuscript-record-dialog.primary-pub-desc',
-                        )
-                      }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-
-                <q-item v-ripple tag="label">
-                  <q-item-section avatar top>
-                    <q-radio
-                      v-model="type"
-                      val="secondary"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-body1">
-                      {{
-                        $t('common.secondary-publication')
-                      }}
-                    </q-item-label>
-                    <q-item-label
-                      class="text-body2 text-grey-8"
-                    >
-                      {{
-                        $t(
-                          'create-manuscript-record-dialog.secondary-pub-desc',
-                        )
-                      }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple tag="label">
-                  <q-item-section avatar top>
-                    <q-radio
-                      v-model="type"
-                      val="preprint"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-body1">
-                      {{
-                        $t('common.preprint-publication')
-                      }}
-                    </q-item-label>
-                    <q-item-label
-                      class="text-body2 text-grey-8"
-                    >
-                      {{
-                        $t(
-                          'create-manuscript-record-dialog.prerint-pub-desc',
-                        )
-                      }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
+            <ManuscriptTypeRadioSelection v-model="type" />
           </q-step>
           <q-step
             :name="2"
