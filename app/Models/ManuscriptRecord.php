@@ -375,8 +375,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         $validator = Validator::make($this->toArray(), [
             'title' => 'required',
             'abstract' => 'required',
-            'pls_en' => 'requiredIf:pls_source_language,en',
-            'pls_fr' => 'required:if:pls_source_language,fr',
+            'pls_en' => 'required_if:pls_source_language,en',
+            'pls_fr' => 'required_if:pls_source_language,fr',
             'pls_source_language' => 'required|in:en,fr',
             'pls_approved_by_author' => 'required|accepted',
             'relevant_to' => 'required',
