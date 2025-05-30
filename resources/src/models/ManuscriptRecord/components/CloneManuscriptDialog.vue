@@ -90,6 +90,7 @@ async function clone() {
               {{
                 $t(
                   'clone-manuscript-record-dialog.clone-text',
+                  { title: props.sourceManuscript.title },
                 )
               }}
             </div>

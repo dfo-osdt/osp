@@ -896,5 +896,12 @@
   },
   "submitted-to-preprint-dialog": {
     "title": "Marquez comme publié sur un serveur de prépublication"
+  },
+  "clone-manuscript-record-dialog": {
+    "title": "Dupliquer le registre de manuscrit",
+    "step1": {
+      "text": "Choisissez le type de registre de manuscrit à créer à partir de ce double. \nPar exemple, si votre dossier actuel est pour une préimpression, vous voudrez peut-être créer un nouvel enregistrement à publier dans un journal."
+    },
+    "clone-text": "Veuillez confirmer que vous souhaitez dupliquer le registre de manuscrit intitulé « {title} ». Notez que tous les aspects du registre ne seront pas dupliqués. Le statut du registre sera défini comme brouillon et vous deviendrez le demandeur pour le registre dupliqué."
   }
 }

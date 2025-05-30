@@ -896,5 +896,12 @@
   },
   "submitted-to-preprint-dialog": {
     "title": "Mark as published to a preprint server"
+  },
+  "clone-manuscript-record-dialog": {
+    "title": "Duplicate Manuscript Record",
+    "step1": {
+      "text": "Choose the type of manuscript record to create from this duplicate. For example, if your current record is for a preprint, you might want to create a new record to publish to a journal. "
+    },
+    "clone-text": "Please confirm you'd like to duplicate the manuscript record titled \"{title}\". Note that not all aspects of the record will be duplicated. The record status will be set to draft and you will become the applicant for the duplicated record."
   }
 }
