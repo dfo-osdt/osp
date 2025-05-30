@@ -299,7 +299,7 @@
     "preprints": "Preprints",
     "plain-language-summary-en": "Plain Language Summary - English",
     "plain-language-summary-fr": "Plain Language Summary - French",
-    "clone": "Clone"
+    "clone": "Duplicate"
   },
   "create-author-dialog": {
     "title": "Create a new author"
