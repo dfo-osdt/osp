@@ -15,6 +15,7 @@ import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFu
 import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue'
 import ManageManuscriptPeerReviewersCard from '@/models/ManuscriptPeerReviewer/components/ManageManuscriptPeerReviewersCard.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
+import CloneManuscriptButton from '../components/CloneManuscriptButton.vue'
 import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue'
 import ManuscriptFileManagementCard from '../components/ManuscriptFileManagementCard.vue'
 import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue'
@@ -257,11 +258,27 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
             >
               {{ $t('common.status') }}
             </div>
-            <span>
-              <ManuscriptStatusBadge
-                :status="manuscriptResource.data.status"
-                outline
-                class="text-body2"
+            <ManuscriptStatusBadge
+              :status="manuscriptResource.data.status"
+              outline
+              class="text-body2"
+            />
+          </div>
+          <q-separator class="q-my-sm" />
+          <div class="row justify-between">
+            <div
+              class="text-caption text-uppercase text-weight-bold text-grey-7 q-py-xs"
+            >
+              {{ $t('common.actions') }}
+            </div>
+            <div class="row q-gutter-xs">
+              <CloneManuscriptButton
+                flat
+                size="sm"
+                color="primary"
+                icon="mdi-content-duplicate"
+                :label="$t('common.clone')"
+                :manuscript="manuscriptResource"
               />
               <DeleteManuscriptButton
                 v-if="manuscriptResource.can?.delete"
@@ -270,9 +287,10 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
                 size="sm"
                 color="red"
                 icon="mdi-delete-outline"
+                :label="$t('common.delete')"
                 @deleted="$router.push({ name: 'dashboard' })"
               />
-            </span>
+            </div>
           </div>
           <q-separator class="q-my-sm" />
           <div class="row justify-between">
@@ -551,16 +569,6 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
       align="right"
       class="q-mb-lg"
     >
-      <DeleteManuscriptButton
-        v-if="manuscriptResource.can?.delete"
-        class="q-mt-md"
-        :manuscript="manuscriptResource"
-        :label="$t('common.delete')"
-        outline
-        color="red"
-        icon="mdi-delete-outline"
-        @deleted="$router.push({ name: 'dashboard' })"
-      />
       <q-btn
         class="q-mt-md"
         color="primary"

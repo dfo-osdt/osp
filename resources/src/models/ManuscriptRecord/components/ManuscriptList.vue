@@ -80,7 +80,7 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
           <ManuscriptStatusBadge :status="manuscript.data.status" />
           <CloneManuscriptButton
             flat
-            icon="mdi-content-copy"
+            icon="mdi-content-duplicate"
             size="sm"
             class="q-ml-sm"
             :manuscript="manuscript"
