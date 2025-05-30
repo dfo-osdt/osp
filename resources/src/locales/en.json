@@ -298,7 +298,8 @@
     "view-preprint": "External Link",
     "preprints": "Preprints",
     "plain-language-summary-en": "Plain Language Summary - English",
-    "plain-language-summary-fr": "Plain Language Summary - French"
+    "plain-language-summary-fr": "Plain Language Summary - French",
+    "clone": "Clone"
   },
   "create-author-dialog": {
     "title": "Create a new author"

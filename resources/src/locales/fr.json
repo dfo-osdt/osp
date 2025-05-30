@@ -298,7 +298,8 @@
     "plain-language-summary-fr": "Résumé en langage clair - Français",
     "announcements": "Cliquez ici pour afficher l'annonce en sourdine | \nCliquez ici pour afficher les annonces {count} en mourti",
     "preprint-url-placeholder": "https://doi.org/ ..",
-    "submitted-to-preprint-on": "Date soumise au serveur préalable"
+    "submitted-to-preprint-on": "Date soumise au serveur préalable",
+    "clone": "Cloner"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
