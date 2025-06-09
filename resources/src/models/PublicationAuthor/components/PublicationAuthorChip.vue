@@ -13,8 +13,8 @@ const props = withDefaults(
 )
 
 const emit = defineEmits([
-  'delete:publicationAuthor',
-  'edit:toggleCorrespondingAuthor',
+  'deletePublicationAuthor',
+  'editToggleCorrespondingAuthor',
 ])
 
 const { copy, copied, isSupported } = useClipboard()
@@ -40,7 +40,7 @@ const removable = computed(() => {
     clickable
     :removable="removable"
     color="teal-2"
-    @remove="emit('delete:publicationAuthor')"
+    @remove="emit('deletePublicationAuthor')"
   >
     <q-avatar
       v-if="publicationAuthor.data.is_corresponding_author"
@@ -108,7 +108,7 @@ const removable = computed(() => {
           clickable
         >
           <q-item-section avatar>
-            <OrcidAvatar />
+            <OrcidAvatar :unauthenticated="publicationAuthor.data.author.data.orcid_verified" />
           </q-item-section>
           <q-item-section>
             <a
@@ -136,7 +136,7 @@ const removable = computed(() => {
               v-model="correspondingAuthor"
               @update:model-value="
                 $emit(
-                  'edit:toggleCorrespondingAuthor',
+                  'editToggleCorrespondingAuthor',
                   correspondingAuthor,
                 )
               "
