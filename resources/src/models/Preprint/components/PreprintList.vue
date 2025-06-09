@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PreprintResource } from '../Preprint'
+import OrcidIcon from '@/components/OrcidIcon.vue'
 import DoiLink from '@/models/Publication/components/DoiLink.vue'
 
 defineProps<{
@@ -40,10 +41,9 @@ function publishedDate(preprint: PreprintResource) {
                   .authors"
                 :key="item.data.id"
               >
-                <q-img
+                <OrcidIcon
                   v-if="item.data.author?.data.orcid"
-                  src="/assets/orcid/orcid.logo.icon.svg"
-                  width="15px"
+                  :unauthenticated="!item.data.author.data.orcid_verified"
                 />
                 {{ item.data.author?.data.last_name }},
                 {{ item.data.author?.data.first_name }}
@@ -63,7 +63,7 @@ function publishedDate(preprint: PreprintResource) {
             </template>
           </template>
         </q-item-label>
-        <q-item-label caption class="text-uppercase">
+        <q-item-label caption>
           <div class="q-pt-sm flex">
             <div>
               {{ publishedDate(preprint) }}

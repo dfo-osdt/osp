@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useQuasar } from 'quasar'
-import ContentCard from '@/components/ContentCard.vue'
 import type {
   PublicationAuthorResource,
   PublicationAuthorResourceList,
 } from '@/models/PublicationAuthor/PublicationAuthor'
+import { useQuasar } from 'quasar'
+import ContentCard from '@/components/ContentCard.vue'
+import AddPublicationAuthorDialog from '@/models/PublicationAuthor/components/AddPublicationAuthorDialog.vue'
+import PublicationAuthorChip from '@/models/PublicationAuthor/components/PublicationAuthorChip.vue'
 import {
   PublicationAuthorService,
 } from '@/models/PublicationAuthor/PublicationAuthor'
-import AddPublicationAuthorDialog from '@/models/PublicationAuthor/components/AddPublicationAuthorDialog.vue'
-import PublicationAuthorChip from '@/models/PublicationAuthor/components/PublicationAuthorChip.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -66,7 +66,7 @@ async function loadPublicationAuthors() {
       publicationAuthors.value = response
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
   loading.value = false
 }
@@ -81,8 +81,8 @@ function addedPublicationAuthor(publicationAuthor: PublicationAuthorResource) {
     type: 'positive',
     color: 'primary',
     message: `${
-            publicationAuthor.data.author?.data.first_name ?? t('common.author')
-        } ${t('common.added-successfully')}.`,
+      publicationAuthor.data.author?.data.first_name ?? t('common.author')
+    } ${t('common.added-successfully')}.`,
   })
   showAddDialog.value = false
   loadPublicationAuthors()
@@ -100,14 +100,14 @@ async function toggleCorrespondingAuthor(
         type: 'positive',
         color: 'primary',
         message: `${
-                    publicationAuthor.author?.data.first_name
-                    ?? t('common.author')
-                } ${t('common.updated-successfully')}.`,
+          publicationAuthor.author?.data.first_name
+          ?? t('common.author')
+        } ${t('common.updated-successfully')}.`,
       })
       loadPublicationAuthors()
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
 }
 
@@ -127,7 +127,7 @@ async function deletePublicationAuthor(publicationAuthor: PublicationAuthorResou
         loadPublicationAuthors()
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   })
 }
@@ -161,10 +161,10 @@ async function deletePublicationAuthor(publicationAuthor: PublicationAuthorResou
               :key="item.data.id"
               :publication-author="item"
               :readonly="readonly"
-              @delete:publication-author="
+              @delete-publication-author="
                 deletePublicationAuthor(item)
               "
-              @edit:toggle-corresponding-author="
+              @edit-toggle-corresponding-author="
                 toggleCorrespondingAuthor(item, $event)
               "
               @click.prevent

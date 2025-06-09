@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PublicationResource } from '../Publication'
+import OrcidIcon from '@/components/OrcidIcon.vue'
 import JournalNameSpan from '@/models/Journal/components/JournalNameSpan.vue'
 import DOILink from './DoiLink.vue'
 import PublicationStatusBadge from './PublicationStatusBadge.vue'
@@ -47,10 +48,9 @@ function publishedYear(publication: PublicationResource) {
                   .publication_authors"
                 :key="item.data.id"
               >
-                <q-img
+                <OrcidIcon
                   v-if="item.data.author?.data.orcid"
-                  src="/assets/orcid/orcid.logo.icon.svg"
-                  width="15px"
+                  :unauthenticated="!item.data.author.data.orcid_verified"
                 />
                 {{ item.data.author?.data.last_name }},
                 {{ item.data.author?.data.first_name }}
@@ -70,7 +70,7 @@ function publishedYear(publication: PublicationResource) {
             </template>
           </template>
         </q-item-label>
-        <q-item-label caption class="text-uppercase">
+        <q-item-label caption>
           <div class="q-pt-sm flex">
             <div>
               {{ publishedYear(publication) }}
