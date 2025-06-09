@@ -1,4 +1,3 @@
-import type { StringOptions } from 'sass-embedded'
 import type { FunctionalArea } from '../FunctionalArea/FunctionalArea'
 import type { MediaResource, MediaResourceList } from '../Media/Media'
 import type { PublicationResource } from '../Publication/Publication'
@@ -269,6 +268,18 @@ export class ManuscriptRecordService {
     }
     const response
       = await http.get<ManuscriptRecordSummaryResourceList>(url)
+    return response.data
+  }
+
+  /** Clone a manuscript */
+  public static async clone(id: number, type: ManuscriptRecordType) {
+    const data = {
+      type,
+    }
+    const response = await http.post<any, ManuscriptRecordResource>(
+      `${this.baseURL}/${id}/clone`,
+      data,
+    )
     return response.data
   }
 }

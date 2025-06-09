@@ -6,6 +6,11 @@ import DrawerMenuItem from './DrawerMenuItem.vue'
 const authStore = useAuthStore()
 const { t } = useI18n()
 
+const { height } = useWindowSize()
+const displayBottomMenu = computed(() => {
+  return height.value >= 600
+})
+
 const userMenuItems = computed<MenuItem[]>(() => {
   return [
     {
@@ -123,7 +128,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
         role="menuitem"
       />
     </QList>
-    <QList class="q-mb-sm" role="menubar">
+    <QList v-if="displayBottomMenu" class="q-mb-sm" role="menubar">
       <QSeparator />
       <DrawerMenuItem
         v-for="item in bottomMenuItems"

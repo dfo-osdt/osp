@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ManuscriptRecordSummaryResource } from '../ManuscriptRecord'
 import OrcidIcon from '@/components/OrcidIcon.vue'
+import CloneManuscriptButton from './CloneManuscriptButton.vue'
 import DeleteManuscriptButton from './DeleteManuscriptButton.vue'
 import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue'
 import ManuscriptTypeBadge from './ManuscriptTypeBadge.vue'
@@ -77,6 +78,13 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
             class="q-mr-xs"
           />
           <ManuscriptStatusBadge :status="manuscript.data.status" />
+          <CloneManuscriptButton
+            flat
+            icon="mdi-content-duplicate"
+            size="sm"
+            class="q-ml-sm"
+            :manuscript="manuscript"
+          />
           <DeleteManuscriptButton
             v-if="manuscript.can?.delete"
             flat
@@ -84,7 +92,6 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
             color="red"
             dense
             icon="mdi-delete-outline"
-            class="q-ml-sm"
             :manuscript="manuscript"
             @deleted="$emit('deleted', manuscript)"
           />

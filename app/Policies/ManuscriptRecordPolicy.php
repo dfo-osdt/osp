@@ -34,10 +34,6 @@ class ManuscriptRecordPolicy
     public function view(User $user, ManuscriptRecord $manuscriptRecord)
     {
 
-        if ($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD)) {
-            return $manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT;
-        }
-
         // owners can view their own manuscripts
         if ($user->id === $manuscriptRecord->user_id) {
             return true;
@@ -57,8 +53,15 @@ class ManuscriptRecordPolicy
 
         // is this shared with the user?
         $manuscriptRecord->load('shareables');
+        if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isViewable()) {
+            return true;
+        }
 
-        return $manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isViewable();
+        if ($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD)) {
+            return $manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT;
+        }
+
+        return false;
     }
 
     /**

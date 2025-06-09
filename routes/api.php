@@ -129,6 +129,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('manuscript-records/{manuscriptRecord}/submitted', 'submitted');
         Route::put('manuscript-records/{manuscriptRecord}/submitted-to-preprint', 'submittedToPreprint');
         Route::put('manuscript-records/{manuscriptRecord}/accepted', 'accepted');
+        Route::post('manuscript-records/{manuscriptRecord}/clone', 'clone');
     });
 
     Route::controller(PreprintController::class)->group(function () {
