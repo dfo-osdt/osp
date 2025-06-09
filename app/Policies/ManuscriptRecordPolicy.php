@@ -53,7 +53,7 @@ class ManuscriptRecordPolicy
 
         // is this shared with the user?
         $manuscriptRecord->load('shareables');
-        if($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isViewable()) {
+        if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isViewable()) {
             return true;
         }
 
