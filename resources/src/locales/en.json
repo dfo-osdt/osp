@@ -553,7 +553,7 @@
     "not-authorized-text": "You do not have permission to view this manuscript record",
     "pls-already-generated-erase-it-to-generate-a-new-one": "A PLS already exists - erase it to generate a new one",
     "pls-generated-successfully": "PLS generated successfully",
-    "pls-help-ai-text": "Need some help? Using your manuscript's abstract, we can generate a draft PLS. Make sure to review/edit the generated PLS! A PLS will be generated in both official languages. If you'd like to try again, simply delete both PLS and click \"Generate PLS\" again.",
+    "pls-help-ai-text": "Need some help? Using your manuscript's abstract, we can generate a draft PLS. Make sure to review/edit the generated PLS! If you'd like to try again, simply delete the PLS and click \"Generate PLS\" again.",
     "pls-text": "A concise Plain Language Summary (PLS), in both official languages, is required for every scientific and technical publication. PLS should incorporate Indigenous place names and species, where appropriate. ",
     "pls-translated-successfully": "PLS translated successfully",
     "source-pls-required-for-translation": "Source language PLS is required for translation",
@@ -564,7 +564,7 @@
     "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest.",
     "ready-to-marked-published": "This manuscript has completed its management review but still needs to be marked as submitted and accepted to a thrid-party Journal by the applicant.",
     "relevant-text": "Describe how this manuscript is relevant to the program that funded it, how it supports the department's mandate, strategic plan and or/regional priorities. ",
-    "relevant-title": "Relevance to programs/initiatives/client sector",
+    "relevant-title": "Relevance to programs/initiatives/management sector",
     "replace-manuscript": "Drop the file or click to upload a new version of the manuscript",
     "scientific-implication-text": "Describe the scientific implications of the paper. (i.e. field, importance, focus, purpose, benefits, etc.)",
     "scientific-implications": "Scientific Implications",
@@ -684,11 +684,12 @@
     },
     "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html",
-    "p2": "Science management commits to a 10 working-day turnaround for sign-off of manuscripts for publication. If managers do not respond with an approval within 10 working days, authors may submit their manuscripts to the publisher.",
+    "p2": "Authors may submit their publication to the third-party journal for peer review after the manager has deemed the publication to be in alignment with the relevant legislation, policies and directives, or if no feedback was received from the management review within 10 working days. Division Managers, National Directors, Regional Directors of Science and National Directors General may perform the management review. ",
     "privacy-act": "Privacy Act",
     "privacy-act-link": "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-privacy-act/pa_brief/",
     "values-and-ethics-code-for-dfo": "Values and Ethics Code for DFO",
-    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-eng.htm"
+    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-eng.htm",
+    "p3": "If a manager identifies issues related to the relevant legislation, policies, and directives, they must communicate with the author(s) to request revisions or refer the publication to the respective Regional Director of Science or National Director General, and the 10-working-day timeline is paused. "
   },
   "pub": {
     "general-information": "General Information"

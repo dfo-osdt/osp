@@ -553,7 +553,7 @@
     "not-authorized-text": "Vous n'êtes pas autorisé à consulter ce registre de manuscrit",
     "pls-already-generated-erase-it-to-generate-a-new-one": "Un résumé existe déjà- effacez-le pour en générer un nouveau",
     "pls-generated-successfully": "Résumé généré avec succès",
-    "pls-help-ai-text": "Besoin d'aide? En utilisant le résumé de votre manuscrit, nous pouvons générer un projet de RLC. Assurez-vous de revoir / modifier les RLC générés! Un RLC sera généré dans les deux langues officielles. \nSi vous souhaitez réessayer, supprimez simplement les deux RLC et cliquez à nouveau \"générer le résumé\".",
+    "pls-help-ai-text": "Besoin d'aide? En utilisant le résumé de votre manuscrit, nous pouvons générer un projet de RLC. Assurez-vous de revoir / modifier les RLC générés! \nSi vous souhaitez réessayer, supprimez simplement le RLC et cliquez à nouveau \"générer le résumé\".",
     "pls-text": "Un résumé en langage clair (RLC) concis, rédigé dans les deux langues officielles, est requis pour chaque publication scientifique et technique. Le RLC doit inclure les noms de lieux et les espèces autochtones, lorsque cela est approprié.",
     "pls-translated-successfully": "Résumé traduit avec succès",
     "source-pls-required-for-translation": "Le résumé en langue source est requis pour la traduction",
@@ -564,7 +564,7 @@
     "potential-media-interest-text-field-text": "Facultativement, veuillez fournir toute information pertinente concernant l'intérêt public potentiel.",
     "ready-to-marked-published": "Ce manuscrit a terminé sa revue par la gestion mais doit encore être marqué comme soumis et accepté dans une revue tierce par le demandeur.",
     "relevant-text": "Décrivez comment ce manuscrit est pertinent pour le programme qui l'a financé, comment il supporte le mandat du ministère, le plan stratégique du département et/ou les priorités régionales. ",
-    "relevant-title": "Pertinence par rapport aux programmes/initiatives/clients ",
+    "relevant-title": "Pertinence par rapport aux programmes/initiatives/secteurs",
     "replace-manuscript": "Déposez le fichier ou cliquez pour télécharger une nouvelle version du manuscrit",
     "scientific-implication-text": "Décrivez les implications scientifiques de l'article. \n(c'est-à-dire le domaine, l'importance, point focal, le but, les avantages, etc.)",
     "scientific-implications": "Implications scientifiques",
@@ -684,11 +684,12 @@
     },
     "national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html",
-    "p2": "Le Secteur des sciences s’engage à approuver les manuscrits en vue de leur publication dans un délai de dix jours ouvrables. Si les directeurs ne donnent pas leur approbation dans un délai de dix jours ouvrables, les auteurs peuvent soumettre leur manuscrit à l’éditeur.",
+    "p2": "Les auteurs peuvent soumettre leur publication au Journal tiers pour l'examen par les pairs après que le gestionnaire a jugé que la publication était alignée sur la législation, les politiques et les directives pertinentes, ou si aucun commentaire n'a été reçu de l'examen de la direction dans les 10 jours ouvrables. Les directeurs de division, les directeurs nationaux, les directeurs régionaux des sciences et les directeurs nationaux généraux peuvent effectuer l'examen de la gestion.",
     "privacy-act": "Loi sur la protection des renseignements personnels",
     "privacy-act-link": "https://www.priv.gc.ca/fr/sujets-lies-a-la-protection-de-la-vie-privee/lois-sur-la-protection-des-renseignements-personnels-au-canada/la-loi-sur-la-protection-des-renseignements-personnels/lprp_survol/",
     "values-and-ethics-code-for-dfo": "Code de valeurs et d'éthique du MPO",
-    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-fra.htm"
+    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-fra.htm",
+    "p3": "Si un gestionnaire identifie les questions liées à la législation, aux politiques et aux directives pertinentes, elle doit communiquer avec les auteurs pour demander des révisions ou renvoyer la publication au directeur régional respectif de la science ou du directeur général national, et le calendrier de 10 jours ouvrable est interrompu."
   },
   "pub": {
     "general-information": "Informations générales"
