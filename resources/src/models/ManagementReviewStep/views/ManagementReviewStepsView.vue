@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type {
-  ManuscriptRecordResource,
-} from '@/models/ManuscriptRecord/ManuscriptRecord'
-import type { Ref } from 'vue'
-import type {
   ManagementReviewStepResourceList,
 } from '../ManagementReviewStep'
+import type {
+  ManuscriptRecordResource,
+} from '@/models/ManuscriptRecord/ManuscriptRecord'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 import {
   ManuscriptRecordService,
@@ -190,9 +189,11 @@ async function decisionSubmitted() {
       <p>
         {{ t('policy.message.p2') }}
       </p>
-      <p v-if="manuscriptRecord?.data.type === 'primary'">
-        {{ t('policy.p2') }}
-      </p>
+      <div v-if="manuscriptRecord?.data.type !== 'secondary'">
+        <p>{{ t('policy.p2') }}</p>
+        <p>{{ t('policy.p3') }}</p>
+      </div>
+
       <i18n-t keypath="policy.for-more-info" tag="p" scope="global">
         <template #policy>
           <a

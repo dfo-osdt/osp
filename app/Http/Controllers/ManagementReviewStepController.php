@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
+use App\Enums\ManuscriptRecordType;
 use App\Events\ManagementReviewStepCreated;
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
@@ -79,7 +80,6 @@ class ManagementReviewStepController extends Controller
         // should this MRF be flagged for planning binder?
         if ($validated['flag_for_planning_binder']) {
             FlagManuscriptRecordForPlanningBinderMail::commit(user_id: $managementReviewStep->user->id, manuscript_record_ulid: $manuscriptRecord->ulid);
-
         }
 
         return new ManagementReviewStepResource($managementReviewStep);
@@ -218,7 +218,9 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
         $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
-        $nextReviewStep->decision_expected_by = now()->addBusinessDays(config('osp.management_review.decision_expected_business_days'));
+        // if the manuscript record is a primary or preprint, then we expect a decision within X days
+        $decisionExpected = in_array($manuscriptRecord->type, [ManuscriptRecordType::PRIMARY, ManuscriptRecordType::PREPRINT], true);
+        $nextReviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
         $nextReviewStep->saveOrFail();
 
         ManagementReviewStepCreated::dispatch($nextReviewStep);
