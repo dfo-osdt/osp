@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { MediaResource, MediaResourceList } from '@/models/Media/Media'
 import type { SupplementaryFileType } from '@/models/Media/supplementaryFileOptions'
+import DOMPurify from 'dompurify'
+import { QInput, useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import MediaListItem from '@/models/Media/components/MediaListItem.vue'
 import SupplementaryFileTypeSelect from '@/models/Media/components/SupplementaryFileTypeSelect.vue'
-import DOMPurify from 'dompurify'
-import { QInput, useQuasar } from 'quasar'
 import { type PublicationResource, PublicationService } from '../Publication'
 
 const props = defineProps<{
@@ -114,6 +114,24 @@ const disableUpload = computed(() => {
 
 const hideMrf = computed(() => {
   return props.publication.data.manuscript_record_id !== null
+})
+
+/**
+ * This is used for parents components to check if the publication has an
+ * external manuscript record form (MRF) attached.
+ */
+const hasExternalMRF = computed(() => {
+  if (supplementaryFileResourceList.value?.data) {
+    return supplementaryFileResourceList.value.data.some(
+      media => media.data.supplementary_file_type === 'manuscript_record_form',
+    )
+  }
+  return false
+})
+
+defineExpose({
+  supplementaryFileResourceList: readonly(supplementaryFileResourceList),
+  hasExternalMRF: readonly(hasExternalMRF),
 })
 </script>
 

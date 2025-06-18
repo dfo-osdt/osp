@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-export type SupplementaryFileType =
-  | 'manuscript_record_form'
+export type SupplementaryFileType
+  = | 'manuscript_record_form'
   | 'author_agreement'
   | 'joint_copyright_agreement'
   | 'preprint'

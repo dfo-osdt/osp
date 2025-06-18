@@ -142,6 +142,14 @@ async function save() {
 // scroll save logic
 const saveButton = ref<HTMLButtonElement | null>(null)
 const saveButtonIsVisible = useElementVisibility(saveButton)
+
+// extenal mrf logic
+const supplementaryFileManagementCard = ref<InstanceType<typeof PublicationSupplementaryFileManagementCard> | undefined>()
+const hasExternalMRF = computed(() => {
+  if (supplementaryFileManagementCard.value === undefined)
+    return false
+  return supplementaryFileManagementCard.value.hasExternalMRF
+})
 </script>
 
 <template>
@@ -360,6 +368,7 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
       />
       <PublicationSupplementaryFileManagementCard
         v-if="publication"
+        ref="supplementaryFileManagementCard"
         :publication="publication"
       />
       <q-card-actions align="right">
