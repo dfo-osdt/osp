@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc5470d8739fbe41321e1a411bf6f6c7",
+    "content-hash": "ac5cc14afb2b90ee697d29e19e68ad7a",
     "packages": [
         {
             "name": "amphp/amp",
@@ -4400,16 +4400,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.19.2",
+            "version": "v12.19.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "97c581cb23bdc3147aab0d5087b19167d329991e"
+                "reference": "4e6ec689ef704bb4bd282f29d9dd658dfb4fb262"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/97c581cb23bdc3147aab0d5087b19167d329991e",
-                "reference": "97c581cb23bdc3147aab0d5087b19167d329991e",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/4e6ec689ef704bb4bd282f29d9dd658dfb4fb262",
+                "reference": "4e6ec689ef704bb4bd282f29d9dd658dfb4fb262",
                 "shasum": ""
             },
             "require": {
@@ -4611,7 +4611,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-06-17T23:44:27+00:00"
+            "time": "2025-06-18T12:56:23+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -7729,16 +7729,16 @@
         },
         {
             "name": "openai-php/client",
-            "version": "v0.12.0",
+            "version": "v0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/client.git",
-                "reference": "87cb05309dc1b3ba96725dfeb66186df83a2d489"
+                "reference": "399229860cea244843753bf1d9c28aee0e74c3a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/client/zipball/87cb05309dc1b3ba96725dfeb66186df83a2d489",
-                "reference": "87cb05309dc1b3ba96725dfeb66186df83a2d489",
+                "url": "https://api.github.com/repos/openai-php/client/zipball/399229860cea244843753bf1d9c28aee0e74c3a6",
+                "reference": "399229860cea244843753bf1d9c28aee0e74c3a6",
                 "shasum": ""
             },
             "require": {
@@ -7800,7 +7800,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/client/issues",
-                "source": "https://github.com/openai-php/client/tree/v0.12.0"
+                "source": "https://github.com/openai-php/client/tree/v0.13.0"
             },
             "funding": [
                 {
@@ -7816,26 +7816,26 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-04T13:34:48+00:00"
+            "time": "2025-05-14T21:43:59+00:00"
         },
         {
             "name": "openai-php/laravel",
-            "version": "v0.12.0",
+            "version": "v0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/laravel.git",
-                "reference": "79958886d6da28501202563d52b93a29f72f8ad5"
+                "reference": "a06af65a4a5cacceea9778d2228c73e72de0a9e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/laravel/zipball/79958886d6da28501202563d52b93a29f72f8ad5",
-                "reference": "79958886d6da28501202563d52b93a29f72f8ad5",
+                "url": "https://api.github.com/repos/openai-php/laravel/zipball/a06af65a4a5cacceea9778d2228c73e72de0a9e2",
+                "reference": "a06af65a4a5cacceea9778d2228c73e72de0a9e2",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^7.9.3",
-                "laravel/framework": "^12.12",
-                "openai-php/client": "^0.12.0",
+                "laravel/framework": "^11.29|^12.12",
+                "openai-php/client": "^0.13.0",
                 "php": "^8.2.0"
             },
             "require-dev": {
@@ -7885,7 +7885,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/laravel/issues",
-                "source": "https://github.com/openai-php/laravel/tree/v0.12.0"
+                "source": "https://github.com/openai-php/laravel/tree/v0.13.0"
             },
             "funding": [
                 {
@@ -7905,7 +7905,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-05-04T13:56:25+00:00"
+            "time": "2025-05-14T22:07:36+00:00"
         },
         {
             "name": "openspout/openspout",
@@ -19889,15 +19889,15 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.4"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
