@@ -142,6 +142,21 @@ async function save() {
 // scroll save logic
 const saveButton = ref<HTMLButtonElement | null>(null)
 const saveButtonIsVisible = useElementVisibility(saveButton)
+
+// external mrf logic
+const supplementaryFileManagementCard = ref<InstanceType<typeof PublicationSupplementaryFileManagementCard> | undefined>()
+const hasExternalMRF = computed(() => {
+  if (supplementaryFileManagementCard.value === undefined)
+    return false
+  return supplementaryFileManagementCard.value.hasExternalMRF
+})
+
+// scroll to supplementary files section
+function scrollToSupplementaryFiles() {
+  if (supplementaryFileManagementCard.value?.$el) {
+    supplementaryFileManagementCard.value.$el.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 </script>
 
 <template>
@@ -235,6 +250,20 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
                     :to="`/manuscript/${publication.data.manuscript_record_id}/form`"
                     :disable="!manuscriptMetadata?.can?.view"
                     icon-right="mdi-arrow-right"
+                  />
+                </div>
+                <div v-else-if="hasExternalMRF">
+                  <q-btn
+                    dense
+                    size="sm"
+                    flat
+                    :label="
+                      t(
+                        'publication-page.view-manuscript-record',
+                      )
+                    "
+                    icon-right="mdi-arrow-down"
+                    @click="scrollToSupplementaryFiles"
                   />
                 </div>
                 <div v-else>
@@ -360,6 +389,7 @@ const saveButtonIsVisible = useElementVisibility(saveButton)
       />
       <PublicationSupplementaryFileManagementCard
         v-if="publication"
+        ref="supplementaryFileManagementCard"
         :publication="publication"
       />
       <q-card-actions align="right">
