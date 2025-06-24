@@ -12,7 +12,7 @@
         "@intlify/unplugin-vue-i18n": "^6.0.8",
         "@quasar/extras": "^1.17.0",
         "@vitejs/plugin-vue": "^5.2.4",
-        "@vueuse/core": "^13.3.0",
+        "@vueuse/core": "^13.4.0",
         "dompurify": "^3.2.6",
         "pinia": "^3.0.3",
         "quasar": "^2.18.1",
