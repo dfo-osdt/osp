@@ -15,8 +15,8 @@ class ExpertiseFactory extends Factory
     public function definition(): array
     {
         return [
-            'name_en' => $this->faker->sentence(3),
-            'name_fr' => $this->faker->sentence(3),
+            'name_en' => $this->faker->unique()->sentence(3),
+            'name_fr' => $this->faker->unique()->sentence(3),
         ];
     }
 }
