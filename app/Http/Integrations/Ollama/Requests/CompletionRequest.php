@@ -19,7 +19,7 @@ class CompletionRequest extends Request implements HasBody
      */
     protected Method $method = Method::POST;
 
-    public function __construct(readonly protected CompletionRequestData $data) {}
+    public function __construct(protected readonly CompletionRequestData $data) {}
 
     protected function defaultBody(): array
     {
