@@ -16,7 +16,7 @@ class DeleteEmploymentRequest extends Request
 
     protected ActivitiesScopeEndpoint $endpoint = ActivitiesScopeEndpoint::EMPLOYMENT;
 
-    public function __construct(readonly protected int $putCode)
+    public function __construct(protected readonly int $putCode)
     {
 
         if (empty($this->putCode)) {

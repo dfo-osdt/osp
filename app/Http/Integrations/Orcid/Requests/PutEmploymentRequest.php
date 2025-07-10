@@ -20,7 +20,7 @@ class PutEmploymentRequest extends Request implements HasBody
     protected Method $method = Method::PUT;
 
     public function __construct(
-        readonly protected EmploymentData $employmentData,
+        protected readonly EmploymentData $employmentData,
         protected ActivitiesScopeEndpoint $endpoint = ActivitiesScopeEndpoint::EMPLOYMENT
     ) {
         if (empty($this->employmentData->putCode)) {
