@@ -42,7 +42,6 @@
     "spatie/laravel-ray": "^1.36.2",
     "spatie/simple-excel": "^3.6",
     "symfony/http-client": "^7.0.7",
-    "symfony/mailgun-mailer": "^7.0.7",
     "torann/geoip": "^3.0.7"
   },
   "require-dev": {
