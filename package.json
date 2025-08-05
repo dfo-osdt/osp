@@ -37,7 +37,7 @@
         "unplugin-auto-import": "^19.3.0",
         "vite": "^7.0.6",
         "vite-plugin-vue-devtools": "^8.0.0",
-        "vue-tsc": "^3.0.4"
+        "vue-tsc": "^3.0.5"
     },
     "pnpm": {
         "ignoredBuiltDependencies": [
