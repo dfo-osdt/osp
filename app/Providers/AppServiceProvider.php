@@ -90,7 +90,7 @@ class AppServiceProvider extends ServiceProvider
     private function configureHealth(): void
     {
         Health::checks([
-            UsedDiskSpaceCheck::new()->warnWhenUsedSpaceIsAbovePercentage(60)->failWhenUsedSpaceIsAbovePercentage(80),
+            UsedDiskSpaceCheck::new()->warnWhenUsedSpaceIsAbovePercentage(75)->failWhenUsedSpaceIsAbovePercentage(90),
             DatabaseCheck::new(),
             CacheCheck::new(),
             DebugModeCheck::new(),
