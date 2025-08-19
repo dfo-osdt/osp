@@ -11,7 +11,7 @@
     "php": "^8.4",
     "cerbero/json-parser": "^1.1",
     "cmixin/business-day": "^1.18.2",
-    "filament/filament": "^3.2",
+    "filament/filament": "^4.0",
     "guzzlehttp/guzzle": "^7.8.1",
     "hirethunk/verbs": "^0.7.0",
     "laracasts/cypress": "^3.0.2",
