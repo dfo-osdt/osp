@@ -49,6 +49,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property string|null $submitted_to_journal_on
  * @property string|null $accepted_on
  * @property string|null $withdrawn_on
+ * @property string|null $withdraw_reason
  * @property bool $potential_public_interest
  * @property string|null $pls_source_language
  * @property bool $pls_approved_by_author

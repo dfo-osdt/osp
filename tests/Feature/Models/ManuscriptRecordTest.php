@@ -10,6 +10,8 @@ use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 
 test('an authenticated user can create a new manuscript', function () {
     $user = User::factory()->create();
@@ -244,11 +246,16 @@ test('a user can withdraw a manuscript record', function () {
     // check they cannot withdraw if they are not the author
     $this->actingAs(User::factory()->create())->putJson("/api/manuscript-records/{$manuscript->id}/withdraw")->assertForbidden();
 
-    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/withdraw")->assertOk();
+    $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/withdraw",
+        ['withdraw_reason' => 'cannot publish'])->assertOk();
 
     Event::assertDispatched(ManuscriptRecordWithdrawnByAuthor::class);
 
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::WITHDRAWN);
+    expect($manuscript->fresh()->withdraw_reason)->toBe('cannot publish');
     expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::WITHDRAWN->value);
+    expect($response->json('data.withdrawn_on'))->toBeString();
+    expect($response->json('data.withdraw_reason'))->toBe('cannot publish');
 });
 
 test('a user cannot withdraw a manuscript record that was accepted', function () {
