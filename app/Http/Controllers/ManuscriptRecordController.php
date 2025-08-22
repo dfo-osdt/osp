@@ -144,13 +144,19 @@ class ManuscriptRecordController extends Controller
     }
 
     /** Withdraw this manuscript - it will not be published */
-    public function withdraw(ManuscriptRecord $manuscriptRecord): JsonResource
+    public function withdraw(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
         Gate::authorize('withdraw', $manuscriptRecord);
 
+        $validated = $request->validate([
+            'withdraw_reason' => 'required|string|max:1000',
+        ]);
+
         $manuscriptRecord->status = ManuscriptRecordStatus::WITHDRAWN;
         $manuscriptRecord->withdrawn_on = now();
+        $manuscriptRecord->withdraw_reason = $validated['withdraw_reason'];
         $manuscriptRecord->save();
+        $manuscriptRecord->refresh();
 
         ManuscriptRecordWithdrawnByAuthor::dispatch($manuscriptRecord);
 

@@ -46,6 +46,7 @@ class ManuscriptRecordResource extends JsonResource
                 'intends_open_access' => $this->intends_open_access,
                 'open_access_rationale' => $this->open_access_rationale ?? '',
                 'preprint_url' => $this->preprint_url ?? '',
+                'withdraw_reason' => $this->withdraw_reason ?? '',
 
                 // dates and times
                 'created_at' => $this->created_at,

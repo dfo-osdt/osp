@@ -240,16 +240,10 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('withdraw', $managementReviewStep);
 
         $validated = $request->validate([
-            'comments' => 'nullable|string',
+            'comments' => 'required|string',
         ]);
 
-        if (isset($validated['comments'])) {
-            $managementReviewStep->comments = $validated['comments'];
-        }
-        // validate that the review step has a comment
-        Validator::make($managementReviewStep->toArray(), [
-            'comments' => 'required|string',
-        ])->validate();
+        $managementReviewStep->comments = $validated['comments'];
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
         $managementReviewStep->decision = ManagementReviewStepDecision::WITHDRAWN;
@@ -257,6 +251,7 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->saveOrFail();
 
         $manuscriptRecord->status = ManuscriptRecordStatus::WITHDRAWN;
+        $manuscriptRecord->withdraw_reason = $validated['comments'];
         $manuscriptRecord->withdrawn_on = now();
         $manuscriptRecord->saveOrFail();
 
