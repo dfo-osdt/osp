@@ -7,6 +7,8 @@ use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Pages\Login;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -127,10 +129,18 @@ class LoginRequest extends Login
     {
         return [
             'form' => $this->form(
-                $this->makeForm()
-                    ->components([
-                        $this->getEmailFormComponent(),
-                        $this->getPasswordFormComponent(),
+                Form::make()
+                    ->schema([
+                        TextInput::make('email')
+                            ->label('Email')
+                            ->email()
+                            ->required()
+                            ->autocomplete('email'),
+                        TextInput::make('password')
+                            ->label('Password')
+                            ->password()
+                            ->required()
+                            ->autocomplete('current-password'),
                     ])
                     ->statePath('data'),
             ),
