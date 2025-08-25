@@ -2,16 +2,17 @@
 
 namespace App\Filament\Requests\Auth;
 
+use Filament\Auth\Pages\Login;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse;
+use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
-use Filament\Http\Responses\Auth\Contracts\LoginResponse;
-use Filament\Pages\Auth\Login as BaseAuth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
-class LoginRequest extends BaseAuth
+class LoginRequest extends Login
 {
     protected int $maxAttempts;
 
@@ -46,10 +47,10 @@ class LoginRequest extends BaseAuth
         /**
          * Check if user has permission to access admin panel
          *
-         * @throws \Illuminate\Validation\ValidationException
+         * @throws ValidationException
          */
         if (
-            (! $user->canAccessPanel(Filament::getCurrentPanel())) ||
+            (! $user->canAccessPanel(Filament::getCurrentOrDefaultPanel())) ||
             (! $user->hasVerifiedEmail()) ||
             (! $user->active)
         ) {
@@ -127,7 +128,7 @@ class LoginRequest extends BaseAuth
         return [
             'form' => $this->form(
                 $this->makeForm()
-                    ->schema([
+                    ->components([
                         $this->getEmailFormComponent(),
                         $this->getPasswordFormComponent(),
                     ])

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use Filament\Actions\Action;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
@@ -13,7 +14,7 @@ class ViewUser extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Back')
+            Action::make('Back')
                 ->url(fn () => UserResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use Filament\Actions\Action;
+use App\Models\User;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Notifications\Notification;
@@ -9,7 +11,7 @@ use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Password;
 
 /**
- * @property \App\Models\User $record
+ * @property User $record
  * @property array<string, mixed> $data
  */
 class EditUser extends EditRecord
@@ -19,7 +21,7 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Back')
+            Action::make('Back')
                 ->url(fn () => UserResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];

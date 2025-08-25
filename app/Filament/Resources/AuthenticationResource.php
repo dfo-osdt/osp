@@ -2,11 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Actions\ViewAction;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Infolists\Components\KeyValueEntry;
+use App\Filament\Resources\AuthenticationResource\Pages\ListAuthentications;
+use App\Filament\Resources\AuthenticationResource\Pages\ViewAuthentication;
 use App\Filament\Resources\AuthenticationResource\Pages;
 use Filament\Forms;
 use Filament\Infolists;
 use Filament\Infolists\Components;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
@@ -18,39 +28,39 @@ class AuthenticationResource extends Resource
 {
     protected static ?string $model = AuthenticationLog::class;
 
-    protected static ?string $navigationGroup = 'Audit Logs';
+    protected static string | \UnitEnum | null $navigationGroup = 'Audit Logs';
 
     protected static ?string $navigationLabel = 'Authentications';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('login_at')
+                TextColumn::make('login_at')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('login_successful')
+                IconColumn::make('login_successful')
                     ->label('Login Successful')
                     ->boolean()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('authenticatable.email')
+                TextColumn::make('authenticatable.email')
                     ->label('User')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ip_address')
+                TextColumn::make('ip_address')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('logout_at')
+                TextColumn::make('logout_at')
                     ->searchable()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\Filter::make('login_at')
-                    ->form([
-                        Forms\Components\DatePicker::make('logins_from'),
-                        Forms\Components\DatePicker::make('logins_until')
+                Filter::make('login_at')
+                    ->schema([
+                        DatePicker::make('logins_from'),
+                        DatePicker::make('logins_until')
                             ->default(now()),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -65,21 +75,21 @@ class AuthenticationResource extends Resource
                             );
                     })
                     ->columns(2),
-                Tables\Filters\TernaryFilter::make('login_successful'),
+                TernaryFilter::make('login_successful'),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(3)
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Infolists\Components\KeyValueEntry::make('attributes')
+                        KeyValueEntry::make('attributes')
                             ->label('Log Entry (JSON)')
                             ->default(fn ($record) => $record->getAttributes()),
                     ]),
@@ -94,8 +104,8 @@ class AuthenticationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAuthentications::route('/'),
-            'view' => Pages\ViewAuthentication::route('/{record}'),
+            'index' => ListAuthentications::route('/'),
+            'view' => ViewAuthentication::route('/{record}'),
         ];
     }
 }

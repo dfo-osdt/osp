@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\AuthenticationResource\Pages;
 
+use Filament\Actions\Action;
 use App\Filament\Resources\ActivityLogResource;
 use App\Filament\Resources\AuthenticationResource;
 use Filament\Actions;
@@ -14,7 +15,7 @@ class ListAuthentications extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Activity Log')
+            Action::make('Activity Log')
                 ->url(fn () => ActivityLogResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];

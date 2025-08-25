@@ -2,11 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\ViewAction;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Infolists\Components\KeyValueEntry;
+use App\Filament\Resources\ActivityLogResource\Pages\ListActivityLogs;
+use App\Filament\Resources\ActivityLogResource\Pages\ViewActivityLog;
 use App\Filament\Resources\ActivityLogResource\Pages;
 use Filament\Forms;
 use Filament\Infolists;
 use Filament\Infolists\Components;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
@@ -18,41 +27,41 @@ class ActivityLogResource extends Resource
 {
     protected static ?string $model = Activity::class;
 
-    protected static ?string $navigationGroup = 'Audit Logs';
+    protected static string | \UnitEnum | null $navigationGroup = 'Audit Logs';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('event')
+                TextColumn::make('event')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('causer.email')
+                TextColumn::make('causer.email')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('subject_type')
+                TextColumn::make('subject_type')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('log_name')
+                TextColumn::make('log_name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('subject_id')
+                TextColumn::make('subject_id')
                     ->hidden()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('causer_id')
+                TextColumn::make('causer_id')
                     ->hidden()
                     ->searchable(),
             ])
             ->filters([
-                Tables\Filters\Filter::make('created_at')
-                    ->form([
-                        Forms\Components\DatePicker::make('created_from'),
-                        Forms\Components\DatePicker::make('created_until')
+                Filter::make('created_at')
+                    ->schema([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until')
                             ->default(now()),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -67,7 +76,7 @@ class ActivityLogResource extends Resource
                             );
                     })
                     ->columns(2),
-                Tables\Filters\SelectFilter::make('event')
+                SelectFilter::make('event')
                     ->options(
                         fn () => Activity::query()
                             ->whereNotNull('event')
@@ -75,7 +84,7 @@ class ActivityLogResource extends Resource
                             ->pluck('event', 'event')
                             ->toArray()
                     ),
-                Tables\Filters\SelectFilter::make('causer_type')
+                SelectFilter::make('causer_type')
                     ->options(
                         fn () => Activity::query()
                             ->whereNotNull('causer_type')
@@ -83,7 +92,7 @@ class ActivityLogResource extends Resource
                             ->pluck('causer_type', 'causer_type')
                             ->toArray()
                     ),
-                Tables\Filters\SelectFilter::make('subject_type')
+                SelectFilter::make('subject_type')
                     ->options(
                         fn () => Activity::query()
                             ->whereNotNull('subject_type')
@@ -91,24 +100,24 @@ class ActivityLogResource extends Resource
                             ->pluck('subject_type', 'subject_type')
                             ->toArray()
                     ),
-                Tables\Filters\Filter::make('no_event')
+                Filter::make('no_event')
                     ->label('No Event')
                     ->query(fn ($query) => $query->whereNull('event')),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(3)
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
             ])
             ->defaultSort('created_at', $direction = 'desc');
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Infolists\Components\KeyValueEntry::make('attributes')
+                        KeyValueEntry::make('attributes')
                             ->label('Log Entry (JSON)')
                             ->default(fn ($record) => $record->getAttributes()),
                     ]),
@@ -123,8 +132,8 @@ class ActivityLogResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListActivityLogs::route('/'),
-            'view' => Pages\ViewActivityLog::route('/{record}'),
+            'index' => ListActivityLogs::route('/'),
+            'view' => ViewActivityLog::route('/{record}'),
         ];
     }
 }
