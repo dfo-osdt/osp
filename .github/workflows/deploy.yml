@@ -95,14 +95,15 @@ jobs:
             cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
-            composer install --optimize-autoloader --no-interaction
-            php artisan optimize:clear
-            php artisan config:clear
-            php artisan view:clear
-            php artisan config:cache
-            php artisan migrate --force
-            php artisan db:seed --class=RoleAndPermissionSeeder --force
-            sudo systemctl reload php8.4-fpm.service
+             composer install --optimize-autoloader --no-interaction
+             php artisan filament:install --no-interaction
+             php artisan optimize:clear
+             php artisan config:clear
+             php artisan view:clear
+             php artisan config:cache
+             php artisan migrate --force
+             php artisan db:seed --class=RoleAndPermissionSeeder --force
+             sudo systemctl reload php8.4-fpm.service
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo chown -h osp.www-data $ACTIVE_RELEASE_PATH
             sudo chown -R osp.www-data $ACTIVE_RELEASE_PATH/
@@ -160,14 +161,15 @@ jobs:
             cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
-            composer install --optimize-autoloader --no-interaction
-            php artisan optimize:clear
-            php artisan config:clear
-            php artisan view:clear
-            php artisan config:cache
-            php artisan migrate --force
-            php artisan db:seed --class=RoleAndPermissionSeeder --force
-            sudo systemctl reload php8.3-fpm.service
+             composer install --optimize-autoloader --no-interaction
+             php artisan filament:install --no-interaction
+             php artisan optimize:clear
+             php artisan config:clear
+             php artisan view:clear
+             php artisan config:cache
+             php artisan migrate --force
+             php artisan db:seed --class=RoleAndPermissionSeeder --force
+             sudo systemctl reload php8.3-fpm.service
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo chown -h osp.www-data $ACTIVE_RELEASE_PATH
             sudo chown -R osp.www-data $ACTIVE_RELEASE_PATH/

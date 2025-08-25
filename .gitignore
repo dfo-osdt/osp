@@ -2,6 +2,9 @@
 /public/build
 /public/hot
 /public/storage
+/public/css/filament/
+/public/fonts/filament/
+/public/js/filament/
 /storage/*.key
 /storage/*
 /vendor
