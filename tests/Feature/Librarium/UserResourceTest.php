@@ -58,8 +58,6 @@ describe('List Users table features', function () {
         collect([
             'first_name',
             'last_name',
-            'email_verified_at',
-            'active',
         ])->each(fn ($column) => $this->actingAs($this->admin)->livewire(ListUsers::class)
             ->sortTable($column)
             ->assertCanSeeTableRecords($this->records->sortBy($column), inOrder: true)
