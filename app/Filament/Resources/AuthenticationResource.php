@@ -2,24 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Filters\Filter;
-use Filament\Forms\Components\DatePicker;
-use Filament\Tables\Filters\TernaryFilter;
-use Filament\Actions\ViewAction;
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
-use Filament\Infolists\Components\KeyValueEntry;
 use App\Filament\Resources\AuthenticationResource\Pages\ListAuthentications;
 use App\Filament\Resources\AuthenticationResource\Pages\ViewAuthentication;
-use App\Filament\Resources\AuthenticationResource\Pages;
-use Filament\Forms;
-use Filament\Infolists;
-use Filament\Infolists\Components;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
@@ -28,11 +23,11 @@ class AuthenticationResource extends Resource
 {
     protected static ?string $model = AuthenticationLog::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Audit Logs';
+    protected static string|\UnitEnum|null $navigationGroup = 'Audit Logs';
 
     protected static ?string $navigationLabel = 'Authentications';
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function table(Table $table): Table
     {
