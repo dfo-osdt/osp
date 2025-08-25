@@ -18,29 +18,29 @@ Before you begin, ensure you have the following prerequisites installed:
 
 1. Install dependencies:
 
-    ```bash
-    composer install
-    pnpm install
-    ```
+   ```bash
+   composer install  # This will automatically publish Filament assets
+   pnpm install
+   ```
 
 2. Set up environment variables:
 
-    ```bash
-    cp .env.example .env
-    php artisan key:generate
-    ```
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
 3. Run database migrations:
 
-    ```bash
-    php artisan migrate
-    ```
+   ```bash
+   php artisan migrate
+   ```
 
 4. Start the development servers:
 
-    ```bash
-    composer run dev
-    ```
+   ```bash
+   composer run dev
+   ```
 
 ## Built With
 
@@ -97,8 +97,8 @@ The commit message should be structured as follows:
   'refactor',
   'revert',
   'style',
-  'test'
-]
+  'test',
+];
 ```
 
 ## Running Tests Locally
