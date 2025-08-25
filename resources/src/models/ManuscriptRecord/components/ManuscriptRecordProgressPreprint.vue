@@ -2,8 +2,8 @@
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
-import CopyToClipboardButton from '@/components/CopyToClipboardButton.vue'
 import { useQuasar } from 'quasar'
+import CopyToClipboardButton from '@/components/CopyToClipboardButton.vue'
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
 import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
 import SubmittedToPreprintDialog from './SubmittedToPreprintDialog.vue'
@@ -254,7 +254,7 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       color="red"
     >
       <p>
-        {{ $t('manuscript-progress-view.withdrawn-details') }}
+        {{ `${$t('manuscript-progress-view.withdrawn-details')}${manuscriptRecord.data.withdraw_reason}` }}
       </p>
     </q-timeline-entry>
     <WithdrawManuscriptDialog

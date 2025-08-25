@@ -14,13 +14,13 @@ import { SpatieQuery } from '@/api/SpatieQuery'
 
 export type ManuscriptRecordType = 'primary' | 'secondary' | 'preprint'
 
-export type ManuscriptRecordStatus =
-  | 'draft'
-  | 'in_review'
-  | 'reviewed'
-  | 'submitted'
-  | 'accepted'
-  | 'withdrawn'
+export type ManuscriptRecordStatus
+  = | 'draft'
+    | 'in_review'
+    | 'reviewed'
+    | 'submitted'
+    | 'accepted'
+    | 'withdrawn'
 
 /**
  * The minimum set of data required to create a new manuscript record.
@@ -61,6 +61,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   submitted_to_journal_on: string | null
   accepted_on: string | null
   withdrawn_on: string | null
+  withdraw_reason: string | null
   // relationships
   region?: Region
   functional_area?: FunctionalArea
@@ -95,8 +96,8 @@ export type ManuscriptRecordResource = Resource<ManuscriptRecord>
 export type ManuscriptRecordResourceList = ResourceList<ManuscriptRecord>
 export type ManuscriptRecordSummaryResource = Resource<ManuscriptRecordSummary>
 export type ManuscriptRecordMetadataResource = Resource<ManuscriptRecordMetadata>
-export type ManuscriptRecordSummaryResourceList =
-  ResourceList<ManuscriptRecordSummary>
+export type ManuscriptRecordSummaryResourceList
+  = ResourceList<ManuscriptRecordSummary>
 
 export class ManuscriptRecordService {
   private static baseURL = 'api/manuscript-records'
@@ -253,9 +254,13 @@ export class ManuscriptRecordService {
   }
 
   // Withdraw the manuscript
-  public static async withdraw(id: number) {
+  public static async withdraw(id: number, withdraw_reason: string) {
+    const data = {
+      withdraw_reason,
+    }
     const response = await http.put<any, ManuscriptRecordResource>(
       `${this.baseURL}/${id}/withdraw`,
+      data,
     )
     return response.data
   }
@@ -321,9 +326,9 @@ export class ManuscriptQuery extends SpatieQuery {
   }
 }
 
-type ManuscriptQuerySort =
-  | 'created_at'
-  | 'updated_at'
-  | 'title'
-  | 'status'
-  | 'type'
+type ManuscriptQuerySort
+  = | 'created_at'
+    | 'updated_at'
+    | 'title'
+    | 'status'
+    | 'type'

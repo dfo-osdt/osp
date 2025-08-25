@@ -6,7 +6,6 @@ import { useQuasar } from 'quasar'
 import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue'
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
 import SubmittedToJournalDialog from '../components/SubmittedToJournalDialog.vue'
-import SubmitToPubTeamDialog from '../components/SubmitToPubTeamDialog.vue'
 import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
 
 const manuscriptRecord = defineModel<ManuscriptRecordResource>({ required: true })
@@ -304,7 +303,7 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       color="red"
     >
       <p>
-        {{ $t('manuscript-progress-view.withdrawn-details') }}
+        {{ `${$t('manuscript-progress-view.withdrawn-details')}${manuscriptRecord.data.withdraw_reason}` }}
       </p>
     </q-timeline-entry>
     <SubmittedToJournalDialog

@@ -524,7 +524,7 @@
     "title": "Manuscript Progress",
     "withdraw-manuscript": "Withdraw Manuscript",
     "withdrawn-by-applicant": "Withdrawn by Applicant",
-    "withdrawn-details": "The manuscript was withdrawn by the applicant. The manuscript record will be archived after 30 days.",
+    "withdrawn-details": "The manuscript was withdrawn by the applicant for the following reason: ",
     "submisison-to-dfo-title": "Submit to the Science Publication Team",
     "submit-title": "Submit manuscript",
     "submission-to-dfo-details": "Following your submission to the Science publication team, your manuscript will be marked as accepted in the portal. Your work will then undergo a technical edit before a final proof is sent to the corresponding author(s) for review. Once this is completed, the publication group will make arrangements to have the manuscript published in the appropriate series.",
@@ -818,7 +818,8 @@
   },
   "withdraw-manuscript-dialog": {
     "text": "Withdraw this manuscript. This lets us know that this manuscript will not be published and closes this manuscript record.",
-    "title": "Withdraw this manuscript"
+    "title": "Withdraw this manuscript",
+    "reason": "Reason for withdrawal"
   },
   "author-employment-list": {
     "no-employment-given": "No ORCID employments entries"

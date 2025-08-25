@@ -242,7 +242,7 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       color="red"
     >
       <p>
-        {{ $t('manuscript-progress-view.withdrawn-details') }}
+        {{ `${$t('manuscript-progress-view.withdrawn-details')}${manuscriptRecord.data.withdraw_reason}` }}
       </p>
     </q-timeline-entry>
     <WithdrawManuscriptDialog
