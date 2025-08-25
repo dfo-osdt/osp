@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\ActivityLogs\ActivityLogs;
 
-use App\Filament\Resources\ActivityLogResource\Pages\ListActivityLogs;
-use App\Filament\Resources\ActivityLogResource\Pages\ViewActivityLog;
+use App\Filament\Resources\ActivityLogs\Pages\ListActivityLogs;
+use App\Filament\Resources\ActivityLogs\Pages\ViewActivityLog;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Infolists\Components\KeyValueEntry;

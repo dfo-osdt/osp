@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Announcements\Announcements;
 
-use App\Filament\Resources\AnnouncementResource\Pages\CreateAnnouncement;
-use App\Filament\Resources\AnnouncementResource\Pages\EditAnnouncement;
-use App\Filament\Resources\AnnouncementResource\Pages\ListAnnouncements;
+use App\Filament\Resources\Announcements\Pages\CreateAnnouncement;
+use App\Filament\Resources\Announcements\Pages\EditAnnouncement;
+use App\Filament\Resources\Announcements\Pages\ListAnnouncements;
 use App\Models\Announcement;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
