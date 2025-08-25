@@ -524,7 +524,7 @@
     "title": "Progrès du manuscrit",
     "withdraw-manuscript": "Retirer le manuscrit",
     "withdrawn-by-applicant": "Retiré par le demandeur",
-    "withdrawn-details": "Le manuscrit a été retiré par le demandeur. \nLe registre du manuscrit sera archivé après 30 jours.",
+    "withdrawn-details": "Le manuscrit a été retiré par le demandeur pour la raison suivante: ",
     "submisison-to-dfo-title": "Soumettre au groupe de publication du SEO",
     "submit-title": "Soumettre le manuscrit",
     "submission-to-dfo-details": "Suite à votre soumission au groupe de publication EOS, votre manuscrit sera marqué comme accepté dans le portail. Votre travail subira ensuite une révision technique avant qu'une épreuve finale ne soit envoyée à l'auteur(e) correspondant(e) pour révision. Une fois cette étape terminée, le groupe de publication prendra des dispositions pour publier le manuscrit dans la série appropriée.",
@@ -818,7 +818,8 @@
   },
   "withdraw-manuscript-dialog": {
     "text": "Retirez ce manuscrit. \nCela nous permet de savoir que ce manuscrit ne sera pas publié et ferme ce registre de manuscrit.",
-    "title": "Retirer ce manuscrit"
+    "title": "Retirer ce manuscrit",
+    "reason": "Raison du retrait"
   },
   "orcid-employment-edit": {
     "update-confirmation-message": "En mettant à jour votre relevé d'emploi ORCID à partir du portail, vous confirmez que les informations fournies sont exactes et reflètent vos emplois actuels et passés au MPO au meilleur de vos connaissances.",

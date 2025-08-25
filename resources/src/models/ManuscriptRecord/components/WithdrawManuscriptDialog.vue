@@ -1,12 +1,8 @@
 <script setup lang="ts">
+import type { ManuscriptRecordResource } from '../ManuscriptRecord'
 import { QBtn, QCardActions, QForm } from 'quasar'
-import type {
-  ManuscriptRecordResource,
-} from '../ManuscriptRecord'
-import {
-  ManuscriptRecordService,
-} from '../ManuscriptRecord'
 import BaseDialog from '@/components/BaseDialog.vue'
+import { ManuscriptRecordService } from '../ManuscriptRecord'
 
 const props = defineProps<{
   manuscriptRecordId: number
@@ -17,12 +13,14 @@ const emit = defineEmits<{
 }>()
 
 const loading = ref(false)
+const withdrawReason = ref<string>('')
 
 async function submit() {
   loading.value = true
   try {
     const resource = await ManuscriptRecordService.withdraw(
       props.manuscriptRecordId,
+      withdrawReason.value,
     )
     emit('updated', resource)
   }
@@ -42,6 +40,12 @@ async function submit() {
         {{ $t('withdraw-manuscript-dialog.text') }}
       </p>
       <QForm @submit="submit">
+        <QInput
+          v-model="withdrawReason"
+          :label="$t('withdraw-manuscript-dialog.reason')"
+          outlined
+          :rules="[(val) => !!val || $t('common.required')]"
+        />
         <QCardActions align="right">
           <QBtn
             v-close-popup
