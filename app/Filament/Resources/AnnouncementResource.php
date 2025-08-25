@@ -2,13 +2,27 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\ViewAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
+use App\Filament\Resources\AnnouncementResource\Pages\ListAnnouncements;
+use App\Filament\Resources\AnnouncementResource\Pages\CreateAnnouncement;
+use App\Filament\Resources\AnnouncementResource\Pages\EditAnnouncement;
 use App\Filament\Resources\AnnouncementResource\Pages;
 use App\Models\Announcement;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Infolists\Components;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,43 +32,43 @@ class AnnouncementResource extends Resource
 {
     protected static ?string $model = Announcement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-bell';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-bell';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Announcement Content')
+        return $schema
+            ->components([
+                Section::make('Announcement Content')
                     ->columns(2)
                     ->schema([
-                        Forms\Components\TextInput::make('title_en')
+                        TextInput::make('title_en')
                             ->label('Title English')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('title_fr')
+                        TextInput::make('title_fr')
                             ->label('Title French')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('text_en')
+                        Textarea::make('text_en')
                             ->label('Announcement English')
                             ->autosize()
                             ->required()
                             ->maxLength(500),
-                        Forms\Components\Textarea::make('text_fr')
+                        Textarea::make('text_fr')
                             ->label('Announcement French')
                             ->autosize()
                             ->required()
                             ->maxLength(500),
                     ]),
-                Forms\Components\Section::make('Dates')
+                Section::make('Dates')
                     ->description('Announcements times are in UTC')
                     ->schema([
-                        Forms\Components\DateTimePicker::make('start_at')
+                        DateTimePicker::make('start_at')
                             ->label('Start Date')
                             ->default(fn () => now())
                             ->required()
                             ->before('end_at'),
-                        Forms\Components\DateTimePicker::make('end_at')
+                        DateTimePicker::make('end_at')
                             ->label('End Date')
                             ->default(fn () => now()->addDay()->endOfDay())
                             ->required()
@@ -67,26 +81,26 @@ class AnnouncementResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title_en')
+                TextColumn::make('title_en')
                     ->label('Title English')
                     ->wrap()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('title_fr')
+                TextColumn::make('title_fr')
                     ->label('Title French')
                     ->wrap()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Created (UTC)')
                     ->datetime('M d, Y H:i'),
-                Tables\Columns\TextColumn::make('start_at')
+                TextColumn::make('start_at')
                     ->label('Start (UTC)')
                     ->datetime('M d, Y H:i')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('end_at')
+                TextColumn::make('end_at')
                     ->label('End (UTC)')
                     ->datetime('M d, Y H:i')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge(true)
                     ->label('Status')
                     ->getStateUsing(function (Announcement $record) {
@@ -111,27 +125,27 @@ class AnnouncementResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Components\Section::make('Info')
+        return $schema
+            ->components([
+                Section::make('Info')
                     ->schema([
-                        Components\Grid::make(2)
+                        Grid::make(2)
                             ->schema([
-                                Components\Group::make([
+                                Group::make([
                                     TextEntry::make('title_en')
                                         ->label('Title English'),
                                     TextEntry::make('created_at')
@@ -141,7 +155,7 @@ class AnnouncementResource extends Resource
                                         ->label('Start (UTC)')
                                         ->datetime('M d, Y H:i'),
                                 ]),
-                                Components\Group::make([
+                                Group::make([
                                     TextEntry::make('title_fr')
                                         ->label('Title French'),
                                     TextEntry::make('status')
@@ -170,11 +184,11 @@ class AnnouncementResource extends Resource
                                     ->columns(1),
                             ]),
                     ]),
-                Components\Section::make('Message')
+                Section::make('Message')
                     ->schema([
-                        Components\TextEntry::make('text_en')
+                        TextEntry::make('text_en')
                             ->label('English'),
-                        Components\TextEntry::make('text_fr')
+                        TextEntry::make('text_fr')
                             ->label('French'),
                     ]),
             ]);
@@ -190,9 +204,9 @@ class AnnouncementResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAnnouncements::route('/'),
-            'create' => Pages\CreateAnnouncement::route('/create'),
-            'edit' => Pages\EditAnnouncement::route('/{record}/edit'),
+            'index' => ListAnnouncements::route('/'),
+            'create' => CreateAnnouncement::route('/create'),
+            'edit' => EditAnnouncement::route('/{record}/edit'),
         ];
     }
 }

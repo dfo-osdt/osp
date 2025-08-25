@@ -2,12 +2,21 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use Filament\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Actions\ViewAction;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Infolists\Components\KeyValueEntry;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Infolists;
 use Filament\Infolists\Components;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
@@ -20,7 +29,7 @@ class ViewUserLogins extends ManageRelatedRecords
 
     protected static string $relationship = 'authentications';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getNavigationLabel(): string
     {
@@ -30,7 +39,7 @@ class ViewUserLogins extends ManageRelatedRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Back')
+            Action::make('Back')
                 ->url(fn () => UserResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];
@@ -41,31 +50,31 @@ class ViewUserLogins extends ManageRelatedRecords
         return $table
             ->recordTitleAttribute('authenticatable_id')
             ->columns([
-                Tables\Columns\TextColumn::make('authenticatable_id')
+                TextColumn::make('authenticatable_id')
                     ->hidden(),
-                Tables\Columns\TextColumn::make('login_at')
+                TextColumn::make('login_at')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('login_successful')
+                IconColumn::make('login_successful')
                     ->label('Login Successful')
                     ->boolean()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('authenticatable.email')
+                TextColumn::make('authenticatable.email')
                     ->label('User')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ip_address')
+                TextColumn::make('ip_address')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('logout_at')
+                TextColumn::make('logout_at')
                     ->searchable()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\Filter::make('login_at')
-                    ->form([
-                        Forms\Components\DatePicker::make('logins_from'),
-                        Forms\Components\DatePicker::make('logins_until')
+                Filter::make('login_at')
+                    ->schema([
+                        DatePicker::make('logins_from'),
+                        DatePicker::make('logins_until')
                             ->default(now()),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -80,21 +89,21 @@ class ViewUserLogins extends ManageRelatedRecords
                             );
                     })
                     ->columns(2),
-                Tables\Filters\TernaryFilter::make('login_successful'),
+                TernaryFilter::make('login_successful'),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(3)
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
             ]);
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Infolists\Components\KeyValueEntry::make('attributes')
+                        KeyValueEntry::make('attributes')
                             ->label('Log Entry (JSON)')
                             ->default(fn ($record) => $record->getAttributes()),
                     ]),

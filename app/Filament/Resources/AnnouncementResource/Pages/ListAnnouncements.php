@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\AnnouncementResource\Pages;
 
+use Filament\Actions\CreateAction;
 use App\Filament\Resources\AnnouncementResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -13,7 +14,7 @@ class ListAnnouncements extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
+            CreateAction::make()
                 ->icon('heroicon-o-plus-circle'),
         ];
     }

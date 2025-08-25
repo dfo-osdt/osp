@@ -2,12 +2,20 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use Filament\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\ViewAction;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Infolists\Components\KeyValueEntry;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Infolists;
 use Filament\Infolists\Components;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
@@ -21,7 +29,7 @@ class ViewUserLogs extends ManageRelatedRecords
 
     protected static string $relationship = 'actions';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getNavigationLabel(): string
     {
@@ -31,7 +39,7 @@ class ViewUserLogs extends ManageRelatedRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Back')
+            Action::make('Back')
                 ->url(fn () => UserResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];
@@ -42,29 +50,29 @@ class ViewUserLogs extends ManageRelatedRecords
         return $table
             ->recordTitleAttribute('causer_id')
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('event')
+                TextColumn::make('event')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('subject_type')
+                TextColumn::make('subject_type')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('subject_id')
+                TextColumn::make('subject_id')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('log_name')
+                TextColumn::make('log_name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('causer_id')
+                TextColumn::make('causer_id')
                     ->hidden(),
             ])
             ->filters([
-                Tables\Filters\Filter::make('created_at')
-                    ->form([
-                        Forms\Components\DatePicker::make('created_from'),
-                        Forms\Components\DatePicker::make('created_until')
+                Filter::make('created_at')
+                    ->schema([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until')
                             ->default(now()),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -79,7 +87,7 @@ class ViewUserLogs extends ManageRelatedRecords
                             );
                     })
                     ->columns(2),
-                Tables\Filters\SelectFilter::make('event')
+                SelectFilter::make('event')
                     ->options(
                         fn () => Activity::query()
                             ->whereNotNull('event')
@@ -87,7 +95,7 @@ class ViewUserLogs extends ManageRelatedRecords
                             ->pluck('event', 'event')
                             ->toArray()
                     ),
-                Tables\Filters\SelectFilter::make('subject_type')
+                SelectFilter::make('subject_type')
                     ->options(
                         fn () => Activity::query()
                             ->whereNotNull('subject_type')
@@ -95,24 +103,24 @@ class ViewUserLogs extends ManageRelatedRecords
                             ->pluck('subject_type', 'subject_type')
                             ->toArray()
                     ),
-                Tables\Filters\Filter::make('no_event')
+                Filter::make('no_event')
                     ->label('No Event')
                     ->query(fn ($query) => $query->whereNull('event')),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(3)
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
             ])
             ->defaultSort('created_at', $direction = 'desc');
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Infolists\Components\KeyValueEntry::make('attributes')
+                        KeyValueEntry::make('attributes')
                             ->label('Log Entry (JSON)')
                             ->default(fn ($record) => $record->getAttributes()),
                     ]),

@@ -11,7 +11,7 @@
     "php": "^8.4",
     "cerbero/json-parser": "^1.1",
     "cmixin/business-day": "^1.18.2",
-    "filament/filament": "^3.2",
+    "filament/filament": "^4.0",
     "guzzlehttp/guzzle": "^7.8.1",
     "hirethunk/verbs": "^0.7.0",
     "laracasts/cypress": "^3.0.2",
@@ -47,6 +47,7 @@
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^3.0.0",
     "fakerphp/faker": "^1.23.1",
+    "filament/upgrade": "^4.0",
     "larastan/larastan": "^3.0",
     "laravel/breeze": "^2.0.3",
     "laravel/pint": "^1.15.3",
