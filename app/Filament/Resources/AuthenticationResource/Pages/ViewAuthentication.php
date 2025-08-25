@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\AuthenticationResource\Pages;
 
-use Filament\Actions\Action;
 use App\Filament\Resources\AuthenticationResource;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewAuthentication extends ViewRecord

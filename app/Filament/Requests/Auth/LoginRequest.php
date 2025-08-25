@@ -2,15 +2,15 @@
 
 namespace App\Filament\Requests\Auth;
 
-use Filament\Auth\Pages\Login;
-use Filament\Auth\Http\Responses\Contracts\LoginResponse;
-use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse;
+use Filament\Auth\Pages\Login;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends Login
 {

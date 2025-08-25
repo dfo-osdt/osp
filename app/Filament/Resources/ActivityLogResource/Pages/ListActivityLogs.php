@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\ActivityLogResource\Pages;
 
-use Filament\Actions\Action;
 use App\Filament\Resources\ActivityLogResource;
 use App\Filament\Resources\AuthenticationResource;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 
 class ListActivityLogs extends ListRecords
