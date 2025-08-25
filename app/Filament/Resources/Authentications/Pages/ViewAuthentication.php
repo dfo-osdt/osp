@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\AuthenticationResource\Pages;
+namespace App\Filament\Resources\Authentications\Pages;
 
-use App\Filament\Resources\AuthenticationResource;
+use App\Filament\Resources\Authentications\Authentications\AuthenticationResource;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 

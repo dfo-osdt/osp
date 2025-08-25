@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Authentications\Authentications;
 
-use App\Filament\Resources\AuthenticationResource\Pages\ListAuthentications;
-use App\Filament\Resources\AuthenticationResource\Pages\ViewAuthentication;
+use App\Filament\Resources\Authentications\Pages\ListAuthentications;
+use App\Filament\Resources\Authentications\Pages\ViewAuthentication;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Infolists\Components\KeyValueEntry;

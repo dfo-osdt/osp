@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\AnnouncementResource\Pages;
+namespace App\Filament\Resources\Announcements\Pages;
 
-use App\Filament\Resources\AnnouncementResource;
+use App\Filament\Resources\Announcements\Announcements\AnnouncementResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 

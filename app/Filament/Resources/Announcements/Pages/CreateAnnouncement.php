@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\AnnouncementResource\Pages;
+namespace App\Filament\Resources\Announcements\Pages;
 
-use App\Filament\Resources\AnnouncementResource;
+use App\Filament\Resources\Announcements\Announcements\AnnouncementResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateAnnouncement extends CreateRecord

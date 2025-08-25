@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Users\Users;
 
 use App\Enums\Permissions\UserRole;
-use App\Filament\Resources\UserResource\Pages\EditUser;
-use App\Filament\Resources\UserResource\Pages\ListUsers;
-use App\Filament\Resources\UserResource\Pages\ViewUser;
-use App\Filament\Resources\UserResource\Pages\ViewUserLogins;
-use App\Filament\Resources\UserResource\Pages\ViewUserLogs;
+use App\Filament\Resources\Users\Pages\EditUser;
+use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Filament\Resources\Users\Pages\ViewUser;
+use App\Filament\Resources\Users\Pages\ViewUserLogins;
+use App\Filament\Resources\Users\Pages\ViewUserLogs;
 use App\Models\User;
 use App\Rules\AuthorizedEmailDomain;
 use DateTime;

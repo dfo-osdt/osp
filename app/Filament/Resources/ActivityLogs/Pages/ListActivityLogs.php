@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\ActivityLogResource\Pages;
+namespace App\Filament\Resources\ActivityLogs\Pages;
 
-use App\Filament\Resources\ActivityLogResource;
-use App\Filament\Resources\AuthenticationResource;
+use App\Filament\Resources\ActivityLogs\ActivityLogs\ActivityLogResource;
+use App\Filament\Resources\Authentications\Authentications\AuthenticationResource;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 

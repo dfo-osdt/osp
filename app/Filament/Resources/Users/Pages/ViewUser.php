@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\Users\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\Users\Users\UserResource;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 
