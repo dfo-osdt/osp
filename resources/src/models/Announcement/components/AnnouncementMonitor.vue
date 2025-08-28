@@ -1,16 +1,17 @@
 <script setup lang="ts">
+import type { AnnouncementResource, AnnouncementResourceList } from '../Announcement'
 import { useQuasar } from 'quasar'
-import { type AnnouncementResource, type AnnouncementResourceList, AnnouncementService } from '../Announcement'
+import { AnnouncementService } from '../Announcement'
 
 const localeStore = useLocaleStore()
 const { t } = useI18n()
 
 const muted = useLocalStorage<number[]>('mutedAnnouncementId', [])
 const announcements = ref<AnnouncementResourceList | null>(null)
-const { resume, pause } = useTimeoutPoll(updateStatus, 600000) // 10 minute in ms
+const { pause } = useTimeoutPoll(updateStatus, 60000) // 1 minute in ms
 
 onMounted(async () => {
-  resume()
+  updateStatus()
 })
 
 async function updateStatus() {
