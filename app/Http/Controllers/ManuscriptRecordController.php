@@ -65,7 +65,7 @@ class ManuscriptRecordController extends Controller
         }
 
         $baseQuery = ManuscriptRecord::query()
-            ->with(['user', 'region', 'shareables']);
+            ->with(['user', 'region', 'shareables', 'managementReviewSteps.user']);
 
         // Apply filtering based on permissions
         if ($hasGlobalPermission && ! empty($allowedRegionIds)) {
