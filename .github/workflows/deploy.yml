@@ -20,7 +20,7 @@ jobs:
       VITE_AZURE_ENABLE_AUTH: true
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: pnpm
         uses: pnpm/action-setup@v4
@@ -40,7 +40,7 @@ jobs:
         run: tar -czf osp_${{github.sha}}.tar.gz --exclude=".git" --exclude="node_modules" *
 
       - name: Store artifact for distribution
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: app-build
           path: osp_${{github.sha}}.tar.gz
@@ -51,7 +51,7 @@ jobs:
     environment: staging
     steps:
       - name: Get artifact from previous step
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: app-build
           path: osp_${{github.sha}}.tar.gz
