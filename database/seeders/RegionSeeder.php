@@ -24,6 +24,7 @@ class RegionSeeder extends Seeder
             Region::firstOrCreate([
                 'name_en' => $region['name_en'],
                 'name_fr' => $region['name_fr'],
+                'slug' => $region['slug'],
             ]);
         });
     }
