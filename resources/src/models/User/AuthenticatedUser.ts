@@ -1,6 +1,10 @@
 import type { UserResource } from './User'
 import type { AuthorResource } from '@/models/Author/Author'
-import type { Resource, ResourceList, SensitivityLabel } from '@/models/Resource'
+import type {
+  Resource,
+  ResourceList,
+  SensitivityLabel,
+} from '@/models/Resource'
 import type { Locale } from '@/stores/LocaleStore'
 import { http } from '@/api/http'
 
@@ -64,23 +68,55 @@ export interface IAuthenticatedUser {
 /**
  * List of available permissions
  */
-export type AuthenticatedUserPermissions =
-  | 'create_manuscript_records'
-  | 'create_publications'
-  | 'create_authors'
-  | 'update_authors'
-  | 'create_organizations'
-  | 'create_author_employments'
-  | 'complete_interntal_management_review'
-  | 'view_any_users'
-  | 'view_any_manuscript_record'
-  | 'publish_internal_reports'
-  | 'update_publications'
+export type AuthenticatedUserPermissions
+  = | 'create_manuscript_records'
+    | 'create_publications'
+    | 'create_authors'
+    | 'update_authors'
+    | 'create_organizations'
+    | 'create_author_employments'
+    | 'complete_interntal_management_review'
+    | 'view_any_users'
+    | 'view_any_manuscript_record'
+    | 'publish_internal_reports'
+    | 'update_publications'
+  // Regional MRF permissions - view access
+    | 'can_view_nfl_mrfs'
+    | 'can_view_mar_mrfs'
+    | 'can_view_glf_mrfs'
+    | 'can_view_que_mrfs'
+    | 'can_view_onp_mrfs'
+    | 'can_view_arc_mrfs'
+    | 'can_view_pac_mrfs'
+    | 'can_view_ncr_mrfs'
+  // Regional MRF permissions - edit access
+    | 'can_edit_nfl_mrfs'
+    | 'can_edit_mar_mrfs'
+    | 'can_edit_glf_mrfs'
+    | 'can_edit_que_mrfs'
+    | 'can_edit_onp_mrfs'
+    | 'can_edit_arc_mrfs'
+    | 'can_edit_pac_mrfs'
+    | 'can_edit_ncr_mrfs'
 
 /**
  * List of available roles
  */
-export type AuthenticatedUserRoles = 'author' | 'director' | 'admin' | 'editor' | 'chief_editor'
+export type AuthenticatedUserRoles
+  = | 'author'
+    | 'director'
+    | 'admin'
+    | 'editor'
+    | 'chief_editor'
+  // Regional editor roles
+    | 'nfl_editor'
+    | 'mar_editor'
+    | 'glf_editor'
+    | 'que_editor'
+    | 'onp_editor'
+    | 'arc_editor'
+    | 'pac_editor'
+    | 'ncr_editor'
 
 export class AuthenticatedUser implements IAuthenticatedUser {
   public id!: number
@@ -165,6 +201,29 @@ export class AuthenticatedUser implements IAuthenticatedUser {
         return locale === 'en' ? 'Chief Editor' : 'Rédacteur en chef'
       case 'editor':
         return locale === 'en' ? 'Editor' : 'Éditeur'
+      // Regional editor roles
+      case 'nfl_editor':
+        return locale === 'en'
+          ? 'Newfoundland and Labrador Editor'
+          : 'Éditeur Terre-Neuve-et-Labrador'
+      case 'mar_editor':
+        return locale === 'en' ? 'Maritimes Editor' : 'Éditeur des Maritimes'
+      case 'glf_editor':
+        return locale === 'en' ? 'Gulf Editor' : 'Éditeur du Golfe'
+      case 'que_editor':
+        return locale === 'en' ? 'Quebec Editor' : 'Éditeur du Québec'
+      case 'onp_editor':
+        return locale === 'en'
+          ? 'Ontario and Prairie Editor'
+          : 'Éditeur de l\'Ontario et des Prairies'
+      case 'arc_editor':
+        return locale === 'en' ? 'Arctic Editor' : 'Éditeur de l\'Arctique'
+      case 'pac_editor':
+        return locale === 'en' ? 'Pacific Editor' : 'Éditeur du Pacifique'
+      case 'ncr_editor':
+        return locale === 'en'
+          ? 'National Capital Region Editor'
+          : 'Éditeur de la Région de la capitale nationale'
       default:
         return 'N/A'
     }

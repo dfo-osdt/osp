@@ -9,6 +9,16 @@ enum UserRole: string
     case DIRECTOR = 'director';
     case EDITOR = 'editor';
     case CHIEF_EDITOR = 'chief_editor';
+    
+    // Regional editor roles
+    case NFL_EDITOR = 'nfl_editor';
+    case MAR_EDITOR = 'mar_editor';
+    case GLF_EDITOR = 'glf_editor';
+    case QUE_EDITOR = 'que_editor';
+    case ONP_EDITOR = 'onp_editor';
+    case ARC_EDITOR = 'arc_editor';
+    case PAC_EDITOR = 'pac_editor';
+    case NCR_EDITOR = 'ncr_editor';
 
     /**
      * Get the permissions associated with the role
@@ -49,6 +59,39 @@ enum UserRole: string
                 // Merge editor permissions
                 ...self::EDITOR->permissions(),
             ],
+            // Regional editor permissions
+            self::NFL_EDITOR => [
+                UserPermission::CAN_VIEW_NFL_MRFS,
+                UserPermission::CAN_EDIT_NFL_MRFS,
+            ],
+            self::MAR_EDITOR => [
+                UserPermission::CAN_VIEW_MAR_MRFS,
+                UserPermission::CAN_EDIT_MAR_MRFS,
+            ],
+            self::GLF_EDITOR => [
+                UserPermission::CAN_VIEW_GLF_MRFS,
+                UserPermission::CAN_EDIT_GLF_MRFS,
+            ],
+            self::QUE_EDITOR => [
+                UserPermission::CAN_VIEW_QUE_MRFS,
+                UserPermission::CAN_EDIT_QUE_MRFS,
+            ],
+            self::ONP_EDITOR => [
+                UserPermission::CAN_VIEW_ONP_MRFS,
+                UserPermission::CAN_EDIT_ONP_MRFS,
+            ],
+            self::ARC_EDITOR => [
+                UserPermission::CAN_VIEW_ARC_MRFS,
+                UserPermission::CAN_EDIT_ARC_MRFS,
+            ],
+            self::PAC_EDITOR => [
+                UserPermission::CAN_VIEW_PAC_MRFS,
+                UserPermission::CAN_EDIT_PAC_MRFS,
+            ],
+            self::NCR_EDITOR => [
+                UserPermission::CAN_VIEW_NCR_MRFS,
+                UserPermission::CAN_EDIT_NCR_MRFS,
+            ],
         };
 
     }
@@ -71,6 +114,15 @@ enum UserRole: string
             self::ADMIN => 'Admin',
             self::EDITOR => 'Editor',
             self::CHIEF_EDITOR => 'Chief Editor',
+            // Regional editor labels
+            self::NFL_EDITOR => 'Newfoundland and Labrador Editor',
+            self::MAR_EDITOR => 'Maritimes Editor',
+            self::GLF_EDITOR => 'Gulf Editor',
+            self::QUE_EDITOR => 'Quebec Editor',
+            self::ONP_EDITOR => 'Ontario and Prairie Editor',
+            self::ARC_EDITOR => 'Arctic Editor',
+            self::PAC_EDITOR => 'Pacific Editor',
+            self::NCR_EDITOR => 'National Capital Region Editor',
         };
     }
 }

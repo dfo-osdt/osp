@@ -20,4 +20,24 @@ enum UserPermission: string
     case ADMINISTER_USERS = 'administer_users';
     case PUBLISH_INTERNAL_REPORTS = 'publish_internal_reports';
     case UPDATE_PUBLICATIONS = 'update_publications';
+    
+    // Regional MRF permissions - view access
+    case CAN_VIEW_NFL_MRFS = 'can_view_nfl_mrfs';
+    case CAN_VIEW_MAR_MRFS = 'can_view_mar_mrfs';
+    case CAN_VIEW_GLF_MRFS = 'can_view_glf_mrfs';
+    case CAN_VIEW_QUE_MRFS = 'can_view_que_mrfs';
+    case CAN_VIEW_ONP_MRFS = 'can_view_onp_mrfs';
+    case CAN_VIEW_ARC_MRFS = 'can_view_arc_mrfs';
+    case CAN_VIEW_PAC_MRFS = 'can_view_pac_mrfs';
+    case CAN_VIEW_NCR_MRFS = 'can_view_ncr_mrfs';
+    
+    // Regional MRF permissions - edit access
+    case CAN_EDIT_NFL_MRFS = 'can_edit_nfl_mrfs';
+    case CAN_EDIT_MAR_MRFS = 'can_edit_mar_mrfs';
+    case CAN_EDIT_GLF_MRFS = 'can_edit_glf_mrfs';
+    case CAN_EDIT_QUE_MRFS = 'can_edit_que_mrfs';
+    case CAN_EDIT_ONP_MRFS = 'can_edit_onp_mrfs';
+    case CAN_EDIT_ARC_MRFS = 'can_edit_arc_mrfs';
+    case CAN_EDIT_PAC_MRFS = 'can_edit_pac_mrfs';
+    case CAN_EDIT_NCR_MRFS = 'can_edit_ncr_mrfs';
 }
