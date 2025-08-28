@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name_en
  * @property string $name_fr
+ * @property string $slug
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Region newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Region newQuery()
