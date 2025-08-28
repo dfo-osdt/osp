@@ -54,6 +54,7 @@ class UserManuscriptRecordController extends Controller
             ],
             'shareables',
             'managementReviewSteps',
+            'region',
         ];
 
         $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)
