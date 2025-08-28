@@ -40,7 +40,7 @@ jobs:
         run: tar -czf osp_${{github.sha}}.tar.gz --exclude=".git" --exclude="node_modules" *
 
       - name: Store artifact for distribution
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: app-build
           path: osp_${{github.sha}}.tar.gz
