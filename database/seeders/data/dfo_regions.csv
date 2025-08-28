@@ -1,9 +1,9 @@
-name_en,name_fr
-Newfoundland and Labrador Region,Région de Terre-Neuve-et-Labrador
-Maritimes Region,Région des Maritimes
-Gulf Region,Région du Golfe
-Quebec Region,Région du Québec
-Ontario and Prairie Region,Région de l’Ontario et des Prairies
-Arctic Region,Région de l’Arctique
-Pacific Region,Région du Pacifique
-National Capital Region,Région de la capitale nationale
+name_en,name_fr,slug
+Newfoundland and Labrador Region,Région de Terre-Neuve-et-Labrador,nfl
+Maritimes Region,Région des Maritimes,mar
+Gulf Region,Région du Golfe,glf
+Quebec Region,Région du Québec,que
+Ontario and Prairie Region,Région de l’Ontario et des Prairies,onp
+Arctic Region,Région de l’Arctique,arc
+Pacific Region,Région du Pacifique,pac
+National Capital Region,Région de la capitale nationale,ncr
