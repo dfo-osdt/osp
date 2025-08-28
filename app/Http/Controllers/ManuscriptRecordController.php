@@ -7,6 +7,7 @@ use App\Actions\CreatePublicationFromManuscript;
 use App\Actions\DeleteManuscriptRecord;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Enums\Permissions\UserPermission;
 use App\Events\ManuscriptRecordToReviewEvent;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\PlanningBinder\FlaggedManuscriptAcceptedInJournal;
@@ -17,10 +18,15 @@ use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
+use App\Models\Region;
 use App\Models\User;
+use App\Queries\ManuscriptRecordListQuery;
 use App\Rules\UserNotAManuscriptAuthor;
+use App\Traits\PaginationLimitTrait;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -29,6 +35,58 @@ use Illuminate\Validation\Rules\Enum;
 
 class ManuscriptRecordController extends Controller
 {
+    use PaginationLimitTrait;
+
+    /**
+     * Display a listing of manuscript records based on system permissions.
+     */
+    public function index(#[CurrentUser] User $user, Request $request): ResourceCollection
+    {
+        $limit = $this->getLimitFromRequest($request);
+
+        $hasGlobalPermission = $user->hasPermissionTo(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD);
+
+        // Check for regional view permissions
+        $regionSlugs = ['nfl', 'mar', 'glf', 'que', 'onp', 'arc', 'pac', 'ncr'];
+        $allowedRegionIds = [];
+
+        foreach ($regionSlugs as $slug) {
+            if ($user->can("can_view_{$slug}_mrfs")) {
+                $region = Region::where('slug', $slug)->first();
+                if ($region) {
+                    $allowedRegionIds[] = $region->id;
+                }
+            }
+        }
+
+        // If no system permissions, return forbidden
+        if (! $hasGlobalPermission && empty($allowedRegionIds)) {
+            abort(403, 'Insufficient permissions to view manuscript records');
+        }
+
+        $baseQuery = ManuscriptRecord::query()
+            ->with(['user', 'region', 'shareables']);
+
+        // Apply filtering based on permissions
+        if ($hasGlobalPermission && ! empty($allowedRegionIds)) {
+            // Both global AND regional - union of access
+            $baseQuery->where(function ($query) use ($allowedRegionIds) {
+                $query->where('status', '!=', ManuscriptRecordStatus::DRAFT)
+                    ->orWhereIn('region_id', $allowedRegionIds);
+            });
+        } elseif ($hasGlobalPermission) {
+            // Only global - all non-drafts
+            $baseQuery->where('status', '!=', ManuscriptRecordStatus::DRAFT);
+        } else {
+            // Only regional - all from assigned regions
+            $baseQuery->whereIn('region_id', $allowedRegionIds);
+        }
+
+        $manuscriptListQuery = new ManuscriptRecordListQuery($request, $baseQuery);
+
+        return ManuscriptRecordResource::collection($manuscriptListQuery->paginate($limit));
+    }
+
     /**
      * Store a newly created resource in storage.
      */

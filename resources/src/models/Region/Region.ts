@@ -5,6 +5,7 @@ export interface Region {
   id: number
   name_en: string
   name_fr: string
+  slug: string
 }
 
 export type RegionResource = Resource<Region>
