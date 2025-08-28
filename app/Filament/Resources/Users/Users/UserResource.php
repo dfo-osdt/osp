@@ -125,8 +125,8 @@ class UserResource extends Resource
                         UserRole::AUTHOR => 'success',
                         UserRole::DIRECTOR, UserRole::EDITOR, UserRole::CHIEF_EDITOR => 'warning',
                         UserRole::ADMIN => 'danger',
-                        UserRole::NFL_EDITOR, UserRole::MAR_EDITOR, UserRole::GLF_EDITOR, 
-                        UserRole::QUE_EDITOR, UserRole::ONP_EDITOR, UserRole::ARC_EDITOR, 
+                        UserRole::NFL_EDITOR, UserRole::MAR_EDITOR, UserRole::GLF_EDITOR,
+                        UserRole::QUE_EDITOR, UserRole::ONP_EDITOR, UserRole::ARC_EDITOR,
                         UserRole::PAC_EDITOR, UserRole::NCR_EDITOR => 'info',
                     })
                     ->searchable(),
