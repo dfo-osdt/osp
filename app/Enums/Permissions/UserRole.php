@@ -9,7 +9,7 @@ enum UserRole: string
     case DIRECTOR = 'director';
     case EDITOR = 'editor';
     case CHIEF_EDITOR = 'chief_editor';
-    
+
     // Regional editor roles
     case NFL_EDITOR = 'nfl_editor';
     case MAR_EDITOR = 'mar_editor';
