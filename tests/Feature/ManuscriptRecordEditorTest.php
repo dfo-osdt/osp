@@ -3,33 +3,7 @@
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\Permissions\UserRole;
 use App\Models\ManuscriptRecord;
-use App\Models\Region;
 use App\Models\User;
-use Spatie\Permission\Models\Role;
-
-beforeEach(function () {
-    // Seed regions with slugs if they don't exist
-    if (Region::count() === 0) {
-        Region::factory()->create(['id' => 1, 'slug' => 'nfl', 'name_en' => 'Newfoundland and Labrador']);
-        Region::factory()->create(['id' => 2, 'slug' => 'mar', 'name_en' => 'Maritimes']);
-        Region::factory()->create(['id' => 3, 'slug' => 'glf', 'name_en' => 'Gulf']);
-        Region::factory()->create(['id' => 4, 'slug' => 'que', 'name_en' => 'Quebec']);
-        Region::factory()->create(['id' => 5, 'slug' => 'onp', 'name_en' => 'Ontario and Prairie']);
-        Region::factory()->create(['id' => 6, 'slug' => 'arc', 'name_en' => 'Arctic']);
-        Region::factory()->create(['id' => 7, 'slug' => 'pac', 'name_en' => 'Pacific']);
-        Region::factory()->create(['id' => 8, 'slug' => 'ncr', 'name_en' => 'National Capital Region']);
-    }
-
-    // Create roles if they don't exist
-    foreach (UserRole::cases() as $role) {
-        if (! Role::where('name', $role->value)->exists()) {
-            Role::create([
-                'name' => $role->value,
-                'permissions' => $role->permissionValues(),
-            ]);
-        }
-    }
-});
 
 test('regional editor can view draft manuscript in their region', function () {
     $nflEditor = User::factory()->create();
