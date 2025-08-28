@@ -294,7 +294,7 @@ class ManuscriptRecordController extends Controller
      */
     private function loadPolicyRelationships(ManuscriptRecord $manuscriptRecord): ManuscriptRecord
     {
-        $relationships = collect(['user', 'shareables']);
+        $relationships = collect(['user', 'shareables', 'region']);
         if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
             $relationships->push('publication');
         }
