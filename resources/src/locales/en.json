@@ -303,7 +303,8 @@
     "preprints": "Preprints",
     "plain-language-summary-en": "Plain Language Summary - English",
     "plain-language-summary-fr": "Plain Language Summary - French",
-    "clone": "Duplicate"
+    "clone": "Duplicate",
+    "type": "of type"
   },
   "create-author-dialog": {
     "title": "Create a new author"
@@ -918,7 +919,7 @@
     "manuscripts-needing-attention": "Manuscripts that need attention or are under review",
     "under-management-review": "Under Management Review",
     "in-management-review-process": "Manuscripts currently in the management review process",
-    "accepted-published-manuscripts": "Accepted and published manuscripts",
+    "accepted-published-manuscripts": "Accepted by Journal or Withdrawn",
     "potential-public-interest": "Potential Public Interest",
     "manuscripts-with-public-interest": "Manuscripts flagged for potential public interest",
     "permission-required": "You need regional manuscript view permissions to access this page."

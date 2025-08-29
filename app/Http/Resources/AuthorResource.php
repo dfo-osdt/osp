@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Enums\SensitivityLabel;
-use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Resource for Author model.

@@ -14,6 +14,7 @@ use App\Events\PlanningBinder\FlaggedManuscriptAcceptedInJournal;
 use App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint;
 use App\Http\Resources\ManuscriptRecordMetadataResource;
 use App\Http\Resources\ManuscriptRecordResource;
+use App\Http\Resources\ManuscriptRecordSummaryResource;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
@@ -67,7 +68,6 @@ class ManuscriptRecordController extends Controller
             ->with(['user',
                 'manuscriptAuthors' => [
                     'author',
-                    'organization',
                 ],
                 'region', 'shareables', 'managementReviewSteps.user']);
 
@@ -87,7 +87,7 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptListQuery = new ManuscriptRecordListQuery($request, $baseQuery);
 
-        return ManuscriptRecordResource::collection($manuscriptListQuery->paginate($limit));
+        return ManuscriptRecordSummaryResource::collection($manuscriptListQuery->paginate($limit));
     }
 
     /**
