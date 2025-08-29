@@ -2,11 +2,11 @@
 import type {
   PublicationAuthorResource,
 } from '../PublicationAuthor'
+import BaseDialog from '@/components/BaseDialog.vue'
+import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
 import {
   PublicationAuthorService,
 } from '../PublicationAuthor'
-import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
-import BaseDialog from '@/components/BaseDialog.vue'
 
 const props = withDefaults(
   defineProps<{

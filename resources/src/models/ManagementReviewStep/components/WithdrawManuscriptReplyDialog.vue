@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { QBtn, QCardActions, QForm } from 'quasar'
 import type {
   ManagementReviewStepResource,
 } from '../ManagementReviewStep'
+import { QBtn, QCardActions, QForm } from 'quasar'
+import BaseDialog from '@/components/BaseDialog.vue'
 import {
   ManagementReviewStepService,
 } from '../ManagementReviewStep'
-import BaseDialog from '@/components/BaseDialog.vue'
 
 const props = defineProps<{
   managementReviewStep: ManagementReviewStepResource

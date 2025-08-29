@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { QTableProps } from 'quasar'
-import TimeStampTd from './Table/TimeStampTd.vue'
 import ContentCard from '@/components/ContentCard.vue'
+import TimeStampTd from './Table/TimeStampTd.vue'
 
 const authStore = useAuthStore()
 authStore.getAuthentications()

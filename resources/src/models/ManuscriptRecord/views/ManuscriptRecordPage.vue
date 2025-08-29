@@ -13,7 +13,7 @@ const manuscript = ref<ManuscriptRecordResource | undefined>(undefined)
 
 /**
  * this page depends on its child routes to load the manuscript record by
- * emitting an event called 'update-manuscript'
+ * emitting an event called 'updateManuscript'
  */
 function updateManuscript(updatedManuscript: ManuscriptRecordResource) {
   manuscript.value = updatedManuscript
@@ -40,12 +40,14 @@ const showPublishBanner = computed(() => {
         <div class="text-subtitle2 text-grey-7 q-pl-md q-py-sm">
           <span class="text-primary text-uppercase">{{ $t('common.unique-id') }}:
           </span>
-          <span class="text-weight-medium">{{
-            manuscript?.data.ulid
-          }}</span>
+          <span class="text-weight-medium">{{ manuscript?.data.ulid }}</span>
         </div>
         <div class="flex items-center">
-          <ManuscriptTypeBadge v-if="manuscript?.data.type" :type="manuscript.data.type" class="text-subtitle2 q-mr-md" />
+          <ManuscriptTypeBadge
+            v-if="manuscript?.data.type"
+            :type="manuscript.data.type"
+            class="text-subtitle2 q-mr-md"
+          />
         </div>
       </div>
       <q-separator />
@@ -56,11 +58,7 @@ const showPublishBanner = computed(() => {
     >
       <div class="flex justify-between items-center">
         <div class="text-subtitle1 flex items-center">
-          <q-icon
-            name="mdi-information-outline"
-            size="md"
-            class="q-mr-sm"
-          />
+          <q-icon name="mdi-information-outline" size="md" class="q-mr-sm" />
           <span v-if="manuscript?.data.type === 'primary'">
             {{ $t('mrf.ready-to-marked-published') }}
           </span>
@@ -89,9 +87,7 @@ const showPublishBanner = computed(() => {
           style="position: sticky; top: 160px"
         >
           <template #title>
-            {{
-              $t('common.manuscript-record')
-            }}
+            {{ $t('common.manuscript-record') }}
           </template>
           <q-list>
             <q-item clickable :to="`/manuscript/${id}/form`">
@@ -100,9 +96,7 @@ const showPublishBanner = computed(() => {
               </q-item-section>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    $t('common.form')
-                  }}
+                  {{ $t('common.form') }}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -112,9 +106,7 @@ const showPublishBanner = computed(() => {
               </q-item-section>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    $t('management-review-step-view.title')
-                  }}
+                  {{ $t('management-review-step-view.title') }}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -124,9 +116,7 @@ const showPublishBanner = computed(() => {
               </q-item-section>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    $t('manuscript-progress-view.title')
-                  }}
+                  {{ $t('manuscript-progress-view.title') }}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -136,9 +126,7 @@ const showPublishBanner = computed(() => {
               </q-item-section>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    $t('common.sharing')
-                  }}
+                  {{ $t('common.sharing') }}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -146,9 +134,7 @@ const showPublishBanner = computed(() => {
             <q-item
               v-if="manuscript?.data.type !== 'preprint'"
               clickable
-              :disable="
-                manuscript?.data.publication === undefined
-              "
+              :disable="manuscript?.data.publication === undefined"
               :to="`/publication/${manuscript?.data.publication?.data.id}`"
             >
               <q-item-section avatar>
@@ -156,24 +142,14 @@ const showPublishBanner = computed(() => {
               </q-item-section>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    $t('common.publication')
-                  }}
+                  {{ $t('common.publication') }}
                 </q-item-label>
                 <q-item-label caption>
-                  <span
-                    v-if="
-                      manuscript?.data.publication
-                        === undefined
-                    "
-                  >{{ $t('common.pending') }}
+                  <span v-if="manuscript?.data.publication === undefined">{{ $t('common.pending') }}
                   </span>
                   <PublicationStatusSpan
                     v-else
-                    :status="
-                      manuscript?.data.publication?.data
-                        .status
-                    "
+                    :status="manuscript?.data.publication?.data.status"
                   />
                 </q-item-label>
               </q-item-section>
@@ -181,11 +157,8 @@ const showPublishBanner = computed(() => {
             <q-item
               v-if="manuscript?.data.type === 'preprint'"
               clickable
-              :disable="
-                manuscript?.data.preprint_url === ''
-              "
-              :href="
-                manuscript?.data.preprint_url"
+              :disable="manuscript?.data.preprint_url === ''"
+              :href="manuscript?.data.preprint_url"
               target="_blank"
             >
               <q-item-section avatar>
@@ -193,22 +166,12 @@ const showPublishBanner = computed(() => {
               </q-item-section>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    $t('common.preprint')
-                  }}
+                  {{ $t('common.preprint') }}
                 </q-item-label>
                 <q-item-label caption>
-                  <span
-                    v-if="
-                      manuscript?.data.preprint_url
-                        === ''
-                    "
-                  >{{ $t('common.pending') }}
+                  <span v-if="manuscript?.data.preprint_url === ''">{{ $t('common.pending') }}
                   </span>
-                  <span
-                    v-else
-                  >{{ $t('common.view-preprint') }}
-                  </span>
+                  <span v-else>{{ $t('common.view-preprint') }} </span>
                 </q-item-label>
               </q-item-section>
             </q-item>

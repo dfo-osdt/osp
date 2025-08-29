@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import type {
   ManagementReviewStepResource,
 } from '../ManagementReviewStep'
+import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
+import DOMPurify from 'dompurify'
+import { useQuasar } from 'quasar'
 import QuestionEditor from '@/components/QuestionEditor.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import { useLocaleDate } from '@/composables/useLocaleDate'
-import DOMPurify from 'dompurify'
-import { useQuasar } from 'quasar'
 import ManagementReviewStepStatusSpan from '../components/ManagementReviewStepStatusSpan.vue'
 import {
   ManagementReviewStepService,

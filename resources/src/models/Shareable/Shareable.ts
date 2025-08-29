@@ -38,22 +38,22 @@ export class ShareableService {
 
   public async list() {
     const response = await http.get<ShareableResourceList>(
-            `api/${this.model}/${this.modelId}/sharing`,
+      `api/${this.model}/${this.modelId}/sharing`,
     )
     return response.data
   }
 
   public async get(id: string) {
     const response = await http.get<ShareableResource>(
-            `api/${this.model}/${this.modelId}/sharing/${id}`,
+      `api/${this.model}/${this.modelId}/sharing/${id}`,
     )
     return response.data
   }
 
   public async create(shareable: ShareableRequest) {
     const response = await http.post<ShareableRequest, ShareableResource>(
-            `api/${this.model}/${this.modelId}/sharing`,
-            shareable,
+      `api/${this.model}/${this.modelId}/sharing`,
+      shareable,
     )
     return response.data
   }
@@ -71,15 +71,15 @@ export class ShareableService {
     }
 
     const response = await http.put<typeof request, ShareableResource>(
-            `api/${this.model}/${this.modelId}/sharing/${shareable.id}`,
-            request,
+      `api/${this.model}/${this.modelId}/sharing/${shareable.id}`,
+      request,
     )
     return response.data
   }
 
   public async delete(id: string) {
     const response = await http.delete(
-            `api/${this.model}/${this.modelId}/sharing/${id}`,
+      `api/${this.model}/${this.modelId}/sharing/${id}`,
     )
     if (response.status === 204) {
       return true

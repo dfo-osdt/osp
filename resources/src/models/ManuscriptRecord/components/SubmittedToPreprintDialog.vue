@@ -2,10 +2,10 @@
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import { QBtn, QCardActions, QForm } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
 import UrlInput from '@/components/UrlInput.vue'
-import { QBtn, QCardActions, QForm } from 'quasar'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'

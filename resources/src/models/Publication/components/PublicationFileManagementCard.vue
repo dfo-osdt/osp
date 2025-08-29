@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import type { PublicationResource } from '../Publication'
 import type { MediaResource, MediaResourceList } from '@/models/Media/Media'
+import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import MediaListItem from '@/models/Media/components/MediaListItem.vue'
-import { useQuasar } from 'quasar'
-import { type PublicationResource, PublicationService } from '../Publication'
+import { PublicationService } from '../Publication'
 
 const props = defineProps<{
   publication: PublicationResource

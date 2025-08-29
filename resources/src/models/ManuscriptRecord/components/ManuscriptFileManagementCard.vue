@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { ManuscriptRecordResource } from '../ManuscriptRecord'
+import type { FormSectionStatus } from '@/components/FormSectionStatusIcon.vue'
 import type { MediaResource, MediaResourceList } from '@/models/Media/Media'
-import ContentCard from '@/components/ContentCard.vue'
-import FormSectionStatusIcon, {
-  type FormSectionStatus,
-} from '@/components/FormSectionStatusIcon.vue'
-import MediaListItem from '@/models/Media/components/MediaListItem.vue'
 import { useQuasar } from 'quasar'
+import ContentCard from '@/components/ContentCard.vue'
+import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
+import MediaListItem from '@/models/Media/components/MediaListItem.vue'
 import {
-  type ManuscriptRecordResource,
+
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
 

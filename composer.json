@@ -101,6 +101,9 @@
     "test:types": [
       "phpstan analyse --memory-limit=1G"
     ],
+    "test:lint:ts": [
+      "pnpm run lint:test"
+    ],
     "test:feature": [
       "pest --parallel --ci"
     ],
@@ -110,6 +113,7 @@
     "test": [
       "@test:lint",
       "@test:types",
+      "@test:lint:ts",
       "@test:feature"
     ]
   },

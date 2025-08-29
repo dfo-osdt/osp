@@ -22,6 +22,7 @@ class RegionResource extends JsonResource
                 'id' => $this->id,
                 'name_en' => $this->name_en,
                 'name_fr' => $this->name_fr,
+                'slug' => $this->slug,
             ],
             'can' => [
                 'update' => false,

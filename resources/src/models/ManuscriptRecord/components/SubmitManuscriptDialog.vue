@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import type { QDialog } from 'quasar'
 import type { Ref } from 'vue'
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
+import { QForm, QStepper } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import UserSelect from '@/models/User/components/UserSelect.vue'
-import { QForm, QStepper } from 'quasar'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'

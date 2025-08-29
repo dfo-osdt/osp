@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { AuthorResource } from '../Author'
+import { QForm, QInput, useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidInput from '@/components/OrcidInput.vue'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
-import { QForm, QInput, useQuasar } from 'quasar'
 import { AuthorService } from '../Author'
 
 const props = defineProps<{

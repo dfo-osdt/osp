@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { QTableProps } from 'quasar'
-import {
-  AuthenticatedUserService,
-  type UserInvitationResource,
-} from '../AuthenticatedUser'
-import TimeStampTd from './Table/TimeStampTd.vue'
+import type { UserInvitationResource } from '../AuthenticatedUser'
 import ContentCard from '@/components/ContentCard.vue'
+import { AuthenticatedUserService } from '../AuthenticatedUser'
+import TimeStampTd from './Table/TimeStampTd.vue'
 
 const authStore = useAuthStore()
 authStore.getAuthentications()
@@ -22,7 +20,7 @@ onMounted(async () => {
     invitations.value = response.data
   }
   catch (e) {
-    console.log(e)
+    console.error(e)
   }
   finally {
     loading.value = false
@@ -36,8 +34,7 @@ const columns = computed<QTableColumnProps>(() => {
     {
       name: 'registered',
       label: t('common.status'),
-      field: (row: UserInvitationResource) =>
-        row.data.registered_at !== null,
+      field: (row: UserInvitationResource) => row.data.registered_at !== null,
       align: 'left',
       sortable: true,
     },
@@ -45,7 +42,7 @@ const columns = computed<QTableColumnProps>(() => {
       name: 'user',
       label: t('common.user'),
       field: (row: UserInvitationResource) =>
-                `${row.data.user.data.first_name} ${row.data.user.data.last_name}`,
+        `${row.data.user.data.first_name} ${row.data.user.data.last_name}`,
       align: 'left',
       sortable: true,
     },
@@ -96,18 +93,14 @@ const columns = computed<QTableColumnProps>(() => {
               name="mdi-check-circle-outline"
               color="green-6"
               size="1.5em"
-            /><span class="q-ml-sm">{{
-              $t('common.registered')
-            }}</span>
+            /><span class="q-ml-sm">{{ $t('common.registered') }}</span>
           </template>
           <template v-else>
             <q-icon
               name="mdi-clock-outline"
               color="secondary"
               size="1.5em"
-            /><span class="q-ml-sm">{{
-              $t('common.pending')
-            }}</span>
+            /><span class="q-ml-sm">{{ $t('common.pending') }}</span>
           </template>
         </q-td>
       </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ErrorResponse } from '@/api/errors'
-import type { Locale } from '@/stores/LocaleStore'
 import type { AzureDirectoryUserResource } from '../AzureDirectoryUser'
 import type { UserResource } from '../User'
+import type { ErrorResponse } from '@/api/errors'
+import type { Locale } from '@/stores/LocaleStore'
 import { extractErrorMessages } from '@/api/errors'
 import BaseDialog from '@/components/BaseDialog.vue'
 import LocaleSelect from '@/components/LocaleSelect.vue'

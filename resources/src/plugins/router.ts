@@ -1,7 +1,7 @@
 import type { App } from 'vue'
-import routes from '@/router/routes'
-
 import { createRouter, createWebHashHistory } from 'vue-router'
+
+import routes from '@/router/routes'
 
 export const Router = createRouter({
   scrollBehavior(to, from, savedPosition) {

@@ -1,6 +1,6 @@
 import type { Resource, ResourceList } from '../Resource'
-import { http } from '@/api/http'
 import type { SpatieQuery } from '@/api/SpatieQuery'
+import { http } from '@/api/http'
 
 export interface Organization {
   id: number
@@ -33,7 +33,7 @@ export class OrganizationService {
   /** Get an organization */
   public static async find(id: number) {
     const response = await http.get<OrganizationResource>(
-            `api/organizations/${id}`,
+      `api/organizations/${id}`,
     )
     return response.data
   }

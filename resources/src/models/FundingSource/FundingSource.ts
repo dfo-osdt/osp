@@ -35,7 +35,7 @@ export class FundingSourceService {
   /** list all funding sources for given fundable */
   public async all(fundableId: number) {
     const response = await http.get<FundingSourceResourceList>(
-            `${this.baseUrl}/${fundableId}/funding-sources`,
+      `${this.baseUrl}/${fundableId}/funding-sources`,
     )
     return response.data
   }
@@ -43,7 +43,7 @@ export class FundingSourceService {
   /** get a specific funding source from the fundable */
   public async find(fundableId: number, fundingSourceId: number) {
     const response = await http.get<FundingSourceResource>(
-            `${this.baseUrl}/${fundableId}/funding-sources/${fundingSourceId}`,
+      `${this.baseUrl}/${fundableId}/funding-sources/${fundingSourceId}`,
     )
     return response.data
   }
@@ -60,8 +60,8 @@ export class FundingSourceService {
   /** update a funding source from the fundable */
   public async update(data: FundingSource) {
     const response = await http.put<FundingSource, FundingSourceResource>(
-            `${this.baseUrl}/${data.fundable_id}/funding-sources/${data.id}`,
-            data,
+      `${this.baseUrl}/${data.fundable_id}/funding-sources/${data.id}`,
+      data,
     )
     return response.data
   }
@@ -69,7 +69,7 @@ export class FundingSourceService {
   /** delete a funding source from the funable */
   public async delete(data: FundingSource): Promise<boolean> {
     const response = await http.delete(
-            `${this.baseUrl}/${data.fundable_id}/funding-sources/${data.id}`,
+      `${this.baseUrl}/${data.fundable_id}/funding-sources/${data.id}`,
     )
     // response should be empty with a 204 status code
     return response.status === 204

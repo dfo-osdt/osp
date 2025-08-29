@@ -1,31 +1,23 @@
 <script setup lang="ts">
-import type {
-  ManagementReviewStepResourceList,
-} from '../ManagementReviewStep'
-import type {
-  ManuscriptRecordResource,
-} from '@/models/ManuscriptRecord/ManuscriptRecord'
+import type { ManagementReviewStepResourceList } from '../ManagementReviewStep'
+import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
-import {
-  ManuscriptRecordService,
-} from '@/models/ManuscriptRecord/ManuscriptRecord'
+import { ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import ManagementReviewStepTimelineEntry from '../components/ManagementReviewStepTimelineEntry.vue'
-import {
-  ManagementReviewStepService,
-} from '../ManagementReviewStep'
+import { ManagementReviewStepService } from '../ManagementReviewStep'
 
 const props = defineProps<{
   id: number
 }>()
 
 const emit = defineEmits<{
-  (e: 'update-manuscript', manuscript: ManuscriptRecordResource): void
+  (e: 'updateManuscript', manuscript: ManuscriptRecordResource): void
 }>()
 
 const { t } = useI18n()
 
 const managementReviewSteps: Ref<ManagementReviewStepResourceList | null>
-    = ref(null)
+  = ref(null)
 const manuscriptRecord: Ref<ManuscriptRecordResource | null> = ref(null)
 
 const processStatus = computed(() => {
@@ -53,12 +45,9 @@ const sentForReview = computed(() => {
     case 'draft':
       return t('common.pending')
     default:
-      return (
-        `${t('common.submitted-on')
-        } ${
-          useLocaleDate(manuscriptRecord.value.data.sent_for_review_at)
-            .value}`
-      )
+      return `${t('common.submitted-on')} ${
+        useLocaleDate(manuscriptRecord.value.data.sent_for_review_at).value
+      }`
   }
 })
 
@@ -83,11 +72,9 @@ const reviewCompletedOn = computed(() => {
     case 'in_review':
       return t('common.pending')
     default:
-      return (
-        `${t('common.completed-on')
-        } ${
-          useLocaleDate(manuscriptRecord.value.data.reviewed_at).value}`
-      )
+      return `${t('common.completed-on')} ${
+        useLocaleDate(manuscriptRecord.value.data.reviewed_at).value
+      }`
   }
 })
 
@@ -119,7 +106,7 @@ async function getManuscriptRecord() {
   await ManuscriptRecordService.find(props.id)
     .then((response) => {
       manuscriptRecord.value = response
-      emit('update-manuscript', manuscriptRecord.value)
+      emit('updateManuscript', manuscriptRecord.value)
     })
     .catch((error) => {
       console.error(error)
@@ -146,9 +133,7 @@ async function decisionSubmitted() {
         </div>
         <div><SensitivityLabelChip sensitivity="Protected A" /></div>
       </div>
-      <div
-        class="text-subtitle2 text-weight-bold text-grey-7 text-uppercase"
-      >
+      <div class="text-subtitle2 text-weight-bold text-grey-7 text-uppercase">
         {{ processStatus }}
       </div>
     </q-timeline-entry>
@@ -162,17 +147,9 @@ async function decisionSubmitted() {
       <i18n-t keypath="policy.message.p1" tag="p" scope="global">
         <template #copyrightsAct>
           <a
-            :href="
-              t(
-                'policy.intellectual-property-policy-copyright-act-link',
-              )
-            "
+            :href="t('policy.intellectual-property-policy-copyright-act-link')"
             target="_blank"
-          >{{
-            t(
-              'policy.intellectual-property-policy-copyright-act',
-            )
-          }}</a>
+          >{{ t('policy.intellectual-property-policy-copyright-act') }}</a>
         </template>
         <template #privacyAct>
           <a :href="t('policy.privacy-act-link')" target="_blank">{{
@@ -197,25 +174,15 @@ async function decisionSubmitted() {
       <i18n-t keypath="policy.for-more-info" tag="p" scope="global">
         <template #policy>
           <a
-            :href="
-              t(
-                'policy.national-policy-for-science-publications-link',
-              )
-            "
+            :href="t('policy.national-policy-for-science-publications-link')"
             target="_blank"
-          >{{
-            t(
-              'policy.national-policy-for-science-publications',
-            )
-          }}</a>
+          >{{ t('policy.national-policy-for-science-publications') }}</a>
         </template>
       </i18n-t>
     </q-timeline-entry>
     <template v-if="managementReviewSteps !== null">
       <ManagementReviewStepTimelineEntry
-        v-for="(
-          managementReviewStep, index
-        ) in managementReviewSteps.data"
+        v-for="(managementReviewStep, index) in managementReviewSteps.data"
         :key="managementReviewStep.data.id"
         v-model="managementReviewSteps.data[index]"
         :manuscript-record="manuscriptRecord"
@@ -225,11 +192,7 @@ async function decisionSubmitted() {
     <q-timeline-entry
       class="q-mx-lg"
       icon="mdi-check-all"
-      :title="
-        t(
-          'management-review-step-view.completion-of-management-review',
-        )
-      "
+      :title="t('management-review-step-view.completion-of-management-review')"
       :color="completedColor"
       :subtitle="reviewCompletedOn"
     />

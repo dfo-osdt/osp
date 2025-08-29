@@ -20,9 +20,9 @@ const label = computed(() =>
 )
 const options = computed(
   () =>
-    regionStore.regions?.sort((a, b) =>
-      a[label.value].localeCompare(b[label.value]),
-    ) ?? [],
+    regionStore.regions
+      ?.slice()
+      .sort((a, b) => a[label.value].localeCompare(b[label.value])) ?? [],
 )
 </script>
 
@@ -38,5 +38,6 @@ const options = computed(
     :loading="regionStore.loading"
     emit-value
     map-options
+    outlined
   />
 </template>

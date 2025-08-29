@@ -1,5 +1,5 @@
-import type { Locale } from '@/stores/LocaleStore'
 import type { Resource, ResourceList } from '../Resource'
+import type { Locale } from '@/stores/LocaleStore'
 import { http } from '@/api/http'
 
 export interface AzureDirectoryUser {

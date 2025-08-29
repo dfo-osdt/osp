@@ -130,6 +130,7 @@ function submitToPubTeam(record: ManuscriptRecordResource) {
 
 function updateManuscriptandNotify(record: ManuscriptRecordResource) {
   manuscriptRecord.value = record
+  showSubmitToPubTeamDialog.value = false
   $q.notify({
     message: t('manuscript-progress-view.manuscript-status-updated'),
     color: 'positive',

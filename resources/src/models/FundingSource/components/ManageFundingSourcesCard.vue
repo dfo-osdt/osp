@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import type {
-  FundableType,
-  FundingSourceResource,
-} from '../FundingSource'
+import type { FundableType, FundingSourceResource } from '../FundingSource'
+import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
-import { useQuasar } from 'quasar'
-import {
-  FundingSourceService,
-} from '../FundingSource'
+import { FundingSourceService } from '../FundingSource'
 import CreateFundingSourceDialog from './CreateFundingSourceDialog.vue'
 import FundingSourceList from './FundingSourceList.vue'
 
@@ -86,8 +81,8 @@ async function deleteFundingSource(fundingSource: FundingSourceResource) {
       :funding-sources="fundingSources"
       :fundable-type="fundableType"
       :readonly="readonly"
-      @edited:funding-source="editFundingSource"
-      @delete:funding-source="deleteFundingSource"
+      @edited-funding-source="editFundingSource"
+      @delete-funding-source="deleteFundingSource"
     />
     <q-card-actions class="justify-end q-px-none q-pt-md">
       <q-btn
@@ -104,7 +99,7 @@ async function deleteFundingSource(fundingSource: FundingSourceResource) {
       v-model="showCreateDialog"
       :fundable-type="fundableType"
       :fundable-id="fundableId"
-      @create:funding-source="createFundingSource"
+      @create-funding-source="createFundingSource"
     />
   </ContentCard>
 </template>

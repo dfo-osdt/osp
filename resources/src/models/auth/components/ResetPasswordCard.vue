@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { ErrorResponse } from '@/api/errors'
-import { extractErrorMessages } from '@/api/errors'
 import type { SanctumResetPasswordRequest } from '@/api/sanctum'
+import { extractErrorMessages } from '@/api/errors'
 import { useSanctum } from '@/api/sanctum'
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue'
 

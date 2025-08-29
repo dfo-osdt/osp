@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import ManageAuthorEmploymentsCard from '@/models/AuthorEmployment/components/ManageAuthorEmploymentsCard.vue'
-import { useQuasar } from 'quasar'
 
 const localeStore = useLocaleStore()
 const authStore = useAuthStore()

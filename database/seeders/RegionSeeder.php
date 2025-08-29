@@ -21,10 +21,13 @@ class RegionSeeder extends Seeder
         $regions = SimpleExcelReader::create($path)->getRows();
 
         $regions->each(function ($region) {
-            Region::firstOrCreate([
-                'name_en' => $region['name_en'],
-                'name_fr' => $region['name_fr'],
-            ]);
+            Region::updateOrCreate(
+                ['name_en' => $region['name_en']],
+                [
+                    'name_fr' => $region['name_fr'],
+                    'slug' => $region['slug'],
+                ]
+            );
         });
     }
 }

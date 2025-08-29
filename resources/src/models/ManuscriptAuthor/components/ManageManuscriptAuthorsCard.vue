@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type {
-  FormSectionStatus,
-} from '@/components/FormSectionStatusIcon.vue'
 import type { Ref } from 'vue'
 import type {
   ManuscriptAuthorResource,
   ManuscriptAuthorResourceList,
 } from '../ManuscriptAuthor'
+import type {
+  FormSectionStatus,
+} from '@/components/FormSectionStatusIcon.vue'
+import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
-import { useQuasar } from 'quasar'
 import {
   ManuscriptAuthorService,
 } from '../ManuscriptAuthor'

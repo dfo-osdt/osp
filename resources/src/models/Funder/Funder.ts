@@ -24,7 +24,7 @@ export class FunderService {
    */
   public static async find(id: number) {
     const response = await http.get<FunderResource>(
-            `${this.baseURL}/${id}`,
+      `${this.baseURL}/${id}`,
     )
     return response.data
   }

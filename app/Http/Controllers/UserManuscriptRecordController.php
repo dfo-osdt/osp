@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ManuscriptRecordSummaryResource;
 use App\Models\ManuscriptRecord;
-use App\Queries\ManuscriptRecordQuery;
+use App\Queries\MyManuscriptsRecordQuery;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -54,12 +54,13 @@ class UserManuscriptRecordController extends Controller
             ],
             'shareables',
             'managementReviewSteps',
+            'region',
         ];
 
         $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)
             ->with($relationship);
 
-        $listQuery = new ManuscriptRecordQuery($request, $baseQuery);
+        $listQuery = new MyManuscriptsRecordQuery($request, $baseQuery);
 
         return ManuscriptRecordSummaryResource::collection($listQuery->paginate($limit)->appends($request->query()));
     }

@@ -57,6 +57,13 @@ class ManuscriptRecordPolicy
             return true;
         }
 
+        // Regional editor access - can view MRFs in their region
+        $regionSlug = $manuscriptRecord->region->slug ?? null;
+        if ($regionSlug && $user->can("can_view_{$regionSlug}_mrfs")) {
+            // since regional editors will often help, we allow them to see draft manuscript records
+            return true;
+        }
+
         if ($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD)) {
             return $manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT;
         }
@@ -87,9 +94,26 @@ class ManuscriptRecordPolicy
                     return true;
                 }
 
+                // Regional editor access
+                $regionSlug = $manuscriptRecord->region->slug ?? null;
+                if ($regionSlug && $user->can("can_edit_{$regionSlug}_mrfs")) {
+                    return true;
+                }
+
                 return $manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable();
             case ManuscriptRecordStatus::IN_REVIEW:
-                return $manuscriptRecord->managementReviewSteps->contains('user_id', $user->id);
+                // Existing reviewer access
+                if ($manuscriptRecord->managementReviewSteps->contains('user_id', $user->id)) {
+                    return true;
+                }
+
+                // Regional editor access
+                $regionSlug = $manuscriptRecord->region->slug ?? null;
+                if ($regionSlug && $user->can("can_edit_{$regionSlug}_mrfs")) {
+                    return true;
+                }
+
+                return false;
             default:
                 return false;
         }

@@ -39,6 +39,21 @@ class LocalTestDataSeeder extends Seeder
             'email' => 'chief.editor@test.local',
         ]);
 
+        // create regional editor users
+        $nflEditor = \App\Models\User::factory()->create([
+            'first_name' => 'NFL',
+            'last_name' => 'Editor',
+            'email' => 'nfl.editor@test.local',
+        ]);
+        $nflEditor->assignRole('nfl_editor');
+
+        $marEditor = \App\Models\User::factory()->create([
+            'first_name' => 'MAR',
+            'last_name' => 'Editor',
+            'email' => 'mar.editor@test.local',
+        ]);
+        $marEditor->assignRole('mar_editor');
+
         // create a blank slate user
         \App\Models\User::factory()->create([
             'email' => 'new@test.local',
@@ -171,6 +186,51 @@ class LocalTestDataSeeder extends Seeder
             'title_fr' => 'Annonce de test',
             'text_en' => 'This is a test announcement.',
             'text_fr' => 'Ceci est une annonce de test.',
+        ]);
+
+        // create draft manuscripts for regional editors testing
+        ManuscriptRecord::factory()->create([
+            'title' => 'NFL Draft Manuscript',
+            'status' => \App\Enums\ManuscriptRecordStatus::DRAFT,
+            'region_id' => 1, // NFL region
+            'user_id' => $user->id,
+        ]);
+
+        ManuscriptRecord::factory()->create([
+            'title' => 'MAR Draft Manuscript',
+            'status' => \App\Enums\ManuscriptRecordStatus::DRAFT,
+            'region_id' => 2, // MAR region
+            'user_id' => $user->id,
+        ]);
+
+        // create in_review manuscripts for regional editors testing
+        ManuscriptRecord::factory()->create([
+            'title' => 'NFL In Review Manuscript',
+            'status' => \App\Enums\ManuscriptRecordStatus::IN_REVIEW,
+            'region_id' => 1, // NFL region
+            'user_id' => $user->id,
+        ]);
+
+        ManuscriptRecord::factory()->create([
+            'title' => 'MAR In Review Manuscript',
+            'status' => \App\Enums\ManuscriptRecordStatus::IN_REVIEW,
+            'region_id' => 2, // MAR region
+            'user_id' => $user->id,
+        ]);
+
+        // create reviewed manuscripts for regional editors testing (non-editable)
+        ManuscriptRecord::factory()->create([
+            'title' => 'NFL Reviewed Manuscript',
+            'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
+            'region_id' => 1, // NFL region
+            'user_id' => $user->id,
+        ]);
+
+        ManuscriptRecord::factory()->create([
+            'title' => 'MAR Reviewed Manuscript',
+            'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
+            'region_id' => 2, // MAR region
+            'user_id' => $user->id,
         ]);
 
         // let's add a few preprints

@@ -2,7 +2,7 @@
 import type { AuthorResource } from '../Author'
 import AuthorListItem from './AuthorListItem.vue'
 
-const props = defineProps<{
+defineProps<{
   authors: AuthorResource[]
 }>()
 </script>
@@ -17,6 +17,4 @@ const props = defineProps<{
   </q-list>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

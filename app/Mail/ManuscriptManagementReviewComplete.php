@@ -34,8 +34,9 @@ class ManuscriptManagementReviewComplete extends Mailable
 
         $reviewers = $this->manuscriptRecord->managementReviewSteps()->with('user')->get()->pluck('user.email');
         $authors = $this->manuscriptRecord->manuscriptAuthors->pluck('author.email');
+        $editors = $this->manuscriptRecord->region->getRegionalEditors();
 
-        $cc = $reviewers->merge($authors)->unique()->
+        $cc = $reviewers->merge($authors)->merge($editors)->unique()->
             filter(fn ($email) => $email !== $this->manuscriptRecord->user->email)->
             filter(fn ($email) => Str::of($email)->endsWith(config('osp.allowed_registration_email_domains')))->
             toArray();

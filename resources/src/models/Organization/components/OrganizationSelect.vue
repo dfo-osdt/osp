@@ -3,8 +3,8 @@ import type {
   OrganizationResource,
   OrganizationResourceList,
 } from '../Organization'
-import { SpatieQuery } from '@/api/SpatieQuery'
 import { QSelect } from 'quasar'
+import { SpatieQuery } from '@/api/SpatieQuery'
 import {
   OrganizationService,
 } from '../Organization'

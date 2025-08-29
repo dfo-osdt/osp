@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { ManuscriptPeerReviewerResource } from '../ManuscriptPeerReviewer'
 import type { AuthorResource } from '@/models/Author/Author'
 import BaseDialog from '@/components/BaseDialog.vue'
 import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
-import { type ManuscriptPeerReviewerResource, ManuscriptPeerReviewerService } from '../ManuscriptPeerReviewer'
+import { ManuscriptPeerReviewerService } from '../ManuscriptPeerReviewer'
 
 const props = withDefaults(
   defineProps<{

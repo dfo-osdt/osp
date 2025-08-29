@@ -1,19 +1,19 @@
 <script setup lang="ts">
-const value = defineModel<string>()
+const value = defineModel<string | null>()
 
 const { t } = useI18n()
 
 const options = computed(() => [
   {
-    label: t('common.primary-manuscript'),
+    label: t('manuscript.primary'),
     value: 'primary',
   },
   {
-    label: t('common.secondary-manuscript'),
+    label: t('manuscript.secondary'),
     value: 'secondary',
   },
   {
-    label: t('common.preprint-manuscript'),
+    label: t('manuscript.preprint'),
     value: 'preprint',
   },
 ])
@@ -23,7 +23,8 @@ const options = computed(() => [
   <q-select
     v-model="value"
     :options="options"
-    label="$t('common.manuscript-type')"
+    :label="$t('common.manuscript-type')"
+    outlined
     emit-value
     map-options
   />

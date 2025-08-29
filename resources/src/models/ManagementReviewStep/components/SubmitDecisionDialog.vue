@@ -32,11 +32,11 @@ const stepper: Ref<QStepper | null> = ref(null)
 const step = ref(1)
 const validationError = ref(false)
 
-type Decision =
-  | 'complete'
-  | 'refer'
-  | 'revision'
-  | 'reassign'
+type Decision
+  = | 'complete'
+    | 'refer'
+    | 'revision'
+    | 'reassign'
 
 interface DecisionOption {
   label: string

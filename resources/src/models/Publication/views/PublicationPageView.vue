@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PublicationResource } from '../Publication'
 import type { ManuscriptRecordMetadataResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
-import type { Region } from '@/models/Region/Region'
 import { QForm, useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'

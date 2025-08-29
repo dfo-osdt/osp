@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { ErrorResponse } from '@/api/errors'
 import type { Ref } from 'vue'
+import type { ErrorResponse } from '@/api/errors'
+import { useQuasar } from 'quasar'
 import { extractErrorMessages } from '@/api/errors'
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue'
-import { useQuasar } from 'quasar'
 
 const authStore = useAuthStore()
 const localeStore = useLocaleStore()

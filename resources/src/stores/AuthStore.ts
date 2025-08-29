@@ -1,12 +1,10 @@
+import type { Ref } from 'vue'
+import type { UserAuthenticationRecord } from '../models/User/AuthenticatedUser'
 import type { SanctumUser } from '@/api/sanctum'
 import type { Locale } from '@/stores/LocaleStore'
-import type { Ref } from 'vue'
-import type {
-  UserAuthenticationRecord,
-} from '../models/User/AuthenticatedUser'
+import { Notify } from 'quasar'
 import { useSanctum } from '@/api/sanctum'
 import { i18n } from '@/plugins/i18n'
-import { Notify } from 'quasar'
 import {
   AuthenticatedUser,
   AuthenticatedUserService,
@@ -22,14 +20,17 @@ export const useAuthStore = defineStore('AuthStore', () => {
   // initial state
   // const user: Ref<AuthenticatedUser | null> = useStorage('authUser', null);
   const user: Ref<AuthenticatedUser | null> = ref(null)
-  const userAuthentications: Ref<UserAuthenticationRecord[] | null>
-        = ref(null)
+  const userAuthentications: Ref<UserAuthenticationRecord[] | null> = ref(null)
   const loading = ref(true)
   const authenticationsLoading = ref(false)
   refreshUser() // check with backend - is our session still valid?
 
   // computed
   const isAuthenticated = computed(() => user.value !== null)
+
+  const canViewRegionalManuscripts = computed(() => {
+    return user.value?.canViewRegionalManuscripts() ?? false
+  })
 
   /**
    * Internal function to check if user is still logged in by
@@ -38,7 +39,9 @@ export const useAuthStore = defineStore('AuthStore', () => {
    *
    * @returns void
    */
-  async function refreshUser(silent = false): Promise<AuthenticatedUser | null> {
+  async function refreshUser(
+    silent = false,
+  ): Promise<AuthenticatedUser | null> {
     if (!silent)
       loading.value = true
     try {
@@ -86,8 +89,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
       return true
     authenticationsLoading.value = true
     try {
-      const response
-                = await AuthenticatedUserService.getUserAuthentications()
+      const response = await AuthenticatedUserService.getUserAuthentications()
       userAuthentications.value = response.data
       return true
     }
@@ -181,6 +183,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
     openAuthOnly,
     user,
     isAuthenticated,
+    canViewRegionalManuscripts,
     login,
     logout,
     refreshUser,

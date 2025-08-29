@@ -21,6 +21,7 @@ class PreprintListQuery extends QueryBuilder
                     'manuscriptAuthors.organization',
                     'managementReviewSteps',
                     'shareables',
+                    'region',
                 ])
 
         );

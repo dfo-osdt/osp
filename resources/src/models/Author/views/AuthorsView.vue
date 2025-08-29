@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import type { AuthorResourceList } from '../Author'
+import { watchThrottled } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
-import { watchThrottled } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { AuthorQuery, type AuthorResourceList, AuthorService } from '../Author'
+import { AuthorQuery, AuthorService } from '../Author'
 import AuthorList from '../components/AuthorList.vue'
 
 // State variables

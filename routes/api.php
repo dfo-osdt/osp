@@ -118,6 +118,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::controller(ManuscriptRecordController::class)->group(function () {
+        Route::get('/manuscript-records', 'index');
         Route::get('/manuscript-records/{manuscriptRecord}', 'show');
         Route::get('/manuscript-records/{manuscriptRecord}/metadata', 'metadata');
         Route::put('manuscript-records/{manuscriptRecord}', 'update');

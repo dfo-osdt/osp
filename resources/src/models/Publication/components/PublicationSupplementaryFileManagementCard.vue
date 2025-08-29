@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PublicationResource } from '../Publication'
 import type { MediaResource, MediaResourceList } from '@/models/Media/Media'
 import type { SupplementaryFileType } from '@/models/Media/supplementaryFileOptions'
 import DOMPurify from 'dompurify'
@@ -6,7 +7,7 @@ import { QInput, useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import MediaListItem from '@/models/Media/components/MediaListItem.vue'
 import SupplementaryFileTypeSelect from '@/models/Media/components/SupplementaryFileTypeSelect.vue'
-import { type PublicationResource, PublicationService } from '../Publication'
+import { PublicationService } from '../Publication'
 
 const props = defineProps<{
   publication: PublicationResource

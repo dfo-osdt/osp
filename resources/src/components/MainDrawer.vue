@@ -11,6 +11,8 @@ const displayBottomMenu = computed(() => {
   return height.value >= 600
 })
 
+// Permission check for regional manuscripts is now in AuthStore
+
 const userMenuItems = computed<MenuItem[]>(() => {
   return [
     {
@@ -54,6 +56,13 @@ const exploreMenuItems = computed<MenuItem[]>(() => {
       tooltipVisible: authStore.isDrawerMini,
     },
     {
+      icon: 'mdi-file-document-edit-outline',
+      label: t('common.regional-manuscripts'),
+      to: '/regional-manuscripts',
+      visible: authStore.canViewRegionalManuscripts,
+      tooltipVisible: authStore.isDrawerMini,
+    },
+    {
       icon: 'mdi-cloud-print-outline',
       label: t('common.preprints'),
       to: '/preprints',
@@ -67,13 +76,6 @@ const exploreMenuItems = computed<MenuItem[]>(() => {
       visible: true,
       tooltipVisible: authStore.isDrawerMini,
     },
-    // {
-    //     icon: 'mdi-archive-star-outline',
-    //     label: t('common.sensitive-issues'),
-    //     to: '/sensitive-issues',
-    //     visible: true,
-    //     tooltipVisible: authStore.isDrawerMini,
-    // },
   ]
 })
 
@@ -108,7 +110,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
   >
     <QList padding class="menu-list" role="menubar">
       <DrawerMenuItem
-        v-for="item in userMenuItems"
+        v-for="item in userMenuItems.filter(item => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"
@@ -116,13 +118,11 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
 
       <QSeparator />
       <QItemLabel header class="q-mt-md">
-        {{
-          $t('common.explore')
-        }}
+        {{ $t('common.explore') }}
       </QItemLabel>
 
       <DrawerMenuItem
-        v-for="item in exploreMenuItems"
+        v-for="item in exploreMenuItems.filter(item => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"
@@ -131,7 +131,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
     <QList v-if="displayBottomMenu" class="q-mb-sm" role="menubar">
       <QSeparator />
       <DrawerMenuItem
-        v-for="item in bottomMenuItems"
+        v-for="item in bottomMenuItems.filter(item => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"

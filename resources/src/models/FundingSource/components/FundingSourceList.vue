@@ -9,22 +9,16 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (
-    event: 'edited:funding-source',
-    fundingSource: FundingSourceResource
-  ): void
-  (
-    event: 'delete:funding-source',
-    fundingSource: FundingSourceResource
-  ): void
+  (event: 'editedFundingSource', fundingSource: FundingSourceResource): void
+  (event: 'deleteFundingSource', fundingSource: FundingSourceResource): void
 }>()
 
 function editedFundingSource(fundingSource: FundingSourceResource) {
-  emit('edited:funding-source', fundingSource)
+  emit('editedFundingSource', fundingSource)
 }
 
 function deleteFundingSource(fundingSource: FundingSourceResource) {
-  emit('delete:funding-source', fundingSource)
+  emit('deleteFundingSource', fundingSource)
 }
 </script>
 
@@ -36,8 +30,8 @@ function deleteFundingSource(fundingSource: FundingSourceResource) {
       :funding-source="fundingSource"
       :fundable-type="fundableType"
       :readonly="readonly"
-      @edited:funding-source="editedFundingSource"
-      @delete:funding-source="deleteFundingSource"
+      @edited-funding-source="editedFundingSource"
+      @delete-funding-source="deleteFundingSource"
     />
   </q-list>
   <div v-else>

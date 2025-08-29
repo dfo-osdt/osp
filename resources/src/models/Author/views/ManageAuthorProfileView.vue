@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ManageAuthorProfileCard from '../components/ManageAuthorProfileCard.vue'
 import ManageAuthorExpertise from '../components/ManageAuthorExpertise.vue'
 import ManageAuthorOrcidCard from '../components/ManageAuthorOrcidCard.vue'
+import ManageAuthorProfileCard from '../components/ManageAuthorProfileCard.vue'
 
 const authStore = useAuthStore()
 </script>
