@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Permissions\UserRole;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,4 +25,19 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @mixin \Eloquent
  */
-class Region extends Model {}
+class Region extends Model
+{
+    /**
+     * Return this region's editors
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\User>
+     */
+    public function getRegionalEditors(): Collection
+    {
+        $role = UserRole::from($this->slug.'_editor');
+        $editors = User::role($role->value)->get();
+
+        return $editors;
+
+    }
+}
