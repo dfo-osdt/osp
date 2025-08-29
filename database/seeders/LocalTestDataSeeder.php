@@ -176,6 +176,54 @@ class LocalTestDataSeeder extends Seeder
         // let's add a few preprints
         ManuscriptRecord::factory()->publishedPreprint()->count(5)->create();
 
+        // create regional editors for testing
+        $nflEditor = \App\Models\User::factory()->create([
+            'first_name' => 'NFL',
+            'last_name' => 'Editor',
+            'email' => 'nfl.editor@test.local',
+        ]);
+        $nflEditor->assignRole('nfl_editor');
+
+        $marEditor = \App\Models\User::factory()->create([
+            'first_name' => 'MAR',
+            'last_name' => 'Editor',
+            'email' => 'mar.editor@test.local',
+        ]);
+        $marEditor->assignRole('mar_editor');
+
+        // create manuscripts for regional editor testing
+        // NFL region (region_id = 1) - draft manuscript
+        \App\Models\ManuscriptRecord::factory()->create([
+            'status' => \App\Enums\ManuscriptRecordStatus::DRAFT,
+            'region_id' => 1,
+            'title' => 'NFL Draft Manuscript for Testing',
+            'user_id' => $user->id,
+        ]);
+
+        // NFL region (region_id = 1) - in_review manuscript
+        \App\Models\ManuscriptRecord::factory()->create([
+            'status' => \App\Enums\ManuscriptRecordStatus::IN_REVIEW,
+            'region_id' => 1,
+            'title' => 'NFL In Review Manuscript for Testing',
+            'user_id' => $user->id,
+        ]);
+
+        // MAR region (region_id = 2) - draft manuscript
+        \App\Models\ManuscriptRecord::factory()->create([
+            'status' => \App\Enums\ManuscriptRecordStatus::DRAFT,
+            'region_id' => 2,
+            'title' => 'MAR Draft Manuscript for Testing',
+            'user_id' => $user->id,
+        ]);
+
+        // MAR region (region_id = 2) - in_review manuscript
+        \App\Models\ManuscriptRecord::factory()->create([
+            'status' => \App\Enums\ManuscriptRecordStatus::IN_REVIEW,
+            'region_id' => 2,
+            'title' => 'MAR In Review Manuscript for Testing',
+            'user_id' => $user->id,
+        ]);
+
         activity()->enableLogging();
     }
 }
