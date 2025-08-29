@@ -1,5 +1,5 @@
-import type { SpatieQuery } from '@/api/SpatieQuery'
 import type { Resource, ResourceList } from '../Resource'
+import type { SpatieQuery } from '@/api/SpatieQuery'
 import { http } from '@/api/http'
 
 export interface Journal {

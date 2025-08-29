@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { type SupplementaryFileType, useSupplementaryFileOptions } from '../supplementaryFileOptions'
+import type { SupplementaryFileType } from '../supplementaryFileOptions'
+import { useSupplementaryFileOptions } from '../supplementaryFileOptions'
 
 const props = defineProps<{
   type: SupplementaryFileType

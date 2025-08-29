@@ -1,5 +1,5 @@
-import { Dialog, LoadingBar, Notify, Quasar } from 'quasar'
 import type { App } from 'vue'
+import { Dialog, LoadingBar, Notify, Quasar } from 'quasar'
 
 // Import icon libraries
 import '@quasar/extras/roboto-font/roboto-font.css'

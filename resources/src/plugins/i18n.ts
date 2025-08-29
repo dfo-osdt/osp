@@ -1,9 +1,9 @@
 import type { App } from 'vue'
-import en from '@/locales/en.json'
-import fr from '@/locales/fr.json'
-
 import { useStorage } from '@vueuse/core'
 import { createI18n } from 'vue-i18n'
+
+import en from '@/locales/en.json'
+import fr from '@/locales/fr.json'
 
 type MessageSchema = typeof en
 

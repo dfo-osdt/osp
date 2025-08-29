@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { AuthorResource } from '../Author'
 import CopyToClipboardButton from '@/components/CopyToClipboardButton.vue'
-import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import OrcidIcon from '@/components/OrcidIcon.vue'
 import RORLinkSpan from '@/models/Organization/components/RORLinkSpan.vue'
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useQuasar } from 'quasar'
 import MainDrawer from '@/components/MainDrawer.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import MainHeader from '@/components/MainHeader.vue'
-import { useQuasar } from 'quasar'
 
 const { t } = useI18n()
 const router = useRouter()

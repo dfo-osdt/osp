@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
 import type { AuthorResource } from '../Author'
-import { AuthorService } from '../Author'
-import ContentCard from '@/components/ContentCard.vue'
 import type { ExpertiseResource } from '@/models/Expertise/Expertise'
-import ExpertiseSelect from '@/models/Expertise/components/ExpertiseSelect.vue'
+import { useQuasar } from 'quasar'
+import ContentCard from '@/components/ContentCard.vue'
 import ExpertiseChip from '@/models/Expertise/components/ExpertiseChip.vue'
+import ExpertiseSelect from '@/models/Expertise/components/ExpertiseSelect.vue'
+import { AuthorService } from '../Author'
 
 const props = defineProps<{
   authorId: number

@@ -1,8 +1,8 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { ErrorResponse } from './errors'
-import { Router } from '@/plugins/router'
 import axios from 'axios'
 import { Notify } from 'quasar'
+import { Router } from '@/plugins/router'
 import { extractErrorMessages } from './errors'
 
 enum StatusCode {

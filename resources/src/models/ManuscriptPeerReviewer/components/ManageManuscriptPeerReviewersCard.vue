@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import type { ManuscriptPeerReviewerResource } from '../ManuscriptPeerReviewer'
 import type { FormSectionStatus } from '@/components/FormSectionStatusIcon.vue'
 import type { AuthorResource } from '@/models/Author/Author'
+import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
+import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
-import { type ManuscriptAuthorResource, ManuscriptAuthorService } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
-import { useQuasar } from 'quasar'
-import { type ManuscriptPeerReviewerResource, ManuscriptPeerReviewerService } from '../ManuscriptPeerReviewer'
+import { ManuscriptPeerReviewerService } from '../ManuscriptPeerReviewer'
 import AddManuscriptPeerReviewerDialog from './AddManuscriptPeerReviewerDialog.vue'
 import ManuscriptPeerReviewerChip from './ManuscriptPeerReviewerChip.vue'
 

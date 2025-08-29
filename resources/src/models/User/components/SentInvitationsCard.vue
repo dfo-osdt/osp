@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { QTableProps } from 'quasar'
+import type { UserInvitationResource } from '../AuthenticatedUser'
+import ContentCard from '@/components/ContentCard.vue'
 import {
   AuthenticatedUserService,
-  type UserInvitationResource,
+
 } from '../AuthenticatedUser'
 import TimeStampTd from './Table/TimeStampTd.vue'
-import ContentCard from '@/components/ContentCard.vue'
 
 const authStore = useAuthStore()
 authStore.getAuthentications()
@@ -45,7 +46,7 @@ const columns = computed<QTableColumnProps>(() => {
       name: 'user',
       label: t('common.user'),
       field: (row: UserInvitationResource) =>
-                `${row.data.user.data.first_name} ${row.data.user.data.last_name}`,
+        `${row.data.user.data.first_name} ${row.data.user.data.last_name}`,
       align: 'left',
       sortable: true,
     },

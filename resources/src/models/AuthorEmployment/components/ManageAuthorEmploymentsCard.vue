@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { type AuthorEmploymentResource, AuthorEmploymentService } from '../AuthorEmployement'
+import type { AuthorEmploymentResource } from '../AuthorEmployement'
+import { AuthorEmploymentService } from '../AuthorEmployement'
 import AddAuthorEmploymentDialog from './AddAuthorEmploymentDialog.vue'
 import AuthorEmploymentList from './AuthorEmploymentList.vue'
 
-const props = defineProps < {
+const props = defineProps <{
   authorId: number
   disabled?: boolean
 }>()
 
 const loading = ref(true)
-const authorEmployments = ref < AuthorEmploymentResource[] > ([])
+const authorEmployments = ref <AuthorEmploymentResource[]> ([])
 const authorEmploymentService = new AuthorEmploymentService(props.authorId)
 const showCreateDialog = ref(false)
 

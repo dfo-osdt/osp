@@ -4,16 +4,16 @@ import type { UserResource } from '../User/User'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
 
-export type ManagementReviewStepDecision =
-  | 'none'
-  | 'complete'
-  | 'revision'
-  | 'withdrawn'
-export type ManagementReviewStepStatus =
-  | 'pending'
-  | 'reassign'
-  | 'completed'
-  | 'on_hold'
+export type ManagementReviewStepDecision
+  = | 'none'
+    | 'complete'
+    | 'revision'
+    | 'withdrawn'
+export type ManagementReviewStepStatus
+  = | 'pending'
+    | 'reassign'
+    | 'completed'
+    | 'on_hold'
 export type UpdateStep = Pick<ManagementReviewStep, 'comments'>
 export interface DecisionStep {
   comments?: string
@@ -46,8 +46,8 @@ export interface ManagementReviewStep {
 }
 
 export type ManagementReviewStepResource = Resource<ManagementReviewStep>
-export type ManagementReviewStepResourceList =
-  ResourceList<ManagementReviewStep>
+export type ManagementReviewStepResourceList
+  = ResourceList<ManagementReviewStep>
 
 type R = ManagementReviewStepResource
 type RList = ManagementReviewStepResourceList

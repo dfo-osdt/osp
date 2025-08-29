@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { QForm } from 'quasar'
 import type { ErrorResponse } from '@/api/errors'
-import ContentCard from '@/components/ContentCard.vue'
 import type { SanctumStatusResponse } from '@/api/sanctum'
+import { QForm } from 'quasar'
 import { useSanctum } from '@/api/sanctum'
+import ContentCard from '@/components/ContentCard.vue'
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue'
 
 const password = ref('')

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import ManagementReviewStepList from '../components/ManagementReviewStepList.vue'
 import type {
   ManagementReviewStepResourceList,
 } from '../ManagementReviewStep'
+import ContentCard from '@/components/ContentCard.vue'
+import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
+import PaginationDiv from '@/components/PaginationDiv.vue'
+import SearchInput from '@/components/SearchInput.vue'
+import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import ManagementReviewStepList from '../components/ManagementReviewStepList.vue'
+import NoManagementStepExistsDiv from '../components/NoManagementStepExistsDiv.vue'
+
 import {
   ManagementReviewQuery,
   ManagementReviewStepService,
 } from '../ManagementReviewStep'
-import NoManagementStepExistsDiv from '../components/NoManagementStepExistsDiv.vue'
-import ContentCard from '@/components/ContentCard.vue'
-import SearchInput from '@/components/SearchInput.vue'
-import MainPageLayout from '@/layouts/MainPageLayout.vue'
-import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
-
-import PaginationDiv from '@/components/PaginationDiv.vue'
 
 const { t } = useI18n()
 

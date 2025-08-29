@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { AuthorEmploymentResource } from '../AuthorEmployement'
+import { useQuasar } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
-import { useQuasar } from 'quasar'
-import { type AuthorEmploymentResource, AuthorEmploymentService } from '../AuthorEmployement'
+import { AuthorEmploymentService } from '../AuthorEmployement'
 
 const props = defineProps<{
   authorEmployment: AuthorEmploymentResource

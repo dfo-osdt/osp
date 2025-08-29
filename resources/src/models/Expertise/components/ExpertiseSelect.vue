@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { QSelect } from 'quasar'
 import type {
   ExpertiseResource,
   ExpertiseResourceList,
 } from '../Expertise'
+import { QSelect } from 'quasar'
 import {
   ExpertiseQuery,
   ExpertiseService,

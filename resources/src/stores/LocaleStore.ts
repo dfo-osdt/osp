@@ -1,6 +1,6 @@
-import { i18n } from '@/plugins/i18n'
 // locale store is used to store the current locale
 import { useQuasar } from 'quasar'
+import { i18n } from '@/plugins/i18n'
 
 export type Locale = 'en' | 'fr'
 

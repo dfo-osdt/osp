@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { QSelect } from 'quasar'
 import type { UserResource, UserResourceList } from '../User'
+import { QSelect } from 'quasar'
 import { UserService } from '../User'
 import InviteUserDialog from './InviteUserDialog.vue'
 

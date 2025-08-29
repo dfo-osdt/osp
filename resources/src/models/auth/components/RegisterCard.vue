@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { ErrorResponse } from '@/api/errors'
-import { extractErrorMessages } from '@/api/errors'
 import type {
   SanctumRegisterResponse,
   SanctumRegisterUser,
 } from '@/api/sanctum'
+import { extractErrorMessages } from '@/api/errors'
 import {
   useSanctum,
 } from '@/api/sanctum'

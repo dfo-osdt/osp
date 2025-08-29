@@ -2,10 +2,7 @@ import type { FunctionalArea } from '../FunctionalArea/FunctionalArea'
 import type { MediaResource, MediaResourceList } from '../Media/Media'
 import type { PublicationResource } from '../Publication/Publication'
 import type { Region } from '../Region/Region'
-import type {
-  Resource,
-  ResourceList,
-} from '../Resource'
+import type { Resource, ResourceList } from '../Resource'
 import type { UserResource } from '../User/User'
 import type { ManuscriptAuthorResource } from '@/models/ManuscriptAuthor/ManuscriptAuthor'
 import type { Locale } from '@/stores/LocaleStore'
@@ -95,12 +92,24 @@ export interface ManuscriptRecordMetadata {
 export type ManuscriptRecordResource = Resource<ManuscriptRecord>
 export type ManuscriptRecordResourceList = ResourceList<ManuscriptRecord>
 export type ManuscriptRecordSummaryResource = Resource<ManuscriptRecordSummary>
-export type ManuscriptRecordMetadataResource = Resource<ManuscriptRecordMetadata>
+export type ManuscriptRecordMetadataResource
+  = Resource<ManuscriptRecordMetadata>
 export type ManuscriptRecordSummaryResourceList
   = ResourceList<ManuscriptRecordSummary>
 
 export class ManuscriptRecordService {
   private static baseURL = 'api/manuscript-records'
+
+  /** Get a list of manuscript records */
+  public static async list(query?: ManuscriptRecordListQuery) {
+    let url = 'api/manuscript-records'
+    if (query) {
+      url += `?${query.toQueryString()}`
+    }
+    const response = await http.get<ManuscriptRecordSummaryResourceList>(url)
+    return response.data
+  }
+
   /**
    * Get a manuscript record.
    *
@@ -143,10 +152,10 @@ export class ManuscriptRecordService {
    * @returns The saved manuscript record.
    */
   public static async save(data: ManuscriptRecord) {
-    const response = await http.put<
-      ManuscriptRecord,
-      ManuscriptRecordResource
-    >(`${this.baseURL}/${data.id}`, data)
+    const response = await http.put<ManuscriptRecord, ManuscriptRecordResource>(
+      `${this.baseURL}/${data.id}`,
+      data,
+    )
     return response.data
   }
 
@@ -187,9 +196,7 @@ export class ManuscriptRecordService {
    * Delete a PDF file associated with this manuscript
    */
   public static async deletePDF(id: number, uuid: string) {
-    const response = await http.delete(
-      `${this.baseURL}/${id}/files/${uuid}`,
-    )
+    const response = await http.delete(`${this.baseURL}/${id}/files/${uuid}`)
     return response.status === 204
   }
 
@@ -271,8 +278,7 @@ export class ManuscriptRecordService {
     if (query) {
       url += `?${query.toQueryString()}`
     }
-    const response
-      = await http.get<ManuscriptRecordSummaryResourceList>(url)
+    const response = await http.get<ManuscriptRecordSummaryResourceList>(url)
     return response.data
   }
 
@@ -326,9 +332,77 @@ export class MyManuscriptQuery extends SpatieQuery {
   }
 }
 
+export class ManuscriptRecordListQuery extends SpatieQuery {
+  public filterId(id: number[]): this {
+    this.filter('id', id)
+    return this
+  }
+
+  public filterUserId(userId: number[]): this {
+    this.filter('user_id', userId)
+    return this
+  }
+
+  public filterTitle(title: string): this {
+    this.filter('title', title)
+    return this
+  }
+
+  public filterAbstract(abstract: string): this {
+    this.filter('abstract', abstract)
+    return this
+  }
+
+  public filterRegionId(regionId: number[]): this {
+    this.filter('region_id', regionId)
+    return this
+  }
+
+  public filterFunctionalAreaId(functionalAreaId: number[]): this {
+    this.filter('functional_area_id', functionalAreaId)
+    return this
+  }
+
+  public filterType(type: ManuscriptRecordType[]): this {
+    this.filter('type', type)
+    return this
+  }
+
+  public filterStatus(status: ManuscriptRecordStatus[]): this {
+    this.filter('status', status)
+    return this
+  }
+
+  public filterAuthorId(authorId: number[]): this {
+    this.filter('manuscriptAuthors.author_id', authorId)
+    return this
+  }
+
+  public filterPotentialPublicInterest(interest: boolean): this {
+    this.filter('potential_public_interest', interest)
+    return this
+  }
+
+  public sort(
+    name: ManuscriptRecordListQuerySort,
+    direction: 'asc' | 'desc',
+  ): this {
+    super.sort(name, direction)
+    return this
+  }
+}
+
 type ManuscriptQuerySort
   = | 'created_at'
     | 'updated_at'
     | 'title'
     | 'status'
     | 'type'
+
+type ManuscriptRecordListQuerySort
+  = | 'title'
+    | 'created_at'
+    | 'updated_at'
+    | 'sent_for_review_at'
+    | 'accepted_on'
+    | 'submitted_to_journal_on'

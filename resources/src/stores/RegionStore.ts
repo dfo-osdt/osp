@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
-import { type Region, type RegionResource, RegionService } from '@/models/Region/Region'
+import type { Region, RegionResource } from '@/models/Region/Region'
+import { RegionService } from '@/models/Region/Region'
 
 /**
  * This store will be used to store the application's regions, as
