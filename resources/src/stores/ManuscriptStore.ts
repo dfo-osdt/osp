@@ -3,7 +3,7 @@ import type {
   ManuscriptRecordSummaryResource,
 } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import {
-  ManuscriptQuery,
+  MyManuscriptQuery,
   ManuscriptRecordService,
 } from '@/models/ManuscriptRecord/ManuscriptRecord'
 
@@ -28,7 +28,7 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
     if (manuscripts.value === undefined || force) {
       loading.value = true
 
-      const query = new ManuscriptQuery()
+      const query = new MyManuscriptQuery()
       query.sort('updated_at', 'desc').paginate(1, 10)
 
       const response

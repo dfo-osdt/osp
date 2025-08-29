@@ -6,7 +6,7 @@ use App\Models\ManuscriptRecord;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class ManuscriptRecordQuery extends QueryBuilder
+class MyManuscriptsRecordQuery extends QueryBuilder
 {
     public function __construct($request, $baseQuery = null)
     {
