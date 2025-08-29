@@ -20,15 +20,13 @@ const routes: RouteRecordRaw[] = [
           { path: '', redirect: { name: 'login' } },
           {
             path: 'login',
-            component: () =>
-              import('@/models/auth/components/LoginCard.vue'),
+            component: () => import('@/models/auth/components/LoginCard.vue'),
             name: 'login',
             meta: { requiresAuth: false },
           },
           {
             path: 'logout',
-            component: () =>
-              import('@/models/auth/components/LogoutCard.vue'),
+            component: () => import('@/models/auth/components/LogoutCard.vue'),
             name: 'logout',
             meta: { requiresAuth: false },
           },
@@ -42,27 +40,21 @@ const routes: RouteRecordRaw[] = [
           {
             path: 'forgot-password',
             component: () =>
-              import(
-                '@/models/auth/components/ForgotPasswordCard.vue'
-              ),
+              import('@/models/auth/components/ForgotPasswordCard.vue'),
             name: 'forgotPassword',
             meta: { requiresAuth: false },
           },
           {
             path: 'password-reset',
             component: () =>
-              import(
-                '@/models/auth/components/ResetPasswordCard.vue'
-              ),
+              import('@/models/auth/components/ResetPasswordCard.vue'),
             name: 'resetPassword',
             meta: { requiresAuth: false },
           },
           {
             path: 'orcid-callback',
             component: () =>
-              import(
-                '@/models/auth/components/OrcidCallbackCard.vue'
-              ),
+              import('@/models/auth/components/OrcidCallbackCard.vue'),
             name: 'orcidCallback',
             meta: { requiresAuth: true },
           },
@@ -82,32 +74,25 @@ const routes: RouteRecordRaw[] = [
           { path: '', redirect: { name: 'settings.profile' } },
           {
             path: 'profile',
-            component: () =>
-              import('@/models/User/views/UserProfileView.vue'),
+            component: () => import('@/models/User/views/UserProfileView.vue'),
             name: 'settings.profile',
           },
           {
             path: 'author',
             component: () =>
-              import(
-                '@/models/Author/views/ManageAuthorProfileView.vue'
-              ),
+              import('@/models/Author/views/ManageAuthorProfileView.vue'),
             name: 'settings.author',
           },
           {
             path: 'security',
             component: () =>
-              import(
-                '@/models/User/views/UserAccountSecurityView.vue'
-              ),
+              import('@/models/User/views/UserAccountSecurityView.vue'),
             name: 'settings.security',
           },
           {
             path: 'invitations',
             component: () =>
-              import(
-                '@/models/User/views/UserInvitationsView.vue'
-              ),
+              import('@/models/User/views/UserInvitationsView.vue'),
             name: 'settings.invitations',
           },
         ],
@@ -115,9 +100,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/my-manuscripts',
         component: () =>
-          import(
-            '@/models/ManuscriptRecord/views/MyManuscriptRecordsView.vue'
-          ),
+          import('@/models/ManuscriptRecord/views/MyManuscriptRecordsView.vue'),
         meta: { requiresAuth: true },
       },
       {
@@ -141,15 +124,22 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
-        path: '/authors',
+        path: '/regional-manuscripts',
         component: () =>
-          import('@/models/Author/views/AuthorsView.vue'),
+          import(
+            '@/models/ManuscriptRecord/views/RegionalManuscriptRecordsView.vue'
+          ),
+        meta: { requiresAuth: true },
+        name: 'regional-manuscripts',
+      },
+      {
+        path: '/authors',
+        component: () => import('@/models/Author/views/AuthorsView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/preprints',
-        component: () =>
-          import('@/models/Preprint/views/PreprintListView.vue'),
+        component: () => import('@/models/Preprint/views/PreprintListView.vue'),
         meta: { requiresAuth: true },
       },
       {
@@ -160,9 +150,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/manuscript/:id',
         component: () =>
-          import(
-            '@/models/ManuscriptRecord/views/ManuscriptRecordPage.vue'
-          ),
+          import('@/models/ManuscriptRecord/views/ManuscriptRecordPage.vue'),
         meta: { requiresAuth: true },
         props: route => ({ id: Number(route.params.id) }),
         children: [
@@ -212,9 +200,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/publication/:id',
         component: () =>
-          import(
-            '@/models/Publication/views/PublicationPageView.vue'
-          ),
+          import('@/models/Publication/views/PublicationPageView.vue'),
         meta: { requiresAuth: true },
         props: route => ({ id: Number(route.params.id) }),
         name: 'publication',
