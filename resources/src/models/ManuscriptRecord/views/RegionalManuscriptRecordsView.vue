@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import type {
-  ManuscriptRecordResourceList,
+  ManuscriptRecordSummaryResourceList,
   ManuscriptRecordType,
 } from '../ManuscriptRecord'
-import { watchThrottled } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
@@ -15,16 +11,14 @@ import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
 import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
-import { useAuthStore } from '@/stores/AuthStore'
 import ManuscriptList from '../components/ManuscriptList.vue'
+import ManuscriptTypeSelect from '../components/ManuscriptTypeSelect.vue'
 import {
   ManuscriptRecordListQuery,
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
 
-// Permission check - only show to users with regional view permissions
 const authStore = useAuthStore()
-const router = useRouter()
 
 // Check if user has permission (but don't redirect automatically)
 const hasPermission = computed(() => {
@@ -35,7 +29,7 @@ const hasPermission = computed(() => {
 })
 
 // State variables
-const manuscripts = ref<ManuscriptRecordResourceList>()
+const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
 const loading = ref(false)
 const activeFilter = ref(1)
 const currentPage = ref(1)
@@ -69,40 +63,30 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
     },
     {
       id: 2,
-      label: t('regional-manuscripts.draft-in-review'),
-      caption: t('regional-manuscripts.manuscripts-needing-attention'),
+      label: t('regional-manuscripts.under-management-review'),
+      caption: t('regional-manuscripts.in-management-review-process'),
       icon: 'mdi-progress-clock',
       active: activeFilter.value === 2,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
-        return query.filterStatus(['draft', 'in_review', 'reviewed'])
+        return query.filterStatus(['in_review'])
       },
     },
     {
       id: 3,
-      label: t('regional-manuscripts.under-management-review'),
-      caption: t('regional-manuscripts.in-management-review-process'),
-      icon: 'mdi-account-check-outline',
+      label: t('common.completed'),
+      caption: t('regional-manuscripts.accepted-published-manuscripts'),
+      icon: 'mdi-check-circle',
       active: activeFilter.value === 3,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
-        return query.filterStatus(['submitted'])
+        return query.filterStatus(['accepted', 'withdrawn'])
       },
     },
     {
       id: 4,
-      label: t('common.completed'),
-      caption: t('regional-manuscripts.accepted-published-manuscripts'),
-      icon: 'mdi-check-circle',
-      active: activeFilter.value === 4,
-      filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
-        return query.filterStatus(['accepted', 'published'])
-      },
-    },
-    {
-      id: 5,
       label: t('regional-manuscripts.potential-public-interest'),
       caption: t('regional-manuscripts.manuscripts-with-public-interest'),
       icon: 'mdi-eye-outline',
-      active: activeFilter.value === 5,
+      active: activeFilter.value === 4,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
         return query.filterPotentialPublicInterest(true)
       },
@@ -135,9 +119,9 @@ const filterCaption = computed(() => {
   if (manuscriptType.value) {
     const typeLabel
       = manuscriptType.value === 'primary'
-        ? t('common.primary')
+        ? t('manuscript.primary')
         : manuscriptType.value === 'secondary'
-          ? t('common.secondary')
+          ? t('manuscript.secondary')
           : t('common.preprint')
     caption += `${t('common.type')} ${typeLabel} `
   }
@@ -163,7 +147,7 @@ async function getManuscripts() {
 
   // is there a search term?
   if (search?.value) {
-    query = query.filterTitle([search.value])
+    query = query.filterTitle(search.value)
   }
 
   if (regionId.value) {
@@ -251,37 +235,7 @@ interface MainFilterOption {
 
 <template>
   <MainPageLayout :title="$t('common.regional-manuscripts')">
-    <!-- Show loading state while auth is loading -->
-    <div v-if="authStore.loading" class="flex justify-center q-pa-xl">
-      <q-spinner-dots size="lg" />
-    </div>
-
-    <!-- Show permission denied message if user doesn't have access -->
     <div
-      v-else-if="hasPermission === false"
-      class="flex justify-center q-pa-xl"
-    >
-      <ContentCard>
-        <template #title>
-          {{ $t('common.access-denied') }}
-        </template>
-        <div class="text-center">
-          <q-icon name="mdi-lock" size="4rem" color="grey-5" class="q-mb-md" />
-          <p class="text-body1 q-mb-md">
-            {{ $t('regional-manuscripts.permission-required') }}
-          </p>
-          <q-btn
-            :label="$t('common.go-to-dashboard')"
-            color="primary"
-            @click="router.push('/dashboard')"
-          />
-        </div>
-      </ContentCard>
-    </div>
-
-    <!-- Show main content if user has permission -->
-    <div
-      v-else-if="hasPermission === true"
       class="row q-gutter-lg q-col-gutter-lg flex"
     >
       <div class="col-3">
@@ -350,21 +304,9 @@ interface MainFilterOption {
                   :disable="loading"
                   :hide-create-author-dialog="true"
                 />
-                <q-select
+                <ManuscriptTypeSelect
                   v-model="manuscriptType"
-                  :options="[
-                    { label: $t('common.primary'), value: 'primary' },
-                    { label: $t('common.secondary'), value: 'secondary' },
-                    { label: $t('common.preprint'), value: 'preprint' },
-                  ]"
-                  option-label="label"
-                  option-value="value"
-                  :label="$t('common.manuscript-type')"
-                  :disable="loading"
                   clearable
-                  outlined
-                  emit-value
-                  map-options
                 />
               </q-card-section>
             </q-expansion-item>

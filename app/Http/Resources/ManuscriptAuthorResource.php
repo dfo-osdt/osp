@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use Auth;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @mixin \App\Models\ManuscriptAuthor

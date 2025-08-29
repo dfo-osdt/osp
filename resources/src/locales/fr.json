@@ -301,7 +301,8 @@
     "announcements": "Cliquez ici pour afficher l'annonce en sourdine | \nCliquez ici pour afficher les annonces {count} en mourti",
     "preprint-url-placeholder": "https://doi.org/ ..",
     "submitted-to-preprint-on": "Date soumise au serveur préalable",
-    "clone": "Dupliquer"
+    "clone": "Dupliquer",
+    "type": "de type"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
@@ -916,7 +917,7 @@
     "manuscripts-needing-attention": "Manuscrits qui nécessitent de l'attention ou sont en révision",
     "under-management-review": "Sous révision de gestion",
     "in-management-review-process": "Manuscrits actuellement dans le processus de révision de gestion",
-    "accepted-published-manuscripts": "Manuscrits acceptés et publiés",
+    "accepted-published-manuscripts": "Accepté par journal ou retiré",
     "potential-public-interest": "Intérêt public potentiel",
     "manuscripts-with-public-interest": "Manuscrits signalés pour un intérêt public potentiel"
   }
