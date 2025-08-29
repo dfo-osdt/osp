@@ -38,5 +38,6 @@ const options = computed(
     :loading="regionStore.loading"
     emit-value
     map-options
+    outlined
   />
 </template>
