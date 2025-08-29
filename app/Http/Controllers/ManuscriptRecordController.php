@@ -59,15 +59,18 @@ class ManuscriptRecordController extends Controller
             }
         }
 
-        // If no system permissions, return forbidden
         if (! $hasGlobalPermission && empty($allowedRegionIds)) {
             abort(403, 'Insufficient permissions to view manuscript records');
         }
 
         $baseQuery = ManuscriptRecord::query()
-            ->with(['user', 'region', 'shareables', 'managementReviewSteps.user']);
+            ->with(['user',
+                'manuscriptAuthors' => [
+                    'author',
+                    'organization',
+                ],
+                'region', 'shareables', 'managementReviewSteps.user']);
 
-        // Apply filtering based on permissions
         if ($hasGlobalPermission && ! empty($allowedRegionIds)) {
             // Both global AND regional - union of access
             $baseQuery->where(function ($query) use ($allowedRegionIds) {

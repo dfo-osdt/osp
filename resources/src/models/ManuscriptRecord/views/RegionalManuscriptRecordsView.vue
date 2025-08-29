@@ -1,51 +1,58 @@
 <script setup lang="ts">
-import type { ManuscriptRecordResourceList } from '../ManuscriptRecord';
-import { watchThrottled } from '@vueuse/core';
-import { computed, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import ContentCard from '@/components/ContentCard.vue';
-import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue';
-import PaginationDiv from '@/components/PaginationDiv.vue';
-import SearchInput from '@/components/SearchInput.vue';
-import MainPageLayout from '@/layouts/MainPageLayout.vue';
-import AuthorSelect from '@/models/Author/components/AuthorSelect.vue';
-import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue';
-import RegionSelect from '@/models/Region/components/RegionSelect.vue';
-import ManuscriptList from '../components/ManuscriptList.vue';
+import type {
+  ManuscriptRecordResourceList,
+  ManuscriptRecordType,
+} from '../ManuscriptRecord'
+import { watchThrottled } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import ContentCard from '@/components/ContentCard.vue'
+import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
+import PaginationDiv from '@/components/PaginationDiv.vue'
+import SearchInput from '@/components/SearchInput.vue'
+import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
+import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
+import { useAuthStore } from '@/stores/AuthStore'
+import ManuscriptList from '../components/ManuscriptList.vue'
 import {
   ManuscriptRecordListQuery,
   ManuscriptRecordService,
-} from '../ManuscriptRecord';
+} from '../ManuscriptRecord'
 
 // Permission check - only show to users with regional view permissions
-const authStore = useAuthStore();
-const router = useRouter();
+const authStore = useAuthStore()
+const router = useRouter()
 
 // Check if user has permission (but don't redirect automatically)
 const hasPermission = computed(() => {
   // Wait for auth to load before making permission decisions
-  if (authStore.loading || !authStore.user) return null;
-  return authStore.canViewRegionalManuscripts;
-});
+  if (authStore.loading || !authStore.user)
+    return null
+  return authStore.canViewRegionalManuscripts
+})
 
 // State variables
-const manuscripts = ref<ManuscriptRecordResourceList>();
-const loading = ref(false);
-const activeFilter = ref(1);
-const currentPage = ref(1);
-const search = ref<string | null>(null);
-const showFilters = ref(false);
-const regionId = ref<number | null>(null);
-const regionSelect = ref<InstanceType<typeof RegionSelect> | null>(null);
-const functionalAreaId = ref<number | null>(null);
+const manuscripts = ref<ManuscriptRecordResourceList>()
+const loading = ref(false)
+const activeFilter = ref(1)
+const currentPage = ref(1)
+const search = ref<string | null>(null)
+const showFilters = ref(false)
+const regionId = ref<number | null>(null)
+const regionSelect = ref<InstanceType<typeof RegionSelect> | null>(null)
+const functionalAreaId = ref<number | null>(null)
 const functionalAreaSelect = ref<InstanceType<
   typeof FunctionalAreaSelect
-> | null>(null);
-const authorId = ref<number | null>(null);
-const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null);
+> | null>(null)
+const authorId = ref<number | null>(null)
+const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null)
+const manuscriptType = ref<ManuscriptRecordType | null>(null)
 
 // i18n
-const { t } = useI18n();
+const { t } = useI18n()
 
 // Main filter options
 const mainFilterOptions = computed<MainFilterOption[]>(() => {
@@ -57,7 +64,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-all-inclusive',
       active: activeFilter.value === 1,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
-        return query;
+        return query
       },
     },
     {
@@ -67,7 +74,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-progress-clock',
       active: activeFilter.value === 2,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
-        return query.filterStatus(['draft', 'in_review', 'reviewed']);
+        return query.filterStatus(['draft', 'in_review', 'reviewed'])
       },
     },
     {
@@ -77,7 +84,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-account-check-outline',
       active: activeFilter.value === 3,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
-        return query.filterStatus(['submitted']);
+        return query.filterStatus(['submitted'])
       },
     },
     {
@@ -87,7 +94,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-check-circle',
       active: activeFilter.value === 4,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
-        return query.filterStatus(['accepted', 'published']);
+        return query.filterStatus(['accepted', 'published'])
       },
     },
     {
@@ -97,133 +104,148 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-eye-outline',
       active: activeFilter.value === 5,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
-        return query.filterPotentialPublicInterest(true);
+        return query.filterPotentialPublicInterest(true)
       },
     },
-  ];
-});
+  ]
+})
 
 // Computed properties
 const mainFilter = computed(() => {
-  return mainFilterOptions.value.find((f) => f.active);
-});
+  return mainFilterOptions.value.find(f => f.active)
+})
 
 const filterCaption = computed(() => {
-  let caption = '';
+  let caption = ''
+  // For RegionSelect, we need to access the store since it doesn't expose selectedRegion
   if (regionId.value) {
-    const regionData = regionSelect?.value?.selectedRegion?.data;
-    if (regionData) {
-      const regionName = regionData.name_en || regionData.name_fr || 'NA';
-      caption += `${t('common.in')} ${regionName} `;
-    }
+    caption += `${t('common.in')} ${t('common.dfo-region')} `
   }
+  // For FunctionalAreaSelect, we need to access the store since it doesn't expose selectedFunctionalArea
   if (functionalAreaId.value) {
-    const faData = functionalAreaSelect?.value?.selectedFunctionalArea?.data;
-    if (faData) {
-      const faName = faData.name_en || faData.name_fr || 'NA';
-      caption += `${t('common.for')} ${faName} `;
-    }
+    caption += `${t('common.for')} ${t('common.functional-area')} `
   }
+  // AuthorSelect properly exposes selectedAuthor
   if (authorId.value) {
-    const { first_name, last_name } =
-      authorSelect?.value?.selectedAuthor?.data || {};
-    caption += `${t('common.by')} ${first_name || 'NA'} ${last_name || 'NA'} `;
+    const { first_name, last_name }
+      = authorSelect?.value?.selectedAuthor?.data || {}
+    caption += `${t('common.by')} ${first_name || 'NA'} ${last_name || 'NA'} `
+  }
+  // Manuscript type filter
+  if (manuscriptType.value) {
+    const typeLabel
+      = manuscriptType.value === 'primary'
+        ? t('common.primary')
+        : manuscriptType.value === 'secondary'
+          ? t('common.secondary')
+          : t('common.preprint')
+    caption += `${t('common.type')} ${typeLabel} `
   }
   if (caption.length > 0)
-    caption = `${t('common.manuscripts')} ${caption.slice(0, -1)}`;
-  else caption = t('common.no-filters-applied');
-  return caption;
-});
+    caption = `${t('common.manuscripts')} ${caption.slice(0, -1)}`
+  else caption = t('common.no-filters-applied')
+  return caption
+})
 
 // Methods
 async function getManuscripts() {
-  if (loading.value) return;
+  if (loading.value)
+    return
   // build the query
-  let query = new ManuscriptRecordListQuery();
+  let query = new ManuscriptRecordListQuery()
 
   // apply the active main filters
   mainFilterOptions.value.forEach((f) => {
     if (f.active) {
-      query = f.filter(query);
+      query = f.filter(query)
     }
-  });
+  })
 
   // is there a search term?
   if (search?.value) {
-    query = query.filterTitle([search.value]);
+    query = query.filterTitle([search.value])
   }
 
   if (regionId.value) {
-    query = query.filterRegionId([regionId.value]);
+    query = query.filterRegionId([regionId.value])
   }
 
   if (functionalAreaId.value) {
-    query = query.filterFunctionalAreaId([functionalAreaId.value]);
+    query = query.filterFunctionalAreaId([functionalAreaId.value])
   }
 
   if (authorId.value) {
-    query = query.filterAuthorId([authorId.value]);
+    query = query.filterAuthorId([authorId.value])
   }
 
-  query.sort('updated_at', 'desc');
-  query.paginate(currentPage.value, 10);
+  if (manuscriptType.value) {
+    query = query.filterType([manuscriptType.value])
+  }
 
-  loading.value = true;
-  manuscripts.value = await ManuscriptRecordService.list(query);
-  loading.value = false;
+  query.sort('updated_at', 'desc')
+  query.paginate(currentPage.value, 10)
+
+  loading.value = true
+  manuscripts.value = await ManuscriptRecordService.list(query)
+  loading.value = false
 }
 
 function mainFilterClick(filterId: number) {
-  activeFilter.value = filterId;
-  search.value = '';
-  currentPage.value = 1;
-  getManuscripts();
+  activeFilter.value = filterId
+  search.value = ''
+  currentPage.value = 1
+  getManuscripts()
 }
 
 // Watchers
 watch(currentPage, () => {
-  getManuscripts();
-});
+  getManuscripts()
+})
 
 watchThrottled(
   search,
   () => {
-    currentPage.value = 1;
-    getManuscripts();
+    currentPage.value = 1
+    getManuscripts()
   },
   { throttle: 750 },
-);
+)
 
 watch(regionId, () => {
-  currentPage.value = 1;
-  getManuscripts();
-});
+  currentPage.value = 1
+  getManuscripts()
+})
 
 watch(functionalAreaId, () => {
-  currentPage.value = 1;
-  getManuscripts();
-});
+  currentPage.value = 1
+  getManuscripts()
+})
 
 watch(authorId, () => {
-  currentPage.value = 1;
-  getManuscripts();
-});
+  currentPage.value = 1
+  getManuscripts()
+})
+
+watch(manuscriptType, () => {
+  currentPage.value = 1
+  getManuscripts()
+})
 
 // Lifecycle hooks - only load data if user has permission
 onMounted(() => {
   if (hasPermission.value) {
-    getManuscripts();
+    getManuscripts()
   }
-});
+})
 
 // Type definitions
 interface MainFilterOption {
-  id: number;
-  label: string;
-  caption?: string;
-  icon: string;
-  active: boolean;
-  filter: (query: ManuscriptRecordListQuery) => ManuscriptRecordListQuery;
+  id: number
+  label: string
+  caption?: string
+  icon: string
+  active: boolean
+  filter: (query: ManuscriptRecordListQuery) => ManuscriptRecordListQuery
 }
 </script>
 
@@ -311,11 +333,13 @@ interface MainFilterOption {
                 <RegionSelect
                   ref="regionSelect"
                   v-model="regionId"
+                  clearable
                   :disable="loading"
                 />
                 <FunctionalAreaSelect
                   ref="functionalAreaSelect"
                   v-model="functionalAreaId"
+                  clearable
                   :label="$t('common.functional-area')"
                   :disable="loading"
                 />
@@ -325,6 +349,22 @@ interface MainFilterOption {
                   :label="$t('common.author')"
                   :disable="loading"
                   :hide-create-author-dialog="true"
+                />
+                <q-select
+                  v-model="manuscriptType"
+                  :options="[
+                    { label: $t('common.primary'), value: 'primary' },
+                    { label: $t('common.secondary'), value: 'secondary' },
+                    { label: $t('common.preprint'), value: 'preprint' },
+                  ]"
+                  option-label="label"
+                  option-value="value"
+                  :label="$t('common.manuscript-type')"
+                  :disable="loading"
+                  clearable
+                  outlined
+                  emit-value
+                  map-options
                 />
               </q-card-section>
             </q-expansion-item>
