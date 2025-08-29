@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type {
-  ManuscriptRecordResource,
-} from '../ManuscriptRecord'
+import type { ManuscriptRecordResource } from '../ManuscriptRecord'
 import type {
   Shareable,
   ShareableResource,
@@ -11,12 +9,8 @@ import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import ShareableTable from '@/models/Shareable/components/ShareableTable.vue'
 import ShareItemDialog from '@/models/Shareable/components/ShareItemDialog.vue'
-import {
-  ShareableService,
-} from '@/models/Shareable/Shareable'
-import {
-  ManuscriptRecordService,
-} from '../ManuscriptRecord'
+import { ShareableService } from '@/models/Shareable/Shareable'
+import { ManuscriptRecordService } from '../ManuscriptRecord'
 
 const props = defineProps<{
   id: number
@@ -44,7 +38,6 @@ const { t } = useI18n()
 
 async function deleteShareable(shareable: ShareableResource) {
   loading.value = true
-  console.log(shareable)
   $q.dialog({
     title: t('mrf.sharing-confirm-delete-title'),
     message: t('mrf.sharing-confirm-delete-message', {
@@ -78,7 +71,7 @@ function createShareable() {
 }
 
 function editShareable(shareable: ShareableResource) {
-  if (shareable.data == undefined) {
+  if (shareable.data === undefined) {
     throw new Error('Shareable data is undefined')
   }
   editShareableItem.value = shareable.data

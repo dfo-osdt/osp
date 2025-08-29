@@ -1,22 +1,14 @@
 <script setup lang="ts">
-import type {
-  FundingSource,
-  FundingSourceResource,
-} from '../FundingSource'
+import type { FundingSource, FundingSourceResource } from '../FundingSource'
 import type { Funder } from '@/models/Funder/Funder'
 import BaseDialog from '@/components/BaseDialog.vue'
-import {
-  FundingSourceService,
-} from '../FundingSource'
+import { FundingSourceService } from '../FundingSource'
 
 const props = defineProps<{
   fundingSource: FundingSource
 }>()
 const emit = defineEmits<{
-  (
-    event: 'edited:funding-source',
-    fundingSource: FundingSourceResource
-  ): void
+  (event: 'editedFundingSource', fundingSource: FundingSourceResource): void
 }>()
 const funderStore = useFunderStore()
 funderStore.getFunders()
@@ -41,7 +33,7 @@ async function editFundingSource() {
     fundable_type: props.fundingSource.fundable_type,
     fundable_id: props.fundingSource.fundable_id,
   })
-  emit('edited:funding-source', response)
+  emit('editedFundingSource', response)
 }
 </script>
 
@@ -85,7 +77,12 @@ async function editFundingSource() {
         />
       </q-card-section>
       <q-card-actions class="justify-end">
-        <q-btn v-close-popup :label="$t('common.cancel')" color="primary" outline />
+        <q-btn
+          v-close-popup
+          :label="$t('common.cancel')"
+          color="primary"
+          outline
+        />
         <q-btn :label="$t('common.save')" type="submit" color="primary" />
       </q-card-actions>
     </q-form>

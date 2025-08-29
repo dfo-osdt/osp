@@ -4,7 +4,7 @@ const localeStore = useLocaleStore()
  * project. If the data is a string, it must be in ISO format.
  *
  * @param date
- * @returns
+ * @returns Formatted date string in the current locale
  */
 export function useLocaleDate(date: Date | string | null) {
   return computed(() => {

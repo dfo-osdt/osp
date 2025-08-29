@@ -1,23 +1,15 @@
 <script setup lang="ts">
-import type {
-  FundableType,
-  FundingSourceResource,
-} from '../FundingSource'
+import type { FundableType, FundingSourceResource } from '../FundingSource'
 import type { Funder } from '@/models/Funder/Funder'
 import BaseDialog from '@/components/BaseDialog.vue'
-import {
-  FundingSourceService,
-} from '../FundingSource'
+import { FundingSourceService } from '../FundingSource'
 
 const props = defineProps<{
   fundableId: number
   fundableType: FundableType
 }>()
 const emit = defineEmits<{
-  (
-    event: 'create:funding-source',
-    fundingSource: FundingSourceResource
-  ): void
+  (event: 'createFundingSource', fundingSource: FundingSourceResource): void
 }>()
 const { t } = useI18n()
 const funderStore = useFunderStore()
@@ -37,7 +29,7 @@ async function createFundingSource() {
     description: description.value,
     funder_id: funder.value.id,
   })
-  emit('create:funding-source', response)
+  emit('createFundingSource', response)
 }
 </script>
 
@@ -50,7 +42,10 @@ async function createFundingSource() {
           :label="$t('common.funder')"
           :options="funderStore.funders"
           option-value="id"
-          :option-label="(funder: Funder) => $i18n.locale === 'fr' ? funder.name_fr : funder.name_en"
+          :option-label="
+            (funder: Funder) =>
+              $i18n.locale === 'fr' ? funder.name_fr : funder.name_en
+          "
           outlined
           :rules="[(val) => !!val || t('common.required')]"
           class="q-mb-md"
@@ -63,10 +58,7 @@ async function createFundingSource() {
             (val) => !!val || t('common.required'),
             (val) =>
               val.length <= 255
-              || t(
-                'common.validation.must-be-less-than-x-characters',
-                [255],
-              ),
+              || t('common.validation.must-be-less-than-x-characters', [255]),
           ]"
           class="q-mb-md"
         />
@@ -78,10 +70,7 @@ async function createFundingSource() {
           :rules="[
             (val) =>
               val.length <= 1500
-              || t(
-                'common.validation.must-be-less-than-x-characters',
-                [1500],
-              ),
+              || t('common.validation.must-be-less-than-x-characters', [1500]),
           ]"
           class="q-mb-md"
         />
@@ -93,11 +82,7 @@ async function createFundingSource() {
           color="primary"
           outline
         />
-        <q-btn
-          :label="$t('common.create')"
-          type="submit"
-          color="primary"
-        />
+        <q-btn :label="$t('common.create')" type="submit" color="primary" />
       </q-card-actions>
     </q-form>
   </BaseDialog>

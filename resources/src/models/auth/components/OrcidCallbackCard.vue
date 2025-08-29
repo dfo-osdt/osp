@@ -6,11 +6,23 @@ const router = useRouter()
 const authStore = useAuthStore()
 const { t } = useI18n()
 
-type Statuses = 'success' | 'invalid_key' | 'invalid_user' | 'failed' | 'error' | undefined
+type Statuses
+  = | 'success'
+    | 'invalid_key'
+    | 'invalid_user'
+    | 'failed'
+    | 'error'
+    | undefined
 type OrcidErrorType = 'access_denied' | undefined
-const status = ref((router.currentRoute.value.query?.status as Statuses) || undefined)
-const orcidErrorType = ref((router.currentRoute.value.query?.error as OrcidErrorType) || undefined)
-const orcidErrorMessage = ref(router.currentRoute.value.query?.error_description as string | undefined)
+const status = ref(
+  (router.currentRoute.value.query?.status as Statuses) || undefined,
+)
+const _orcidErrorType = ref(
+  (router.currentRoute.value.query?.error as OrcidErrorType) || undefined,
+)
+const orcidErrorMessage = ref(
+  router.currentRoute.value.query?.error_description as string | undefined,
+)
 
 const loading = ref(true)
 const valid = computed(() => status.value === 'success')

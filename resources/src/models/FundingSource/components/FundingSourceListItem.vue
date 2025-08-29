@@ -8,14 +8,8 @@ const props = defineProps<{
   fundingSource: FundingSourceResource
 }>()
 const emit = defineEmits<{
-  (
-    event: 'edited:funding-source',
-    fundingSource: FundingSourceResource
-  ): void
-  (
-    event: 'delete:funding-source',
-    fundingSource: FundingSourceResource
-  ): void
+  (event: 'editedFundingSource', fundingSource: FundingSourceResource): void
+  (event: 'deleteFundingSource', fundingSource: FundingSourceResource): void
 }>()
 const $q = useQuasar()
 const { t } = useI18n()
@@ -29,7 +23,7 @@ async function deleteFundingSource() {
     cancel: true,
     persistent: true,
   }).onOk(() => {
-    emit('delete:funding-source', props.fundingSource)
+    emit('deleteFundingSource', props.fundingSource)
   })
 }
 
@@ -38,7 +32,7 @@ const showEditDialog = ref(false)
 
 async function editedFundingSource(fundingSource: FundingSourceResource) {
   showEditDialog.value = false
-  emit('edited:funding-source', fundingSource)
+  emit('editedFundingSource', fundingSource)
 }
 
 // locale
@@ -62,9 +56,7 @@ const fundingSourceName = computed(() => {
       </q-item-label>
       <q-item-label>{{ fundingSource.data.title }} </q-item-label>
       <q-item-label caption>
-        {{
-          fundingSource.data.description
-        }}
+        {{ fundingSource.data.description }}
       </q-item-label>
     </q-item-section>
     <q-item-section v-if="!readonly" side>
@@ -99,7 +91,7 @@ const fundingSourceName = computed(() => {
       v-if="showEditDialog"
       v-model="showEditDialog"
       :funding-source="fundingSource.data"
-      @edited:funding-source="editedFundingSource"
+      @edited-funding-source="editedFundingSource"
     />
   </q-item>
 </template>

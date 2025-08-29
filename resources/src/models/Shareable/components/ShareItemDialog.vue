@@ -6,16 +6,14 @@ import type {
 } from '@/models/Shareable/Shareable'
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
-import {
-  ShareableService,
-} from '@/models/Shareable/Shareable'
+import { ShareableService } from '@/models/Shareable/Shareable'
 import UserSelect from '@/models/User/components/UserSelect.vue'
 
 const props = withDefaults(
   defineProps<{
     shareableType: ShareableModel
     shareableModelId: number | string
-    shareable: undefined | Shareable
+    shareable?: Shareable
     disabledUserIds?: number[]
   }>(),
   {
@@ -32,7 +30,7 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 const isEditDialog = computed(() => {
-  return props.shareable != undefined
+  return props.shareable !== undefined
 })
 
 const tomorrow = computed(() => {
@@ -114,7 +112,7 @@ async function save() {
 <template>
   <BaseDialog :title="title">
     <q-card-section class="q-mt-md">
-      <q-form ref="form" class="q-gutter-md" autofocus @submit="save">
+      <q-form class="q-gutter-md" autofocus @submit="save">
         <p v-if="!isEditDialog">
           {{ $t('shareable-dialog.user-create-text') }}
         </p>
@@ -155,17 +153,9 @@ async function save() {
           clearable
         />
         <div class="flex justify-end">
+          <q-btn v-close-popup :label="$t('common.cancel')" class="q-mr-md" />
           <q-btn
-            v-close-popup
-            :label="$t('common.cancel')"
-            class="q-mr-md"
-          />
-          <q-btn
-            :label="
-              isEditDialog
-                ? $t('common.save')
-                : $t('common.share')
-            "
+            :label="isEditDialog ? $t('common.save') : $t('common.share')"
             type="submit"
             :loading="loading"
             color="primary"

@@ -11,7 +11,7 @@ const showValue = computed(() => {
   if (props.value === 0) {
     return '0'
   }
-  if (props.value == 10) {
+  if (props.value === 10) {
     return '10+'
   }
   return props.value.toLocaleString()
