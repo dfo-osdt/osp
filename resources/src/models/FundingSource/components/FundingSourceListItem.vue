@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
 import type { FundingSourceResource } from '../FundingSource'
+import { useQuasar } from 'quasar'
 import EditFundingSourceDialog from './EditFundingSourceDialog.vue'
 
 const props = defineProps<{

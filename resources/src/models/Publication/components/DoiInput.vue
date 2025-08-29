@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CopyToClipboardButton from '@/components/CopyToClipboardButton.vue'
 import { QInput } from 'quasar'
+import CopyToClipboardButton from '@/components/CopyToClipboardButton.vue'
 
 const props = defineProps<{
   modelValue: string | null

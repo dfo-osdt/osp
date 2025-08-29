@@ -3,11 +3,11 @@ import type {
   FundingSource,
   FundingSourceResource,
 } from '../FundingSource'
+import type { Funder } from '@/models/Funder/Funder'
+import BaseDialog from '@/components/BaseDialog.vue'
 import {
   FundingSourceService,
 } from '../FundingSource'
-import BaseDialog from '@/components/BaseDialog.vue'
-import type { Funder } from '@/models/Funder/Funder'
 
 const props = defineProps<{
   fundingSource: FundingSource

@@ -3,12 +3,12 @@ import { useI18n } from 'vue-i18n'
 
 export type SupplementaryFileType
   = | 'manuscript_record_form'
-  | 'author_agreement'
-  | 'joint_copyright_agreement'
-  | 'preprint'
-  | 'authors_accepted_manuscript'
-  | 'errata'
-  | 'other'
+    | 'author_agreement'
+    | 'joint_copyright_agreement'
+    | 'preprint'
+    | 'authors_accepted_manuscript'
+    | 'errata'
+    | 'other'
 
 export interface SupplementaryFileOption {
   label: () => string

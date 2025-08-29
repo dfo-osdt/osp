@@ -3,8 +3,8 @@ import type {
   ManuscriptRecordSummaryResource,
 } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import {
-  MyManuscriptQuery,
   ManuscriptRecordService,
+  MyManuscriptQuery,
 } from '@/models/ManuscriptRecord/ManuscriptRecord'
 
 /**

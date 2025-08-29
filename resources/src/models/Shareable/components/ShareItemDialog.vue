@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import BaseDialog from '@/components/BaseDialog.vue'
-import DateInput from '@/components/DateInput.vue'
 import type {
   Shareable,
   ShareableModel,
   ShareableResource,
 } from '@/models/Shareable/Shareable'
+import BaseDialog from '@/components/BaseDialog.vue'
+import DateInput from '@/components/DateInput.vue'
 import {
   ShareableService,
 } from '@/models/Shareable/Shareable'

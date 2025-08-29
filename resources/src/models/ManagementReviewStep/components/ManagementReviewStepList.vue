@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { ManagementReviewStepResource } from '../ManagementReviewStep'
+import { useLocaleDate } from '@/composables/useLocaleDate'
 import ManagementReviewStepDecisionSpan from './ManagementReviewStepDecisionSpan.vue'
 import ManagementReviewStepStatusBadge from './ManagementReviewStepStatusBadge.vue'
-import { useLocaleDate } from '@/composables/useLocaleDate'
 
 defineProps<{
   managementReviewSteps: ManagementReviewStepResource[]

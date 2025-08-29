@@ -3,8 +3,8 @@ import type {
   JournalResource,
   JournalResourceList,
 } from '../Journal'
-import { SpatieQuery } from '@/api/SpatieQuery'
 import { QSelect } from 'quasar'
+import { SpatieQuery } from '@/api/SpatieQuery'
 import {
   JournalService,
 } from '../Journal'

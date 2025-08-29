@@ -3,9 +3,9 @@ import type {
   FundableType,
   FundingSourceResource,
 } from '../FundingSource'
+import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
-import { useQuasar } from 'quasar'
 import {
   FundingSourceService,
 } from '../FundingSource'

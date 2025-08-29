@@ -3,10 +3,10 @@ import type {
   Organization,
   OrganizationResource,
 } from '../Organization'
+import BaseDialog from '@/components/BaseDialog.vue'
 import {
   OrganizationService,
 } from '../Organization'
-import BaseDialog from '@/components/BaseDialog.vue'
 
 const emit = defineEmits<{
   (event: 'created', payload: OrganizationResource): void

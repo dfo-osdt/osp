@@ -29,7 +29,7 @@ export class PublicationAuthorService {
    */
   public static async list(publicationId: number) {
     const response = await http.get<RList>(
-            `api/publications/${publicationId}/publication-authors`,
+      `api/publications/${publicationId}/publication-authors`,
     )
     return response.data
   }
@@ -41,7 +41,7 @@ export class PublicationAuthorService {
   public static async delete(publicationAuthor: PublicationAuthor) {
     const { publication_id, id } = publicationAuthor
     const response = await http.delete(
-            `api/publications/${publication_id}/publication-authors/${id}`,
+      `api/publications/${publication_id}/publication-authors/${id}`,
     )
     return response.status === 204
   }

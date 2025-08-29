@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
-import {
-  ManuscriptRecordService,
-} from '../ManuscriptRecord'
-import ContentCard from '@/components/ContentCard.vue'
 import type {
   Shareable,
   ShareableResource,
   ShareableResourceList,
 } from '@/models/Shareable/Shareable'
+import { useQuasar } from 'quasar'
+import ContentCard from '@/components/ContentCard.vue'
+import ShareableTable from '@/models/Shareable/components/ShareableTable.vue'
+import ShareItemDialog from '@/models/Shareable/components/ShareItemDialog.vue'
 import {
   ShareableService,
 } from '@/models/Shareable/Shareable'
-import ShareableTable from '@/models/Shareable/components/ShareableTable.vue'
-import ShareItemDialog from '@/models/Shareable/components/ShareItemDialog.vue'
+import {
+  ManuscriptRecordService,
+} from '../ManuscriptRecord'
 
 const props = defineProps<{
   id: number

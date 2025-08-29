@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onBeforeRouteLeave } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
+import { onBeforeRouteLeave } from 'vue-router'
 
 const props = defineProps<{
   isDirty: boolean

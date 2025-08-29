@@ -1,12 +1,12 @@
-import type { SanctumUser } from '@/api/sanctum'
-import type { Locale } from '@/stores/LocaleStore'
 import type { Ref } from 'vue'
 import type {
   UserAuthenticationRecord,
 } from '../models/User/AuthenticatedUser'
+import type { SanctumUser } from '@/api/sanctum'
+import type { Locale } from '@/stores/LocaleStore'
+import { Notify } from 'quasar'
 import { useSanctum } from '@/api/sanctum'
 import { i18n } from '@/plugins/i18n'
-import { Notify } from 'quasar'
 import {
   AuthenticatedUser,
   AuthenticatedUserService,

@@ -1,5 +1,5 @@
-import { http } from './http'
 import type { Locale } from '@/stores/LocaleStore'
+import { http } from './http'
 
 export interface SanctumUser {
   email: string

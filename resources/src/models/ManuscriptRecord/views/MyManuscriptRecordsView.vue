@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import CreateManuscriptDialog from '../components/CreateManuscriptDialog.vue'
-import ManuscriptList from '../components/ManuscriptList.vue'
-import NoManuscriptExistsDiv from '../components/NoManuscriptExistsDiv.vue'
 import type {
   ManuscriptRecordSummaryResourceList,
 } from '../ManuscriptRecord'
-import {
-  MyManuscriptQuery,
-  ManuscriptRecordService,
-} from '../ManuscriptRecord'
 import ContentCard from '@/components/ContentCard.vue'
+import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
+import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
-import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
+import CreateManuscriptDialog from '../components/CreateManuscriptDialog.vue'
+import ManuscriptList from '../components/ManuscriptList.vue'
+import NoManuscriptExistsDiv from '../components/NoManuscriptExistsDiv.vue'
 
-import PaginationDiv from '@/components/PaginationDiv.vue'
+import {
+  ManuscriptRecordService,
+  MyManuscriptQuery,
+} from '../ManuscriptRecord'
 
 const { t } = useI18n()
 
