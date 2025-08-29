@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type {
-  ManagementReviewStepResourceList,
-} from '../ManagementReviewStep'
+import type { ManagementReviewStepResourceList } from '../ManagementReviewStep'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
@@ -18,46 +16,6 @@ import {
 const { t } = useI18n()
 
 const reviews = ref<ManagementReviewStepResourceList>()
-
-onMounted(() => {
-  getReviews()
-})
-
-const loading = ref(false)
-async function getReviews() {
-  if (loading.value)
-    return
-  // build the query
-  let query = new ManagementReviewQuery()
-
-  // apply the active main filters
-  mainFilterOptions.value.forEach((f) => {
-    if (f.active) {
-      query = f.filter(query)
-    }
-  })
-
-  // is there a search term?
-  if (search?.value) {
-    query = query.filterManuscriptRecordTitle([search.value])
-  }
-
-  query.sort('updated_at', 'asc')
-  query.paginate(currentPage.value, 5)
-
-  loading.value = true
-  reviews.value = await ManagementReviewStepService.listMy(query)
-  loading.value = false
-}
-
-// manuscript store - used to determine if the user has any reviews
-const managementReviewStore = useManagementReviewStepStore()
-managementReviewStore.getMyManagementReviewSteps()
-const hasAnyManagementSteps = computed(() => {
-  if (!managementReviewStore.recent)
-    return false
-  return managementReviewStore.recent?.length > 0
-})
 
 // type for main filter options
 interface MainFilterOption {
@@ -106,6 +64,52 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
   ]
 })
 
+// pagination
+const currentPage = ref(1)
+
+// search
+const search = ref<string | null>(null)
+
+onMounted(() => {
+  getReviews()
+})
+
+const loading = ref(false)
+async function getReviews() {
+  if (loading.value)
+    return
+  // build the query
+  let query = new ManagementReviewQuery()
+
+  // apply the active main filters
+  mainFilterOptions.value.forEach((f) => {
+    if (f.active) {
+      query = f.filter(query)
+    }
+  })
+
+  // is there a search term?
+  if (search?.value) {
+    query = query.filterManuscriptRecordTitle([search.value])
+  }
+
+  query.sort('updated_at', 'asc')
+  query.paginate(currentPage.value, 5)
+
+  loading.value = true
+  reviews.value = await ManagementReviewStepService.listMy(query)
+  loading.value = false
+}
+
+// manuscript store - used to determine if the user has any reviews
+const managementReviewStore = useManagementReviewStepStore()
+managementReviewStore.getMyManagementReviewSteps()
+const hasAnyManagementSteps = computed(() => {
+  if (!managementReviewStore.recent)
+    return false
+  return managementReviewStore.recent?.length > 0
+})
+
 function mainFilterClick(filterId: number) {
   activeFilterId.value = filterId
   search.value = ''
@@ -117,14 +121,9 @@ const mainFilter = computed(() => {
   return mainFilterOptions.value.find(f => f.active)
 })
 
-// pagination
-const currentPage = ref(1)
 watch(currentPage, () => {
   getReviews()
 })
-
-// search
-const search = ref<string | null>(null)
 
 watchThrottled(
   search,
@@ -175,23 +174,12 @@ watchThrottled(
             {{ mainFilter?.caption }}
           </template>
           <template #title-right>
-            <SearchInput
-              v-model="search"
-              :label="$t('common.filter')"
-            />
+            <SearchInput v-model="search" :label="$t('common.filter')" />
           </template>
-          <template
-            v-if="
-              reviews?.data.length === 0 && !hasAnyManagementSteps
-            "
-          >
+          <template v-if="reviews?.data.length === 0 && !hasAnyManagementSteps">
             <NoManagementStepExistsDiv />
           </template>
-          <template
-            v-if="
-              reviews?.data.length === 0 && hasAnyManagementSteps
-            "
-          >
+          <template v-if="reviews?.data.length === 0 && hasAnyManagementSteps">
             <NoResultFoundDiv />
           </template>
           <ManagementReviewStepList

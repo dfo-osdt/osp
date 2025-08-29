@@ -46,7 +46,7 @@ onMounted(async () => {
   }
 })
 
-async function filterUsers(val: string, update, abort) {
+async function filterUsers(val: string, update, _abort) {
   lastSearchTerm.value = val
   update(async () => {
     if (val !== '') {
@@ -67,7 +67,6 @@ const rules = computed(() => {
   const rules = [
     // required
     (val: string | null) => {
-      console.log('required', val)
       if (!props.required)
         return true
       const msg = t('common.required')
@@ -125,9 +124,7 @@ function optionDisable(item: UserResource) {
       <q-item>
         <q-item-section class="text-grey">
           <template v-if="lastSearchTerm === ''">
-            {{
-              $t('user-select.start-typing-to-search-for-a-user')
-            }}
+            {{ $t('user-select.start-typing-to-search-for-a-user') }}
           </template>
           <template v-else>
             {{ $t('common.no-results-found-for') }}
@@ -149,9 +146,7 @@ function optionDisable(item: UserResource) {
             @click="showInviteUserDialog = true"
           >
             <q-tooltip class="text-body2">
-              {{
-                $t('user-select.invite-a-new-user')
-              }}
+              {{ $t('user-select.invite-a-new-user') }}
             </q-tooltip>
           </q-btn>
         </q-item-section>
@@ -185,9 +180,7 @@ function optionDisable(item: UserResource) {
             @click="showInviteUserDialog = true"
           >
             <q-tooltip class="text-body2">
-              {{
-                $t('user-select.invite-a-new-user')
-              }}
+              {{ $t('user-select.invite-a-new-user') }}
             </q-tooltip>
           </q-btn>
         </q-item-section>

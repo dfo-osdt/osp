@@ -42,8 +42,6 @@ async function changePassword() {
       authStore.refreshUser()
       loading.value = false
     })
-
-  console.log('changePassword')
 }
 
 function onReset() {

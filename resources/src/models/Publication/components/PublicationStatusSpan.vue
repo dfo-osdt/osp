@@ -13,6 +13,8 @@ const statusLabel = computed(() => {
       return t.t('publication.accepted')
     case 'published':
       return t.t('publication.published')
+    default:
+      return ''
   }
 })
 </script>

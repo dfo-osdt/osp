@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type {
-  ManuscriptRecordSummaryResourceList,
-} from '../ManuscriptRecord'
+import type { ManuscriptRecordSummaryResourceList } from '../ManuscriptRecord'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
@@ -19,6 +17,59 @@ import {
 const { t } = useI18n()
 
 const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
+
+// type for main filter options
+interface MainFilterOption {
+  id: number
+  label: string
+  caption?: string
+  icon: string
+  active: boolean
+  filter: (query: MyManuscriptQuery) => MyManuscriptQuery
+}
+
+// content filter - sidebar
+const activeFilterId = ref(3)
+const mainFilterOptions = computed<MainFilterOption[]>(() => {
+  return [
+    {
+      id: 1,
+      label: t('my-manuscript-records.all-manuscripts'),
+      caption: t('my-manuscript-records.all-manuscripts-caption'),
+      icon: 'mdi-all-inclusive',
+      active: activeFilterId.value === 1,
+      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
+        return query
+      },
+    },
+    {
+      id: 2,
+      label: t('my-manuscript-records.draft-manuscripts'),
+      caption: t('my-manuscript-records.draft-manuscripts-caption'),
+      icon: 'mdi-file-edit',
+      active: activeFilterId.value === 2,
+      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
+        return query.filterStatus(['draft'])
+      },
+    },
+    {
+      id: 3,
+      label: t('my-manuscript-records.submitted-manuscripts'),
+      caption: t('my-manuscript-records.submitted-manuscripts-caption'),
+      icon: 'mdi-file-check',
+      active: activeFilterId.value === 3,
+      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
+        return query.filterStatus(['in_review', 'completed'])
+      },
+    },
+  ]
+})
+
+// pagination
+const currentPage = ref(1)
+
+// search
+const search = ref<string | null>(null)
 
 onMounted(() => {
   getManuscripts()
@@ -67,74 +118,6 @@ const hasAnyManuscripts = computed(() => {
   return manuscriptStore.manuscripts?.length > 0
 })
 
-// type for main filter options
-interface MainFilterOption {
-  id: number
-  label: string
-  caption?: string
-  icon: string
-  active: boolean
-  filter: (query: MyManuscriptQuery) => MyManuscriptQuery
-}
-
-// content filter - sidebar
-const activeFilterId = ref(3)
-const mainFilterOptions = computed<MainFilterOption[]>(() => {
-  return [
-    {
-      id: 1,
-      label: t('my-manuscript-records.all-manuscripts'),
-      caption: t('my-manuscript-records.all-manuscripts-caption'),
-      icon: 'mdi-all-inclusive',
-      active: activeFilterId.value === 1,
-      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
-        return query
-      },
-    },
-    {
-      id: 2,
-      label: t('common.my-manuscripts'),
-      caption: t('my-manuscript-records.my-manuscripts-caption'),
-      icon: 'mdi-account-arrow-left-outline',
-      active: activeFilterId.value === 2,
-      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
-        return authorStore.user
-          ? query.filterUserId([authorStore.user.id])
-          : query
-      },
-    },
-    {
-      id: 3,
-      label: t('common.in-progress'),
-      caption: t('my-manuscript-records.actions-still-required'),
-      icon: 'mdi-progress-clock',
-      active: activeFilterId.value === 3,
-      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
-        return query.filterStatus([
-          'draft',
-          'in_review',
-          'reviewed',
-          'submitted',
-        ])
-      },
-    },
-    {
-      id: 4,
-      label: t('common.completed'),
-      caption: t('common.no-actions-required'),
-      icon: 'mdi-check-circle',
-      active: activeFilterId.value === 4,
-      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
-        return query.filterStatus([
-          'accepted',
-          'withdrawn',
-          'withheld',
-        ])
-      },
-    },
-  ]
-})
-
 function mainFilterClick(filterId: number) {
   activeFilterId.value = filterId
   search.value = ''
@@ -146,14 +129,9 @@ const mainFilter = computed(() => {
   return mainFilterOptions.value.find(f => f.active)
 })
 
-// pagination
-const currentPage = ref(1)
 watch(currentPage, () => {
   getManuscripts()
 })
-
-// search
-const search = ref<string | null>(null)
 
 watchThrottled(
   search,
@@ -185,9 +163,7 @@ watchThrottled(
               anchor="center left"
               self="center right"
             >
-              {{
-                $t('my-manuscript-records.create-manuscript')
-              }}
+              {{ $t('my-manuscript-records.create-manuscript') }}
             </q-tooltip>
           </template>
         </q-fab>
@@ -220,15 +196,11 @@ watchThrottled(
             </q-item>
           </q-list>
           <div
-            v-if="
-              authorStore.user?.can('create_manuscript_records')
-            "
+            v-if="authorStore.user?.can('create_manuscript_records')"
             class="flex-center flex q-mt-lg q-mb-sm q-mx-md"
           >
             <q-btn
-              :label="
-                $t('my-manuscript-records.create-manuscript')
-              "
+              :label="$t('my-manuscript-records.create-manuscript')"
               color="primary"
               outline
               icon="mdi-plus"
@@ -246,25 +218,14 @@ watchThrottled(
             {{ mainFilter?.caption }}
           </template>
           <template #title-right>
-            <SearchInput
-              v-model="search"
-              :label="$t('common.filter')"
-            />
+            <SearchInput v-model="search" :label="$t('common.filter')" />
           </template>
-          <template
-            v-if="
-              manuscripts?.data.length === 0 && !hasAnyManuscripts
-            "
-          >
+          <template v-if="manuscripts?.data.length === 0 && !hasAnyManuscripts">
             <NoManuscriptExistsDiv
               :title="$t('my-manuscript-records.no-manuscript')"
             />
           </template>
-          <template
-            v-if="
-              manuscripts?.data.length === 0 && hasAnyManuscripts
-            "
-          >
+          <template v-if="manuscripts?.data.length === 0 && hasAnyManuscripts">
             <NoResultFoundDiv />
           </template>
           <ManuscriptList

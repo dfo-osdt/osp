@@ -13,11 +13,12 @@
 ## Code Style
 
 - **PHP**: Use Laravel Pint (excluded: lang/, .phpstorm.meta.php, \_ide_helper.php)
-- **Vue/TS**: ESLint with @antfu/eslint-config + Quasar plugin
+- **Vue/TS**: ESLint with @antfu/eslint-config + Quasar plugin - **NO SEMICOLONS** (auto-fixed by ESLint)
 - **Imports**: Group by vendor/package, then local files
 - **Types**: Full PHPDoc blocks for models, strict TypeScript for Vue
 - **Naming**: snake_case (PHP), camelCase (JS/Vue), PascalCase (Vue components)
 - **Error handling**: Use Laravel exceptions, validate with form requests
+- **Semicolons**: NEVER add semicolons to TypeScript/Vue code - the project uses ESLint with @antfu/eslint-config which removes them automatically
 
 ## Framework Stack
 

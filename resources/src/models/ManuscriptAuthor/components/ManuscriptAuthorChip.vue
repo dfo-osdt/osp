@@ -14,8 +14,8 @@ const props = withDefaults(
 )
 
 const emit = defineEmits([
-  'delete:manuscriptAuthor',
-  'edit:toggleCorrespondingAuthor',
+  'deleteManuscriptAuthor',
+  'editToggleCorrespondingAuthor',
 ])
 
 const localeStore = useLocaleStore()
@@ -28,7 +28,7 @@ const correspondingAuthor = computed({
     return props.manuscriptAuthor.data.is_corresponding_author
   },
   set(value) {
-    emit('edit:toggleCorrespondingAuthor', value)
+    emit('editToggleCorrespondingAuthor', value)
   },
 })
 
@@ -49,7 +49,7 @@ const removable = computed(() => {
     clickable
     :removable="removable"
     color="teal-2"
-    @remove="emit('delete:manuscriptAuthor')"
+    @remove="emit('deleteManuscriptAuthor')"
   >
     <q-avatar
       v-if="manuscriptAuthor.data.is_corresponding_author"
@@ -73,11 +73,7 @@ const removable = computed(() => {
               }}
             </q-item-label>
             <q-item-label caption>
-              <RORLinkSpan
-                :organization="
-                  manuscriptAuthor.data.organization
-                "
-              />
+              <RORLinkSpan :organization="manuscriptAuthor.data.organization" />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -90,9 +86,7 @@ const removable = computed(() => {
               <a
                 class="text-primary"
                 :href="`mailto:${manuscriptAuthor.data.author?.data.email}`"
-              >{{
-                manuscriptAuthor.data.author?.data.email
-              }}</a>
+              >{{ manuscriptAuthor.data.author?.data.email }}</a>
             </q-item-label>
           </q-item-section>
           <q-item-section v-if="isSupported" side>
@@ -102,17 +96,10 @@ const removable = computed(() => {
               round
               flat
               size="sm"
-              @click="
-                copy(
-                  manuscriptAuthor.data.author?.data.email
-                    ?? '',
-                )
-              "
+              @click="copy(manuscriptAuthor.data.author?.data.email ?? '')"
             >
               <q-tooltip>
-                {{
-                  t('common.copy-to-clipboard')
-                }}
+                {{ t('common.copy-to-clipboard') }}
               </q-tooltip>
             </q-btn>
             <div v-else class="text-caption">
@@ -122,7 +109,11 @@ const removable = computed(() => {
         </q-item>
         <q-item v-if="manuscriptAuthor.data.author?.data.orcid">
           <q-item-section avatar>
-            <OrcidAvatar :unauthenticated="!manuscriptAuthor.data.author.data.orcid_verified" />
+            <OrcidAvatar
+              :unauthenticated="
+                !manuscriptAuthor.data.author.data.orcid_verified
+              "
+            />
           </q-item-section>
           <q-item-section>
             <q-item-label>
@@ -132,30 +123,32 @@ const removable = computed(() => {
                 target="_blank"
               >{{ manuscriptAuthor.data.author?.data.orcid }}</a>
             </q-item-label>
-            <q-item-label v-if="!manuscriptAuthor.data.author.data.orcid_verified" caption>
+            <q-item-label
+              v-if="!manuscriptAuthor.data.author.data.orcid_verified"
+              caption
+            >
               {{ t('common.unauthenticated-orcid-id') }}
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="manuscriptAuthor.can?.update || manuscriptAuthor.data.is_corresponding_author">
+        <q-item
+          v-if="
+            manuscriptAuthor.can?.update
+              || manuscriptAuthor.data.is_corresponding_author
+          "
+        >
           <q-item-section avatar>
             <q-avatar icon="mdi-at" text-color="primary" />
           </q-item-section>
           <q-item-section>
-            <q-item-label
-              :class="correspondingAuthor ? '' : 'text-grey-5'"
-            >
-              {{
-                t('common.corresponding-author')
-              }}
+            <q-item-label :class="correspondingAuthor ? '' : 'text-grey-5'">
+              {{ t('common.corresponding-author') }}
             </q-item-label>
           </q-item-section>
           <q-item-section v-if="!readonly" side>
             <q-toggle v-model="correspondingAuthor">
               <q-tooltip>
-                {{
-                  t('common.corresponding-author-toggle')
-                }}
+                {{ t('common.corresponding-author-toggle') }}
               </q-tooltip>
             </q-toggle>
           </q-item-section>
