@@ -6,7 +6,7 @@ import type {
   ManuscriptRecordSummaryResourceList,
 } from '../ManuscriptRecord'
 import {
-  ManuscriptQuery,
+  MyManuscriptQuery,
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
 import ContentCard from '@/components/ContentCard.vue'
@@ -29,7 +29,7 @@ async function getManuscripts() {
   if (loading.value)
     return
   // build the query
-  let query = new ManuscriptQuery()
+  let query = new MyManuscriptQuery()
 
   // apply the active main filters
   mainFilterOptions.value.forEach((f) => {
@@ -74,7 +74,7 @@ interface MainFilterOption {
   caption?: string
   icon: string
   active: boolean
-  filter: (query: ManuscriptQuery) => ManuscriptQuery
+  filter: (query: MyManuscriptQuery) => MyManuscriptQuery
 }
 
 // content filter - sidebar
@@ -87,7 +87,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       caption: t('my-manuscript-records.all-manuscripts-caption'),
       icon: 'mdi-all-inclusive',
       active: activeFilterId.value === 1,
-      filter: (query: ManuscriptQuery): ManuscriptQuery => {
+      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
         return query
       },
     },
@@ -97,7 +97,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       caption: t('my-manuscript-records.my-manuscripts-caption'),
       icon: 'mdi-account-arrow-left-outline',
       active: activeFilterId.value === 2,
-      filter: (query: ManuscriptQuery): ManuscriptQuery => {
+      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
         return authorStore.user
           ? query.filterUserId([authorStore.user.id])
           : query
@@ -109,7 +109,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       caption: t('my-manuscript-records.actions-still-required'),
       icon: 'mdi-progress-clock',
       active: activeFilterId.value === 3,
-      filter: (query: ManuscriptQuery): ManuscriptQuery => {
+      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
         return query.filterStatus([
           'draft',
           'in_review',
@@ -124,7 +124,7 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       caption: t('common.no-actions-required'),
       icon: 'mdi-check-circle',
       active: activeFilterId.value === 4,
-      filter: (query: ManuscriptQuery): ManuscriptQuery => {
+      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
         return query.filterStatus([
           'accepted',
           'withdrawn',

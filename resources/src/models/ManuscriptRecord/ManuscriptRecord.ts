@@ -266,7 +266,7 @@ export class ManuscriptRecordService {
   }
 
   /** Get the logged in users' manuscripts */
-  public static async getMyManuscripts(query?: ManuscriptQuery) {
+  public static async getMyManuscripts(query?: MyManuscriptQuery) {
     let url = 'api/my/manuscript-records'
     if (query) {
       url += `?${query.toQueryString()}`
@@ -289,7 +289,7 @@ export class ManuscriptRecordService {
   }
 }
 
-export class ManuscriptQuery extends SpatieQuery {
+export class MyManuscriptQuery extends SpatieQuery {
   public filterUserId(userId: number[]): this {
     this.filter('user_id', userId)
     return this
