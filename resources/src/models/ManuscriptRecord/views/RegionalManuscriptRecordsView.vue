@@ -18,16 +18,6 @@ import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
 
-const authStore = useAuthStore()
-
-// Check if user has permission (but don't redirect automatically)
-const hasPermission = computed(() => {
-  // Wait for auth to load before making permission decisions
-  if (authStore.loading || !authStore.user)
-    return null
-  return authStore.canViewRegionalManuscripts
-})
-
 // State variables
 const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
 const loading = ref(false)
@@ -217,9 +207,7 @@ watch(manuscriptType, () => {
 
 // Lifecycle hooks - only load data if user has permission
 onMounted(() => {
-  if (hasPermission.value) {
-    getManuscripts()
-  }
+  getManuscripts()
 })
 
 // Type definitions
