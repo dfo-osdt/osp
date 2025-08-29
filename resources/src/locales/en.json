@@ -68,6 +68,7 @@
     "abstract": "Abstract",
     "accepted-for-publication-on": "Accepted for Publication On",
     "accepted-on": "Accepted on",
+    "access-denied": "Access Denied",
     "actions": "Actions",
     "add": "Add",
     "added-successfully": "added successfully",
@@ -121,10 +122,13 @@
     "filters": "Filters",
     "first-name": "First Name",
     "flagged": "Flagged for Follow-Up",
+    "for": "for",
     "form": "Form",
     "french": "French",
+    "functional-area": "Functional Area",
     "funder": "Funder",
     "funding-sources": "Funding Sources",
+    "go-to-dashboard": "Go to Dashboard",
     "go-to-manuscript-form": "Go to Manuscript Form",
     "go-to-potential-public-interest-section": "Go to Potential Public Interest Section",
     "hide": "Hide",
@@ -180,6 +184,7 @@
     "published-as-open-access": "Published as Open Access",
     "published-on": "Published on",
     "recent": "Recent",
+    "regional-manuscripts": "Regional Manuscripts",
     "register": "Register",
     "registered": "Registered",
     "required": "Required",
@@ -261,7 +266,6 @@
     "your-first-name": "Your first name",
     "your-last-name": "Your last name",
     "your-password": "Your password",
-    "functional-area": "Functional Area",
     "protected-a": "Protected A",
     "unclassified": "Unclassified",
     "unclassified-tooltip": "This information is unclassified",
@@ -906,5 +910,17 @@
       "text": "Choose the type of manuscript record to create from this duplicate. For example, if your current record is for a preprint, you might want to create a new record to publish to a journal. "
     },
     "clone-text": "Please confirm you'd like to duplicate the manuscript record titled \"{title}\". Note that not all aspects of the record will be duplicated. The record status will be set to draft and you will become the applicant for the duplicated record."
+  },
+  "regional-manuscripts": {
+    "all-regional-manuscripts": "All Regional Manuscripts",
+    "all-manuscripts-you-can-view": "All manuscript records you have regional permissions to view",
+    "draft-in-review": "Draft & In Review",
+    "manuscripts-needing-attention": "Manuscripts that need attention or are under review",
+    "under-management-review": "Under Management Review",
+    "in-management-review-process": "Manuscripts currently in the management review process",
+    "accepted-published-manuscripts": "Accepted and published manuscripts",
+    "potential-public-interest": "Potential Public Interest",
+    "manuscripts-with-public-interest": "Manuscripts flagged for potential public interest",
+    "permission-required": "You need regional manuscript view permissions to access this page."
   }
 }

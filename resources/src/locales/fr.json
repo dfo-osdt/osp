@@ -120,9 +120,11 @@
     "filter": "Filtre",
     "filters": "Filtres",
     "first-name": "Prénom",
-    "flagged": "Demande de suivi",
+    "flagged": "Signalé pour Suivi",
+    "for": "pour",
     "form": "Formulaire",
     "french": "Français",
+    "functional-area": "Domaine Fonctionnel",
     "funder": "Bailleur de fonds",
     "funding-sources": "Sources de financement",
     "go-to-manuscript-form": "Aller au formulaire",
@@ -180,6 +182,7 @@
     "published-as-open-access": "Publié en libre accès",
     "published-on": "Publié le",
     "recent": "Récent",
+    "regional-manuscripts": "Manuscrits Régionaux",
     "register": "S'inscrire",
     "registered": "Inscrit",
     "required": "Obligatoire",
@@ -261,7 +264,6 @@
     "your-first-name": "Votre prénom",
     "your-last-name": "Votre nom de famille",
     "your-password": "Votre mot de passe",
-    "functional-area": "Domaine fonctionnel",
     "unclassified": "Non classé",
     "protected-a": "Protégé A",
     "unclassified-tooltip": "Cette information n'est pas classifiée",
@@ -906,5 +908,16 @@
       "text": "Choisissez le type de registre de manuscrit à créer à partir de ce double. \nPar exemple, si votre dossier actuel est pour une préimpression, vous voudrez peut-être créer un nouvel enregistrement à publier dans un journal."
     },
     "clone-text": "Veuillez confirmer que vous souhaitez dupliquer le registre de manuscrit intitulé « {title} ». Notez que tous les aspects du registre ne seront pas dupliqués. Le statut du registre sera défini comme brouillon et vous deviendrez le demandeur pour le registre dupliqué."
+  },
+  "regional-manuscripts": {
+    "all-regional-manuscripts": "Tous les manuscrits régionaux",
+    "all-manuscripts-you-can-view": "Tous les registres de manuscrits que vous avez les permissions régionales pour voir",
+    "draft-in-review": "Brouillon et en révision",
+    "manuscripts-needing-attention": "Manuscrits qui nécessitent de l'attention ou sont en révision",
+    "under-management-review": "Sous révision de gestion",
+    "in-management-review-process": "Manuscrits actuellement dans le processus de révision de gestion",
+    "accepted-published-manuscripts": "Manuscrits acceptés et publiés",
+    "potential-public-interest": "Intérêt public potentiel",
+    "manuscripts-with-public-interest": "Manuscrits signalés pour un intérêt public potentiel"
   }
 }
