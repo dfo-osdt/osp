@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\ManuscriptRecordType;
 use App\Events\Auth\Invited;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\ManagementReviewStep;
@@ -36,9 +37,17 @@ class ExportEmails extends Command
         // start a database transaction, we will rollback after this to leave the database clean
         \DB::beginTransaction();
 
-        $mrfReviewComplete = new \App\Mail\ManuscriptManagementReviewComplete(ManuscriptRecord::factory()->reviewed()->create());
+        $mrfReviewComplete = new \App\Mail\ManuscriptManagementReviewComplete(ManuscriptRecord::factory([
+            'type' => ManuscriptRecordType::PRIMARY,
+        ])->reviewed()->create());
         $markdownContent = $mrfReviewComplete->render();
-        $this->exportFile('mrf-review-complete.html', $markdownContent);
+        $this->exportFile('mrf-primary-review-complete.html', $markdownContent);
+
+        $mrfReviewComplete = new \App\Mail\ManuscriptManagementReviewComplete(ManuscriptRecord::factory([
+            'type' => ManuscriptRecordType::SECONDARY,
+        ])->reviewed()->create());
+        $markdownContent = $mrfReviewComplete->render();
+        $this->exportFile('mrf-secondary-review-complete.html', $markdownContent);
 
         $manuscriptRecordShared = new \App\Mail\ManuscriptRecordSharedMail(Shareable::factory()->create());
         $markdownContent = $manuscriptRecordShared->render();
