@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Enums\ManuscriptRecordType;
 use App\Models\ManuscriptRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -12,6 +13,8 @@ class ManuscriptManagementReviewComplete extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public bool $secondaryManuscript;
+
     /**
      * Create a new message instance.
      *
@@ -20,6 +23,8 @@ class ManuscriptManagementReviewComplete extends Mailable
     public function __construct(public ManuscriptRecord $manuscriptRecord)
     {
         $manuscriptRecord->load('user', 'manuscriptAuthors.author', 'managementReviewSteps.user');
+        $this->secondaryManuscript = $manuscriptRecord->type == ManuscriptRecordType::SECONDARY;
+
     }
 
     /**
