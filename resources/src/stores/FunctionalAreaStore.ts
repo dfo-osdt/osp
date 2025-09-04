@@ -14,7 +14,7 @@ export const useFunctionalAreaStore = defineStore('FunctionalAreaStore', () => {
   // initial state
   const loading: Ref<boolean> = ref(false)
   const functionalAreas: Ref<FunctionalAreaResource[] | undefined>
-        = ref(undefined)
+    = ref(undefined)
 
   /**
    * get values if they're not already loaded.
