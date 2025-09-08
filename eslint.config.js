@@ -1,6 +1,6 @@
-import antfu from '@antfu/eslint-config';
-import quasar from 'eslint-plugin-quasar';
-import vueI18n from '@intlify/eslint-plugin-vue-i18n';
+import antfu from '@antfu/eslint-config'
+import vueI18n from '@intlify/eslint-plugin-vue-i18n'
+import quasar from 'eslint-plugin-quasar'
 
 export default antfu(
   {
@@ -47,10 +47,22 @@ export default antfu(
 
       // Best practices
       '@intlify/vue-i18n/no-raw-text': [
-        'warn',
+        'error',
         {
-          ignoreNodes: ['style', 'script'],
-          ignorePattern: '^[-#:()&]+$',
+          attributes: {
+            '/.+/': [
+              'title',
+              'aria-label',
+              'aria-placeholder',
+              'aria-roledescription',
+              'aria-valuetext',
+            ],
+            'input': ['placeholder'],
+            'img': ['alt'],
+          },
+          ignoreNodes: ['md-icon', 'v-icon'],
+          ignorePattern: '^[-#:()&,;0-9|*.]+$',
+          ignoreText: ['DOI', 'URL'],
         },
       ],
       '@intlify/vue-i18n/key-format-style': [
@@ -94,4 +106,4 @@ export default antfu(
     },
     files: ['**/locales/*.json'],
   },
-);
+)
