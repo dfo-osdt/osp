@@ -32,7 +32,7 @@ export const useManagementReviewStepStore = defineStore(
         query.sort('updated_at', 'asc')
         query.paginate(1, 10)
         managementReviewSteps.value
-                    = await ManagementReviewStepService.listMy(query)
+          = await ManagementReviewStepService.listMy(query)
         loading.value = false
       }
     }

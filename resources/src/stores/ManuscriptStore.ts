@@ -14,7 +14,7 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
   // initial state
   const loading: Ref<boolean> = ref(false)
   const manuscripts: Ref<ManuscriptRecordSummaryResource[] | undefined>
-        = ref(undefined)
+    = ref(undefined)
 
   /**
    * get values if they're not already loaded.
@@ -32,7 +32,7 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
       query.sort('updated_at', 'desc').paginate(1, 10)
 
       const response
-                = await ManuscriptRecordService.getMyManuscripts(query)
+        = await ManuscriptRecordService.getMyManuscripts(query)
       manuscripts.value = response.data
       loading.value = false
     }
