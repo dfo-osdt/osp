@@ -25,7 +25,7 @@ class AuthorPublicationController extends Controller
                 'publicationAuthors.author',
                 'publicationAuthors.organization',
                 'user',
-                'region'
+                'region',
             ])
             ->orderBy('published_on', 'desc')
             ->paginate($limit);
