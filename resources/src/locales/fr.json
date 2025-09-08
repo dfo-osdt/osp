@@ -612,8 +612,12 @@
     "all-manuscripts": "Tous les formulaires",
     "all-manuscripts-caption": "Inclut ceux partagés avec moi",
     "create-manuscript": "Créer une entrée",
+    "draft-manuscripts": "Formulaires brouillons",
+    "draft-manuscripts-caption": "Formulaires en cours de rédaction",
     "my-manuscripts-caption": "Je suis le demandeur",
-    "no-manuscript": "Aucun formulaire du registre des manuscrits n'existe ou n'est partagé avec vous"
+    "no-manuscript": "Aucun formulaire du registre des manuscrits n'existe ou n'est partagé avec vous",
+    "submitted-manuscripts": "Formulaires soumis",
+    "submitted-manuscripts-caption": "Formulaires soumis pour révision"
   },
   "my-publication-view": {
     "actions-still-required": "Actions encore nécessaires",

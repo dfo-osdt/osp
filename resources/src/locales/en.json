@@ -614,8 +614,12 @@
     "all-manuscripts": "All Record Forms",
     "all-manuscripts-caption": "Includes ones shared with me",
     "create-manuscript": "Create a record",
+    "draft-manuscripts": "Draft Forms",
+    "draft-manuscripts-caption": "Forms in draft state",
     "my-manuscripts-caption": "I am the applicant",
-    "no-manuscript": "No manuscripts record form exist or are shared with you"
+    "no-manuscript": "No manuscripts record form exist or are shared with you",
+    "submitted-manuscripts": "Submitted Forms",
+    "submitted-manuscripts-caption": "Forms submitted for review"
   },
   "my-publication-view": {
     "actions-still-required": "Actions still required",
