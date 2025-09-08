@@ -920,5 +920,17 @@
     "accepted-published-manuscripts": "Accepté par journal ou retiré",
     "potential-public-interest": "Intérêt public potentiel",
     "manuscripts-with-public-interest": "Manuscrits signalés pour un intérêt public potentiel"
+  },
+  "author-profile": {
+    "title": "Profil de l'auteur",
+    "author-information": "Informations de l'auteur",
+    "author-information-for": "Profil de l'auteur pour {name}",
+    "publications": "Publications",
+    "publications-count": "{count} publication | {count} publications",
+    "no-publications-subtitle": "Cet auteur n'a pas encore de publications",
+    "expertise": "Domaines d'expertise",
+    "no-expertise": "Aucun domaine d'expertise répertorié",
+    "expertise-description": "Les domaines d'expertise aident les utilisateurs à comprendre et à faire confiance au contenu, et facilitent la recherche d'informations.",
+    "author-not-found": "Auteur non trouvé"
   }
 }

@@ -923,5 +923,17 @@
     "potential-public-interest": "Potential Public Interest",
     "manuscripts-with-public-interest": "Manuscripts flagged for potential public interest",
     "permission-required": "You need regional manuscript view permissions to access this page."
+  },
+  "author-profile": {
+    "title": "Author Profile",
+    "author-information": "Author Information",
+    "author-information-for": "Author Profile for {name}",
+    "publications": "Publications",
+    "publications-count": "{count} publication | {count} publications",
+    "no-publications-subtitle": "This author has no publications yet",
+    "expertise": "Areas of Expertise",
+    "no-expertise": "No expertise areas listed",
+    "expertise-description": "Areas of expertise help users understand and trust content, and make it easier to find information they need.",
+    "author-not-found": "Author not found"
   }
 }

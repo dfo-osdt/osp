@@ -11,16 +11,23 @@ const props = defineProps<{
 const localeStore = useLocaleStore()
 
 const organizationName = computed(() => {
-  return localeStore.locale === 'en' ? props.author.data.organization?.data.name_en : props.author.data.organization?.data.name_fr
+  return localeStore.locale === 'en'
+    ? props.author.data.organization?.data.name_en
+    : props.author.data.organization?.data.name_fr
 })
 </script>
 
 <template>
-  <q-item>
+  <q-item
+    v-ripple
+    clickable
+    :to="{
+      name: 'author.profile',
+      params: { id: author.data.id },
+    }"
+  >
     <q-item-section>
-      <q-item-label
-        class="text-body1 text-weight-medium text-primary"
-      >
+      <q-item-label class="text-body1 text-weight-medium text-primary">
         {{ author.data.last_name }}, {{ author.data.first_name }}
       </q-item-label>
       <q-item-label>
@@ -37,8 +44,15 @@ const organizationName = computed(() => {
     <q-item-section side top>
       <span>
         <q-icon name="mdi-at" size="16px" color="primary" />
-        <a :href="`mailto:${author.data.email}`">{{ author.data.email }}</a>
-        <CopyToClipboardButton :text="author.data.email" size="sm" class="q-ml-sm q-pr-none" />
+        <a :href="`mailto:${author.data.email}`" @click.stop>{{
+          author.data.email
+        }}</a>
+        <CopyToClipboardButton
+          :text="author.data.email"
+          size="sm"
+          class="q-ml-sm q-pr-none"
+          @click.stop
+        />
       </span>
       <span v-if="author.data.orcid" class="q-mt-sm">
         <OrcidIcon :unauthenticated="!author.data.orcid_verified" />
@@ -47,6 +61,7 @@ const organizationName = computed(() => {
           target="_blank"
           rel="noopener noreferrer"
           class="q-ml-sm"
+          @click.stop
         >
           {{ author.data.orcid }}
         </a>
@@ -55,6 +70,4 @@ const organizationName = computed(() => {
   </q-item>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
