@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthenticatedUserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\AuthorEmploymentController;
 use App\Http\Controllers\AuthorExpertiseController;
+use App\Http\Controllers\AuthorPublicationController;
 use App\Http\Controllers\Azure\AzureDirectorySearchController;
 use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunctionalAreaController;
@@ -193,6 +194,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(AuthorExpertiseController::class)->group(function () {
         Route::get('/authors/{author}/expertises', 'index');
         Route::post('/authors/{author}/expertises', 'store');
+    });
+
+    Route::controller(AuthorPublicationController::class)->group(function () {
+        Route::get('/authors/{author}/publications', 'index');
     });
 
     Route::controller(FunderController::class)->group(function () {
