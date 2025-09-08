@@ -4,8 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint --ext .ts,.vue resources/src",
-    "lint:test": "eslint --ext .ts,.vue resources/src --max-warnings 0",
+    "lint": "eslint resources/src",
+    "lint:test": "eslint resources/src --max-warnings 0",
     "cy:open": "cypress open",
     "cy:run": "cypress run"
   },
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.2.2",
+    "@intlify/eslint-plugin-vue-i18n": "^4.1.0",
     "@quasar/vite-plugin": "^1.10.0",
     "@types/node": "^24.3.1",
     "axios": "^1.11.0",
