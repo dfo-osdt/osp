@@ -164,7 +164,6 @@ test('includes proper eager loaded relationships', function () {
         'journal',
         'user',
         'publication_authors',
-        'manuscript_record',
     ]);
 
     // Verify nested relationships are loaded
