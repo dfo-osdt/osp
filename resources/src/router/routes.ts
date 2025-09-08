@@ -138,6 +138,13 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true },
       },
       {
+        path: '/author/:id',
+        component: () => import('@/models/Author/views/AuthorProfileView.vue'),
+        meta: { requiresAuth: true },
+        props: route => ({ id: Number(route.params.id) }),
+        name: 'author.profile',
+      },
+      {
         path: '/preprints',
         component: () => import('@/models/Preprint/views/PreprintListView.vue'),
         meta: { requiresAuth: true },

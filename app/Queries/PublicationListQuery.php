@@ -14,7 +14,7 @@ class PublicationListQuery extends QueryBuilder
 
         $this->
          defaultSort('title')->
-         allowedSorts(['title', 'created_at', 'updated_at'])->
+         allowedSorts(['title', 'created_at', 'updated_at', 'published_on'])->
          allowedFilters([
              AllowedFilter::exact('id'),
              AllowedFilter::exact('status'),

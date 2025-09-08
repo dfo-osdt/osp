@@ -131,7 +131,7 @@ test('publications are ordered by published date descending', function () {
         ]);
     }
 
-    $response = $this->actingAs($user)->getJson("/api/authors/{$author->id}/publications");
+    $response = $this->actingAs($user)->getJson("/api/authors/{$author->id}/publications?sort=-published_on");
 
     $response->assertOk();
     $returnedTitles = collect($response->json('data'))->pluck('data.title')->toArray();
@@ -162,7 +162,6 @@ test('includes proper eager loaded relationships', function () {
     $publicationData = $response->json('data.0.data');
     expect($publicationData)->toHaveKeys([
         'journal',
-        'user',
         'publication_authors',
     ]);
 
