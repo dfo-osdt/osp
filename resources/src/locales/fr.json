@@ -74,7 +74,6 @@
     "affiliation": "Affiliation",
     "app-name": "SEO Portail Science Ouverte",
     "applicant": "Demandeur",
-    "approved": "Approuvé",
     "author": "Auteur | Auteurs",
     "back": "Retour",
     "by": "par",
@@ -84,7 +83,6 @@
     "complete": "Complété",
     "completed": "Complété",
     "completed-on": "Terminé le",
-    "confirm-email": "Confirmez votre courriel",
     "confirm-password": "Confirmez le mot de passe",
     "congratulations": "Toutes nos félicitations!",
     "contact": "Contact",
@@ -101,9 +99,7 @@
     "current-affiliation": "Affiliation actuelle",
     "current-password": "Mot de passe actuel",
     "dashboard": "Tableau de bord",
-    "decision": "Décision",
     "decision-expected-by": "Révision attendue par le",
-    "deferred": "Différé",
     "delete": "Supprimer",
     "deleted": "Supprimé",
     "description": "Description",
@@ -139,7 +135,6 @@
     "kb-uploaded-on": "Ko téléchargé le",
     "last-name": "Nom de famille",
     "lead-region": "Région responsable",
-    "loading": "Chargement...",
     "logged-out": "Déconnecté",
     "login": "Connexion",
     "logout": "Se déconnecter",
@@ -152,7 +147,6 @@
     "my-manuscripts": "Mon registre de manuscrits",
     "my-publications": "Mes publications",
     "my-reviews": "Mes revues de direction",
-    "never": "Jamais",
     "next": "Suivant",
     "no": "Non",
     "no-actions-required": "Aucune action requise",
@@ -173,9 +167,7 @@
     "pending": "En attente",
     "pending-publication": "En attente de publication",
     "plain-language-summary": "Résumé en langage clair",
-    "primary-manuscript": "Manuscrit principal",
     "primary-publication": "Un manuscrit publié par un tiers",
-    "progress": "Progrès",
     "publication": "Publication",
     "publication-under-embargo": "Publication sous embargo",
     "publications": "Publications",
@@ -190,9 +182,7 @@
     "reviews": "Revues de direction",
     "save": "Sauvegarder",
     "saved": "Enregistré",
-    "secondary-manuscript": "Manuscrit secondaire",
     "secondary-publication": "Un manuscrit qui sera publié par le MPO",
-    "sensitive-issues": "questions sensibles",
     "settings": "Paramètres",
     "share": "Partager",
     "sharing": "Partage",
@@ -237,7 +227,6 @@
       "date-is-too-late": "La date est trop tard",
       "email-invalid": "Le courriel est invalide",
       "email-required": "Le courriel est requis",
-      "emails-match": "Les courriels indiqués ne correspondent pas",
       "file-size-is-too-large": "La taille du fichier est trop grande",
       "file-type-is-not-accepted": "Le type de fichier n'est pas accepté",
       "invalid-date": "Date invalide",
@@ -258,7 +247,6 @@
     "withdraw": "Retirer",
     "withdrawn": "Retiré",
     "withdrawn-on": "Retiré le",
-    "withheld": "Refusé",
     "yes": "Oui",
     "your-email": "Votre courriel",
     "your-first-name": "Votre prénom",
@@ -272,7 +260,6 @@
     "confirm": "Confirmer",
     "present": "présent",
     "reviewer": "Évaluateur par les pairs",
-    "download": "Télécharger",
     "copy": "Copie",
     "document-type": "Type de document",
     "optional": "Facultatif",
@@ -287,8 +274,6 @@
     "form-invalid": "Il y a des erreurs dans le formulaire, merci de les corriger pour pouvoir sauvegarder ce formulaire.",
     "no_announcements": "Il n’y a pas d’annonces générales pour le moment.",
     "preprint-publication": "Un manuscrit destiné à un serveur de prépublications",
-    "preprint-manuscript": "Manuscrit prépublication",
-    "revision": "Révision demandée",
     "review-outcome": "Résultat de la revue",
     "url": "URL",
     "preprint-url-hint": "Le doi ou une URL liant directement à la prépublication",
@@ -367,8 +352,6 @@
     "reassign-desc": "Vous n'êtes pas le responsable approprié pour examiner ce manuscrit et vous réattribuez cet examen au responsable compétent sans faire de recommandation.",
     "complete": "Terminer",
     "complete-desc": "L'examen de ce manuscrit pour publication est terminé et vous mettez fin au processus de révision de gestion.",
-    "revision-revision-desc": "Vous avez examiné le manuscrit et pensez que des modifications peuvent être nécessaires avant de terminer l'examen. Vous le référez maintenant à un RDS ou à une DG pour un examen plus approfondi.",
-    "refer-revision": "Référer avec des révisions",
     "refer-desc-2": "Un examen final par un DRS ou une DG est requis pour cette revue de gestion."
   },
   "dialog": {
@@ -388,17 +371,14 @@
     },
     "delete-publication-pdf": {
       "message": "Cela supprimera le fichier de publication joint suivant: {file}",
-      "title": "Veuillez confirmer la suppression de ce fichier",
-      "success": "Le fichier de publication a été supprimé."
+      "title": "Veuillez confirmer la suppression de ce fichier"
     }
   },
   "error-invalid-signature": {
     "invalid-signature": "Signature non valide",
     "link-expired-text": "Le lien signé que vous utilisez a probablement expiré."
   },
-  "expertise": {
-    "top-level-expertise": "Catégorie d'expertise principale"
-  },
+  "expertise": {},
   "expertise-select": {
     "hint": "Commencez à taper pour rechercher une expertise"
   },
@@ -438,7 +418,6 @@
     "email-verified-text": "Courriel verifié. \nVous pouvez maintenant vous connecter.",
     "forgot-your-password": "Mot de passe oublié?",
     "new-password-required": "Vous avez été redirigé car votre compte nécessite un nouveau mot de passe.",
-    "remember-me": "Se souvenir de moi",
     "login-with-microsoft": "Connectez-vous avec Microsoft - Compte professionnel du MPO",
     "login-with-oauth": "Pour accéder au portail, veuillez vous connecter en utilisant vos identifiants du MPO. En cliquant sur le bouton \"Connectez-vous avec Microsoft\", vous serez redirigé vers la page de connexion sécurisée de DFO. Il s'agit du même système que vous utilisez pour accéder aux services Microsoft 365. Une fois authentifié, vous serez redirigé vers le portail.",
     "login-with-oauth-2": "Si vous avez des questions ou rencontrez des problèmes, veuillez contacter notre équipe de support pour obtenir de l'aide.",
@@ -475,7 +454,6 @@
   "management-review-guidelines": {
     "subtitle": "Veuillez consulter la Politique nationale des publications scientifiques pour plus de détails.",
     "tip-one": "Examiner le manuscrit pour s'assurer qu'il est conforme à la Politique sur la propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique du MPO.",
-    "tip-three": "À aucun moment, l'inclusion de matériel sensible (par exemple, des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
     "tip-two": "Déterminez si le manuscrit présente un intérêt potentiel pour le public ou les médias, uniquement dans le but d'informer la haute direction et la Direction des communications. Ces informations peuvent être renseignées dans la section Intérêt public potentiel du formulaire de manuscrit. Notez qu'à aucun moment l'inclusion de documents sensibles (par exemple des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
     "title": "Lignes directrices sur la révision par la gestion"
   },
@@ -502,7 +480,6 @@
     "secondary": "Publication du MPO",
     "submitted": "Soumis",
     "withdrawn": "Retiré",
-    "withheld": "Retenu",
     "preprint": "Prépublication"
   },
   "manuscript-author-dialog": {
@@ -514,7 +491,6 @@
     "accepted-title": "Accepté pour publication",
     "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est revisé par la gestion du MPO. À ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
     "completed-title": "Fin de la révision par la gestion",
-    "completed-withheld-details": "Le manuscrit n'est pas conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est retenu par la gestion du MPO.",
     "created-details": "À ce stade, seuls le demandeur et les auteurs peuvent voir et modifier le registre du manuscrit.",
     "go-to-the-publication": "Aller à la publication",
     "manuscript-record-created": "Registre de manuscrit créé",
@@ -547,8 +523,6 @@
     "general-information": "Informations générales",
     "generate-pls": "Générer le résumé",
     "generating-pls-please-be-patient": "Génération de résumé... veuillez patienter",
-    "geographical-text": "Décrivez la portée géographique/région et (le cas échéant) les espèces (y compris les noms communs) de l'article.",
-    "geographical-title": "Portée géographique et espèces",
     "lead-region-text": "Sélectionnez la région du MPO responsable de la révision par la gestion de ce manuscrit. \nSi plus d'une région est responsable, sélectionnez la région qui dirigera la révision.",
     "manuscript-saved-successfully": "Manuscrit enregistré avec succès",
     "manuscript-submitted-successfully": "Le registre du manuscrit a été soumis avec succès.",
@@ -569,8 +543,6 @@
     "relevant-text": "Décrivez comment ce manuscrit est pertinent pour le programme qui l'a financé, comment il supporte le mandat du ministère, le plan stratégique du département et/ou les priorités régionales. ",
     "relevant-title": "Pertinence par rapport aux programmes/initiatives/secteurs",
     "replace-manuscript": "Déposez le fichier ou cliquez pour télécharger une nouvelle version du manuscrit",
-    "scientific-implication-text": "Décrivez les implications scientifiques de l'article. \n(c'est-à-dire le domaine, l'importance, point focal, le but, les avantages, etc.)",
-    "scientific-implications": "Implications scientifiques",
     "share-dialog-title": "Partagez ce manuscrit",
     "sharing-confirm-delete-message": "Veuillez confirmer la suppression de l'accès de {userName} à cet enregistrement.",
     "sharing-confirm-delete-title": "Confirmer la suppression",
@@ -608,12 +580,14 @@
     "open-access-rationale": "Publication ouverte"
   },
   "my-manuscript-records": {
-    "actions-still-required": "Actions encore nécessaires",
     "all-manuscripts": "Tous les formulaires",
     "all-manuscripts-caption": "Inclut ceux partagés avec moi",
     "create-manuscript": "Créer une entrée",
-    "my-manuscripts-caption": "Je suis le demandeur",
-    "no-manuscript": "Aucun formulaire du registre des manuscrits n'existe ou n'est partagé avec vous"
+    "draft-manuscripts": "Formulaires brouillons",
+    "draft-manuscripts-caption": "Formulaires en cours de rédaction",
+    "no-manuscript": "Aucun formulaire du registre des manuscrits n'existe ou n'est partagé avec vous",
+    "submitted-manuscripts": "Formulaires soumis",
+    "submitted-manuscripts-caption": "Formulaires soumis pour révision"
   },
   "my-publication-view": {
     "actions-still-required": "Actions encore nécessaires",
@@ -640,7 +614,6 @@
     "revoke-btn-text": "Déconnectez votre ORCID ID"
   },
   "orcid": {
-    "already-verified-text": "Votre ORCID a été vérifié avec succès avec ORCID.org. \nSi vous souhaitez le modifier ou le vérifier à nouveau, cliquez ci-dessous.",
     "error-verifying": "Erreur d'authentification avec ORCID.org",
     "verified-with": "Authentifié avec succès avec ORCID.org",
     "verify-header-text": "Connectez votre ORCID iD (ou inscrivez-vous pour un iD)",
@@ -667,8 +640,8 @@
   "osp": {
     "alt": {
       "logo": "Logo PSO - un prisme divisant un seul flux lumineux en un ensemble de couleurs.",
-      "main-image": "Une personne avec une grosse ampoule en guise de tête. \nUn vieux robinet de ferme fait couler de l’eau sur une petite pousse d’arbre qui pousse du sol.",
-      "toggle-drawer": "basculer la visibilité du tiroir de navigation"
+      "main-image": "Une personne avec une grosse ampoule en guise de tête. \nUn vieux robinet de ferme fait couler de l'eau sur une petite pousse d'arbre qui pousse du sol.",
+      "toggle-drawer": "Basculer le tiroir de navigation"
     },
     "description": "Le Portail de la science ouverte est une application Web intuitive pour promouvoir la science ouverte et suivre les publications scientifiques au sein de Pêches et Océans Canada.",
     "slogan": {
@@ -901,7 +874,8 @@
     "search-hint": "Commencez à taper un courriel pour rechercher un utilisateur du MPO"
   },
   "submitted-to-preprint-dialog": {
-    "title": "Marquez comme publié sur un serveur de prépublication"
+    "title": "Marquez comme publié sur un serveur de prépublication",
+    "text": "Vous avez soumis votre manuscrit à un serveur de prépublication. Si le serveur attribue un DOI (Digital Object Identifier), assurez-vous qu'il soit fourni dans votre soumission. Si aucun DOI n'est disponible, une URL stable reliant directement à la prépublication devrait être incluse."
   },
   "clone-manuscript-record-dialog": {
     "title": "Dupliquer le registre de manuscrit",
@@ -913,12 +887,49 @@
   "regional-manuscripts": {
     "all-regional-manuscripts": "Tous les manuscrits régionaux",
     "all-manuscripts-you-can-view": "Tous les registres de manuscrits que vous avez les permissions régionales pour voir",
-    "draft-in-review": "Brouillon et en révision",
-    "manuscripts-needing-attention": "Manuscrits qui nécessitent de l'attention ou sont en révision",
     "under-management-review": "Sous révision de gestion",
     "in-management-review-process": "Manuscrits actuellement dans le processus de révision de gestion",
     "accepted-published-manuscripts": "Accepté par journal ou retiré",
     "potential-public-interest": "Intérêt public potentiel",
     "manuscripts-with-public-interest": "Manuscrits signalés pour un intérêt public potentiel"
+  },
+  "author-profile": {
+    "title": "Profil de l'auteur",
+    "author-information-for": "Profil de l'auteur pour {name}",
+    "publications": "Publications",
+    "publications-count": "{count} publication | {count} publications",
+    "no-publications-subtitle": "Cet auteur n'a pas encore de publications",
+    "expertise": "Domaines d'expertise",
+    "no-expertise": "Aucun domaine d'expertise répertorié",
+    "expertise-description": "Les domaines d'expertise aident les utilisateurs à comprendre et à faire confiance au contenu, et facilitent la recherche d'informations.",
+    "author-not-found": "Auteur non trouvé"
+  },
+  "ContentCard": {
+    "title-here": "Titre ici"
+  },
+  "AnnouncementMonitor": {
+    "announcements": "Annonces"
+  },
+  "OrcidAvatar": {
+    "logo-alt": "Logo ORCID iD"
+  },
+  "RORLinkSpan": {
+    "ror-id-label": "ID ROR :"
+  },
+  "PreprintList": {
+    "url-doi-label": "URL/DOI : "
+  },
+  "PublicationList": {
+    "doi-label": "DOI : "
+  },
+  "PublicationPageView": {
+    "doi-label": "DOI : "
+  },
+  "InviteUserDialog": {
+    "search-dfo-directory": "Rechercher dans le répertoire du MPO",
+    "search-description": "Recherchez dans le répertoire des utilisateurs du MPO par courriel pour inviter l'utilisateur sélectionné."
+  },
+  "PublicationSupplementaryFileManagementCard": {
+    "upload-instruction": "Télécharger un fichier supplémentaire pour la publication"
   }
 }

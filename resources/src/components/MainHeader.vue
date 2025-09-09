@@ -22,20 +22,14 @@ function toggleLeftDrawer() {
         dense
         round
         :icon="authStore.leftDrawerOpen ? 'mdi-menu-open' : 'mdi-menu'"
-        aria-label="t('osp.alt.toggle-drawer')"
+        :aria-label="$t('osp.alt.toggle-drawer')"
         @click="toggleLeftDrawer"
       />
       <router-link to="/">
-        <q-img
-          src="/assets/logo.svg"
-          width="40px"
-          :alt="t('osp.alt.logo')"
-        />
+        <q-img src="/assets/logo.svg" width="40px" :alt="t('osp.alt.logo')" />
       </router-link>
       <q-toolbar-title class="q-mt-sm text-black">
-        {{
-          t('common.app-name')
-        }}
+        {{ t('common.app-name') }}
       </q-toolbar-title>
       <!-- login button -->
       <q-btn
@@ -57,17 +51,13 @@ function toggleLeftDrawer() {
         <q-menu :offset="[0, 10]">
           <q-list>
             <q-item-label header>
-              {{
-                authStore.user?.fullName
-              }}
+              {{ authStore.user?.fullName }}
             </q-item-label>
             <q-separator />
             <q-item v-ripple to="/settings" clickable>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    t('common.settings')
-                  }}
+                  {{ t('common.settings') }}
                 </q-item-label>
               </q-item-section>
               <q-item-section avatar>
@@ -77,9 +67,7 @@ function toggleLeftDrawer() {
             <q-item v-ripple to="/dashboard" clickable>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    t('common.dashboard')
-                  }}
+                  {{ t('common.dashboard') }}
                 </q-item-label>
               </q-item-section>
               <q-item-section avatar>
@@ -89,9 +77,7 @@ function toggleLeftDrawer() {
             <q-item v-ripple to="/auth/logout" clickable>
               <q-item-section>
                 <q-item-label>
-                  {{
-                    t('common.logout')
-                  }}
+                  {{ t('common.logout') }}
                 </q-item-label>
               </q-item-section>
               <q-item-section avatar>

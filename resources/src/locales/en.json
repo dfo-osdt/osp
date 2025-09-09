@@ -68,14 +68,12 @@
     "abstract": "Abstract",
     "accepted-for-publication-on": "Accepted for Publication On",
     "accepted-on": "Accepted on",
-    "access-denied": "Access Denied",
     "actions": "Actions",
     "add": "Add",
     "added-successfully": "added successfully",
     "affiliation": "Affiliation",
     "app-name": "EOS Open Science Portal",
     "applicant": "Applicant",
-    "approved": "Approved",
     "author": "Author | Authors",
     "back": "Back",
     "by": "by",
@@ -85,7 +83,6 @@
     "complete": "Complete",
     "completed": "Completed",
     "completed-on": "Completed on",
-    "confirm-email": "Confirm email",
     "confirm-password": "Confirm password",
     "congratulations": "Congratulations!",
     "contact": "Contact",
@@ -102,9 +99,7 @@
     "current-affiliation": "Current Affiliation",
     "current-password": "Current Password",
     "dashboard": "Dashboard",
-    "decision": "Decision",
     "decision-expected-by": "Review Expected By",
-    "deferred": "Deferred",
     "delete": "Delete",
     "deleted": "Deleted",
     "description": "Description",
@@ -128,7 +123,6 @@
     "functional-area": "Functional Area",
     "funder": "Funder",
     "funding-sources": "Funding Sources",
-    "go-to-dashboard": "Go to Dashboard",
     "go-to-manuscript-form": "Go to Manuscript Form",
     "go-to-potential-public-interest-section": "Go to Potential Public Interest Section",
     "hide": "Hide",
@@ -141,7 +135,6 @@
     "kb-uploaded-on": "KB uploaded on",
     "last-name": "Last Name",
     "lead-region": "Lead Region",
-    "loading": "Loading...",
     "logged-out": "Logged Out",
     "login": "Login",
     "logout": "Logout",
@@ -154,7 +147,6 @@
     "my-manuscripts": "My Manuscript Records",
     "my-publications": "My Publications",
     "my-reviews": "My Management Reviews",
-    "never": "Never",
     "next": "Next",
     "no": "No",
     "no-actions-required": "No actions required",
@@ -175,9 +167,7 @@
     "pending": "Pending",
     "pending-publication": "Pending Publication",
     "plain-language-summary": "Plain Language Summary",
-    "primary-manuscript": "Primary Manuscript",
     "primary-publication": "A manuscript published by a third party",
-    "progress": "Progress",
     "publication": "Publication",
     "publication-under-embargo": "Publication under embargo",
     "publications": "Publications",
@@ -192,9 +182,7 @@
     "reviews": "Management Reviews",
     "save": "Save",
     "saved": "Saved",
-    "secondary-manuscript": "Secondary Manuscript",
     "secondary-publication": "A manuscript to be published by DFO",
-    "sensitive-issues": "Sensitive Issues",
     "settings": "Settings",
     "share": "Share",
     "sharing": "Sharing",
@@ -239,7 +227,6 @@
       "date-is-too-late": "Date is too late",
       "email-invalid": "Email is invalid",
       "email-required": "Email is required",
-      "emails-match": "The given emails do not match",
       "file-size-is-too-large": "File size is too large",
       "file-type-is-not-accepted": "File type is not accepted",
       "invalid-date": "Invalid date",
@@ -260,7 +247,6 @@
     "withdraw": "Withdraw",
     "withdrawn": "Withdrawn",
     "withdrawn-on": "Withdrawn on",
-    "withheld": "Withheld",
     "yes": "Yes",
     "your-email": "Your email",
     "your-first-name": "Your first name",
@@ -274,7 +260,6 @@
     "present": "present",
     "confirm": "Confirm",
     "reviewer": "Peer Reviewer",
-    "download": "Download",
     "copy": "Copy",
     "document-type": "Document Type",
     "select-file": "Select or drop file here",
@@ -290,8 +275,6 @@
     "no_announcements": "There are no general announcements at this time.",
     "announcements": "Click here to show the muted announcement | Click here to show the {count} muted announcements",
     "preprint-publication": "A manuscript to be published on a preprint server",
-    "preprint-manuscript": "Preprint Manuscript",
-    "revision": "Revision Requested",
     "review-outcome": "Review Outcome",
     "url": "URL",
     "preprint-url": "Preprint DOI or URL",
@@ -369,8 +352,6 @@
     "reassign-desc": "You are not the correct manager to review this manuscript and reassign this review to the proper manager without making a recommendation.",
     "complete": "Complete",
     "complete-desc": "Review of this manuscript for publication is complete and you are ending the management review process.",
-    "refer-revision": "Refer with Revisions",
-    "revision-revision-desc": "You have reviewed the manuscript and believe that changes may be required before completing the review. You are now referring it to an RDS or DG for further review.",
     "refer-desc-2": "Final review by an RDS or DG is required for this management review."
   },
   "dialog": {
@@ -390,17 +371,14 @@
     },
     "delete-publication-pdf": {
       "message": "This will delete the following attached publication file: {file}",
-      "title": "Please confirm deletion of this file",
-      "success": "The publication file was deleted."
+      "title": "Please confirm deletion of this file"
     }
   },
   "error-invalid-signature": {
     "invalid-signature": "Invalid Signature",
     "link-expired-text": "The signed link you're using has likely expired."
   },
-  "expertise": {
-    "top-level-expertise": "Main Expertise Category"
-  },
+  "expertise": {},
   "expertise-select": {
     "hint": "Start typing to search for an expertise"
   },
@@ -440,7 +418,6 @@
     "email-verified-text": "Email verified. You may now login.",
     "forgot-your-password": "Forgot your password?",
     "new-password-required": "You've been redirected because your account requires a new password.",
-    "remember-me": "Remember me",
     "login-with-microsoft": "Sign-in with Microsoft - DFO Work Account",
     "login-with-oauth": "To access the portal, please sign in using your DFO credentials. By clicking the \"Sign-in with Microsoft\" button, you will be redirected to DFO's secure login page. This is the same system you use to access Microsoft 365 services. Once authenticated, you will be redirected to the portal.",
     "login-with-oauth-2": "If you have any questions or encounter any issues, please contact our support team for assistance.",
@@ -477,7 +454,6 @@
   "management-review-guidelines": {
     "subtitle": "Please refer to the National Policy for Science Publications for more details.",
     "tip-one": "Review the manuscript for compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs) and the Values and Ethics Code for DFO.",
-    "tip-three": "At no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers.",
     "tip-two": "Identify whether the manuscript is of potential public or media interest, solely for the purpose of briefing senior management and the Communications Branch. This information can be filled out in the Potential Public Interest section of the manuscript form. Note that at no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers.",
     "title": "Management Review Guidelines"
   },
@@ -504,7 +480,6 @@
     "secondary": "DFO Publication",
     "submitted": "Submitted",
     "withdrawn": "Withdrawn",
-    "withheld": "Withheld",
     "preprint": "Preprint"
   },
   "manuscript-author-dialog": {
@@ -516,7 +491,6 @@
     "accepted-title": "Accepted for Publication",
     "completed-details": "The manuscript complies with Fisheries and Oceans Canada National Policy for Science Publications and has been reviewed by DFO management. At this stage, you may now submit the manuscript to your target journal.",
     "completed-title": "Completion of Management Review",
-    "completed-withheld-details": "The manuscript does not comply with Fisheries and Oceans Canada National Policy for Science Publications and is withheld by DFO management.",
     "created-details": "At this stage, only the applicant and authors can see and edit the manuscript record.",
     "go-to-the-publication": "Go to the Publication",
     "manuscript-record-created": "Manuscript Record Created",
@@ -549,8 +523,6 @@
     "general-information": "General Information",
     "generate-pls": "Generate PLS",
     "generating-pls-please-be-patient": "Generating PLS... please be patient",
-    "geographical-text": "Describe the geographical scope/region and (if applicable) species (to include common names) of the paper.",
-    "geographical-title": "Geographical Scope and Species",
     "lead-region-text": "Select the DFO region responsible for the management review of this manuscript. If more than one region is responsible, select the region that will lead the review.",
     "manuscript-saved-successfully": "Manuscript saved successfully",
     "manuscript-submitted-successfully": "The manuscript record was successfully submitted.",
@@ -571,8 +543,6 @@
     "relevant-text": "Describe how this manuscript is relevant to the program that funded it, how it supports the department's mandate, strategic plan and or/regional priorities. ",
     "relevant-title": "Relevance to programs/initiatives/management sector",
     "replace-manuscript": "Drop the file or click to upload a new version of the manuscript",
-    "scientific-implication-text": "Describe the scientific implications of the paper. (i.e. field, importance, focus, purpose, benefits, etc.)",
-    "scientific-implications": "Scientific Implications",
     "share-dialog-title": "Share this manuscript",
     "sharing-confirm-delete-message": "Please confirm the removal of {userName}'s access to this record.",
     "sharing-confirm-delete-title": "Confirm removal",
@@ -610,12 +580,14 @@
     "pls-content-title": "Plain Language Summaries"
   },
   "my-manuscript-records": {
-    "actions-still-required": "Actions still required",
     "all-manuscripts": "All Record Forms",
     "all-manuscripts-caption": "Includes ones shared with me",
     "create-manuscript": "Create a record",
-    "my-manuscripts-caption": "I am the applicant",
-    "no-manuscript": "No manuscripts record form exist or are shared with you"
+    "draft-manuscripts": "Draft Forms",
+    "draft-manuscripts-caption": "Forms in draft state",
+    "no-manuscript": "No manuscripts record form exist or are shared with you",
+    "submitted-manuscripts": "Submitted Forms",
+    "submitted-manuscripts-caption": "Forms submitted for review"
   },
   "my-publication-view": {
     "actions-still-required": "Actions still required",
@@ -642,7 +614,6 @@
     "revoke-btn-text": "Disconnect your ORCID ID"
   },
   "orcid": {
-    "already-verified-text": "Your ORCID has been successfully verified with ORCID.org. If you'd like to change it or verify it again, click below.",
     "error-verifying": "Error authenticating with ORCID.org",
     "verified-with": "Successfully authentificated with ORCID.org",
     "verify-header-text": "Connect your ORCID iD (or register for an iD)",
@@ -670,7 +641,7 @@
     "alt": {
       "logo": "OSP logo - a prism dividing a single light stream into an array or colors.",
       "main-image": "A person with a large lightbulb as a head. An old farmhouse tap is trickling water on a small tree sprout growing from the ground.",
-      "toggle-drawer": "toggle navigation drawer visibility"
+      "toggle-drawer": "Toggle navigation drawer"
     },
     "description": "The Open Science Portal is an intuitive web-based application to promote open science and track science publications within Fisheries and Oceans Canada.",
     "slogan": {
@@ -903,7 +874,8 @@
     "search-hint": "Start typing an email to search for a DFO user"
   },
   "submitted-to-preprint-dialog": {
-    "title": "Mark as published to a preprint server"
+    "title": "Mark as published to a preprint server",
+    "text": "You've submitted your manuscript to a preprint server. If the server assigns a DOI (Digital Object Identifier), please ensure that it is provided in your submission. If no DOI is available, a stable URL linking directly to the preprint should be included."
   },
   "clone-manuscript-record-dialog": {
     "title": "Duplicate Manuscript Record",
@@ -915,13 +887,49 @@
   "regional-manuscripts": {
     "all-regional-manuscripts": "All Regional Manuscripts",
     "all-manuscripts-you-can-view": "All manuscript records you have regional permissions to view",
-    "draft-in-review": "Draft & In Review",
-    "manuscripts-needing-attention": "Manuscripts that need attention or are under review",
     "under-management-review": "Under Management Review",
     "in-management-review-process": "Manuscripts currently in the management review process",
     "accepted-published-manuscripts": "Accepted by Journal or Withdrawn",
     "potential-public-interest": "Potential Public Interest",
-    "manuscripts-with-public-interest": "Manuscripts flagged for potential public interest",
-    "permission-required": "You need regional manuscript view permissions to access this page."
+    "manuscripts-with-public-interest": "Manuscripts flagged for potential public interest"
+  },
+  "author-profile": {
+    "title": "Author Profile",
+    "author-information-for": "Author Profile for {name}",
+    "publications": "Publications",
+    "publications-count": "{count} publication | {count} publications",
+    "no-publications-subtitle": "This author has no publications yet",
+    "expertise": "Areas of Expertise",
+    "no-expertise": "No expertise areas listed",
+    "expertise-description": "Areas of expertise help users understand and trust content, and make it easier to find information they need.",
+    "author-not-found": "Author not found"
+  },
+  "ContentCard": {
+    "title-here": "Title here"
+  },
+  "AnnouncementMonitor": {
+    "announcements": "Announcements"
+  },
+  "OrcidAvatar": {
+    "logo-alt": "ORCID iD logo"
+  },
+  "RORLinkSpan": {
+    "ror-id-label": "ROR ID:"
+  },
+  "PreprintList": {
+    "url-doi-label": "URL/DOI: "
+  },
+  "PublicationList": {
+    "doi-label": "DOI: "
+  },
+  "PublicationPageView": {
+    "doi-label": "DOI: "
+  },
+  "InviteUserDialog": {
+    "search-dfo-directory": "Search the DFO Directory",
+    "search-description": "Search the DFO user directory by email to invite the selected user."
+  },
+  "PublicationSupplementaryFileManagementCard": {
+    "upload-instruction": "Upload a supplementary file for the publication"
   }
 }

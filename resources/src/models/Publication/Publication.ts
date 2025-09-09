@@ -227,4 +227,4 @@ export class PublicationQuery extends SpatieQuery {
   }
 }
 
-type PublicationQuerySort = 'title' | 'created_at' | 'updated_at'
+type PublicationQuerySort = 'title' | 'created_at' | 'updated_at' | 'published_on'

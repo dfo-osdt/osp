@@ -113,7 +113,7 @@ const routes: RouteRecordRaw[] = [
         path: '/my-reviews',
         component: () =>
           import(
-            '@/models/ManagementReviewStep/views/MyManagementReviewStepsView.vue'
+            '@/models/ManagementReviewStep/views/MyManagementReviewStepsView.vue',
           ),
         meta: { requiresAuth: true },
       },
@@ -127,7 +127,7 @@ const routes: RouteRecordRaw[] = [
         path: '/regional-manuscripts',
         component: () =>
           import(
-            '@/models/ManuscriptRecord/views/RegionalManuscriptRecordsView.vue'
+            '@/models/ManuscriptRecord/views/RegionalManuscriptRecordsView.vue',
           ),
         meta: { requiresAuth: true },
         name: 'regional-manuscripts',
@@ -136,6 +136,13 @@ const routes: RouteRecordRaw[] = [
         path: '/authors',
         component: () => import('@/models/Author/views/AuthorsView.vue'),
         meta: { requiresAuth: true },
+      },
+      {
+        path: '/author/:id',
+        component: () => import('@/models/Author/views/AuthorProfileView.vue'),
+        meta: { requiresAuth: true },
+        props: route => ({ id: Number(route.params.id) }),
+        name: 'author.profile',
       },
       {
         path: '/preprints',
@@ -163,7 +170,7 @@ const routes: RouteRecordRaw[] = [
             path: 'form',
             component: () =>
               import(
-                '@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue'
+                '@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue',
               ),
             props: route => ({ id: Number(route.params.id) }),
             name: 'manuscript.form',
@@ -172,7 +179,7 @@ const routes: RouteRecordRaw[] = [
             path: 'reviews',
             component: () =>
               import(
-                '@/models/ManagementReviewStep/views/ManagementReviewStepsView.vue'
+                '@/models/ManagementReviewStep/views/ManagementReviewStepsView.vue',
               ),
             props: route => ({ id: Number(route.params.id) }),
             name: 'manuscript.reviews',
@@ -181,7 +188,7 @@ const routes: RouteRecordRaw[] = [
             path: 'progress',
             component: () =>
               import(
-                '@/models/ManuscriptRecord/views/ManuscriptRecordProgressView.vue'
+                '@/models/ManuscriptRecord/views/ManuscriptRecordProgressView.vue',
               ),
             props: route => ({ id: Number(route.params.id) }),
             name: 'manuscript.progress',
@@ -190,7 +197,7 @@ const routes: RouteRecordRaw[] = [
             path: 'sharing',
             component: () =>
               import(
-                '@/models/ManuscriptRecord/views/ManuscriptRecordSharingView.vue'
+                '@/models/ManuscriptRecord/views/ManuscriptRecordSharingView.vue',
               ),
             props: route => ({ id: Number(route.params.id) }),
             name: 'manuscript.sharing',

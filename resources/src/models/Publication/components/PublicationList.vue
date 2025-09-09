@@ -31,21 +31,14 @@ function publishedYear(publication: PublicationResource) {
       }"
     >
       <q-item-section>
-        <q-item-label
-          class="text-body1 text-weight-medium text-primary"
-        >
+        <q-item-label class="text-body1 text-weight-medium text-primary">
           {{ publication.data.title }}
         </q-item-label>
         <q-item-label caption lines="2">
           <template v-if="publication.data.publication_authors">
-            <template
-              v-if="
-                publication.data.publication_authors.length > 0
-              "
-            >
+            <template v-if="publication.data.publication_authors.length > 0">
               <span
-                v-for="(item, index) in publication.data
-                  .publication_authors"
+                v-for="(item, index) in publication.data.publication_authors"
                 :key="item.data.id"
               >
                 <OrcidIcon
@@ -56,10 +49,7 @@ function publishedYear(publication: PublicationResource) {
                 {{ item.data.author?.data.first_name }}
                 <span
                   v-if="
-                    index
-                      < publication.data.publication_authors
-                        ?.length
-                      - 1
+                    index < publication.data.publication_authors?.length - 1
                   "
                 >;
                 </span>
@@ -79,22 +69,22 @@ function publishedYear(publication: PublicationResource) {
               |
             </div>
             <div>
-              <JournalNameSpan
-                :journal="publication.data.journal"
-              />
+              <JournalNameSpan :journal="publication.data.journal" />
             </div>
             <div class="q-mx-sm">
               |
             </div>
-            <div>DOI: <DOILink :doi="publication.data.doi" /></div>
+            <div>
+              {{ $t('PublicationList.doi-label')
+              }}<DOILink :doi="publication.data.doi" />
+            </div>
           </div>
         </q-item-label>
       </q-item-section>
       <q-item-section side top>
         <span>
-          <PublicationStatusBadge
-            :status="publication.data.status"
-          /> </span>
+          <PublicationStatusBadge :status="publication.data.status" />
+        </span>
       </q-item-section>
     </q-item>
   </q-list>

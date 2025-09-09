@@ -3,6 +3,7 @@ import type {
   ExpertiseResourceList,
 } from '../Expertise/Expertise'
 import type { OrganizationResource } from '../Organization/Organization'
+import type { PublicationQuery, PublicationResourceList } from '../Publication/Publication'
 import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
@@ -93,6 +94,16 @@ export class AuthorService {
     >(`api/authors/${authorId}/expertises`, {
       expertises: expertises.map(e => e.data.id),
     })
+    return response.data
+  }
+
+  /** Get the authors published publications */
+  public static async getPublications(id: number, query?: PublicationQuery) {
+    let url = `api/authors/${id}/publications`
+    if (query) {
+      url += `?${query.toQueryString()}`
+    }
+    const response = await http.get<PublicationResourceList>(url)
     return response.data
   }
 }

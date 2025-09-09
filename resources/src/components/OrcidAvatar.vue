@@ -11,7 +11,7 @@ const svgLink = computed(() => {
 </script>
 
 <template>
-  <q-avatar :icon="svgLink" aria-label="ORCID iD logo">
+  <q-avatar :icon="svgLink" :aria-label="$t('OrcidAvatar.logo-alt')">
     <q-tooltip anchor="top middle" self="bottom middle">
       <span v-if="unauthenticated">
         {{ $t('common.unauthenticated-orcid-id') }}
