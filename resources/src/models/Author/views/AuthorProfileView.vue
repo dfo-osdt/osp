@@ -165,7 +165,6 @@ onMounted(async () => {
             <SearchInput
               v-model="search"
               :label="t('common.filter')"
-              :disable="loading.publications"
             />
           </template>
 
