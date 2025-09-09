@@ -24,21 +24,14 @@ function publishedDate(preprint: PreprintResource) {
       :key="preprint.data.manuscript_record_id"
     >
       <q-item-section>
-        <q-item-label
-          class="text-body1 text-weight-medium text-primary"
-        >
+        <q-item-label class="text-body1 text-weight-medium text-primary">
           {{ preprint.data.title }}
         </q-item-label>
         <q-item-label caption lines="2">
           <template v-if="preprint.data.authors">
-            <template
-              v-if="
-                preprint.data.authors.length > 0
-              "
-            >
+            <template v-if="preprint.data.authors.length > 0">
               <span
-                v-for="(item, index) in preprint.data
-                  .authors"
+                v-for="(item, index) in preprint.data.authors"
                 :key="item.data.id"
               >
                 <OrcidIcon
@@ -47,15 +40,7 @@ function publishedDate(preprint: PreprintResource) {
                 />
                 {{ item.data.author?.data.last_name }},
                 {{ item.data.author?.data.first_name }}
-                <span
-                  v-if="
-                    index
-                      < preprint.data.authors
-                        ?.length
-                      - 1
-                  "
-                >;
-                </span>
+                <span v-if="index < preprint.data.authors?.length - 1">; </span>
               </span>
             </template>
             <template v-else>
@@ -71,7 +56,10 @@ function publishedDate(preprint: PreprintResource) {
             <div class="q-mx-sm">
               |
             </div>
-            <div>URL/DOI: <DoiLink :doi="preprint.data.preprint_url" /></div>
+            <div>
+              {{ $t('PreprintList.url-doi-label')
+              }}<DoiLink :doi="preprint.data.preprint_url" />
+            </div>
           </div>
         </q-item-label>
       </q-item-section>

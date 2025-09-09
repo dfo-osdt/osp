@@ -378,8 +378,7 @@
     "invalid-signature": "Signature non valide",
     "link-expired-text": "Le lien signé que vous utilisez a probablement expiré."
   },
-  "expertise": {
-  },
+  "expertise": {},
   "expertise-select": {
     "hint": "Commencez à taper pour rechercher une expertise"
   },
@@ -641,7 +640,8 @@
   "osp": {
     "alt": {
       "logo": "Logo PSO - un prisme divisant un seul flux lumineux en un ensemble de couleurs.",
-      "main-image": "Une personne avec une grosse ampoule en guise de tête. \nUn vieux robinet de ferme fait couler de l’eau sur une petite pousse d’arbre qui pousse du sol."
+      "main-image": "Une personne avec une grosse ampoule en guise de tête. \nUn vieux robinet de ferme fait couler de l'eau sur une petite pousse d'arbre qui pousse du sol.",
+      "toggle-drawer": "Basculer le tiroir de navigation"
     },
     "description": "Le Portail de la science ouverte est une application Web intuitive pour promouvoir la science ouverte et suivre les publications scientifiques au sein de Pêches et Océans Canada.",
     "slogan": {
@@ -874,7 +874,8 @@
     "search-hint": "Commencez à taper un courriel pour rechercher un utilisateur du MPO"
   },
   "submitted-to-preprint-dialog": {
-    "title": "Marquez comme publié sur un serveur de prépublication"
+    "title": "Marquez comme publié sur un serveur de prépublication",
+    "text": "Vous avez soumis votre manuscrit à un serveur de prépublication. Si le serveur attribue un DOI (Digital Object Identifier), assurez-vous qu'il soit fourni dans votre soumission. Si aucun DOI n'est disponible, une URL stable reliant directement à la prépublication devrait être incluse."
   },
   "clone-manuscript-record-dialog": {
     "title": "Dupliquer le registre de manuscrit",
@@ -902,5 +903,33 @@
     "no-expertise": "Aucun domaine d'expertise répertorié",
     "expertise-description": "Les domaines d'expertise aident les utilisateurs à comprendre et à faire confiance au contenu, et facilitent la recherche d'informations.",
     "author-not-found": "Auteur non trouvé"
+  },
+  "ContentCard": {
+    "title-here": "Titre ici"
+  },
+  "AnnouncementMonitor": {
+    "announcements": "Annonces"
+  },
+  "OrcidAvatar": {
+    "logo-alt": "Logo ORCID iD"
+  },
+  "RORLinkSpan": {
+    "ror-id-label": "ID ROR :"
+  },
+  "PreprintList": {
+    "url-doi-label": "URL/DOI : "
+  },
+  "PublicationList": {
+    "doi-label": "DOI : "
+  },
+  "PublicationPageView": {
+    "doi-label": "DOI : "
+  },
+  "InviteUserDialog": {
+    "search-dfo-directory": "Rechercher dans le répertoire du MPO",
+    "search-description": "Recherchez dans le répertoire des utilisateurs du MPO par courriel pour inviter l'utilisateur sélectionné."
+  },
+  "PublicationSupplementaryFileManagementCard": {
+    "upload-instruction": "Télécharger un fichier supplémentaire pour la publication"
   }
 }

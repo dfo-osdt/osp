@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { AnnouncementResource, AnnouncementResourceList } from '../Announcement'
+import type {
+  AnnouncementResource,
+  AnnouncementResourceList,
+} from '../Announcement'
 import { useQuasar } from 'quasar'
 import { AnnouncementService } from '../Announcement'
 
@@ -82,12 +85,14 @@ function unmutedAnnouncement() {
     :disable="!announcements"
     :icon="announcements?.data.length ? 'mdi-bell-badge' : 'mdi-bell-outline'"
     class="q-mb-xs"
-    aria-label="Announcements"
+    :aria-label="$t('AnnouncementMonitor.announcements')"
     @click="unmutedAnnouncement"
   >
     <q-tooltip anchor="top left" self="bottom right">
       <span v-if="!announcements">{{ $t('common.no_announcements') }}</span>
-      <span v-else>{{ $t('common.announcements', { count: announcements.data.length }) }}</span>
+      <span v-else>{{
+        $t('common.announcements', { count: announcements.data.length })
+      }}</span>
     </q-tooltip>
   </q-btn>
 </template>

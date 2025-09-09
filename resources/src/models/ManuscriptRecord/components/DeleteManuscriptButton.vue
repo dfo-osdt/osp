@@ -1,19 +1,16 @@
 <script
-    setup
-    lang="ts"
-    generic="
-        M extends ManuscriptRecordResource | ManuscriptRecordSummaryResource
-    "
+  setup
+  lang="ts"
+  generic="M extends ManuscriptRecordResource | ManuscriptRecordSummaryResource"
 >
 import type { QBtnProps } from 'quasar'
-import type { ManuscriptRecordResource, ManuscriptRecordSummaryResource } from '../ManuscriptRecord'
+import type {
+  ManuscriptRecordResource,
+  ManuscriptRecordSummaryResource,
+} from '../ManuscriptRecord'
 import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
-import {
-
-  ManuscriptRecordService,
-
-} from '../ManuscriptRecord'
+import { ManuscriptRecordService } from '../ManuscriptRecord'
 
 const props = defineProps<
   QBtnProps & {
@@ -57,7 +54,7 @@ async function deleteManuscript() {
 <template>
   <q-btn
     v-bind="props"
-    aria-label="$t('common.delete')"
+    :aria-label="$t('common.delete')"
     @click.stop="confirmDeletion()"
   >
     <slot>

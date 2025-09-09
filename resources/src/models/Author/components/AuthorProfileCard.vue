@@ -9,7 +9,6 @@ const props = defineProps<{
   author: AuthorResource
 }>()
 
-const { t } = useI18n()
 const localeStore = useLocaleStore()
 
 const organizationName = computed(() => {
