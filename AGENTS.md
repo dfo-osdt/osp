@@ -26,6 +26,13 @@
 - **Frontend**: Vue 3 + TypeScript + Quasar + Pinia + Vue Router
 - **Database**: SQLite (testing), activity logging, permissions via Spatie
 
+## Internationalization (i18n)
+
+- **Backend i18n**: Laravel translation files in `lang/en/` and `lang/fr/` directories (PHP arrays)
+- **Frontend i18n**: Vue i18n JSON files at `resources/src/locales/en.json` and `fr.json`
+- **Usage**: Frontend uses `$t('key.path')` in templates, `t('key.path')` in script sections
+- **ESLint rules**: `@intlify/vue-i18n/no-raw-text` prevents hardcoded text, `@intlify/vue-i18n/no-missing-keys` validates translation keys exist
+
 ## Core Laravel Principle
 
 **Follow Laravel conventions first.** If Laravel has a documented way to do something, use it. Only deviate when you have a clear justification.
