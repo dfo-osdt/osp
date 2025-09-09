@@ -378,8 +378,7 @@
     "invalid-signature": "Invalid Signature",
     "link-expired-text": "The signed link you're using has likely expired."
   },
-  "expertise": {
-  },
+  "expertise": {},
   "expertise-select": {
     "hint": "Start typing to search for an expertise"
   },
@@ -641,7 +640,8 @@
   "osp": {
     "alt": {
       "logo": "OSP logo - a prism dividing a single light stream into an array or colors.",
-      "main-image": "A person with a large lightbulb as a head. An old farmhouse tap is trickling water on a small tree sprout growing from the ground."
+      "main-image": "A person with a large lightbulb as a head. An old farmhouse tap is trickling water on a small tree sprout growing from the ground.",
+      "toggle-drawer": "Toggle navigation drawer"
     },
     "description": "The Open Science Portal is an intuitive web-based application to promote open science and track science publications within Fisheries and Oceans Canada.",
     "slogan": {
@@ -874,7 +874,8 @@
     "search-hint": "Start typing an email to search for a DFO user"
   },
   "submitted-to-preprint-dialog": {
-    "title": "Mark as published to a preprint server"
+    "title": "Mark as published to a preprint server",
+    "text": "You've submitted your manuscript to a preprint server. If the server assigns a DOI (Digital Object Identifier), please ensure that it is provided in your submission. If no DOI is available, a stable URL linking directly to the preprint should be included."
   },
   "clone-manuscript-record-dialog": {
     "title": "Duplicate Manuscript Record",
@@ -902,5 +903,33 @@
     "no-expertise": "No expertise areas listed",
     "expertise-description": "Areas of expertise help users understand and trust content, and make it easier to find information they need.",
     "author-not-found": "Author not found"
+  },
+  "ContentCard": {
+    "title-here": "Title here"
+  },
+  "AnnouncementMonitor": {
+    "announcements": "Announcements"
+  },
+  "OrcidAvatar": {
+    "logo-alt": "ORCID iD logo"
+  },
+  "RORLinkSpan": {
+    "ror-id-label": "ROR ID:"
+  },
+  "PreprintList": {
+    "url-doi-label": "URL/DOI: "
+  },
+  "PublicationList": {
+    "doi-label": "DOI: "
+  },
+  "PublicationPageView": {
+    "doi-label": "DOI: "
+  },
+  "InviteUserDialog": {
+    "search-dfo-directory": "Search the DFO Directory",
+    "search-description": "Search the DFO user directory by email to invite the selected user."
+  },
+  "PublicationSupplementaryFileManagementCard": {
+    "upload-instruction": "Upload a supplementary file for the publication"
   }
 }

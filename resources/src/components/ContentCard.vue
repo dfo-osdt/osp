@@ -23,7 +23,7 @@ const bgClass = computed(() => {
       >
         <div>
           <slot name="title">
-            Title here
+            {{ $t('ContentCard.title-here') }}
           </slot>
           <div class="text-subtitle2 text-grey-6">
             <slot name="subtitle" />

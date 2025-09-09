@@ -31,9 +31,11 @@ onMounted(async () => {
 })
 
 async function getFiles() {
-  PublicationService.listSupplementaryFiles(props.publication.data.id).then((response) => {
-    supplementaryFileResourceList.value = response
-  })
+  PublicationService.listSupplementaryFiles(props.publication.data.id).then(
+    (response) => {
+      supplementaryFileResourceList.value = response
+    },
+  )
 }
 
 async function upload() {
@@ -89,13 +91,18 @@ async function deleteFile(publicationResource: MediaResource) {
       color: 'primary',
     },
   }).onOk(async () => {
-    await PublicationService.deleteSupplementaryFile(props.publication.data.id, publicationResource.data.uuid)
+    await PublicationService.deleteSupplementaryFile(
+      props.publication.data.id,
+      publicationResource.data.uuid,
+    )
     await getFiles()
   })
 }
 
 const descriptionRules = [
-  (val: string) => val.length <= 150 || t('common.validation.must-be-less-than-x-characters', [150]),
+  (val: string) =>
+    val.length <= 150
+    || t('common.validation.must-be-less-than-x-characters', [150]),
 ]
 
 const disableUpload = computed(() => {
@@ -124,7 +131,8 @@ const hideMrf = computed(() => {
 const hasExternalMRF = computed(() => {
   if (supplementaryFileResourceList.value?.data) {
     return supplementaryFileResourceList.value.data.some(
-      media => media.data.supplementary_file_type === 'manuscript_record_form',
+      media =>
+        media.data.supplementary_file_type === 'manuscript_record_form',
     )
   }
   return false
@@ -139,9 +147,7 @@ defineExpose({
 <template>
   <ContentCard class="q-mb-md" secondary>
     <template #title>
-      {{
-        t('publication-page.attach-supplementary-files')
-      }}
+      {{ t('publication-page.attach-supplementary-files') }}
     </template>
     <p v-if="publication.can?.update">
       {{ t('publication-page.attach-supplementary-files-details') }}
@@ -168,17 +174,25 @@ defineExpose({
     </template>
     <q-card v-if="publication.can?.update" class="q-pa-md" flat bordered>
       <p class="text-primary">
-        Upload a supplementary file for the publication
+        {{
+          $t('PublicationSupplementaryFileManagementCard.upload-instruction')
+        }}
       </p>
       <div class="row q-col-gutter-md q-mb-md">
-        <SupplementaryFileTypeSelect v-model="fileType" :hide-mrf="hideMrf" class="col" />
+        <SupplementaryFileTypeSelect
+          v-model="fileType"
+          :hide-mrf="hideMrf"
+          class="col"
+        />
         <q-file
           v-model="supplementaryFile"
           class="col-lg-8 col-md-12"
           outlined
           use-chips
           :label="t('common.select-file')"
-          :hint="t('publication-supplementary.upload-hint', { max: maxFileSizeMB })"
+          :hint="
+            t('publication-supplementary.upload-hint', { max: maxFileSizeMB })
+          "
           accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           :max-file-size="maxFileSizeMB * 1e6"
           counter
@@ -214,6 +228,4 @@ defineExpose({
   </ContentCard>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

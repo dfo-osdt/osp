@@ -26,14 +26,17 @@ const lastName = ref('')
 const email = ref('')
 const locale = ref<Locale>(localStore.locale)
 
-watch(() => selectedAzureUser.value, (user) => {
-  if (user) {
-    firstName.value = user.data.first_name
-    lastName.value = user.data.last_name
-    email.value = user.data.email
-    locale.value = user.data.locale
-  }
-})
+watch(
+  () => selectedAzureUser.value,
+  (user) => {
+    if (user) {
+      firstName.value = user.data.first_name
+      lastName.value = user.data.last_name
+      email.value = user.data.email
+      locale.value = user.data.locale
+    }
+  },
+)
 
 // invitation logic
 const loading = ref(false)
@@ -64,7 +67,8 @@ const nameRules = [(val: string) => !!val || t('common.required')]
 const emailRules = [
   (val: string) => !!val || t('common.required'),
   (val: string) =>
-    /.[^\n\r@\u2028\u2029]*@.+\..+/.test(val) || t('common.validation.email-invalid'),
+    /.[^\n\r@\u2028\u2029]*@.+\..+/.test(val)
+    || t('common.validation.email-invalid'),
 ]
 </script>
 
@@ -83,9 +87,9 @@ const emailRules = [
     </q-banner>
     <q-card-section v-if="enableAzureDirectory" class="q-mx-md">
       <div class="text-primary text-weight-bold">
-        Search the DFO Directory
+        {{ $t('InviteUserDialog.search-dfo-directory') }}
       </div>
-      <p>Search the DFO user directory by email to invite the selected user.</p>
+      <p>{{ $t('InviteUserDialog.search-description') }}</p>
       <AzureUserSelect v-model="selectedAzureUser" />
     </q-card-section>
     <q-card-section class="q-mx-md">

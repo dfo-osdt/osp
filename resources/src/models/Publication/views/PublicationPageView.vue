@@ -62,7 +62,9 @@ onMounted(async () => {
     publication.value = await PublicationService.find(props.id)
     if (publication.value.data.manuscript_record_id === null)
       return
-    manuscriptMetadata.value = await ManuscriptRecordService.metadata(publication.value.data.manuscript_record_id)
+    manuscriptMetadata.value = await ManuscriptRecordService.metadata(
+      publication.value.data.manuscript_record_id,
+    )
   }
   catch (error) {
     console.error(error)
@@ -143,7 +145,9 @@ const saveButton = ref<HTMLButtonElement | null>(null)
 const saveButtonIsVisible = useElementVisibility(saveButton)
 
 // external mrf logic
-const supplementaryFileManagementCard = ref<InstanceType<typeof PublicationSupplementaryFileManagementCard> | undefined>()
+const supplementaryFileManagementCard = ref<
+  InstanceType<typeof PublicationSupplementaryFileManagementCard> | undefined
+>()
 const hasExternalMRF = computed(() => {
   if (supplementaryFileManagementCard.value === undefined)
     return false
@@ -153,7 +157,9 @@ const hasExternalMRF = computed(() => {
 // scroll to supplementary files section
 function scrollToSupplementaryFiles() {
   if (supplementaryFileManagementCard.value?.$el) {
-    supplementaryFileManagementCard.value.$el.scrollIntoView({ behavior: 'smooth' })
+    supplementaryFileManagementCard.value.$el.scrollIntoView({
+      behavior: 'smooth',
+    })
   }
 }
 </script>
@@ -164,9 +170,7 @@ function scrollToSupplementaryFiles() {
       <div class="q-mt-md q-mb-lg row justify-between">
         <div class="col-md-8 col-12 q-mb-md">
           <div class="text-h4 text-primary">
-            {{
-              t('create-publication-dialog.publication-details')
-            }}
+            {{ t('create-publication-dialog.publication-details') }}
           </div>
           <div
             class="text-body2 text-weight-medium text-grey-7 ellipsis-2-lines"
@@ -183,16 +187,14 @@ function scrollToSupplementaryFiles() {
               |
             </div>
             <div class="text-uppercase">
-              {{
-                publication.data.journal?.data.title ?? ' - '
-              }}
+              {{ publication.data.journal?.data.title ?? ' - ' }}
             </div>
             <template v-if="publication.data.doi">
               <div class="q-mx-xs">
                 |
               </div>
               <div>
-                <span>DOI: </span>
+                <span>{{ $t('PublicationPageView.doi-label') }}</span>
                 <DoiLink :doi="publication.data.doi" />
               </div>
             </template>
@@ -206,9 +208,7 @@ function scrollToSupplementaryFiles() {
               >
                 {{ t('publication-page.publication-status') }}
               </div>
-              <PublicationStatusBadge
-                :status="publication.data.status"
-              />
+              <PublicationStatusBadge :status="publication.data.status" />
             </div>
             <q-separator class="q-my-sm" />
             <div class="row justify-between">
@@ -219,9 +219,9 @@ function scrollToSupplementaryFiles() {
               </div>
               <div class="text-body2 text-grey-7 q-py-xs">
                 {{
-                  `${publication.data.user?.data.first_name
-                  } ${
-                    publication.data.user?.data.last_name}`
+                  `${publication.data.user?.data.first_name} ${
+                    publication.data.user?.data.last_name
+                  }`
                 }}
                 ({{ publication.data.user?.data.email }})
               </div>
@@ -234,18 +234,12 @@ function scrollToSupplementaryFiles() {
                 {{ t('common.manuscript-record') }}
               </div>
               <div class="text-body2 text-grey-7 q-py-xs">
-                <div
-                  v-if="publication.data.manuscript_record_id"
-                >
+                <div v-if="publication.data.manuscript_record_id">
                   <q-btn
                     dense
                     size="sm"
                     flat
-                    :label="
-                      t(
-                        'publication-page.go-to-manuscript-record',
-                      )
-                    "
+                    :label="t('publication-page.go-to-manuscript-record')"
                     :to="`/manuscript/${publication.data.manuscript_record_id}/form`"
                     :disable="!manuscriptMetadata?.can?.view"
                     icon-right="mdi-arrow-right"
@@ -256,11 +250,7 @@ function scrollToSupplementaryFiles() {
                     dense
                     size="sm"
                     flat
-                    :label="
-                      t(
-                        'publication-page.view-manuscript-record',
-                      )
-                    "
+                    :label="t('publication-page.view-manuscript-record')"
                     icon-right="mdi-arrow-down"
                     @click="scrollToSupplementaryFiles"
                   />
@@ -318,10 +308,7 @@ function scrollToSupplementaryFiles() {
             :hide-dfo-series="manuscriptMetadata?.data?.type === 'primary'"
             :dfo-series-only="manuscriptMetadata?.data?.type === 'secondary'"
             :readonly="!canEdit"
-            :rules="[
-              (val: number | null) =>
-                !!val || t('common.required'),
-            ]"
+            :rules="[(val: number | null) => !!val || t('common.required')]"
             class="q-mb-md"
           />
           <DoiInput
@@ -355,9 +342,7 @@ function scrollToSupplementaryFiles() {
               class="q-mb-md col-grow"
             />
           </div>
-          <div
-            class="text-body1 q-mt-lg text-primary text-weight-medium"
-          >
+          <div class="text-body1 q-mt-lg text-primary text-weight-medium">
             {{ t('create-publication-dialog.publication-access') }}
           </div>
           <q-separator class="q-mb-md" />
@@ -401,9 +386,7 @@ function scrollToSupplementaryFiles() {
           @click="markAsPublished"
         >
           <q-tooltip v-if="!publication.can?.publish">
-            {{
-              t('publication-page.mark-as-published-tooltip')
-            }}
+            {{ t('publication-page.mark-as-published-tooltip') }}
           </q-tooltip>
         </q-btn>
         <q-btn
