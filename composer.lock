@@ -1546,16 +1546,16 @@
         },
         {
             "name": "cmixin/business-day",
-            "version": "1.20.1",
+            "version": "1.20.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kylekatarnls/business-day.git",
-                "reference": "fcf655f70c706c7505a992112b9047a08fa648ba"
+                "reference": "ea49eb48324e0356fe2e910457606dc77baa2273"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/fcf655f70c706c7505a992112b9047a08fa648ba",
-                "reference": "fcf655f70c706c7505a992112b9047a08fa648ba",
+                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/ea49eb48324e0356fe2e910457606dc77baa2273",
+                "reference": "ea49eb48324e0356fe2e910457606dc77baa2273",
                 "shasum": ""
             },
             "require": {
@@ -1565,7 +1565,7 @@
             "require-dev": {
                 "phpstan/extension-installer": "*",
                 "phpstan/phpstan": "1.* || 2.*",
-                "phpunit/phpunit": "^7.5.20 || ^8.5.31"
+                "phpunit/phpunit": "^7.5.20 || ^8.5.31 || ^9.6.27 || ^10.5.55"
             },
             "type": "library",
             "extra": {
@@ -1601,7 +1601,7 @@
             "description": "Carbon mixin to handle business days",
             "support": {
                 "issues": "https://github.com/kylekatarnls/business-day/issues",
-                "source": "https://github.com/kylekatarnls/business-day/tree/1.20.1"
+                "source": "https://github.com/kylekatarnls/business-day/tree/1.20.2"
             },
             "funding": [
                 {
@@ -1613,7 +1613,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-02T06:55:35+00:00"
+            "time": "2025-09-15T19:47:35+00:00"
         },
         {
             "name": "composer/ca-bundle",
