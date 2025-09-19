@@ -23,11 +23,13 @@ class SyncExpertises extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->info('Syncing expertises...');
 
-        $result = \App\Actions\Expertise\SyncExpertiseWithScience::handle();
+        $result = \App\Actions\Expertise\SyncExpertiseWithScience::handle(function ($message) {
+            $this->info($message);
+        });
 
         if (! $result) {
             $this->error('Failed to sync expertises!');
