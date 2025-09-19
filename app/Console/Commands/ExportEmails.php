@@ -34,6 +34,12 @@ class ExportEmails extends Command
      */
     public function handle(): int
     {
+        if (! app()->environment('local')) {
+            $this->error('This command is only available in the local environment.');
+
+            return 1;
+        }
+
         // start a database transaction, we will rollback after this to leave the database clean
         \DB::beginTransaction();
 
