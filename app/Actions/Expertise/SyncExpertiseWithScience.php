@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Http;
 
 class SyncExpertiseWithScience
 {
-    public static function handle(): bool
+    /**
+     * @param  callable  $message(string):  void
+     */
+    public static function handle(?callable $message = null): bool
     {
         $url = 'https://profils-profiles.science.gc.ca/api/views/admin_taxonomy_term?display_id=services_1';
 
@@ -104,14 +107,23 @@ class SyncExpertiseWithScience
             });
 
         foreach ($unique as $expertise) {
-            Expertise::updateOrCreate(
-                [
-                    'name_en' => html_entity_decode($expertise['name_en']),
-                ],
-                [
-                    'name_fr' => html_entity_decode($expertise['name_fr']),
-                ]
-            );
+
+            try {
+                Expertise::updateOrCreate(
+                    [
+                        'name_en' => html_entity_decode($expertise['name_en']),
+                    ],
+                    [
+                        'name_fr' => html_entity_decode($expertise['name_fr']),
+                    ]
+                );
+            } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+
+                if (is_callable($message)) {
+                    $message('Duplicate expertise found: '.$expertise['name_en'].' / '.$expertise['name_fr'].PHP_EOL);
+                }
+
+            }
         }
 
         return true;
