@@ -31,7 +31,7 @@
     "@types/node": "^24.5.2",
     "axios": "^1.12.2",
     "cypress": "^14.5.4",
-    "eslint": "^9.35.0",
+    "eslint": "^9.36.0",
     "eslint-plugin-quasar": "^1.1.0",
     "laravel-vite-plugin": "^2.0.1",
     "lodash": "^4.17.21",
