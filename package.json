@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "type": "module",
   "private": true,
   "scripts": {
