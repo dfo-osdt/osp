@@ -46,7 +46,7 @@ onMounted(async () => {
   }
 })
 
-async function filterUsers(val: string, update, _abort) {
+async function filterUsers(val: string, update: any) {
   lastSearchTerm.value = val
   update(async () => {
     if (val !== '') {
@@ -82,6 +82,7 @@ function createdUser(item: UserResource) {
   userSelect.value?.updateInputValue('', true)
   selectedUser.value = item
   showInviteUserDialog.value = false
+  userSelect.value?.hidePopup()
 }
 
 function optionValue(item: UserResource) {
