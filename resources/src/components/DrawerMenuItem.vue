@@ -1,17 +1,17 @@
 <script setup lang="ts">
 export interface MenuItem {
-  icon: string;
-  label: string;
-  to: string;
-  visible: boolean;
-  tooltipVisible: boolean;
-  external?: boolean;
-  href?: string;
+  icon: string
+  label: string
+  to: string
+  visible: boolean
+  tooltipVisible: boolean
+  external?: boolean
+  href?: string
 }
 
 defineProps<{
-  item: MenuItem;
-}>();
+  item: MenuItem
+}>()
 </script>
 
 <template>

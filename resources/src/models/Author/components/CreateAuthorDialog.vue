@@ -19,6 +19,29 @@ const email = ref('')
 const organizationId = ref<number | null>(null)
 const orcId = ref('')
 const errorMessage = ref('')
+const showPersonalEmailWarning = ref(false)
+
+const personalEmailDomains = [
+  'gmail.com',
+  'yahoo.com',
+  'hotmail.com',
+  'outlook.com',
+  'aol.com',
+  'icloud.com',
+  'protonmail.com',
+  'yandex.com',
+]
+
+// Watch email input to detect personal email domains
+watchEffect(() => {
+  if (email.value) {
+    const emailDomain = email.value.split('@')[1]?.toLowerCase()
+    showPersonalEmailWarning.value = personalEmailDomains.includes(emailDomain)
+  }
+  else {
+    showPersonalEmailWarning.value = false
+  }
+})
 
 async function createAuthor() {
   if (organizationId.value === null) {
@@ -50,52 +73,81 @@ async function createAuthor() {
 <template>
   <BaseDialog persistent :title="$t('create-author-dialog.title')">
     <q-banner v-if="errorMessage" class="q-pa-md bg-red text-white">
-      {{
-        errorMessage
-      }}
+      {{ errorMessage }}
     </q-banner>
     <q-form @submit="createAuthor">
-      <q-input
-        v-model="firstName"
-        outlined
-        :label="$t('common.first-name')"
-        class="q-ma-md"
-        :rules="[(val: string) => val !== '' || t('common.required')]"
-      />
-      <q-input
-        v-model="lastName"
-        outlined
-        :label="$t('common.last-name')"
-        class="q-ma-md"
-        :rules="[(val: string) => val !== '' || t('common.required')]"
-      />
-      <OrganizationSelect
-        v-model="organizationId"
-        show-default-organization
-        :label="$t('common.affiliation')"
-        class="q-ma-md"
-        :rules="[
-          (val: number | null) =>
-            val !== null || t('common.required'),
-        ]"
-      />
-      <q-input
-        v-model="email"
-        outlined
-        :label="$t('common.email')"
-        class="q-ma-md"
-        :rules="[
-          (val: string) => val !== '' || t('common.required'),
-          (val: string) =>
-            /^\S+@\S+\.\S+$/.test(val)
-            || t('common.validation.email-invalid'),
-        ]"
-      />
-      <OrcidInput
-        v-model.stripBaseUrl="orcId"
-        class="q-ma-md"
-        :hint="$t('common.validation.orcid-hint')"
-      />
+      <!-- Personal Information Group -->
+      <q-card flat bordered class="q-ma-md">
+        <q-card-section>
+          <div class="text-subtitle2 text-grey-8 q-mb-md">
+            {{ $t('create-author-dialog.personal-information') }}
+          </div>
+          <q-input
+            v-model="firstName"
+            outlined
+            :label="$t('common.first-name')"
+            class="q-mb-md"
+            :rules="[(val: string) => val !== '' || t('common.required')]"
+          />
+          <q-input
+            v-model="lastName"
+            outlined
+            :label="$t('common.last-name')"
+            class="q-mb-md"
+            :rules="[(val: string) => val !== '' || t('common.required')]"
+          />
+
+          <!-- Personal Email Warning -->
+          <div v-if="showPersonalEmailWarning" class="q-mb-sm">
+            <div class="text-caption text-orange-8">
+              {{ $t('create-author-dialog.personal-email-warning') }}
+            </div>
+          </div>
+
+          <q-input
+            v-model="email"
+            outlined
+            :label="$t('common.email')"
+            :rules="[
+              (val: string) => val !== '' || t('common.required'),
+              (val: string) =>
+                /^\S+@\S+\.\S+$/.test(val)
+                || t('common.validation.email-invalid'),
+            ]"
+          />
+        </q-card-section>
+      </q-card>
+
+      <!-- Affiliation & Research Information Group -->
+      <q-card flat bordered class="q-ma-md">
+        <q-card-section>
+          <div class="text-subtitle2 text-grey-8 q-mb-md">
+            {{ $t('create-author-dialog.affiliation-research') }}
+          </div>
+
+          <!-- ROR Guidance -->
+          <div class="q-mb-sm">
+            <div class="text-caption text-grey-7">
+              {{ $t('create-author-dialog.ror-guidance') }}
+            </div>
+          </div>
+
+          <OrganizationSelect
+            v-model="organizationId"
+            show-default-organization
+            :label="$t('common.affiliation')"
+            class="q-mb-md"
+            :rules="[
+              (val: number | null) => val !== null || t('common.required'),
+            ]"
+          />
+
+          <OrcidInput
+            v-model.stripBaseUrl="orcId"
+            :hint="$t('common.validation.orcid-hint')"
+          />
+        </q-card-section>
+      </q-card>
       <div class="flex justify-end">
         <q-btn
           color="primary"
