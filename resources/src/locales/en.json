@@ -287,7 +287,9 @@
     "plain-language-summary-en": "Plain Language Summary - English",
     "plain-language-summary-fr": "Plain Language Summary - French",
     "clone": "Duplicate",
-    "type": "of type"
+    "type": "of type",
+    "documentation": "Documentation",
+    "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/"
   },
   "create-author-dialog": {
     "title": "Create a new author"

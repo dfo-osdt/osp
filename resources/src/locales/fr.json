@@ -287,7 +287,9 @@
     "preprint-url-placeholder": "https://doi.org/ ..",
     "submitted-to-preprint-on": "Date soumise au serveur préalable",
     "clone": "Dupliquer",
-    "type": "de type"
+    "type": "de type",
+    "documentation": "Documentation",
+    "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/fr/"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur"
