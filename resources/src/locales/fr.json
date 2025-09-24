@@ -292,7 +292,11 @@
     "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/fr/"
   },
   "create-author-dialog": {
-    "title": "Créer un nouvel auteur"
+    "title": "Créer un nouvel auteur",
+    "personal-information": "Informations personnelles",
+    "affiliation-research": "Affiliation et informations de recherche",
+    "ror-guidance": "Lors de la sélection de l'affiliation de votre co-auteur, choisissez l'institution principale qui apparaît dans ses publications de recherche (par exemple, 'Université McGill' et non 'Département des sciences de McGill'). Ne créez une nouvelle organisation que si vous ne trouvez pas leur affiliation institutionnelle principale.",
+    "personal-email-warning": "Considérez demander à votre co-auteur son adresse courriel institutionnelle. Les adresses courriels personnelles peuvent ne pas être idéales pour les communications de recherche professionnelles."
   },
   "create-manuscript-record-dialog": {
     "create-text": "Une fois créé, vous serez redirigé vers le formulaire du registre des manuscrits. \nLe formulaire du registre des manuscrits sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour révision.",

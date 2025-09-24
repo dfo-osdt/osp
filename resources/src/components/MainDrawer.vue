@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { MenuItem } from './DrawerMenuItem.vue';
-import { QDrawer, QItemLabel, QList, QSeparator } from 'quasar';
-import DrawerMenuItem from './DrawerMenuItem.vue';
+import type { MenuItem } from './DrawerMenuItem.vue'
+import { QDrawer, QItemLabel, QList, QSeparator } from 'quasar'
+import DrawerMenuItem from './DrawerMenuItem.vue'
 
-const authStore = useAuthStore();
-const { t } = useI18n();
+const authStore = useAuthStore()
+const { t } = useI18n()
 
-const { height } = useWindowSize();
+const { height } = useWindowSize()
 const displayBottomMenu = computed(() => {
-  return height.value >= 600;
-});
+  return height.value >= 600
+})
 
 // Permission check for regional manuscripts is now in AuthStore
 
@@ -43,8 +43,8 @@ const userMenuItems = computed<MenuItem[]>(() => {
       visible: true,
       tooltipVisible: authStore.isDrawerMini,
     },
-  ];
-});
+  ]
+})
 
 const exploreMenuItems = computed<MenuItem[]>(() => {
   return [
@@ -76,8 +76,8 @@ const exploreMenuItems = computed<MenuItem[]>(() => {
       visible: true,
       tooltipVisible: authStore.isDrawerMini,
     },
-  ];
-});
+  ]
+})
 
 const bottomMenuItems = computed<MenuItem[]>(() => {
   return [
@@ -104,8 +104,8 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
       visible: true,
       tooltipVisible: authStore.isDrawerMini,
     },
-  ];
-});
+  ]
+})
 </script>
 
 <template>

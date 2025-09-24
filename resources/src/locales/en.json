@@ -292,7 +292,11 @@
     "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/"
   },
   "create-author-dialog": {
-    "title": "Create a new author"
+    "title": "Create a new author",
+    "personal-information": "Personal Information",
+    "affiliation-research": "Affiliation & Research Information",
+    "ror-guidance": "When selecting your co-author's affiliation, choose the main institution that appears in their research publications (e.g., 'McGill University' not 'Department of Science at McGill'). Only create a new organization if you cannot find their main institutional affiliation.",
+    "personal-email-warning": "Consider asking your co-author for their institutional email address. Personal email addresses may not be ideal for professional research communications."
   },
   "create-manuscript-record-dialog": {
     "create-text": "Once created, you will be taken to the manuscript record form. The manuscript record form will be marked as a draft and only be visible to you and the people you invite as observers. Once the form is complete you will be able to submit it for review.",
