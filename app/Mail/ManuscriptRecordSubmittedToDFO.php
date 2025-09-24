@@ -23,7 +23,7 @@ class ManuscriptRecordSubmittedToDFO extends Mailable implements ShouldQueue
      */
     public function __construct(public ManuscriptRecord $manuscriptRecord)
     {
-        $manuscriptRecord->load('user', 'manuscriptAuthors.author', 'publication');
+        $manuscriptRecord->load('user', 'manuscriptAuthors.author', 'publication', 'region');
         $this->publication = $manuscriptRecord->publication;
 
     }
@@ -37,9 +37,12 @@ class ManuscriptRecordSubmittedToDFO extends Mailable implements ShouldQueue
         if (empty($to)) {
             throw new \Exception('The manuscript submission email address is not set.');
         }
+        $regionalEditors = $this->manuscriptRecord->region->getRegionalEditors()->pluck('email');
+
         $cc = collect($this->manuscriptRecord->manuscriptAuthors)
             ->pluck('author.email')
             ->add($this->manuscriptRecord->user->email)
+            ->merge($regionalEditors)
             ->filter(fn ($email) => Str::of($email)->endsWith(config('osp.allowed_registration_email_domains')))
             ->unique()->toArray();
 
