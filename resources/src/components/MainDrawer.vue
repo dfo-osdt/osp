@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { MenuItem } from './DrawerMenuItem.vue'
-import { QDrawer, QItemLabel, QList, QSeparator } from 'quasar'
-import DrawerMenuItem from './DrawerMenuItem.vue'
+import type { MenuItem } from './DrawerMenuItem.vue';
+import { QDrawer, QItemLabel, QList, QSeparator } from 'quasar';
+import DrawerMenuItem from './DrawerMenuItem.vue';
 
-const authStore = useAuthStore()
-const { t } = useI18n()
+const authStore = useAuthStore();
+const { t } = useI18n();
 
-const { height } = useWindowSize()
+const { height } = useWindowSize();
 const displayBottomMenu = computed(() => {
-  return height.value >= 600
-})
+  return height.value >= 600;
+});
 
 // Permission check for regional manuscripts is now in AuthStore
 
@@ -43,8 +43,8 @@ const userMenuItems = computed<MenuItem[]>(() => {
       visible: true,
       tooltipVisible: authStore.isDrawerMini,
     },
-  ]
-})
+  ];
+});
 
 const exploreMenuItems = computed<MenuItem[]>(() => {
   return [
@@ -76,8 +76,8 @@ const exploreMenuItems = computed<MenuItem[]>(() => {
       visible: true,
       tooltipVisible: authStore.isDrawerMini,
     },
-  ]
-})
+  ];
+});
 
 const bottomMenuItems = computed<MenuItem[]>(() => {
   return [
@@ -89,14 +89,23 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
       tooltipVisible: authStore.isDrawerMini,
     },
     {
+      icon: 'mdi-lifebuoy',
+      label: t('common.documentation'),
+      to: '',
+      href: t('common.documentation-url'),
+      external: true,
+      visible: true,
+      tooltipVisible: authStore.isDrawerMini,
+    },
+    {
       icon: 'mdi-logout',
       label: t('common.logout'),
       to: '/auth/logout',
       visible: true,
       tooltipVisible: authStore.isDrawerMini,
     },
-  ]
-})
+  ];
+});
 </script>
 
 <template>
@@ -110,7 +119,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
   >
     <QList padding class="menu-list" role="menubar">
       <DrawerMenuItem
-        v-for="item in userMenuItems.filter(item => item.visible)"
+        v-for="item in userMenuItems.filter((item) => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"
@@ -122,7 +131,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
       </QItemLabel>
 
       <DrawerMenuItem
-        v-for="item in exploreMenuItems.filter(item => item.visible)"
+        v-for="item in exploreMenuItems.filter((item) => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"
@@ -131,7 +140,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
     <QList v-if="displayBottomMenu" class="q-mb-sm" role="menubar">
       <QSeparator />
       <DrawerMenuItem
-        v-for="item in bottomMenuItems.filter(item => item.visible)"
+        v-for="item in bottomMenuItems.filter((item) => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"
