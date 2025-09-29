@@ -8,6 +8,7 @@
 /storage/*.key
 /storage/*
 /vendor
+/tests/Browser/screenshots
 .env
 .env.backup
 .phpunit.result.cache
@@ -22,3 +23,4 @@ tests/cypress/screenshots/*
 .phpactor.json
 .phpstorm.meta.php
 _ide_helper.php
+

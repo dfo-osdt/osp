@@ -17,6 +17,7 @@
     "@vueuse/core": "^13.9.0",
     "dompurify": "^3.2.7",
     "pinia": "^3.0.3",
+    "playwright": "^1.55.1",
     "quasar": "^2.18.5",
     "sass-embedded": "^1.93.2",
     "vite-plugin-manifest-sri": "^0.2.0",
