@@ -116,7 +116,7 @@ const passwordConfirmationRules = computed(() => [
           outlined
           :label="$t('common.your-password')"
           :rules="passwordRules"
-          data-cy="password"
+          data-test="password"
           @focus="errorMessage = null"
         />
         <PasswordWithToggleInput
@@ -124,7 +124,7 @@ const passwordConfirmationRules = computed(() => [
           outlined
           :label="$t('common.confirm-password')"
           :rules="passwordConfirmationRules"
-          data-cy="password"
+          data-test="password"
           @focus="errorMessage = null"
         />
         <div class="flex justify-end">
@@ -132,7 +132,7 @@ const passwordConfirmationRules = computed(() => [
             :label="$t('common.reset')"
             type="submit"
             color="primary"
-            data-cy="login"
+            data-test="login"
             :loading="loading"
           />
         </div>

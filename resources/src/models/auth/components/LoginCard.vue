@@ -191,7 +191,7 @@ function notifyUserLastLogin() {
           lazy-rules
           :rules="emailRules"
           autocomplete="email"
-          data-cy="email"
+          data-test="email"
           @focus="errorMessage = null"
         />
         <PasswordWithToggleInput
@@ -199,7 +199,7 @@ function notifyUserLastLogin() {
           filled
           :label="t('common.your-password')"
           :rules="passwordRules"
-          data-cy="password"
+          data-test="password"
           autocomplete="current-password"
           @focus="errorMessage = null"
         />
@@ -208,7 +208,7 @@ function notifyUserLastLogin() {
             :label="t('common.login')"
             type="submit"
             color="primary"
-            data-cy="login"
+            data-test="login"
             :loading="loading"
           />
         </div>

@@ -6,9 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint resources/src",
-    "lint:test": "eslint resources/src --max-warnings 0",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "lint:test": "eslint resources/src --max-warnings 0"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^11.0.1",
@@ -31,7 +29,6 @@
     "@quasar/vite-plugin": "^1.10.0",
     "@types/node": "^24.5.2",
     "axios": "^1.12.2",
-    "cypress": "^14.5.4",
     "eslint": "^9.36.0",
     "eslint-plugin-quasar": "^1.1.0",
     "laravel-vite-plugin": "^2.0.1",
@@ -49,7 +46,6 @@
     ],
     "onlyBuiltDependencies": [
       "@parcel/watcher",
-      "cypress",
       "esbuild",
       "unrs-resolver"
     ]

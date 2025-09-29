@@ -14,7 +14,6 @@
     "filament/filament": "^4.0",
     "guzzlehttp/guzzle": "^7.8.1",
     "hirethunk/verbs": "^0.7.0",
-    "laracasts/cypress": "^3.0.2",
     "laravel/framework": "^12.0",
     "laravel/horizon": "^5.24.3",
     "laravel/pail": "^1.1.2",
@@ -107,9 +106,6 @@
     ],
     "test:feature": [
       "pest --parallel --ci"
-    ],
-    "test:cy:open": [
-      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"pnpm run dev\" \"php artisan serve --env=ci\" \"php artisan pail --timeout=0\" \"pnpm run cy:open\"  --names=vite,server,logs,cypress"
     ],
     "test": [
       "@test:lint",
