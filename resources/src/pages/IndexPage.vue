@@ -13,6 +13,8 @@ const authStore = useAuthStore()
           <div class="col-4 gt-sm">
             <q-img
               src="/assets/ideas_grow.png"
+              fetch-priority="high"
+              loading-show-delay="100"
               width="100%"
               :alt="$t('osp.alt.main-image')"
             />
