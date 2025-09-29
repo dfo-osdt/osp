@@ -2,8 +2,9 @@
 
 ## Build & Test Commands
 
-- **Run tests**: `composer test` (runs lint, types, and feature tests)
+- **Run tests**: `composer test` (runs lint, types, feature tests, and browser tests)
 - **Single test**: `./vendor/bin/pest --filter="TestName"` or `./vendor/bin/pest tests/Feature/TestFile.php`
+- **Browser tests**: `./vendor/bin/pest tests/Browser/` (Pest4 automated browser testing)
 - **Lint PHP**: `composer lint` (Laravel Pint)
 - **Type check**: `composer test:types` (PHPStan level 5)
 - **Lint JS/Vue**: `pnpm lint` (ESLint with Antfu config)
@@ -22,7 +23,7 @@
 
 ## Framework Stack
 
-- **Backend**: Laravel 12 + PHP 8.4 + Filament admin + Pest testing
+- **Backend**: Laravel 12 + PHP 8.4 + Filament admin + Pest testing (including Pest4 browser tests)
 - **Frontend**: Vue 3 + TypeScript + Quasar + Pinia + Vue Router
 - **Database**: SQLite (testing), activity logging, permissions via Spatie
 
