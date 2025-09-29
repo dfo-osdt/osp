@@ -112,7 +112,7 @@ const passwordConfirmationRules = computed(() => [
           :label="t('common.your-first-name')"
           lazy-rules
           :rules="nameRules"
-          data-cy="first_name"
+          data-test="first_name"
           autocomplete="given-name"
           @focus="errorMessage = null"
         />
@@ -123,7 +123,7 @@ const passwordConfirmationRules = computed(() => [
           :label="t('common.your-last-name')"
           lazy-rules
           :rules="nameRules"
-          data-cy="last_name"
+          data-test="last_name"
           autocomplete="family-name"
           @focus="errorMessage = null"
         />
@@ -134,7 +134,7 @@ const passwordConfirmationRules = computed(() => [
           :label="t('common.your-email')"
           lazy-rules
           :rules="emailRules"
-          data-cy="email"
+          data-test="email"
           autocomplete="email"
           @focus="errorMessage = null"
         />
@@ -145,7 +145,7 @@ const passwordConfirmationRules = computed(() => [
                     :label="t('common.confirm-email')"
                     lazy-rules
                     :rules="emailConfirmationRules"
-                    data-cy="email"
+                    data-test="email"
                     @focus="errorMessage = null"
                 /> -->
         <PasswordWithToggleInput
@@ -154,7 +154,7 @@ const passwordConfirmationRules = computed(() => [
           :label="t('common.your-password')"
           :rules="passwordRules"
           autocomplete="new-password"
-          data-cy="password"
+          data-test="password"
           @focus="errorMessage = null"
         />
         <PasswordWithToggleInput
@@ -163,7 +163,7 @@ const passwordConfirmationRules = computed(() => [
           :label="t('common.confirm-password')"
           :rules="passwordConfirmationRules"
           autocomplete="new-password"
-          data-cy="password-confirm"
+          data-test="password-confirm"
           @focus="errorMessage = null"
         />
         <div class="flex justify-end">
@@ -171,7 +171,7 @@ const passwordConfirmationRules = computed(() => [
             :label="t('common.register')"
             type="submit"
             color="primary"
-            data-cy="register-btn"
+            data-test="register-btn"
             :loading="loading"
           />
         </div>

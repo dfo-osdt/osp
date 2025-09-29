@@ -159,7 +159,7 @@ async function save() {
             type="submit"
             :loading="loading"
             color="primary"
-            data-cy="save"
+            data-test="save"
           />
         </div>
       </q-form>

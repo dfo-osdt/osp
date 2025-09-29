@@ -28,6 +28,8 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
       - name: Create Database
         run: |
           mkdir -p database
@@ -40,24 +42,5 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
       - name: Execute PHP tests
         run: composer test
-      - name: Install Cypress
-        uses: cypress-io/github-action@v6
-        with:
-          runTests: false
-      - name: Check Cypress install
-        run: pnpm cypress verify | pnpm cypress install
-      - name: Execute Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: ./
-          start: php artisan serve
-          wait-on-timeout: 60
-          browser: chrome
-          command: pnpm run cy:run --record
-          build: pnpm run build
-          install-command: pnpm install
-          record: true
         env:
-          CYPRESS_baseUrl: http://127.0.0.1:8000
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

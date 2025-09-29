@@ -5,10 +5,15 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@/*": ["resources/src/*"]
+      "@/*": [
+        "resources/src/*"
+      ]
     },
     "resolveJsonModule": true,
-    "types": ["vite/client", "cypress", "@intlify/unplugin-vue-i18n/messages"],
+    "types": [
+      "vite/client",
+      "@intlify/unplugin-vue-i18n/messages"
+    ],
     "allowJs": true,
     "strict": true,
     "strictNullChecks": true,
@@ -20,12 +25,15 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
-  "include": ["**/*.ts", "**/*.vue", "**/*.d.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.vue",
+    "**/*.d.ts"
+  ],
   "exclude": [
     "vendor",
     "public/build",
     "public/vendor",
-    "tests/cypress/support",
     "node_modules"
   ]
 }
