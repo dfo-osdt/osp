@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Permissions\UserRole;
 use App\Models\User;
 
 test('an authenticated user can search through the users', function () {
@@ -64,4 +65,47 @@ test('a user can get their authenticated user resource', function () {
     $response = $this->actingAs($user)->getJson('api/user')->assertOk();
 
     expect($response->json('data'))->toHaveKeys(['id', 'first_name', 'last_name', 'email', 'author', 'roles', 'permissions'])->toHaveKey('id', $user->id);
+});
+
+test('isRegionalEditor returns true for all regional editor roles', function () {
+    $regionalRoles = [
+        UserRole::NFL_EDITOR,
+        UserRole::MAR_EDITOR,
+        UserRole::GLF_EDITOR,
+        UserRole::QUE_EDITOR,
+        UserRole::ONP_EDITOR,
+        UserRole::ARC_EDITOR,
+        UserRole::PAC_EDITOR,
+        UserRole::NCR_EDITOR,
+    ];
+
+    foreach ($regionalRoles as $role) {
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        expect($user->isRegionalEditor())->toBeTrue("Failed for role: {$role->value}");
+    }
+});
+
+test('isRegionalEditor returns false for non-regional roles', function () {
+    $nonRegionalRoles = [
+        UserRole::ADMIN,
+        UserRole::AUTHOR,
+        UserRole::DIRECTOR,
+        UserRole::EDITOR,
+        UserRole::CHIEF_EDITOR,
+    ];
+
+    foreach ($nonRegionalRoles as $role) {
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        expect($user->isRegionalEditor())->toBeFalse("Failed for role: {$role->value}");
+    }
+});
+
+test('isRegionalEditor returns false for user with no roles', function () {
+    $user = User::factory()->create();
+
+    expect($user->isRegionalEditor())->toBeFalse();
 });
