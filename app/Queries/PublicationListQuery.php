@@ -20,6 +20,7 @@ class PublicationListQuery extends QueryBuilder
              AllowedFilter::exact('status'),
              AllowedFilter::exact('user_id'),
              AllowedFilter::exact('journal_id'),
+             AllowedFilter::exact('region_id'),
              AllowedFilter::exact('publicationAuthors.author_id'),
              AllowedFilter::partial('title'),
              AllowedFilter::scope('open_access'),
