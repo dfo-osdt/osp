@@ -42,7 +42,8 @@ class UserPublicationController extends Controller
             ->with('manuscriptRecord',
                 'journal',
                 'publicationAuthors.author',
-                'publicationAuthors.organization');
+                'publicationAuthors.organization',
+                'region');
 
         $listQuery = new PublicationListQuery($request, $baseQuery);
 

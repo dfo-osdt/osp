@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Contracts\Fundable;
 use App\Contracts\Plannable;
 use App\Enums\MediaCollection;
+use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
 use App\Enums\SensitivityLabel;
 use App\Enums\SupplementaryFileType;
@@ -302,5 +303,39 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     public function scopeSecondaryPublication($query)
     {
         return $query->whereIn('journal_id', Journal::dfoSeries()->pluck('id'));
+    }
+
+    /**
+     * Scope publications based on user permissions
+     * - Admins see all publications
+     * - Regional editors see all published + unpublished in their region
+     * - Regular users see only published publications
+     */
+    public function scopeForUser($query, User $user)
+    {
+        // if user has permission to update all publications, show everything
+        if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
+            return $query;
+        }
+
+        // if user is a regional editor, show published + unpublished in their region
+        if ($user->isRegionalEditor()) {
+            $permissions = collect(UserPermission::getRegionalEditorPubEditPermissions())->pluck('value');
+            $userPermissions = $user->getAllPermissions()->pluck('name');
+            $slugs = $permissions->intersect($userPermissions)
+                ->map(fn ($perm) => explode('_', $perm)[2] ?? null)
+                ->except(null)->toArray();
+
+            return $query->where('status', PublicationStatus::PUBLISHED)
+                ->orWhere(function ($q) use ($slugs) {
+                    $q->where('status', PublicationStatus::ACCEPTED)
+                        ->whereHas('region', function ($regionQuery) use ($slugs) {
+                            $regionQuery->whereIn('slug', $slugs);
+                        });
+                });
+        }
+
+        // regular users only see published publications
+        return $query->where('status', PublicationStatus::PUBLISHED);
     }
 }

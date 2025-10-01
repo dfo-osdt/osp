@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
 use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
@@ -30,33 +29,8 @@ class PublicationController extends Controller
     {
         $limit = $this->getLimitFromRequest($request);
 
-        $baseQuery = Publication::query()
-            ->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization');
-
-        // if user does not have permission to update all publications, only show published publications
-        if (! $user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS) && ! $user->isRegionalEditor()) {
-            $baseQuery->where('status', PublicationStatus::PUBLISHED);
-        }
-
-        // if user is a regional editor but does not have permission to update all publications,
-        // let's scope the query to only have unpublished publications in their region, and all published publications
-        // from other reigons
-        if ($user->isRegionalEditor() && ! $user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
-
-            $permissions = collect(UserPermission::getRegionalEditorPubEditPermissions())->pluck('value');
-            $userPermissions = $user->getAllPermissions()->pluck('name');
-            $slugs = $permissions->intersect($userPermissions)
-                ->map(fn ($perm) => explode('_', $perm)[2] ?? null)
-                ->except(null)->toArray();
-
-            $baseQuery->where('status', PublicationStatus::PUBLISHED)
-                ->orWhere(function ($query) use ($slugs) {
-                    $query->where('status', PublicationStatus::ACCEPTED)
-                        ->whereHas('region', function ($regionQuery) use ($slugs) {
-                            $regionQuery->whereIn('slug', $slugs);
-                        });
-                });
-        }
+        $baseQuery = Publication::forUser($user)
+            ->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization', 'region');
 
         $publicationListQuery = new PublicationListQuery($request, $baseQuery);
 
