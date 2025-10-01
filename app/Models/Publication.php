@@ -307,7 +307,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
 
     /**
      * Scope publications based on user permissions
-     * - Admins see all publications
+     * - Editors with UPDATE_PUBLICATIONS see all publications
      * - Regional editors see all published + unpublished in their region
      * - Regular users see only published publications
      */
@@ -324,7 +324,8 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
             $userPermissions = $user->getAllPermissions()->pluck('name');
             $slugs = $permissions->intersect($userPermissions)
                 ->map(fn ($perm) => explode('_', $perm)[2] ?? null)
-                ->except(null)->toArray();
+                ->filter()
+                ->toArray();
 
             return $query->where('status', PublicationStatus::PUBLISHED)
                 ->orWhere(function ($q) use ($slugs) {
