@@ -63,34 +63,42 @@ enum UserRole: string
             self::NFL_EDITOR => [
                 UserPermission::CAN_VIEW_NFL_MRFS,
                 UserPermission::CAN_EDIT_NFL_MRFS,
+                UserPermission::CAN_EDIT_NFL_PUBS,
             ],
             self::MAR_EDITOR => [
                 UserPermission::CAN_VIEW_MAR_MRFS,
                 UserPermission::CAN_EDIT_MAR_MRFS,
+                UserPermission::CAN_EDIT_MAR_PUBS,
             ],
             self::GLF_EDITOR => [
                 UserPermission::CAN_VIEW_GLF_MRFS,
                 UserPermission::CAN_EDIT_GLF_MRFS,
+                UserPermission::CAN_EDIT_GLF_PUBS,
             ],
             self::QUE_EDITOR => [
                 UserPermission::CAN_VIEW_QUE_MRFS,
                 UserPermission::CAN_EDIT_QUE_MRFS,
+                UserPermission::CAN_EDIT_QUE_PUBS,
             ],
             self::ONP_EDITOR => [
                 UserPermission::CAN_VIEW_ONP_MRFS,
                 UserPermission::CAN_EDIT_ONP_MRFS,
+                UserPermission::CAN_EDIT_ONP_PUBS,
             ],
             self::ARC_EDITOR => [
                 UserPermission::CAN_VIEW_ARC_MRFS,
                 UserPermission::CAN_EDIT_ARC_MRFS,
+                UserPermission::CAN_EDIT_ARC_PUBS,
             ],
             self::PAC_EDITOR => [
                 UserPermission::CAN_VIEW_PAC_MRFS,
                 UserPermission::CAN_EDIT_PAC_MRFS,
+                UserPermission::CAN_EDIT_PAC_PUBS,
             ],
             self::NCR_EDITOR => [
                 UserPermission::CAN_VIEW_NCR_MRFS,
                 UserPermission::CAN_EDIT_NCR_MRFS,
+                UserPermission::CAN_EDIT_NCR_PUBS,
             ],
         };
 
@@ -124,5 +132,19 @@ enum UserRole: string
             self::PAC_EDITOR => 'Pacific Editor',
             self::NCR_EDITOR => 'National Capital Region Editor',
         };
+    }
+
+    public static function getRegionalEditorRoles(): array
+    {
+        return [
+            self::NFL_EDITOR,
+            self::MAR_EDITOR,
+            self::GLF_EDITOR,
+            self::QUE_EDITOR,
+            self::ONP_EDITOR,
+            self::ARC_EDITOR,
+            self::PAC_EDITOR,
+            self::NCR_EDITOR,
+        ];
     }
 }

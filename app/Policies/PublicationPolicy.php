@@ -132,6 +132,13 @@ class PublicationPolicy
             return true;
         }
 
+        // Regional editor access - can edit publication in their region
+        $regionSlug = $publication->region->slug ?? null;
+        if ($regionSlug && $user->can("can_view_{$regionSlug}_pubs")) {
+            // since regional editors will often help, we allow them to see publiations - even if they are unpublished
+            return true;
+        }
+
         // is the user the owner of the publication
         if ($user->id === $publication->user_id) {
             return true;
