@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Permissions\UserPermission;
-use App\Enums\PublicationStatus;
 use App\Http\Resources\PublicationResource;
 use App\Models\Author;
 use App\Models\Publication;
@@ -25,14 +23,11 @@ class AuthorPublicationController extends Controller
     {
         $limit = $this->getLimitFromRequest($request);
 
-        $baseQuery = Publication::whereHas('publicationAuthors', function ($query) use ($author) {
-            $query->where('author_id', $author->id);
-        })->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization');
-
-        // if user does not have permission to update all publications, only show published publications
-        if (! $user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
-            $baseQuery->where('status', PublicationStatus::PUBLISHED);
-        }
+        $baseQuery = Publication::forUser($user)
+            ->whereHas('publicationAuthors', function ($query) use ($author) {
+                $query->where('author_id', $author->id);
+            })
+            ->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization', 'region');
 
         $query = new PublicationListQuery($request, $baseQuery);
 
