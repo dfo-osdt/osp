@@ -133,3 +133,27 @@ test('supports pagination and filtering with regional scoping', function () {
     expect($response->json('meta.total'))->toBe(8);
     expect($response->json('meta.per_page'))->toBe(5);
 });
+
+test('can filter publications by region_id', function () {
+    $nflRegion = Region::whereSlug('nfl')->first();
+    $marRegion = Region::whereSlug('mar')->first();
+
+    $editor = User::factory()->create();
+    $editor->assignRole(UserRole::EDITOR);
+
+    $nflPublications = Publication::factory()->count(3)->published()->create(['region_id' => $nflRegion->id]);
+    $marPublications = Publication::factory()->count(2)->published()->create(['region_id' => $marRegion->id]);
+
+    $response = $this->actingAs($editor)->getJson("/api/publications?filter[region_id]={$nflRegion->id}");
+
+    $response->assertOk();
+    $response->assertJsonCount(3, 'data');
+
+    $returnedIds = collect($response->json('data'))->pluck('data.id')->toArray();
+    foreach ($nflPublications as $pub) {
+        expect($returnedIds)->toContain($pub->id);
+    }
+    foreach ($marPublications as $pub) {
+        expect($returnedIds)->not->toContain($pub->id);
+    }
+});

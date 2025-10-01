@@ -49,7 +49,10 @@ export type PublicationPermissions = ModelPermissions & {
 }
 
 export type PublicationResource = Resource<Publication, PublicationPermissions>
-export type PublicationResourceList = ResourceList<Publication, PublicationPermissions>
+export type PublicationResourceList = ResourceList<
+  Publication,
+  PublicationPermissions
+>
 
 export type R = PublicationResource
 export type RList = PublicationResourceList
@@ -145,7 +148,12 @@ export class PublicationService {
     return response.data
   }
 
-  public static async attachSupplementaryFile(file: File, id: number, type: SupplementaryFileType, desc: string | null = null) {
+  public static async attachSupplementaryFile(
+    file: File,
+    id: number,
+    type: SupplementaryFileType,
+    desc: string | null = null,
+  ) {
     const formData = new FormData()
     formData.append('file', file)
     formData.append('supplementary_file_type', type)
@@ -165,7 +173,9 @@ export class PublicationService {
   }
 
   public static async deleteSupplementaryFile(id: number, uuid: string) {
-    const response = await http.delete(`api/publications/${id}/supplementary-files/${uuid}`)
+    const response = await http.delete(
+      `api/publications/${id}/supplementary-files/${uuid}`,
+    )
     return response.status === 204
   }
 }
@@ -193,6 +203,11 @@ export class PublicationQuery extends SpatieQuery {
 
   public filterAuthorID(authorId: number[]) {
     this.filter('publicationAuthors.author_id', authorId)
+    return this
+  }
+
+  public filterRegionId(regionId: number[]) {
+    this.filter('region_id', regionId)
     return this
   }
 
@@ -227,4 +242,8 @@ export class PublicationQuery extends SpatieQuery {
   }
 }
 
-type PublicationQuerySort = 'title' | 'created_at' | 'updated_at' | 'published_on'
+type PublicationQuerySort
+  = | 'title'
+    | 'created_at'
+    | 'updated_at'
+    | 'published_on'
