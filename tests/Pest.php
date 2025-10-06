@@ -42,7 +42,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function assertNoRealJavascriptErrors(\Pest\Browser\Api\Webpage $page): void
+function assertNoRealJavascriptErrors(Pest\Browser\Api\PendingAwaitablePage $page): void
 {
     $errors = $page->script('window.__pestBrowser.jsErrors || []');
 
