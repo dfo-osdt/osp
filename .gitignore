@@ -8,6 +8,7 @@
 /storage/*.key
 /storage/*
 /vendor
+/tests/Browser/screenshots
 .env
 .env.backup
 .phpunit.result.cache
@@ -17,8 +18,8 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-tests/cypress/videos/*
-tests/cypress/screenshots/*
 .phpactor.json
 .phpstorm.meta.php
 _ide_helper.php
+
+tests/Browser/Screenshots

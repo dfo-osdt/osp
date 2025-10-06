@@ -89,6 +89,15 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
       tooltipVisible: authStore.isDrawerMini,
     },
     {
+      icon: 'mdi-lifebuoy',
+      label: t('common.documentation'),
+      to: '',
+      href: t('common.documentation-url'),
+      external: true,
+      visible: true,
+      tooltipVisible: authStore.isDrawerMini,
+    },
+    {
       icon: 'mdi-logout',
       label: t('common.logout'),
       to: '/auth/logout',
@@ -110,7 +119,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
   >
     <QList padding class="menu-list" role="menubar">
       <DrawerMenuItem
-        v-for="item in userMenuItems.filter(item => item.visible)"
+        v-for="item in userMenuItems.filter((item) => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"
@@ -122,7 +131,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
       </QItemLabel>
 
       <DrawerMenuItem
-        v-for="item in exploreMenuItems.filter(item => item.visible)"
+        v-for="item in exploreMenuItems.filter((item) => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"
@@ -131,7 +140,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
     <QList v-if="displayBottomMenu" class="q-mb-sm" role="menubar">
       <QSeparator />
       <DrawerMenuItem
-        v-for="item in bottomMenuItems.filter(item => item.visible)"
+        v-for="item in bottomMenuItems.filter((item) => item.visible)"
         :key="item.label"
         :item="item"
         role="menuitem"

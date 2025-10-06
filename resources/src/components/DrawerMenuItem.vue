@@ -5,6 +5,8 @@ export interface MenuItem {
   to: string
   visible: boolean
   tooltipVisible: boolean
+  external?: boolean
+  href?: string
 }
 
 defineProps<{
@@ -17,7 +19,10 @@ defineProps<{
     :key="item.label"
     v-ripple
     clickable
-    :to="item.to"
+    :to="item.external ? undefined : item.to"
+    :href="item.external ? item.href : undefined"
+    :target="item.external ? '_blank' : undefined"
+    :rel="item.external ? 'noopener noreferrer' : undefined"
     :aria-label="item.label"
   >
     <q-item-section avatar>
@@ -39,7 +44,7 @@ defineProps<{
 
 <style scoped>
 .wrap-content {
-    max-width: 255px;
-    white-space: normal;
+  max-width: 255px;
+  white-space: normal;
 }
 </style>

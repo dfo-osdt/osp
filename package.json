@@ -1,45 +1,44 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "type": "module",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint resources/src",
-    "lint:test": "eslint resources/src --max-warnings 0",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "lint:test": "eslint resources/src --max-warnings 0"
   },
   "dependencies": {
-    "@intlify/unplugin-vue-i18n": "^11.0.0",
+    "@intlify/unplugin-vue-i18n": "^11.0.1",
     "@quasar/extras": "^1.17.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vueuse/core": "^13.9.0",
-    "dompurify": "^3.2.6",
+    "dompurify": "^3.2.7",
     "pinia": "^3.0.3",
-    "quasar": "^2.18.2",
-    "sass-embedded": "^1.92.1",
+    "playwright": "^1.55.1",
+    "quasar": "^2.18.5",
+    "sass-embedded": "^1.93.2",
     "vite-plugin-manifest-sri": "^0.2.0",
-    "vue": "^3.5.21",
+    "vue": "^3.5.22",
     "vue-i18n": "^11.1.12",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.3.0",
+    "@antfu/eslint-config": "^5.4.1",
     "@intlify/eslint-plugin-vue-i18n": "^4.1.0",
     "@quasar/vite-plugin": "^1.10.0",
-    "@types/node": "^24.3.1",
-    "axios": "^1.11.0",
-    "cypress": "^14.5.4",
-    "eslint": "^9.35.0",
+    "@types/node": "^24.6.1",
+    "axios": "^1.12.2",
+    "eslint": "^9.36.0",
     "eslint-plugin-quasar": "^1.1.0",
     "laravel-vite-plugin": "^2.0.1",
     "lodash": "^4.17.21",
     "prettier": "^3.6.2",
-    "typescript": "^5.9.2",
-    "unplugin-auto-import": "^20.1.0",
-    "vite": "^7.1.5",
-    "vite-plugin-vue-devtools": "^8.0.1",
-    "vue-tsc": "^3.0.6"
+    "typescript": "^5.9.3",
+    "unplugin-auto-import": "^20.2.0",
+    "vite": "^7.1.7",
+    "vite-plugin-vue-devtools": "^8.0.2",
+    "vue-tsc": "^3.1.0"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [
@@ -47,10 +46,12 @@
     ],
     "onlyBuiltDependencies": [
       "@parcel/watcher",
-      "cypress",
       "esbuild",
       "unrs-resolver"
     ]
   },
-  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
+  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971",
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.52.3"
+  }
 }

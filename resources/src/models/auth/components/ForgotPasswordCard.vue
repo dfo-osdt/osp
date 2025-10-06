@@ -103,7 +103,7 @@ const emailRules = computed(() => [
           :label="t('common.your-email')"
           lazy-rules
           :rules="emailRules"
-          data-cy="email"
+          data-test="email"
           @focus="errorMessage = null"
         />
         <div class="flex justify-end">
@@ -111,14 +111,14 @@ const emailRules = computed(() => [
             :label="t('common.reset')"
             type="submit"
             color="primary"
-            data-cy="reset-password"
+            data-test="reset-password"
             :loading="loading"
           />
           <q-btn
             :label="t('forgot-password-card.cancel')"
             color="primary"
             flat
-            data-cy="cancel"
+            data-test="cancel"
             @click="router.push({ name: 'login' })"
           />
         </div>

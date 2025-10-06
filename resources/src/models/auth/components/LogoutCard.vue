@@ -43,7 +43,7 @@ onMounted(async () => {
         round
         outline
         color="primary"
-        data-cy="login"
+        data-test="login"
         :to="{ name: 'login' }"
         icon="mdi-home"
       />

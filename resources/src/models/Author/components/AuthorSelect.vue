@@ -58,6 +58,7 @@ function createdAuthor(item: AuthorResource) {
   authorSelect.value?.updateInputValue('', true)
   selectedAuthor.value = item
   showCreateAuthorDialog.value = false
+  authorSelect.value?.hidePopup()
 }
 
 function optionValue(item: AuthorResource) {

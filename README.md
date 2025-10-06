@@ -111,19 +111,15 @@ composer run test
 
 ### Frontend Tests
 
-We use Cypress for the front-end E2E tests. It must run with the
-`env.ci` environment.
-
-Before starting the test, start the dev server. For the frontend,
-you can either use `pnpnm dev` or `pnmp build`. In most cases, `dev`
-is better as changes to the code can instantly be tested again.
+We use Pest4 for automated browser tests. Browser tests are included
+in the main test suite and run with the backend tests.
 
 ```sh
-pnpm dev
-php artisan serve --env=ci
+composer run test
 ```
 
-Once the local server is up and running, you can launch Cypress
-with `pnpm cy:open` or just run the tests with `pnpm cy:run`
+For running browser tests specifically:
 
-If using WSL, you will need to follow this [guide](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) first.
+```sh
+./vendor/bin/pest tests/Browser/
+```

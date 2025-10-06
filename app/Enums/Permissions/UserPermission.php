@@ -40,4 +40,28 @@ enum UserPermission: string
     case CAN_EDIT_ARC_MRFS = 'can_edit_arc_mrfs';
     case CAN_EDIT_PAC_MRFS = 'can_edit_pac_mrfs';
     case CAN_EDIT_NCR_MRFS = 'can_edit_ncr_mrfs';
+
+    // Regional publication permissions - edit access
+    case CAN_EDIT_NFL_PUBS = 'can_edit_nfl_pubs';
+    case CAN_EDIT_MAR_PUBS = 'can_edit_mar_pubs';
+    case CAN_EDIT_GLF_PUBS = 'can_edit_glf_pubs';
+    case CAN_EDIT_QUE_PUBS = 'can_edit_que_pubs';
+    case CAN_EDIT_ONP_PUBS = 'can_edit_onp_pubs';
+    case CAN_EDIT_ARC_PUBS = 'can_edit_arc_pubs';
+    case CAN_EDIT_PAC_PUBS = 'can_edit_pac_pubs';
+    case CAN_EDIT_NCR_PUBS = 'can_edit_ncr_pubs';
+
+    public static function getRegionalEditorPubEditPermissions(): array
+    {
+        return [
+            self::CAN_EDIT_NFL_PUBS,
+            self::CAN_EDIT_MAR_PUBS,
+            self::CAN_EDIT_GLF_PUBS,
+            self::CAN_EDIT_QUE_PUBS,
+            self::CAN_EDIT_ONP_PUBS,
+            self::CAN_EDIT_ARC_PUBS,
+            self::CAN_EDIT_PAC_PUBS,
+            self::CAN_EDIT_NCR_PUBS,
+        ];
+    }
 }

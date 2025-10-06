@@ -10,6 +10,7 @@ import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import PublicationList from '../components/PublicationList.vue'
 import { PublicationQuery, PublicationService } from '../Publication'
 
@@ -24,6 +25,7 @@ const journalId = ref<number | null>(null)
 const journalSelect = ref<InstanceType<typeof JournalSelect> | null>(null)
 const authorId = ref<number | null>(null)
 const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null)
+const regionId = ref<number | null>(null)
 
 // i18n
 const { t } = useI18n()
@@ -79,6 +81,8 @@ const mainFilter = computed(() => {
   return mainFilterOptions.value.find(f => f.active)
 })
 
+const regionStore = useRegionStore()
+
 const filterCaption = computed(() => {
   let caption = ''
   if (journalId.value) {
@@ -86,8 +90,16 @@ const filterCaption = computed(() => {
     caption += `${t('common.in')} ${title || 'NA'} `
   }
   if (authorId.value) {
-    const { first_name, last_name } = authorSelect?.value?.selectedAuthor?.data || {}
+    const { first_name, last_name }
+      = authorSelect?.value?.selectedAuthor?.data || {}
     caption += `${t('common.by')} ${first_name || 'NA'} ${last_name || 'NA'} `
+  }
+  if (regionId.value) {
+    const localeStore = useLocaleStore()
+    const region = regionStore.regions?.find(r => r.id === regionId.value)
+    const regionName
+      = localeStore.locale === 'fr' ? region?.name_fr : region?.name_en
+    caption += `${t('common.in')} ${regionName || 'NA'} `
   }
   if (caption.length > 0)
     caption = `${t('common.publications')} ${caption.slice(0, -1)}`
@@ -120,6 +132,10 @@ async function getPublications() {
 
   if (authorId.value) {
     query = query.filterAuthorID([authorId.value])
+  }
+
+  if (regionId.value) {
+    query = query.filterRegionId([regionId.value])
   }
 
   query.sort('title', 'asc')
@@ -157,6 +173,11 @@ watch(journalId, () => {
 })
 
 watch(authorId, () => {
+  currentPage.value = 1
+  getPublications()
+})
+
+watch(regionId, () => {
   currentPage.value = 1
   getPublications()
 })
@@ -216,10 +237,7 @@ interface MainFilterOption {
             {{ mainFilter?.caption }}
           </template>
           <template #title-right>
-            <SearchInput
-              v-model="search"
-              :label="$t('common.filter')"
-            />
+            <SearchInput v-model="search" :label="$t('common.filter')" />
           </template>
           <template #nav>
             <q-expansion-item
@@ -242,6 +260,7 @@ interface MainFilterOption {
                   :disable="loading"
                   :hide-create-author-dialog="true"
                 />
+                <RegionSelect v-model="regionId" :readonly="loading" clearable />
               </q-card-section>
             </q-expansion-item>
             <q-separator />

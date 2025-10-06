@@ -18,6 +18,7 @@ function toggleLeftDrawer() {
       <q-btn
         v-if="authStore.isAuthenticated"
         class="q-mr-lg q-mt-xs"
+        data-test="toggle-left-drawer"
         flat
         dense
         round
@@ -47,6 +48,7 @@ function toggleLeftDrawer() {
         round
         color="secondary"
         :label="authStore.user?.initials"
+        data-test="user-menu-button"
       >
         <q-menu :offset="[0, 10]">
           <q-list>
@@ -54,7 +56,7 @@ function toggleLeftDrawer() {
               {{ authStore.user?.fullName }}
             </q-item-label>
             <q-separator />
-            <q-item v-ripple to="/settings" clickable>
+            <q-item v-ripple to="/settings" data-test="settings-item" clickable>
               <q-item-section>
                 <q-item-label>
                   {{ t('common.settings') }}
@@ -64,7 +66,7 @@ function toggleLeftDrawer() {
                 <q-icon name="mdi-account-cog-outline" />
               </q-item-section>
             </q-item>
-            <q-item v-ripple to="/dashboard" clickable>
+            <q-item v-ripple to="/dashboard" data-test="dashboard-item" clickable>
               <q-item-section>
                 <q-item-label>
                   {{ t('common.dashboard') }}
@@ -74,7 +76,7 @@ function toggleLeftDrawer() {
                 <q-icon name="mdi-view-dashboard-outline" />
               </q-item-section>
             </q-item>
-            <q-item v-ripple to="/auth/logout" clickable>
+            <q-item v-ripple to="/auth/logout" data-test="logout-item" clickable>
               <q-item-section>
                 <q-item-label>
                   {{ t('common.logout') }}

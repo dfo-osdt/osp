@@ -156,7 +156,7 @@ async function decisionSubmitted() {
             t('policy.privacy-act')
           }}</a>
         </template>
-        <template #valueAndEthicsCode>
+        <template #dfoCodeOfConduct>
           <a
             :href="t('policy.values-and-ethics-code-for-dfo-link')"
             target="_blank"

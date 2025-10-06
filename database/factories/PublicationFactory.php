@@ -70,11 +70,11 @@ class PublicationFactory extends Factory
     }
 
     /** Has a manuscript */
-    public function withManuscript()
+    public function withManuscript(array $manuscriptAttributes = [])
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function (array $attributes) use ($manuscriptAttributes) {
             return [
-                'manuscript_record_id' => \App\Models\ManuscriptRecord::factory()->accepted(),
+                'manuscript_record_id' => \App\Models\ManuscriptRecord::factory()->accepted()->state($manuscriptAttributes),
             ];
         });
     }

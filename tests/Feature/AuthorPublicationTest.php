@@ -1,8 +1,10 @@
 <?php
 
+use App\Enums\Permissions\UserRole;
 use App\Models\Author;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
+use App\Models\Region;
 use App\Models\User;
 
 test('authenticated user can get author publications', function () {
@@ -169,4 +171,78 @@ test('includes proper eager loaded relationships', function () {
     expect($publicationData['journal']['data'])->toHaveKeys(['id', 'title']);
     expect($publicationData['publication_authors'][0]['data']['author']['data'])
         ->toHaveKeys(['id', 'first_name']);
+});
+
+test('regional editor sees published and unpublished publications in their region', function () {
+    $nflRegion = Region::whereSlug('nfl')->first();
+    $marRegion = Region::whereSlug('mar')->first();
+
+    $regionalEditor = User::factory()->create();
+    $regionalEditor->assignRole(UserRole::NFL_EDITOR);
+
+    $author = Author::factory()->create();
+
+    // Create published publication in NFL region
+    $publishedNfl = Publication::factory()->published()->create(['region_id' => $nflRegion->id]);
+    PublicationAuthor::factory()->create([
+        'publication_id' => $publishedNfl->id,
+        'author_id' => $author->id,
+    ]);
+
+    // Create unpublished (accepted) publication in NFL region
+    $acceptedNfl = Publication::factory()->create(['region_id' => $nflRegion->id]);
+    PublicationAuthor::factory()->create([
+        'publication_id' => $acceptedNfl->id,
+        'author_id' => $author->id,
+    ]);
+
+    // Create unpublished publication in MAR region (should not see)
+    $acceptedMar = Publication::factory()->create(['region_id' => $marRegion->id]);
+    PublicationAuthor::factory()->create([
+        'publication_id' => $acceptedMar->id,
+        'author_id' => $author->id,
+    ]);
+
+    // Create published publication in MAR region (should see)
+    $publishedMar = Publication::factory()->published()->create(['region_id' => $marRegion->id]);
+    PublicationAuthor::factory()->create([
+        'publication_id' => $publishedMar->id,
+        'author_id' => $author->id,
+    ]);
+
+    $response = $this->actingAs($regionalEditor)->getJson("/api/authors/{$author->id}/publications");
+
+    $response->assertOk();
+    $response->assertJsonCount(3, 'data');
+
+    $returnedIds = collect($response->json('data'))->pluck('data.id')->toArray();
+    expect($returnedIds)->toContain($publishedNfl->id, $acceptedNfl->id, $publishedMar->id);
+    expect($returnedIds)->not->toContain($acceptedMar->id);
+});
+
+test('editor with UPDATE_PUBLICATIONS sees all author publications regardless of status or region', function () {
+    $nflRegion = Region::whereSlug('nfl')->first();
+    $marRegion = Region::whereSlug('mar')->first();
+
+    $editor = User::factory()->create();
+    $editor->assignRole(UserRole::EDITOR);
+
+    $author = Author::factory()->create();
+
+    // Create published and unpublished in different regions
+    $publishedNfl = Publication::factory()->published()->create(['region_id' => $nflRegion->id]);
+    $acceptedNfl = Publication::factory()->create(['region_id' => $nflRegion->id]);
+    $acceptedMar = Publication::factory()->create(['region_id' => $marRegion->id]);
+
+    foreach ([$publishedNfl, $acceptedNfl, $acceptedMar] as $publication) {
+        PublicationAuthor::factory()->create([
+            'publication_id' => $publication->id,
+            'author_id' => $author->id,
+        ]);
+    }
+
+    $response = $this->actingAs($editor)->getJson("/api/authors/{$author->id}/publications");
+
+    $response->assertOk();
+    $response->assertJsonCount(3, 'data');
 });

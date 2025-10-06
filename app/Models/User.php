@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Permissions\UserPermission;
+use App\Enums\Permissions\UserRole;
 use App\Notifications\Authentication\PasswordResetNotification;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
@@ -304,5 +305,13 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     public function previousSuccessfulLoginAt()
     {
         return $this->authentications()->whereLoginSuccessful(true)->skip(1)->first()?->login_at;
+    }
+
+    /** Is this a Regional Editor */
+    public function isRegionalEditor(): bool
+    {
+        $regionalEditorRoles = UserRole::getRegionalEditorRoles();
+
+        return $this->hasAnyRole($regionalEditorRoles);
     }
 }

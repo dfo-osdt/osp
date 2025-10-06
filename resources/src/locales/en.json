@@ -287,10 +287,16 @@
     "plain-language-summary-en": "Plain Language Summary - English",
     "plain-language-summary-fr": "Plain Language Summary - French",
     "clone": "Duplicate",
-    "type": "of type"
+    "type": "of type",
+    "documentation": "Documentation",
+    "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/"
   },
   "create-author-dialog": {
-    "title": "Create a new author"
+    "title": "Create a new author",
+    "personal-information": "Personal Information",
+    "affiliation-research": "Affiliation & Research Information",
+    "ror-guidance": "When selecting your co-author's affiliation, choose the main institution that appears in their research publications (e.g., 'McGill University' not 'Department of Science at McGill'). Only create a new organization if you cannot find their main institutional affiliation.",
+    "personal-email-warning": "Consider asking your co-author for their institutional email address. Personal email addresses may not be ideal for professional research communications."
   },
   "create-manuscript-record-dialog": {
     "create-text": "Once created, you will be taken to the manuscript record form. The manuscript record form will be marked as a draft and only be visible to you and the people you invite as observers. Once the form is complete you will be able to submit it for review.",
@@ -453,8 +459,8 @@
   },
   "management-review-guidelines": {
     "subtitle": "Please refer to the National Policy for Science Publications for more details.",
-    "tip-one": "Review the manuscript for compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs) and the Values and Ethics Code for DFO.",
-    "tip-two": "Identify whether the manuscript is of potential public or media interest, solely for the purpose of briefing senior management and the Communications Branch. This information can be filled out in the Potential Public Interest section of the manuscript form. Note that at no time, will the inclusion of sensitive material (e.g. data, scientific conclusions) prevent publication of scientific papers.",
+    "tip-one": "Review the manuscript for compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs) and the DFO Code of Conduct.",
+    "tip-two": "Identify whether the manuscript is of potential public or media interest, solely for the purpose of briefing senior management and the Communications Branch. This information can be filled out in the Potential Public Interest section of the manuscript form. The inclusion of sensitive material (e.g. data, scientific conclusions) should not prevent publication of scientific papers.",
     "title": "Management Review Guidelines"
   },
   "management-review-response": {
@@ -655,16 +661,16 @@
     "intellectual-property-policy-copyright-act": "Intellectual Property Policy/Copyright Act",
     "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/terms-avis/copyright-droits-eng.htm",
     "message": {
-      "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {valueAndEthicsCode}.\n",
-      "p2": "Identifies when a manuscript is of potential public interest for the sole purpose of informing RDS and DFO regional Communications. Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to show case DFO research or studies that are more controversial. The inclusion of potentially sensitive material will never prevent the publication of a manuscript in any way."
+      "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {dfoCodeOfConduct}.\n",
+      "p2": "Identifies when a manuscript is of potential public interest for the sole purpose of informing RDS, DG and DFO Communications. Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to show case DFO research or studies that are more controversial. The inclusion of potentially sensitive material will not prevent the publication of a manuscript."
     },
     "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html",
     "p2": "Authors may submit their publication to the third-party journal for peer review after the manager has deemed the publication to be in alignment with the relevant legislation, policies and directives, or if no feedback was received from the management review within 10 working days. Division Managers, National Directors, Regional Directors of Science and National Directors General may perform the management review. ",
     "privacy-act": "Privacy Act",
     "privacy-act-link": "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-privacy-act/pa_brief/",
-    "values-and-ethics-code-for-dfo": "Values and Ethics Code for DFO",
-    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-eng.htm",
+    "values-and-ethics-code-for-dfo": "DFO Code of Conduct",
+    "values-and-ethics-code-for-dfo-link": "https://intranet.ent.dfo-mpo.ca/hr-rh/sites/hr-rh/files/code_of_conduct_v18_sept_4_2025_-_final_0.pdf",
     "p3": "If a manager identifies issues related to the relevant legislation, policies, and directives, they must communicate with the author(s) to request revisions or refer the publication to the respective Regional Director of Science or National Director General, and the 10-working-day timeline is paused. "
   },
   "pub": {

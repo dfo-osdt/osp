@@ -165,10 +165,10 @@ async function deleteManuscriptAuthor(manuscriptAuthor: ManuscriptAuthorResource
               :key="item.data.id"
               :manuscript-author="item"
               :readonly="readonly"
-              @delete:manuscript-author="
+              @delete-manuscript-author="
                 deleteManuscriptAuthor(item)
               "
-              @edit:toggle-corresponding-author="
+              @edit-toggle-corresponding-author="
                 toggleCorrespondingAuthor(item, $event)
               "
               @click.prevent

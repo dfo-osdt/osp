@@ -287,10 +287,16 @@
     "preprint-url-placeholder": "https://doi.org/ ..",
     "submitted-to-preprint-on": "Date soumise au serveur préalable",
     "clone": "Dupliquer",
-    "type": "de type"
+    "type": "de type",
+    "documentation": "Documentation",
+    "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/fr/"
   },
   "create-author-dialog": {
-    "title": "Créer un nouvel auteur"
+    "title": "Créer un nouvel auteur",
+    "personal-information": "Informations personnelles",
+    "affiliation-research": "Affiliation et informations de recherche",
+    "ror-guidance": "Lors de la sélection de l'affiliation de votre co-auteur, choisissez l'institution principale qui apparaît dans ses publications de recherche (par exemple, 'Université McGill' et non 'Département des sciences de McGill'). Ne créez une nouvelle organisation que si vous ne trouvez pas leur affiliation institutionnelle principale.",
+    "personal-email-warning": "Considérez demander à votre co-auteur son adresse courriel institutionnelle. Les adresses courriels personnelles peuvent ne pas être idéales pour les communications de recherche professionnelles."
   },
   "create-manuscript-record-dialog": {
     "create-text": "Une fois créé, vous serez redirigé vers le formulaire du registre des manuscrits. \nLe formulaire du registre des manuscrits sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour révision.",
@@ -453,8 +459,8 @@
   },
   "management-review-guidelines": {
     "subtitle": "Veuillez consulter la Politique nationale des publications scientifiques pour plus de détails.",
-    "tip-one": "Examiner le manuscrit pour s'assurer qu'il est conforme à la Politique sur la propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de valeurs et d'éthique du MPO.",
-    "tip-two": "Déterminez si le manuscrit présente un intérêt potentiel pour le public ou les médias, uniquement dans le but d'informer la haute direction et la Direction des communications. Ces informations peuvent être renseignées dans la section Intérêt public potentiel du formulaire de manuscrit. Notez qu'à aucun moment l'inclusion de documents sensibles (par exemple des données, des conclusions scientifiques) n'empêchera la publication d'articles scientifiques.",
+    "tip-one": "Examiner le manuscrit pour s'assurer qu'il est conforme à la Politique sur la propriété intellectuelle/Loi sur le droit d'auteur, la Loi sur la protection des renseignements personnels, la Loi sur la gestion des finances publiques (en ce qui concerne les approbations des frais de publication) et le Code de conduite du MPO.",
+    "tip-two": "Déterminez si le manuscrit présente un intérêt potentiel pour le public ou les médias, uniquement dans le but d'informer la haute direction et la Direction des communications. Ces informations peuvent être renseignées dans la section Intérêt public potentiel du formulaire de manuscrit. L'inclusion de documents sensibles (par exemple des données, des conclusions scientifiques) ne devrait pas empêcher la publication d'articles scientifiques.",
     "title": "Lignes directrices sur la révision par la gestion"
   },
   "management-review-response": {
@@ -655,16 +661,16 @@
     "intellectual-property-policy-copyright-act": "Politique de propriété intellectuelle/ la loi sur le droit d'auteur",
     "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/terms-avis/copyright-droits-fra.htm",
     "message": {
-      "p1": "Réviser le manuscrit pour vérifier qu'il respecte le {copyrightsAct}, la {privacyAct}, la loi sur la gestion financière (en ce qui concerne les approbations des coûts de publication) et le {valueAndEthicsCode}.",
-      "p2": " Il identifiera également les cas où un manuscrit présente un intérêt potentiel pour le public, dans le seul but d'informer les Communications et le RDS. Des exemples de sujets d'intérêt public potentiel, incluent des sujets liés à l'actualité ou à l'intérêt des parties prenantes. Il peut s'agir d'histoires intéressantes pour illustrer les projets de recherches menés au MPO ou des sujets d'études qui sont plus controversées. L'inclusion de matériel potentiellement sensible n'empêchera jamais la publication d'un manuscrit."
+      "p1": "Réviser le manuscrit pour vérifier qu'il respecte le {copyrightsAct}, la {privacyAct}, la loi sur la gestion financière (en ce qui concerne les approbations des coûts de publication) et le {dfoCodeOfConduct}.",
+      "p2": " Il identifiera également les cas où un manuscrit présente un intérêt potentiel pour le public, dans le seul but d'informer les Communications et le RDS ou DG. Des exemples de sujets d'intérêt public potentiel, incluent des sujets liés à l'actualité ou à l'intérêt des parties prenantes. Il peut s'agir d'histoires intéressantes pour illustrer les projets de recherches menés au MPO ou des sujets d'études qui sont plus controversées. L'inclusion de matériel potentiellement sensible n'empêchera pas la publication d'un manuscrit."
     },
     "national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html",
     "p2": "Les auteurs peuvent soumettre leur publication au Journal tiers pour l'examen par les pairs après que le gestionnaire a jugé que la publication était alignée sur la législation, les politiques et les directives pertinentes, ou si aucun commentaire n'a été reçu de l'examen de la direction dans les 10 jours ouvrables. Les directeurs de division, les directeurs nationaux, les directeurs régionaux des sciences et les directeurs nationaux généraux peuvent effectuer l'examen de la gestion.",
     "privacy-act": "Loi sur la protection des renseignements personnels",
     "privacy-act-link": "https://www.priv.gc.ca/fr/sujets-lies-a-la-protection-de-la-vie-privee/lois-sur-la-protection-des-renseignements-personnels-au-canada/la-loi-sur-la-protection-des-renseignements-personnels/lprp_survol/",
-    "values-and-ethics-code-for-dfo": "Code de valeurs et d'éthique du MPO",
-    "values-and-ethics-code-for-dfo-link": "https://www.dfo-mpo.gc.ca/reports-rapports/vicr-virc/vicr-virc2012-fra.htm",
+    "values-and-ethics-code-for-dfo": "Code de conduite du MPO",
+    "values-and-ethics-code-for-dfo-link": "https://intranet.ent.dfo-mpo.ca/hr-rh/sites/hr-rh/files/code_of_conduct_fr_4_sept_final_1.pdf",
     "p3": "Si un gestionnaire identifie les questions liées à la législation, aux politiques et aux directives pertinentes, elle doit communiquer avec les auteurs pour demander des révisions ou renvoyer la publication au directeur régional respectif de la science ou du directeur général national, et le calendrier de 10 jours ouvrable est interrompu."
   },
   "pub": {
