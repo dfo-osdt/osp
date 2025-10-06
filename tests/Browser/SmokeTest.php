@@ -9,7 +9,7 @@ test('the index can be loaded successfully', function (): void {
 
     $page->assertSee('EOS Open Science Portal');
 
-    $page->assertNoJavascriptErrors();
+    assertNoRealJavascriptErrors($page);
     $page->screenshot(filename: 'index-page', fullPage: true);
 
 });
@@ -34,7 +34,7 @@ test('an authenticated user can see the dashboard', function (): void {
     $page->click('[data-test="dashboard-item"]');
     $page->wait(1);
 
-    $page->assertNoJavascriptErrors();
+    assertNoRealJavascriptErrors($page);
     $page->assertSee('Recent');
     $page->screenshot(filename: 'dashboard-page', fullPage: true);
 

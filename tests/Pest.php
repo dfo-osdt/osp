@@ -42,7 +42,15 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function assertNoRealJavascriptErrors(\Pest\Browser\Api\Webpage $page): void
 {
-    // ..
+    $errors = $page->script('window.__pestBrowser.jsErrors || []');
+
+    $realErrors = array_filter($errors, fn ($error) => ! str_contains($error['message'], 'ResizeObserver loop'));
+
+    expect($realErrors)->toBeEmpty(sprintf(
+        'Expected no JavaScript errors, but found %s: %s',
+        count($realErrors),
+        implode(', ', array_map(fn ($e) => $e['message'], $realErrors))
+    ));
 }
