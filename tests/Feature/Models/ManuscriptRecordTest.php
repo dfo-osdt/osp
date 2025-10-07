@@ -3,6 +3,7 @@
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Enums\MediaCollection;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptRecordToReviewMail;
 use App\Models\Journal;
@@ -316,12 +317,34 @@ test('a user can mark their manuscript as accepted', function () {
     ];
 
     // only the author can mark the manuscript as accepted
-    $this->actingAs(User::factory()->create())->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertForbidden();
+    $this->actingAs(User::factory()->create())->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertForbidden();
 
-    $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
+    $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
 
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
     expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
+});
+
+test('a user can submit their manuscript to the science pub team', function () {
+    // create a manuscript that has been submitted
+    $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
+    $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => Journal::factory()->dfoSeries()->create()->id,
+        'submission_file' => $file,
+    ];
+
+    // only the author can mark the manuscript as accepted
+    $this->actingAs(User::factory()->create())->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertForbidden();
+
+    $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
+
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
+    expect($manuscript->publication->getMedia(MediaCollection::SUPPLEMENTARY_FILE->value)->first()->file_name)->toBe('test.docx');
 });
 
 test('a user can delete their manuscript record if it is a draft', function () {

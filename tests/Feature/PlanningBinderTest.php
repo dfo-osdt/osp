@@ -5,6 +5,8 @@ use App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail;
 use App\Models\Journal;
 use App\Models\ManuscriptRecord;
 use App\States\PlanningBinder\PlanningBinderItemState;
+use Illuminate\Support\Facades\Mail;
+use Thunk\Verbs\Facades\Verbs;
 
 test('a flagged manuscript that is accepted to a journal triggers an event', function () {
 
@@ -29,7 +31,7 @@ test('a flagged manuscript that is accepted to a journal triggers an event', fun
         'journal_id' => Journal::factory()->create()->id,
     ];
 
-    $response = $this->actingAs($mrf->user)->putJson('/api/manuscript-records/'.$mrf->id.'/accepted', $data);
+    $response = $this->actingAs($mrf->user)->postJson('/api/manuscript-records/'.$mrf->id.'/accepted', $data);
 
     $response->assertStatus(200);
 

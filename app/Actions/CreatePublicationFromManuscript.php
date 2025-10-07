@@ -3,18 +3,20 @@
 namespace App\Actions;
 
 use App\Enums\PublicationStatus;
+use App\Enums\SupplementaryFileType;
 use App\Models\Journal;
 use App\Models\ManuscriptRecord;
 use App\Models\Publication;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CreatePublicationFromManuscript
 {
-    public static function handle(ManuscriptRecord $manuscriptRecord, Journal $journal): Publication
+    public static function handle(ManuscriptRecord $manuscriptRecord, Journal $journal, string|UploadedFile|null $file = null): Publication
     {
 
         // create a new publication record
-        return DB::transaction(function () use ($manuscriptRecord, $journal) {
+        return DB::transaction(function () use ($manuscriptRecord, $journal, $file) {
             $publication = $manuscriptRecord->publication()->create([
                 'title' => $manuscriptRecord->title,
                 'journal_id' => $journal->id,
@@ -41,6 +43,19 @@ class CreatePublicationFromManuscript
                     'description' => $fundingSource->description,
                 ]);
             });
+
+            if ($file) {
+
+                if (is_string($file)) {
+                    if (! file_exists($file) || ! is_readable($file)) {
+                        throw new \Exception("The file path provided does not exist or is not readable: $file");
+                    }
+                }
+
+                $publication->addSupplementaryFile($file,
+                    SupplementaryFileType::AUTHORS_ACCEPTED_MANUSCRIPT,
+                    "Submission to Science Publication Team / Soumission à l'équipe de publication scientifique");
+            }
 
             return $publication;
         });

@@ -251,6 +251,11 @@ class ManuscriptRecordController extends Controller
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => 'required|date|after_or_equal:submitted_to_journal_on',
             'journal_id' => ['required', 'exists:journals,id'],
+            'submission_file' => [
+                'file',
+                'mimes:doc,docx',
+                'max:'.(config('media-library.max_file_size') / 1024),
+            ],
         ]);
 
         // Ensure the journal selected matches the manuscript record type.
@@ -261,6 +266,11 @@ class ManuscriptRecordController extends Controller
             abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
         }
 
+        // Ensure secondary manuscripts have a submission file.
+        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $validated['submission_file']) {
+            abort(422, 'A submission file is required for secondary MRFs.');
+        }
+
         $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
         // if the submitted to journal date is given, set it.
         if ($validated['submitted_to_journal_on']) {
@@ -269,7 +279,7 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
         $manuscriptRecord->save();
 
-        CreatePublicationFromManuscript::handle($manuscriptRecord, $journal);
+        CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null);
 
         // if the manuscript is a secondary, send an email to the submissions team
         if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
