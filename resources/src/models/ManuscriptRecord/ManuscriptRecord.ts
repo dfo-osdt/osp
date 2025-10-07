@@ -230,15 +230,23 @@ export class ManuscriptRecordService {
     submittedOn: string,
     acceptedOn: string,
     journalId: number,
+    submissionFile: File | null = null,
   ) {
-    const data = {
-      submitted_to_journal_on: submittedOn,
-      accepted_on: acceptedOn,
-      journal_id: journalId,
+    const formData = new FormData()
+    formData.append('submitted_to_journal_on', submittedOn)
+    formData.append('accepted_on', acceptedOn)
+    formData.append('journal_id', journalId.toString())
+    if (submissionFile) {
+      formData.append('submission_file', submissionFile)
     }
-    const response = await http.put<any, ManuscriptRecordResource>(
+    const response = await http.post<FormData, ManuscriptRecordResource>(
       `${this.baseURL}/${id}/accepted`,
-      data,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     )
     return response.data
   }

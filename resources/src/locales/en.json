@@ -874,7 +874,9 @@
   },
   "submit-to-pub-team-dialog": {
     "title": "Submit to the Science Publication Team",
-    "text": "Congratulations! The Science publication team will be in touch with you and/or the corresponding author(s) shortly after the submission."
+    "text": "Congratulations! The Science publication team will be in touch with you and/or the corresponding author(s) shortly after the submission.",
+    "file-label": "Submitted Manuscript Document (Word format)",
+    "file-hint": "Upload your manuscript document (.doc or .docx, max {max}MB)"
   },
   "azure-user-select": {
     "search-hint": "Start typing an email to search for a DFO user"
