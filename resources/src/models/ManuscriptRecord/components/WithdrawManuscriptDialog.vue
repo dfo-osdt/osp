@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ManuscriptRecordResource } from '../ManuscriptRecord'
-import { QBtn, QCardActions, QForm } from 'quasar'
+import { QBtn, QCardActions, QForm, QInput } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import { ManuscriptRecordService } from '../ManuscriptRecord'
 
