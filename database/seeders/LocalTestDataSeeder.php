@@ -118,6 +118,16 @@ class LocalTestDataSeeder extends Seeder
                 'accepted_on' => now()->subMonths(11),
             ]);
 
+        \App\Models\Publication::factory()->count(2)
+            ->has(PublicationAuthor::factory(3))
+            ->create([
+                'status' => PublicationStatus::PUBLISHED,
+                'user_id' => $user->id,
+                'journal_id' => \App\Models\Journal::first()->id,
+                'published_on' => now()->subMonths(10),
+                'accepted_on' => now()->subMonths(11),
+            ]);
+
         // create a division manager user
         $dmUser = \App\Models\User::factory()->create([
             'first_name' => 'Division',
