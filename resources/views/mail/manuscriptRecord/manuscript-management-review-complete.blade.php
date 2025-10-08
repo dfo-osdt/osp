@@ -13,8 +13,7 @@ After submission, the following steps will take place:
 
 1. Your manuscript will be marked as accepted in the portal.
 2. It will then undergo a technical edit.
-3. A final proof will be sent to the corresponding author(s) for review and approval.
-4. Once the proof is finalized, the publication group will arrange for your manuscript to be published in the appropriate series.
+3. Once the proof is finalized, the publication group will arrange for your manuscript to be published in the appropriate series.
 
 @else
 You may proceed with the publication process for the manuscript titled "{{ $manuscriptRecord->title }}".
@@ -45,8 +44,7 @@ Après la soumission, les étapes suivantes auront lieu :
 
 1. Votre manuscrit sera marqué comme accepté dans le portail.
 2. Il sera ensuite soumis à une révision technique.
-3. Une épreuve finale sera envoyée au(x) auteur(s) correspondant(s) pour relecture et approbation.
-4. Une fois l’épreuve finalisée, le groupe de publication organisera la publication de votre manuscrit dans la série appropriée.
+3. Une fois l’épreuve finalisée, le groupe de publication organisera la publication de votre manuscrit dans la série appropriée.
 
 @else
 Vous pouvez procéder à la publication du manuscrit intitulé "{{ $manuscriptRecord->title }}".
