@@ -42,7 +42,7 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
             throw new \Exception('The manuscript submission email address is not set.');
         }
 
-        $subject = 'Manuscript Record Flagged for Planning Binder - Manuscrit identifié pour le classeur de planification';
+        $subject = '[No Action Required] Manuscript Record Flagged for Planning Binder - [Aucune Action Requise] Manuscrit identifié pour le classeur de planification';
 
         return new Envelope(
             subject: $subject,
