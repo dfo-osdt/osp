@@ -56,24 +56,31 @@ const showPublishBanner = computed(() => {
       v-if="showPublishBanner"
       class="bg-secondary text-white q-pt-lg q-pb-md"
     >
-      <div class="flex justify-between items-center">
-        <div class="text-subtitle1 flex items-center">
-          <q-icon name="mdi-information-outline" size="md" class="q-mr-sm" />
-          <span v-if="manuscript?.data.type === 'primary'">
-            {{ $t('mrf.ready-to-marked-published') }}
-          </span>
-          <span v-if="manuscript?.data.type === 'secondary'">
-            {{ $t('mrf.ready-to-submit') }}
-          </span>
-          <span v-if="manuscript?.data.type === 'preprint'">
-            {{ $t('mrf.ready-to-submit-preprint') }}
-          </span>
+      <div class="row">
+        <div class="col-10 text-subtitle1">
+          <div class="row items-center">
+            <div class="col-1 justify-center">
+              <q-icon name="mdi-information-outline" size="md" />
+            </div>
+            <div class="col-10 q-pt-sm">
+              <p v-if="manuscript?.data.type === 'primary'">
+                {{ $t('mrf.ready-to-marked-published') }}
+              </p>
+              <p v-if="manuscript?.data.type === 'secondary'">
+                {{ $t('mrf.ready-to-submit') }}
+              </p>
+              <p v-if="manuscript?.data.type === 'preprint'">
+                {{ $t('mrf.ready-to-submit-preprint') }}
+              </p>
+            </div>
+          </div>
         </div>
-        <div>
+        <div class="col-2 justify-end flex">
           <q-btn
             flat
             class="text-white"
             icon-right="mdi-arrow-right-thin-circle-outline"
+            size="lg"
             :to="`/manuscript/${id}/progress`"
           />
         </div>
