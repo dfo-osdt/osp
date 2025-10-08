@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "wsl",
+            "args": [
+                "/usr/bin/php8.4",
+                "/home/augerv/code/osp/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
