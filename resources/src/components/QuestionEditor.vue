@@ -57,12 +57,17 @@ function onPaste(e: ClipboardEvent) {
 }
 
 watch(value, (newValue) => {
-  if (newValue === '<br>') {
+  // First check if content is only empty HTML (br tags, empty divs/paragraphs, &nbsp;)
+  const div = document.createElement('div')
+  div.innerHTML = newValue
+  const textContent = (div.textContent || div.innerText || '').trim()
+
+  if (textContent === '') {
     value.value = ''
     return
   }
 
-  // Remove leading &nbsp; entities
+  // Remove leading &nbsp; entities and whitespace
   const cleaned = newValue.replace(/^(&nbsp;|\s)+/, '')
   if (cleaned !== newValue) {
     value.value = cleaned
