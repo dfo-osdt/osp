@@ -60,7 +60,7 @@ watch(value, (newValue) => {
   // First check if content is only empty HTML (br tags, empty divs/paragraphs, &nbsp;)
   const div = document.createElement('div')
   div.innerHTML = newValue
-  const textContent = (div.textContent || div.innerText || '').trim()
+  const textContent = (div.textContent || '').trim()
 
   if (textContent === '') {
     value.value = ''
