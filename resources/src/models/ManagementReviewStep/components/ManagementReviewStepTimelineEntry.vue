@@ -198,6 +198,7 @@ function withdrawManuscript() {
             icon="mdi-book-remove-outline"
             color="red"
             outline
+            :disabled="managementStep.data.comments === ''"
             :label="
               t('manuscript-progress-view.withdraw-manuscript')
             "
