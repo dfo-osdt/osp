@@ -59,6 +59,13 @@ function onPaste(e: ClipboardEvent) {
 watch(value, (newValue) => {
   if (newValue === '<br>') {
     value.value = ''
+    return
+  }
+
+  // Remove leading &nbsp; entities
+  const cleaned = newValue.replace(/^(&nbsp;|\s)+/, '')
+  if (cleaned !== newValue) {
+    value.value = cleaned
   }
 })
 </script>
