@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enums\ManuscriptRecordType;
 use App\Events\Auth\Invited;
+use App\Mail\ManagementReviewDueMail;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -180,6 +181,59 @@ class ExportEmails extends Command
         $flaggedEmail = new \App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail($state);
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('flagged-manuscript-accepted-in-journal.html', $markdownContent);
+
+        // Management review due soon (only due soon reviews)
+        $user = User::factory()->create();
+        $dueSoonReviews = collect([
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'decision_expected_by' => now()->addDay(),
+            ]),
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'decision_expected_by' => now()->addBusinessDays(2),
+            ]),
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'decision_expected_by' => now()->addHours(12),
+            ]),
+        ])->each(fn ($review) => $review->load('manuscriptRecord'));
+
+        $managementReviewDueSoon = new ManagementReviewDueMail($dueSoonReviews, $user);
+        $markdownContent = $managementReviewDueSoon->render();
+        $this->exportFile('management-review-due-soon.html', $markdownContent);
+
+        // Management review due and overdue (mix of both)
+        $user = User::factory()->create();
+        $mixedReviews = collect([
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'decision_expected_by' => now()->subDays(3),
+            ]),
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'decision_expected_by' => now()->subDay(),
+            ]),
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'decision_expected_by' => now()->addDay(),
+            ]),
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'decision_expected_by' => now()->addBusinessDays(2),
+            ]),
+        ])->each(fn ($review) => $review->load('manuscriptRecord'));
+
+        $managementReviewDueAndOverdue = new ManagementReviewDueMail($mixedReviews, $user);
+        $markdownContent = $managementReviewDueAndOverdue->render();
+        $this->exportFile('management-review-due-and-overdue.html', $markdownContent);
 
         \DB::rollBack();
 
