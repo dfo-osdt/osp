@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Actions\Notifications\CheckDueManagementReviews;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class SendDueManagementReviewNotifications extends Command
 {
@@ -29,13 +28,25 @@ class SendDueManagementReviewNotifications extends Command
     {
         if (! now()->isBusinessDay() && ! $this->option('force')) {
             $this->info('Skipping notification - today is not a business day.');
-            Log::info('SendDueManagementReviewNotifications skipped - not a business day');
+            activity()
+                ->withProperties([
+                    'date' => now()->toDateString(),
+                    'is_business_day' => false,
+                ])
+                ->log('SendDueManagementReviewNotifications skipped - not a business day');
 
             return 0;
         }
 
         if (! now()->isBusinessDay() && $this->option('force')) {
             $this->warn('Forcing execution on a non-business day...');
+            activity()
+                ->withProperties([
+                    'date' => now()->toDateString(),
+                    'is_business_day' => false,
+                    'forced' => true,
+                ])
+                ->log('SendDueManagementReviewNotifications forced on non-business day');
         }
 
         $this->info('Checking for due and overdue management reviews...');
@@ -43,7 +54,12 @@ class SendDueManagementReviewNotifications extends Command
         CheckDueManagementReviews::handle();
 
         $this->info('Management review notifications have been queued.');
-        Log::info('SendDueManagementReviewNotifications completed successfully');
+        activity()
+            ->withProperties([
+                'date' => now()->toDateString(),
+                'is_business_day' => now()->isBusinessDay(),
+            ])
+            ->log('SendDueManagementReviewNotifications completed successfully');
 
         return 0;
     }

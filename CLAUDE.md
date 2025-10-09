@@ -72,6 +72,13 @@
 - Events: `$this->dispatch()` (not `emit`)
 - Alpine is included with Livewire
 
+### Logging
+- Use `activity()` helper from Spatie Activity Log for application events
+- Prefer `activity()` over `Log::` for better auditing and database storage
+- Include contextual properties with `->withProperties([...])`
+- Example: `activity()->withProperties(['date' => now()])->log('Event occurred')`
+- Activity logs stored in `activity_log` table, queryable through application
+
 ## Other
 - Use `config()` not `env()` outside config files
 - Use named routes: `route('home')` not hardcoded paths
