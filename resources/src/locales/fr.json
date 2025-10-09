@@ -510,7 +510,7 @@
     "withdraw-manuscript": "Retirer le manuscrit",
     "withdrawn-by-applicant": "Retiré par le demandeur",
     "withdrawn-details": "Le manuscrit a été retiré par le demandeur pour la raison suivante: ",
-    "submisison-to-dfo-title": "Soumettre au groupe de publication du SEO",
+    "submission-to-dfo-title": "Soumettre au guichet unique pour les publications scientifiques du MPO",
     "submit-title": "Soumettre le manuscrit",
     "submission-to-dfo-details": "Suite à votre soumission au groupe de publication EOS, votre manuscrit sera marqué comme accepté dans le portail. Votre travail subira ensuite une révision technique avant qu'une épreuve finale ne soit envoyée à l'auteur(e) correspondant(e) pour révision. Une fois cette étape terminée, le groupe de publication prendra des dispositions pour publier le manuscrit dans la série appropriée.",
     "completed-preprint-details": "Le manuscrit s'aligne avec la politique nationale des publications scientifiques du MPO et a été examiné par la gestion du MPO. \nÀ ce stade, vous pouvez désormais soumettre le manuscrit à un serveur de prépublication.",
@@ -873,8 +873,8 @@
     "upload-hint": "Seuls les fichiers PDF ou Word sont acceptés. \nLa taille maximale du fichier est de {max} Mo."
   },
   "submit-to-pub-team-dialog": {
-    "text": "Félicitations! L'équipe de publication du SEO prendra contact avec vous et/ou les auteurs correspondants peu après la soumission.",
-    "title": "Soumettre à l'équipe de publication du SEO",
+    "text": "Félicitations! L'équipe du guichet unique pour les publications scientifiques du SEO prendra contact avec vous et/ou les auteurs correspondants peu après la soumission.",
+    "title": "Soumettre au guichet unique pour les publications scientifiques",
     "file-label": "Soumission de votre manuscrit (format Word)",
     "file-hint": "Télécharger votre manuscrit (.doc ou .docx, max {max} Mo)"
   },

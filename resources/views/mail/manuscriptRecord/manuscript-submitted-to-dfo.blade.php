@@ -1,5 +1,5 @@
 <x-mail::message>
-# Hello Science Publication Team,
+# Hello Single Window for Science Publication Team,
 
 *(le français suit)*
 
@@ -18,7 +18,7 @@ Please note that only a Chief Editor can mark the publication as published.
 
 ---
 
-# Bonjour Équipe de publication,
+# Bonjour Équipe de Guichet unique pour les publications scientifiques,
 
 Le manuscrit intitulé "**{{ $publication->title }}**" a été soumis pour
 publication dans "**{{$publication->journal->title}}**." Un nouveau registre de
