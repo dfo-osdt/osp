@@ -128,16 +128,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.32",
+            "version": "3.356.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c564fb87e180da5ae45185a4526bb05a69998d05"
+                "reference": "09f1e434cbeed5b916f572369b9f09389b13a5c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c564fb87e180da5ae45185a4526bb05a69998d05",
-                "reference": "c564fb87e180da5ae45185a4526bb05a69998d05",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/09f1e434cbeed5b916f572369b9f09389b13a5c0",
+                "reference": "09f1e434cbeed5b916f572369b9f09389b13a5c0",
                 "shasum": ""
             },
             "require": {
@@ -219,9 +219,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.32"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.35"
             },
-            "time": "2025-10-03T18:12:05+00:00"
+            "time": "2025-10-08T18:06:42+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -1683,6 +1683,7 @@
                 "issues": "https://github.com/doctrine/annotations/issues",
                 "source": "https://github.com/doctrine/annotations/tree/2.0.2"
             },
+            "abandoned": true,
             "time": "2024-09-05T10:17:24+00:00"
         },
         {
@@ -2089,16 +2090,16 @@
         },
         {
             "name": "filament/actions",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/actions.git",
-                "reference": "28a4569248ada4c884d6ec15076f9e4b43557206"
+                "reference": "bd54da3378705c246c4a0c2d7f185853295bbcd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/actions/zipball/28a4569248ada4c884d6ec15076f9e4b43557206",
-                "reference": "28a4569248ada4c884d6ec15076f9e4b43557206",
+                "url": "https://api.github.com/repos/filamentphp/actions/zipball/bd54da3378705c246c4a0c2d7f185853295bbcd9",
+                "reference": "bd54da3378705c246c4a0c2d7f185853295bbcd9",
                 "shasum": ""
             },
             "require": {
@@ -2134,20 +2135,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-06T08:10:50+00:00"
+            "time": "2025-10-07T12:45:33+00:00"
         },
         {
             "name": "filament/filament",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/panels.git",
-                "reference": "104370db98d7da63e49799053f96074f7312d405"
+                "reference": "d03d2f80f08002e55c9617bb480dc8cd0403892a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/panels/zipball/104370db98d7da63e49799053f96074f7312d405",
-                "reference": "104370db98d7da63e49799053f96074f7312d405",
+                "url": "https://api.github.com/repos/filamentphp/panels/zipball/d03d2f80f08002e55c9617bb480dc8cd0403892a",
+                "reference": "d03d2f80f08002e55c9617bb480dc8cd0403892a",
                 "shasum": ""
             },
             "require": {
@@ -2191,20 +2192,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-06T08:10:51+00:00"
+            "time": "2025-10-08T11:01:55+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
-                "reference": "08c95546032699d3073aadf5babeee042bd1b762"
+                "reference": "ddfa808665077bccae64242dc763e0434e98183f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/08c95546032699d3073aadf5babeee042bd1b762",
-                "reference": "08c95546032699d3073aadf5babeee042bd1b762",
+                "url": "https://api.github.com/repos/filamentphp/forms/zipball/ddfa808665077bccae64242dc763e0434e98183f",
+                "reference": "ddfa808665077bccae64242dc763e0434e98183f",
                 "shasum": ""
             },
             "require": {
@@ -2241,11 +2242,11 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-06T08:11:00+00:00"
+            "time": "2025-10-08T10:40:16+00:00"
         },
         {
             "name": "filament/infolists",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/infolists.git",
@@ -2290,7 +2291,7 @@
         },
         {
             "name": "filament/notifications",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -2337,7 +2338,7 @@
         },
         {
             "name": "filament/schemas",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/schemas.git",
@@ -2382,16 +2383,16 @@
         },
         {
             "name": "filament/support",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
-                "reference": "8af3cf138f9dcff58cc84ac267d580299b0c51ea"
+                "reference": "e3294c6cd71d0b6c8cba8d20c99d5af651351a86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/support/zipball/8af3cf138f9dcff58cc84ac267d580299b0c51ea",
-                "reference": "8af3cf138f9dcff58cc84ac267d580299b0c51ea",
+                "url": "https://api.github.com/repos/filamentphp/support/zipball/e3294c6cd71d0b6c8cba8d20c99d5af651351a86",
+                "reference": "e3294c6cd71d0b6c8cba8d20c99d5af651351a86",
                 "shasum": ""
             },
             "require": {
@@ -2436,20 +2437,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-06T08:11:00+00:00"
+            "time": "2025-10-08T10:40:12+00:00"
         },
         {
             "name": "filament/tables",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
-                "reference": "f11c73f6526237a27da152befe05aed711fe37ba"
+                "reference": "b3bf48fd079d8abdf6dfb0936f1d1c8c4a4479ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/tables/zipball/f11c73f6526237a27da152befe05aed711fe37ba",
-                "reference": "f11c73f6526237a27da152befe05aed711fe37ba",
+                "url": "https://api.github.com/repos/filamentphp/tables/zipball/b3bf48fd079d8abdf6dfb0936f1d1c8c4a4479ab",
+                "reference": "b3bf48fd079d8abdf6dfb0936f1d1c8c4a4479ab",
                 "shasum": ""
             },
             "require": {
@@ -2481,20 +2482,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-06T08:11:09+00:00"
+            "time": "2025-10-08T11:01:10+00:00"
         },
         {
             "name": "filament/widgets",
-            "version": "v4.1.2",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/widgets.git",
-                "reference": "1e1cc264b8a0cf70de8ed9f490b043df9a44ca18"
+                "reference": "f0b009e52737a2f973771928ada952ff577704ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/widgets/zipball/1e1cc264b8a0cf70de8ed9f490b043df9a44ca18",
-                "reference": "1e1cc264b8a0cf70de8ed9f490b043df9a44ca18",
+                "url": "https://api.github.com/repos/filamentphp/widgets/zipball/f0b009e52737a2f973771928ada952ff577704ba",
+                "reference": "f0b009e52737a2f973771928ada952ff577704ba",
                 "shasum": ""
             },
             "require": {
@@ -2525,7 +2526,7 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-03T11:00:36+00:00"
+            "time": "2025-10-08T10:39:57+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -3482,16 +3483,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.32.5",
+            "version": "v12.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "77b2740391cd2a825ba59d6fada45e9b8b9bcc5a"
+                "reference": "124efc5f09d4668a4dc13f94a1018c524a58bcb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/77b2740391cd2a825ba59d6fada45e9b8b9bcc5a",
-                "reference": "77b2740391cd2a825ba59d6fada45e9b8b9bcc5a",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/124efc5f09d4668a4dc13f94a1018c524a58bcb1",
+                "reference": "124efc5f09d4668a4dc13f94a1018c524a58bcb1",
                 "shasum": ""
             },
             "require": {
@@ -3697,20 +3698,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-09-30T17:39:22+00:00"
+            "time": "2025-10-07T14:30:39+00:00"
         },
         {
             "name": "laravel/horizon",
-            "version": "v5.34.0",
+            "version": "v5.35.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "c110ff6ed494b57beb6b4102a92bb4bf896bb774"
+                "reference": "11f9a980d84de56402dec19cf1e78050b211fcef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/c110ff6ed494b57beb6b4102a92bb4bf896bb774",
-                "reference": "c110ff6ed494b57beb6b4102a92bb4bf896bb774",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/11f9a980d84de56402dec19cf1e78050b211fcef",
+                "reference": "11f9a980d84de56402dec19cf1e78050b211fcef",
                 "shasum": ""
             },
             "require": {
@@ -3775,9 +3776,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/horizon/issues",
-                "source": "https://github.com/laravel/horizon/tree/v5.34.0"
+                "source": "https://github.com/laravel/horizon/tree/v5.35.2"
             },
-            "time": "2025-09-12T15:15:45+00:00"
+            "time": "2025-10-08T12:50:15+00:00"
         },
         {
             "name": "laravel/pail",
@@ -4203,16 +4204,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v5.13.0",
+            "version": "v5.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "ad5fadb26c1e4dc2e35958e6dc36191dcf1c10d8"
+                "reference": "99e9487604e67424d07b83b5ab3401850d237685"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/ad5fadb26c1e4dc2e35958e6dc36191dcf1c10d8",
-                "reference": "ad5fadb26c1e4dc2e35958e6dc36191dcf1c10d8",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/99e9487604e67424d07b83b5ab3401850d237685",
+                "reference": "99e9487604e67424d07b83b5ab3401850d237685",
                 "shasum": ""
             },
             "require": {
@@ -4266,9 +4267,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/telescope/issues",
-                "source": "https://github.com/laravel/telescope/tree/v5.13.0"
+                "source": "https://github.com/laravel/telescope/tree/v5.14.0"
             },
-            "time": "2025-09-30T10:03:05+00:00"
+            "time": "2025-10-06T14:52:49+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -5552,16 +5553,16 @@
         },
         {
             "name": "microsoft/kiota-abstractions",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoft/kiota-abstractions-php.git",
-                "reference": "53beaf41d810cd757a89f55152aa686aa74565bb"
+                "reference": "20c37dece3902cea4116fca931e908e5554ba408"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/kiota-abstractions-php/zipball/53beaf41d810cd757a89f55152aa686aa74565bb",
-                "reference": "53beaf41d810cd757a89f55152aa686aa74565bb",
+                "url": "https://api.github.com/repos/microsoft/kiota-abstractions-php/zipball/20c37dece3902cea4116fca931e908e5554ba408",
+                "reference": "20c37dece3902cea4116fca931e908e5554ba408",
                 "shasum": ""
             },
             "require": {
@@ -5596,22 +5597,22 @@
             ],
             "description": "Abstractions for Kiota",
             "support": {
-                "source": "https://github.com/microsoft/kiota-abstractions-php/tree/1.5.0"
+                "source": "https://github.com/microsoft/kiota-abstractions-php/tree/1.5.1"
             },
-            "time": "2025-02-17T16:44:43+00:00"
+            "time": "2025-10-08T16:34:18+00:00"
         },
         {
             "name": "microsoft/kiota-authentication-phpleague",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoft/kiota-authentication-phpleague-php.git",
-                "reference": "2d8e1e200ead2d883f494d767d6a0a57eff62a8b"
+                "reference": "4e15a34c45aa04613ea31461458894ee643e57f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/kiota-authentication-phpleague-php/zipball/2d8e1e200ead2d883f494d767d6a0a57eff62a8b",
-                "reference": "2d8e1e200ead2d883f494d767d6a0a57eff62a8b",
+                "url": "https://api.github.com/repos/microsoft/kiota-authentication-phpleague-php/zipball/4e15a34c45aa04613ea31461458894ee643e57f5",
+                "reference": "4e15a34c45aa04613ea31461458894ee643e57f5",
                 "shasum": ""
             },
             "require": {
@@ -5619,7 +5620,7 @@
                 "ext-openssl": "*",
                 "firebase/php-jwt": "^v6.0.0",
                 "league/oauth2-client": "^2.6.1",
-                "microsoft/kiota-abstractions": "^1.5.0",
+                "microsoft/kiota-abstractions": "^1.5.1",
                 "php": "^7.4 || ^8.0",
                 "ramsey/uuid": "^4.2.3"
             },
@@ -5645,29 +5646,29 @@
             ],
             "description": "Authentication provider for Kiota using the PHP League OAuth 2.0 client to authenticate against the Microsoft Identity platform",
             "support": {
-                "source": "https://github.com/microsoft/kiota-authentication-phpleague-php/tree/1.5.0"
+                "source": "https://github.com/microsoft/kiota-authentication-phpleague-php/tree/1.5.1"
             },
-            "time": "2025-02-19T06:24:55+00:00"
+            "time": "2025-10-08T16:47:56+00:00"
         },
         {
             "name": "microsoft/kiota-http-guzzle",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoft/kiota-http-guzzle-php.git",
-                "reference": "4a9c4b69819712af5c62c2b978a0123ecf8f1208"
+                "reference": "adb261be0bf44d69fac670db262e0d2006a55c01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/kiota-http-guzzle-php/zipball/4a9c4b69819712af5c62c2b978a0123ecf8f1208",
-                "reference": "4a9c4b69819712af5c62c2b978a0123ecf8f1208",
+                "url": "https://api.github.com/repos/microsoft/kiota-http-guzzle-php/zipball/adb261be0bf44d69fac670db262e0d2006a55c01",
+                "reference": "adb261be0bf44d69fac670db262e0d2006a55c01",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zlib": "*",
                 "guzzlehttp/guzzle": "^7.4.5",
-                "microsoft/kiota-abstractions": "^1.5.0",
+                "microsoft/kiota-abstractions": "^1.5.1",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
@@ -5692,28 +5693,28 @@
             ],
             "description": "Kiota HTTP Request Adapter implementation",
             "support": {
-                "source": "https://github.com/microsoft/kiota-http-guzzle-php/tree/1.5.0"
+                "source": "https://github.com/microsoft/kiota-http-guzzle-php/tree/1.5.1"
             },
-            "time": "2025-02-19T06:27:54+00:00"
+            "time": "2025-10-08T16:48:12+00:00"
         },
         {
             "name": "microsoft/kiota-serialization-form",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoft/kiota-serialization-form-php.git",
-                "reference": "d26a199a2a5ca5cae3654a6106ff4f9560809277"
+                "reference": "2820f4070a8eef3df89c46ec9e657b1427800c99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/kiota-serialization-form-php/zipball/d26a199a2a5ca5cae3654a6106ff4f9560809277",
-                "reference": "d26a199a2a5ca5cae3654a6106ff4f9560809277",
+                "url": "https://api.github.com/repos/microsoft/kiota-serialization-form-php/zipball/2820f4070a8eef3df89c46ec9e657b1427800c99",
+                "reference": "2820f4070a8eef3df89c46ec9e657b1427800c99",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/psr7": "^1.6 || ^2",
-                "microsoft/kiota-abstractions": "^1.5.0",
+                "microsoft/kiota-abstractions": "^1.5.1",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
@@ -5740,28 +5741,28 @@
             ],
             "description": "Form implementation of Kiota abstractions serialization.",
             "support": {
-                "source": "https://github.com/microsoft/kiota-serialization-form-php/tree/1.5.0"
+                "source": "https://github.com/microsoft/kiota-serialization-form-php/tree/1.5.1"
             },
-            "time": "2025-02-19T06:29:35+00:00"
+            "time": "2025-10-08T16:47:34+00:00"
         },
         {
             "name": "microsoft/kiota-serialization-json",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoft/kiota-serialization-json-php.git",
-                "reference": "ec99e2c22c5229b1b39f5957abcb430f28cc448c"
+                "reference": "8537f9e53d5c5aed303e87a35e4d2a253468aac6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/kiota-serialization-json-php/zipball/ec99e2c22c5229b1b39f5957abcb430f28cc448c",
-                "reference": "ec99e2c22c5229b1b39f5957abcb430f28cc448c",
+                "url": "https://api.github.com/repos/microsoft/kiota-serialization-json-php/zipball/8537f9e53d5c5aed303e87a35e4d2a253468aac6",
+                "reference": "8537f9e53d5c5aed303e87a35e4d2a253468aac6",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/psr7": "^1.6 || ^2",
-                "microsoft/kiota-abstractions": "^1.5.0",
+                "microsoft/kiota-abstractions": "^1.5.1",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
@@ -5788,28 +5789,28 @@
             ],
             "description": "Implementation of Kiota serialization abstractions using Json.",
             "support": {
-                "source": "https://github.com/microsoft/kiota-serialization-json-php/tree/1.5.0"
+                "source": "https://github.com/microsoft/kiota-serialization-json-php/tree/1.5.1"
             },
-            "time": "2025-02-19T06:28:58+00:00"
+            "time": "2025-10-08T16:47:11+00:00"
         },
         {
             "name": "microsoft/kiota-serialization-multipart",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoft/kiota-serialization-multipart-php.git",
-                "reference": "6668768223cf0760a5cfab76232883eae85e7c15"
+                "reference": "28ad890e9b1602ea1681e8d933edd3c78287e729"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/kiota-serialization-multipart-php/zipball/6668768223cf0760a5cfab76232883eae85e7c15",
-                "reference": "6668768223cf0760a5cfab76232883eae85e7c15",
+                "url": "https://api.github.com/repos/microsoft/kiota-serialization-multipart-php/zipball/28ad890e9b1602ea1681e8d933edd3c78287e729",
+                "reference": "28ad890e9b1602ea1681e8d933edd3c78287e729",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/psr7": "^1.6 || ^2",
-                "microsoft/kiota-abstractions": "^1.5.0",
+                "microsoft/kiota-abstractions": "^1.5.1",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
@@ -5836,27 +5837,27 @@
             ],
             "description": "Multipart implementation of Kiota abstractions serialization.",
             "support": {
-                "source": "https://github.com/microsoft/kiota-serialization-multipart-php/tree/1.5.0"
+                "source": "https://github.com/microsoft/kiota-serialization-multipart-php/tree/1.5.1"
             },
-            "time": "2025-02-19T06:29:47+00:00"
+            "time": "2025-10-08T16:47:45+00:00"
         },
         {
             "name": "microsoft/kiota-serialization-text",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoft/kiota-serialization-text-php.git",
-                "reference": "341ae866e50341f63f1b0320cb6c08582ae6709a"
+                "reference": "257afebadf347f47284fdaa28849f7187bafb6e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/kiota-serialization-text-php/zipball/341ae866e50341f63f1b0320cb6c08582ae6709a",
-                "reference": "341ae866e50341f63f1b0320cb6c08582ae6709a",
+                "url": "https://api.github.com/repos/microsoft/kiota-serialization-text-php/zipball/257afebadf347f47284fdaa28849f7187bafb6e6",
+                "reference": "257afebadf347f47284fdaa28849f7187bafb6e6",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^1.6 || ^2",
-                "microsoft/kiota-abstractions": "^1.5.0",
+                "microsoft/kiota-abstractions": "^1.5.1",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
@@ -5881,22 +5882,22 @@
             ],
             "description": "Implementation of Serialization Abstractions for text/plain content",
             "support": {
-                "source": "https://github.com/microsoft/kiota-serialization-text-php/tree/1.5.0"
+                "source": "https://github.com/microsoft/kiota-serialization-text-php/tree/1.5.1"
             },
-            "time": "2025-02-19T06:29:21+00:00"
+            "time": "2025-10-08T16:46:20+00:00"
         },
         {
             "name": "microsoft/microsoft-graph",
-            "version": "v2.48.0",
+            "version": "v2.49.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoftgraph/msgraph-sdk-php.git",
-                "reference": "5d2f028941ab765fb09aa0b9b330765e64ec0590"
+                "reference": "eba42c6802b562823fb4670afcdde51a668876cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoftgraph/msgraph-sdk-php/zipball/5d2f028941ab765fb09aa0b9b330765e64ec0590",
-                "reference": "5d2f028941ab765fb09aa0b9b330765e64ec0590",
+                "url": "https://api.github.com/repos/microsoftgraph/msgraph-sdk-php/zipball/eba42c6802b562823fb4670afcdde51a668876cf",
+                "reference": "eba42c6802b562823fb4670afcdde51a668876cf",
                 "shasum": ""
             },
             "require": {
@@ -5928,9 +5929,9 @@
             "homepage": "https://developer.microsoft.com/en-us/graph",
             "support": {
                 "issues": "https://github.com/microsoftgraph/msgraph-sdk-php/issues",
-                "source": "https://github.com/microsoftgraph/msgraph-sdk-php/tree/v2.48.0"
+                "source": "https://github.com/microsoftgraph/msgraph-sdk-php/tree/v2.49.0"
             },
-            "time": "2025-09-18T20:24:27+00:00"
+            "time": "2025-10-06T21:41:48+00:00"
         },
         {
             "name": "microsoft/microsoft-graph-core",
@@ -10176,16 +10177,16 @@
         },
         {
             "name": "spatie/laravel-csp",
-            "version": "3.18.0",
+            "version": "3.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-csp.git",
-                "reference": "ca84f7a0fea5aa2acb52ab99c2442890b21ee387"
+                "reference": "da988762858093ef769eafd218f64e6cc9a08335"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-csp/zipball/ca84f7a0fea5aa2acb52ab99c2442890b21ee387",
-                "reference": "ca84f7a0fea5aa2acb52ab99c2442890b21ee387",
+                "url": "https://api.github.com/repos/spatie/laravel-csp/zipball/da988762858093ef769eafd218f64e6cc9a08335",
+                "reference": "da988762858093ef769eafd218f64e6cc9a08335",
                 "shasum": ""
             },
             "require": {
@@ -10249,7 +10250,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-csp/tree/3.18.0"
+                "source": "https://github.com/spatie/laravel-csp/tree/3.20.0"
             },
             "funding": [
                 {
@@ -10257,7 +10258,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-09-22T12:44:54+00:00"
+            "time": "2025-10-09T08:31:10+00:00"
         },
         {
             "name": "spatie/laravel-data",
