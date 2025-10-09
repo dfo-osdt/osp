@@ -34,6 +34,9 @@ class Kernel extends ConsoleKernel
                 \Spatie\Health\Models\HealthCheckResultHistoryItem::class,
             ],
         ])->daily();
+
+        // send management review notifications (only on business days)
+        $schedule->command('osp:send-due-management-review-notifications')->daily()->at('14:00'); // 9am EST
     }
 
     /**
