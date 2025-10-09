@@ -27,6 +27,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\ManuscriptRecord $manuscriptRecord
  * @property-read ManagementReviewStep|null $previousStep
  * @property-read \App\Models\User $user
+ *
  * @method static \Database\Factories\ManagementReviewStepFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep newQuery()
@@ -42,9 +43,10 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep whereUserId($value)
- * @method static Builder<static>|ManagementReviewStep dueSoon(int $days = 2)
- * @method static Builder<static>|ManagementReviewStep overdue()
- * @method static Builder<static>|ManagementReviewStep pending()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep dueSoon(int $days = 2)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep overdue()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep pending()
+ *
  * @mixin \Eloquent
  */
 class ManagementReviewStep extends Model
@@ -111,21 +113,21 @@ class ManagementReviewStep extends Model
     }
 
     #[Scope]
-    public function overdue(Builder $query): void
+    protected function overdue(Builder $query): void
     {
         $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING)
             ->where('decision_expected_by', '<', now());
     }
 
     #[Scope]
-    public function dueSoon(Builder $query, int $days = 2): void
+    protected function dueSoon(Builder $query, int $days = 2): void
     {
         $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING)
             ->whereBetween('decision_expected_by', [now(), now()->addBusinessDays($days)]);
     }
 
     #[Scope]
-    public function pending(Builder $query): void
+    protected function pending(Builder $query): void
     {
         $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING);
     }
