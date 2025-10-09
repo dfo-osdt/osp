@@ -1,5 +1,5 @@
 <x-mail::message>
-# Hello Science Publication Team,
+# Hello Single Window for Science Publication Team,
 
 *(le français suit)*
 
@@ -26,7 +26,7 @@ View Publication
 
 ---
 
-# Bonjour Équipe de publication scientifique,
+# Bonjour Équipe de Guichet unique pour les publications scientifiques,
 
 Le manuscrit intitulé "**{{ $publication->title }}**" a été accepté pour publication dans la revue suivante : {{ $publication->journal->title }}.
 Vous recevez ce courriel parce que {{ $referrer->full_name }} a signalé ce manuscrit pour ajout au classeur de planification.

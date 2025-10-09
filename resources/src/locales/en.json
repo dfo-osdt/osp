@@ -510,7 +510,7 @@
     "withdraw-manuscript": "Withdraw Manuscript",
     "withdrawn-by-applicant": "Withdrawn by Applicant",
     "withdrawn-details": "The manuscript was withdrawn by the applicant for the following reason: ",
-    "submisison-to-dfo-title": "Submit to the Science Publication Team",
+    "submission-to-dfo-title": "Submit to the Single Window for Science Publications",
     "submit-title": "Submit manuscript",
     "submission-to-dfo-details": "Following your submission to the Science publication team, your manuscript will be marked as accepted in the portal. Your work will then undergo a technical edit before a final proof is sent to the corresponding author(s) for review. Once this is completed, the publication group will make arrangements to have the manuscript published in the appropriate series.",
     "submitted-to-preprint": "Submit your Manuscript to a Preprint Server",
@@ -873,8 +873,8 @@
     "upload-hint": "Only PDF or Word files are accepted. Maximum file size is {max}MB."
   },
   "submit-to-pub-team-dialog": {
-    "title": "Submit to the Science Publication Team",
-    "text": "Congratulations! The Science publication team will be in touch with you and/or the corresponding author(s) shortly after the submission.",
+    "title": "Submit to the Single Window for Science Publications",
+    "text": "Congratulations! The Single Window for Science Publications team will be in touch with you and/or the corresponding author(s) shortly after the submission.",
     "file-label": "Submitted Manuscript Document (Word format)",
     "file-hint": "Upload your manuscript document (.doc or .docx, max {max}MB)"
   },

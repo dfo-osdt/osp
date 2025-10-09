@@ -54,7 +54,8 @@ class CreatePublicationFromManuscript
 
                 $publication->addSupplementaryFile($file,
                     SupplementaryFileType::AUTHORS_ACCEPTED_MANUSCRIPT,
-                    "Submission to Science Publication Team / Soumission à l'équipe de publication scientifique");
+                    "Submission to Single Window for Science Publications / Soumission à l'équipe de guichet unique pour les publications scientifiques"
+                );
             }
 
             return $publication;

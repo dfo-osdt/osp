@@ -1,5 +1,5 @@
 <x-mail::message>
-# Hello Science Publication Team,
+# Hello Single Window for Science Publication Team,
 
 *(le français suit)*
 
@@ -19,7 +19,7 @@ or preprint is created in the Open Science Portal.
 
 ---
 
-# Bonjour Équipe de publication,
+# Bonjour Équipe de Guichet unique pour les publications scientifiques,
 
 Le manuscrit intitulé "**{{ $manuscript->title }}**" a été signalé pour
 examen dans le classeur de planification par {{ $user->full_name }} via le

@@ -188,7 +188,7 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       v-if="manuscriptRecord.data.status !== 'withdrawn'"
       class="q-mx-lg"
       icon="mdi-check-all"
-      :title="$t('manuscript-progress-view.submisison-to-dfo-title')"
+      :title="$t('manuscript-progress-view.submission-to-dfo-title')"
       :subtitle="acceptedToJournalSubtitle"
       :color="acceptedToJournalColor"
     >
