@@ -11,13 +11,11 @@ class CheckDueManagementReviews
 {
     public static function handle(): void
     {
-        $overdueReviews = ManagementReviewStep::query()
-            ->overdue()
+        $overdueReviews = ManagementReviewStep::overdue()
             ->with(['manuscriptRecord', 'user'])
             ->get();
 
-        $dueSoonReviews = ManagementReviewStep::query()
-            ->dueSoon()
+        $dueSoonReviews = ManagementReviewStep::dueSoon()
             ->with(['manuscriptRecord', 'user'])
             ->get();
 
