@@ -58,7 +58,7 @@ function handleAuthorUpdated() {
         flat
         round
         dense
-        color="primary"
+        color="secondary"
         @click="showEditAuthorDialog = true"
       >
         <q-tooltip>{{ t('author.edit-author-details') }}</q-tooltip>
