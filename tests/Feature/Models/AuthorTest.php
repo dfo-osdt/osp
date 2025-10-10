@@ -168,6 +168,55 @@ test('an editor can update an author profile without an owner', function () {
     ]);
 });
 
+test('an editor can update an author profile with an owner', function () {
+    $editor = User::factory()->withRoles([UserRole::EDITOR])->create();
+
+    // Create an author owned by a different user
+    $ownerUser = User::factory()->create();
+    $author = $ownerUser->author;
+
+    $newOrganizationId = Organization::factory()->create()->id;
+
+    $data = [
+        'first_name' => 'Updated',
+        'last_name' => 'Name',
+        'organization_id' => $newOrganizationId,
+        'email' => 'different@email.com',
+        'orcid' => 'https://orcid.org/0000-0002-0868-2726',
+    ];
+
+    $response = $this->actingAs($editor)->putJson('api/authors/'.$author->id, $data)->assertOk();
+
+    // first_name, last_name, and email should not be updated since author has a user account
+    $data['first_name'] = $author->first_name;
+    $data['last_name'] = $author->last_name;
+    $data['email'] = $author->email;
+
+    $response->assertJson([
+        'data' => $data,
+    ]);
+});
+
+test('a regular user can update an author profile without an owner', function () {
+    $user = User::factory()->create(); // Regular user without EDITOR role
+
+    $author = Author::factory()->create(['user_id' => null]); // Author without owner
+
+    $data = [
+        'first_name' => 'Jane',
+        'last_name' => 'Smith',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'jane.smith@dfo-mpo.gc.ca',
+        'orcid' => 'https://orcid.org/0000-0002-0868-2726',
+    ];
+
+    $response = $this->actingAs($user)->putJson('api/authors/'.$author->id, $data)->assertOk();
+
+    $response->assertJson([
+        'data' => $data,
+    ]);
+});
+
 test('a user can update their own author profile', function () {
     $user = User::factory()->create();
 
@@ -308,4 +357,34 @@ test('updating author without sync_all_pivots flag does not update pivots', func
     // Verify manuscript_author was NOT updated (preserves historical affiliation)
     $manuscriptAuthor->refresh();
     expect($manuscriptAuthor->organization_id)->toBe($originalOrg->id);
+});
+
+test('a regular user cannot sync pivots even if they try', function () {
+    $regularUser = User::factory()->create(); // Regular user without EDITOR role
+
+    // Create author without owner
+    $originalOrg = Organization::factory()->create(['name_en' => 'Original University']);
+    $author = Author::factory()->create([
+        'user_id' => null,
+        'organization_id' => $originalOrg->id,
+    ]);
+
+    // Create a manuscript with the original organization
+    $manuscript = \App\Models\ManuscriptRecord::factory()->create();
+    $manuscriptAuthor = \App\Models\ManuscriptAuthor::factory()->create([
+        'author_id' => $author->id,
+        'manuscript_record_id' => $manuscript->id,
+        'organization_id' => $originalOrg->id,
+    ]);
+
+    // Try to update author with sync_all_pivots flag
+    $newOrg = Organization::factory()->create(['name_en' => 'New University']);
+
+    $data = [
+        'organization_id' => $newOrg->id,
+        'sync_all_pivots' => true,
+    ];
+
+    // Should be forbidden because user doesn't have UPDATE_AUTHORS permission
+    $response = $this->actingAs($regularUser)->putJson('api/authors/'.$author->id, $data)->assertForbidden();
 });

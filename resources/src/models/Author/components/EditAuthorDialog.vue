@@ -15,6 +15,7 @@ const emit = defineEmits<{
   (event: 'updated', payload: AuthorResource): void
 }>()
 
+const authStore = useAuthStore()
 const { t } = useI18n()
 
 const firstName = ref(props.author.data.first_name)
@@ -40,6 +41,11 @@ const personalEmailDomains = [
 // Check if author has a linked user account
 const hasUserAccount = computed(() => {
   return props.author.data.user_id !== null
+})
+
+// Check if user has permission to sync all pivots
+const canSyncAllPivots = computed(() => {
+  return authStore.user?.can('update_authors') ?? false
 })
 
 // Watch email input to detect personal email domains
@@ -180,8 +186,8 @@ async function updateAuthor() {
         </q-card-section>
       </q-card>
 
-      <!-- Sync Options -->
-      <q-card flat bordered class="q-ma-md">
+      <!-- Sync Options (only for users with update_authors permission) -->
+      <q-card v-if="canSyncAllPivots" flat bordered class="q-ma-md">
         <q-card-section>
           <div class="text-subtitle2 text-grey-8 q-mb-md">
             {{ $t('edit-author-dialog.update-options') }}
