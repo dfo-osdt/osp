@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-This is your weekly summary of pending management reviews. You have {{ $reviews->count() }} {{ $reviews->count() === 1 ? 'review' : 'reviews' }} awaiting your decision:
+This is your weekly summary of pending management reviews. You have {{ $reviews->count() }} {{ $reviews->count() === 1 ? 'review' : 'reviews' }} awaiting your review:
 
 <x-mail::table>
 | Manuscript Title | Due Date | Pending For |
@@ -25,7 +25,7 @@ View My Reviews
 
 # Bonjour {{ $user->first_name }},
 
-Voici votre résumé hebdomadaire des révisions de gestion en attente. Vous avez {{ $reviews->count() }} {{ $reviews->count() === 1 ? 'révision en attente' : 'révisions en attente' }} de votre décision:
+Voici votre résumé hebdomadaire des révisions de gestion en attente. Vous avez {{ $reviews->count() }} {{ $reviews->count() === 1 ? 'révision en attente' : 'révisions en attente' }} de votre révision :
 
 <x-mail::table>
 | Titre du manuscrit | Date d'échéance | En attente depuis |
