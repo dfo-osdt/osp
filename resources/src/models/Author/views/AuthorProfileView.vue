@@ -118,14 +118,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <MainPageLayout :title="pageTitle">
-    <div class="row q-gutter-lg q-col-gutter-lg flex">
+  <MainPageLayout :title="pageTitle" class="q-pr-lg">
+    <div class="row q-gutter-lg q-col-gutter-lg q-mr-lg">
       <!-- Left Column: Author Information -->
-      <div class="col-3">
+      <div class="col-lg-3 col-md-12">
         <!-- Author Profile Card -->
         <template v-if="author">
-          <AuthorProfileCard :author="author" @updated="handleAuthorUpdated" />
-          <AuthorExpertiseDisplay :author="author" />
+          <div class="row q-gutter-lg flex justify-between">
+            <AuthorProfileCard :author="author" class="col-lg-12 col-md-6" @updated="handleAuthorUpdated" />
+            <AuthorExpertiseDisplay :author="author" class="col-lg-12 col-md-5" />
+          </div>
         </template>
 
         <!-- Loading skeleton for author info -->
@@ -138,7 +140,7 @@ onMounted(async () => {
         <!-- Author not found -->
         <template v-else>
           <ContentCard>
-            <div class="text-center q-py-lg">
+            <div class="text-center">
               <q-icon name="mdi-account-off-outline" size="xl" color="grey-5" />
               <div class="text-h6 q-mt-md">
                 {{ t('author-profile.author-not-found') }}
@@ -149,7 +151,7 @@ onMounted(async () => {
       </div>
 
       <!-- Right Column: Publications -->
-      <div class="col q-pr-lg q-pb-lg">
+      <div class="col-lg-grow col-md-12">
         <ContentCard secondary>
           <template #title>
             {{ t('author-profile.publications') }}
