@@ -186,6 +186,13 @@ class Author extends Model
         return $this->belongsToMany(ManuscriptRecord::class, 'manuscript_authors');
     }
 
+    /** PublicationAuthors
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PublicationAuthor, $this> */
+    public function publicationAuthors(): HasMany
+    {
+        return $this->hasMany('App\Models\PublicationAuthor');
+    }
+
     /** Pubslihed publications
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Publication, $this> */
     public function publications(): BelongsToMany

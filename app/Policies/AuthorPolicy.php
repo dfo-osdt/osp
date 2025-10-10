@@ -48,9 +48,13 @@ class AuthorPolicy
      */
     public function update(User $user, Author $author)
     {
-        // this record isn't associated with a user,
-        // and user can update authors.
-        if ($author->user_id === null && $user->can(UserPermission::UPDATE_AUTHORS)) {
+        // Editors can always edit authors
+        if ($user->can(UserPermission::UPDATE_AUTHORS)) {
+            return true;
+        }
+
+        // Any user can edit authors that don't have a user_id
+        if ($author->user_id === null) {
             return true;
         }
 

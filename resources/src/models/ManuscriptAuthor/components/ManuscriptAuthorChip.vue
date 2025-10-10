@@ -153,6 +153,23 @@ const removable = computed(() => {
             </q-toggle>
           </q-item-section>
         </q-item>
+        <q-separator />
+        <q-item
+          clickable
+          :to="{
+            name: 'author.profile',
+            params: { id: manuscriptAuthor.data.author?.data.id },
+          }"
+        >
+          <q-item-section avatar>
+            <q-avatar icon="mdi-account" text-color="primary" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>
+              {{ t('author.view-profile') }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-menu>
   </q-chip>

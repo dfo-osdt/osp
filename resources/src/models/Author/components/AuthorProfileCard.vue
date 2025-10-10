@@ -4,12 +4,20 @@ import ContentCard from '@/components/ContentCard.vue'
 import CopyToClipboardButton from '@/components/CopyToClipboardButton.vue'
 import OrcidIcon from '@/components/OrcidIcon.vue'
 import RORLinkSpan from '@/models/Organization/components/RORLinkSpan.vue'
+import EditAuthorDialog from './EditAuthorDialog.vue'
 
 const props = defineProps<{
   author: AuthorResource
 }>()
 
+const emit = defineEmits<{
+  (event: 'updated'): void
+}>()
+
 const localeStore = useLocaleStore()
+const { t } = useI18n()
+
+const showEditAuthorDialog = ref(false)
 
 const organizationName = computed(() => {
   if (!props.author.data.organization)
@@ -28,6 +36,11 @@ const initials = computed(() => {
   const lastName = props.author.data.last_name?.charAt(0).toUpperCase() || ''
   return `${firstName}${lastName}`
 })
+
+function handleAuthorUpdated() {
+  showEditAuthorDialog.value = false
+  emit('updated')
+}
 </script>
 
 <template>
@@ -37,6 +50,19 @@ const initials = computed(() => {
         {{ initials }}
       </q-avatar>
       {{ fullName }}
+    </template>
+    <template #title-right>
+      <q-btn
+        v-if="author.can?.update"
+        icon="mdi-pencil"
+        flat
+        round
+        dense
+        color="secondary"
+        @click="showEditAuthorDialog = true"
+      >
+        <q-tooltip>{{ t('author.edit-author-details') }}</q-tooltip>
+      </q-btn>
     </template>
 
     <div class="q-gutter-md">
@@ -87,6 +113,13 @@ const initials = computed(() => {
         </div>
       </div>
     </div>
+
+    <EditAuthorDialog
+      v-if="showEditAuthorDialog"
+      v-model="showEditAuthorDialog"
+      :author="author"
+      @updated="handleAuthorUpdated"
+    />
   </ContentCard>
 </template>
 
