@@ -56,6 +56,22 @@
     "hint": "Commencez à taper pour rechercher un auteur (prénom, nom ou courriel)",
     "not-the-author-youre-looking-for": "Ce n'est pas l'auteur que vous recherchez ?"
   },
+  "author": {
+    "edit-author-details": "Modifier les détails de l'auteur",
+    "view-profile": "Voir le profil de l'auteur"
+  },
+  "edit-author-dialog": {
+    "title": "Modifier l'auteur",
+    "personal-information": "Informations personnelles",
+    "affiliation-research": "Affiliation et informations de recherche",
+    "ror-guidance": "Lors de la sélection de l'affiliation, choisissez l'institution principale qui apparaît dans les publications de recherche (par exemple, « Université McGill » et non « Département des sciences de McGill »). Ne créez une nouvelle organisation que si vous ne trouvez pas l'affiliation institutionnelle principale.",
+    "personal-email-warning": "Envisagez de demander à l'auteur son adresse courriel institutionnelle. Les adresses courriel personnelles peuvent ne pas être idéales pour les communications de recherche professionnelles.",
+    "user-account-warning": "Cet auteur a un compte d'utilisateur lié. Les modifications du nom et du courriel doivent être effectuées via son profil d'utilisateur.",
+    "orcid-verified-note": "Cet ORCID a été vérifié et ne peut pas être modifié.",
+    "update-options": "Options de mise à jour",
+    "sync-all-pivots": "Mettre à jour l'affiliation pour tous les manuscrits et publications",
+    "sync-all-pivots-tooltip": "Lorsque coché, cela mettra à jour l'affiliation pour tous les manuscrits et publications passés associés à cet auteur. Utilisez ceci si l'affiliation a été enregistrée incorrectement. Laissez décoché pour conserver les affiliations historiques."
+  },
   "change-password-card": {
     "change-password": "Changer le mot de passe",
     "confirm-new-password": "Confirmer le nouveau mot de passe",

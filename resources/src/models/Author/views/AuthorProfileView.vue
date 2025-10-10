@@ -105,6 +105,11 @@ watchThrottled(
   { throttle: 750 },
 )
 
+// Event handlers
+function handleAuthorUpdated() {
+  loadAuthor()
+}
+
 // Lifecycle hooks
 onMounted(async () => {
   await loadAuthor()
@@ -119,7 +124,7 @@ onMounted(async () => {
       <div class="col-3">
         <!-- Author Profile Card -->
         <template v-if="author">
-          <AuthorProfileCard :author="author" />
+          <AuthorProfileCard :author="author" @updated="handleAuthorUpdated" />
           <AuthorExpertiseDisplay :author="author" />
         </template>
 

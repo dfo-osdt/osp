@@ -97,7 +97,11 @@ class AuthorController extends Controller
                 new Ocrid,
                 Rule::unique('authors', 'orcid')->ignore($author->id),
             ],
+            'sync_all_pivots' => 'boolean',
         ]);
+
+        $syncAllPivots = $validated['sync_all_pivots'] ?? false;
+        unset($validated['sync_all_pivots']);
 
         // does this user have a user_id? If so, the name and email are controller
         // via the user model. We don't want to update those here.
@@ -108,6 +112,27 @@ class AuthorController extends Controller
         }
 
         $author->update($validated);
+
+        // If sync_all_pivots is true and organization_id was updated,
+        // update all manuscript_authors and publication_authors
+        if ($syncAllPivots && isset($validated['organization_id'])) {
+            $author->manuscriptAuthors()->update([
+                'organization_id' => $validated['organization_id'],
+            ]);
+
+            $author->publicationAuthors()->update([
+                'organization_id' => $validated['organization_id'],
+            ]);
+
+            activity()
+                ->performedOn($author)
+                ->withProperties([
+                    'organization_id' => $validated['organization_id'],
+                    'synced_pivots' => true,
+                ])
+                ->log('Author affiliation updated and synced to all manuscripts and publications');
+        }
+
         $author->refresh();
         $author->load('organization');
 
