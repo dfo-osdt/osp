@@ -46,6 +46,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep dueSoon(int $days = 2)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep overdue()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep pending()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep pendingForDays(int $days = 4)
  *
  * @mixin \Eloquent
  */
@@ -130,5 +131,12 @@ class ManagementReviewStep extends Model
     protected function pending(Builder $query): void
     {
         $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING);
+    }
+
+    #[Scope]
+    protected function pendingForDays(Builder $query, int $days = 4): void
+    {
+        $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING)
+            ->where('created_at', '<=', now()->subBusinessDays($days));
     }
 }
