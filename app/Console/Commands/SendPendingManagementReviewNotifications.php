@@ -19,7 +19,7 @@ class SendPendingManagementReviewNotifications extends Command
      *
      * @var string
      */
-    protected $description = 'Send weekly email notifications for pending management reviews (scheduled for Mondays)';
+    protected $description = 'Send weekly email notifications for pending management reviews';
 
     /**
      * Execute the console command.
