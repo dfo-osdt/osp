@@ -38,6 +38,9 @@ class Kernel extends ConsoleKernel
         // send management review notifications (only on business days)
         $schedule->command('osp:send-due-management-review-notifications')->daily()->at('14:00');  // 14h00 UTC (9am EST)
 
+        // send weekly pending management review summary (only on Mondays)
+        $schedule->command('osp:send-pending-management-review-notifications')->weekly()->mondays()->at('14:00');  // 14h00 UTC (9am EST)
+
     }
 
     /**

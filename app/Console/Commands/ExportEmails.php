@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\ManuscriptRecordType;
 use App\Events\Auth\Invited;
 use App\Mail\ManagementReviewDueMail;
+use App\Mail\ManagementReviewPendingMail;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -234,6 +235,33 @@ class ExportEmails extends Command
         $managementReviewDueAndOverdue = new ManagementReviewDueMail($mixedReviews, $user);
         $markdownContent = $managementReviewDueAndOverdue->render();
         $this->exportFile('management-review-due-and-overdue.html', $markdownContent);
+
+        // Management review weekly pending summary
+        $user = User::factory()->create();
+        $pendingReviews = collect([
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'created_at' => now()->subBusinessDays(10),
+                'decision_expected_by' => now()->addBusinessDays(5),
+            ]),
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'created_at' => now()->subBusinessDays(5),
+                'decision_expected_by' => now()->addBusinessDays(3),
+            ]),
+            ManagementReviewStep::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'created_at' => now()->subBusinessDays(2),
+                'decision_expected_by' => now()->addBusinessDay(),
+            ]),
+        ])->each(fn ($review) => $review->load('manuscriptRecord'));
+
+        $managementReviewPending = new ManagementReviewPendingMail($pendingReviews, $user);
+        $markdownContent = $managementReviewPending->render();
+        $this->exportFile('management-review-pending-weekly.html', $markdownContent);
 
         \DB::rollBack();
 
