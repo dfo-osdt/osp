@@ -118,7 +118,7 @@ class AuthorController extends Controller
         // update all manuscript_authors and publication_authors
         if ($syncAllPivots && isset($validated['organization_id'])) {
             // Only users with UPDATE_AUTHORS permission can sync pivots
-            Gate::authorize('can', UserPermission::UPDATE_AUTHORS);
+            Gate::authorize(UserPermission::UPDATE_AUTHORS);
 
             $author->manuscriptAuthors()->update([
                 'organization_id' => $validated['organization_id'],
