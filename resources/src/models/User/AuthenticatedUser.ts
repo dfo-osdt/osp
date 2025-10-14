@@ -73,6 +73,7 @@ export type AuthenticatedUserPermissions
     | 'create_publications'
     | 'create_authors'
     | 'update_authors'
+    | 'synchronize_author_affiliations'
     | 'create_organizations'
     | 'create_author_employments'
     | 'complete_interntal_management_review'
