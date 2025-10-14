@@ -385,6 +385,6 @@ test('a regular user cannot sync pivots even if they try', function () {
         'sync_all_pivots' => true,
     ];
 
-    // Should be forbidden because user doesn't have UPDATE_AUTHORS permission
+    // Should be forbidden because user doesn't have SYNC Author affiliations permission
     $response = $this->actingAs($regularUser)->putJson('api/authors/'.$author->id, $data)->assertForbidden();
 });

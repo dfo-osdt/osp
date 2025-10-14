@@ -8,6 +8,7 @@ enum UserPermission: string
     case CREATE_PUBLICATIONS = 'create_publications';
     case CREATE_AUTHORS = 'create_authors';
     case UPDATE_AUTHORS = 'update_authors';
+    case SYNCHRONIZE_AUTHOR_AFFILIATIONS = 'synchronize_author_affiliations';
     case CREATE_ORGANIZATIONS = 'create_organizations';
     case CREATE_AUTHOR_EMPLOYMENTS = 'create_author_employments';
     case COMPLETE_INTERNTAL_MANAGEMENT_REVIEW = 'complete_interntal_management_review';

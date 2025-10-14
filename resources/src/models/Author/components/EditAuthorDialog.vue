@@ -45,7 +45,7 @@ const hasUserAccount = computed(() => {
 
 // Check if user has permission to sync all pivots
 const canSyncAllPivots = computed(() => {
-  return authStore.user?.can('update_authors') ?? false
+  return authStore.user?.can('synchronize_author_affiliations') ?? false
 })
 
 // Watch email input to detect personal email domains
