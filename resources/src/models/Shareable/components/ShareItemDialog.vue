@@ -158,6 +158,7 @@ async function save() {
             :label="isEditDialog ? $t('common.save') : $t('common.share')"
             type="submit"
             :loading="loading"
+            :disable="loading"
             color="primary"
             data-test="save"
           />

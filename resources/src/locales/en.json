@@ -56,6 +56,22 @@
     "hint": "Start typing to search for an author (first name, last name, or email)",
     "not-the-author-youre-looking-for": "Not the author you're looking for?"
   },
+  "author": {
+    "edit-author-details": "Edit Author Details",
+    "view-profile": "View Author Profile"
+  },
+  "edit-author-dialog": {
+    "title": "Edit Author",
+    "personal-information": "Personal Information",
+    "affiliation-research": "Affiliation & Research Information",
+    "ror-guidance": "When selecting the affiliation, choose the main institution that appears in research publications (e.g., 'McGill University' not 'Department of Science at McGill'). Only create a new organization if you cannot find the main institutional affiliation.",
+    "personal-email-warning": "Consider asking the author for their institutional email address. Personal email addresses may not be ideal for professional research communications.",
+    "user-account-warning": "This author has a linked user account. Name and email changes must be made through their user profile.",
+    "orcid-verified-note": "This ORCID has been verified and cannot be changed.",
+    "update-options": "Update Options",
+    "sync-all-pivots": "Update affiliation for all manuscripts and publications",
+    "sync-all-pivots-tooltip": "When checked, this will update the affiliation for all past manuscripts and publications associated with this author. Use this if the affiliation was recorded incorrectly. Leave unchecked to preserve historical affiliations."
+  },
   "change-password-card": {
     "change-password": "Change Password",
     "confirm-new-password": "Confirm New Password",
@@ -90,8 +106,8 @@
     "continue": "Continue",
     "copied": "Copied",
     "copy-to-clipboard": "Copy to clipboard",
-    "corresponding-author": "Corresponding Author",
-    "corresponding-author-desc": "The corresponding author communicates with the journal(s) and is responsible for managing editorial issues and the manuscript's final format and content. This person is not necessarily the \"first\" author, which could have different meanings in different fields. For example, it could be a first or the last author or the person overseeing the publication process and, often, responsible for conceiving, supporting, and managing the project.",
+    "corresponding-author": "DFO Corresponding Author",
+    "corresponding-author-desc": "The DFO corresponding author is the primary contact for this manuscript within the DFO Open Science Portal and management review process. This person receives notifications, manages the manuscript record, and communicates with DFO management regarding the manuscript. The DFO corresponding author may or may not be the same person as the corresponding author listed on the publication who communicates with the journal.",
     "corresponding-author-toggle": "Toggles whether this is a corresponding author",
     "create": "Create",
     "created": "Created",

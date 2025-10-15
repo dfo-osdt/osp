@@ -178,6 +178,7 @@ async function getManuscriptOwnerId(): Promise<number> {
  */
 const loading = ref(false)
 async function submit() {
+  loading.value = true
   let response: ManagementReviewStepResource | null = null
   switch (decision.value) {
     case 'complete':

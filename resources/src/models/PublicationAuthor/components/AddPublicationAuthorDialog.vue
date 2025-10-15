@@ -34,11 +34,13 @@ const isCorrespondingOptions = [
   { label: t('common.yes'), value: true },
   { label: t('common.no'), value: false },
 ]
+const loading = ref(false)
 
 async function addPublicationAuthor() {
   if (authorId.value === null) {
     return
   }
+  loading.value = true
   await PublicationAuthorService.create(
     props.publicationId,
     authorId.value,
@@ -87,6 +89,7 @@ async function addPublicationAuthor() {
             :label="$t('common.add')"
             type="submit"
             class="q-ma-md"
+            :loading="loading"
           />
         </div>
       </div>

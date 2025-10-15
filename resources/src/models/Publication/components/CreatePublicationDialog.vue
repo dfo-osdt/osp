@@ -77,9 +77,11 @@ async function next() {
 }
 
 const router = useRouter()
+const loading = ref(false)
 
 /** Create the publication */
 async function create() {
+  loading.value = true
   const publication: PublicationCreate = {
     status: publishedOn.value === '' ? 'accepted' : 'published',
     title: title.value,
@@ -190,7 +192,7 @@ async function create() {
         <q-stepper-navigation class="flex justify-end">
           <q-btn
             color="primary" :label="step === 3 ? $t('common.create') : $t('common.next')
-            " class="q-mr-sm" @click="next()"
+            " class="q-mr-sm" :loading="loading" @click="next()"
           />
           <q-btn
             v-if="step > 1" flat color="primary" :label="$t('common.back')"

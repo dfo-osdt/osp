@@ -53,6 +53,7 @@ enum UserRole: string
                 UserPermission::UPDATE_AUTHORS,
                 UserPermission::UPDATE_PUBLICATIONS,
                 UserPermission::VIEW_ANY_MANUSCRIPT_RECORD,
+                UserPermission::SYNCHRONIZE_AUTHOR_AFFILIATIONS,
             ],
             self::CHIEF_EDITOR => [
                 UserPermission::PUBLISH_INTERNAL_REPORTS,
