@@ -6,6 +6,7 @@ use App\Http\Resources\ManuscriptAuthorResource;
 use App\Models\Author;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
+use App\Traits\LoadsManuscriptRecordPolicyRelationships;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
@@ -14,11 +15,14 @@ use Illuminate\Validation\Rule;
 
 class ManuscriptAuthorController extends Controller
 {
+    use LoadsManuscriptRecordPolicyRelationships;
+
     /**
      * Display a listing of the resource.
      */
     public function index(ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
 
         $manuscriptAuthors = $manuscriptRecord->manuscriptAuthors()->with($this->getPolicyRelationships())->orderBy('id')->get();
@@ -31,6 +35,7 @@ class ManuscriptAuthorController extends Controller
      */
     public function store(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -63,6 +68,7 @@ class ManuscriptAuthorController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor): JsonResource
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
 
         $manuscriptAuthor->load($this->getPolicyRelationships());
@@ -75,6 +81,7 @@ class ManuscriptAuthorController extends Controller
      */
     public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor): JsonResource
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -100,6 +107,7 @@ class ManuscriptAuthorController extends Controller
      */
     public function destroy(ManuscriptRecord $manuscriptRecord, ManuscriptAuthor $manuscriptAuthor): Response
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('delete', $manuscriptAuthor);
 
         $manuscriptAuthor->delete();

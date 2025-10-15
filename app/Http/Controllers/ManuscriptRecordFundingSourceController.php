@@ -5,24 +5,37 @@ namespace App\Http\Controllers;
 use App\Http\Resources\FundingSourceResource;
 use App\Models\FundingSource;
 use App\Models\ManuscriptRecord;
-use Gate;
+use App\Traits\LoadsManuscriptRecordPolicyRelationships;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class ManuscriptRecordFundingSourceController extends Controller
 {
+    use LoadsManuscriptRecordPolicyRelationships;
+
     /**
      * Display a listing of the resource.
      */
     public function index(ManuscriptRecord $manuscriptRecord): ResourceCollection
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
 
         $fundingSources = $manuscriptRecord->fundingSources;
 
-        return FundingSourceResource::collection($fundingSources->load(['funder', 'fundable']));
+        /** @phpstan-ignore-next-line */
+        return FundingSourceResource::collection($fundingSources->load([
+            'funder',
+            'fundable' => function (MorphTo $morphTo) {
+                $morphTo->morphWith([
+                    ManuscriptRecord::class => ['user', 'manuscriptAuthors.author', 'shareables', 'managementReviewSteps'],
+                ]);
+            },
+        ]));
     }
 
     /**
@@ -30,6 +43,7 @@ class ManuscriptRecordFundingSourceController extends Controller
      */
     public function store(ManuscriptRecord $manuscriptRecord, Request $request): JsonResource
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -46,7 +60,15 @@ class ManuscriptRecordFundingSourceController extends Controller
 
         $manuscriptRecord->fundingSources()->save($fundingSource);
 
-        return new FundingSourceResource($fundingSource->load(['funder', 'fundable']));
+        return new FundingSourceResource($fundingSource->load([
+            'funder',
+            'fundable' => function (MorphTo $morphTo) {
+                $morphTo->morphWith([
+                    ManuscriptRecord::class => ['user', 'manuscriptAuthors.author', 'shareables', 'managementReviewSteps'],
+                ]);
+            },
+        ]));
+
     }
 
     /**
@@ -54,9 +76,17 @@ class ManuscriptRecordFundingSourceController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource): JsonResource
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
 
-        return new FundingSourceResource($fundingSource->load(['funder', 'fundable']));
+        return new FundingSourceResource($fundingSource->load([
+            'funder',
+            'fundable' => function (MorphTo $morphTo) {
+                $morphTo->morphWith([
+                    ManuscriptRecord::class => ['user', 'manuscriptAuthors.author', 'shareables', 'managementReviewSteps'],
+                ]);
+            },
+        ]));
     }
 
     /**
@@ -64,6 +94,7 @@ class ManuscriptRecordFundingSourceController extends Controller
      */
     public function update(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource, Request $request): JsonResource
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -78,7 +109,14 @@ class ManuscriptRecordFundingSourceController extends Controller
             'description' => $validated['description'],
         ]);
 
-        return new FundingSourceResource($fundingSource->load(['funder', 'fundable']));
+        return new FundingSourceResource($fundingSource->load([
+            'funder',
+            'fundable' => function (MorphTo $morphTo) {
+                $morphTo->morphWith([
+                    ManuscriptRecord::class => ['user', 'manuscriptAuthors.author', 'shareables', 'managementReviewSteps'],
+                ]);
+            },
+        ]));
     }
 
     /**
@@ -86,6 +124,7 @@ class ManuscriptRecordFundingSourceController extends Controller
      */
     public function destroy(ManuscriptRecord $manuscriptRecord, FundingSource $fundingSource): Response
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('update', $manuscriptRecord);
 
         $fundingSource->delete();
