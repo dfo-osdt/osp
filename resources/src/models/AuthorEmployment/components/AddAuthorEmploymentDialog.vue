@@ -28,8 +28,10 @@ const q = useQuasar()
 const authorEmploymentService = new AuthorEmploymentService(props.authorId)
 
 const today = new Date().toISOString().split('T')[0]
+const loading = ref(false)
 
 async function createAuthorEmployment() {
+  loading.value = true
   q.dialog({
     title: t('orcid-employment-edit.update-confirmation-title'),
     message: t('orcid-employment-edit.update-confirmation-message'),
@@ -48,6 +50,8 @@ async function createAuthorEmployment() {
       end_date: endDate.value,
     })
     emit('changed')
+  }).onCancel(() => {
+    loading.value = false
   })
 }
 </script>
@@ -103,6 +107,7 @@ async function createAuthorEmployment() {
           type="submit"
           color="primary"
           :label="$t('common.create')"
+          :loading="loading"
         />
       </q-card-actions>
     </q-form>

@@ -26,6 +26,7 @@ const orcId = ref(props.author.data.orcid || '')
 const syncAllPivots = ref(false)
 const errorMessage = ref('')
 const showPersonalEmailWarning = ref(false)
+const loading = ref(false)
 
 const personalEmailDomains = [
   'gmail.com',
@@ -64,6 +65,7 @@ async function updateAuthor() {
     return
   }
 
+  loading.value = true
   const data: Partial<Author> & { sync_all_pivots?: boolean } = {
     id: props.author.data.id,
     first_name: firstName.value,
@@ -84,6 +86,7 @@ async function updateAuthor() {
       const errMsg = extractErrorMessages(response)
       errorMessage.value = errMsg.message
     }
+    loading.value = false
   }
 }
 </script>
@@ -214,6 +217,7 @@ async function updateAuthor() {
           color="primary"
           :label="$t('common.save')"
           type="submit"
+          :loading="loading"
         />
       </q-card-actions>
     </q-form>

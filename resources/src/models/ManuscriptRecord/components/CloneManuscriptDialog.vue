@@ -33,8 +33,10 @@ async function next() {
 
 // information required to clone a manuscript record
 const type: Ref<ManuscriptRecordType> = ref(props.sourceManuscript.type)
+const loading = ref(false)
 
 async function clone() {
+  loading.value = true
   try {
     // clone the manuscript record
     const response = await ManuscriptRecordService.clone(props.sourceManuscript.id, type.value)
@@ -105,6 +107,7 @@ async function clone() {
                     : $t('common.continue')
                 "
                 class="q-mr-sm"
+                :loading="loading"
                 @click="next()"
               />
               <q-btn

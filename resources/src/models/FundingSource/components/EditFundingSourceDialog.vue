@@ -18,10 +18,12 @@ const funders = computed(() => funderStore.funders)
 const title = ref(props.fundingSource.title)
 const description = ref(props.fundingSource.description ?? '')
 const funder = ref<Funder | null>(props.fundingSource.funder?.data ?? null)
+const loading = ref(false)
 
 async function editFundingSource() {
   if (!funder.value)
     return // will have been caught by validation
+  loading.value = true
   const fundingService = new FundingSourceService(
     props.fundingSource.fundable_type,
   )
@@ -83,7 +85,7 @@ async function editFundingSource() {
           color="primary"
           outline
         />
-        <q-btn :label="$t('common.save')" type="submit" color="primary" />
+        <q-btn :label="$t('common.save')" type="submit" color="primary" :loading="loading" />
       </q-card-actions>
     </q-form>
   </BaseDialog>

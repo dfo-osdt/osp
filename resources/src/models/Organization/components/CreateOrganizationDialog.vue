@@ -16,8 +16,10 @@ const name_en = ref('')
 const name_fr = ref('')
 const abbr_en = ref('')
 const abbr_fr = ref('')
+const loading = ref(false)
 
 async function createOrganization() {
+  loading.value = true
   const org: Organization = {
     id: 0,
     name_en: name_en.value,
@@ -82,6 +84,7 @@ async function createOrganization() {
           :label="$t('common.create')"
           type="submit"
           class="q-ma-md"
+          :loading="loading"
         />
       </div>
     </q-form>

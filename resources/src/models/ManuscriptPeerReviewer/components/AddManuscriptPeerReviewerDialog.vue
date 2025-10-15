@@ -26,11 +26,13 @@ const disabledAuthorIds = computed(() =>
 )
 
 const authorId = ref<number | null>(null)
+const loading = ref(false)
 
 async function addManuscriptPeerReviewer() {
   if (authorId.value === null) {
     return
   }
+  loading.value = true
   await ManuscriptPeerReviewerService.create(
     props.manuscriptRecordId,
     authorId.value,
@@ -65,6 +67,7 @@ async function addManuscriptPeerReviewer() {
             :label="$t('common.add')"
             type="submit"
             class="q-ma-md"
+            :loading="loading"
           />
         </div>
       </div>

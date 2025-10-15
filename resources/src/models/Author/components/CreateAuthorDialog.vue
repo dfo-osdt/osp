@@ -20,6 +20,7 @@ const organizationId = ref<number | null>(null)
 const orcId = ref('')
 const errorMessage = ref('')
 const showPersonalEmailWarning = ref(false)
+const loading = ref(false)
 
 const personalEmailDomains = [
   'gmail.com',
@@ -48,6 +49,7 @@ async function createAuthor() {
     return
   }
 
+  loading.value = true
   const data: Partial<Author> = {
     first_name: firstName.value,
     last_name: lastName.value,
@@ -66,6 +68,7 @@ async function createAuthor() {
       const errMsg = extractErrorMessages(response)
       errorMessage.value = errMsg.message
     }
+    loading.value = false
   }
 }
 </script>
@@ -154,6 +157,7 @@ async function createAuthor() {
           :label="$t('common.create')"
           type="submit"
           class="q-ma-md"
+          :loading="loading"
         />
       </div>
     </q-form>

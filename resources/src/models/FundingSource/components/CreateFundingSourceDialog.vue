@@ -19,10 +19,12 @@ funderStore.getFunders()
 const title = ref('')
 const description = ref('')
 const funder = ref<Funder | null>(null)
+const loading = ref(false)
 
 async function createFundingSource() {
   if (!funder.value)
     return // will have been caught by validation
+  loading.value = true
   const fundingService = new FundingSourceService(props.fundableType)
   const response = await fundingService.create(props.fundableId, {
     title: title.value,
@@ -82,7 +84,7 @@ async function createFundingSource() {
           color="primary"
           outline
         />
-        <q-btn :label="$t('common.create')" type="submit" color="primary" />
+        <q-btn :label="$t('common.create')" type="submit" color="primary" :loading="loading" />
       </q-card-actions>
     </q-form>
   </BaseDialog>
