@@ -14,6 +14,7 @@ use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
+use Thunk\Verbs\Facades\Verbs;
 
 test('a reviewer can view all review steps associated with manuscript', function () {
     $owner = User::factory()->create();

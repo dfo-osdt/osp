@@ -55,6 +55,8 @@ class PublicationPolicy
 
         // if the publication has a manuscript record, then the users that can view it, can view this publication
         if ($publication->manuscript_record_id) {
+            $publication->load('manuscriptRecord.manuscriptAuthors.author');
+
             return $user->can('view', $publication->manuscriptRecord);
         }
 

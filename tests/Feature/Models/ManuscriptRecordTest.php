@@ -239,6 +239,60 @@ test('a user can submit a filled manuscript record', function () {
     expect($manuscript->managementReviewSteps()->first()->status)->toBe(ManagementReviewStepStatus::PENDING);
 });
 
+test('a MRF author can edit and submit a filled manuscript record', function () {
+    Mail::fake();
+
+    $radomUser = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->filled()->create();
+    $authorUser = User::factory()->create();
+    $manuscript->manuscriptAuthors()->create([
+        'author_id' => $authorUser->author->id,
+        'is_corresponding_author' => true,
+        'organization_id' => $authorUser->author->organization_id,
+    ]);
+    $reviewerUser = User::factory()->create();
+
+    $data = [
+        'reviewer_user_id' => $reviewerUser->id,
+    ];
+
+    // random user cannot submit manuscript
+    $this->actingAs($radomUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertForbidden();
+
+    $mrfData = [
+        'abstract' => 'My new abstract',
+    ];
+
+    $response = $this->actingAs($authorUser)->putJson("/api/manuscript-records/{$manuscript->id}", $mrfData)->assertOk();
+
+    // test the author must have approved the pls
+    $manuscript->pls_approved_by_author = false;
+    $manuscript->save();
+    $response = $this->actingAs($authorUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertStatus(422);
+
+    // approve the pls
+    $manuscript->pls_approved_by_author = true;
+    $manuscript->save();
+
+    $response = $this->actingAs($authorUser)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data);
+    $response->assertOk();
+
+    Mail::assertQueued(ManuscriptRecordToReviewMail::class);
+
+    expect($response->json('data.status'))->toBe(ManuscriptRecordStatus::IN_REVIEW->value);
+
+    // check that the manuscript files has been locked
+    expect($manuscript->getLastManuscriptFile()->getCustomProperty('locked'))->toBe(true);
+    // try to delete the manuscript file
+    $response = $this->actingAs($authorUser)->deleteJson("/api/manuscript-records/{$manuscript->id}/files/{$manuscript->getLastManuscriptFile()->uuid}")->assertForbidden();
+
+    // check that a management review step has been created and for it belongs to the reviewer
+    expect($manuscript->fresh()->user->id)->toBe($authorUser->id);
+    expect($manuscript->managementReviewSteps()->count())->toBe(1);
+    expect($manuscript->managementReviewSteps()->first()->user_id)->toBe($reviewerUser->id);
+    expect($manuscript->managementReviewSteps()->first()->status)->toBe(ManagementReviewStepStatus::PENDING);
+});
+
 test('a user can withdraw a manuscript record', function () {
     Event::fake();
 

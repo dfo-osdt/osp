@@ -44,9 +44,6 @@ class ManuscriptRecordPolicy
             return true;
         }
 
-        // is this a manuscript author?
-        $manuscriptRecord->load('manuscriptAuthors.author');
-
         if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
             return true;
         }
@@ -91,6 +88,11 @@ class ManuscriptRecordPolicy
         switch ($manuscriptRecord->status) {
             case ManuscriptRecordStatus::DRAFT:
                 if ($user->id === $manuscriptRecord->user_id) {
+                    return true;
+                }
+
+                // Is the the user an author on this manuscript?
+                if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
                     return true;
                 }
 
@@ -149,7 +151,7 @@ class ManuscriptRecordPolicy
     }
 
     /**
-     * Can the user attach an copy of the manuscript to the record?
+     * Can the user attach a copy of the manuscript to the record?
      */
     public function attachManuscript(User $user, ManuscriptRecord $manuscriptRecord)
     {
@@ -164,6 +166,11 @@ class ManuscriptRecordPolicy
         if ($user->id === $manuscriptRecord->user_id) {
             return true;
         }
+
+        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+            return true;
+        }
+
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
@@ -177,6 +184,10 @@ class ManuscriptRecordPolicy
         // can only submit if the manuscript is in draft state
         if ($manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
             return false;
+        }
+
+        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+            return true;
         }
 
         // can only submit if the user is the owner of the manuscript
@@ -215,6 +226,10 @@ class ManuscriptRecordPolicy
         if ($user->id === $manuscriptRecord->user_id) {
             return true;
         }
+
+        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+            return true;
+        }
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
@@ -232,6 +247,9 @@ class ManuscriptRecordPolicy
 
         // can only mark as accepted if the user is the owner of the manuscript
         if ($user->id === $manuscriptRecord->user_id) {
+            return true;
+        }
+        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
             return true;
         }
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
@@ -256,6 +274,9 @@ class ManuscriptRecordPolicy
         if ($user->id === $manuscriptRecord->user_id) {
             return true;
         }
+        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+            return true;
+        }
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
@@ -268,6 +289,10 @@ class ManuscriptRecordPolicy
      */
     public function share(User $user, ManuscriptRecord $manuscriptRecord)
     {
+        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+            return true;
+        }
+
         return $user->id === $manuscriptRecord->user_id;
     }
 
