@@ -33,6 +33,7 @@ class ManuscriptRecordFileController extends Controller
      */
     public function store(Request $request, ManuscriptRecord $manuscriptRecord)
     {
+        $manuscriptRecord->load('manuscriptAuthors.author', 'managementReviewSteps', 'shareables');
         Gate::authorize('attachManuscript', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -61,6 +62,7 @@ class ManuscriptRecordFileController extends Controller
     public function show(Request $request, ManuscriptRecord $manuscriptRecord, string $uuid)
     {
 
+        $manuscriptRecord->load('manuscriptAuthors.author', 'managementReviewSteps', 'shareables');
         Gate::authorize('view', $manuscriptRecord);
 
         $media = $manuscriptRecord->getManuscriptFile($uuid);
@@ -83,6 +85,7 @@ class ManuscriptRecordFileController extends Controller
      */
     public function destroy(Request $request, ManuscriptRecord $manuscriptRecord, string $uuid)
     {
+        $manuscriptRecord->load('manuscriptAuthors.author', 'managementReviewSteps', 'shareables');
         Gate::authorize('attachManuscript', $manuscriptRecord);
 
         try {

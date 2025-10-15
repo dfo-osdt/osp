@@ -29,6 +29,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
@@ -43,6 +44,7 @@ class ManuscriptRecordController extends Controller
      */
     public function index(#[CurrentUser] User $user, Request $request): ResourceCollection
     {
+
         $limit = $this->getLimitFromRequest($request);
 
         $hasGlobalPermission = $user->hasPermissionTo(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD);
@@ -118,6 +120,7 @@ class ManuscriptRecordController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('view', $manuscriptRecord);
 
         return $this->defaultResource($manuscriptRecord);
@@ -128,6 +131,7 @@ class ManuscriptRecordController extends Controller
      */
     public function update(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -157,6 +161,7 @@ class ManuscriptRecordController extends Controller
     /** Delete a manuscript */
     public function destroy(Request $request, ManuscriptRecord $manuscriptRecord)
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('delete', $manuscriptRecord);
 
         DeleteManuscriptRecord::handle($manuscriptRecord);
@@ -167,6 +172,7 @@ class ManuscriptRecordController extends Controller
     /** Submit the manuscript record for review */
     public function submitForReview(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('submitForReview', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -177,29 +183,38 @@ class ManuscriptRecordController extends Controller
             ],
         ]);
 
-        // validate that the record has all the required fields
-        $manuscriptRecord->validateIsFilled();
+        DB::transaction(function () use ($manuscriptRecord, $validated) {
 
-        // get review user
-        $reviewUser = User::findOrFail($validated['reviewer_user_id']);
+            // validate that the record has all the required fields
+            $manuscriptRecord->validateIsFilled();
 
-        // create the first management review step for this record
-        $reviewStep = new ManagementReviewStep;
-        $reviewStep->manuscript_record_id = $manuscriptRecord->id;
+            // is the user submitting the MRF applicant? If not, we need to set it.
+            // this will occur when an admin creates a draft and an auhtor submits it.
+            if ($manuscriptRecord->user_id !== Auth::id()) {
+                $manuscriptRecord->user_id = Auth::id();
+            }
 
-        // is there an expected decision date for this manuscript type? Only primary for now.
-        $decisionExpected = in_array($manuscriptRecord->type, [ManuscriptRecordType::PRIMARY, ManuscriptRecordType::PREPRINT], true);
-        $reviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
-        $reviewStep->user_id = $reviewUser->id;
-        $reviewStep->save();
+            // get review user
+            $reviewUser = User::findOrFail($validated['reviewer_user_id']);
 
-        // trigger event that the record was submitted
-        ManuscriptRecordToReviewEvent::dispatch($manuscriptRecord, $reviewUser);
+            // create the first management review step for this record
+            $reviewStep = new ManagementReviewStep;
+            $reviewStep->manuscript_record_id = $manuscriptRecord->id;
 
-        $manuscriptRecord->status = ManuscriptRecordStatus::IN_REVIEW;
-        $manuscriptRecord->sent_for_review_at = now();
-        $manuscriptRecord->lockManuscriptFiles();
-        $manuscriptRecord->save();
+            // is there an expected decision date for this manuscript type? Only primary for now.
+            $decisionExpected = in_array($manuscriptRecord->type, [ManuscriptRecordType::PRIMARY, ManuscriptRecordType::PREPRINT], true);
+            $reviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
+            $reviewStep->user_id = $reviewUser->id;
+            $reviewStep->save();
+
+            $manuscriptRecord->status = ManuscriptRecordStatus::IN_REVIEW;
+            $manuscriptRecord->sent_for_review_at = now();
+            $manuscriptRecord->lockManuscriptFiles();
+            $manuscriptRecord->save();
+
+            // trigger event that the record was submitted
+            ManuscriptRecordToReviewEvent::dispatch($manuscriptRecord, $reviewUser);
+        });
 
         return $this->defaultResource($manuscriptRecord);
     }
@@ -207,6 +222,7 @@ class ManuscriptRecordController extends Controller
     /** Withdraw this manuscript - it will not be published */
     public function withdraw(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('withdraw', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -227,6 +243,7 @@ class ManuscriptRecordController extends Controller
     /** Mark the manuscript as submitted */
     public function submitted(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('markSubmitted', $manuscriptRecord);
 
         // validate the request has the submitted on date
@@ -244,6 +261,7 @@ class ManuscriptRecordController extends Controller
     /** Mark the manuscript as accepted */
     public function accepted(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('markAccepted', $manuscriptRecord);
 
         // validate the request has the submitted on date
@@ -301,6 +319,7 @@ class ManuscriptRecordController extends Controller
     /** Submit to a preprint server / only works with preprint manuscripts */
     public function submittedToPreprint(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('submitToPreprint', $manuscriptRecord);
 
         // validate the request has the preprint url
@@ -330,6 +349,7 @@ class ManuscriptRecordController extends Controller
 
     public function clone(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('view', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -365,7 +385,7 @@ class ManuscriptRecordController extends Controller
      */
     private function loadPolicyRelationships(ManuscriptRecord $manuscriptRecord): ManuscriptRecord
     {
-        $relationships = collect(['user', 'shareables', 'region']);
+        $relationships = collect(['user', 'shareables', 'region', 'manuscriptAuthors.author']);
         if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
             $relationships->push('publication');
         }

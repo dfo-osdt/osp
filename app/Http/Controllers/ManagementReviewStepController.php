@@ -26,6 +26,7 @@ class ManagementReviewStepController extends Controller
      */
     public function index(ManuscriptRecord $manuscriptRecord): JsonResource
     {
+        $manuscriptRecord->load('manuscriptAuthors.author');
         Gate::authorize('view', $manuscriptRecord);
 
         $managementReviewSteps = $manuscriptRecord->managementReviewSteps()->with('user', 'manuscriptRecord')->orderBy('id')->get();
