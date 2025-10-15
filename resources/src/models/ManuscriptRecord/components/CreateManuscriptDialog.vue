@@ -19,10 +19,12 @@ const stepper: Ref<QStepper | null> = ref(null)
 const step = ref(1)
 const manuscriptDetailForm: Ref<QForm | null> = ref(null)
 const manuscriptDetailFormValid = ref(true)
+const createButtonDisabled = ref(false)
 
 async function next() {
   if (step.value === 3) {
     // create manuscript
+    createButtonDisabled.value = true
     create()
     return
   }
@@ -169,6 +171,7 @@ async function create() {
                     : $t('common.continue')
                 "
                 class="q-mr-sm"
+                :loading="createButtonDisabled"
                 @click="next()"
               />
               <q-btn

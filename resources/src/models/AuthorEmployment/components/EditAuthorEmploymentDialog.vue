@@ -25,8 +25,10 @@ const { t } = useI18n()
 const q = useQuasar()
 
 const authorEmploymentService = new AuthorEmploymentService(props.authorEmployment.data.author_id)
+const loading = ref(false)
 
 async function udpateAuthorEmployment() {
+  loading.value = true
   q.dialog({
     title: t('orcid-employment-edit.update-confirmation-title'),
     message: t('orcid-employment-edit.update-confirmation-message'),
@@ -46,6 +48,8 @@ async function udpateAuthorEmployment() {
       end_date: endDate.value,
     })
     emit('changed')
+  }).onCancel(() => {
+    loading.value = false
   })
 }
 
@@ -118,6 +122,7 @@ function deleteAuthorEmployment() {
           type="submit"
           color="primary"
           :label="$t('common.save')"
+          :loading="loading"
         />
       </q-card-actions>
     </q-form>

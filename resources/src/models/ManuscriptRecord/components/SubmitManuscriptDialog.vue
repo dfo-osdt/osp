@@ -149,7 +149,7 @@ async function submit() {
                   ? $t('common.submit')
                   : $t('common.next')
               "
-              :disable="!agreeToTerms"
+              :disable="!agreeToTerms || loading"
               :loading="loading"
               @click="step === 2 ? submit() : stepper?.next()"
             />
