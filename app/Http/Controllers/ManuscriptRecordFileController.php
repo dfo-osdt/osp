@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MediaResource;
 use App\Models\ManuscriptRecord;
+use App\Traits\LoadsManuscriptRecordPolicyRelationships;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
@@ -12,11 +13,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ManuscriptRecordFileController extends Controller
 {
+    use LoadsManuscriptRecordPolicyRelationships;
+
     /**
      * Returns a list of all files for a manuscript record.
      */
     public function index(Request $request, ManuscriptRecord $manuscriptRecord)
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
 
         $media = $manuscriptRecord->getManuscriptFiles();
@@ -33,7 +37,7 @@ class ManuscriptRecordFileController extends Controller
      */
     public function store(Request $request, ManuscriptRecord $manuscriptRecord)
     {
-        $manuscriptRecord->load('manuscriptAuthors.author', 'managementReviewSteps', 'shareables');
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('attachManuscript', $manuscriptRecord);
 
         $validated = $request->validate([
@@ -61,8 +65,7 @@ class ManuscriptRecordFileController extends Controller
      */
     public function show(Request $request, ManuscriptRecord $manuscriptRecord, string $uuid)
     {
-
-        $manuscriptRecord->load('manuscriptAuthors.author', 'managementReviewSteps', 'shareables');
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
 
         $media = $manuscriptRecord->getManuscriptFile($uuid);
@@ -85,7 +88,7 @@ class ManuscriptRecordFileController extends Controller
      */
     public function destroy(Request $request, ManuscriptRecord $manuscriptRecord, string $uuid)
     {
-        $manuscriptRecord->load('manuscriptAuthors.author', 'managementReviewSteps', 'shareables');
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('attachManuscript', $manuscriptRecord);
 
         try {
