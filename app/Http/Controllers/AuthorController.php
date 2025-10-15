@@ -117,7 +117,6 @@ class AuthorController extends Controller
         // If sync_all_pivots is true and organization_id was updated,
         // update all manuscript_authors and publication_authors
         if ($syncAllPivots && isset($validated['organization_id'])) {
-            // Only users with UPDATE_AUTHORS permission can sync pivots
             Gate::authorize(UserPermission::SYNCHRONIZE_AUTHOR_AFFILIATIONS);
 
             $author->manuscriptAuthors()->update([
