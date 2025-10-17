@@ -2,6 +2,7 @@
 
 namespace App\Mail\PlanningBinder;
 
+use App\Enums\ManuscriptRecordType;
 use App\Models\Publication;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
@@ -35,15 +36,21 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
     public function envelope(): Envelope
     {
 
-        $to = config('osp.manuscript_submission_email');
-        if (empty($to)) {
+        $cc = config('osp.manuscript_submission_email');
+        if (empty($cc)) {
             throw new \Exception('The manuscript submission email address is not set.');
         }
 
+        $title = match ($this->planningBinderItemState->manuscript_record_type) {
+            ManuscriptRecordType::PRIMARY => 'Manuscript Flagged for Planning Binder Accepted In Journal - Manuscrit identifié pour le classeur de planification accepté dans un journal',
+            ManuscriptRecordType::SECONDARY => 'Manuscript Flagged for Planning Binder Accepted in DFO Journal - Manuscrit identifié pour le classeur de planification accepté dans un journal du MPO',
+            default => 'Manuscript Flagged for Planning Binder Accepted In Journal - Manuscrit identifié pour le classeur de planification accepté dans un journal',
+        };
+
         return new Envelope(
-            subject: 'Manuscript Flagged for Planning Binder Accepted In Journal - Manuscrit identifié pour le classeur de planification accepté dans un journal',
-            to: [$to],
-            cc: [$this->referrer->email],
+            subject: $title,
+            to: [$this->referrer->email],
+            cc: [$cc],
         );
     }
 
@@ -52,8 +59,15 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
      */
     public function content(): Content
     {
+
+        $markdownTemplate = match ($this->planningBinderItemState->manuscript_record_type) {
+            ManuscriptRecordType::PRIMARY => 'mail.planning-binder.flagged-manuscript-accepted-in-journal',
+            ManuscriptRecordType::SECONDARY => 'mail.planning-binder.flagged-manuscript-accepted-by-dfo',
+            default => 'mail.planning-binder.flagged-manuscript-accepted-in-journal',
+        };
+
         return new Content(
-            markdown: 'mail.planning-binder.flagged-manuscript-accepted-in-journal',
+            markdown: $markdownTemplate,
             with: [
                 'publication' => $this->publication,
                 'state' => $this->planningBinderItemState,

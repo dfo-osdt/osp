@@ -37,8 +37,8 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
      */
     public function envelope(): Envelope
     {
-        $to = config('osp.manuscript_submission_email');
-        if (empty($to)) {
+        $cc = config('osp.manuscript_submission_email');
+        if (empty($cc)) {
             throw new \Exception('The manuscript submission email address is not set.');
         }
 
@@ -46,7 +46,8 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
 
         return new Envelope(
             subject: $subject,
-            to: [$to],
+            to: [$this->user->email],
+            cc: [$cc]
         );
     }
 
