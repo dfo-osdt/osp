@@ -183,6 +183,18 @@ class ExportEmails extends Command
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('flagged-manuscript-accepted-in-journal.html', $markdownContent);
 
+        $publication = Publication::factory()->withManuscript(['type' => ManuscriptRecordType::SECONDARY])->create();
+        $state = PlanningBinderItemState::factory()->state([
+            'manuscript_record_ulid' => $publication->manuscriptRecord->ulid,
+            'manuscript_record_type' => $publication->manuscriptRecord->type,
+            'publication_id' => $publication->id,
+            'referrer_user_id' => User::factory()->create()->id,
+        ])->create();
+
+        $flaggedEmail = new \App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail($state);
+        $markdownContent = $flaggedEmail->render();
+        $this->exportFile('flagged-manuscript-accepted-by-dfo.html', $markdownContent);
+
         // Management review due soon (only due soon reviews)
         $user = User::factory()->create();
         $dueSoonReviews = collect([

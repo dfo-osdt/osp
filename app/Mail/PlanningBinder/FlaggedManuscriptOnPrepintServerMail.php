@@ -36,16 +36,16 @@ class FlaggedManuscriptOnPrepintServerMail extends Mailable
     public function envelope(): Envelope
     {
 
-        $to = config('osp.manuscript_submission_email');
-        if (empty($to)) {
+        $cc = config('osp.manuscript_submission_email');
+        if (empty($cc)) {
             throw new \Exception('The manuscript submission email address is not set.');
         }
 
         return new Envelope(
             subject: 'Manuscript Flagged for Planning Binder posted on Prepint Server - Manuscrit identifié pour le classeur de planification publié un serveur de prépublication',
 
-            to: [$to],
-            cc: [$this->referrer->email],
+            to: [$this->referrer->email],
+            cc: [$cc],
         );
     }
 
