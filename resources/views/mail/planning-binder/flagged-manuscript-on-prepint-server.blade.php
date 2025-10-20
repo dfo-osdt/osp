@@ -1,5 +1,5 @@
 <x-mail::message>
-# Hello $referer->first_name,
+# Hello {{ $referrer->first_name }},
 
 *(le français suit)*
 
@@ -27,7 +27,7 @@ View Preprint
 
 ---
 
-# Bonjour $referer->first_name,
+# Bonjour {{ $referrer->first_name }},
 
 Le manuscrit signalé intitulé "**{{ $manuscript->title }}**" a été déposé sur un serveur de prépublication et est maintenant disponible en ligne. Veuillez trouver les détails ci-dessous. Vous pouvez consulter la prépublication en utilisant le bouton ci-dessous.
 Vous recevez ce courriel parce que {{ $referrer->full_name }} a signalé ce manuscrit pour l'ajouter au classeur de planification.

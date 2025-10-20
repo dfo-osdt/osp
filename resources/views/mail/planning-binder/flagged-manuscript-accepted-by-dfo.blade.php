@@ -1,5 +1,5 @@
 <x-mail::message>
-# Hello $referer->first_name,
+# Hello {{$referrer->first_name}},
 
 *(le français suit)*
 
@@ -29,7 +29,7 @@ View Publication
 
 ---
 
-# Bonjour $referer->first_name,
+# Bonjour {{ $referrer->first_name }},
 
 Le manuscrit intitulé "**{{ $publication->title }}**" a été accepté pour publication dans la série: {{ $publication->journal->title }}.
 Vous recevez ce courriel parce que {{ $referrer->full_name }} a signalé ce manuscrit pour ajout au classeur de planification.
