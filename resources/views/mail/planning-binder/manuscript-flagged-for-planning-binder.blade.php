@@ -1,5 +1,5 @@
 <x-mail::message>
-# Hello $user->first_name,
+# Hello {{ $user->first_name }},
 
 *(le français suit)*
 
@@ -21,7 +21,7 @@ It is the region’s responsibility to include the publication in the planning b
 
 ---
 
-# Bonjour $user->first_name,
+# Bonjour {{ $user->first_name }},
 
 Le manuscrit intitulé "**{{ $manuscript->title }}**" a été signalé pour
 examen dans le classeur de planification par {{ $user->full_name }} via le
