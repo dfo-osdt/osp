@@ -64,7 +64,7 @@ const showPublishBanner = computed(() => {
             </div>
             <div class="col-10 q-pt-sm">
               <p v-if="manuscript?.data.type === 'primary'">
-                {{ $t('mrf.ready-to-marked-published') }}
+                {{ $t('mrf.ready-to-be-marked-published') }}
               </p>
               <p v-if="manuscript?.data.type === 'secondary'">
                 {{ $t('mrf.ready-to-submit') }}

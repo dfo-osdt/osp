@@ -45,7 +45,7 @@ const value = defineModel<ManuscriptRecordType>({ required: true })
               {{ $t('common.preprint-publication') }}
             </q-item-label>
             <q-item-label class="text-body2 text-grey-8">
-              {{ $t('create-manuscript-record-dialog.prerint-pub-desc') }}
+              {{ $t('create-manuscript-record-dialog.preprint-pub-desc') }}
             </q-item-label>
           </q-item-section>
         </q-item>
