@@ -128,16 +128,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.356.42",
+            "version": "3.357.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c886d60206d2f100c2d132052875f53ce3f999f7"
+                "reference": "c52162a65338044c15ec38c29055edb06376ccf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c886d60206d2f100c2d132052875f53ce3f999f7",
-                "reference": "c886d60206d2f100c2d132052875f53ce3f999f7",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c52162a65338044c15ec38c29055edb06376ccf0",
+                "reference": "c52162a65338044c15ec38c29055edb06376ccf0",
                 "shasum": ""
             },
             "require": {
@@ -219,9 +219,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.356.42"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.357.1"
             },
-            "time": "2025-10-17T18:17:41+00:00"
+            "time": "2025-10-23T18:05:18+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -738,16 +738,16 @@
         },
         {
             "name": "cmixin/business-day",
-            "version": "1.20.2",
+            "version": "1.20.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kylekatarnls/business-day.git",
-                "reference": "ea49eb48324e0356fe2e910457606dc77baa2273"
+                "reference": "414302dde988a7c130fd703320c088c33caef59f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/ea49eb48324e0356fe2e910457606dc77baa2273",
-                "reference": "ea49eb48324e0356fe2e910457606dc77baa2273",
+                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/414302dde988a7c130fd703320c088c33caef59f",
+                "reference": "414302dde988a7c130fd703320c088c33caef59f",
                 "shasum": ""
             },
             "require": {
@@ -793,7 +793,7 @@
             "description": "Carbon mixin to handle business days",
             "support": {
                 "issues": "https://github.com/kylekatarnls/business-day/issues",
-                "source": "https://github.com/kylekatarnls/business-day/tree/1.20.2"
+                "source": "https://github.com/kylekatarnls/business-day/tree/1.20.3"
             },
             "funding": [
                 {
@@ -805,7 +805,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-15T19:47:35+00:00"
+            "time": "2025-10-24T10:22:25+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -3483,16 +3483,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.34.0",
+            "version": "v12.35.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "f9ec5a5d88bc8c468f17b59f88e05c8ac3c8d687"
+                "reference": "d6d6e3cb68238e2fb25b440f222442adef5a8a15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/f9ec5a5d88bc8c468f17b59f88e05c8ac3c8d687",
-                "reference": "f9ec5a5d88bc8c468f17b59f88e05c8ac3c8d687",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/d6d6e3cb68238e2fb25b440f222442adef5a8a15",
+                "reference": "d6d6e3cb68238e2fb25b440f222442adef5a8a15",
                 "shasum": ""
             },
             "require": {
@@ -3698,20 +3698,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-10-14T13:58:31+00:00"
+            "time": "2025-10-23T15:25:03+00:00"
         },
         {
             "name": "laravel/horizon",
-            "version": "v5.36.0",
+            "version": "v5.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "eccc804c9da78064c97a8f506bb148f05c816409"
+                "reference": "3a970f934e95e396faa0aab53b3a996c6bf47e95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/eccc804c9da78064c97a8f506bb148f05c816409",
-                "reference": "eccc804c9da78064c97a8f506bb148f05c816409",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/3a970f934e95e396faa0aab53b3a996c6bf47e95",
+                "reference": "3a970f934e95e396faa0aab53b3a996c6bf47e95",
                 "shasum": ""
             },
             "require": {
@@ -3776,9 +3776,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/horizon/issues",
-                "source": "https://github.com/laravel/horizon/tree/v5.36.0"
+                "source": "https://github.com/laravel/horizon/tree/v5.37.0"
             },
-            "time": "2025-10-10T13:44:39+00:00"
+            "time": "2025-10-21T14:32:49+00:00"
         },
         {
             "name": "laravel/pail",
@@ -6486,16 +6486,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.6.1",
+            "version": "v5.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "f103601b29efebd7ff4a1ca7b3eeea9e3336a2a2"
+                "reference": "3a454ca033b9e06b63282ce19562e892747449bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f103601b29efebd7ff4a1ca7b3eeea9e3336a2a2",
-                "reference": "f103601b29efebd7ff4a1ca7b3eeea9e3336a2a2",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3a454ca033b9e06b63282ce19562e892747449bb",
+                "reference": "3a454ca033b9e06b63282ce19562e892747449bb",
                 "shasum": ""
             },
             "require": {
@@ -6538,9 +6538,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.6.1"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.6.2"
             },
-            "time": "2025-08-13T20:13:15+00:00"
+            "time": "2025-10-21T19:32:17+00:00"
         },
         {
             "name": "nunomaduro/termwind",
@@ -10440,16 +10440,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "11.16.0",
+            "version": "11.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "3515057560927ff762cb76f3cb2c4777a34b1519"
+                "reference": "0d58f3184d6449e3173ee3e44b29dc5ff7425d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/3515057560927ff762cb76f3cb2c4777a34b1519",
-                "reference": "3515057560927ff762cb76f3cb2c4777a34b1519",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/0d58f3184d6449e3173ee3e44b29dc5ff7425d71",
+                "reference": "0d58f3184d6449e3173ee3e44b29dc5ff7425d71",
                 "shasum": ""
             },
             "require": {
@@ -10534,7 +10534,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.16.0"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.17.0"
             },
             "funding": [
                 {
@@ -10546,7 +10546,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-21T06:59:05+00:00"
+            "time": "2025-10-22T08:01:45+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -17657,16 +17657,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "8d2dedf7779c2e175a02a176dec38e6f9b35352b"
+                "reference": "20486fad67ee3e20f491e855aa6b9844b8140981"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/8d2dedf7779c2e175a02a176dec38e6f9b35352b",
-                "reference": "8d2dedf7779c2e175a02a176dec38e6f9b35352b",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/20486fad67ee3e20f491e855aa6b9844b8140981",
+                "reference": "20486fad67ee3e20f491e855aa6b9844b8140981",
                 "shasum": ""
             },
             "require": {
@@ -17719,7 +17719,7 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2025-10-14T01:13:19+00:00"
+            "time": "2025-10-24T06:22:38+00:00"
         },
         {
             "name": "laravel/breeze",
