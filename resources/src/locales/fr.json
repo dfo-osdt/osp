@@ -20,7 +20,7 @@
     "title": "Journal accepté pour publication"
   },
   "add-pub-author-dialog": {
-    "dialog-help": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse e-mail a changé, vous pouvez créer une nouvelle fiche d'auteur.",
+    "dialog-help": "Recherchez l'auteur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. \nSi vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse courriel a changé, vous pouvez créer une nouvelle fiche d'auteur.",
     "title": "Ajouter un auteur à cette publication"
   },
   "auth": {
@@ -216,13 +216,13 @@
       "in": "dans {0}",
       "just-now": "tout de suite",
       "last-month": "le mois dernier",
-      "last-week": "La semaine dernière",
+      "last-week": "la semaine dernière",
       "last-year": "l'année dernière",
       "minute": "minutes | minutes",
       "month": "mois | mois",
       "next-month": "le mois prochain",
       "next-week": "la semaine prochaine",
-      "next-year": "L'année prochaine",
+      "next-year": "l'année prochaine",
       "second": "seconde | secondes",
       "tomorrow": "demain",
       "week": "semaine | semaines",
@@ -312,12 +312,12 @@
     "personal-information": "Informations personnelles",
     "affiliation-research": "Affiliation et informations de recherche",
     "ror-guidance": "Lors de la sélection de l'affiliation de votre co-auteur, choisissez l'institution principale qui apparaît dans ses publications de recherche (par exemple, 'Université McGill' et non 'Département des sciences de McGill'). Ne créez une nouvelle organisation que si vous ne trouvez pas leur affiliation institutionnelle principale.",
-    "personal-email-warning": "Considérez demander à votre co-auteur son adresse courriel institutionnelle. Les adresses courriels personnelles peuvent ne pas être idéales pour les communications de recherche professionnelles."
+    "personal-email-warning": "Envisagez de demander à votre co-auteur son adresse courriel institutionnelle. Les adresses courriels personnelles peuvent ne pas être idéales pour les communications de recherche professionnelles."
   },
   "create-manuscript-record-dialog": {
     "create-text": "Une fois créé, vous serez redirigé vers le formulaire du registre des manuscrits. \nLe formulaire du registre des manuscrits sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour révision.",
     "enter-the-title-of-your-manuscript": "Entrez le titre de votre manuscrit",
-    "primary-pub-desc": "Document scientifique ou technique destiné à être publié dans une revue tierce, un numéro spécial, un chapitre de livre, un acte de livre ou de conférence",
+    "primary-pub-desc": "Document scientifique ou technique destiné à être publié dans une revue tierce, un numéro spécial, un chapitre de livre, des actes de livre ou de conférence",
     "secondary-pub-desc": "Document scientifique ou technique à publier dans une série scientifique du MPO",
     "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de la révision par la gestion de ce manuscrit.",
     "step1": {
@@ -349,7 +349,7 @@
     "publication-details": "Détails de publication",
     "published-on": "Publié le",
     "step1": {
-      "p1": "Cet assistant vous permet d'ajouter au portail des manuscrits publiées ; \nvous permettant de partager des publications passées ou d'ajouter des publications où le Formulaire du Registre des Manuscrits (FRM) a été fait par d'autres moyens.",
+      "p1": "Cet assistant vous permet d'ajouter au portail des manuscrits publiés ; \nvous permettant de partager des publications passées ou d'ajouter des publications où le Formulaire du Registre des Manuscrits (FRM) a été fait par d'autres moyens.",
       "warning": "Si vous êtes ici pour faire réviser votre manuscrit par la gestion avant de le soumettre à une revue, ne continuez pas, créez plutôt un nouveau registre de manuscrit."
     },
     "title": "Créer une publication",
@@ -369,7 +369,7 @@
     "refer": "Référer au prochain responsable",
     "refer-desc": "Vous avez examiné le manuscrit et vous le transmettez au prochain responsable (généralement un RDS ou un DG) pour examen.",
     "revision": "Révisions requises",
-    "revision-desc": "Signalez les commentaires de gestion qui doivent être pris en compte par l'auteur avant de completer l'évaluation.",
+    "revision-desc": "Signalez les commentaires de gestion qui doivent être pris en compte par l'auteur avant de compléter l'évaluation.",
     "reassign": "Réassigner",
     "reassign-desc": "Vous n'êtes pas le responsable approprié pour examiner ce manuscrit et vous réattribuez cet examen au responsable compétent sans faire de recommandation.",
     "complete": "Terminer",
@@ -423,7 +423,7 @@
   },
   "fundingSource": {
     "delete": "Confirmer la suppression",
-    "deleteConfirmation": "Veuillez confirmer que vous souhaitez cette source de financement: {source}"
+    "deleteConfirmation": "Veuillez confirmer que vous souhaitez supprimer cette source de financement: {source}"
   },
   "invite-user-dialog": {
     "help": "Invitez un nouvel utilisateur sur le portail. \nLe courriel d'invitation sera envoyé à l'adresse courriel de l'utilisateur et vous pourrez savoir s'il a accepté l'invitation sous l'onglet \"Invitation envoyée\" dans le menu \"Paramètres\".",
@@ -437,7 +437,7 @@
   },
   "login-card": {
     "dont-have-an-account": "Vous n'avez pas de compte?",
-    "email-verified-text": "Courriel verifié. \nVous pouvez maintenant vous connecter.",
+    "email-verified-text": "Courriel vérifié. \nVous pouvez maintenant vous connecter.",
     "forgot-your-password": "Mot de passe oublié?",
     "new-password-required": "Vous avez été redirigé car votre compte nécessite un nouveau mot de passe.",
     "login-with-microsoft": "Connectez-vous avec Microsoft - Compte professionnel du MPO",
@@ -511,7 +511,7 @@
   "manuscript-progress-view": {
     "accepted-details": "Le manuscrit a été accepté pour publication par la revue ciblée et entre dans le processus de production. \nLa confirmation de cette étape créera un nouvel registre de publication dans lequel vous pourrez télécharger le manuscrit final et mettre à jour les détails de la publication.",
     "accepted-title": "Accepté pour publication",
-    "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et est revisé par la gestion du MPO. À ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
+    "completed-details": "Le manuscrit est conforme à la Politique nationale sur les publications scientifiques de Pêches et Océans Canada et a été révisé par la gestion du MPO. À ce stade, vous pouvez maintenant soumettre le manuscrit à votre revue cible.",
     "completed-title": "Fin de la révision par la gestion",
     "created-details": "À ce stade, seuls le demandeur et les auteurs peuvent voir et modifier le registre du manuscrit.",
     "go-to-the-publication": "Aller à la publication",
@@ -531,11 +531,11 @@
     "submission-to-dfo-details": "Suite à votre soumission au groupe de publication EOS, votre manuscrit sera marqué comme accepté dans le portail. Votre travail subira ensuite une révision technique avant qu'une épreuve finale ne soit envoyée à l'auteur(e) correspondant(e) pour révision. Une fois cette étape terminée, le groupe de publication prendra des dispositions pour publier le manuscrit dans la série appropriée.",
     "completed-preprint-details": "Le manuscrit s'aligne avec la politique nationale des publications scientifiques du MPO et a été examiné par la gestion du MPO. \nÀ ce stade, vous pouvez désormais soumettre le manuscrit à un serveur de prépublication.",
     "submitted-to-preprint": "Soumettez votre manuscrit à un serveur de prépublication",
-    "submitted-to-preprint-details": "Vous avez soumis votre manuscrit à un serveur de prépublication. \nSi le serveur attribue un DOI (identifiant d'objet numérique), veuillez vous assurer qu'il est fourni dans votre soumission. \nSi aucun DOI n'est disponible, une URL stable liée directement à la préparation doit être incluse.",
+    "submitted-to-preprint-details": "Vous avez soumis votre manuscrit à un serveur de prépublication. \nSi le serveur attribue un DOI (identifiant d'objet numérique), veuillez vous assurer qu'il est fourni dans votre soumission. \nSi aucun DOI n'est disponible, une URL stable liée directement à la prépublication doit être incluse.",
     "submit-preprint-title": "Marquez comme publié",
     "edit-preprint-title": "Modifier la soumission de préparation",
     "go-to-the-preprint": "Afficher la prépublication (externe)",
-    "preprint-url": "URL de préimpression"
+    "preprint-url": "URL de prépublication"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",
@@ -552,7 +552,7 @@
     "not-authorized-text": "Vous n'êtes pas autorisé à consulter ce registre de manuscrit",
     "pls-already-generated-erase-it-to-generate-a-new-one": "Un résumé existe déjà- effacez-le pour en générer un nouveau",
     "pls-generated-successfully": "Résumé généré avec succès",
-    "pls-help-ai-text": "Besoin d'aide? En utilisant le résumé de votre manuscrit, nous pouvons générer un projet de RLC. Assurez-vous de revoir / modifier les RLC générés! \nSi vous souhaitez réessayer, supprimez simplement le RLC et cliquez à nouveau \"générer le résumé\".",
+    "pls-help-ai-text": "Besoin d'aide? En utilisant le résumé de votre manuscrit, nous pouvons générer un projet de RLC. Assurez-vous de revoir/modifier les RLC générés! \nSi vous souhaitez réessayer, supprimez simplement le RLC et cliquez à nouveau \"générer le résumé\".",
     "pls-text": "Un résumé en langage clair (RLC) concis, rédigé dans les deux langues officielles, est requis pour chaque publication scientifique et technique. Le RLC doit inclure les noms de lieux et les espèces autochtones, lorsque cela est approprié.",
     "pls-translated-successfully": "Résumé traduit avec succès",
     "source-pls-required-for-translation": "Le résumé en langue source est requis pour la traduction",
@@ -583,7 +583,7 @@
     "no-ogl-explanation": "Licence de rapport",
     "ogl-provide-explanation": "Puisque vous avez répondu « Non », veuillez fournir une explication des raisons pour lesquelles une Licence du gouvernement ouvert ne peut pas être appliquée à votre rapport.",
     "ready-to-submit": "Ce manuscrit a terminé sa révision par la gestion et est maintenant prêt à être soumis à l'équipe de publication du SEO.",
-    "ready-to-submit-preprint": "Ce manuscrit a terminé son examen de la gestion et est maintenant prêt à se soumettre à un serveur de prépublication.",
+    "ready-to-submit-preprint": "Ce manuscrit a terminé son examen de la gestion et est maintenant prêt pour la soumission à un serveur de prépublication.",
     "open-access-rationale-text-field-text": "Avez-vous l’intention de rendre votre publication en libre accès (p. ex. en publiant dans une revue en libre accès, en choisissant l’option libre accès dans une revue hybride ou en déposant dans un dépôt institutionnel ou disciplinaire)?",
     "open-access-rationale-text": "Puisque vous avez répondu \"non\", veuillez fournir votre justification.",
     "intends_open_access": "Toutes les publications doivent suivre l'ouverture par conception et par défaut. À moins qu'une exception ne s'applique, vos publications doivent être accessibles librement et publiquement lors de la publication. \nLes exceptions peuvent inclure des situations où les informations, les données ou le code sont sensibles pour des raisons de sécurité de la recherche, des intérêts propriétaires, des restrictions tierces ou sont régis par des accords juridiques, éthiques ou de confidentialité.",
@@ -682,12 +682,12 @@
     },
     "national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html",
-    "p2": "Les auteurs peuvent soumettre leur publication au Journal tiers pour l'examen par les pairs après que le gestionnaire a jugé que la publication était alignée sur la législation, les politiques et les directives pertinentes, ou si aucun commentaire n'a été reçu de l'examen de la direction dans les 10 jours ouvrables. Les directeurs de division, les directeurs nationaux, les directeurs régionaux des sciences et les directeurs nationaux généraux peuvent effectuer l'examen de la gestion.",
+    "p2": "Les auteurs peuvent soumettre leur publication au journal tiers pour l'examen par les pairs après que le gestionnaire a jugé que la publication était alignée sur la législation, les politiques et les directives pertinentes, ou si aucun commentaire n'a été reçu de l'examen de la direction dans les 10 jours ouvrables. Les directeurs de division, les directeurs nationaux, les directeurs régionaux des sciences et les directeurs nationaux généraux peuvent effectuer l'examen de la gestion.",
     "privacy-act": "Loi sur la protection des renseignements personnels",
     "privacy-act-link": "https://www.priv.gc.ca/fr/sujets-lies-a-la-protection-de-la-vie-privee/lois-sur-la-protection-des-renseignements-personnels-au-canada/la-loi-sur-la-protection-des-renseignements-personnels/lprp_survol/",
     "values-and-ethics-code-for-dfo": "Code de conduite du MPO",
     "values-and-ethics-code-for-dfo-link": "https://intranet.ent.dfo-mpo.ca/hr-rh/sites/hr-rh/files/code_of_conduct_fr_4_sept_final_1.pdf",
-    "p3": "Si un gestionnaire identifie les questions liées à la législation, aux politiques et aux directives pertinentes, elle doit communiquer avec les auteurs pour demander des révisions ou renvoyer la publication au directeur régional respectif de la science ou du directeur général national, et le calendrier de 10 jours ouvrable est interrompu."
+    "p3": "Si un gestionnaire identifie les questions liées à la législation, aux politiques et aux directives pertinentes, il ou elle doit communiquer avec les auteurs pour demander des révisions ou renvoyer la publication au directeur régional respectif de la science ou du directeur général national, et le calendrier de 10 jours ouvrable est interrompu."
   },
   "pub": {
     "general-information": "Informations générales"
@@ -767,7 +767,7 @@
   "shareable-dialog": {
     "abilities-text": "Par défaut, l'utilisateur a la possibilité de visualiser la ressource. \nVous pouvez également autoriser l'utilisateur à modifier et supprimer cette ressource.",
     "expiry-date-text": "Par défaut, la ressource est partagée jusqu'à ce que vous supprimiez manuellement la capacité. \nSi vous préférez, vous pouvez également définir une date d'expiration à laquelle l'utilisateur ne pourra plus accéder à cette ressource.",
-    "user-create-text": "L'utilisateur avec lequel vous souhaitez partager. \nL'utilisateur recevra une notification par e-mail une fois que vous partagerez cette ressource."
+    "user-create-text": "L'utilisateur avec lequel vous souhaitez partager. \nL'utilisateur recevra une notification par courriel une fois que vous partagerez cette ressource."
   },
   "submit-decision-dialog": {
     "certify-text": "Je certifie qu'à ma connaissance, ma revue est fondée sur les lignes directrices énoncées dans la Politique nationale pour les publications scientifiques du MPO. \nLe cas échéant, j'ai lu les commentaires fournis par le gestionnaire précédent et les ai pris en compte dans ma révision.",
@@ -791,7 +791,7 @@
     },
     "step2": {
       "p1": "Pour soumettre le manuscrit pour la révision par la gestion, recherchez le responsable/chef de division approprié dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
-      "p2": "Noter; \nvous ne pourrez pas sélectionner quelqu'un qui est l'auteur de ce manuscrit ou le propriétaire de ce registre de manuscrit.",
+      "p2": "Note : \nvous ne pourrez pas sélectionner quelqu'un qui est l'auteur de ce manuscrit ou le propriétaire de ce registre de manuscrit.",
       "subtitle": "Chef de division/Directeur",
       "title": "Sélectionnez le réviseur de gestion"
     },
@@ -822,7 +822,7 @@
   "orcid-employment-edit": {
     "update-confirmation-message": "En mettant à jour votre relevé d'emploi ORCID à partir du portail, vous confirmez que les informations fournies sont exactes et reflètent vos emplois actuels et passés au MPO au meilleur de vos connaissances.",
     "update-confirmation-title": "Confirmer la mise à jour du dossier d'emploi",
-    "department-name-hint": "Veuillez inclure votre secteur. \nEx.:Sciences des écosystèmes et des océans",
+    "department-name-hint": "Veuillez inclure votre secteur. \nEx. : Sciences des écosystèmes et des océans",
     "role-title": "Poste/titre",
     "department-name": "Secteur",
     "dialog-description": "Ajoutez votre relevé d'emploi vérifié du MPO à votre profil ORCID pour confirmer votre affiliation et améliorer votre visibilité dans la communauté scientifique. \nVeuillez vous assurer que toutes les informations fournies sont exactes et à jour.",
@@ -844,14 +844,14 @@
   },
   "manage-peer-review": {
     "title": "Examen par les pairs",
-    "description": "Veuillez indiquer les évaluateurs de ce rapport. Au moins deux experts en la matière doivent avoir procédé à un examen par les pairs du rapport. Notez qu'un examen par les pairs des rapports de données et des rapports de contacteurs est facultatif.",
+    "description": "Veuillez indiquer les évaluateurs de ce rapport. Au moins deux experts en la matière doivent avoir procédé à un examen par les pairs du rapport. Notez qu'un examen par les pairs des rapports de données et des rapports de contracteurs est facultatif.",
     "peer-reviewer": "Évaluateurs",
     "no-reviewers": "Aucun évaluateur. \nVeuillez en ajouter au moins deux, si applicable pour votre rapport.",
     "add-peer-reviewer": "Ajouter un évaluateur",
     "delete-peer-reviewer-confirm": "Êtes-vous sûr de vouloir supprimer cet évaluateur?"
   },
   "manuscript-peer-reviewer-dialog": {
-    "instructions": "Recherchez l'évaluateur que vous souhaitez ajouter en utilisant son nom ou son adresse e-mail professionnelle. Si vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse électronique a changé, vous pouvez créer une nouvelle fiche d'auteur."
+    "instructions": "Recherchez l'évaluateur que vous souhaitez ajouter en utilisant son nom ou son adresse courriel professionnelle. Si vous ne trouvez pas l'auteur que vous recherchez, ou si son affiliation ou son adresse courriel a changé, vous pouvez créer une nouvelle fiche d'auteur."
   },
   "mannage-peer-review": {
     "delete-peer-reviewer": "Supprimer l'évaluateur"
@@ -872,8 +872,8 @@
     "manuscriptRecordFormDescription": "Un formulaire d'enregistrement manuscrit (MRF) signé du MPO rempli à l'extérieur du portail.",
     "other": "Autre",
     "otherDescription": "Tout fichier supplémentaire lié à votre publication (veuillez préciser).",
-    "preprint": "Préimpression/Soumis",
-    "preprintDescription": "La version du manuscrit téléchargée sur un serveur de préimpression avant l'examen par les pairs."
+    "preprint": "Prépublication/Soumis",
+    "preprintDescription": "La version du manuscrit téléchargée sur un serveur de prépublication avant l'examen par les pairs."
   },
   "authors-view": {
     "all-authors": "Tous les auteurs",
@@ -904,7 +904,7 @@
   "clone-manuscript-record-dialog": {
     "title": "Dupliquer le registre de manuscrit",
     "step1": {
-      "text": "Choisissez le type de registre de manuscrit à créer à partir de ce double. \nPar exemple, si votre dossier actuel est pour une préimpression, vous voudrez peut-être créer un nouvel enregistrement à publier dans un journal."
+      "text": "Choisissez le type de registre de manuscrit à créer à partir de ce double. \nPar exemple, si votre dossier actuel est pour une prépublication, vous voudrez peut-être créer un nouvel enregistrement à publier dans un journal."
     },
     "clone-text": "Veuillez confirmer que vous souhaitez dupliquer le registre de manuscrit intitulé « {title} ». Notez que tous les aspects du registre ne seront pas dupliqués. Le statut du registre sera défini comme brouillon et vous deviendrez le demandeur pour le registre dupliqué."
   },

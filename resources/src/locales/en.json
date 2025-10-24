@@ -16,7 +16,7 @@
     "user-roles-description": "Each user role gives different permissions within the portal. If you think you should have additional roles, please contact us."
   },
   "accepted-by-journal-dialog": {
-    "text": "You can now mark this manuscript as having been accepted for publication by a journal. This step will create a new publication to your profile allowing you to update the publication details. Once you know the publication details, please remember to update publication record and mark it as published so that we can help share it within the DFO community.",
+    "text": "You can now mark this manuscript as having been accepted for publication by a journal. This step will create a new publication on your profile allowing you to update the publication details. Once you know the publication details, please remember to update the publication record and mark it as published so that we can help share it within the DFO community.",
     "title": "Journal accepted for publication"
   },
   "add-pub-author-dialog": {
@@ -99,7 +99,7 @@
     "complete": "Complete",
     "completed": "Completed",
     "completed-on": "Completed on",
-    "confirm-password": "Confirm password",
+    "confirm-password": "Confirm Password",
     "congratulations": "Congratulations!",
     "contact": "Contact",
     "contact-us": "Contact Us",
@@ -337,7 +337,7 @@
     "organization-name-french": "Organization Name (French)",
     "p1": "Once created, this organization will be available to all users. Please make sure to use the official name and abbreviation for the organization. (E.g.: do not include departments, branches or regions.)",
     "p2": "If the name of the organization does not have an official French or English equivalent, please copy the official name in both fields.",
-    "title": "Create new Organization"
+    "title": "Create a New Organization"
   },
   "create-publication-dialog": {
     "accepted-on-optional": "Accepted On (Optional)",
@@ -371,7 +371,7 @@
     "revision": "Revisions required",
     "revision-desc": "Flag management review comments that should be addressed by the author before completing the review.",
     "reassign": "Reassign",
-    "reassign-desc": "You are not the correct manager to review this manuscript and reassign this review to the proper manager without making a recommendation.",
+    "reassign-desc": "You are not the correct manager to review this manuscript and you reassign this review to the proper manager without making a recommendation.",
     "complete": "Complete",
     "complete-desc": "Review of this manuscript for publication is complete and you are ending the management review process.",
     "refer-desc-2": "Final review by an RDS or DG is required for this management review."
@@ -423,7 +423,7 @@
   },
   "fundingSource": {
     "delete": "Confirm Funding Source Deletion",
-    "deleteConfirmation": "Please confirm that you would like this funding source: {source}"
+    "deleteConfirmation": "Please confirm that you would like to delete this funding source: {source}"
   },
   "invite-user-dialog": {
     "help": "Invite a new user to the portal. The invite email will be sent to the user's email address and you will be able to know whether they have accepted the invitation under the \"Sent Invitation\" tab in the \"Settings\" menu.",
@@ -568,14 +568,14 @@
     "share-dialog-title": "Share this manuscript",
     "sharing-confirm-delete-message": "Please confirm the removal of {userName}'s access to this record.",
     "sharing-confirm-delete-title": "Confirm removal",
-    "sharing-subtitle": "Share this manuscript with others users",
+    "sharing-subtitle": "Share this manuscript with other users",
     "sharing-title": "Record Sharing",
     "submit-tooltip": "Submit for management review",
     "submit-tooltip-disabled": "Please complete all sections and save to submit",
     "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
     "upload-manuscript": "Drop the file or click to upload manuscript",
     "upload-text": "Upload the most recent copy of your manuscript as a PDF. This file can be updated as required by the applicant, even after submitting the manuscript.",
-    "working-title-text": "Enter to the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
+    "working-title-text": "Enter the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
     "functional-area-text": "In order to improve reporting on research outputs, please select the relevant functional area for this manuscript.",
     "no-ogl-explanation": "Report Licensing",
     "no-ogl-explanation-text-field-text": "DFO is committed to the \"Open by Design and by Default\" principle of Open Science, ensuring that all DFO publications are made available under the latest version of the \"{url}\" whenever possible. The Open Government Licence - Canada should not be applied if there are conflicting Licensing obligations.",
@@ -607,7 +607,7 @@
     "create-manuscript": "Create a record",
     "draft-manuscripts": "Draft Forms",
     "draft-manuscripts-caption": "Forms in draft state",
-    "no-manuscript": "No manuscripts record form exist or are shared with you",
+    "no-manuscript": "No manuscript record forms exist or are shared with you",
     "submitted-manuscripts": "Submitted Forms",
     "submitted-manuscripts-caption": "Forms submitted for review"
   },
@@ -637,7 +637,7 @@
   },
   "orcid": {
     "error-verifying": "Error authenticating with ORCID.org",
-    "verified-with": "Successfully authentificated with ORCID.org",
+    "verified-with": "Successfully authenticated with ORCID.org",
     "verify-header-text": "Connect your ORCID iD (or register for an iD)",
     "verifying": "Verifying with ORCID.org",
     "invalid-key": "Invalid key - likely due to timeout - please try again.",
@@ -647,11 +647,11 @@
     "connect-linked-text": "The following ORCID is connected to your author profile:",
     "connect-header": "ORCID Connection",
     "employment-section-intro": "This section allows you to officially update your ORCID employee profile with Fisheries and Oceans Canada (DFO). By allowing trusted organizations like DFO to manage these updates, you enhance the credibility of your professional profile, as the information will be recognized as authoritative and trustworthy. Ultimately, linking your DFO employment through the Open Science Portal not only establishes your employment at DFO but also boosts your visibility within the scientific community.",
-    "revoke-dialog-title": "Confirm the disconnection your ORCID account",
-    "revoke-dialog-message": "This will revoke the portal's access to your ORICD account. You can always reconnect it later. Information we've added to your profile up to this point will remain but you can choose to manually delete it.",
+    "revoke-dialog-title": "Confirm the disconnection of your ORCID account",
+    "revoke-dialog-message": "This will revoke the portal's access to your ORCID account. You can always reconnect it later. Information we've added to your profile up to this point will remain but you can choose to manually delete it.",
     "employment-title": "Employment",
     "needs_sync": "ORCID synchronization pending",
-    "synced": "Synchronzied with your ORCID profile",
+    "synced": "Synchronized with your ORCID profile",
     "error": "ORCID.org returned an error"
   },
   "organization-select": {
@@ -661,7 +661,7 @@
   },
   "osp": {
     "alt": {
-      "logo": "OSP logo - a prism dividing a single light stream into an array or colors.",
+      "logo": "OSP logo - a prism dividing a single light stream into an array of colors.",
       "main-image": "A person with a large lightbulb as a head. An old farmhouse tap is trickling water on a small tree sprout growing from the ground.",
       "toggle-drawer": "Toggle navigation drawer"
     },
@@ -678,7 +678,7 @@
     "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/terms-avis/copyright-droits-eng.htm",
     "message": {
       "p1": "Reviews the manuscript for compliance with the {copyrightsAct}, the {privacyAct}, the Financial Administration Act (with respect to approvals of publication costs) and the {dfoCodeOfConduct}.\n",
-      "p2": "Identifies when a manuscript is of potential public interest for the sole purpose of informing RDS, DG and DFO Communications. Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to show case DFO research or studies that are more controversial. The inclusion of potentially sensitive material will not prevent the publication of a manuscript."
+      "p2": "Identifies when a manuscript is of potential public interest for the sole purpose of informing RDS, DG and DFO Communications. Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to showcase DFO research or studies that are more controversial. The inclusion of potentially sensitive material will not prevent the publication of a manuscript."
     },
     "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html",
@@ -776,7 +776,7 @@
     "next-reviewer-hint": "Search for the appropriate person to complete the management review within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
     "no-comments-warning": "Your management review has no comments. Therefore, you can only complete this review. Please add comments to support your review if you want to select from the other options.",
     "select-decision": "Select your review outcome",
-    "select-next-reviewer": "Select Next Manger",
+    "select-next-reviewer": "Select Next Manager",
     "subsequent-reviewer-is-required": "Given your review, a subsequent manager is required to complete the review",
     "your-decision": "Your Review",
     "no-comments-warning-cant-complete": "A review comment is required to proceed.",
@@ -791,7 +791,7 @@
     },
     "step2": {
       "p1": "To submit the manuscript for management review, search for the appropriate division manager/director within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
-      "p2": "Note; you will not be able to select someone that is an author on this manuscript or the owner of this manuscript record.",
+      "p2": "Note: you will not be able to select someone that is an author on this manuscript or the owner of this manuscript record.",
       "subtitle": "Division Manager/Director",
       "title": "Select Management Reviewer"
     },
@@ -820,7 +820,7 @@
     "reason": "Reason for withdrawal"
   },
   "author-employment-list": {
-    "no-employment-given": "No ORCID employments entries"
+    "no-employment-given": "No ORCID employment entries"
   },
   "orcid-employment-edit": {
     "delete-confirmation-title": "Delete employment from ORCID profile",
@@ -836,7 +836,7 @@
     "end-date": "End Date"
   },
   "orcid-employment-add": {
-    "dialog-title": " Add a DFO employment to ORCID"
+    "dialog-title": "Add a DFO employment to ORCID"
   },
   "author-employment": {
     "add-employment-tooltip": "Link your ORCID to add Employment",
@@ -844,7 +844,7 @@
   },
   "manage-peer-review": {
     "title": "Peer Review",
-    "description": "Please enter the peer reviewers for this report. At least two subject matter experts must have conducted a peer review of the report. Note that a peer review for data reports and contactor reports is optional.",
+    "description": "Please enter the peer reviewers for this report. At least two subject matter experts must have conducted a peer review of the report. Note that a peer review for data reports and contractor reports is optional.",
     "peer-reviewer": "Peer-Reviewers",
     "no-reviewers": "No reviewers. Please add at least two if applicable for your report.",
     "add-peer-reviewer": "Add a reviewer",
@@ -925,7 +925,7 @@
     "no-publications-subtitle": "This author has no publications yet",
     "expertise": "Areas of Expertise",
     "no-expertise": "No expertise areas listed",
-    "expertise-description": "Areas of expertise help users understand and trust content, and make it easier to find information they need.",
+    "expertise-description": "Areas of expertise help users understand and trust the content, and make it easier to find information they need.",
     "author-not-found": "Author not found"
   },
   "ContentCard": {
