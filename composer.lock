@@ -9191,23 +9191,23 @@
         },
         {
             "name": "saloonphp/saloon",
-            "version": "v3.14.1",
+            "version": "v3.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saloonphp/saloon.git",
-                "reference": "339cfe77b10abf520676df7cb8976eaeb1f49ac1"
+                "reference": "634be16ca5eb0b71ab01533f58dc88d174a2e28b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saloonphp/saloon/zipball/339cfe77b10abf520676df7cb8976eaeb1f49ac1",
-                "reference": "339cfe77b10abf520676df7cb8976eaeb1f49ac1",
+                "url": "https://api.github.com/repos/saloonphp/saloon/zipball/634be16ca5eb0b71ab01533f58dc88d174a2e28b",
+                "reference": "634be16ca5eb0b71ab01533f58dc88d174a2e28b",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^7.6",
                 "guzzlehttp/promises": "^1.5 || ^2.0",
                 "guzzlehttp/psr7": "^2.0",
-                "php": "^8.1",
+                "php": "^8.2",
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.1 || ^2.0"
             },
@@ -9217,12 +9217,12 @@
             "require-dev": {
                 "ext-simplexml": "*",
                 "friendsofphp/php-cs-fixer": "^3.5",
-                "illuminate/collections": "^9.39 || ^10.0",
+                "illuminate/collections": "^10.0 || ^11.0 || ^12.0",
                 "league/flysystem": "^3.0",
-                "pestphp/pest": "^2.36.0 || ^3.8.2",
+                "pestphp/pest": "^2.36.0 || ^3.8.2 || ^4.1.4",
                 "phpstan/phpstan": "^2.1.13",
                 "saloonphp/xml-wrangler": "^1.1",
-                "spatie/ray": "^1.33",
+                "spatie/invade": "^2.1",
                 "symfony/dom-crawler": "^6.0 || ^7.0",
                 "symfony/var-dumper": "^6.3 || ^7.0"
             },
@@ -9260,7 +9260,7 @@
             ],
             "support": {
                 "issues": "https://github.com/saloonphp/saloon/issues",
-                "source": "https://github.com/saloonphp/saloon/tree/v3.14.1"
+                "source": "https://github.com/saloonphp/saloon/tree/v3.14.2"
             },
             "funding": [
                 {
@@ -9268,7 +9268,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-11T14:03:47+00:00"
+            "time": "2025-11-20T21:42:32+00:00"
         },
         {
             "name": "scrivo/highlight.php",
