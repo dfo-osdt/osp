@@ -26,7 +26,7 @@ class ImplicitFlowController extends Controller
     {
         // validate the request
         $request->validate([
-            'access_token' => 'required',
+            'access_token' => ['required'],
         ]);
 
         // get the ORCID iD from ORCID using the access token

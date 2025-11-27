@@ -19,7 +19,7 @@ class AuthorEmploymentController extends Controller
         // validate user can do this
         $this->authorize('viewAny', [AuthorEmployment::class, $author]);
 
-        return AuthorEmploymentResource::collection($author->employments()->orderByDesc('start_date')->with('organization')->get());
+        return AuthorEmploymentResource::collection($author->employments()->latest('start_date')->with('organization')->get());
     }
 
     /**
@@ -32,11 +32,11 @@ class AuthorEmploymentController extends Controller
         $defaultOrganization = Organization::getDefaultOrganization();
 
         $validated = $request->validate([
-            'organization_id' => 'nullable|exists:organizations,id',
-            'role_title' => 'nullable|string|max:75',
-            'department_name' => 'nullable|string|max:75',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
+            'organization_id' => ['nullable', 'exists:organizations,id'],
+            'role_title' => ['nullable', 'string', 'max:75'],
+            'department_name' => ['nullable', 'string', 'max:75'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['nullable', 'date'],
         ]);
 
         // if orgnaiztion isn't the default, it is forbidden
@@ -55,7 +55,7 @@ class AuthorEmploymentController extends Controller
 
         $authorEmployment->load('organization');
 
-        SyncAuthorEmploymentWithOrcid::dispatch($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_CREATE);
+        dispatch(new \App\Jobs\SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_CREATE));
 
         return AuthorEmploymentResource::make($authorEmployment);
 
@@ -81,10 +81,10 @@ class AuthorEmploymentController extends Controller
         $this->authorize('update', $authorEmployment);
 
         $validated = $request->validate([
-            'role_title' => 'nullable|string|max:75',
-            'department_name' => 'nullable|string|max:75',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
+            'role_title' => ['nullable', 'string', 'max:75'],
+            'department_name' => ['nullable', 'string', 'max:75'],
+            'start_date' => ['required', 'date'],
+            'end_date' => ['nullable', 'date'],
         ]);
 
         $authorEmployment->update($validated);
@@ -93,7 +93,7 @@ class AuthorEmploymentController extends Controller
         $authorEmployment->load('organization');
         $authorEmployment->refresh();
 
-        SyncAuthorEmploymentWithOrcid::dispatch($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_UPDATE);
+        dispatch(new \App\Jobs\SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_UPDATE));
 
         return AuthorEmploymentResource::make($authorEmployment);
     }
@@ -105,7 +105,7 @@ class AuthorEmploymentController extends Controller
     {
         $this->authorize('delete', $authorEmployment);
 
-        SyncAuthorEmploymentWithOrcid::dispatch($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_DELETE);
+        dispatch(new \App\Jobs\SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_DELETE));
 
         $authorEmployment->delete();
 

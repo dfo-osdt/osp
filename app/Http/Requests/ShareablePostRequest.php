@@ -28,9 +28,9 @@ class ShareablePostRequest extends FormRequest
                 'exists:users,id',
                 Rule::notIn([$this->user()->id]), // can't share with yourself
             ],
-            'can_edit' => 'required|boolean',
-            'can_delete' => 'required|boolean',
-            'expires_at' => 'nullable|date',
+            'can_edit' => ['required', 'boolean'],
+            'can_delete' => ['required', 'boolean'],
+            'expires_at' => ['nullable', 'date'],
         ];
     }
 }

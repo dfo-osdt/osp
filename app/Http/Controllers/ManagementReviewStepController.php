@@ -6,9 +6,6 @@ use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
-use App\Events\ManagementReviewStepCreated;
-use App\Events\ManuscriptManagementReviewComplete;
-use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinderMail;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
@@ -42,7 +39,7 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('update', $managementReviewStep);
 
         $validated = $request->validate([
-            'comments' => 'string|nullable',
+            'comments' => ['string', 'nullable'],
         ]);
 
         $managementReviewStep->update($validated);
@@ -56,8 +53,8 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('complete', $managementReviewStep);
 
         $validated = $request->validate([
-            'comments' => 'string|nullable',
-            'flag_for_planning_binder' => 'boolean',
+            'comments' => ['string', 'nullable'],
+            'flag_for_planning_binder' => ['boolean'],
         ]);
 
         if (isset($validated['comments'])) {
@@ -71,7 +68,7 @@ class ManagementReviewStepController extends Controller
         $manuscriptRecord->saveOrFail();
 
         // send event that a manuscript record review is complete.
-        ManuscriptManagementReviewComplete::dispatch($manuscriptRecord);
+        event(new \App\Events\ManuscriptManagementReviewComplete($manuscriptRecord));
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
         $managementReviewStep->completed_at = now();
@@ -96,7 +93,7 @@ class ManagementReviewStepController extends Controller
 
         $validated = $request->validate([
             'next_user_id' => ['exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
-            'comments' => 'string|nullable',
+            'comments' => ['string', 'nullable'],
         ]);
 
         $nextReviewStep = new ManagementReviewStep;
@@ -111,7 +108,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->saveOrFail();
 
         // send event that a management review step has been created.
-        ManagementReviewStepCreated::dispatch($nextReviewStep);
+        event(new \App\Events\ManagementReviewStepCreated($nextReviewStep));
 
         $managementReviewStep->comments = $validated['comments'];
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
@@ -129,7 +126,7 @@ class ManagementReviewStepController extends Controller
 
         $validated = $request->validate([
             'next_user_id' => ['required', 'exists:users,id', Rule::notIn([$managementReviewStep->user_id])],
-            'comments' => 'string|nullable',
+            'comments' => ['string', 'nullable'],
         ]);
 
         if (isset($validated['comments'])) {
@@ -137,7 +134,7 @@ class ManagementReviewStepController extends Controller
         }
         // validate that the review step has a comment
         Validator::make($managementReviewStep->toArray(), [
-            'comments' => 'required|string',
+            'comments' => ['required', 'string'],
         ])->validate();
 
         $nextReviewStep = new ManagementReviewStep;
@@ -150,7 +147,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->saveOrFail();
 
         // send event that a management review step has been created.
-        ManagementReviewStepCreated::dispatch($nextReviewStep);
+        event(new \App\Events\ManagementReviewStepCreated($nextReviewStep));
 
         $managementReviewStep->status = ManagementReviewStepStatus::REASSIGN;
         $managementReviewStep->completed_at = now();
@@ -164,7 +161,7 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('decide', $managementReviewStep);
 
         $validated = $request->validate([
-            'comments' => 'string|nullable',
+            'comments' => ['string', 'nullable'],
         ]);
 
         if (isset($validated['comments'])) {
@@ -172,7 +169,7 @@ class ManagementReviewStepController extends Controller
         }
         // validate that the review step has a comment
         Validator::make($managementReviewStep->toArray(), [
-            'comments' => 'required|string',
+            'comments' => ['required', 'string'],
         ])->validate();
 
         $nextReviewStep = new ManagementReviewStep;
@@ -183,7 +180,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
         $nextReviewStep->saveOrFail();
 
-        ManagementReviewStepCreated::dispatch($nextReviewStep);
+        event(new \App\Events\ManagementReviewStepCreated($nextReviewStep));
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
         $managementReviewStep->decision = ManagementReviewStepDecision::REVISION;
@@ -198,7 +195,7 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('update', $managementReviewStep);
 
         $validated = $request->validate([
-            'comments' => 'nullable|string',
+            'comments' => ['nullable', 'string'],
         ]);
 
         if (isset($validated['comments'])) {
@@ -206,7 +203,7 @@ class ManagementReviewStepController extends Controller
         }
         // validate that the review step has a comment
         Validator::make($managementReviewStep->toArray(), [
-            'comments' => 'required|string',
+            'comments' => ['required', 'string'],
         ])->validate();
 
         // return to the manager that sent the manuscript back to the author.
@@ -224,7 +221,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
         $nextReviewStep->saveOrFail();
 
-        ManagementReviewStepCreated::dispatch($nextReviewStep);
+        event(new \App\Events\ManagementReviewStepCreated($nextReviewStep));
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
         $managementReviewStep->decision = ManagementReviewStepDecision::NONE;
@@ -241,7 +238,7 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('withdraw', $managementReviewStep);
 
         $validated = $request->validate([
-            'comments' => 'required|string',
+            'comments' => ['required', 'string'],
         ]);
 
         $managementReviewStep->comments = $validated['comments'];
@@ -256,7 +253,7 @@ class ManagementReviewStepController extends Controller
         $manuscriptRecord->withdrawn_on = now();
         $manuscriptRecord->saveOrFail();
 
-        ManuscriptRecordWithdrawnByAuthor::dispatch($manuscriptRecord);
+        event(new \App\Events\ManuscriptRecordWithdrawnByAuthor($manuscriptRecord));
 
         return new ManagementReviewStepResource($managementReviewStep);
     }

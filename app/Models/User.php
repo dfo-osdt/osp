@@ -138,7 +138,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     /**
      * Get the full name of the user.
      */
-    public function getFullNameAttribute(): string
+    protected function getFullNameAttribute(): string
     {
         return $this->first_name.' '.$this->last_name;
     }

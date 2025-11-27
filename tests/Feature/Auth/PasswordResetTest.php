@@ -67,7 +67,7 @@ class PasswordResetTest extends TestCase
                 'password_confirmation' => 'passwordpassword',
             ]);
 
-            $response->assertStatus(422);
+            $response->assertUnprocessable();
 
             return true;
         });

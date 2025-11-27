@@ -32,8 +32,8 @@ class GeneratePLSController extends Controller
     public function generate(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'abstract' => 'required|string|max:3000',
-            'locale' => 'required|string|in:en,fr',
+            'abstract' => ['required', 'string', 'max:3000'],
+            'locale' => ['required', 'string', 'in:en,fr'],
         ]);
 
         $locale = match ($validated['locale']) {
@@ -50,8 +50,8 @@ class GeneratePLSController extends Controller
     public function translate(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'abstract' => 'required|string|max:3000',
-            'locale' => 'required|string|in:en,fr',
+            'abstract' => ['required', 'string', 'max:3000'],
+            'locale' => ['required', 'string', 'in:en,fr'],
         ]);
 
         $locale = match ($validated['locale']) {

@@ -16,7 +16,7 @@ class AzureDirectorySearchController extends Controller
     public function __invoke(Request $request)
     {
         $validated = $request->validate([
-            'search' => 'required|string|min:3',
+            'search' => ['required', 'string', 'min:3'],
         ]);
 
         $needle = strtolower((string) $validated['search']);

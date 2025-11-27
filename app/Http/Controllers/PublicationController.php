@@ -48,14 +48,14 @@ class PublicationController extends Controller
         // validate the request
         $validated = $request->validate([
             'status' => new Enum(PublicationStatus::class),
-            'title' => 'required',
-            'journal_id' => 'required|exists:journals,id',
+            'title' => ['required'],
+            'journal_id' => ['required', 'exists:journals,id'],
             'doi' => ['nullable', 'string', new Doi],
-            'accepted_on' => 'date|nullable',
+            'accepted_on' => ['date', 'nullable'],
             'published_on' => 'date|nullable|required_if:status,'.PublicationStatus::PUBLISHED->value,
-            'embargoed_until' => 'date|nullable',
-            'is_open_access' => 'boolean',
-            'region_id' => 'required|exists:regions,id',
+            'embargoed_until' => ['date', 'nullable'],
+            'is_open_access' => ['boolean'],
+            'region_id' => ['required', 'exists:regions,id'],
         ]);
 
         if (isset($validated['is_open_access']) && $validated['is_open_access']) {
@@ -110,14 +110,14 @@ class PublicationController extends Controller
 
         // validate the rest of the request
         $validated = $request->validate([
-            'title' => 'sometimes|required|string',
-            'journal_id' => 'sometimes|required|exists:journals,id',
+            'title' => ['sometimes', 'required', 'string'],
+            'journal_id' => ['sometimes', 'required', 'exists:journals,id'],
             'doi' => ['string', 'nullable', new Doi],
             'accepted_on' => ['date', 'nullable', Rule::when($publication->status === PublicationStatus::PUBLISHED, ['before_or_equal:published_on']), Rule::requiredIf($publication->status === PublicationStatus::ACCEPTED)],
             'published_on' => ['date', 'nullable', 'after_or_equal:accepted_on', Rule::requiredIf($publication->status === PublicationStatus::PUBLISHED)],
-            'embargoed_until' => 'date|nullable',
-            'is_open_access' => 'boolean',
-            'region_id' => 'sometimes|required|exists:regions,id',
+            'embargoed_until' => ['date', 'nullable'],
+            'is_open_access' => ['boolean'],
+            'region_id' => ['sometimes', 'required', 'exists:regions,id'],
         ]);
 
         if (isset($validated['is_open_access']) && $validated['is_open_access']) {
@@ -143,6 +143,6 @@ class PublicationController extends Controller
             'manuscriptRecord',
         ]);
 
-        return new PublicationResource($publication->load($relationship->toArray()));
+        return new PublicationResource($publication->load($relationship->all()));
     }
 }

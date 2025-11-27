@@ -31,10 +31,10 @@ class FullFlowController
         $frontendUrl = config('app.frontend_url');
 
         $validated = $request->validate([
-            'code' => 'string|alpha_num',
-            'key' => 'required|string|alpha_num',
-            'error' => 'string',
-            'error_description' => 'required_with:error, string',
+            'code' => ['string', 'alpha_num'],
+            'key' => ['required', 'string', 'alpha_num'],
+            'error' => ['string'],
+            'error_description' => ['required_with:error, string'],
         ]);
 
         if (! Cache::has($validated['key'])) {

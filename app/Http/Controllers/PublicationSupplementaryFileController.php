@@ -54,7 +54,7 @@ class PublicationSupplementaryFileController extends Controller
                 'max:'.(config('media-library.max_file_size') / 1024),
             ],
             'supplementary_file_type' => ['required', Rule::enum(SupplementaryFileType::class)],
-            'description' => 'nullable|string|max:200',
+            'description' => ['nullable', 'string', 'max:200'],
         ]);
 
         $type = SupplementaryFileType::tryFrom($validated['supplementary_file_type']);

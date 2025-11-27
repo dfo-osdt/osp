@@ -36,7 +36,7 @@ class ManuscriptPeerReviewerController extends Controller
         }
 
         $validated = $request->validate([
-            'author_id' => 'required|exists:authors,id',
+            'author_id' => ['required', 'exists:authors,id'],
         ]);
 
         if ($manuscriptRecord->peerReviewers()->where('author_id', $validated['author_id'])->exists()) {

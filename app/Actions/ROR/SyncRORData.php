@@ -36,7 +36,7 @@ class SyncRORData
                 continue;
             }
             // only import records with a country code we want
-            if (! $countryCodesToImport->contains($record['locations'][0]['geonames_details']['country_code'])) {
+            if ($countryCodesToImport->doesntContain($record['locations'][0]['geonames_details']['country_code'])) {
                 continue;
             }
 
@@ -61,7 +61,7 @@ class SyncRORData
         $ror_identifier = $record['id'];
 
         $lastModified = $record['admin']['last_modified']['date'];
-        $lastModifiedAt = \Carbon\Carbon::parse($lastModified);
+        $lastModifiedAt = \Illuminate\Support\Facades\Date::parse($lastModified);
 
         // first - check if we have this record already and if version is the same
         $alreadyUpToDate = Organization::where('ror_identifier', $ror_identifier)->where('updated_at', $lastModified)->exists();
