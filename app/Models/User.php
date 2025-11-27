@@ -131,7 +131,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     {
         return Attribute::make(
             get: fn ($value) => $value,
-            set: fn ($value) => strtolower($value),
+            set: fn ($value) => strtolower((string) $value),
         );
     }
 

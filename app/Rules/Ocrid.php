@@ -15,7 +15,7 @@ class Ocrid implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // check that values contains full uri prefix we support (https://orcid.org/) and the sandbox prefix (https://sandbox.orcid.org/)
-        if (! preg_match('/^https:\/\/(sandbox\.)?orcid\.org\//', $value)) {
+        if (! preg_match('/^https:\/\/(sandbox\.)?orcid\.org\//', (string) $value)) {
             $fail(__('validation.orcid.prefix', ['attribute' => $attribute]));
         }
 
@@ -23,7 +23,7 @@ class Ocrid implements ValidationRule
         $orcid = Str::substr($value, -19);
 
         // check value against regex
-        if (! preg_match('/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$/', $orcid)) {
+        if (! preg_match('/^\d{4}-\d{4}-\d{4}-\d{3}[0-9X]$/', $orcid)) {
             $fail(__('validation.orcid.format', ['attribute' => $attribute]));
         }
 
@@ -38,7 +38,7 @@ class Ocrid implements ValidationRule
      */
     private function isChecksumValid(string $orcid): bool
     {
-        if (strlen($orcid) != 19) {
+        if (strlen($orcid) !== 19) {
             return false;
         }
         $orcid = str_replace('-', '', $orcid);
@@ -51,8 +51,8 @@ class Ocrid implements ValidationRule
         }
         $remainder = $sum % 11;
         $result = (12 - $remainder) % 11;
-        $checkDigit = $result == 10 ? 'X' : strval($result);
+        $checkDigit = $result === 10 ? 'X' : strval($result);
 
-        return $checkDigit == $givenCheckSum;
+        return $checkDigit === $givenCheckSum;
     }
 }

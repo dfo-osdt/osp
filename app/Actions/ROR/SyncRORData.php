@@ -29,7 +29,7 @@ class SyncRORData
 
         $update = is_callable($progressCallback);
 
-        foreach ($json as $key => $record) {
+        foreach ($json as $record) {
 
             // we only want to import "active" records
             if ($record['status'] !== 'active') {
@@ -55,10 +55,8 @@ class SyncRORData
      * which is bad with with internationalization of names, aliases, and acronyms.
      *
      * We will update this routine when ROR updates their schema to 2.0 in late 2023.
-     *
-     * @return void
      */
-    private static function updateOrCreateOrganization(array $record, string $version)
+    private static function updateOrCreateOrganization(array $record, string $version): void
     {
         $ror_identifier = $record['id'];
 
@@ -72,9 +70,7 @@ class SyncRORData
         }
 
         // get default name - ror_display
-        $ror_display_name = collect($record['names'])->filter(function ($name) {
-            return in_array('ror_display', $name['types']);
-        })->first()['value'] ?? null;
+        $ror_display_name = collect($record['names'])->filter(fn(array $name): bool => in_array('ror_display', $name['types']))->first()['value'] ?? null;
 
         // if there's no ror display name, throw an error
         if (! $ror_display_name) {
@@ -82,27 +78,17 @@ class SyncRORData
         }
 
         // get english and french names
-        $name_en = collect($record['names'])->filter(function ($name) {
-            return in_array('label', $name['types']) && $name['lang'] === 'en';
-        })->first()['value'] ?? $ror_display_name;
+        $name_en = collect($record['names'])->filter(fn(array $name): bool => in_array('label', $name['types']) && $name['lang'] === 'en')->first()['value'] ?? $ror_display_name;
 
-        $name_fr = collect($record['names'])->filter(function ($name) {
-            return in_array('label', $name['types']) && $name['lang'] === 'fr';
-        })->first()['value'] ?? $ror_display_name;
+        $name_fr = collect($record['names'])->filter(fn(array $name): bool => in_array('label', $name['types']) && $name['lang'] === 'fr')->first()['value'] ?? $ror_display_name;
 
         // acronyms - ROR 2.0 datasets doens't have lang well implemeted on acronyms yet. Assume EN first.
-        $acronyms = collect($record['names'])->filter(function ($name) {
-            return in_array('acronym', $name['types']);
-        })->pluck('value')->toArray();
+        $acronyms = collect($record['names'])->filter(fn(array $name): bool => in_array('acronym', $name['types']))->pluck('value')->toArray();
 
         // try to get english and french acronyms
-        $abbr_en = collect($record['names'])->filter(function ($name) {
-            return in_array('acronym', $name['types']) && $name['lang'] === 'en';
-        })->first()['value'] ?? $acronyms[0] ?? null;
+        $abbr_en = collect($record['names'])->filter(fn(array $name): bool => in_array('acronym', $name['types']) && $name['lang'] === 'en')->first()['value'] ?? $acronyms[0] ?? null;
 
-        $abbr_fr = collect($record['names'])->filter(function ($name) {
-            return in_array('acronym', $name['types']) && $name['lang'] === 'fr';
-        })->first()['value'] ?? $acronyms[1] ?? $abbr_en;
+        $abbr_fr = collect($record['names'])->filter(fn(array $name): bool => in_array('acronym', $name['types']) && $name['lang'] === 'fr')->first()['value'] ?? $acronyms[1] ?? $abbr_en;
 
         // bundle up name data for json column
         $ror_names = collect($record['names'])->toJson();
@@ -110,7 +96,7 @@ class SyncRORData
         $country_code = $record['locations'][0]['geonames_details']['country_code'] ?? null;
 
         // find or create the organization
-        $organization = Organization::updateOrCreate(
+        Organization::updateOrCreate(
             ['ror_identifier' => $ror_identifier],
             [
                 'name_en' => $name_en,

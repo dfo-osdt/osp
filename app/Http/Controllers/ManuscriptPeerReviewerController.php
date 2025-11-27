@@ -59,7 +59,7 @@ class ManuscriptPeerReviewerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ManuscriptRecord $manuscriptRecord, ManuscriptPeerReviewer $manuscriptPeerReviewer)
+    public function show(ManuscriptRecord $manuscriptRecord, ManuscriptPeerReviewer $manuscriptPeerReviewer): void
     {
         Gate::authorize('view', $manuscriptPeerReviewer);
     }

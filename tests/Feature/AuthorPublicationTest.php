@@ -7,7 +7,7 @@ use App\Models\PublicationAuthor;
 use App\Models\Region;
 use App\Models\User;
 
-test('authenticated user can get author publications', function () {
+test('authenticated user can get author publications', function (): void {
     $user = User::factory()->create();
     $author = Author::factory()->create();
     $publications = Publication::factory()->count(3)->published()->create();
@@ -27,7 +27,7 @@ test('authenticated user can get author publications', function () {
 
 });
 
-test('unauthenticated user cannot access author publications', function () {
+test('unauthenticated user cannot access author publications', function (): void {
     $author = Author::factory()->create();
 
     $response = $this->getJson("/api/authors/{$author->id}/publications");
@@ -35,7 +35,7 @@ test('unauthenticated user cannot access author publications', function () {
     $response->assertUnauthorized();
 });
 
-test('returns only published publications for author', function () {
+test('returns only published publications for author', function (): void {
     $user = User::factory()->create();
     $author = Author::factory()->create();
 
@@ -66,7 +66,7 @@ test('returns only published publications for author', function () {
     }
 });
 
-test('supports pagination with limit parameter', function () {
+test('supports pagination with limit parameter', function (): void {
     $user = User::factory()->create();
     $author = Author::factory()->create();
     $publications = Publication::factory()->count(5)->published()->create();
@@ -87,7 +87,7 @@ test('supports pagination with limit parameter', function () {
     expect($response->json('meta.per_page'))->toBe(3);
 });
 
-test('returns empty collection for author with no publications', function () {
+test('returns empty collection for author with no publications', function (): void {
     $user = User::factory()->create();
     $author = Author::factory()->create();
 
@@ -98,7 +98,7 @@ test('returns empty collection for author with no publications', function () {
     expect($response->json('meta.total'))->toBe(0);
 });
 
-test('returns 404 for non-existent author', function () {
+test('returns 404 for non-existent author', function (): void {
     $user = User::factory()->create();
     $nonExistentAuthorId = 999999;
 
@@ -107,7 +107,7 @@ test('returns 404 for non-existent author', function () {
     $response->assertNotFound();
 });
 
-test('publications are ordered by published date descending', function () {
+test('publications are ordered by published date descending', function (): void {
     $user = User::factory()->create();
     $author = Author::factory()->create();
 
@@ -146,7 +146,7 @@ test('publications are ordered by published date descending', function () {
     ]);
 });
 
-test('includes proper eager loaded relationships', function () {
+test('includes proper eager loaded relationships', function (): void {
     $user = User::factory()->create();
     $author = Author::factory()->create();
     $publication = Publication::factory()->published()->create();
@@ -173,7 +173,7 @@ test('includes proper eager loaded relationships', function () {
         ->toHaveKeys(['id', 'first_name']);
 });
 
-test('regional editor sees published and unpublished publications in their region', function () {
+test('regional editor sees published and unpublished publications in their region', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
 
@@ -220,7 +220,7 @@ test('regional editor sees published and unpublished publications in their regio
     expect($returnedIds)->not->toContain($acceptedMar->id);
 });
 
-test('editor with UPDATE_PUBLICATIONS sees all author publications regardless of status or region', function () {
+test('editor with UPDATE_PUBLICATIONS sees all author publications regardless of status or region', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
 

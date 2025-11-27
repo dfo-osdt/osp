@@ -16,7 +16,7 @@ class PublicationAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return false;
     }
@@ -26,7 +26,7 @@ class PublicationAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, PublicationAuthor $publicationAuthor)
+    public function view(User $user, PublicationAuthor $publicationAuthor): bool
     {
         return false;
     }
@@ -36,7 +36,7 @@ class PublicationAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -79,7 +79,7 @@ class PublicationAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, PublicationAuthor $publicationAuthor)
+    public function restore(User $user, PublicationAuthor $publicationAuthor): bool
     {
         return false;
     }
@@ -89,7 +89,7 @@ class PublicationAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, PublicationAuthor $publicationAuthor)
+    public function forceDelete(User $user, PublicationAuthor $publicationAuthor): bool
     {
         return false;
     }

@@ -61,14 +61,14 @@ class Organization extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Author, $this> */
     public function authors(): HasMany
     {
-        return $this->hasMany('App\Models\Author');
+        return $this->hasMany(\App\Models\Author::class);
     }
 
     /** ManuscriptAuthors
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptAuthor, $this> */
     public function manuscriptAuthors(): HasMany
     {
-        return $this->hasMany('App\Models\ManuscriptAuthor');
+        return $this->hasMany(\App\Models\ManuscriptAuthor::class);
     }
 
     /** Get default organization */

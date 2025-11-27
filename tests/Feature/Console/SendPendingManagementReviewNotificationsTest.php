@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Mail;
 
 uses(RefreshDatabase::class);
 
-test('it sends notifications when there are pending reviews', function () {
+test('it sends notifications when there are pending reviews', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -25,7 +25,7 @@ test('it sends notifications when there are pending reviews', function () {
     Mail::assertQueued(ManagementReviewPendingMail::class);
 });
 
-test('it does not send notifications when there are no old pending reviews', function () {
+test('it does not send notifications when there are no old pending reviews', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();

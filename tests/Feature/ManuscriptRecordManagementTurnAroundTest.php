@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-test('check that all federal holidays are recongized', function () {
+test('check that all federal holidays are recongized', function (): void {
 
     // New Year's Day if it falls on a Sunday
     expect(Carbon::parse('2023-01-02')->isHoliday())->toBeTrue();
@@ -45,7 +45,7 @@ test('check that all federal holidays are recongized', function () {
 
 });
 
-test('system accurately calculates 10 buisness days forward', function () {
+test('system accurately calculates 10 buisness days forward', function (): void {
 
     expect(Carbon::parse('2024-03-28')->addBusinessDays(10)->format('Y-m-d'))->toBe('2024-04-15');
     expect(Carbon::parse('2024-04-13')->addBusinessDays(10)->format('Y-m-d'))->toBe('2024-04-26');

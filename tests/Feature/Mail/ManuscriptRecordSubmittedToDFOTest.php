@@ -7,7 +7,7 @@ use App\Models\Publication;
 use App\Models\User;
 use Database\Factories\AuthorFactory;
 
-test('a manuscript submitted email is generated', function () {
+test('a manuscript submitted email is generated', function (): void {
     $publication = Publication::factory()
         ->recycle(Journal::factory()->dfoSeries())
         ->withManuscript([

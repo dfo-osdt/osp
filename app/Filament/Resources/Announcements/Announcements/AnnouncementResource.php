@@ -61,7 +61,7 @@ class AnnouncementResource extends Resource
                     ->schema([
                         DateTimePicker::make('start_at')
                             ->label('Start Date')
-                            ->default(fn () => now())
+                            ->default(fn (): \Carbon\CarbonInterface => now())
                             ->required()
                             ->before('end_at'),
                         DateTimePicker::make('end_at')

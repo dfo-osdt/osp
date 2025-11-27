@@ -11,15 +11,11 @@ class AuthServiceProvider extends ServiceProvider
 {
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
 
-        VerifyEmail::toMailUsing(function (User $notifiable, string $url) {
-            return (new MailMessage)->subject(__('email.auth.verify.title'))->markdown('authentication.verify_email', ['url' => $url, 'user' => $notifiable->first_name]);
-        });
+        VerifyEmail::toMailUsing(fn(User $notifiable, string $url) => (new MailMessage)->subject(__('email.auth.verify.title'))->markdown('authentication.verify_email', ['url' => $url, 'user' => $notifiable->first_name]));
 
     }
 }

@@ -29,7 +29,7 @@ class ManagementReviewStepPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -96,7 +96,7 @@ class ManagementReviewStepPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, ManagementReviewStep $managementReviewStep)
+    public function delete(User $user, ManagementReviewStep $managementReviewStep): bool
     {
         return false;
     }
@@ -106,7 +106,7 @@ class ManagementReviewStepPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, ManagementReviewStep $managementReviewStep)
+    public function restore(User $user, ManagementReviewStep $managementReviewStep): bool
     {
         return false;
     }
@@ -116,7 +116,7 @@ class ManagementReviewStepPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, ManagementReviewStep $managementReviewStep)
+    public function forceDelete(User $user, ManagementReviewStep $managementReviewStep): bool
     {
         return false;
     }

@@ -6,7 +6,7 @@ use App\Models\Organization;
 use App\Models\Publication;
 use App\Models\User;
 
-test('a user can get list of authors', function () {
+test('a user can get list of authors', function (): void {
     Author::factory()->count(15)->create();
 
     $user = User::factory()->create();
@@ -20,7 +20,7 @@ test('a user can get list of authors', function () {
     expect($response->json('meta.total'))->toBe(Author::count());
 });
 
-test('a user can create an author', function () {
+test('a user can create an author', function (): void {
     $user = User::factory()->create();
 
     $minimumData = [
@@ -41,7 +41,7 @@ test('a user can create an author', function () {
     ]);
 });
 
-test('a user can create an author with an ORCID', function () {
+test('a user can create an author with an ORCID', function (): void {
     $user = User::factory()->create();
 
     $invalidFormatOrcid = 'https://orcid.org/0000-0002-X868-2722';
@@ -86,7 +86,7 @@ test('a user can create an author with an ORCID', function () {
     ]);
 });
 
-test('a user cannot create an author if email already exist', function () {
+test('a user cannot create an author if email already exist', function (): void {
     $user = User::factory()->create();
 
     $author = Author::factory()->create();
@@ -104,7 +104,7 @@ test('a user cannot create an author if email already exist', function () {
     $response->assertStatus(422)->assertJsonValidationErrors('email');
 });
 
-test('a user cannot create an author if orcid already exists', function () {
+test('a user cannot create an author if orcid already exists', function (): void {
     $user = User::factory()->create();
 
     $author = Author::factory()->create([
@@ -123,7 +123,7 @@ test('a user cannot create an author if orcid already exists', function () {
     $response->assertStatus(422)->assertJsonValidationErrors('orcid');
 });
 
-test('a user can get an author profile', function () {
+test('a user can get an author profile', function (): void {
     $user = User::factory()->create();
 
     $author = Author::factory()->create();
@@ -134,7 +134,7 @@ test('a user can get an author profile', function () {
     expect($response->json('data'))->toHaveKey('id', $author->id);
 });
 
-test('a user can include the list of publications when querying an author profile', function () {
+test('a user can include the list of publications when querying an author profile', function (): void {
     $user = User::factory()->create();
 
     $publication = Publication::factory()->withAuthors()->published()->create();
@@ -148,7 +148,7 @@ test('a user can include the list of publications when querying an author profil
     expect($response->json('data.publications'))->toHaveCount(1);
 });
 
-test('an editor can update an author profile without an owner', function () {
+test('an editor can update an author profile without an owner', function (): void {
     $user = User::factory()->withRoles([UserRole::EDITOR])->create();
 
     $author = Author::factory()->create();
@@ -168,7 +168,7 @@ test('an editor can update an author profile without an owner', function () {
     ]);
 });
 
-test('an editor can update an author profile with an owner', function () {
+test('an editor can update an author profile with an owner', function (): void {
     $editor = User::factory()->withRoles([UserRole::EDITOR])->create();
 
     // Create an author owned by a different user
@@ -197,7 +197,7 @@ test('an editor can update an author profile with an owner', function () {
     ]);
 });
 
-test('a regular user can update an author profile without an owner', function () {
+test('a regular user can update an author profile without an owner', function (): void {
     $user = User::factory()->create(); // Regular user without EDITOR role
 
     $author = Author::factory()->create(['user_id' => null]); // Author without owner
@@ -217,7 +217,7 @@ test('a regular user can update an author profile without an owner', function ()
     ]);
 });
 
-test('a user can update their own author profile', function () {
+test('a user can update their own author profile', function (): void {
     $user = User::factory()->create();
 
     $author = $user->author;
@@ -242,7 +242,7 @@ test('a user can update their own author profile', function () {
     ]);
 });
 
-test('a user cannot edit an author profile that is owned by another user', function () {
+test('a user cannot edit an author profile that is owned by another user', function (): void {
     $user = User::factory()->create();
 
     $author = User::factory()->create()->author;
@@ -258,7 +258,7 @@ test('a user cannot edit an author profile that is owned by another user', funct
     $response = $this->actingAs($user)->putJson('api/authors/'.$author->id, $data)->assertForbidden();
 });
 
-test('an editor can update an author and sync all pivot affiliations', function () {
+test('an editor can update an author and sync all pivot affiliations', function (): void {
     $user = User::factory()->withRoles([UserRole::EDITOR])->create();
 
     // Create author with original organization
@@ -324,7 +324,7 @@ test('an editor can update an author and sync all pivot affiliations', function 
     expect($publicationAuthor2->organization_id)->toBe($newOrg->id);
 });
 
-test('updating author without sync_all_pivots flag does not update pivots', function () {
+test('updating author without sync_all_pivots flag does not update pivots', function (): void {
     $user = User::factory()->withRoles([UserRole::EDITOR])->create();
 
     // Create author with original organization
@@ -359,7 +359,7 @@ test('updating author without sync_all_pivots flag does not update pivots', func
     expect($manuscriptAuthor->organization_id)->toBe($originalOrg->id);
 });
 
-test('a regular user cannot sync pivots even if they try', function () {
+test('a regular user cannot sync pivots even if they try', function (): void {
     $regularUser = User::factory()->create(); // Regular user without EDITOR role
 
     // Create author without owner

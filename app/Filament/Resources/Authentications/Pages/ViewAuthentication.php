@@ -14,7 +14,7 @@ class ViewAuthentication extends ViewRecord
     {
         return [
             Action::make('Back')
-                ->url(fn () => AuthenticationResource::getUrl('index'))
+                ->url(fn (): string => AuthenticationResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];
     }

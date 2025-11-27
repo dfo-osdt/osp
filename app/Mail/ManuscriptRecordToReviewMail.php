@@ -41,7 +41,7 @@ class ManuscriptRecordToReviewMail extends Mailable
         $this->cc(
             $this->manuscriptRecord->manuscriptAuthors
                 ->pluck('author.user.email')
-                ->filter(fn ($email) => $email !== null)
+                ->filter(fn ($email): bool => $email !== null)
                 ->forget($this->user->email) // don't send to the user twice
                 ->toArray());
 

@@ -42,10 +42,9 @@ class FlaggedManuscriptOnPrepintServerMail extends Mailable
         }
 
         return new Envelope(
-            subject: 'Manuscript Flagged for Planning Binder posted on Prepint Server - Manuscrit identifié pour le classeur de planification publié un serveur de prépublication',
-
             to: [$this->referrer->email],
             cc: [$cc],
+            subject: 'Manuscript Flagged for Planning Binder posted on Prepint Server - Manuscrit identifié pour le classeur de planification publié un serveur de prépublication',
         );
     }
 

@@ -4,7 +4,7 @@ use App\Models\Journal;
 use App\Models\User;
 use Database\Seeders\JournalsTableSeeder;
 
-test('a user can get a list of journals', function () {
+test('a user can get a list of journals', function (): void {
     // create a user
     $user = User::factory()->create();
 
@@ -19,7 +19,7 @@ test('a user can get a list of journals', function () {
     expect($response->json('meta.total'))->toBe(Journal::count());
 });
 
-test('a user can get a list of all dfo journals', function () {
+test('a user can get a list of all dfo journals', function (): void {
     // create a user
     $user = User::factory()->create();
 
@@ -33,7 +33,7 @@ test('a user can get a list of all dfo journals', function () {
     expect($response->json('data'))->toHaveCount(6);
 });
 
-test('a user can get a specific journal by id', function () {
+test('a user can get a specific journal by id', function (): void {
     // create a user
     $user = User::factory()->create();
 
@@ -48,7 +48,7 @@ test('a user can get a specific journal by id', function () {
     expect($response->json('data.id'))->toBe($journal->id);
 });
 
-test('a user can find these specific journals by title', function (string $title) {
+test('a user can find these specific journals by title', function (string $title): void {
 
     expect($title)->not->toBeEmpty();
 

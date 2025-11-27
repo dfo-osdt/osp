@@ -47,9 +47,9 @@ class ManuscriptRecordSubmittedToDFO extends Mailable implements ShouldQueue
             ->unique()->toArray();
 
         return new Envelope(
-            subject: 'Manuscript Submitted - Manuscrit soumis: '.$this->manuscriptRecord->title,
             to: [$to],
             cc: $cc,
+            subject: 'Manuscript Submitted - Manuscrit soumis: '.$this->manuscriptRecord->title,
         );
     }
 

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Thunk\Verbs\Facades\Verbs;
 
-test('a reviewer can view all review steps associated with manuscript', function () {
+test('a reviewer can view all review steps associated with manuscript', function (): void {
     $owner = User::factory()->create();
     $reviewer = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $owner->id]);
@@ -55,7 +55,7 @@ test('a reviewer can view all review steps associated with manuscript', function
     expect($response->json('data.0.can.update'))->toBeFalse();
 });
 
-test('a reviewer can update their review comments', function () {
+test('a reviewer can update their review comments', function (): void {
     $reviewer = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create();
 
@@ -67,7 +67,7 @@ test('a reviewer can update their review comments', function () {
     expect($manuscript->managementReviewSteps->first()->refresh()->comments)->toBe('test comments');
 });
 
-test('a reviewer can refer the review to the next reviewer', function () {
+test('a reviewer can refer the review to the next reviewer', function (): void {
     Mail::fake();
 
     // to send to the next step, a comment is required
@@ -85,7 +85,7 @@ test('a reviewer can refer the review to the next reviewer', function () {
     Mail::assertQueued(ReviewStepNotificationMail::class);
 });
 
-test('a reviewer can ask for revision and send back to the author for clarifications and can reply to continue management review', function () {
+test('a reviewer can ask for revision and send back to the author for clarifications and can reply to continue management review', function (): void {
 
     Mail::fake();
 
@@ -126,7 +126,7 @@ test('a reviewer can ask for revision and send back to the author for clarificat
     Mail::assertQueued(ReviewStepNotificationMail::class, 2);
 });
 
-test('an author can withdraw their manuscript when revision are required on their manuscript', function () {
+test('an author can withdraw their manuscript when revision are required on their manuscript', function (): void {
     Mail::fake();
 
     $reviewer = User::factory()->create();
@@ -154,7 +154,7 @@ test('an author can withdraw their manuscript when revision are required on thei
     Event::assertDispatched(ManuscriptRecordWithdrawnByAuthor::class);
 });
 
-test('a reviewer can approve and complete the review of a third-party manuscript and flag for planning binder', function () {
+test('a reviewer can approve and complete the review of a third-party manuscript and flag for planning binder', function (): void {
     Mail::fake();
     Verbs::fake();
 
@@ -178,7 +178,7 @@ test('a reviewer can approve and complete the review of a third-party manuscript
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
 });
 
-test('a reviewer can approve and complete the review of a third-party manuscript and not flag for planning binder', function () {
+test('a reviewer can approve and complete the review of a third-party manuscript and not flag for planning binder', function (): void {
 
     Mail::fake();
     Verbs::fake();
@@ -202,7 +202,7 @@ test('a reviewer can approve and complete the review of a third-party manuscript
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
 });
 
-test('a reviewer can reassign and send to the next reviewer', function () {
+test('a reviewer can reassign and send to the next reviewer', function (): void {
     Mail::fake();
 
     // to send to the next step, a comment is required
@@ -222,7 +222,7 @@ test('a reviewer can reassign and send to the next reviewer', function () {
     Mail::assertQueued(ReviewStepNotificationMail::class);
 });
 
-test('a reviewer can list their reviews', function () {
+test('a reviewer can list their reviews', function (): void {
     $reviewer = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create();
 
@@ -234,7 +234,7 @@ test('a reviewer can list their reviews', function () {
     expect($response->json('data.0.data.manuscript_record'))->toBeTruthy();
 });
 
-test('only a director can complete an internal managment reviw', function () {
+test('only a director can complete an internal managment reviw', function (): void {
     $regularReviewer = User::factory()->create();
     $director = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 

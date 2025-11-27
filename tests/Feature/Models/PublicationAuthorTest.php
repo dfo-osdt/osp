@@ -3,7 +3,7 @@
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
 
-test('a user can get the publication authors associated with a publication', function () {
+test('a user can get the publication authors associated with a publication', function (): void {
     $user = \App\Models\User::factory()->create();
     $publication = \App\Models\Publication::factory()->has(PublicationAuthor::factory()->count(5))->create([
         'user_id' => $user->id,
@@ -24,7 +24,7 @@ test('a user can get the publication authors associated with a publication', fun
     ]);
 });
 
-test('a user can add a new publication author to their publication', function () {
+test('a user can add a new publication author to their publication', function (): void {
     $user = \App\Models\User::factory()->create();
     $publication = \App\Models\Publication::factory()->create([
         'user_id' => $user->id,
@@ -54,7 +54,7 @@ test('a user can add a new publication author to their publication', function ()
     expect($publication->publicationAuthors()->count())->toBe(1);
 });
 
-test('a user cannot add the same author twice on a publication', function () {
+test('a user cannot add the same author twice on a publication', function (): void {
     $user = \App\Models\User::factory()->create();
     $publication = \App\Models\Publication::factory()->create([
         'user_id' => $user->id,
@@ -70,7 +70,7 @@ test('a user cannot add the same author twice on a publication', function () {
     ])->assertInvalid('author_id');
 });
 
-test('an editor or chief editor can manage publication authors', function () {
+test('an editor or chief editor can manage publication authors', function (): void {
     // create a publication with 3 authors
     $publication = Publication::factory()->has(PublicationAuthor::factory()->count(3))->create();
     $chiefEditor = \App\Models\User::factory()->chiefEditor()->create();

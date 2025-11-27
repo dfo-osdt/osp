@@ -3,7 +3,7 @@
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 
-test('a user can get a list of all organization', function () {
+test('a user can get a list of all organization', function (): void {
     //
 
     Organization::factory()->count(20)->create();
@@ -19,7 +19,7 @@ test('a user can get a list of all organization', function () {
     expect($response->json('meta.total'))->toBe(Organization::count());
 });
 
-test('a user can create a new organization', function () {
+test('a user can create a new organization', function (): void {
     $user = \App\Models\User::factory()->create();
 
     $data = [
@@ -37,7 +37,7 @@ test('a user can create a new organization', function () {
     expect(Organization::find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
 });
 
-test('a user can create a new organization without the abbreviation', function () {
+test('a user can create a new organization without the abbreviation', function (): void {
     $user = \App\Models\User::factory()->create();
 
     $data = [
@@ -53,7 +53,7 @@ test('a user can create a new organization without the abbreviation', function (
     expect(Organization::find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
 });
 
-test('a user cannot create the same organization twice', function () {
+test('a user cannot create the same organization twice', function (): void {
     $user = \App\Models\User::factory()->create();
 
     $data = [
@@ -71,7 +71,7 @@ test('a user cannot create the same organization twice', function () {
     $response = $this->actingAs($user)->postJson('/api/organizations', $data)->assertStatus(422)->assertJsonValidationErrors(['name_en', 'name_fr']);
 });
 
-test('a user can see an organization', function () {
+test('a user can see an organization', function (): void {
     $user = \App\Models\User::factory()->create();
 
     $organization = Organization::factory()->create();

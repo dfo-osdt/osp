@@ -35,9 +35,8 @@ class Region extends Model
     public function getRegionalEditors(): Collection
     {
         $role = UserRole::from($this->slug.'_editor');
-        $editors = User::role($role->value)->get();
 
-        return $editors;
+        return User::role($role->value)->get();
 
     }
 }

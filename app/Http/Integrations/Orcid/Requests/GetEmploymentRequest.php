@@ -10,7 +10,7 @@ class GetEmploymentRequest extends GetActivityRequest
 {
     public function __construct(string $putcode)
     {
-        parent::__construct($putcode, ActivitiesScopeEndpoint::EMPLOYMENT);
+        parent::__construct($putcode);
     }
 
     public function createDtoFromResponse(Response $response): EmploymentData

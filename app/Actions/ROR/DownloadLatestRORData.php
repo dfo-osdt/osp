@@ -52,7 +52,7 @@ class DownloadLatestRORData
             if ($update) {
                 $progressCallable('Staring ROR download: '.$command.'...'.PHP_EOL);
             }
-            $process = Process::timeout(120)->start($command, function ($type, $buffer) use ($progressCallable) {
+            $process = Process::timeout(120)->start($command, function ($type, string $buffer) use ($progressCallable): void {
                 if ($type === 'stderr') {
                     $progressCallable('ERROR: '.$buffer);
                 } else {
@@ -80,7 +80,7 @@ class DownloadLatestRORData
 
         $command = "unzip -o $fileName";
 
-        $result = Process::path($base_path)->start($command, function ($type, $buffer) use ($progressCallable) {
+        $result = Process::path($base_path)->start($command, function ($type, string $buffer) use ($progressCallable): void {
             if ($type === 'stderr') {
                 $progressCallable('ERROR: '.$buffer);
             } else {

@@ -94,13 +94,9 @@ class SyncExpertiseWithScience
         }
 
         $unique = $expertises
-            ->unique(function ($expertise) {
-                return strtolower($expertise['name_en']);
-            })
-            ->unique(function ($expertise) {
-                return strtolower($expertise['name_fr']);
-            })
-            ->filter(function ($expertise) use ($termsToRemove) {
+            ->unique(fn(array $expertise) => strtolower((string) $expertise['name_en']))
+            ->unique(fn(array $expertise) => strtolower((string) $expertise['name_fr']))
+            ->filter(function (array $expertise) use ($termsToRemove): bool {
                 $a = strtolower($expertise['name_en']);
 
                 return ! in_array($a, $termsToRemove);
@@ -111,10 +107,10 @@ class SyncExpertiseWithScience
             try {
                 Expertise::updateOrCreate(
                     [
-                        'name_en' => html_entity_decode($expertise['name_en']),
+                        'name_en' => html_entity_decode((string) $expertise['name_en']),
                     ],
                     [
-                        'name_fr' => html_entity_decode($expertise['name_fr']),
+                        'name_fr' => html_entity_decode((string) $expertise['name_fr']),
                     ]
                 );
             } catch (\Illuminate\Database\UniqueConstraintViolationException) {

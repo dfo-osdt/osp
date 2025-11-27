@@ -3,7 +3,7 @@
 use App\Models\Expertise;
 use App\Models\User;
 
-test('a user can get a list of expertise', function () {
+test('a user can get a list of expertise', function (): void {
 
     Expertise::factory()->count(4)->create();
     $expertise = Expertise::factory()->create(
@@ -27,7 +27,7 @@ test('a user can get a list of expertise', function () {
     ray($response->json('data'));
 });
 
-test('a use can get a single expertise', function () {
+test('a use can get a single expertise', function (): void {
 
     Expertise::factory()->count(4)->create();
     $expertise = Expertise::factory()->create(

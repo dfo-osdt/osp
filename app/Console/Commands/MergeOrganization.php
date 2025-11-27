@@ -15,7 +15,7 @@ class MergeOrganization extends Command
 
     protected $description = 'Merge an unverified organization into a verified organization';
 
-    public function handle()
+    public function handle(): ?int
     {
         $this->info('Merge Organization Tool');
         $this->newLine();
@@ -25,13 +25,13 @@ class MergeOrganization extends Command
         if ($unverifiedOrgs->isEmpty()) {
             $this->info('No unverified organizations found.');
 
-            return;
+            return null;
         }
 
         $this->info('Unverified Organizations:');
         $this->table(
             ['ID', 'Name (EN)', 'Name (FR)', 'ROR ID'],
-            $unverifiedOrgs->map(fn ($org) => [
+            $unverifiedOrgs->map(fn ($org): array => [
                 $org->id,
                 $org->name_en,
                 $org->name_fr,
@@ -41,7 +41,7 @@ class MergeOrganization extends Command
 
         $sourceOrgId = select(
             label: 'Select the source organization to merge FROM:',
-            options: $unverifiedOrgs->mapWithKeys(fn ($org) => [
+            options: $unverifiedOrgs->mapWithKeys(fn ($org): array => [
                 $org->id => "{$org->name_en} (ID: {$org->id})",
             ])->toArray()
         );
@@ -53,16 +53,16 @@ class MergeOrganization extends Command
 
         $targetOrg = search(
             label: 'Search for verified target organization to merge INTO:',
-            options: fn (string $value) => strlen($value) > 0
+            options: fn (string $value) => $value !== ''
                 ? Organization::where('is_validated', true)
-                    ->where(function ($query) use ($value) {
+                    ->where(function ($query) use ($value): void {
                         $query->where('name_en', 'like', "%{$value}%")
                             ->orWhere('name_fr', 'like', "%{$value}%")
                             ->orWhere('ror_identifier', 'like', "%{$value}%");
                     })
                     ->limit(10)
                     ->get()
-                    ->mapWithKeys(fn ($org) => [
+                    ->mapWithKeys(fn ($org): array => [
                         $org->id => "{$org->name_en} ({$org->ror_identifier}) - ID: {$org->id}",
                     ])
                     ->toArray()
@@ -95,7 +95,7 @@ class MergeOrganization extends Command
         if (! $this->confirm('Do you want to proceed with the merge?', false)) {
             $this->info('Merge cancelled.');
 
-            return;
+            return null;
         }
 
         try {

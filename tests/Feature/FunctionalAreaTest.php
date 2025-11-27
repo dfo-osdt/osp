@@ -3,7 +3,7 @@
 use App\Models\FunctionalArea;
 use App\Models\User;
 
-test('an authenticated user can get a list of the functional areas', function () {
+test('an authenticated user can get a list of the functional areas', function (): void {
 
     $user = User::factory()->create();
 

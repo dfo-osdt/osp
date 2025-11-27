@@ -5,7 +5,7 @@ use App\Models\Publication;
 use App\Models\Region;
 use App\Models\User;
 
-test('regional editor can update publications in their region', function () {
+test('regional editor can update publications in their region', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
 
     $regionalEditor = User::factory()->create();
@@ -16,7 +16,7 @@ test('regional editor can update publications in their region', function () {
     expect($regionalEditor->can('update', $publication))->toBeTrue();
 });
 
-test('regional editor cannot update publications in other regions', function () {
+test('regional editor cannot update publications in other regions', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
 
@@ -28,7 +28,7 @@ test('regional editor cannot update publications in other regions', function () 
     expect($nflEditor->can('update', $marPublication))->toBeFalse();
 });
 
-test('regional editor can update both published and unpublished publications in their region', function () {
+test('regional editor can update both published and unpublished publications in their region', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
 
     $regionalEditor = User::factory()->create();
@@ -41,7 +41,7 @@ test('regional editor can update both published and unpublished publications in 
     expect($regionalEditor->can('update', $acceptedPub))->toBeTrue();
 });
 
-test('editor with UPDATE_PUBLICATIONS can update publications in any region', function () {
+test('editor with UPDATE_PUBLICATIONS can update publications in any region', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
 
@@ -55,7 +55,7 @@ test('editor with UPDATE_PUBLICATIONS can update publications in any region', fu
     expect($editor->can('update', $marPub))->toBeTrue();
 });
 
-test('publication owner can update their own publication regardless of region', function () {
+test('publication owner can update their own publication regardless of region', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
 
     $owner = User::factory()->create();
@@ -68,7 +68,7 @@ test('publication owner can update their own publication regardless of region', 
     expect($owner->can('update', $publication))->toBeTrue();
 });
 
-test('regular user cannot update publications they do not own', function () {
+test('regular user cannot update publications they do not own', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
 
     $user = User::factory()->create();
@@ -77,7 +77,7 @@ test('regular user cannot update publications they do not own', function () {
     expect($user->can('update', $publication))->toBeFalse();
 });
 
-test('user with multiple regional editor roles can update publications in all their regions', function () {
+test('user with multiple regional editor roles can update publications in all their regions', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
     $glfRegion = Region::whereSlug('glf')->first();

@@ -6,7 +6,7 @@ use App\Models\ManuscriptRecord;
 use App\Models\Shareable;
 use App\Models\User;
 
-test('a manuscript user can list who has access to one of their manuscript', function () {
+test('a manuscript user can list who has access to one of their manuscript', function (): void {
 
     $manuscript = ManuscriptRecord::factory()->create();
     $shared = Shareable::factory()->create([
@@ -30,7 +30,7 @@ test('a manuscript user can list who has access to one of their manuscript', fun
         ->assertJsonCount(1, 'data');
 });
 
-test('a shared user can view and edit a shared manuscript', function () {
+test('a shared user can view and edit a shared manuscript', function (): void {
 
     $manuscript = ManuscriptRecord::factory()->create();
     $shared = Shareable::factory()->create([
@@ -60,7 +60,7 @@ test('a shared user can view and edit a shared manuscript', function () {
         ]);
 });
 
-test('a shared user can no longer view the manuscript once the shareable has expired', function () {
+test('a shared user can no longer view the manuscript once the shareable has expired', function (): void {
     $shared = Shareable::factory()->create([
         'expires_at' => now()->subDays(5),
     ]);
@@ -77,7 +77,7 @@ test('a shared user can no longer view the manuscript once the shareable has exp
         ->assertOk();
 });
 
-test('a shared user can be given the ability to delete the manuscript', function () {
+test('a shared user can be given the ability to delete the manuscript', function (): void {
     $shared = Shareable::factory()->create([
         'can_delete' => false,
     ]);
@@ -94,7 +94,7 @@ test('a shared user can be given the ability to delete the manuscript', function
         ->assertStatus(204);
 });
 
-test('a user can share their manuscript with a user', function () {
+test('a user can share their manuscript with a user', function (): void {
 
     $manuscript = ManuscriptRecord::factory()->create();
     $user = $manuscript->user;
@@ -109,9 +109,7 @@ test('a user can share their manuscript with a user', function () {
         'expires_at' => now()->addDays(5),
     ])->assertCreated();
 
-    Event::assertDispatched(function (ItemShared $event) use ($manuscript, $sharedUser) {
-        return $event->shareableItem->shareable->is($manuscript) && $event->shareableItem->user->is($sharedUser);
-    });
+    Event::assertDispatched(fn(ItemShared $event): bool => $event->shareableItem->shareable->is($manuscript) && $event->shareableItem->user->is($sharedUser));
 
     $this->assertDatabaseHas('shareables', [
         'shareable_type' => ManuscriptRecord::class,
@@ -136,7 +134,7 @@ test('a user can share their manuscript with a user', function () {
     ])->assertForbidden();
 });
 
-test('a user can update a share to their manuscript', function () {
+test('a user can update a share to their manuscript', function (): void {
 
     $manuscript = ManuscriptRecord::factory()->create();
     $user = $manuscript->user;
@@ -162,7 +160,7 @@ test('a user can update a share to their manuscript', function () {
     ]);
 });
 
-test('a user can delete a share and shared user no longer has access', function () {
+test('a user can delete a share and shared user no longer has access', function (): void {
 
     $manuscript = ManuscriptRecord::factory()->create();
     $user = $manuscript->user;
@@ -187,7 +185,7 @@ test('a user can delete a share and shared user no longer has access', function 
         ->assertForbidden();
 });
 
-test('a user can see a single manuscript shareable entity', function () {
+test('a user can see a single manuscript shareable entity', function (): void {
     $manuscript = ManuscriptRecord::factory()->create();
     $user = $manuscript->user;
     $sharedUser = User::factory()->create();
@@ -208,7 +206,7 @@ test('a user can see a single manuscript shareable entity', function () {
         ]);
 });
 
-test('a shared manuscript is seen in my manuscript for a shared users', function () {
+test('a shared manuscript is seen in my manuscript for a shared users', function (): void {
 
     $manuscript = ManuscriptRecord::factory()->create();
     $user = $manuscript->user;
@@ -235,7 +233,7 @@ test('a shared manuscript is seen in my manuscript for a shared users', function
         ->assertJsonCount(0, 'data');
 });
 
-test('a email is sent when a sharing event for a manuscript is dispatched', function () {
+test('a email is sent when a sharing event for a manuscript is dispatched', function (): void {
 
     $sharable = Shareable::factory()->create();
 
@@ -244,7 +242,7 @@ test('a email is sent when a sharing event for a manuscript is dispatched', func
     Mail::assertQueued(ManuscriptRecordSharedMail::class);
 });
 
-test('the share email is properly formatted', function () {
+test('the share email is properly formatted', function (): void {
 
     $shareable = Shareable::factory()->create([
         'can_edit' => true,
@@ -266,7 +264,7 @@ test('the share email is properly formatted', function () {
     $mailable->assertSeeInHtml('Never');
 });
 
-test('a user cannot share the same manuscript twice to the same user', function () {
+test('a user cannot share the same manuscript twice to the same user', function (): void {
 
     $manuscript = ManuscriptRecord::factory()->create();
     $user = $manuscript->user;

@@ -14,14 +14,12 @@ use Thunk\Verbs\Event;
 
 class FlaggedManuscriptSubmittedToPrepint extends Event
 {
-    #[StateId(PlanningBinderItemState::class)]
-    public int $planning_binder_item_id;
-
     public function __construct(
         public int $user_id,
-        int $planning_binder_item_id,
-    ) {
-        $this->planning_binder_item_id = $planning_binder_item_id;
+        #[StateId(PlanningBinderItemState::class)]
+        public int $planning_binder_item_id
+    )
+    {
     }
 
     public function validate(PlanningBinderItemState $state): bool
@@ -38,14 +36,10 @@ class FlaggedManuscriptSubmittedToPrepint extends Event
 
         // mrf should have no publication id
         $mrf = ManuscriptRecord::where('ulid', $state->manuscript_record_ulid)->firstOrFail();
-        if ($mrf->publication?->id !== null) {
-            return false;
-        }
-
-        return true;
+        return $mrf->publication?->id === null;
     }
 
-    public function apply(PlanningBinderItemState $state)
+    public function apply(PlanningBinderItemState $state): void
     {
         // set the status to flagged
         $state->status = PlanningBinderItemStatus::READY;
@@ -63,7 +57,7 @@ class FlaggedManuscriptSubmittedToPrepint extends Event
 
     }
 
-    public function handle(PlanningBinderItemState $state)
+    public function handle(PlanningBinderItemState $state): void
     {
 
         $item = PlanningBinderItem::findOrFail($state->id);

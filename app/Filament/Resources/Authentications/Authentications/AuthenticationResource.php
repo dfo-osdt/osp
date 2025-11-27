@@ -58,17 +58,15 @@ class AuthenticationResource extends Resource
                         DatePicker::make('logins_until')
                             ->default(now()),
                     ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['logins_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('login_at', '>=', $date),
-                            )
-                            ->when(
-                                $data['logins_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('login_at', '<=', $date),
-                            );
-                    })
+                    ->query(fn(Builder $query, array $data): Builder => $query
+                        ->when(
+                            $data['logins_from'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('login_at', '>=', $date),
+                        )
+                        ->when(
+                            $data['logins_until'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('login_at', '<=', $date),
+                        ))
                     ->columns(2),
                 TernaryFilter::make('login_successful'),
             ], layout: FiltersLayout::AboveContent)

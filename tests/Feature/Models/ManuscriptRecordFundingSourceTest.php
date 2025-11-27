@@ -3,7 +3,7 @@
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 
-test('a user can list the funding source associated with a manuscript', function () {
+test('a user can list the funding source associated with a manuscript', function (): void {
     $unauthorizedUser = User::factory()->create();
     $authorizedUser = User::factory()->create();
 
@@ -19,7 +19,7 @@ test('a user can list the funding source associated with a manuscript', function
     expect($response->json('data'))->toHaveCount(3);
 });
 
-test('a user can add a new funding source to their manuscript', function () {
+test('a user can add a new funding source to their manuscript', function (): void {
     $unauthorizedUser = User::factory()->create();
     $authorizedUser = User::factory()->create();
 
@@ -44,7 +44,7 @@ test('a user can add a new funding source to their manuscript', function () {
     ray($response->json());
 });
 
-test('a user can update an existing funding source on their manuscript', function () {
+test('a user can update an existing funding source on their manuscript', function (): void {
     $unauthorizedUser = User::factory()->create();
     $authorizedUser = User::factory()->create();
 
@@ -69,7 +69,7 @@ test('a user can update an existing funding source on their manuscript', functio
     ray($response->json());
 });
 
-test('a user can delete a funding source on their manuscript', function () {
+test('a user can delete a funding source on their manuscript', function (): void {
     $unauthorizedUser = User::factory()->create();
     $authorizedUser = User::factory()->create();
 

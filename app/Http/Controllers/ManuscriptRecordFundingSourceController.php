@@ -30,7 +30,7 @@ class ManuscriptRecordFundingSourceController extends Controller
         /** @phpstan-ignore-next-line */
         return FundingSourceResource::collection($fundingSources->load([
             'funder',
-            'fundable' => function (MorphTo $morphTo) {
+            'fundable' => function (MorphTo $morphTo): void {
                 $morphTo->morphWith([
                     ManuscriptRecord::class => ['user', 'manuscriptAuthors.author', 'shareables', 'managementReviewSteps'],
                 ]);
@@ -62,7 +62,7 @@ class ManuscriptRecordFundingSourceController extends Controller
 
         return new FundingSourceResource($fundingSource->load([
             'funder',
-            'fundable' => function (MorphTo $morphTo) {
+            'fundable' => function (MorphTo $morphTo): void {
                 $morphTo->morphWith([
                     ManuscriptRecord::class => ['user', 'manuscriptAuthors.author', 'shareables', 'managementReviewSteps'],
                 ]);
@@ -81,7 +81,7 @@ class ManuscriptRecordFundingSourceController extends Controller
 
         return new FundingSourceResource($fundingSource->load([
             'funder',
-            'fundable' => function (MorphTo $morphTo) {
+            'fundable' => function (MorphTo $morphTo): void {
                 $morphTo->morphWith([
                     ManuscriptRecord::class => ['user', 'manuscriptAuthors.author', 'shareables', 'managementReviewSteps'],
                 ]);
@@ -111,7 +111,7 @@ class ManuscriptRecordFundingSourceController extends Controller
 
         return new FundingSourceResource($fundingSource->load([
             'funder',
-            'fundable' => function (MorphTo $morphTo) {
+            'fundable' => function (MorphTo $morphTo): void {
                 $morphTo->morphWith([
                     ManuscriptRecord::class => ['user', 'manuscriptAuthors.author', 'shareables', 'managementReviewSteps'],
                 ]);

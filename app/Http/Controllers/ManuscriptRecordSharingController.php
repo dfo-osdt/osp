@@ -30,7 +30,7 @@ class ManuscriptRecordSharingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ShareablePostRequest $request, ManuscriptRecord $manuscriptRecord)
+    public function store(ShareablePostRequest $request, ManuscriptRecord $manuscriptRecord): \App\Http\Resources\ShareableResource
     {
         $this->authorize('share', $manuscriptRecord);
 
@@ -61,7 +61,7 @@ class ManuscriptRecordSharingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ManuscriptRecord $manuscriptRecord, Shareable $shareable)
+    public function show(ManuscriptRecord $manuscriptRecord, Shareable $shareable): \App\Http\Resources\ShareableResource
     {
         $this->authorize('view', $manuscriptRecord);
 
@@ -71,7 +71,7 @@ class ManuscriptRecordSharingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ManuscriptRecord $manuscriptRecord, Shareable $shareable)
+    public function update(Request $request, ManuscriptRecord $manuscriptRecord, Shareable $shareable): \App\Http\Resources\ShareableResource
     {
         $this->authorize('share', $manuscriptRecord);
 

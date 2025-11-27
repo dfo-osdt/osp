@@ -26,10 +26,8 @@ class UserInvitedListener implements ShouldQueue
     /**
      * Handle the event.
      *
-     *
-     * @return void
      */
-    public function handle(Invited $event)
+    public function handle(Invited $event): void
     {
         if (config('osp.azure.enable_auth')) {
             // email that just welcomes them

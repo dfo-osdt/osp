@@ -4,7 +4,7 @@
 use App\Models\Funder;
 use App\Models\User;
 
-test('a user can get a list of funders', function () {
+test('a user can get a list of funders', function (): void {
     // This test expects the seed data to be loaded
 
     $user = User::factory()->create();
@@ -13,7 +13,7 @@ test('a user can get a list of funders', function () {
     expect($response->json('data'))->toHaveCount(Funder::count());
 });
 
-test('a user can get a single funder', function () {
+test('a user can get a single funder', function (): void {
     $user = User::factory()->create();
     $funder = Funder::factory()->create();
     $response = $this->getJson('/api/funders/'.$funder->id)->assertUnauthorized();

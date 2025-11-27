@@ -30,7 +30,7 @@ class FlagManuscriptRecordForPlanningBinderMail extends Event
         return true;
     }
 
-    public function apply(PlanningBinderItemState $state)
+    public function apply(PlanningBinderItemState $state): void
     {
         // set the status to flagged
         $state->status = PlanningBinderItemStatus::FLAGGED;
@@ -47,7 +47,7 @@ class FlagManuscriptRecordForPlanningBinderMail extends Event
         $state->manuscript_record_ulid = $this->manuscript_record_ulid;
     }
 
-    public function fired(PlanningBinderItemState $state)
+    public function fired(PlanningBinderItemState $state): void
     {
         // send notification to the user
         Mail::queue(new ManuscriptFlaggedForPlanningBinderMail(
@@ -56,7 +56,7 @@ class FlagManuscriptRecordForPlanningBinderMail extends Event
         ));
     }
 
-    public function handle(PlanningBinderItemState $state)
+    public function handle(PlanningBinderItemState $state): void
     {
 
         $mrf = ManuscriptRecord::where('ulid', $this->manuscript_record_ulid)->firstOrFail();

@@ -15,7 +15,7 @@ class ListActivityLogs extends ListRecords
     {
         return [
             Action::make('Authentication Log')
-                ->url(fn () => AuthenticationResource::getUrl('index'))
+                ->url(fn (): string => AuthenticationResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];
     }

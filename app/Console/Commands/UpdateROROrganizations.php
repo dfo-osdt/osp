@@ -25,10 +25,10 @@ class UpdateROROrganizations extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->info('Downloading or looking for ROR data dump...');
-        $rorPath = DownloadLatestRORData::handle(function ($message) {
+        $rorPath = DownloadLatestRORData::handle(function (string|iterable $message): void {
             $this->output->write($message);
         });
         if (! $rorPath) {
@@ -42,7 +42,7 @@ class UpdateROROrganizations extends Command
         SyncRORData::handle(
             $rorPath['jsonFile'],
             $rorPath['version'],
-            function ($percentage) use ($progressBar) {
+            function (int $percentage) use ($progressBar): void {
                 $progressBar->setProgress($percentage);
             }
         );

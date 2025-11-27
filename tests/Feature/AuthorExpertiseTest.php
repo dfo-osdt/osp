@@ -5,7 +5,7 @@ use App\Models\Author;
 use App\Models\Expertise;
 use App\Models\User;
 
-test('we can get a list of an authors expertise', function () {
+test('we can get a list of an authors expertise', function (): void {
 
     $author = Author::factory()->hasExpertises(5)->create();
 
@@ -21,7 +21,7 @@ test('we can get a list of an authors expertise', function () {
     expect($response->json('data'))->toHaveCount(5);
 });
 
-test('an editor can sync an authors expertise', function () {
+test('an editor can sync an authors expertise', function (): void {
 
     $expertise = Expertise::factory()->count(10)->create();
 

@@ -27,7 +27,7 @@ class InvitedUserController extends Controller
             'locale' => 'string|in:en,fr',
         ]);
 
-        $validated['email'] = strtolower($validated['email']);
+        $validated['email'] = strtolower((string) $validated['email']);
 
         // does the user already exist?
         if (User::where('email', $validated['email'])->exists()) {
@@ -74,7 +74,7 @@ class InvitedUserController extends Controller
             );
         }
 
-        if (! hash_equals(sha1($user->invitation->invitation_token), (string) $hash)) {
+        if (! hash_equals(sha1((string) $user->invitation->invitation_token), (string) $hash)) {
             return redirect()->intended(
                 config('app.frontend_url').'#/invalid-signature'
             );

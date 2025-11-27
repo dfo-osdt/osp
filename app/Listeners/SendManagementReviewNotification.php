@@ -21,10 +21,8 @@ class SendManagementReviewNotification implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(ManagementReviewStepCreated $event)
+    public function handle(ManagementReviewStepCreated $event): void
     {
         Mail::queue(new ReviewStepNotificationMail($event->managementReviewStep));
     }

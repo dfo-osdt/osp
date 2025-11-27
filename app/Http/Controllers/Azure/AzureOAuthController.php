@@ -48,7 +48,7 @@ class AzureOAuthController extends Controller
 
         $azureUser = Socialite::driver('azure')->user();
 
-        $email = strtolower($azureUser->getEmail());
+        $email = strtolower((string) $azureUser->getEmail());
 
         $user = User::where('email', $email)->first();
 

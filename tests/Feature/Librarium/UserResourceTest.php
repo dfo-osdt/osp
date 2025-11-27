@@ -6,42 +6,42 @@ use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Models\User;
 
-describe('Access control for User Resources', function () {
+describe('Access control for User Resources', function (): void {
 
-    beforeEach(function () {
+    beforeEach(function (): void {
         $this->record = User::factory()->create();
         $this->user = User::factory()->create();
         $this->admin = User::factory()->create();
         $this->admin->assignRole('admin');
     });
 
-    it('An unauthorized user cannot render the page', function ($url) {
+    it('An unauthorized user cannot render the page', function ($url): void {
         $this->actingAs($this->user)->get($url)->assertForbidden();
     })->with([
-        'ListUsers' => [fn () => ListUsers::getUrl()],
+        'ListUsers' => [fn (): string => ListUsers::getUrl()],
     ]);
 
-    it('An unauthorized user cannot render the edit page', function () {
+    it('An unauthorized user cannot render the edit page', function (): void {
         $this->actingAs($this->user)->livewire(EditUser::class, ['record' => $this->record->getRouteKey()])->assertForbidden();
     });
 
-    it('Can render the index page', function () {
+    it('Can render the index page', function (): void {
         $this->actingAs($this->admin)->get(ListUsers::getUrl())->assertOk();
     });
 
-    it('Can render logout button', function () {})->todo();
-    it('Can logout path successful', function () {})->todo();
+    it('Can render logout button', function (): void {})->todo();
+    it('Can logout path successful', function (): void {})->todo();
 });
 
-describe('List Users table features', function () {
+describe('List Users table features', function (): void {
 
-    beforeEach(function () {
+    beforeEach(function (): void {
         $this->records = User::factory(5)->create();
         $this->admin = User::factory()->create();
         $this->admin->assignRole('admin');
     });
 
-    it('Columns are displayed', function () {
+    it('Columns are displayed', function (): void {
         collect([
             'first_name',
             'last_name',
@@ -54,7 +54,7 @@ describe('List Users table features', function () {
             ->assertCanRenderTableColumn($column));
     });
 
-    it('Columns can be sorted', function () {
+    it('Columns can be sorted', function (): void {
         collect([
             'first_name',
             'last_name',
@@ -65,13 +65,13 @@ describe('List Users table features', function () {
             ->assertCanSeeTableRecords($this->records->sortByDesc($column), inOrder: true));
     });
 
-    it('Columns can be searched', function () {
+    it('Columns can be searched', function (): void {
         collect([
             'first_name',
             'last_name',
             'email',
             'roles.name',
-        ])->each(function ($column) {
+        ])->each(function ($column): void {
             $value = $this->records->first()->{$column};
 
             $this->actingAs($this->admin)->livewire(ListUsers::class)
@@ -81,26 +81,26 @@ describe('List Users table features', function () {
         });
     });
 
-    it('Delete User button cannot be rendered', function () {
+    it('Delete User button cannot be rendered', function (): void {
         $this->actingAs($this->admin)->get(ListUsers::getUrl())
             ->assertDontSee('Delete');
     });
 });
 
-describe('Edit User page features', function () {
+describe('Edit User page features', function (): void {
 
-    beforeEach(function () {
+    beforeEach(function (): void {
         $this->record = User::factory()->create();
         $this->admin = User::factory()->create();
         $this->admin->assignRole('admin');
     });
 
-    it('Delete User button cannot be rendered', function () {
+    it('Delete User button cannot be rendered', function (): void {
         $this->actingAs($this->admin)->get(ListUsers::getUrl())
             ->assertDontSee('Delete');
     });
 
-    it('Can edit an existing user', function () {
+    it('Can edit an existing user', function (): void {
         $this->actingAs($this->admin)->livewire(Edituser::class, ['record' => $this->record->getRouteKey()])
             ->fillForm([
                 'email' => "{$this->record->first_name}.{$this->record->last_name}@dfo-mpo.gc.ca",
@@ -116,12 +116,12 @@ describe('Edit User page features', function () {
     Add attributes: roles
 NOTE);
 
-    it('Cannot save an invalid field', function () {
+    it('Cannot save an invalid field', function (): void {
         //
     })->todo(
-        issue: 857,
         note: <<<'NOTE'
     validate inputs
-    NOTE
+    NOTE,
+        issue: 857
     );
 });

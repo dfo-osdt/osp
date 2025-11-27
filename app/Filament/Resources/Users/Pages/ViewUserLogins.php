@@ -35,7 +35,7 @@ class ViewUserLogins extends ManageRelatedRecords
     {
         return [
             Action::make('Back')
-                ->url(fn () => UserResource::getUrl('index'))
+                ->url(fn (): string => UserResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];
     }
@@ -72,17 +72,15 @@ class ViewUserLogins extends ManageRelatedRecords
                         DatePicker::make('logins_until')
                             ->default(now()),
                     ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['logins_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('login_at', '>=', $date),
-                            )
-                            ->when(
-                                $data['logins_until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('login_at', '<=', $date),
-                            );
-                    })
+                    ->query(fn(Builder $query, array $data): Builder => $query
+                        ->when(
+                            $data['logins_from'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('login_at', '>=', $date),
+                        )
+                        ->when(
+                            $data['logins_until'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('login_at', '<=', $date),
+                        ))
                     ->columns(2),
                 TernaryFilter::make('login_successful'),
             ], layout: FiltersLayout::AboveContent)

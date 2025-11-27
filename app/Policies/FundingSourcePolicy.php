@@ -15,7 +15,7 @@ class FundingSourcePolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return false;
     }
@@ -36,7 +36,7 @@ class FundingSourcePolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -68,7 +68,7 @@ class FundingSourcePolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, FundingSource $fundingSource)
+    public function restore(User $user, FundingSource $fundingSource): bool
     {
         return false;
     }
@@ -78,7 +78,7 @@ class FundingSourcePolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, FundingSource $fundingSource)
+    public function forceDelete(User $user, FundingSource $fundingSource): bool
     {
         return false;
     }

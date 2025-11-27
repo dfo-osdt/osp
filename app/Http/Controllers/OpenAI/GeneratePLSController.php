@@ -42,7 +42,7 @@ class GeneratePLSController extends Controller
         };
 
         // clean up the abstract - it could have html tags we don't want
-        $validated['abstract'] = strip_tags($validated['abstract']);
+        $validated['abstract'] = strip_tags((string) $validated['abstract']);
 
         return $this->generateWithOllama($validated['abstract'], $locale);
     }
@@ -60,13 +60,12 @@ class GeneratePLSController extends Controller
         };
 
         // clean up the PLS - it could have html tags we don't want
-        $validated['abstract'] = strip_tags($validated['abstract']);
+        $validated['abstract'] = strip_tags((string) $validated['abstract']);
 
         if ($this->useOllama) {
             return $this->translateWithOllama($validated['abstract'], $locale);
-        } else {
-            return $this->error('Feature temporarily unavailable.');
         }
+        return $this->error('Feature temporarily unavailable.');
     }
 
     /**
@@ -165,10 +164,8 @@ class GeneratePLSController extends Controller
 
     /**
      * Respond with an error.
-     *
-     * @param  string  $message
      */
-    private function error($message = 'Feature temporarily unavailable.'): JsonResponse
+    private function error(string $message = 'Feature temporarily unavailable.'): JsonResponse
     {
         return response()->json([
             'message' => $message,

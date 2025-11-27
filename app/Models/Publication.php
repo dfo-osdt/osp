@@ -183,7 +183,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     /**
      * Add publication file media model.
      */
-    public function addPublicationFile($file, $preserveOriginal = false): Media
+    public function addPublicationFile(string|\Symfony\Component\HttpFoundation\File\UploadedFile $file, bool $preserveOriginal = false): Media
     {
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)
@@ -221,7 +221,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     /**
      * Add supplementary file media model.
      */
-    public function addSupplementaryFile(string|UploadedFile $file, SupplementaryFileType $type, ?string $description = null, $preserveOriginal = false): Media
+    public function addSupplementaryFile(string|UploadedFile $file, SupplementaryFileType $type, ?string $description = null, bool $preserveOriginal = false): Media
     {
 
         $properties = [
@@ -323,14 +323,14 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
             $permissions = collect(UserPermission::getRegionalEditorPubEditPermissions())->pluck('value');
             $userPermissions = $user->getAllPermissions()->pluck('name');
             $slugs = $permissions->intersect($userPermissions)
-                ->map(fn ($perm) => explode('_', $perm)[2] ?? null)
+                ->map(fn ($perm): ?string => explode('_', (string) $perm)[2] ?? null)
                 ->filter()
                 ->toArray();
 
             return $query->where('status', PublicationStatus::PUBLISHED)
-                ->orWhere(function ($q) use ($slugs) {
+                ->orWhere(function ($q) use ($slugs): void {
                     $q->where('status', PublicationStatus::ACCEPTED)
-                        ->whereHas('region', function ($regionQuery) use ($slugs) {
+                        ->whereHas('region', function ($regionQuery) use ($slugs): void {
                             $regionQuery->whereIn('slug', $slugs);
                         });
                 });

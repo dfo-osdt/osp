@@ -12,7 +12,7 @@ class ValidListItems implements ValidationRule
      * @return void
      */
     public function __construct(
-        private array $allowedItems
+        private readonly array $allowedItems
     ) {}
 
     /**
@@ -23,8 +23,8 @@ class ValidListItems implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $items = collect(explode(',', $value))->map(fn ($item) => trim($item))->unique();
-        $items->each(function ($item) use ($fail, $attribute) {
+        $items = collect(explode(',', (string) $value))->map(fn ($item): string => trim((string) $item))->unique();
+        $items->each(function ($item) use ($fail, $attribute): void {
             if (! in_array($item, $this->allowedItems)) {
                 $fail("$item is not a valid item for $attribute.");
             }

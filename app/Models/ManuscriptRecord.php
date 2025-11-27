@@ -173,7 +173,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     {
         parent::boot();
 
-        static::creating(function (ManuscriptRecord $manuscript) {
+        static::creating(function (ManuscriptRecord $manuscript): void {
             $manuscript->generateUlid();
         });
     }
@@ -199,7 +199,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function region(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Region');
+        return $this->belongsTo(\App\Models\Region::class);
     }
 
     /**
@@ -209,7 +209,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function functionalArea(): BelongsTo
     {
-        return $this->belongsTo('App\Models\FunctionalArea');
+        return $this->belongsTo(\App\Models\FunctionalArea::class);
     }
 
     /**
@@ -219,7 +219,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function manuscriptAuthors(): HasMany
     {
-        return $this->hasMany('App\Models\ManuscriptAuthor')->chaperone();
+        return $this->hasMany(\App\Models\ManuscriptAuthor::class)->chaperone();
     }
 
     /**
@@ -229,7 +229,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     /**
@@ -239,7 +239,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function shareables(): MorphMany
     {
-        return $this->morphMany('App\Models\Shareable', 'shareable');
+        return $this->morphMany(\App\Models\Shareable::class, 'shareable');
     }
 
     /**
@@ -247,8 +247,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function sharedWithUsers(): MorphToMany
     {
-        return $this->morphToMany('App\Models\User', 'shareable', 'shareables')
-            ->whereHas('sharedWith', function ($query) {
+        return $this->morphToMany(\App\Models\User::class, 'shareable', 'shareables')
+            ->whereHas('sharedWith', function ($query): void {
                 $query->whereNull('expires_at')
                     ->orWhere('expires_at', '>', now());
             })
@@ -262,7 +262,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function managementReviewSteps(): HasMany
     {
-        return $this->hasMany('App\Models\ManagementReviewStep');
+        return $this->hasMany(\App\Models\ManagementReviewStep::class);
     }
 
     /**
@@ -283,7 +283,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function publication(): HasOne
     {
-        return $this->hasOne('App\Models\Publication');
+        return $this->hasOne(\App\Models\Publication::class);
     }
 
     /**
@@ -306,7 +306,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     /**
      * Get manuscript files media model.
      */
-    public function getManuscriptFiles()
+    public function getManuscriptFiles(): \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection
     {
         return $this->getMedia(MediaCollection::MANUSCRIPT->value);
     }
@@ -316,7 +316,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      * unpublished and should not be shared, we set the sensitivity label
      * to Protected A by default.
      */
-    public function addManuscriptFile($file, $preserveOriginal = false)
+    public function addManuscriptFile(string|\Symfony\Component\HttpFoundation\File\UploadedFile $file, bool $preserveOriginal = false): \Spatie\MediaLibrary\MediaCollections\Models\Media
     {
         return $this->addMedia($file)
             ->withCustomProperties([
@@ -335,7 +335,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     /**
      * Delete a manuscript file
      */
-    public function deleteManuscriptFile($uuid, $force = false)
+    public function deleteManuscriptFile($uuid, $force = false): void
     {
         $media = $this->getMedia(MediaCollection::MANUSCRIPT->value)->where('uuid', $uuid)->first();
         if (! $media) {
@@ -355,9 +355,9 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     /**
      * Lock all manuscript files.
      */
-    public function lockManuscriptFiles()
+    public function lockManuscriptFiles(): void
     {
-        $this->getManuscriptFiles()->each(function ($media) {
+        $this->getManuscriptFiles()->each(function ($media): void {
             $media->setCustomProperty('locked', true);
             $media->save();
         });
@@ -387,7 +387,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
             'open_access_rationale' => 'required_if:intends_open_access,false',
         ]);
 
-        $validator->after(function ($validator) {
+        $validator->after(function ($validator): void {
             if ($this->manuscriptAuthors->where('is_corresponding_author', true)->count() < 1) {
                 $validator->errors()->add('manuscript_authors', 'At least one corresponding author is required.');
             }

@@ -39,18 +39,15 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
+        $this->reportable(function (Throwable $e): void {
             //
         });
 
-        $this->renderable(function (InvalidSignatureException $e) {
+        $this->renderable(fn(InvalidSignatureException $e): \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse =>
             // redirect
-            return redirect(config('app.frontend_url').'#/invalid-signature');
-        });
+            redirect(config('app.frontend_url').'#/invalid-signature'));
     }
 }

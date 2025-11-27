@@ -5,7 +5,7 @@ use App\Enums\Permissions\UserRole;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 
-test('regional editor can view draft manuscript in their region', function () {
+test('regional editor can view draft manuscript in their region', function (): void {
     $nflEditor = User::factory()->create();
     $nflEditor->assignRole(UserRole::NFL_EDITOR->value);
 
@@ -22,7 +22,7 @@ test('regional editor can view draft manuscript in their region', function () {
     expect($response->json('data.id'))->toBe($manuscript->id);
 });
 
-test('regional editor can view in_review manuscript in their region', function () {
+test('regional editor can view in_review manuscript in their region', function (): void {
     $marEditor = User::factory()->create();
     $marEditor->assignRole(UserRole::MAR_EDITOR->value);
 
@@ -39,7 +39,7 @@ test('regional editor can view in_review manuscript in their region', function (
     expect($response->json('data.id'))->toBe($manuscript->id);
 });
 
-test('regional editor cannot view manuscript outside their region', function () {
+test('regional editor cannot view manuscript outside their region', function (): void {
     $nflEditor = User::factory()->create();
     $nflEditor->assignRole(UserRole::NFL_EDITOR->value);
 
@@ -53,7 +53,7 @@ test('regional editor cannot view manuscript outside their region', function () 
         ->assertForbidden();
 });
 
-test('regional editor can edit draft manuscript in their region', function () {
+test('regional editor can edit draft manuscript in their region', function (): void {
     $queEditor = User::factory()->create();
     $queEditor->assignRole(UserRole::QUE_EDITOR->value);
 
@@ -76,7 +76,7 @@ test('regional editor can edit draft manuscript in their region', function () {
     expect($manuscript->fresh()->title)->toBe('Updated by QUE Editor');
 });
 
-test('regional editor can edit in_review manuscript in their region', function () {
+test('regional editor can edit in_review manuscript in their region', function (): void {
     $onpEditor = User::factory()->create();
     $onpEditor->assignRole(UserRole::ONP_EDITOR->value);
 
@@ -96,7 +96,7 @@ test('regional editor can edit in_review manuscript in their region', function (
     expect($response->json('can.update'))->toBe(true);
 });
 
-test('regional editor cannot edit manuscript outside their region', function () {
+test('regional editor cannot edit manuscript outside their region', function (): void {
     $arcEditor = User::factory()->create();
     $arcEditor->assignRole(UserRole::ARC_EDITOR->value);
 
@@ -116,7 +116,7 @@ test('regional editor cannot edit manuscript outside their region', function () 
     expect($manuscript->fresh()->title)->toBe('Original Title');
 });
 
-test('regional editor cannot edit non-editable statuses', function () {
+test('regional editor cannot edit non-editable statuses', function (): void {
     $pacEditor = User::factory()->create();
     $pacEditor->assignRole(UserRole::PAC_EDITOR->value);
 
@@ -144,7 +144,7 @@ test('regional editor cannot edit non-editable statuses', function () {
     }
 });
 
-test('global editor can view non-draft manuscripts from any region', function () {
+test('global editor can view non-draft manuscripts from any region', function (): void {
     $globalEditor = User::factory()->create();
     $globalEditor->assignRole(UserRole::EDITOR->value);
 
@@ -174,7 +174,7 @@ test('global editor can view non-draft manuscripts from any region', function ()
     }
 });
 
-test('global editor cannot view draft manuscripts unless they are regional editor for that region', function () {
+test('global editor cannot view draft manuscripts unless they are regional editor for that region', function (): void {
     $globalEditor = User::factory()->create();
     $globalEditor->assignRole(UserRole::EDITOR->value);
 
@@ -188,7 +188,7 @@ test('global editor cannot view draft manuscripts unless they are regional edito
         ->assertForbidden();
 });
 
-test('user with both global and regional permissions can access all manuscripts including drafts in their region', function () {
+test('user with both global and regional permissions can access all manuscripts including drafts in their region', function (): void {
     $hybridEditor = User::factory()->create();
     $hybridEditor->assignRole([UserRole::EDITOR->value, UserRole::NCR_EDITOR->value]);
 
@@ -227,7 +227,7 @@ test('user with both global and regional permissions can access all manuscripts 
         ->assertForbidden();
 });
 
-test('editor with multiple regional roles can access manuscripts from all assigned regions', function () {
+test('editor with multiple regional roles can access manuscripts from all assigned regions', function (): void {
     $multiRegionEditor = User::factory()->create();
     $multiRegionEditor->assignRole([UserRole::NFL_EDITOR->value, UserRole::MAR_EDITOR->value]);
 
@@ -264,7 +264,7 @@ test('editor with multiple regional roles can access manuscripts from all assign
         ->assertForbidden();
 });
 
-test('regional editor permissions are correctly returned in response', function () {
+test('regional editor permissions are correctly returned in response', function (): void {
     $ncrEditor = User::factory()->create();
     $ncrEditor->assignRole(UserRole::NCR_EDITOR->value);
 
@@ -297,7 +297,7 @@ test('regional editor permissions are correctly returned in response', function 
     expect($response->json('can.delete'))->toBe(false);
 });
 
-test('regular author cannot access other users manuscripts without proper sharing', function () {
+test('regular author cannot access other users manuscripts without proper sharing', function (): void {
     $author = User::factory()->create();
     $author->assignRole(UserRole::AUTHOR->value);
 
@@ -311,7 +311,7 @@ test('regular author cannot access other users manuscripts without proper sharin
         ->assertForbidden();
 });
 
-test('unauthenticated user cannot access any manuscript', function () {
+test('unauthenticated user cannot access any manuscript', function (): void {
     $manuscript = ManuscriptRecord::factory()->create([
         'status' => ManuscriptRecordStatus::IN_REVIEW,
         'region_id' => 1,

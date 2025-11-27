@@ -70,9 +70,8 @@ class ImplicitFlowController extends Controller
 
         if ($response->failed()) {
             throw ValidationException::withMessages(['orcid' => __('Unable to retrieve ORCID iD from ORCID.')]);
-        } else {
-            return $response->json()['id'];
         }
+        return $response->json()['id'];
     }
 
     /**
@@ -91,7 +90,7 @@ class ImplicitFlowController extends Controller
         }
 
         // encode URI - if it's not encoded, ORCID will returns to base URL
-        $encoded = urlencode($redirectURI);
+        $encoded = urlencode((string) $redirectURI);
 
         $base_url = $this->getBaseUrl();
 

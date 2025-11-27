@@ -8,10 +8,7 @@ use Spatie\QueryBuilder\Filters\Filter;
 
 class FuzzyFilter implements Filter
 {
-    /**
-     * @var array
-     */
-    private $columns;
+    private readonly array $columns;
 
     public function __construct(...$columns)
     {
@@ -25,9 +22,9 @@ class FuzzyFilter implements Filter
         // is database engine postgresql? if so, use ILIKE as it is case insensitive
         $like = config('database.default') === 'pgsql' ? 'ILIKE' : 'LIKE';
 
-        $query->where(function (Builder $query) use ($attributes, $value, $like) {
+        $query->where(function (Builder $query) use ($attributes, $value, $like): void {
             foreach (Arr::wrap($attributes) as $attribute) {
-                $query->orWhere(function ($query) use ($attribute, $value, $like) {
+                $query->orWhere(function ($query) use ($attribute, $value, $like): void {
                     if (is_string($value)) {
                         $value = explode(' ', $value);
                     }

@@ -15,7 +15,7 @@ class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_email_can_be_verified()
+    public function test_email_can_be_verified(): void
     {
         $user = User::factory()->unverified()->create();
 
@@ -24,7 +24,7 @@ class EmailVerificationTest extends TestCase
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
-            ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]
+            ['id' => $user->id, 'hash' => sha1((string) $user->getEmailForVerification())]
         );
 
         $response = $this->get($verificationUrl);
@@ -43,7 +43,7 @@ class EmailVerificationTest extends TestCase
         $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
     }
 
-    public function test_email_can_be_verified_for_user_with_invitation()
+    public function test_email_can_be_verified_for_user_with_invitation(): void
     {
         $user = User::factory()->unverified()->create();
         $user->invitation()->create([
@@ -56,7 +56,7 @@ class EmailVerificationTest extends TestCase
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
-            ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]
+            ['id' => $user->id, 'hash' => sha1((string) $user->getEmailForVerification())]
         );
 
         $response = $this->get($verificationUrl);
@@ -76,7 +76,7 @@ class EmailVerificationTest extends TestCase
         $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
     }
 
-    public function test_email_is_not_verified_with_invalid_hash()
+    public function test_email_is_not_verified_with_invalid_hash(): void
     {
         $user = User::factory()->unverified()->create();
 
@@ -92,7 +92,7 @@ class EmailVerificationTest extends TestCase
         $response->assertRedirect(config('app.frontend_url').'#/invalid-signature');
     }
 
-    public function test_verification_email_can_be_sent_again()
+    public function test_verification_email_can_be_sent_again(): void
     {
         $user = User::factory()->unverified()->create();
 
@@ -106,7 +106,7 @@ class EmailVerificationTest extends TestCase
         Notification::assertSentToTimes($user, \Illuminate\Auth\Notifications\VerifyEmail::class, 1);
     }
 
-    public function test_verification_email_wont_be_sent_if_already_verified()
+    public function test_verification_email_wont_be_sent_if_already_verified(): void
     {
         $user = User::factory()->create();
 
@@ -120,7 +120,7 @@ class EmailVerificationTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    public function test_verification_email_wont_be_sent_if_user_doesnt_exist()
+    public function test_verification_email_wont_be_sent_if_user_doesnt_exist(): void
     {
         Notification::fake();
 

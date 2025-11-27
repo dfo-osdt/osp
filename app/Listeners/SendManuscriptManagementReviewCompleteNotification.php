@@ -21,10 +21,8 @@ class SendManuscriptManagementReviewCompleteNotification implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(ManuscriptManagementReviewComplete $event)
+    public function handle(ManuscriptManagementReviewComplete $event): void
     {
         Mail::queue(new MailManuscriptManagementReviewComplete($event->manuscriptRecord));
     }

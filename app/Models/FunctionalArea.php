@@ -36,6 +36,6 @@ class FunctionalArea extends Model
      */
     public function manuscriptRecords(): HasMany
     {
-        return $this->hasMany('App\Models\ManuscriptRecord');
+        return $this->hasMany(\App\Models\ManuscriptRecord::class);
     }
 }

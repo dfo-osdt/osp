@@ -14,7 +14,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 
-test('an authenticated user can create a new manuscript', function () {
+test('an authenticated user can create a new manuscript', function (): void {
     $user = User::factory()->create();
 
     // expected data once created
@@ -22,7 +22,7 @@ test('an authenticated user can create a new manuscript', function () {
         'type' => ManuscriptRecordType::PRIMARY->value,
         'status' => ManuscriptRecordStatus::DRAFT->value,
         'title' => 'My manuscript working title',
-        'region_id' => rand(1, 8),
+        'region_id' => random_int(1, 8),
         'user_id' => $user->id,
     ]);
 
@@ -37,7 +37,7 @@ test('an authenticated user can create a new manuscript', function () {
     expect(ManuscriptRecord::find($response->json('data.id')))->toMatchArray($manuscript_data->toArray());
 });
 
-test('an authenticator user can see the manuscript for which they are an author', function () {
+test('an authenticator user can see the manuscript for which they are an author', function (): void {
     $author = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(2))->create();
     // add the author to the manuscript
@@ -51,7 +51,7 @@ test('an authenticator user can see the manuscript for which they are an author'
     expect($response->json('data.id'))->toBe($manuscript->id);
 });
 
-test('a user can save a draft manuscript', function () {
+test('a user can save a draft manuscript', function (): void {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
 
@@ -86,7 +86,7 @@ test('a user can save a draft manuscript', function () {
     $manuscript->delete();
 });
 
-test('a user can attach and download a pdf version of their manuscript to a manuscript record', function () {
+test('a user can attach and download a pdf version of their manuscript to a manuscript record', function (): void {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
 
@@ -95,22 +95,22 @@ test('a user can attach and download a pdf version of their manuscript to a manu
     expect($response->json('data'))->toBeEmpty();
 
     // fake pdf
-    $fakePdfContent = <<<'PDF'
-%PDF-1.4
-1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
-2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
-3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
-xref
-0 4
-0000000000 65535 f
-0000000009 00000 n
-0000000052 00000 n
-0000000101 00000 n
-trailer<</Size 4/Root 1 0 R>>
-startxref
-178
-%%EOF
-PDF;
+    $fakePdfContent = <<<'PDF_WRAP'
+    %PDF-1.4
+    1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+    2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
+    3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
+    xref
+    0 4
+    0000000000 65535 f
+    0000000009 00000 n
+    0000000052 00000 n
+    0000000101 00000 n
+    trailer<</Size 4/Root 1 0 R>>
+    startxref
+    178
+    %%EOF
+    PDF_WRAP;
 
     // upload pdf
     $kbLimit = config('media-library.max_file_size') / 1024;
@@ -163,7 +163,7 @@ PDF;
     expect($response->json('data'))->toHaveCount(2);
 });
 
-test('a user cannot submit a manuscript record that does not have all mandatory fields for internal review', function () {
+test('a user cannot submit a manuscript record that does not have all mandatory fields for internal review', function (): void {
     $manuscript = ManuscriptRecord::factory()->create();
 
     $reviewerUser = User::factory()->create();
@@ -177,7 +177,7 @@ test('a user cannot submit a manuscript record that does not have all mandatory 
     expect($response->json('errors'))->toHaveKeys(['abstract', 'manuscript_authors', 'manuscript_pdf']);
 });
 
-test('a user cannot submit a filled manuscript record to himself or an author of the manuscript', function () {
+test('a user cannot submit a filled manuscript record to himself or an author of the manuscript', function (): void {
     $manuscript = ManuscriptRecord::factory()->filled()->create();
 
     $author = $manuscript->manuscriptAuthors()->first()->author;
@@ -198,7 +198,7 @@ test('a user cannot submit a filled manuscript record to himself or an author of
     $response = $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/submit-for-review", $data)->assertStatus(422);
 });
 
-test('a user can submit a filled manuscript record', function () {
+test('a user can submit a filled manuscript record', function (): void {
     Mail::fake();
 
     $radomUser = User::factory()->create();
@@ -239,7 +239,7 @@ test('a user can submit a filled manuscript record', function () {
     expect($manuscript->managementReviewSteps()->first()->status)->toBe(ManagementReviewStepStatus::PENDING);
 });
 
-test('a MRF author can edit and submit a filled manuscript record', function () {
+test('a MRF author can edit and submit a filled manuscript record', function (): void {
     Mail::fake();
 
     $radomUser = User::factory()->create();
@@ -293,7 +293,7 @@ test('a MRF author can edit and submit a filled manuscript record', function () 
     expect($manuscript->managementReviewSteps()->first()->status)->toBe(ManagementReviewStepStatus::PENDING);
 });
 
-test('a user can withdraw a manuscript record', function () {
+test('a user can withdraw a manuscript record', function (): void {
     Event::fake();
 
     $manuscript = ManuscriptRecord::factory()->reviewed()->create();
@@ -313,7 +313,7 @@ test('a user can withdraw a manuscript record', function () {
     expect($response->json('data.withdraw_reason'))->toBe('cannot publish');
 });
 
-test('a user cannot withdraw a manuscript record that was accepted', function () {
+test('a user cannot withdraw a manuscript record that was accepted', function (): void {
     $manuscript = ManuscriptRecord::factory()->filled()->create();
     $manuscript->status = ManuscriptRecordStatus::ACCEPTED;
     $manuscript->save();
@@ -321,7 +321,7 @@ test('a user cannot withdraw a manuscript record that was accepted', function ()
     $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/withdraw")->assertForbidden();
 });
 
-test('a user can mark their manuscript as submitted', function () {
+test('a user can mark their manuscript as submitted', function (): void {
     Event::fake();
 
     // manuscript must be reviewed
@@ -341,7 +341,7 @@ test('a user can mark their manuscript as submitted', function () {
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::SUBMITTED);
 });
 
-test('a user cannot submit their manuscript for review if they do not want an OGL but have provide no explanation', function () {
+test('a user cannot submit their manuscript for review if they do not want an OGL but have provide no explanation', function (): void {
     $manuscript = ManuscriptRecord::factory()->filled()->create([
         'apply_ogl' => false,
     ]);
@@ -358,7 +358,7 @@ test('a user cannot submit their manuscript for review if they do not want an OG
     ])->assertOk();
 });
 
-test('a user can mark their manuscript as accepted', function () {
+test('a user can mark their manuscript as accepted', function (): void {
     // create a manuscript that has been submitted
     $manuscript = ManuscriptRecord::factory()->filled()->create([
         'status' => ManuscriptRecordStatus::SUBMITTED,
@@ -379,7 +379,7 @@ test('a user can mark their manuscript as accepted', function () {
     expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
 });
 
-test('a user can submit their manuscript to the science pub team', function () {
+test('a user can submit their manuscript to the science pub team', function (): void {
     // create a manuscript that has been submitted
     $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
     $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
@@ -401,7 +401,7 @@ test('a user can submit their manuscript to the science pub team', function () {
     expect($manuscript->publication->getMedia(MediaCollection::SUPPLEMENTARY_FILE->value)->first()->file_name)->toBe('test.docx');
 });
 
-test('a user can delete their manuscript record if it is a draft', function () {
+test('a user can delete their manuscript record if it is a draft', function (): void {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $user->id]);
 
@@ -437,7 +437,7 @@ test('a user can delete their manuscript record if it is a draft', function () {
     expect(ManuscriptRecord::find($manuscript->id))->not->toBeNull();
 });
 
-test('an authenticated user can get manuscript metadata', function () {
+test('an authenticated user can get manuscript metadata', function (): void {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create();
 
@@ -450,7 +450,7 @@ test('an authenticated user can get manuscript metadata', function () {
     expect($response->json('can.delete'))->toBe(false);
 });
 
-test('a user can mark a reviewed preprint manuscript as accepted', function () {
+test('a user can mark a reviewed preprint manuscript as accepted', function (): void {
 
     $manuscript = ManuscriptRecord::factory()->reviewed()->create();
     $manuscript->type = ManuscriptRecordType::PREPRINT;
@@ -485,7 +485,7 @@ test('a user can mark a reviewed preprint manuscript as accepted', function () {
 
 });
 
-test('a user can clone a manuscript record', function () {
+test('a user can clone a manuscript record', function (): void {
 
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $user->id]);

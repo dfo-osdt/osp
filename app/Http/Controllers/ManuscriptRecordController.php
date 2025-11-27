@@ -62,7 +62,7 @@ class ManuscriptRecordController extends Controller
             }
         }
 
-        if (! $hasGlobalPermission && empty($allowedRegionIds)) {
+        if (! $hasGlobalPermission && $allowedRegionIds === []) {
             abort(403, 'Insufficient permissions to view manuscript records');
         }
 
@@ -73,9 +73,9 @@ class ManuscriptRecordController extends Controller
                 ],
                 'region', 'shareables', 'managementReviewSteps.user']);
 
-        if ($hasGlobalPermission && ! empty($allowedRegionIds)) {
+        if ($hasGlobalPermission && $allowedRegionIds !== []) {
             // Both global AND regional - union of access
-            $baseQuery->where(function ($query) use ($allowedRegionIds) {
+            $baseQuery->where(function ($query) use ($allowedRegionIds): void {
                 $query->where('status', '!=', ManuscriptRecordStatus::DRAFT)
                     ->orWhereIn('region_id', $allowedRegionIds);
             });
@@ -183,7 +183,7 @@ class ManuscriptRecordController extends Controller
             ],
         ]);
 
-        DB::transaction(function () use ($manuscriptRecord, $validated) {
+        DB::transaction(function () use ($manuscriptRecord, $validated): void {
 
             // validate that the record has all the required fields
             $manuscriptRecord->validateIsFilled();

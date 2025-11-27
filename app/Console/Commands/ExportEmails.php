@@ -281,7 +281,7 @@ class ExportEmails extends Command
     }
 
     /** Helper that exports the file */
-    private function exportFile($fileName, $content)
+    private function exportFile(string $fileName, $content): void
     {
         $outputPath = $this->option('output');
         $outputFile = $outputPath.'/'.$fileName;

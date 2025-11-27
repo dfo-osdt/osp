@@ -6,7 +6,7 @@ use App\Models\ManuscriptPeerReviewer;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 
-test('an user can list the peer reviewer to their secondary manuscript', function () {
+test('an user can list the peer reviewer to their secondary manuscript', function (): void {
 
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->secondary()->create(['user_id' => $user->id]);
@@ -21,7 +21,7 @@ test('an user can list the peer reviewer to their secondary manuscript', functio
     expect($response->json('data'))->toHaveCount(2);
 });
 
-test('a user can add a peer reviewer to their secondary manuscript', function () {
+test('a user can add a peer reviewer to their secondary manuscript', function (): void {
 
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->secondary()->create(['user_id' => $user->id]);
@@ -40,7 +40,7 @@ test('a user can add a peer reviewer to their secondary manuscript', function ()
     expect($manuscript->peerReviewers()->count())->toBe(1);
 });
 
-test('a user cannot add a peer reviewer to their primary manuscript', function () {
+test('a user cannot add a peer reviewer to their primary manuscript', function (): void {
 
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
@@ -55,7 +55,7 @@ test('a user cannot add a peer reviewer to their primary manuscript', function (
     $response->assertStatus(422);
 });
 
-test('a user can remove a peer reviewer from their secondary manuscript', function () {
+test('a user can remove a peer reviewer from their secondary manuscript', function (): void {
 
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->secondary()->create(['user_id' => $user->id]);
@@ -70,7 +70,7 @@ test('a user can remove a peer reviewer from their secondary manuscript', functi
     expect($manuscript->peerReviewers()->count())->toBe(0);
 });
 
-test('a user cannot change the peer reviewer if they can only view the manuscript', function () {
+test('a user cannot change the peer reviewer if they can only view the manuscript', function (): void {
 
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->secondary()->in_review()->create(['user_id' => $user->id]);
@@ -92,7 +92,7 @@ test('a user cannot change the peer reviewer if they can only view the manuscrip
     $response = $this->actingAs($manuscript->managementReviewSteps()->first()->user)->postJson('api/manuscript-records/'.$manuscript->id.'/peer-reviewers', $data);
 });
 
-test('a user cannot add a peer reviwer that already exists or that is on the list of manuscript authors', function () {
+test('a user cannot add a peer reviwer that already exists or that is on the list of manuscript authors', function (): void {
 
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->secondary()->create(['user_id' => $user->id]);
@@ -108,7 +108,7 @@ test('a user cannot add a peer reviwer that already exists or that is on the lis
     $response->assertStatus(422);
 });
 
-test('a user cannot add a peer reviewer to a manuscript twice', function () {
+test('a user cannot add a peer reviewer to a manuscript twice', function (): void {
 
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->secondary()->create(['user_id' => $user->id]);
