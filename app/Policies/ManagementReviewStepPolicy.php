@@ -15,8 +15,6 @@ class ManagementReviewStepPolicy
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, ManagementReviewStep $managementReviewStep)
     {
@@ -26,8 +24,6 @@ class ManagementReviewStepPolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user): bool
     {
@@ -36,8 +32,6 @@ class ManagementReviewStepPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, ManagementReviewStep $managementReviewStep)
     {
@@ -93,8 +87,6 @@ class ManagementReviewStepPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, ManagementReviewStep $managementReviewStep): bool
     {
@@ -103,8 +95,6 @@ class ManagementReviewStepPolicy
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, ManagementReviewStep $managementReviewStep): bool
     {
@@ -113,8 +103,6 @@ class ManagementReviewStepPolicy
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, ManagementReviewStep $managementReviewStep): bool
     {
