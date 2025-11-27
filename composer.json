@@ -115,7 +115,8 @@
       "@test:lint",
       "@test:types",
       "@test:lint:ts",
-      "@test:feature"
+      "@test:feature",
+      "@test:refactor"
     ]
   },
   "extra": {
