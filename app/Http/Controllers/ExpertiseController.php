@@ -27,7 +27,7 @@ class ExpertiseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         //
     }
@@ -35,7 +35,7 @@ class ExpertiseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Expertise $expertise)
+    public function show(Expertise $expertise): void
     {
         //
     }
@@ -43,7 +43,7 @@ class ExpertiseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Expertise $expertise)
+    public function update(Request $request, Expertise $expertise): void
     {
         //
     }
@@ -51,7 +51,7 @@ class ExpertiseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Expertise $expertise)
+    public function destroy(Expertise $expertise): void
     {
         //
     }

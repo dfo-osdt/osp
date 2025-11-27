@@ -42,8 +42,8 @@ class FundingSourceResource extends JsonResource
     private function fundableType(string $type): string
     {
         return match ($type) {
-            'App\Models\ManuscriptRecord' => 'manuscript-records',
-            'App\Models\Publication' => 'publications',
+            \App\Models\ManuscriptRecord::class => 'manuscript-records',
+            \App\Models\Publication::class => 'publications',
             default => throw new Exception('Unknown fundable type: '.$type),
         };
     }

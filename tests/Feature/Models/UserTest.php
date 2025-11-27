@@ -3,7 +3,7 @@
 use App\Enums\Permissions\UserRole;
 use App\Models\User;
 
-test('an authenticated user can search through the users', function () {
+test('an authenticated user can search through the users', function (): void {
     User::factory()->count(20)->create();
 
     $user = User::find(1);
@@ -14,7 +14,7 @@ test('an authenticated user can search through the users', function () {
     expect($response->json('meta.total'))->toBe(User::count());
 });
 
-test('a user can view their profile and profile has author relationship', function () {
+test('a user can view their profile and profile has author relationship', function (): void {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->getJson('api/users/'.$user->id)->assertOk();
@@ -22,7 +22,7 @@ test('a user can view their profile and profile has author relationship', functi
     expect($response->json('data'))->toHaveKeys(['id', 'first_name', 'last_name', 'email', 'author', 'locale']);
 });
 
-test('a user can update their profile', function () {
+test('a user can update their profile', function (): void {
     $user = User::factory()->create();
     $user2 = User::factory()->create();
 
@@ -41,7 +41,7 @@ test('a user can update their profile', function () {
     expect($response->json('data.author.data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->toArray());
 });
 
-test('a user can see their authentication history', function () {
+test('a user can see their authentication history', function (): void {
     $user = User::factory()->create();
 
     // login and log out the user, this should create an authentication record
@@ -59,7 +59,7 @@ test('a user can see their authentication history', function () {
     expect($response->json('data'))->toHaveCount(1);
 });
 
-test('a user can get their authenticated user resource', function () {
+test('a user can get their authenticated user resource', function (): void {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->getJson('api/user')->assertOk();
@@ -67,7 +67,7 @@ test('a user can get their authenticated user resource', function () {
     expect($response->json('data'))->toHaveKeys(['id', 'first_name', 'last_name', 'email', 'author', 'roles', 'permissions'])->toHaveKey('id', $user->id);
 });
 
-test('isRegionalEditor returns true for all regional editor roles', function () {
+test('isRegionalEditor returns true for all regional editor roles', function (): void {
     $regionalRoles = [
         UserRole::NFL_EDITOR,
         UserRole::MAR_EDITOR,
@@ -87,7 +87,7 @@ test('isRegionalEditor returns true for all regional editor roles', function () 
     }
 });
 
-test('isRegionalEditor returns false for non-regional roles', function () {
+test('isRegionalEditor returns false for non-regional roles', function (): void {
     $nonRegionalRoles = [
         UserRole::ADMIN,
         UserRole::AUTHOR,
@@ -104,7 +104,7 @@ test('isRegionalEditor returns false for non-regional roles', function () {
     }
 });
 
-test('isRegionalEditor returns false for user with no roles', function () {
+test('isRegionalEditor returns false for user with no roles', function (): void {
     $user = User::factory()->create();
 
     expect($user->isRegionalEditor())->toBeFalse();

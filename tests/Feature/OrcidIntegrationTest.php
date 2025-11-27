@@ -3,7 +3,7 @@
 use App\Http\Integrations\Orcid\Enums\ORCIDAuthScope;
 use App\Models\User;
 
-test('check OpenID redirect works', function () {
+test('check OpenID redirect works', function (): void {
     $user = User::factory()->create();
 
     // use our own environment variables - these should match

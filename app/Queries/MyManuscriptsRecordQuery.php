@@ -8,7 +8,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class MyManuscriptsRecordQuery extends QueryBuilder
 {
-    public function __construct($request, $baseQuery = null)
+    public function __construct(?\Illuminate\Http\Request $request, $baseQuery = null)
     {
         parent::__construct($baseQuery ?? ManuscriptRecord::query(), $request);
 

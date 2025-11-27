@@ -70,20 +70,20 @@ class PublicationAuthor extends Model
      */
     public function publication(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Publication');
+        return $this->belongsTo(\App\Models\Publication::class);
     }
 
     /** Organization
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this> */
     public function organization(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Organization');
+        return $this->belongsTo(\App\Models\Organization::class);
     }
 
     /** Author
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Author, $this> */
     public function author(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Author');
+        return $this->belongsTo(\App\Models\Author::class);
     }
 }

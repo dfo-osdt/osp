@@ -18,7 +18,7 @@ class GetActivityRequest extends Request
         protected string $putcode,
         protected ActivitiesScopeEndpoint $endpoint = ActivitiesScopeEndpoint::EMPLOYMENT
     ) {
-        if (empty($putcode)) {
+        if ($putcode === '' || $putcode === '0') {
             throw new OrcidIntegrationException('Putcode is required for this request');
         }
     }

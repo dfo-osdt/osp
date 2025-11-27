@@ -8,7 +8,7 @@ use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Support\Facades\Mail;
 use Thunk\Verbs\Facades\Verbs;
 
-test('a flagged manuscript that is accepted to a journal triggers an event', function () {
+test('a flagged manuscript that is accepted to a journal triggers an event', function (): void {
 
     Verbs::fake();
     Mail::fake();
@@ -48,7 +48,7 @@ test('a flagged manuscript that is accepted to a journal triggers an event', fun
 
 });
 
-test('a flagged manuscript that is posted on a preprint server triggers an event', function () {
+test('a flagged manuscript that is posted on a preprint server triggers an event', function (): void {
 
     Mail::fake();
     Verbs::fake();

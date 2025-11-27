@@ -81,16 +81,16 @@ class UserResource extends Resource
                         Toggle::make('active')
                             ->label('Activate User')
                             ->dehydrated(false)
-                            ->hidden(fn ($record) => $record && ! $record->email_verified_at)
+                            ->hidden(fn ($record): bool => $record && ! $record->email_verified_at)
                             ->onColor('success'),
                         Actions::make([
                             Action::make('reset_password')
                                 ->label('Send Password Reset Email')
-                                ->disabled(fn () => config('osp.azure.enable_auth', false) || ! request()->routeIs('filament.librarium.resources.users.edit'))
+                                ->disabled(fn (): bool => config('osp.azure.enable_auth', false) || ! request()->routeIs('filament.librarium.resources.users.edit'))
                                 ->action('sendPasswordReset'),
                             Action::make('verify_email')
                                 ->label('Activate User & Verify Email')
-                                ->disabled(fn ($record) => isset($record->email_verified_at) || ! request()->routeIs('filament.librarium.resources.users.edit'))
+                                ->disabled(fn ($record): bool => isset($record->email_verified_at) || ! request()->routeIs('filament.librarium.resources.users.edit'))
                                 ->action('setVerifiedEmail'),
                         ]),
                     ]),
@@ -112,8 +112,8 @@ class UserResource extends Resource
                 IconColumn::make('email_verified_at')
                     ->label('Email Verified')
                     ->default('heroicon-o-x-circle')
-                    ->icon(fn ($state) => $state instanceof DateTime ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
-                    ->color(fn ($state) => $state instanceof DateTime ? 'success' : 'danger')
+                    ->icon(fn ($state): string => $state instanceof DateTime ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
+                    ->color(fn ($state): string => $state instanceof DateTime ? 'success' : 'danger')
                     ->sortable(),
                 IconColumn::make('active')
                     ->boolean()

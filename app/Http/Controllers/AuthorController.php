@@ -64,7 +64,7 @@ class AuthorController extends Controller
         $includes = collect(
             [
                 'organization',
-                'expertises' => function ($query) {
+                'expertises' => function ($query): void {
                     $query->orderBy('name_en');
                 },
             ]

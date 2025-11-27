@@ -19,7 +19,7 @@ class DeleteEmploymentRequest extends Request
     public function __construct(protected readonly int $putCode)
     {
 
-        if (empty($this->putCode)) {
+        if ($this->putCode === 0) {
             throw new OrcidIntegrationException('Putcode is required for this request');
         }
     }

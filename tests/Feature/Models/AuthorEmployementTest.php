@@ -5,7 +5,7 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Queue;
 
-test('a user can list their author profile employements', function () {
+test('a user can list their author profile employements', function (): void {
     $user = User::factory()->create();
     $employments = AuthorEmployment::factory()->count(2)->create([
         'author_id' => $user->author->id,
@@ -22,7 +22,7 @@ test('a user can list their author profile employements', function () {
 
 });
 
-test('a user can see a single profile employement', function () {
+test('a user can see a single profile employement', function (): void {
     $user = User::factory()->create();
     $employment = AuthorEmployment::factory()->create([
         'author_id' => $user->author->id,
@@ -39,7 +39,7 @@ test('a user can see a single profile employement', function () {
 
 });
 
-test('a user can create a new author employment record', function () {
+test('a user can create a new author employment record', function (): void {
 
     // mock queue to ensure job dispatched
     Queue::fake();
@@ -71,7 +71,7 @@ test('a user can create a new author employment record', function () {
 
 });
 
-test('a user can update an author employment record', function () {
+test('a user can update an author employment record', function (): void {
 
     Queue::fake();
 
@@ -103,7 +103,7 @@ test('a user can update an author employment record', function () {
 
 });
 
-test('a user can delete an author employment record', function () {
+test('a user can delete an author employment record', function (): void {
 
     Queue::fake();
     $user = User::factory()->create();
@@ -121,7 +121,7 @@ test('a user can delete an author employment record', function () {
 
 });
 
-test('adding a 75 char role title is valid', function () {
+test('adding a 75 char role title is valid', function (): void {
     $user = User::factory()->create();
     $employment = AuthorEmployment::factory()->create([
         'author_id' => $user->author->id,

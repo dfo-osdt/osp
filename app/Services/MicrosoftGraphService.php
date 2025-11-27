@@ -48,13 +48,8 @@ class MicrosoftGraphService
         $params->filter .= " and startswith(mail, '{$needle}')";
         $params->count = true;
         $config->queryParameters = $params;
-        try {
-            $users = $this->client->users()->get($config)->wait();
-
-            return $users->getValue();
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        $users = $this->client->users()->get($config)->wait();
+        return $users->getValue();
 
     }
 }

@@ -12,10 +12,8 @@ class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,7 +23,7 @@ class ChangePasswordRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'current_password' => ['current_password'],
@@ -36,7 +34,7 @@ class ChangePasswordRequest extends FormRequest
     /**
      * Update the password of the user
      */
-    public function updatePassword()
+    public function updatePassword(): void
     {
         $this->user()->forceFill([
             'password' => Hash::make($this->password),

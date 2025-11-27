@@ -16,7 +16,7 @@ class ManuscriptAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return false;
     }
@@ -36,7 +36,7 @@ class ManuscriptAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -66,7 +66,7 @@ class ManuscriptAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, ManuscriptAuthor $manuscriptAuthor)
+    public function restore(User $user, ManuscriptAuthor $manuscriptAuthor): bool
     {
         return false;
     }
@@ -76,7 +76,7 @@ class ManuscriptAuthorPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, ManuscriptAuthor $manuscriptAuthor)
+    public function forceDelete(User $user, ManuscriptAuthor $manuscriptAuthor): bool
     {
         return false;
     }

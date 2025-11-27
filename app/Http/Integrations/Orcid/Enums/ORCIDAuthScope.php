@@ -53,7 +53,7 @@ enum ORCIDAuthScope: string
      */
     public static function encode(array $scopes): string
     {
-        $scopes = array_map(fn ($scope) => $scope->value, $scopes);
+        $scopes = array_map(fn (\App\Http\Integrations\Orcid\Enums\ORCIDAuthScope $scope) => $scope->value, $scopes);
 
         return implode('%20', $scopes);
     }
@@ -81,6 +81,6 @@ enum ORCIDAuthScope: string
     {
         $scopes = explode(' ', $scopes);
 
-        return array_map(fn ($scope) => self::fromString($scope), $scopes);
+        return array_map(self::fromString(...), $scopes);
     }
 }

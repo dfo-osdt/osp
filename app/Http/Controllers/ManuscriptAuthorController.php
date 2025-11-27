@@ -43,9 +43,7 @@ class ManuscriptAuthorController extends Controller
                 'required',
                 'integer',
                 'exists:authors,id',
-                Rule::unique('manuscript_authors')->where(function ($query) use ($manuscriptRecord) {
-                    return $query->where('manuscript_record_id', $manuscriptRecord->id);
-                }),
+                Rule::unique('manuscript_authors')->where(fn($query) => $query->where('manuscript_record_id', $manuscriptRecord->id)),
             ],
             'is_corresponding_author' => 'boolean',
         ]);

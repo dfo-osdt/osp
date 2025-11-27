@@ -39,7 +39,7 @@ class PublicationFileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Publication $publication)
+    public function store(Request $request, Publication $publication): \App\Http\Resources\MediaResource
     {
         Gate::authorize('update', $publication);
 
@@ -105,9 +105,9 @@ class PublicationFileController extends Controller
 
         try {
             $publication->deletePublicationFile($uuid);
-        } catch (FileNotFoundException $e) {
+        } catch (FileNotFoundException) {
             throw new NotFoundHttpException('File not found.');
-        } catch (Exception $e) {
+        } catch (Exception) {
             return response()->json([
                 'message' => 'This file is locked.',
             ], 403);

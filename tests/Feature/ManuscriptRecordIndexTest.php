@@ -8,12 +8,12 @@ use App\Models\Region;
 use App\Models\User;
 
 // Authorization Tests
-test('unauthenticated users cannot access manuscript index', function () {
+test('unauthenticated users cannot access manuscript index', function (): void {
     $response = $this->getJson('/api/manuscript-records');
     $response->assertUnauthorized();
 });
 
-test('users without system permissions get 403 forbidden', function () {
+test('users without system permissions get 403 forbidden', function (): void {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->getJson('/api/manuscript-records');
@@ -21,7 +21,7 @@ test('users without system permissions get 403 forbidden', function () {
 });
 
 // Global Permission Tests
-test('users with VIEW_ANY_MANUSCRIPT_RECORD see all non-draft manuscripts', function () {
+test('users with VIEW_ANY_MANUSCRIPT_RECORD see all non-draft manuscripts', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     // Create manuscripts with different statuses
@@ -40,7 +40,7 @@ test('users with VIEW_ANY_MANUSCRIPT_RECORD see all non-draft manuscripts', func
     expect($statuses)->not->toContain(ManuscriptRecordStatus::DRAFT->value);
 });
 
-test('global permission users cannot see draft manuscripts', function () {
+test('global permission users cannot see draft manuscripts', function (): void {
     $user = User::factory()->withRoles([UserRole::EDITOR])->create();
 
     ManuscriptRecord::factory()->count(3)->create(['status' => ManuscriptRecordStatus::DRAFT]);
@@ -53,7 +53,7 @@ test('global permission users cannot see draft manuscripts', function () {
 });
 
 // Regional Permission Tests
-test('NFL editor can see all manuscripts from NFL region including drafts', function () {
+test('NFL editor can see all manuscripts from NFL region including drafts', function (): void {
     $user = User::factory()->withRoles([UserRole::NFL_EDITOR])->create();
 
     $nflRegion = Region::where('slug', 'nfl')->first();
@@ -85,7 +85,7 @@ test('NFL editor can see all manuscripts from NFL region including drafts', func
     expect($regionIds)->toBe([$nflRegion->id]);
 });
 
-test('regional editors cannot see manuscripts from other regions', function () {
+test('regional editors cannot see manuscripts from other regions', function (): void {
     $user = User::factory()->withRoles([UserRole::MAR_EDITOR])->create();
 
     $nflRegion = Region::where('slug', 'nfl')->first();
@@ -101,7 +101,7 @@ test('regional editors cannot see manuscripts from other regions', function () {
     expect($response->json('data'))->toHaveCount(3); // Only MAR manuscripts
 });
 
-test('regional editors see drafts from their region but not others', function () {
+test('regional editors see drafts from their region but not others', function (): void {
     $user = User::factory()->withRoles([UserRole::GLF_EDITOR])->create();
 
     $glfRegion = Region::where('slug', 'glf')->first();
@@ -126,12 +126,12 @@ test('regional editors see drafts from their region but not others', function ()
 
     // Verify all are GLF region and draft status
     $manuscripts = collect($response->json('data'));
-    expect($manuscripts->every(fn ($ms) => $ms['data']['region_id'] === $glfRegion->id))->toBeTrue();
-    expect($manuscripts->every(fn ($ms) => $ms['data']['status'] === ManuscriptRecordStatus::DRAFT->value))->toBeTrue();
+    expect($manuscripts->every(fn ($ms): bool => $ms['data']['region_id'] === $glfRegion->id))->toBeTrue();
+    expect($manuscripts->every(fn ($ms): bool => $ms['data']['status'] === ManuscriptRecordStatus::DRAFT->value))->toBeTrue();
 });
 
 // Multi-Regional Permission Tests
-test('user with multiple regional permissions sees manuscripts from all assigned regions', function () {
+test('user with multiple regional permissions sees manuscripts from all assigned regions', function (): void {
     // Create user with both NFL and MAR editor roles
     $user = User::factory()->create();
     $user->assignRole([UserRole::NFL_EDITOR, UserRole::MAR_EDITOR]);
@@ -156,7 +156,7 @@ test('user with multiple regional permissions sees manuscripts from all assigned
 });
 
 // Combined Permission Tests
-test('user with global AND regional permissions sees union of both access patterns', function () {
+test('user with global AND regional permissions sees union of both access patterns', function (): void {
     // Create user with both global and regional permissions
     $user = User::factory()->create();
     $user->assignRole([UserRole::EDITOR, UserRole::ONP_EDITOR]); // Global + Regional
@@ -187,7 +187,7 @@ test('user with global AND regional permissions sees union of both access patter
 });
 
 // Filtering and Sorting Tests
-test('manuscripts can be filtered by status', function () {
+test('manuscripts can be filtered by status', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     ManuscriptRecord::factory()->count(2)->create(['status' => ManuscriptRecordStatus::IN_REVIEW]);
@@ -199,7 +199,7 @@ test('manuscripts can be filtered by status', function () {
     expect($response->json('data'))->toHaveCount(2);
 });
 
-test('manuscripts can be filtered by type', function () {
+test('manuscripts can be filtered by type', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     ManuscriptRecord::factory()->count(2)->create([
@@ -217,7 +217,7 @@ test('manuscripts can be filtered by type', function () {
     expect($response->json('data'))->toHaveCount(2);
 });
 
-test('manuscripts can be filtered by region_id', function () {
+test('manuscripts can be filtered by region_id', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     $nflRegion = Region::where('slug', 'nfl')->first();
@@ -238,7 +238,7 @@ test('manuscripts can be filtered by region_id', function () {
     expect($response->json('data'))->toHaveCount(2);
 });
 
-test('manuscripts can be sorted by title', function () {
+test('manuscripts can be sorted by title', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     ManuscriptRecord::factory()->create([
@@ -257,7 +257,7 @@ test('manuscripts can be sorted by title', function () {
     expect($titles)->toBe(['Alpha Study', 'Zebra Research']);
 });
 
-test('manuscripts can be sorted by created_at descending', function () {
+test('manuscripts can be sorted by created_at descending', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     // Create manuscripts with known timestamps
@@ -277,7 +277,7 @@ test('manuscripts can be sorted by created_at descending', function () {
     expect($ids)->toBe([$newer->id, $older->id]); // Newer first
 });
 
-test('manuscripts support partial text search on title', function () {
+test('manuscripts support partial text search on title', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     ManuscriptRecord::factory()->create([
@@ -297,7 +297,7 @@ test('manuscripts support partial text search on title', function () {
 });
 
 // Pagination Tests
-test('manuscripts respect default pagination limit', function () {
+test('manuscripts respect default pagination limit', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     // Create more manuscripts than the default limit
@@ -312,7 +312,7 @@ test('manuscripts respect default pagination limit', function () {
     expect($response->json('meta.total'))->toBe(15);
 });
 
-test('manuscripts respect custom limit parameter', function () {
+test('manuscripts respect custom limit parameter', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     ManuscriptRecord::factory()->count(25)->create(['status' => ManuscriptRecordStatus::IN_REVIEW]);
@@ -324,7 +324,7 @@ test('manuscripts respect custom limit parameter', function () {
     expect($response->json('meta.per_page'))->toBe(15);
 });
 
-test('manuscript pagination works with filtering', function () {
+test('manuscript pagination works with filtering', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     ManuscriptRecord::factory()->count(15)->create(['status' => ManuscriptRecordStatus::IN_REVIEW]);
@@ -338,7 +338,7 @@ test('manuscript pagination works with filtering', function () {
 });
 
 // Data Integrity Tests
-test('response includes proper relationships', function () {
+test('response includes proper relationships', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     $manuscript = ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::IN_REVIEW]);
@@ -352,7 +352,7 @@ test('response includes proper relationships', function () {
     expect($data)->toHaveKeys(['user', 'region']);
 });
 
-test('response structure matches ManuscriptRecordResource format', function () {
+test('response structure matches ManuscriptRecordResource format', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
     ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::IN_REVIEW]);
@@ -386,7 +386,7 @@ test('response structure matches ManuscriptRecordResource format', function () {
 });
 
 // Combined Filter and Pagination Test
-test('complex query with multiple filters and pagination works correctly', function () {
+test('complex query with multiple filters and pagination works correctly', function (): void {
     $user = User::factory()->withRoles([UserRole::PAC_EDITOR])->create();
 
     $pacRegion = Region::where('slug', 'pac')->first();

@@ -19,7 +19,7 @@ class ManuscriptRecordPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         // this should stay false as the "draft" MRF should
         // never be seen by "anyone".
@@ -111,11 +111,7 @@ class ManuscriptRecordPolicy
 
                 // Regional editor access
                 $regionSlug = $manuscriptRecord->region->slug ?? null;
-                if ($regionSlug && $user->can("can_edit_{$regionSlug}_mrfs")) {
-                    return true;
-                }
-
-                return false;
+                return $regionSlug && $user->can("can_edit_{$regionSlug}_mrfs");
             default:
                 return false;
         }
@@ -145,7 +141,7 @@ class ManuscriptRecordPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, ManuscriptRecord $manuscriptRecord)
+    public function restore(User $user, ManuscriptRecord $manuscriptRecord): bool
     {
         return false;
     }
@@ -153,7 +149,7 @@ class ManuscriptRecordPolicy
     /**
      * Can the user attach a copy of the manuscript to the record?
      */
-    public function attachManuscript(User $user, ManuscriptRecord $manuscriptRecord)
+    public function attachManuscript(User $user, ManuscriptRecord $manuscriptRecord): ?bool
     {
 
         // cannot attach a manuscript if the manuscript has been accepted to a publication
@@ -174,6 +170,7 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
+        return null;
     }
 
     /**
@@ -215,7 +212,7 @@ class ManuscriptRecordPolicy
     /**
      * A user can mark the manuscript as submitted
      */
-    public function markSubmitted(User $user, ManuscriptRecord $manuscriptRecord)
+    public function markSubmitted(User $user, ManuscriptRecord $manuscriptRecord): ?bool
     {
         // can only mark as submitted if the manuscript is reviewed
         if ($manuscriptRecord->status !== ManuscriptRecordStatus::REVIEWED) {
@@ -233,12 +230,13 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
+        return null;
     }
 
     /**
      * A user can mark the manuscript as accepted
      */
-    public function markAccepted(User $user, ManuscriptRecord $manuscriptRecord)
+    public function markAccepted(User $user, ManuscriptRecord $manuscriptRecord): ?bool
     {
         // can only mark as accepted if the manuscript is reviewed or submitted
         if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED])) {
@@ -255,6 +253,7 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
+        return null;
     }
 
     public function submitToPreprint(User $user, ManuscriptRecord $manuscriptRecord)
@@ -277,11 +276,7 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
             return true;
         }
-        if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
-            return true;
-        }
-
-        return false;
+        return (bool) $manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable();
     }
 
     /**
@@ -296,7 +291,7 @@ class ManuscriptRecordPolicy
         return $user->id === $manuscriptRecord->user_id;
     }
 
-    public function updateMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)
+    public function updateMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media): bool
     {
         return false;
     }

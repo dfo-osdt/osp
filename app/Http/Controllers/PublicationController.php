@@ -97,7 +97,9 @@ class PublicationController extends Controller
                     case PublicationStatus::PUBLISHED->value:
                         Gate::authorize('publish', $publication);
                         $publication->status = PublicationStatus::PUBLISHED;
-                        ! isset($request['accepted_on']) ? $request['accepted_on'] = $publication->accepted_on : null;
+                        if (! isset($request['accepted_on'])) {
+                            $request['accepted_on'] = $publication->accepted_on;
+                        }
                         break;
                     default:
                         // likely, only way we're here is someone is having a go at the API directly.

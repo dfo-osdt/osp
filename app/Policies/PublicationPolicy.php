@@ -21,7 +21,7 @@ class PublicationPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return true;
     }
@@ -103,7 +103,7 @@ class PublicationPolicy
         return false;
     }
 
-    public function updateMedia(User $user, Publication $publication, Media $media)
+    public function updateMedia(User $user, Publication $publication, Media $media): bool
     {
         return false;
     }
@@ -139,17 +139,12 @@ class PublicationPolicy
         if ($regionSlug && $user->can("can_edit_{$regionSlug}_pubs")) {
             return true;
         }
-
         // is the user the owner of the publication
-        if ($user->id === $publication->user_id) {
-            return true;
-        }
-
-        return false;
+        return $user->id === $publication->user_id;
     }
 
     /** Can the user publish this publication */
-    public function publish(User $user, Publication $publication)
+    public function publish(User $user, Publication $publication): bool
     {
 
         $isDfoSeries = $publication->journal->publisher == Journal::$dfoPublisher;
@@ -160,11 +155,7 @@ class PublicationPolicy
 
         // is the user the owner of the publication
         if ($user->id === $publication->user_id) {
-            if ($isDfoSeries) {
-                return false;
-            }
-
-            return true;
+            return !$isDfoSeries;
         }
 
         return false;
@@ -186,13 +177,8 @@ class PublicationPolicy
         if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
             return true;
         }
-
         // is the user the owner of the publication
-        if ($user->id === $publication->user_id) {
-            return true;
-        }
-
-        return false;
+        return $user->id === $publication->user_id;
     }
 
     /**
@@ -200,7 +186,7 @@ class PublicationPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Publication $publication)
+    public function restore(User $user, Publication $publication): bool
     {
         return false;
     }
@@ -210,7 +196,7 @@ class PublicationPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Publication $publication)
+    public function forceDelete(User $user, Publication $publication): bool
     {
         return false;
     }

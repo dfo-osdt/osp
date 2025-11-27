@@ -33,7 +33,7 @@ class ManagementReviewDueMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $overdueCount = $this->reviews->filter(fn ($review) => $review->decision_expected_by < now())->count();
+        $overdueCount = $this->reviews->filter(fn ($review): bool => $review->decision_expected_by < now())->count();
         $dueSoonCount = $this->reviews->count() - $overdueCount;
 
         if ($overdueCount > 0 && $dueSoonCount > 0) {

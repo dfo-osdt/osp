@@ -48,9 +48,9 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
         };
 
         return new Envelope(
-            subject: $title,
             to: [$this->referrer->email],
             cc: [$cc],
+            subject: $title,
         );
     }
 

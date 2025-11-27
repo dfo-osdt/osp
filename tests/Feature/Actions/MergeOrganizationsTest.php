@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('it merges organizations and updates all related records', function () {
+test('it merges organizations and updates all related records', function (): void {
     $sourceOrg = Organization::factory()->create(['name_en' => 'Source Org']);
     $targetOrg = Organization::factory()->create(['name_en' => 'Target Org']);
 
@@ -49,13 +49,13 @@ test('it merges organizations and updates all related records', function () {
     expect(Organization::find($sourceOrg->id))->toBeNull();
 });
 
-test('it throws exception when trying to merge organization with itself', function () {
+test('it throws exception when trying to merge organization with itself', function (): void {
     $organization = Organization::factory()->create();
 
     MergeOrganizations::handle($organization, $organization);
 })->throws(\InvalidArgumentException::class, 'Source and target organizations cannot be the same.');
 
-test('it rolls back on error and preserves data integrity', function () {
+test('it rolls back on error and preserves data integrity', function (): void {
     $sourceOrg = Organization::factory()->create(['name_en' => 'Source Org']);
     $targetOrg = Organization::factory()->create(['name_en' => 'Target Org']);
 
@@ -65,14 +65,14 @@ test('it rolls back on error and preserves data integrity', function () {
 
     try {
         MergeOrganizations::handle($sourceOrg, $targetOrg);
-    } catch (\Exception $e) {
+    } catch (\Exception) {
     }
 
     expect($author->fresh()->organization_id)->toBe($sourceOrg->id);
     expect(Organization::find($sourceOrg->id))->not->toBeNull();
 });
 
-test('it handles organizations with no related records', function () {
+test('it handles organizations with no related records', function (): void {
     $sourceOrg = Organization::factory()->create(['name_en' => 'Empty Source Org']);
     $targetOrg = Organization::factory()->create(['name_en' => 'Target Org']);
 

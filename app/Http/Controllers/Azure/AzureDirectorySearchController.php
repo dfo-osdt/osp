@@ -19,7 +19,7 @@ class AzureDirectorySearchController extends Controller
             'search' => 'required|string|min:3',
         ]);
 
-        $needle = strtolower($validated['search']);
+        $needle = strtolower((string) $validated['search']);
 
         /**
          * Get an instance of the MicrosoftGraphService class using the Laravel service container.
@@ -30,7 +30,7 @@ class AzureDirectorySearchController extends Controller
 
         try {
             $users = $microsoftGraphService->searchForUserByEmail($needle);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return response()->json([
                 'message' => __('An error occurred while searching for users in the directory.'),
             ], 500);

@@ -27,8 +27,8 @@ class ShareableResource extends JsonResource
                 'expires_at' => $this->expires_at,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
-                'user' => $this->whenLoaded('user', fn () => new UserResource($this->user)),
-                'sharingUser' => $this->whenLoaded('sharingUser', fn () => new UserResource($this->sharingUser)),
+                'user' => $this->whenLoaded('user', fn (): \App\Http\Resources\UserResource => new UserResource($this->user)),
+                'sharingUser' => $this->whenLoaded('sharingUser', fn (): \App\Http\Resources\UserResource => new UserResource($this->sharingUser)),
             ],
         ];
     }

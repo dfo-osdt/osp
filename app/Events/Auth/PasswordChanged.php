@@ -27,7 +27,7 @@ class PasswordChanged
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn(): \Illuminate\Broadcasting\PrivateChannel
     {
         return new PrivateChannel('channel-name');
     }

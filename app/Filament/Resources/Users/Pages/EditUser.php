@@ -22,7 +22,7 @@ class EditUser extends EditRecord
     {
         return [
             Action::make('Back')
-                ->url(fn () => UserResource::getUrl('index'))
+                ->url(fn (): string => UserResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];
     }
@@ -41,17 +41,17 @@ class EditUser extends EditRecord
     protected function beforeSave(): void
     {
         // log email change
-        if ($this->record->email != $this->data['email'] and $this->data['email']) {
+        if ($this->record->email != $this->data['email'] && $this->data['email']) {
             $this->logEmailChange();
         }
 
         // log password change
-        if ($this->record->password != $this->data['password'] and $this->data['password']) {
+        if ($this->record->password != $this->data['password'] && $this->data['password']) {
             $this->logPasswordChange();
         }
 
         // Log role change
-        if (count($this->record->getRoleNames()) != count($this->data['roles'])) {
+        if (count($this->record->getRoleNames()) !== count($this->data['roles'])) {
             $this->logRoleChange();
         }
 
@@ -159,7 +159,7 @@ class EditUser extends EditRecord
                 'ip' => request()->ip(),
             ])
             ->event('active.status.changed')
-            ->log("Active status changed for {$this->record['email']} by ".request()->user()->email.': '.(! $this->record['active'] ? 'active' : 'inactive').' -> '.($this->record['active'] ? 'active' : 'inactive'));
+            ->log("Active status changed for {$this->record['email']} by ".request()->user()->email.': '.($this->record['active'] ? 'inactive' : 'active').' -> '.($this->record['active'] ? 'active' : 'inactive'));
     }
 
     /**

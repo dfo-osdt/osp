@@ -16,19 +16,13 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
 {
     use Queueable, SerializesModels;
 
-    public User $user;
-
     public ?ManuscriptRecord $manuscriptRecord = null;
-
-    public PlanningBinderItemState $planningBinderItemState;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, PlanningBinderItemState $planningBinderItemState)
+    public function __construct(public User $user, public PlanningBinderItemState $planningBinderItemState)
     {
-        $this->planningBinderItemState = $planningBinderItemState;
-        $this->user = $user;
         $this->manuscriptRecord = ManuscriptRecord::where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail();
     }
 
@@ -45,9 +39,9 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
         $subject = '[No Action Required] Manuscript Record Flagged for Planning Binder - [Aucune Action Requise] Manuscrit identifié pour le classeur de planification';
 
         return new Envelope(
-            subject: $subject,
             to: [$this->user->email],
-            cc: [$cc]
+            cc: [$cc],
+            subject: $subject
         );
     }
 

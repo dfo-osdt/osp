@@ -31,17 +31,17 @@ class UserManuscriptRecordController extends Controller
          */
         $manuscriptIds = ManuscriptRecord::select('id')
             ->where('user_id', $userId)
-            ->orWhereHas('manuscriptAuthors', function ($q) use ($userId) {
-                $q->whereHas('author', function ($q) use ($userId) {
+            ->orWhereHas('manuscriptAuthors', function ($q) use ($userId): void {
+                $q->whereHas('author', function ($q) use ($userId): void {
                     $q->where('user_id', $userId);
                 });
             })
-            ->orWhereHas('sharedWithUsers', function ($q) use ($userId) {
+            ->orWhereHas('sharedWithUsers', function ($q) use ($userId): void {
                 $q->where('user_id', $userId);
             });
 
         if ($request->get('include-reviews') === 'true') {
-            $manuscriptIds->orWhereHas('managementReviewSteps', function ($q) use ($userId) {
+            $manuscriptIds->orWhereHas('managementReviewSteps', function ($q) use ($userId): void {
                 $q->where('user_id', $userId);
             });
         }

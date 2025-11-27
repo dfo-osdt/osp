@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Mail;
 
 uses(RefreshDatabase::class);
 
-test('it sends notifications on business days', function () {
+test('it sends notifications on business days', function (): void {
     Mail::fake();
 
     // Set to a Monday (business day)
@@ -30,7 +30,7 @@ test('it sends notifications on business days', function () {
     \Carbon\Carbon::setTestNow();
 });
 
-test('it skips notifications on weekends', function () {
+test('it skips notifications on weekends', function (): void {
     Mail::fake();
 
     // Set to a Saturday (non-business day)
@@ -51,7 +51,7 @@ test('it skips notifications on weekends', function () {
     \Carbon\Carbon::setTestNow();
 });
 
-test('it skips notifications on holidays', function () {
+test('it skips notifications on holidays', function (): void {
     Mail::fake();
 
     // Set to Christmas Day (holiday)
@@ -72,7 +72,7 @@ test('it skips notifications on holidays', function () {
     \Carbon\Carbon::setTestNow();
 });
 
-test('it sends notifications on weekends when forced', function () {
+test('it sends notifications on weekends when forced', function (): void {
     Mail::fake();
 
     // Set to a Saturday (non-business day)
@@ -95,7 +95,7 @@ test('it sends notifications on weekends when forced', function () {
     \Carbon\Carbon::setTestNow();
 });
 
-test('it sends notifications on holidays when forced', function () {
+test('it sends notifications on holidays when forced', function (): void {
     Mail::fake();
 
     // Set to Christmas Day (holiday)

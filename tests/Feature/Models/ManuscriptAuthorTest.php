@@ -2,7 +2,7 @@
 
 use App\Models\ManuscriptAuthor;
 
-test('a user can get the manuscript authors associated with a manuscript record', function () {
+test('a user can get the manuscript authors associated with a manuscript record', function (): void {
     $user = \App\Models\User::factory()->create();
     $manuscript = \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->create([
         'user_id' => $user->id,
@@ -23,7 +23,7 @@ test('a user can get the manuscript authors associated with a manuscript record'
     ]);
 });
 
-test('a user can add a new manuscript author to their manuscript record', function () {
+test('a user can add a new manuscript author to their manuscript record', function (): void {
     $user = \App\Models\User::factory()->create();
     $manuscript = \App\Models\ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
@@ -62,7 +62,7 @@ test('a user can add a new manuscript author to their manuscript record', functi
     expect($manuscript->manuscriptAuthors()->count())->toBe(1);
 });
 
-test('a user cannot add the same author twice to a manuscript record', function () {
+test('a user cannot add the same author twice to a manuscript record', function (): void {
     $user = \App\Models\User::factory()->create();
     $manuscript = \App\Models\ManuscriptRecord::factory()->create([
         'user_id' => $user->id,

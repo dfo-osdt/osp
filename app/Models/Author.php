@@ -136,7 +136,7 @@ class Author extends Model
     {
         return Attribute::make(
             get: fn ($value) => $value,
-            set: fn ($value) => strtolower($value),
+            set: fn ($value) => strtolower((string) $value),
         );
     }
 
@@ -166,11 +166,7 @@ class Author extends Model
         if (! $this->orcid_access_token) {
             return false;
         }
-        if ($this->orcid_expires_at < now()) {
-            return false;
-        }
-
-        return true;
+        return $this->orcid_expires_at >= now();
     }
 
     // Relationships
@@ -178,7 +174,7 @@ class Author extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptAuthor, $this> */
     public function manuscriptAuthors(): HasMany
     {
-        return $this->hasMany('App\Models\ManuscriptAuthor');
+        return $this->hasMany(\App\Models\ManuscriptAuthor::class);
     }
 
     public function manuscriptRecords(): BelongsToMany
@@ -190,7 +186,7 @@ class Author extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PublicationAuthor, $this> */
     public function publicationAuthors(): HasMany
     {
-        return $this->hasMany('App\Models\PublicationAuthor');
+        return $this->hasMany(\App\Models\PublicationAuthor::class);
     }
 
     /** Pubslihed publications
@@ -204,7 +200,7 @@ class Author extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this> */
     public function organization(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Organization');
+        return $this->belongsTo(\App\Models\Organization::class);
     }
 
     /**
@@ -212,7 +208,7 @@ class Author extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     /**
@@ -220,7 +216,7 @@ class Author extends Model
      */
     public function employments(): HasMany
     {
-        return $this->hasMany('App\Models\AuthorEmployment');
+        return $this->hasMany(\App\Models\AuthorEmployment::class);
     }
 
     /**
@@ -228,7 +224,7 @@ class Author extends Model
      */
     public function peerReviews(): HasMany
     {
-        return $this->hasMany('App\Models\ManuscriptPeerReviewer');
+        return $this->hasMany(\App\Models\ManuscriptPeerReviewer::class);
     }
 
     public function scopeInternalAuthor(Builder $query): void

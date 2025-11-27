@@ -27,7 +27,7 @@ class SyncExpertises extends Command
     {
         $this->info('Syncing expertises...');
 
-        $result = \App\Actions\Expertise\SyncExpertiseWithScience::handle(function ($message) {
+        $result = \App\Actions\Expertise\SyncExpertiseWithScience::handle(function ($message): void {
             $this->info($message);
         });
 

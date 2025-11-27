@@ -8,7 +8,7 @@ use App\Models\ManuscriptRecord;
 use App\Models\Organization;
 use App\Models\User;
 
-test('an authenticated users can get a list of their manuscripts', function () {
+test('an authenticated users can get a list of their manuscripts', function (): void {
     $manuscripts = ManuscriptRecord::factory()->count(5)->create();
     $user = User::factory()->create();
     $manuscripts = ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(2))->count(5)->count(5)->create(['user_id' => $user->id]);
@@ -20,7 +20,7 @@ test('an authenticated users can get a list of their manuscripts', function () {
     expect($response->json('data.0.data.manuscript_authors'))->toHaveCount(2);
 });
 
-test('an authenticated user can get a list of manuscript without the ones they reviewed', function () {
+test('an authenticated user can get a list of manuscript without the ones they reviewed', function (): void {
     $reviewer = User::factory()->create();
     ManuscriptRecord::factory()->count(2)->create(['user_id' => $reviewer->id]);
     ManagementReviewStep::factory()->count(2)->create(['user_id' => $reviewer->id]);
@@ -32,7 +32,7 @@ test('an authenticated user can get a list of manuscript without the ones they r
     expect($response->json('data'))->toHaveCount(2);
 });
 
-test('a user can see all their manuscript and filter them', function () {
+test('a user can see all their manuscript and filter them', function (): void {
     $user = User::factory()->create();
     // create a manuscript where the user is the applicant
     $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $user->id]);

@@ -21,10 +21,8 @@ class SendManuscriptRecordToReviewNotifications implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(ManuscriptRecordToReviewEvent $event)
+    public function handle(ManuscriptRecordToReviewEvent $event): void
     {
         Mail::queue(new ManuscriptRecordToReviewMail($event->manuscriptRecord, $event->divisionManagerUser));
     }

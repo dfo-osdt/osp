@@ -35,7 +35,7 @@ class GetPersonRequest extends Request
      */
     public function resolveEndpoint(): string
     {
-        if (! empty($this->putcode)) {
+        if ($this->putcode !== '' && $this->putcode !== '0') {
             return $this->endpoint->value.'/'.$this->putcode;
         }
 

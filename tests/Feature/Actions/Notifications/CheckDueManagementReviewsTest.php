@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 uses(RefreshDatabase::class);
 
-test('it sends email for overdue reviews', function () {
+test('it sends email for overdue reviews', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -20,13 +20,11 @@ test('it sends email for overdue reviews', function () {
 
     CheckDueManagementReviews::handle();
 
-    Mail::assertQueued(ManagementReviewDueMail::class, function ($mail) use ($user) {
-        return $mail->user->id === $user->id
-            && $mail->reviews->count() === 1;
-    });
+    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user->id
+        && $mail->reviews->count() === 1);
 });
 
-test('it sends email for due soon reviews', function () {
+test('it sends email for due soon reviews', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -37,13 +35,11 @@ test('it sends email for due soon reviews', function () {
 
     CheckDueManagementReviews::handle();
 
-    Mail::assertQueued(ManagementReviewDueMail::class, function ($mail) use ($user) {
-        return $mail->user->id === $user->id
-            && $mail->reviews->count() === 1;
-    });
+    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user->id
+        && $mail->reviews->count() === 1);
 });
 
-test('it groups reviews by user and sends one email per user', function () {
+test('it groups reviews by user and sends one email per user', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -59,13 +55,11 @@ test('it groups reviews by user and sends one email per user', function () {
     CheckDueManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewDueMail::class, 1);
-    Mail::assertQueued(ManagementReviewDueMail::class, function ($mail) use ($user) {
-        return $mail->user->id === $user->id
-            && $mail->reviews->count() === 2;
-    });
+    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user->id
+        && $mail->reviews->count() === 2);
 });
 
-test('it sends separate emails to different users', function () {
+test('it sends separate emails to different users', function (): void {
     Mail::fake();
 
     $user1 = User::factory()->create();
@@ -83,17 +77,13 @@ test('it sends separate emails to different users', function () {
     CheckDueManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewDueMail::class, 2);
-    Mail::assertQueued(ManagementReviewDueMail::class, function ($mail) use ($user1) {
-        return $mail->user->id === $user1->id
-            && $mail->reviews->count() === 1;
-    });
-    Mail::assertQueued(ManagementReviewDueMail::class, function ($mail) use ($user2) {
-        return $mail->user->id === $user2->id
-            && $mail->reviews->count() === 1;
-    });
+    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user1->id
+        && $mail->reviews->count() === 1);
+    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user2->id
+        && $mail->reviews->count() === 1);
 });
 
-test('it does not send emails when there are no due reviews', function () {
+test('it does not send emails when there are no due reviews', function (): void {
     Mail::fake();
 
     ManagementReviewStep::factory()->create([
@@ -105,7 +95,7 @@ test('it does not send emails when there are no due reviews', function () {
     Mail::assertNothingQueued();
 });
 
-test('it does not include completed reviews', function () {
+test('it does not include completed reviews', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -119,7 +109,7 @@ test('it does not include completed reviews', function () {
     Mail::assertNothingQueued();
 });
 
-test('it includes both overdue and due soon reviews for a user', function () {
+test('it includes both overdue and due soon reviews for a user', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -139,8 +129,6 @@ test('it includes both overdue and due soon reviews for a user', function () {
     CheckDueManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewDueMail::class, 1);
-    Mail::assertQueued(ManagementReviewDueMail::class, function ($mail) use ($user) {
-        return $mail->user->id === $user->id
-            && $mail->reviews->count() === 3;
-    });
+    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user->id
+        && $mail->reviews->count() === 3);
 });

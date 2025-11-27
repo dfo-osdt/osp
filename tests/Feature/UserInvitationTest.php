@@ -5,7 +5,7 @@ use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 
-test('an existing user can invite a new user', function () {
+test('an existing user can invite a new user', function (): void {
     // inviting a new user should create both a user and an invitation
     Event::fake();
 
@@ -27,7 +27,7 @@ test('an existing user can invite a new user', function () {
             'locale' => 'fr',
         ]]);
 
-    Event::assertDispatched(Invited::class, function ($event) {
+    Event::assertDispatched(Invited::class, function ($event): bool {
         ray($event);
         if ($event->password === null) {
             return false;
@@ -37,7 +37,7 @@ test('an existing user can invite a new user', function () {
     });
 });
 
-test('a user cannot be invited with an invalid email domain', function () {
+test('a user cannot be invited with an invalid email domain', function (): void {
 
     $invitingUser = User::factory()->create();
 
@@ -50,7 +50,7 @@ test('a user cannot be invited with an invalid email domain', function () {
     $response->assertStatus(422);
 });
 
-test('a user cannot invited a user that already exists', function () {
+test('a user cannot invited a user that already exists', function (): void {
     // inviting a new user should create both a user and an invitation
 
     $invitingUser = User::factory()->create();
@@ -65,7 +65,7 @@ test('a user cannot invited a user that already exists', function () {
     $response->assertStatus(422);
 });
 
-test('a invited user can accept their invitation', function () {
+test('a invited user can accept their invitation', function (): void {
     // inviting a new user should create both a user and an invitation
     $invitation = Invitation::factory()->create();
 
@@ -84,7 +84,7 @@ test('a invited user can accept their invitation', function () {
     $response->assertRedirect(config('app.frontend_url').'#/auth/login?verified=1'.'&email='.$user->email);
 });
 
-test('a user can see their sent invitations', function () {
+test('a user can see their sent invitations', function (): void {
     $user = User::factory()->create();
 
     $invitations = Invitation::factory()->count(5)->create([
@@ -98,7 +98,7 @@ test('a user can see their sent invitations', function () {
     $response->assertOk();
 });
 
-test('a user cannot invite a user unless the domain is in the autorized list', function () {
+test('a user cannot invite a user unless the domain is in the autorized list', function (): void {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->postJson('/api/users/invite', [

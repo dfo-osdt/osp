@@ -94,7 +94,7 @@ class ManagementReviewStep extends Model
      */
     public function manuscriptRecord(): BelongsTo
     {
-        return $this->belongsTo('App\Models\ManuscriptRecord');
+        return $this->belongsTo(\App\Models\ManuscriptRecord::class);
     }
 
     /**
@@ -102,7 +102,7 @@ class ManagementReviewStep extends Model
      */
     public function previousStep(): BelongsTo
     {
-        return $this->belongsTo('App\Models\ManagementReviewStep', 'previous_step_id');
+        return $this->belongsTo(\App\Models\ManagementReviewStep::class, 'previous_step_id');
     }
 
     /**
@@ -110,7 +110,7 @@ class ManagementReviewStep extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(\App\Models\User::class);
     }
 
     #[Scope]

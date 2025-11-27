@@ -92,10 +92,8 @@ class LoginRequest extends Login
 
     /**
      * Get the rate limiting throttle key for the request
-     *
-     * @return string
      */
-    public function throttleKey()
+    public function throttleKey(): string
     {
         return Str::lower($this->data['email']).'|'.request()->ip();
     }
@@ -105,12 +103,12 @@ class LoginRequest extends Login
      * as we don't want to log all failed attempts in the
      * log. This could be asbused to fill up the logs.
      */
-    public function logLockout()
+    public function logLockout(): void
     {
         RateLimiter::attempt(
             $this->throttleKey().'|lockout',
             1,
-            function () {
+            function (): void {
                 activity()->withProperties([
                     'ip' => request()->ip(),
                     'email' => $this->data['email'],

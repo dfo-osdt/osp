@@ -14,7 +14,7 @@ class ViewUser extends ViewRecord
     {
         return [
             Action::make('Back')
-                ->url(fn () => UserResource::getUrl('index'))
+                ->url(fn (): string => UserResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];
     }

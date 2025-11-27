@@ -41,12 +41,12 @@ class EmploymentData extends Data
 
     ) {}
 
-    public static function fromModel(AuthorEmployment $authorEmployment)
+    public static function fromModel(AuthorEmployment $authorEmployment): self
     {
         return new self(
             createdDate: Optional::create(),
             lastModifiedDate: Optional::create(),
-            putCode: $authorEmployment->orcid_putcode ? $authorEmployment->orcid_putcode : Optional::create(),
+            putCode: $authorEmployment->orcid_putcode ?: Optional::create(),
             departmentName: $authorEmployment->department_name,
             roleTitle: $authorEmployment->role_title,
             startDate: DateData::from($authorEmployment->start_date->format('Y-m-d')),

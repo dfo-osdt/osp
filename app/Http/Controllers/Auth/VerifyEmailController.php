@@ -16,13 +16,13 @@ class VerifyEmailController extends Controller
     {
         try {
             $user = User::findOrFail($request->route('id'));
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return redirect()->intended(
                 config('app.frontend_url').'#/invalid-signature'
             );
         }
 
-        if (! hash_equals(sha1($user->getEmailForVerification()), (string) $request->route('hash'))) {
+        if (! hash_equals(sha1((string) $user->getEmailForVerification()), (string) $request->route('hash'))) {
             return redirect()->intended(
                 config('app.frontend_url').'#/invalid-signature'
             );

@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
 /** Test that a user can query publications */
-test('a user can get a list of publications', function () {
+test('a user can get a list of publications', function (): void {
     $user = User::factory()->create();
     $publications = Publication::factory()->count(5)->published()->create();
     // can't see unpublished publications
@@ -22,7 +22,7 @@ test('a user can get a list of publications', function () {
     $response->assertJsonCount(5, 'data');
 });
 
-test('a user can get a list of publications with a filter', function () {
+test('a user can get a list of publications with a filter', function (): void {
     $user = User::factory()->create();
     $publications = Publication::factory()->count(5)->published()->create();
     $openAccessPublication = Publication::factory()->published()->openAccess()->create();
@@ -35,7 +35,7 @@ test('a user can get a list of publications with a filter', function () {
 });
 
 /** Test that a user can get a list of their publications */
-test('a user can get a list of their publications', function () {
+test('a user can get a list of their publications', function (): void {
     $user = User::factory()->create();
     $publications = Publication::factory()->count(5)->create(['user_id' => $user->id]);
     Publication::factory()->count(5)->create();
@@ -47,7 +47,7 @@ test('a user can get a list of their publications', function () {
 });
 
 /** Test that a user can create a new publication without a manuscript attached */
-test('a user can create a new publication without a manuscript attached', function () {
+test('a user can create a new publication without a manuscript attached', function (): void {
     $user = User::factory()->create();
     $journal = Journal::factory()->create();
 
@@ -69,7 +69,7 @@ test('a user can create a new publication without a manuscript attached', functi
     $response->assertJsonPath('data.manuscript_id', null);
 });
 
-test('a user can create an accepted publication without a published date', function () {
+test('a user can create an accepted publication without a published date', function (): void {
     $user = User::factory()->create();
     $journal = Journal::factory()->create();
 
@@ -99,7 +99,7 @@ test('a user can create an accepted publication without a published date', funct
 });
 
 /** Test a user can't create a publication with an invalid DOI */
-test('a user cannot create a publication with an invalid DOI', function () {
+test('a user cannot create a publication with an invalid DOI', function (): void {
     $user = User::factory()->create();
     $journal = Journal::factory()->create();
 
@@ -118,7 +118,7 @@ test('a user cannot create a publication with an invalid DOI', function () {
     $response->assertJsonValidationErrors('doi');
 });
 
-test('a user view a publication via its id', function () {
+test('a user view a publication via its id', function (): void {
     $user = User::factory()->create();
     $publication = Publication::factory()->create(['user_id' => $user->id]);
 
@@ -128,7 +128,7 @@ test('a user view a publication via its id', function () {
     $response->assertJsonPath('data.id', $publication->id);
 });
 
-test('a user can update their publication', function () {
+test('a user can update their publication', function (): void {
     $user = User::factory()->create();
     $publication = Publication::factory()->create([
         'user_id' => $user->id,
@@ -150,7 +150,7 @@ test('a user can update their publication', function () {
     $response->assertJsonPath('data.region_id', 1);
 });
 
-test('a user can update their publication to be published from accepted', function () {
+test('a user can update their publication to be published from accepted', function (): void {
     $user = User::factory()->create();
     $publication = Publication::factory()->create([
         'user_id' => $user->id,
@@ -173,7 +173,7 @@ test('a user can update their publication to be published from accepted', functi
     $response->assertJsonPath('data.status', PublicationStatus::PUBLISHED->value);
 });
 
-test('a user cannot update their publication from published to accepted', function () {
+test('a user cannot update their publication from published to accepted', function (): void {
     $user = User::factory()->create();
     $publication = Publication::factory()->create([
         'user_id' => $user->id,
@@ -189,7 +189,7 @@ test('a user cannot update their publication from published to accepted', functi
     $response->assertJsonValidationErrors('status');
 });
 
-test('a user cannot update their publication to be published without a published date', function () {
+test('a user cannot update their publication to be published without a published date', function (): void {
     $user = User::factory()->create();
     $publication = Publication::factory()->create([
         'user_id' => $user->id,
@@ -206,7 +206,7 @@ test('a user cannot update their publication to be published without a published
     expect(Publication::find($publication->id)->status)->toBe(PublicationStatus::ACCEPTED);
 });
 
-test('a user can attach a new publication pdf to their publication', function () {
+test('a user can attach a new publication pdf to their publication', function (): void {
     $user = User::factory()->create();
     $publication = Publication::factory()->create([
         'user_id' => $user->id,
@@ -214,22 +214,22 @@ test('a user can attach a new publication pdf to their publication', function ()
     ]);
 
     // fake pdf
-    $fakePdfContent = <<<'PDF'
-        %PDF-1.4
-        1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
-        2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
-        3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
-        xref
-        0 4
-        0000000000 65535 f
-        0000000009 00000 n
-        0000000052 00000 n
-        0000000101 00000 n
-        trailer<</Size 4/Root 1 0 R>>
-        startxref
-        178
-        %%EOF
-        PDF;
+    $fakePdfContent = <<<'PDF_WRAP'
+    %PDF-1.4
+    1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+    2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
+    3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
+    xref
+    0 4
+    0000000000 65535 f
+    0000000009 00000 n
+    0000000052 00000 n
+    0000000101 00000 n
+    trailer<</Size 4/Root 1 0 R>>
+    startxref
+    178
+    %%EOF
+    PDF_WRAP;
 
     // upload pdf
     $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
@@ -269,7 +269,7 @@ test('a user can attach a new publication pdf to their publication', function ()
     $response->assertJsonCount(2, 'data');
 });
 
-test('a regular user can only view a publication if it has been published', function () {
+test('a regular user can only view a publication if it has been published', function (): void {
 
     $user = User::factory()->create();
     $publication = Publication::factory()->withManuscript()->create();
@@ -281,7 +281,7 @@ test('a regular user can only view a publication if it has been published', func
     $response->assertOk();
 });
 
-test('a user that can see the manuscript can see the publication', function () {
+test('a user that can see the manuscript can see the publication', function (): void {
 
     $publication = Publication::factory()->withManuscript()->create();
 
@@ -291,26 +291,26 @@ test('a user that can see the manuscript can see the publication', function () {
     $response->assertOk();
 });
 
-test('a user can manage supplementary files for their publication record', function () {
+test('a user can manage supplementary files for their publication record', function (): void {
     $publication = Publication::factory()->create();
     $user = $publication->user;
 
-    $fakePdfContent = <<<'PDF'
-        %PDF-1.4
-        1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
-        2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
-        3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
-        xref
-        0 4
-        0000000000 65535 f
-        0000000009 00000 n
-        0000000052 00000 n
-        0000000101 00000 n
-        trailer<</Size 4/Root 1 0 R>>
-        startxref
-        178
-        %%EOF
-        PDF;
+    $fakePdfContent = <<<'PDF_WRAP'
+    %PDF-1.4
+    1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+    2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
+    3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
+    xref
+    0 4
+    0000000000 65535 f
+    0000000009 00000 n
+    0000000052 00000 n
+    0000000101 00000 n
+    trailer<</Size 4/Root 1 0 R>>
+    startxref
+    178
+    %%EOF
+    PDF_WRAP;
 
     // upload pdf
     $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
@@ -350,7 +350,7 @@ test('a user can manage supplementary files for their publication record', funct
     $response->assertNoContent();
 });
 
-test('a user can upload a word document as a supplementary files', function () {
+test('a user can upload a word document as a supplementary files', function (): void {
     $publication = Publication::factory()->create();
     $user = $publication->user;
 
@@ -379,7 +379,7 @@ test('a user can upload a word document as a supplementary files', function () {
     $response->assertNoContent();
 });
 
-test('an editor can edit any publication', function () {
+test('an editor can edit any publication', function (): void {
     $publication = Publication::factory()->create();
     $editor = User::factory()->editor()->create();
 
@@ -398,7 +398,7 @@ test('an editor can edit any publication', function () {
     $response->assertJsonPath('data.region_id', 1);
 });
 
-test("an editor can view and download a publication's files", function () {
+test("an editor can view and download a publication's files", function (): void {
     $publication = Publication::factory()->published()->create();
     $editor = User::factory()->editor()->create();
 
@@ -420,7 +420,7 @@ test("an editor can view and download a publication's files", function () {
 
 });
 
-test('only a chief editor can publish a secondary publication', function () {
+test('only a chief editor can publish a secondary publication', function (): void {
     $chiefEditor = User::factory()->chiefEditor()->create();
 
     $publication = Publication::factory()->dfoSeries()->create();

@@ -30,10 +30,8 @@ class UpdateScopusJournals extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
 
         // Make sure the file exists and is readable
@@ -103,7 +101,7 @@ class UpdateScopusJournals extends Command
 
         $start = now();
         // go through the rows, only import ones that have an ASJC code we want
-        $rows->each(function ($row) use ($asjcCodes, &$actionRegister) {
+        $rows->each(function (array $row) use ($asjcCodes, &$actionRegister): void {
             // 'All Science Journal Classification Codes (ASJC)' column uses the following
             // format '1703; 2614; 1404; 1803;' so we need to split it into an array of
             // integers and then check if any of them are in the list of ASJC codes we
@@ -129,13 +127,13 @@ class UpdateScopusJournals extends Command
             }
 
             // make sure journal has an ASJC code we want to import
-            $asjcCodesInRow = array_map('intval', explode(';', $row['All Science Journal Classification Codes (ASJC)']));
+            $asjcCodesInRow = array_map(intval(...), explode(';', (string) $row['All Science Journal Classification Codes (ASJC)']));
 
             if ($asjcCodes->intersect($asjcCodesInRow)->isNotEmpty()) {
                 $title = $row['Source Title'];
                 $publisher = $row['Publisher Imprints Grouped to Main Publisher'];
 
-                $issn = ! empty($row['EISSN']) ? $row['EISSN'] : (! empty($row['ISSN']) ? $row['ISSN'] : null);
+                $issn = empty($row['EISSN']) ? (! empty($row['ISSN']) ? $row['ISSN'] : null) : ($row['EISSN']);
                 if ($issn) {
                     $issn = $this->formatIssn($issn);
                 }

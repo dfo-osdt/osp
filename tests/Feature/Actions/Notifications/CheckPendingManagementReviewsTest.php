@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 uses(RefreshDatabase::class);
 
-test('it sends email for pending reviews older than 4 business days', function () {
+test('it sends email for pending reviews older than 4 business days', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -20,13 +20,11 @@ test('it sends email for pending reviews older than 4 business days', function (
 
     CheckPendingManagementReviews::handle();
 
-    Mail::assertQueued(ManagementReviewPendingMail::class, function ($mail) use ($user) {
-        return $mail->user->id === $user->id
-            && $mail->reviews->count() === 1;
-    });
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user->id
+        && $mail->reviews->count() === 1);
 });
 
-test('it does not send email for reviews pending less than 4 business days', function () {
+test('it does not send email for reviews pending less than 4 business days', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -40,7 +38,7 @@ test('it does not send email for reviews pending less than 4 business days', fun
     Mail::assertNothingQueued();
 });
 
-test('it includes all pending reviews when user has at least one old review', function () {
+test('it includes all pending reviews when user has at least one old review', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -64,13 +62,11 @@ test('it includes all pending reviews when user has at least one old review', fu
     CheckPendingManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewPendingMail::class, 1);
-    Mail::assertQueued(ManagementReviewPendingMail::class, function ($mail) use ($user) {
-        return $mail->user->id === $user->id
-            && $mail->reviews->count() === 3;
-    });
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user->id
+        && $mail->reviews->count() === 3);
 });
 
-test('it sends separate emails to different users', function () {
+test('it sends separate emails to different users', function (): void {
     Mail::fake();
 
     $user1 = User::factory()->create();
@@ -88,17 +84,13 @@ test('it sends separate emails to different users', function () {
     CheckPendingManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewPendingMail::class, 2);
-    Mail::assertQueued(ManagementReviewPendingMail::class, function ($mail) use ($user1) {
-        return $mail->user->id === $user1->id
-            && $mail->reviews->count() === 1;
-    });
-    Mail::assertQueued(ManagementReviewPendingMail::class, function ($mail) use ($user2) {
-        return $mail->user->id === $user2->id
-            && $mail->reviews->count() === 1;
-    });
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user1->id
+        && $mail->reviews->count() === 1);
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user2->id
+        && $mail->reviews->count() === 1);
 });
 
-test('it does not send emails when there are no old pending reviews', function () {
+test('it does not send emails when there are no old pending reviews', function (): void {
     Mail::fake();
 
     ManagementReviewStep::factory()->create([
@@ -110,7 +102,7 @@ test('it does not send emails when there are no old pending reviews', function (
     Mail::assertNothingQueued();
 });
 
-test('it does not include completed reviews', function () {
+test('it does not include completed reviews', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -130,13 +122,11 @@ test('it does not include completed reviews', function () {
     CheckPendingManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewPendingMail::class, 1);
-    Mail::assertQueued(ManagementReviewPendingMail::class, function ($mail) use ($user) {
-        return $mail->user->id === $user->id
-            && $mail->reviews->count() === 1;
-    });
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user->id
+        && $mail->reviews->count() === 1);
 });
 
-test('it sends one email per user with all their pending reviews', function () {
+test('it sends one email per user with all their pending reviews', function (): void {
     Mail::fake();
 
     $user = User::factory()->create();
@@ -158,8 +148,6 @@ test('it sends one email per user with all their pending reviews', function () {
     CheckPendingManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewPendingMail::class, 1);
-    Mail::assertQueued(ManagementReviewPendingMail::class, function ($mail) use ($user) {
-        return $mail->user->id === $user->id
-            && $mail->reviews->count() === 3;
-    });
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user->id
+        && $mail->reviews->count() === 3);
 });

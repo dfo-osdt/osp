@@ -93,9 +93,9 @@ class ManuscriptRecordFileController extends Controller
 
         try {
             $manuscriptRecord->deleteManuscriptFile($uuid);
-        } catch (FileNotFoundException $e) {
+        } catch (FileNotFoundException) {
             throw new NotFoundHttpException('File not found.');
-        } catch (Exception $e) {
+        } catch (Exception) {
             return response()->json([
                 'message' => 'This file is locked.',
             ], 403);

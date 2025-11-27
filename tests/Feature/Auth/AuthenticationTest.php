@@ -10,7 +10,7 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_users_can_authenticate_using_the_login_screen()
+    public function test_users_can_authenticate_using_the_login_screen(): void
     {
         $user = User::factory()->create();
 
@@ -27,7 +27,7 @@ class AuthenticationTest extends TestCase
 
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password()
+    public function test_users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();
 
@@ -42,7 +42,7 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_a_user_with_a_null_password_cannot_login()
+    public function test_a_user_with_a_null_password_cannot_login(): void
     {
         $user = User::factory()->create([
             'password' => null,
@@ -61,7 +61,7 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_an_invited_user_cannot_login_before_accepting_the_invitation_or_registering()
+    public function test_an_invited_user_cannot_login_before_accepting_the_invitation_or_registering(): void
     {
         $user = User::factory()->invited()->create();
 
@@ -75,7 +75,7 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_a_user_without_an_active_account_cannot_login()
+    public function test_a_user_without_an_active_account_cannot_login(): void
     {
         $user = User::factory()->create([
             'active' => false,
@@ -91,7 +91,7 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_a_user_has_his_last_login_at_updated_on_successful_login()
+    public function test_a_user_has_his_last_login_at_updated_on_successful_login(): void
     {
         $user = User::factory()->create();
 

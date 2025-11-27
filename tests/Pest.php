@@ -27,9 +27,7 @@ uses(RefreshDatabase::class)->in('Feature', 'Browser');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+expect()->extend('toBeOne', fn() => $this->toBe(1));
 
 /*
 |--------------------------------------------------------------------------
@@ -46,11 +44,11 @@ function assertNoRealJavascriptErrors(Pest\Browser\Api\PendingAwaitablePage $pag
 {
     $errors = $page->script('window.__pestBrowser.jsErrors || []');
 
-    $realErrors = array_filter($errors, fn ($error) => ! str_contains($error['message'], 'ResizeObserver loop'));
+    $realErrors = array_filter($errors, fn (array $error): bool => ! str_contains((string) $error['message'], 'ResizeObserver loop'));
 
     expect($realErrors)->toBeEmpty(sprintf(
         'Expected no JavaScript errors, but found %s: %s',
         count($realErrors),
-        implode(', ', array_map(fn ($e) => $e['message'], $realErrors))
+        implode(', ', array_map(fn (array $e) => $e['message'], $realErrors))
     ));
 }

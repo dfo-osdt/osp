@@ -5,13 +5,13 @@ use App\Models\Publication;
 use App\Models\Region;
 use App\Models\User;
 
-test('authenticated user required to access publications index', function () {
+test('authenticated user required to access publications index', function (): void {
     $response = $this->getJson('/api/publications');
 
     $response->assertUnauthorized();
 });
 
-test('regular user sees only published publications', function () {
+test('regular user sees only published publications', function (): void {
     $user = User::factory()->create();
 
     $published = Publication::factory()->count(3)->published()->create();
@@ -26,7 +26,7 @@ test('regular user sees only published publications', function () {
     expect($returnedStatuses->toArray())->toBe(['published']);
 });
 
-test('regional editor sees published publications and unpublished in their region', function () {
+test('regional editor sees published publications and unpublished in their region', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
 
@@ -55,7 +55,7 @@ test('regional editor sees published publications and unpublished in their regio
     expect($returnedIds)->not->toContain($acceptedMar->id);
 });
 
-test('editor with UPDATE_PUBLICATIONS sees all publications regardless of status or region', function () {
+test('editor with UPDATE_PUBLICATIONS sees all publications regardless of status or region', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
 
@@ -81,7 +81,7 @@ test('editor with UPDATE_PUBLICATIONS sees all publications regardless of status
     );
 });
 
-test('chief editor with UPDATE_PUBLICATIONS sees all publications', function () {
+test('chief editor with UPDATE_PUBLICATIONS sees all publications', function (): void {
     $chiefEditor = User::factory()->create();
     $chiefEditor->assignRole(UserRole::CHIEF_EDITOR);
 
@@ -94,7 +94,7 @@ test('chief editor with UPDATE_PUBLICATIONS sees all publications', function () 
     $response->assertJsonCount(4, 'data');
 });
 
-test('multiple regional editor roles allow access to multiple regions', function () {
+test('multiple regional editor roles allow access to multiple regions', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
     $glfRegion = Region::whereSlug('glf')->first();
@@ -117,7 +117,7 @@ test('multiple regional editor roles allow access to multiple regions', function
     expect($returnedIds)->not->toContain($acceptedGlf->id);
 });
 
-test('supports pagination and filtering with regional scoping', function () {
+test('supports pagination and filtering with regional scoping', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
 
     $regionalEditor = User::factory()->create();
@@ -134,7 +134,7 @@ test('supports pagination and filtering with regional scoping', function () {
     expect($response->json('meta.per_page'))->toBe(5);
 });
 
-test('can filter publications by region_id', function () {
+test('can filter publications by region_id', function (): void {
     $nflRegion = Region::whereSlug('nfl')->first();
     $marRegion = Region::whereSlug('mar')->first();
 

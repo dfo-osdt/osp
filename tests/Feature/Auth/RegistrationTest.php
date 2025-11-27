@@ -3,7 +3,7 @@
 use App\Models\Invitation;
 use App\Models\User;
 
-test('new users cannot register with poor password', function () {
+test('new users cannot register with poor password', function (): void {
     $response = $this->post('/register', [
         'first_name' => 'John',
         'last_name' => 'Doe',
@@ -15,7 +15,7 @@ test('new users cannot register with poor password', function () {
     $response->assertStatus(422);
 });
 
-test('new users can register', function () {
+test('new users can register', function (): void {
     // generate random 16 character long string
     $password = Str::random(12);
 
@@ -32,7 +32,7 @@ test('new users can register', function () {
     ]);
 });
 
-test('new user cannot logging until they have verified their email address', function () {
+test('new user cannot logging until they have verified their email address', function (): void {
 
     $user = User::factory()->unverified()->create([
         'email_verified_at' => null,
@@ -49,7 +49,7 @@ test('new user cannot logging until they have verified their email address', fun
     ]);
 });
 
-test('an email is always stored in lowercase', function () {
+test('an email is always stored in lowercase', function (): void {
     $email = 'John.Doe@example.com';
 
     // generate random 16 character long string
@@ -71,7 +71,7 @@ test('an email is always stored in lowercase', function () {
     expect($user->hasRole('author'))->toBeTrue();
 });
 
-test('a user cannot register twice with the same email', function () {
+test('a user cannot register twice with the same email', function (): void {
     $email = 'John.Doe@example.com';
 
     // generate random 16 character long string
@@ -119,7 +119,7 @@ test('a user cannot register twice with the same email', function () {
     expect($response->json('message'))->toBe('Problem with registration, please contact support');
 });
 
-test('a user that was invited can register without following the link', function () {
+test('a user that was invited can register without following the link', function (): void {
     $invitation = Invitation::factory()->create();
     $invitedUser = $invitation->user;
 
@@ -137,7 +137,7 @@ test('a user that was invited can register without following the link', function
     $response->assertOk();
 });
 
-test('a user cannot register with the wrong domain', function () {
+test('a user cannot register with the wrong domain', function (): void {
 
     $password = Str::random(12);
 

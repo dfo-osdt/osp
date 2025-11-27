@@ -14,7 +14,7 @@ class ViewActivityLog extends ViewRecord
     {
         return [
             Action::make('Back')
-                ->url(fn () => ActivityLogResource::getUrl('index'))
+                ->url(fn (): string => ActivityLogResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left'),
         ];
     }

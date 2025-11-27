@@ -43,8 +43,8 @@ class ManuscriptRecordSharedMail extends Mailable
     {
 
         return new Envelope(
-            subject: 'Manuscript record shared with you / Un registre de manuscrit a été partagé avec vous',
             to: [$this->user->email],
+            subject: 'Manuscript record shared with you / Un registre de manuscrit a été partagé avec vous',
         );
     }
 

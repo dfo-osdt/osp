@@ -3,7 +3,7 @@
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 
-test('a user can list the published preprints', function () {
+test('a user can list the published preprints', function (): void {
 
     $user = User::factory()->create();
 

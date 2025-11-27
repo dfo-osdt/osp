@@ -31,8 +31,8 @@ class UserPublicationController extends Controller
          */
         $publicationIds = Publication::select('id')
             ->where('user_id', $userId)
-            ->orWhereHas('publicationAuthors', function ($q) use ($userId) {
-                $q->whereHas('author', function ($q) use ($userId) {
+            ->orWhereHas('publicationAuthors', function ($q) use ($userId): void {
+                $q->whereHas('author', function ($q) use ($userId): void {
                     $q->where('user_id', $userId);
                 });
             })

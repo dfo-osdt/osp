@@ -27,7 +27,7 @@ class CreatePublicationFromManuscript
             ]);
 
             // attach the manuscript's authors to the publication
-            $manuscriptRecord->manuscriptAuthors()->each(function ($manuscriptAuthor) use ($publication) {
+            $manuscriptRecord->manuscriptAuthors()->each(function ($manuscriptAuthor) use ($publication): void {
                 $publication->publicationAuthors()->create([
                     'author_id' => $manuscriptAuthor->author_id,
                     'organization_id' => $manuscriptAuthor->organization_id,
@@ -36,7 +36,7 @@ class CreatePublicationFromManuscript
             });
 
             // attach the manuscript's fundingSources to the publication
-            $manuscriptRecord->fundingSources()->each(function ($fundingSource) use ($publication) {
+            $manuscriptRecord->fundingSources()->each(function ($fundingSource) use ($publication): void {
                 $publication->fundingSources()->create([
                     'funder_id' => $fundingSource->funder_id,
                     'title' => $fundingSource->title,
@@ -46,10 +46,8 @@ class CreatePublicationFromManuscript
 
             if ($file) {
 
-                if (is_string($file)) {
-                    if (! file_exists($file) || ! is_readable($file)) {
-                        throw new \Exception("The file path provided does not exist or is not readable: $file");
-                    }
+                if (is_string($file) && (!file_exists($file) || ! is_readable($file))) {
+                    throw new \Exception("The file path provided does not exist or is not readable: $file");
                 }
 
                 $publication->addSupplementaryFile($file,
