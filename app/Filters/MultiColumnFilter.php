@@ -24,7 +24,7 @@ class MultiColumnFilter implements Filter
 
         $query->where(function (Builder $query) use ($attributes, $value, $like): void {
             foreach (Arr::wrap($attributes) as $attribute) {
-                $query->orWhere(function ($query) use ($attribute, $value, $like): void {
+                $query->orWhere(function (\Illuminate\Contracts\Database\Query\Builder $query) use ($attribute, $value, $like): void {
                     $query->orWhere($attribute, $like, "%{$value}%");
                 });
             }

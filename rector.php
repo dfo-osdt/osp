@@ -29,4 +29,5 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_CODE_QUALITY,
         LaravelSetList::LARAVEL_COLLECTION,
         LaravelSetList::LARAVEL_TESTING,
+        LaravelSetList::LARAVEL_TYPE_DECLARATIONS,
     ]);
