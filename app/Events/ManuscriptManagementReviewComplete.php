@@ -21,8 +21,6 @@ class ManuscriptManagementReviewComplete
 
     /**
      * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn(): \Illuminate\Broadcasting\PrivateChannel
     {

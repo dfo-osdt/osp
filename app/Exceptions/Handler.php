@@ -46,7 +46,7 @@ class Handler extends ExceptionHandler
             //
         });
 
-        $this->renderable(fn(InvalidSignatureException $e): \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse =>
+        $this->renderable(fn (InvalidSignatureException $e): \Illuminate\Http\RedirectResponse =>
             // redirect
             redirect(config('app.frontend_url').'#/invalid-signature'));
     }
