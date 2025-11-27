@@ -35,14 +35,14 @@ class MergeOrganization extends Command
                 $org->name_en,
                 $org->name_fr,
                 $org->ror_identifier ?? 'N/A',
-            ])->toArray()
+            ])->all()
         );
 
         $sourceOrgId = select(
             label: 'Select the source organization to merge FROM:',
             options: $unverifiedOrgs->mapWithKeys(fn ($org): array => [
                 $org->id => "{$org->name_en} (ID: {$org->id})",
-            ])->toArray()
+            ])->all()
         );
 
         $sourceOrg = \App\Models\Organization::query()->find($sourceOrgId);
@@ -64,7 +64,7 @@ class MergeOrganization extends Command
                     ->mapWithKeys(fn ($org): array => [
                         $org->id => "{$org->name_en} ({$org->ror_identifier}) - ID: {$org->id}",
                     ])
-                    ->toArray()
+                    ->all()
                 : [],
             placeholder: 'Type to search verified organizations...',
         );
