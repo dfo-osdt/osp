@@ -20,7 +20,7 @@ test('it sends email for overdue reviews', function (): void {
 
     CheckDueManagementReviews::handle();
 
-    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user->id
+    Mail::assertQueued(ManagementReviewDueMail::class, fn ($mail): bool => $mail->user->id === $user->id
         && $mail->reviews->count() === 1);
 });
 
@@ -35,7 +35,7 @@ test('it sends email for due soon reviews', function (): void {
 
     CheckDueManagementReviews::handle();
 
-    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user->id
+    Mail::assertQueued(ManagementReviewDueMail::class, fn ($mail): bool => $mail->user->id === $user->id
         && $mail->reviews->count() === 1);
 });
 
@@ -55,7 +55,7 @@ test('it groups reviews by user and sends one email per user', function (): void
     CheckDueManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewDueMail::class, 1);
-    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user->id
+    Mail::assertQueued(ManagementReviewDueMail::class, fn ($mail): bool => $mail->user->id === $user->id
         && $mail->reviews->count() === 2);
 });
 
@@ -77,9 +77,9 @@ test('it sends separate emails to different users', function (): void {
     CheckDueManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewDueMail::class, 2);
-    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user1->id
+    Mail::assertQueued(ManagementReviewDueMail::class, fn ($mail): bool => $mail->user->id === $user1->id
         && $mail->reviews->count() === 1);
-    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user2->id
+    Mail::assertQueued(ManagementReviewDueMail::class, fn ($mail): bool => $mail->user->id === $user2->id
         && $mail->reviews->count() === 1);
 });
 
@@ -129,6 +129,6 @@ test('it includes both overdue and due soon reviews for a user', function (): vo
     CheckDueManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewDueMail::class, 1);
-    Mail::assertQueued(ManagementReviewDueMail::class, fn($mail): bool => $mail->user->id === $user->id
+    Mail::assertQueued(ManagementReviewDueMail::class, fn ($mail): bool => $mail->user->id === $user->id
         && $mail->reviews->count() === 3);
 });

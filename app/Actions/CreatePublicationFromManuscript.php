@@ -46,7 +46,7 @@ class CreatePublicationFromManuscript
 
             if ($file) {
 
-                if (is_string($file) && (!file_exists($file) || ! is_readable($file))) {
+                if (is_string($file) && (! file_exists($file) || ! is_readable($file))) {
                     throw new \Exception("The file path provided does not exist or is not readable: $file");
                 }
 

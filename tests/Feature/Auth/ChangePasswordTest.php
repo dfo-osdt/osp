@@ -22,7 +22,7 @@ test('a logged in user can change their password', function (): void {
 
     $response->assertOk();
 
-    Event::assertDispatched(PasswordChanged::class, fn($event): bool => $event->user->id === $user->id);
+    Event::assertDispatched(PasswordChanged::class, fn ($event): bool => $event->user->id === $user->id);
 
     $user->refresh();
     $this->assertFalse($user->new_password_required);

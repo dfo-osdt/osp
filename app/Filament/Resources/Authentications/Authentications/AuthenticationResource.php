@@ -58,7 +58,7 @@ class AuthenticationResource extends Resource
                         DatePicker::make('logins_until')
                             ->default(now()),
                     ])
-                    ->query(fn(Builder $query, array $data): Builder => $query
+                    ->query(fn (Builder $query, array $data): Builder => $query
                         ->when(
                             $data['logins_from'],
                             fn (Builder $query, $date): Builder => $query->whereDate('login_at', '>=', $date),

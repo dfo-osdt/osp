@@ -18,9 +18,7 @@ class FlaggedManuscriptSubmittedToPrepint extends Event
         public int $user_id,
         #[StateId(PlanningBinderItemState::class)]
         public int $planning_binder_item_id
-    )
-    {
-    }
+    ) {}
 
     public function validate(PlanningBinderItemState $state): bool
     {
@@ -36,6 +34,7 @@ class FlaggedManuscriptSubmittedToPrepint extends Event
 
         // mrf should have no publication id
         $mrf = ManuscriptRecord::where('ulid', $state->manuscript_record_ulid)->firstOrFail();
+
         return $mrf->publication?->id === null;
     }
 

@@ -65,6 +65,7 @@ class GeneratePLSController extends Controller
         if ($this->useOllama) {
             return $this->translateWithOllama($validated['abstract'], $locale);
         }
+
         return $this->error('Feature temporarily unavailable.');
     }
 

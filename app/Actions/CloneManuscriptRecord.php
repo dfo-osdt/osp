@@ -15,7 +15,7 @@ class CloneManuscriptRecord
 {
     public static function handle(ManuscriptRecord $manuscriptRecord, User $user, ManuscriptRecordType $type): ManuscriptRecord
     {
-        return \DB::transaction(fn(): \App\Models\ManuscriptRecord => self::cloneManuscriptRecord($manuscriptRecord, $user, $type));
+        return \DB::transaction(fn (): \App\Models\ManuscriptRecord => self::cloneManuscriptRecord($manuscriptRecord, $user, $type));
     }
 
     private static function cloneManuscriptRecord(ManuscriptRecord $manuscriptRecord, User $user, ManuscriptRecordType $type): ManuscriptRecord

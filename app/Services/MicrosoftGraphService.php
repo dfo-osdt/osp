@@ -49,6 +49,7 @@ class MicrosoftGraphService
         $params->count = true;
         $config->queryParameters = $params;
         $users = $this->client->users()->get($config)->wait();
+
         return $users->getValue();
 
     }

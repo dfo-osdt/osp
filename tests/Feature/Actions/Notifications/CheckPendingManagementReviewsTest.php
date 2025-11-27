@@ -20,7 +20,7 @@ test('it sends email for pending reviews older than 4 business days', function (
 
     CheckPendingManagementReviews::handle();
 
-    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user->id
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn ($mail): bool => $mail->user->id === $user->id
         && $mail->reviews->count() === 1);
 });
 
@@ -62,7 +62,7 @@ test('it includes all pending reviews when user has at least one old review', fu
     CheckPendingManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewPendingMail::class, 1);
-    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user->id
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn ($mail): bool => $mail->user->id === $user->id
         && $mail->reviews->count() === 3);
 });
 
@@ -84,9 +84,9 @@ test('it sends separate emails to different users', function (): void {
     CheckPendingManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewPendingMail::class, 2);
-    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user1->id
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn ($mail): bool => $mail->user->id === $user1->id
         && $mail->reviews->count() === 1);
-    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user2->id
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn ($mail): bool => $mail->user->id === $user2->id
         && $mail->reviews->count() === 1);
 });
 
@@ -122,7 +122,7 @@ test('it does not include completed reviews', function (): void {
     CheckPendingManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewPendingMail::class, 1);
-    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user->id
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn ($mail): bool => $mail->user->id === $user->id
         && $mail->reviews->count() === 1);
 });
 
@@ -148,6 +148,6 @@ test('it sends one email per user with all their pending reviews', function (): 
     CheckPendingManagementReviews::handle();
 
     Mail::assertQueued(ManagementReviewPendingMail::class, 1);
-    Mail::assertQueued(ManagementReviewPendingMail::class, fn($mail): bool => $mail->user->id === $user->id
+    Mail::assertQueued(ManagementReviewPendingMail::class, fn ($mail): bool => $mail->user->id === $user->id
         && $mail->reviews->count() === 3);
 });

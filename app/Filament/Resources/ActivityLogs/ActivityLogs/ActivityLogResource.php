@@ -59,7 +59,7 @@ class ActivityLogResource extends Resource
                         DatePicker::make('created_until')
                             ->default(now()),
                     ])
-                    ->query(fn(Builder $query, array $data): Builder => $query
+                    ->query(fn (Builder $query, array $data): Builder => $query
                         ->when(
                             $data['created_from'],
                             fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),

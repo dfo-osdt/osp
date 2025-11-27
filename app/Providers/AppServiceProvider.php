@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(Media::class, MediaPolicy::class);
         // Laravel Pulse view gate
-        Gate::define('viewPulse', fn($user) => $user->can(UserPermission::VIEW_PULSE));
+        Gate::define('viewPulse', fn ($user) => $user->can(UserPermission::VIEW_PULSE));
 
     }
 
@@ -105,7 +105,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Microsoft Graph Service
         if (config('osp.azure.enable_auth')) {
-            $this->app->singleton(\App\Services\MicrosoftGraphService::class, fn($app): \App\Services\MicrosoftGraphService => new \App\Services\MicrosoftGraphService(
+            $this->app->singleton(\App\Services\MicrosoftGraphService::class, fn ($app): \App\Services\MicrosoftGraphService => new \App\Services\MicrosoftGraphService(
                 config('services.azure.tenant'),
                 config('services.azure.client_id'),
                 config('services.azure.client_secret')
