@@ -311,7 +311,8 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      * - Regional editors see all published + unpublished in their region
      * - Regular users see only published publications
      */
-    public function scopeForUser($query, User $user)
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function forUser($query, User $user)
     {
         // if user has permission to update all publications, show everything
         if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
