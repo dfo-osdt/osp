@@ -12,7 +12,7 @@ class RegisterUser
     public static function register(RegisterUserData $data): User
     {
         // check if the user already exists
-        $user = User::where('email', $data->email)->first();
+        $user = \App\Models\User::query()->where('email', $data->email)->first();
         if ($user) {
             // User exits and does not have an invitation or is active (has registered)
             if ($user->active) {
@@ -27,7 +27,7 @@ class RegisterUser
             $user->save();
 
         } else {
-            $user = User::create([
+            $user = \App\Models\User::query()->create([
                 'first_name' => $data->first_name,
                 'last_name' => $data->last_name,
                 'email' => $data->email,

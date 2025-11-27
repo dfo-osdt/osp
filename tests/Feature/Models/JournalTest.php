@@ -16,7 +16,7 @@ test('a user can get a list of journals', function (): void {
     // authenticated user can get a list of journals
     $response = $this->actingAs($user)->getJson('/api/journals')->assertOk();
     expect($response->json('data'))->toHaveCount(config('osp.api_pagination.default', 10));
-    expect($response->json('meta.total'))->toBe(Journal::count());
+    expect($response->json('meta.total'))->toBe(\App\Models\Journal::query()->count());
 });
 
 test('a user can get a list of all dfo journals', function (): void {

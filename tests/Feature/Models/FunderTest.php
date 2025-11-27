@@ -10,7 +10,7 @@ test('a user can get a list of funders', function (): void {
     $user = User::factory()->create();
     $response = $this->getJson('/api/funders')->assertUnauthorized();
     $response = $this->actingAs($user)->getJson('/api/funders')->assertOk();
-    expect($response->json('data'))->toHaveCount(Funder::count());
+    expect($response->json('data'))->toHaveCount(\App\Models\Funder::query()->count());
 });
 
 test('a user can get a single funder', function (): void {

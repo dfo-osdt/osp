@@ -5,8 +5,6 @@ namespace App\Events\PlanningBinder;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail;
-use App\Models\ManuscriptRecord;
-use App\Models\PlanningBinderItem;
 use App\Models\Publication;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Support\Facades\Mail;
@@ -34,7 +32,7 @@ class FlaggedManuscriptAcceptedInJournal extends Event
         }
 
         // mrf needs a publication id
-        $mrf = ManuscriptRecord::where('ulid', $state->manuscript_record_ulid)->firstOrFail();
+        $mrf = \App\Models\ManuscriptRecord::query()->where('ulid', $state->manuscript_record_ulid)->firstOrFail();
 
         return $mrf->publication !== null;
     }
@@ -44,7 +42,7 @@ class FlaggedManuscriptAcceptedInJournal extends Event
         // set the status to flagged
         $state->status = PlanningBinderItemStatus::READY;
 
-        $mrf = ManuscriptRecord::where('ulid', $state->manuscript_record_ulid)->firstOrFail();
+        $mrf = \App\Models\ManuscriptRecord::query()->where('ulid', $state->manuscript_record_ulid)->firstOrFail();
         $state->publication_id = $mrf->publication->id;
 
     }
@@ -62,9 +60,9 @@ class FlaggedManuscriptAcceptedInJournal extends Event
     public function handle(PlanningBinderItemState $state): void
     {
 
-        $item = PlanningBinderItem::findOrFail($state->id);
+        $item = \App\Models\PlanningBinderItem::query()->findOrFail($state->id);
         $item->status = $state->status;
-        $item->plannable()->associate(Publication::findOrFail($state->publication_id));
+        $item->plannable()->associate(\App\Models\Publication::query()->findOrFail($state->publication_id));
         $item->save();
 
     }

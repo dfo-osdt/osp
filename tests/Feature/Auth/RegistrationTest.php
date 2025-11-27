@@ -63,7 +63,7 @@ test('an email is always stored in lowercase', function (): void {
         'password_confirmation' => $password,
     ]);
 
-    $user = User::latest()->first();
+    $user = \App\Models\User::query()->latest()->first();
     expect($user->email)->toBe('john.doe@example.com');
     // check that author profile is created
     expect($user->author->email)->toBe('john.doe@example.com');
@@ -101,7 +101,7 @@ test('a user cannot register twice with the same email', function (): void {
     $response->assertOk();
 
     // try to register again with the same email after verification, should fail.
-    $user = User::latest()->first();
+    $user = \App\Models\User::query()->latest()->first();
     $user->email_verification_token = null;
     $user->email_verified_at = now();
     $user->active = true;

@@ -76,6 +76,6 @@ class Organization extends Model
     {
         $org = config('osp.default_organization');
 
-        return Organization::where('name_en', $org)->first();
+        return \App\Models\Organization::query()->where('name_en', $org)->first();
     }
 }

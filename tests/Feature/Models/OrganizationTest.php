@@ -16,7 +16,7 @@ test('a user can get a list of all organization', function (): void {
     $response = $this->actingAs($user)->getJson('/api/organizations?limit=15')->assertOk();
 
     expect($response->json('data'))->toHaveCount(15);
-    expect($response->json('meta.total'))->toBe(Organization::count());
+    expect($response->json('meta.total'))->toBe(\App\Models\Organization::query()->count());
 });
 
 test('a user can create a new organization', function (): void {
@@ -34,7 +34,7 @@ test('a user can create a new organization', function (): void {
     ]);
 
     // make sure it exists in DB and that it is not validated.
-    expect(Organization::find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+    expect(\App\Models\Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
 });
 
 test('a user can create a new organization without the abbreviation', function (): void {
@@ -50,7 +50,7 @@ test('a user can create a new organization without the abbreviation', function (
     ]);
 
     // make sure it exists in DB and that it is not validated.
-    expect(Organization::find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+    expect(\App\Models\Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
 });
 
 test('a user cannot create the same organization twice', function (): void {
@@ -66,7 +66,7 @@ test('a user cannot create the same organization twice', function (): void {
     ]);
 
     // make sure it exists in DB and that it is not validated.
-    expect(Organization::find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+    expect(\App\Models\Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
 
     $response = $this->actingAs($user)->postJson('/api/organizations', $data)->assertStatus(422)->assertJsonValidationErrors(['name_en', 'name_fr']);
 });

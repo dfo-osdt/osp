@@ -17,7 +17,6 @@ use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
-use App\Models\Region;
 use App\Models\User;
 use App\Queries\ManuscriptRecordListQuery;
 use App\Rules\UserNotAManuscriptAuthor;
@@ -53,7 +52,7 @@ class ManuscriptRecordController extends Controller
 
         foreach ($regionSlugs as $slug) {
             if ($user->can("can_view_{$slug}_mrfs")) {
-                $region = Region::where('slug', $slug)->first();
+                $region = \App\Models\Region::query()->where('slug', $slug)->first();
                 if ($region) {
                     $allowedRegionIds[] = $region->id;
                 }
@@ -193,7 +192,7 @@ class ManuscriptRecordController extends Controller
             }
 
             // get review user
-            $reviewUser = User::findOrFail($validated['reviewer_user_id']);
+            $reviewUser = \App\Models\User::query()->findOrFail($validated['reviewer_user_id']);
 
             // create the first management review step for this record
             $reviewStep = new ManagementReviewStep;
@@ -275,7 +274,7 @@ class ManuscriptRecordController extends Controller
         ]);
 
         // Ensure the journal selected matches the manuscript record type.
-        $journal = Journal::find($validated['journal_id']);
+        $journal = \App\Models\Journal::query()->find($validated['journal_id']);
         if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $journal->isDfoSeries()) {
             abort(422, 'Secondary MRFs must be published in a DFO series journal.');
         } elseif ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY && $journal->isDfoSeries()) {

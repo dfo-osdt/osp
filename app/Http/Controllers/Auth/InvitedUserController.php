@@ -30,7 +30,7 @@ class InvitedUserController extends Controller
         $validated['email'] = strtolower((string) $validated['email']);
 
         // does the user already exist?
-        if (User::where('email', $validated['email'])->exists()) {
+        if (\App\Models\User::query()->where('email', $validated['email'])->exists()) {
             throw ValidationException::withMessages([
                 'email' => __('The account already exists'),
             ]);
@@ -40,7 +40,7 @@ class InvitedUserController extends Controller
         $password = Str::password(20);
 
         // create a new user
-        $user = User::create([
+        $user = \App\Models\User::query()->create([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
@@ -67,7 +67,7 @@ class InvitedUserController extends Controller
 
     public function accept($id, $hash): \Illuminate\Http\RedirectResponse
     {
-        $user = User::find($id);
+        $user = \App\Models\User::query()->find($id);
         if (! $user) {
             return redirect()->intended(
                 config('app.frontend_url').'#/invalid-signature'

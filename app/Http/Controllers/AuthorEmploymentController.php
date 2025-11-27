@@ -44,7 +44,7 @@ class AuthorEmploymentController extends Controller
             abort(403, 'You are not allowed to create employments for other organizations');
         }
 
-        $authorEmployment = AuthorEmployment::create([
+        $authorEmployment = \App\Models\AuthorEmployment::query()->create([
             'author_id' => $author->id,
             'organization_id' => $defaultOrganization->id,
             'role_title' => $validated['role_title'],

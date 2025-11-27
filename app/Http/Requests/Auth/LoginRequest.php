@@ -55,7 +55,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey(), $this->decaySeconds);
 
             // check if this user has verified their email address
-            $user = User::where('email', $this->email)->first();
+            $user = \App\Models\User::query()->where('email', $this->email)->first();
             if ($user && ! $user->hasVerifiedEmail()) {
                 throw ValidationException::withMessages([
                     'email' => __('auth.failed_email_not_verified'),

@@ -26,8 +26,8 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
     public function __construct(
         protected PlanningBinderItemState $planningBinderItemState
     ) {
-        $this->publication = Publication::findOrFail($this->planningBinderItemState->publication_id)->load(['manuscriptRecord', 'journal', 'region']);
-        $this->referrer = User::findOrFail($this->planningBinderItemState->referrer_user_id);
+        $this->publication = \App\Models\Publication::query()->findOrFail($this->planningBinderItemState->publication_id)->load(['manuscriptRecord', 'journal', 'region']);
+        $this->referrer = \App\Models\User::query()->findOrFail($this->planningBinderItemState->referrer_user_id);
     }
 
     /**

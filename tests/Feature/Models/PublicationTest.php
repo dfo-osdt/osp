@@ -203,7 +203,7 @@ test('a user cannot update their publication to be published without a published
 
     $response->assertStatus(422);
     $response->assertJsonValidationErrors('published_on');
-    expect(Publication::find($publication->id)->status)->toBe(PublicationStatus::ACCEPTED);
+    expect(\App\Models\Publication::query()->find($publication->id)->status)->toBe(PublicationStatus::ACCEPTED);
 });
 
 test('a user can attach a new publication pdf to their publication', function (): void {
