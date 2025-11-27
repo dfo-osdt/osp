@@ -57,6 +57,7 @@
     "pestphp/pest-plugin-browser": "^4.1",
     "pestphp/pest-plugin-laravel": "^4.0",
     "pestphp/pest-plugin-livewire": "^4.0",
+    "rector/rector": "^2.2",
     "spatie/laravel-ignition": "^2.7.0"
   },
   "autoload": {
@@ -108,6 +109,8 @@
     "test:feature": [
       "pest --parallel --ci"
     ],
+    "test:refactor": "rector --dry-run",
+    "refactor": "rector",
     "test": [
       "@test:lint",
       "@test:types",
