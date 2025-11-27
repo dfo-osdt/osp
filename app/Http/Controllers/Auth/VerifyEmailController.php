@@ -15,7 +15,7 @@ class VerifyEmailController extends Controller
     public function __invoke(Request $request): \Illuminate\Http\RedirectResponse
     {
         try {
-            $user = User::findOrFail($request->route('id'));
+            $user = \App\Models\User::query()->findOrFail($request->route('id'));
         } catch (\Exception) {
             return redirect()->intended(
                 config('app.frontend_url').'#/invalid-signature'

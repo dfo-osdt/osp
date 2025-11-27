@@ -5,8 +5,6 @@ namespace App\Events\PlanningBinder;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use App\Mail\PlanningBinder\FlaggedManuscriptOnPrepintServerMail;
-use App\Models\ManuscriptRecord;
-use App\Models\PlanningBinderItem;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Support\Facades\Mail;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
@@ -33,7 +31,7 @@ class FlaggedManuscriptSubmittedToPrepint extends Event
         }
 
         // mrf should have no publication id
-        $mrf = ManuscriptRecord::where('ulid', $state->manuscript_record_ulid)->firstOrFail();
+        $mrf = \App\Models\ManuscriptRecord::query()->where('ulid', $state->manuscript_record_ulid)->firstOrFail();
 
         return $mrf->publication?->id === null;
     }
@@ -59,7 +57,7 @@ class FlaggedManuscriptSubmittedToPrepint extends Event
     public function handle(PlanningBinderItemState $state): void
     {
 
-        $item = PlanningBinderItem::findOrFail($state->id);
+        $item = \App\Models\PlanningBinderItem::query()->findOrFail($state->id);
         $item->status = $state->status;
         $item->save();
 

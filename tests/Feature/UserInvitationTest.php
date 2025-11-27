@@ -76,7 +76,7 @@ test('a invited user can accept their invitation', function (): void {
     $response = $this->get($verificationUrl);
 
     Event::assertDispatched(Verified::class);
-    $user = User::find($invitation->user->id);
+    $user = \App\Models\User::query()->find($invitation->user->id);
     $this->assertTrue($user->hasVerifiedEmail());
     $this->assertTrue($user->active);
     $this->assertTrue($user->new_password_required);

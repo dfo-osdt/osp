@@ -46,7 +46,7 @@ test('it merges organizations and updates all related records', function (): voi
     expect($authorEmployment->fresh()->organization_id)->toBe($targetOrg->id);
     expect($funder->fresh()->organization_id)->toBe($targetOrg->id);
 
-    expect(Organization::find($sourceOrg->id))->toBeNull();
+    expect(\App\Models\Organization::query()->find($sourceOrg->id))->toBeNull();
 });
 
 test('it throws exception when trying to merge organization with itself', function (): void {
@@ -69,7 +69,7 @@ test('it rolls back on error and preserves data integrity', function (): void {
     }
 
     expect($author->fresh()->organization_id)->toBe($sourceOrg->id);
-    expect(Organization::find($sourceOrg->id))->not->toBeNull();
+    expect(\App\Models\Organization::query()->find($sourceOrg->id))->not->toBeNull();
 });
 
 test('it handles organizations with no related records', function (): void {
@@ -79,5 +79,5 @@ test('it handles organizations with no related records', function (): void {
     $result = MergeOrganizations::handle($sourceOrg, $targetOrg);
 
     expect($result)->toBeTrue();
-    expect(Organization::find($sourceOrg->id))->toBeNull();
+    expect(\App\Models\Organization::query()->find($sourceOrg->id))->toBeNull();
 });

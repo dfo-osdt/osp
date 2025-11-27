@@ -34,7 +34,7 @@ test('an authenticated user can create a new manuscript', function (): void {
     $response = $this->actingAs($user)->postJson('/api/manuscript-records', $submit_data)->assertCreated();
 
     expect($response->json('data'))->toMatchArray($manuscript_data->all());
-    expect(ManuscriptRecord::find($response->json('data.id')))->toMatchArray($manuscript_data->all());
+    expect(\App\Models\ManuscriptRecord::query()->find($response->json('data.id')))->toMatchArray($manuscript_data->all());
 });
 
 test('an authenticator user can see the manuscript for which they are an author', function (): void {
@@ -62,7 +62,7 @@ test('a user can save a draft manuscript', function (): void {
     expect($response->json('data.title'))->toBe('My new title');
 
     // check that the database has been updated
-    expect(ManuscriptRecord::find($manuscript->id)->title)->toBe('My new title');
+    expect(\App\Models\ManuscriptRecord::query()->find($manuscript->id)->title)->toBe('My new title');
 
     $data = [
         'title' => 'My new title',
@@ -80,7 +80,7 @@ test('a user can save a draft manuscript', function (): void {
 
     // assert new data in response and database
     expect($response->json('data'))->toMatchArray($data);
-    expect(ManuscriptRecord::find($manuscript->id))->toMatchArray($data);
+    expect(\App\Models\ManuscriptRecord::query()->find($manuscript->id))->toMatchArray($data);
 
     // clean up the files created by the test
     $manuscript->delete();
@@ -422,7 +422,7 @@ test('a user can delete their manuscript record if it is a draft', function (): 
     $response = $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}")->assertNoContent();
 
     // check that the manuscript has been deleted
-    expect(ManuscriptRecord::find($manuscript->id))->toBeNull();
+    expect(\App\Models\ManuscriptRecord::query()->find($manuscript->id))->toBeNull();
 
     // try again with submitted manuscript
     $manuscript = ManuscriptRecord::factory()->in_review()->create(['user_id' => $user->id]);
@@ -434,7 +434,7 @@ test('a user can delete their manuscript record if it is a draft', function (): 
     $response = $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}")->assertForbidden();
 
     // check that the manuscript has not been deleted
-    expect(ManuscriptRecord::find($manuscript->id))->not->toBeNull();
+    expect(\App\Models\ManuscriptRecord::query()->find($manuscript->id))->not->toBeNull();
 });
 
 test('an authenticated user can get manuscript metadata', function (): void {
@@ -499,7 +499,7 @@ test('a user can clone a manuscript record', function (): void {
     expect($response->json('data.type'))->toBe(ManuscriptRecordType::SECONDARY->value);
     expect($response->json('data.user_id'))->toBe($user->id);
 
-    $clonedManuscript = ManuscriptRecord::find($response->json('data.id'));
+    $clonedManuscript = \App\Models\ManuscriptRecord::query()->find($response->json('data.id'));
     expect($clonedManuscript)->not->toBeNull();
     expect($clonedManuscript->title)->toBe($manuscript->title.' (Clone)');
     expect($clonedManuscript->type)->toBe(ManuscriptRecordType::SECONDARY);

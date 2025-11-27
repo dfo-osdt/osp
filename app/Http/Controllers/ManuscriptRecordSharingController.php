@@ -20,7 +20,7 @@ class ManuscriptRecordSharingController extends Controller
     {
         $this->authorize('view', $manuscriptRecord);
 
-        return ShareableResource::collection(Shareable::where([
+        return ShareableResource::collection(\App\Models\Shareable::query()->where([
             'shareable_type' => ManuscriptRecord::class,
             'shareable_id' => $manuscriptRecord->id,
         ])->with(['user', 'sharingUser'])->get());
@@ -35,7 +35,7 @@ class ManuscriptRecordSharingController extends Controller
 
         $validated = $request->validated();
 
-        $shareable = Shareable::updateOrCreate([
+        $shareable = \App\Models\Shareable::query()->updateOrCreate([
             'shareable_type' => ManuscriptRecord::class,
             'shareable_id' => $manuscriptRecord->id,
             'user_id' => $validated['user_id'],

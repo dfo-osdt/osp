@@ -26,7 +26,7 @@ class UserNotAManuscriptAuthor implements ValidationRule
     {
         /** Gather a list of all user ids that cannot review this manuscript  */
         $emails = $this->manuscriptRecord->manuscriptAuthors()->with('author')->get()->pluck('author.email');
-        $invalidUserIds = User::whereIn('email', $emails)->pluck('id');
+        $invalidUserIds = \App\Models\User::query()->whereIn('email', $emails)->pluck('id');
         $invalidUserIds = $invalidUserIds->push($this->manuscriptRecord->user_id);
 
         if (in_array($value, $invalidUserIds->toArray())) {

@@ -19,7 +19,7 @@ class EmailVerificationNotificationController extends Controller
         ]);
 
         // get the user
-        $user = User::where('email', $validated['email'])->first();
+        $user = \App\Models\User::query()->where('email', $validated['email'])->first();
 
         if ($user->hasVerifiedEmail()) {
             return response()->json(['status' => 'already-verified']);

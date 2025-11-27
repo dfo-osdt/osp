@@ -26,8 +26,8 @@ class FlaggedManuscriptOnPrepintServerMail extends Mailable
         protected PlanningBinderItemState $planningBinderItemState
 
     ) {
-        $this->manuscriptRecord = ManuscriptRecord::where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail()->load(['region']);
-        $this->referrer = User::findOrFail($this->planningBinderItemState->referrer_user_id);
+        $this->manuscriptRecord = \App\Models\ManuscriptRecord::query()->where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail()->load(['region']);
+        $this->referrer = \App\Models\User::query()->findOrFail($this->planningBinderItemState->referrer_user_id);
     }
 
     /**

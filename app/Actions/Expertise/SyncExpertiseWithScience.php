@@ -105,14 +105,11 @@ class SyncExpertiseWithScience
         foreach ($unique as $expertise) {
 
             try {
-                Expertise::updateOrCreate(
-                    [
-                        'name_en' => html_entity_decode((string) $expertise['name_en']),
-                    ],
-                    [
-                        'name_fr' => html_entity_decode((string) $expertise['name_fr']),
-                    ]
-                );
+                \App\Models\Expertise::query()->updateOrCreate([
+                    'name_en' => html_entity_decode((string) $expertise['name_en']),
+                ], [
+                    'name_fr' => html_entity_decode((string) $expertise['name_fr']),
+                ]);
             } catch (\Illuminate\Database\UniqueConstraintViolationException) {
 
                 if (is_callable($message)) {

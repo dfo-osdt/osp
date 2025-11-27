@@ -23,7 +23,7 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
      */
     public function __construct(public User $user, public PlanningBinderItemState $planningBinderItemState)
     {
-        $this->manuscriptRecord = ManuscriptRecord::where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail();
+        $this->manuscriptRecord = \App\Models\ManuscriptRecord::query()->where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail();
     }
 
     /**

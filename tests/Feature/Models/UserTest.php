@@ -6,12 +6,12 @@ use App\Models\User;
 test('an authenticated user can search through the users', function (): void {
     User::factory()->count(20)->create();
 
-    $user = User::find(1);
+    $user = \App\Models\User::query()->find(1);
 
     $this->getJSON('api/users?limit=10')->assertUnauthorized();
 
     $response = $this->actingAs($user)->getJSON('/api/users?limit=10')->assertOk()->assertJsonCount(10, 'data');
-    expect($response->json('meta.total'))->toBe(User::count());
+    expect($response->json('meta.total'))->toBe(\App\Models\User::query()->count());
 });
 
 test('a user can view their profile and profile has author relationship', function (): void {

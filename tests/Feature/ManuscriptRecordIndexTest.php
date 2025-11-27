@@ -56,8 +56,8 @@ test('global permission users cannot see draft manuscripts', function (): void {
 test('NFL editor can see all manuscripts from NFL region including drafts', function (): void {
     $user = User::factory()->withRoles([UserRole::NFL_EDITOR])->create();
 
-    $nflRegion = Region::where('slug', 'nfl')->first();
-    $marRegion = Region::where('slug', 'mar')->first();
+    $nflRegion = \App\Models\Region::query()->where('slug', 'nfl')->first();
+    $marRegion = \App\Models\Region::query()->where('slug', 'mar')->first();
 
     // NFL manuscripts (should see all including drafts)
     ManuscriptRecord::factory()->count(2)->create([
@@ -88,8 +88,8 @@ test('NFL editor can see all manuscripts from NFL region including drafts', func
 test('regional editors cannot see manuscripts from other regions', function (): void {
     $user = User::factory()->withRoles([UserRole::MAR_EDITOR])->create();
 
-    $nflRegion = Region::where('slug', 'nfl')->first();
-    $marRegion = Region::where('slug', 'mar')->first();
+    $nflRegion = \App\Models\Region::query()->where('slug', 'nfl')->first();
+    $marRegion = \App\Models\Region::query()->where('slug', 'mar')->first();
 
     // Create manuscripts in different regions
     ManuscriptRecord::factory()->count(2)->create(['region_id' => $nflRegion->id]);
@@ -104,8 +104,8 @@ test('regional editors cannot see manuscripts from other regions', function (): 
 test('regional editors see drafts from their region but not others', function (): void {
     $user = User::factory()->withRoles([UserRole::GLF_EDITOR])->create();
 
-    $glfRegion = Region::where('slug', 'glf')->first();
-    $queRegion = Region::where('slug', 'que')->first();
+    $glfRegion = \App\Models\Region::query()->where('slug', 'glf')->first();
+    $queRegion = \App\Models\Region::query()->where('slug', 'que')->first();
 
     // GLF drafts (should see)
     ManuscriptRecord::factory()->count(2)->create([
@@ -136,9 +136,9 @@ test('user with multiple regional permissions sees manuscripts from all assigned
     $user = User::factory()->create();
     $user->assignRole([UserRole::NFL_EDITOR, UserRole::MAR_EDITOR]);
 
-    $nflRegion = Region::where('slug', 'nfl')->first();
-    $marRegion = Region::where('slug', 'mar')->first();
-    $glfRegion = Region::where('slug', 'glf')->first();
+    $nflRegion = \App\Models\Region::query()->where('slug', 'nfl')->first();
+    $marRegion = \App\Models\Region::query()->where('slug', 'mar')->first();
+    $glfRegion = \App\Models\Region::query()->where('slug', 'glf')->first();
 
     // Create manuscripts in different regions
     ManuscriptRecord::factory()->count(2)->create(['region_id' => $nflRegion->id]);
@@ -161,8 +161,8 @@ test('user with global AND regional permissions sees union of both access patter
     $user = User::factory()->create();
     $user->assignRole([UserRole::EDITOR, UserRole::ONP_EDITOR]); // Global + Regional
 
-    $onpRegion = Region::where('slug', 'onp')->first();
-    $arcRegion = Region::where('slug', 'arc')->first();
+    $onpRegion = \App\Models\Region::query()->where('slug', 'onp')->first();
+    $arcRegion = \App\Models\Region::query()->where('slug', 'arc')->first();
 
     // ONP region manuscripts (should see all including drafts due to regional permission)
     ManuscriptRecord::factory()->count(2)->create([
@@ -220,8 +220,8 @@ test('manuscripts can be filtered by type', function (): void {
 test('manuscripts can be filtered by region_id', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
 
-    $nflRegion = Region::where('slug', 'nfl')->first();
-    $marRegion = Region::where('slug', 'mar')->first();
+    $nflRegion = \App\Models\Region::query()->where('slug', 'nfl')->first();
+    $marRegion = \App\Models\Region::query()->where('slug', 'mar')->first();
 
     ManuscriptRecord::factory()->count(2)->create([
         'region_id' => $nflRegion->id,
@@ -389,7 +389,7 @@ test('response structure matches ManuscriptRecordResource format', function (): 
 test('complex query with multiple filters and pagination works correctly', function (): void {
     $user = User::factory()->withRoles([UserRole::PAC_EDITOR])->create();
 
-    $pacRegion = Region::where('slug', 'pac')->first();
+    $pacRegion = \App\Models\Region::query()->where('slug', 'pac')->first();
 
     // Create variety of manuscripts in PAC region
     ManuscriptRecord::factory()->count(5)->create([

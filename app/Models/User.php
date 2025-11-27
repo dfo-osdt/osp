@@ -199,12 +199,12 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
             return $this->author;
         }
 
-        $author = Author::where('email', $this->email)->first();
+        $author = \App\Models\Author::query()->where('email', $this->email)->first();
 
         if ($author) {
             $this->author()->save($author);
         } else {
-            $author = Author::create([
+            $author = \App\Models\Author::query()->create([
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
                 'email' => $this->email,

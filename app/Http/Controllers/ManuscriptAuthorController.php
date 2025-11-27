@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ManuscriptAuthorResource;
-use App\Models\Author;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Traits\LoadsManuscriptRecordPolicyRelationships;
@@ -48,7 +47,7 @@ class ManuscriptAuthorController extends Controller
             'is_corresponding_author' => ['boolean'],
         ]);
 
-        $author = Author::find($validated['author_id']);
+        $author = \App\Models\Author::query()->find($validated['author_id']);
 
         $manuscriptAuthor = new ManuscriptAuthor;
         $manuscriptAuthor->manuscript_record_id = $manuscriptRecord->id;

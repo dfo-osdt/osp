@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ManuscriptRecordSummaryResource;
-use App\Models\ManuscriptRecord;
 use App\Queries\MyManuscriptsRecordQuery;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Http\Request;
@@ -29,10 +28,10 @@ class UserManuscriptRecordController extends Controller
          * to have thousands of records, this should not be a problem.
          * If it is, we can always review this query.
          */
-        $manuscriptIds = ManuscriptRecord::select('id')
+        $manuscriptIds = \App\Models\ManuscriptRecord::query()->select('id')
             ->where('user_id', $userId)
-            ->orWhereHas('manuscriptAuthors', function ($q) use ($userId): void {
-                $q->whereHas('author', function ($q) use ($userId): void {
+            ->orWhereHas('manuscriptAuthors', function (\Illuminate\Contracts\Database\Query\Builder $q) use ($userId): void {
+                $q->whereHas('author', function (\Illuminate\Contracts\Database\Query\Builder $q) use ($userId): void {
                     $q->where('user_id', $userId);
                 });
             })
@@ -57,7 +56,7 @@ class UserManuscriptRecordController extends Controller
             'region',
         ];
 
-        $baseQuery = ManuscriptRecord::whereIn('id', $manuscriptIds)
+        $baseQuery = \App\Models\ManuscriptRecord::query()->whereIn('id', $manuscriptIds)
             ->with($relationship);
 
         $listQuery = new MyManuscriptsRecordQuery($request, $baseQuery);

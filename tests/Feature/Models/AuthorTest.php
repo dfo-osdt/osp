@@ -17,7 +17,7 @@ test('a user can get list of authors', function (): void {
     $response = $this->actingAs($user)->getJson('api/authors?limit=5&include=organization')->assertOk();
 
     expect($response->json('data'))->toHaveCount(5);
-    expect($response->json('meta.total'))->toBe(Author::count());
+    expect($response->json('meta.total'))->toBe(\App\Models\Author::query()->count());
 });
 
 test('a user can create an author', function (): void {
