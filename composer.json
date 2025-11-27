@@ -45,6 +45,7 @@
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^3.0.0",
+    "driftingly/rector-laravel": "^2.1",
     "fakerphp/faker": "^1.23.1",
     "larastan/larastan": "^3.0",
     "laravel/boost": "^1.3",
