@@ -47,9 +47,9 @@ class ManuscriptRecordFundingSourceController extends Controller
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
-            'funder_id' => 'required|exists:funders,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1500',
+            'funder_id' => ['required', 'exists:funders,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1500'],
         ]);
 
         $fundingSource = new FundingSource([
@@ -98,9 +98,9 @@ class ManuscriptRecordFundingSourceController extends Controller
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
-            'funder_id' => 'required|exists:funders,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1500',
+            'funder_id' => ['required', 'exists:funders,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1500'],
         ]);
 
         $fundingSource->update([

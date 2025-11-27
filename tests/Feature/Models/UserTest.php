@@ -35,10 +35,10 @@ test('a user can update their profile', function (): void {
 
     $this->actingAs($user2)->putJson('api/users/'.$user->id, $data)->assertForbidden();
     $response = $this->actingAs($user)->putJson('api/users/'.$user->id, $data)->assertOk();
-    expect($response->json('data'))->toMatchArray(collect($data)->only('first_name', 'last_name', 'locale')->toArray());
+    expect($response->json('data'))->toMatchArray(collect($data)->only('first_name', 'last_name', 'locale')->all());
     expect($response->json('data.email'))->toBe($user->email);
 
-    expect($response->json('data.author.data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->toArray());
+    expect($response->json('data.author.data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->all());
 });
 
 test('a user can see their authentication history', function (): void {

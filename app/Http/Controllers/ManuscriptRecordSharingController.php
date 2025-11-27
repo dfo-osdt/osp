@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ItemShared;
 use App\Http\Requests\ShareablePostRequest;
 use App\Http\Resources\ShareableResource;
 use App\Models\ManuscriptRecord;
@@ -47,7 +46,7 @@ class ManuscriptRecordSharingController extends Controller
             'expires_at' => $validated['expires_at'],
         ]);
 
-        ItemShared::dispatch($shareable);
+        event(new \App\Events\ItemShared($shareable));
 
         activity()
             ->performedOn($manuscriptRecord)
@@ -76,9 +75,9 @@ class ManuscriptRecordSharingController extends Controller
         $this->authorize('share', $manuscriptRecord);
 
         $validated = $request->validate([
-            'can_edit' => 'boolean',
-            'can_delete' => 'boolean',
-            'expires_at' => 'nullable|date',
+            'can_edit' => ['boolean'],
+            'can_delete' => ['boolean'],
+            'expires_at' => ['nullable', 'date'],
         ]);
 
         $shareable->update($validated);

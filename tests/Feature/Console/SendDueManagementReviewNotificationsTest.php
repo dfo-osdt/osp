@@ -12,7 +12,7 @@ test('it sends notifications on business days', function (): void {
     Mail::fake();
 
     // Set to a Monday (business day)
-    \Carbon\Carbon::setTestNow('2024-10-07 10:00:00'); // Monday, October 7, 2024
+    \Illuminate\Support\Facades\Date::setTestNow('2024-10-07 10:00:00'); // Monday, October 7, 2024
 
     $user = User::factory()->create();
     ManagementReviewStep::factory()->create([
@@ -27,14 +27,14 @@ test('it sends notifications on business days', function (): void {
 
     Mail::assertQueued(ManagementReviewDueMail::class);
 
-    \Carbon\Carbon::setTestNow();
+    \Illuminate\Support\Facades\Date::setTestNow();
 });
 
 test('it skips notifications on weekends', function (): void {
     Mail::fake();
 
     // Set to a Saturday (non-business day)
-    \Carbon\Carbon::setTestNow('2024-10-05 10:00:00'); // Saturday, October 5, 2024
+    \Illuminate\Support\Facades\Date::setTestNow('2024-10-05 10:00:00'); // Saturday, October 5, 2024
 
     $user = User::factory()->create();
     ManagementReviewStep::factory()->create([
@@ -48,14 +48,14 @@ test('it skips notifications on weekends', function (): void {
 
     Mail::assertNothingQueued();
 
-    \Carbon\Carbon::setTestNow();
+    \Illuminate\Support\Facades\Date::setTestNow();
 });
 
 test('it skips notifications on holidays', function (): void {
     Mail::fake();
 
     // Set to Christmas Day (holiday)
-    \Carbon\Carbon::setTestNow('2024-12-25 10:00:00'); // Wednesday, December 25, 2024
+    \Illuminate\Support\Facades\Date::setTestNow('2024-12-25 10:00:00'); // Wednesday, December 25, 2024
 
     $user = User::factory()->create();
     ManagementReviewStep::factory()->create([
@@ -69,14 +69,14 @@ test('it skips notifications on holidays', function (): void {
 
     Mail::assertNothingQueued();
 
-    \Carbon\Carbon::setTestNow();
+    \Illuminate\Support\Facades\Date::setTestNow();
 });
 
 test('it sends notifications on weekends when forced', function (): void {
     Mail::fake();
 
     // Set to a Saturday (non-business day)
-    \Carbon\Carbon::setTestNow('2024-10-05 10:00:00'); // Saturday, October 5, 2024
+    \Illuminate\Support\Facades\Date::setTestNow('2024-10-05 10:00:00'); // Saturday, October 5, 2024
 
     $user = User::factory()->create();
     ManagementReviewStep::factory()->create([
@@ -92,14 +92,14 @@ test('it sends notifications on weekends when forced', function (): void {
 
     Mail::assertQueued(ManagementReviewDueMail::class);
 
-    \Carbon\Carbon::setTestNow();
+    \Illuminate\Support\Facades\Date::setTestNow();
 });
 
 test('it sends notifications on holidays when forced', function (): void {
     Mail::fake();
 
     // Set to Christmas Day (holiday)
-    \Carbon\Carbon::setTestNow('2024-12-25 10:00:00'); // Wednesday, December 25, 2024
+    \Illuminate\Support\Facades\Date::setTestNow('2024-12-25 10:00:00'); // Wednesday, December 25, 2024
 
     $user = User::factory()->create();
     ManagementReviewStep::factory()->create([
@@ -115,5 +115,5 @@ test('it sends notifications on holidays when forced', function (): void {
 
     Mail::assertQueued(ManagementReviewDueMail::class);
 
-    \Carbon\Carbon::setTestNow();
+    \Illuminate\Support\Facades\Date::setTestNow();
 });

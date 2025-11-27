@@ -282,25 +282,25 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     // Scopes
 
     /** Get the open access publications */
-    public function scopeOpenAccess($query)
+    protected function scopeOpenAccess($query)
     {
         return $query->where('is_open_access', true);
     }
 
     /** Get the publication that are no longer under embargo */
-    public function scopeNotUnderEmbargo($query)
+    protected function scopeNotUnderEmbargo($query)
     {
         return $query->where('embargoed_until', '<', now())->orWhere('is_open_access', true);
     }
 
     /** Get the publications under embargo */
-    public function scopeUnderEmbargo($query)
+    protected function scopeUnderEmbargo($query)
     {
         return $query->where('embargoed_until', '>=', now());
     }
 
     /** Secondary publications */
-    public function scopeSecondaryPublication($query)
+    protected function scopeSecondaryPublication($query)
     {
         return $query->whereIn('journal_id', Journal::dfoSeries()->pluck('id'));
     }
@@ -326,7 +326,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
             $slugs = $permissions->intersect($userPermissions)
                 ->map(fn ($perm): ?string => explode('_', (string) $perm)[2] ?? null)
                 ->filter()
-                ->toArray();
+                ->all();
 
             return $query->where('status', PublicationStatus::PUBLISHED)
                 ->orWhere(function ($q) use ($slugs): void {

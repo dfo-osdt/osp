@@ -45,7 +45,7 @@ class ManuscriptAuthorController extends Controller
                 'exists:authors,id',
                 Rule::unique('manuscript_authors')->where(fn ($query) => $query->where('manuscript_record_id', $manuscriptRecord->id)),
             ],
-            'is_corresponding_author' => 'boolean',
+            'is_corresponding_author' => ['boolean'],
         ]);
 
         $author = Author::find($validated['author_id']);
@@ -84,8 +84,8 @@ class ManuscriptAuthorController extends Controller
 
         $validated = $request->validate([
             // 'author_id' => 'integer|exists:authors,id',
-            'is_corresponding_author' => 'boolean',
-            'organization_id' => 'integer|exists:organizations,id',
+            'is_corresponding_author' => ['boolean'],
+            'organization_id' => ['integer', 'exists:organizations,id'],
         ]);
 
         if (isset($validated['organization_id'])) {

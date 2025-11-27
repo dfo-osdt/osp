@@ -374,17 +374,17 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     public function validateIsFilled(bool $noExceptions = false): bool
     {
         $validator = Validator::make($this->toArray(), [
-            'title' => 'required',
-            'abstract' => 'required',
-            'pls_en' => 'required_if:pls_source_language,en',
-            'pls_fr' => 'required_if:pls_source_language,fr',
-            'pls_source_language' => 'required|in:en,fr',
-            'pls_approved_by_author' => 'required|accepted',
-            'relevant_to' => 'required',
-            'region_id' => 'required|exists:regions,id',
-            'functional_area_id' => 'required|exists:functional_areas,id',
-            'no_ogl_explanation' => 'required_if:apply_ogl,false',
-            'open_access_rationale' => 'required_if:intends_open_access,false',
+            'title' => ['required'],
+            'abstract' => ['required'],
+            'pls_en' => ['required_if:pls_source_language,en'],
+            'pls_fr' => ['required_if:pls_source_language,fr'],
+            'pls_source_language' => ['required', 'in:en,fr'],
+            'pls_approved_by_author' => ['required', 'accepted'],
+            'relevant_to' => ['required'],
+            'region_id' => ['required', 'exists:regions,id'],
+            'functional_area_id' => ['required', 'exists:functional_areas,id'],
+            'no_ogl_explanation' => ['required_if:apply_ogl,false'],
+            'open_access_rationale' => ['required_if:intends_open_access,false'],
         ]);
 
         $validator->after(function ($validator): void {

@@ -36,7 +36,7 @@ class PublicationAuthorController extends Controller
         $validated = $request->validate([
             'author_id' => ['required', 'integer', 'exists:authors,id',
                 Rule::unique('publication_authors')->where(fn ($query) => $query->where('publication_id', $publication->id)), ],
-            'is_corresponding_author' => 'boolean',
+            'is_corresponding_author' => ['boolean'],
         ]);
 
         $author = Author::find($validated['author_id']);
@@ -73,8 +73,8 @@ class PublicationAuthorController extends Controller
 
         $validated = $request->validate([
             // 'author_id' => 'integer|exists:authors,id',
-            'is_corresponding_author' => 'boolean',
-            'organization_id' => 'integer|exists:organizations,id',
+            'is_corresponding_author' => ['boolean'],
+            'organization_id' => ['integer', 'exists:organizations,id'],
         ]);
 
         if (isset($validated['organization_id'])) {

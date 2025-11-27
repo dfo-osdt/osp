@@ -26,8 +26,8 @@ class AuthorExpertiseController extends Controller
         $this->authorize('update', $author);
 
         $validated = $request->validate([
-            'expertises' => 'present|array',
-            'expertises.*' => 'required|ulid|exists:expertises,id',
+            'expertises' => ['present', 'array'],
+            'expertises.*' => ['required', 'ulid', 'exists:expertises,id'],
         ]);
 
         $author->expertises()->sync($validated['expertises']);

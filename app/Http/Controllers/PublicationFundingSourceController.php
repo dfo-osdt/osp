@@ -33,9 +33,9 @@ class PublicationFundingSourceController extends Controller
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
-            'funder_id' => 'required|exists:funders,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1500',
+            'funder_id' => ['required', 'exists:funders,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1500'],
         ]);
 
         $fundingSource = new FundingSource([
@@ -67,9 +67,9 @@ class PublicationFundingSourceController extends Controller
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
-            'funder_id' => 'required|exists:funders,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1500',
+            'funder_id' => ['required', 'exists:funders,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1500'],
         ]);
 
         $fundingSource->update([

@@ -31,10 +31,10 @@ class OrganizationController extends Controller
     public function store(Request $request): JsonResource
     {
         $validated = $request->validate([
-            'name_en' => 'required|string|max:200|unique:organizations,name_en',
-            'name_fr' => 'required|string|max:200|unique:organizations,name_fr',
-            'abbr_en' => 'nullable|string|max:10',
-            'abbr_fr' => 'nullable|string|max:10',
+            'name_en' => ['required', 'string', 'max:200', 'unique:organizations,name_en'],
+            'name_fr' => ['required', 'string', 'max:200', 'unique:organizations,name_fr'],
+            'abbr_en' => ['nullable', 'string', 'max:10'],
+            'abbr_fr' => ['nullable', 'string', 'max:10'],
         ]);
 
         $organization = Organization::create($validated);

@@ -48,13 +48,13 @@ class Journal extends Model
     public static $dfoPublisher = 'Fisheries and Oceans Canada - Pêches et Océans Canada';
 
     /** Create a scope for DFO series */
-    public function scopeDfoSeries($query)
+    protected function scopeDfoSeries($query)
     {
         return $query->where('publisher', Journal::$dfoPublisher);
     }
 
     /** Create a scope for DFO series */
-    public function scopeNotDfoSeries($query)
+    protected function scopeNotDfoSeries($query)
     {
         return $query->where('publisher', '!=', Journal::$dfoPublisher);
     }

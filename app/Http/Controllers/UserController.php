@@ -46,9 +46,9 @@ class UserController extends Controller
         Gate::authorize('update', $user);
 
         $validated = $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'locale' => 'string|in:en,fr',
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'locale' => ['string', 'in:en,fr'],
         ]);
 
         $user->update($validated);

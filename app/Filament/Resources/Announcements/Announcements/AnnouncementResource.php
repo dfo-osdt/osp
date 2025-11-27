@@ -22,7 +22,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Carbon;
 
 class AnnouncementResource extends Resource
 {
@@ -100,7 +99,7 @@ class AnnouncementResource extends Resource
                     ->badge(true)
                     ->label('Status')
                     ->getStateUsing(function (Announcement $record) {
-                        $now = Carbon::now();
+                        $now = \Illuminate\Support\Facades\Date::now();
                         if ($record->start_at > $now) {
                             return 'Upcoming';
                         }
@@ -157,7 +156,7 @@ class AnnouncementResource extends Resource
                                     TextEntry::make('status')
                                         ->badge()
                                         ->getStateUsing(function ($record) {
-                                            $now = Carbon::now();
+                                            $now = \Illuminate\Support\Facades\Date::now();
                                             if ($record->start_at > $now) {
                                                 return 'Upcoming';
                                             }

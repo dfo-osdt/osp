@@ -238,7 +238,7 @@ test('a email is sent when a sharing event for a manuscript is dispatched', func
     $sharable = Shareable::factory()->create();
 
     Mail::fake();
-    ItemShared::dispatch($sharable);
+    event(new \App\Events\ItemShared($sharable));
     Mail::assertQueued(ManuscriptRecordSharedMail::class);
 });
 

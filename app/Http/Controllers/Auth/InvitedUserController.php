@@ -21,10 +21,10 @@ class InvitedUserController extends Controller
 
         // validate the request
         $validated = $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
             'email' => ['bail', 'required', 'email', new AuthorizedEmailDomain],
-            'locale' => 'string|in:en,fr',
+            'locale' => ['string', 'in:en,fr'],
         ]);
 
         $validated['email'] = strtolower((string) $validated['email']);

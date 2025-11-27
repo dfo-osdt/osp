@@ -53,7 +53,7 @@ class AuthenticationTest extends TestCase
             'password' => '',
         ]);
 
-        $response->assertStatus(422);
+        $response->assertUnprocessable();
 
         // assert empty password attempt was not logged:
         expect($user->authentications()->first())->toBeNull();
@@ -70,7 +70,7 @@ class AuthenticationTest extends TestCase
             'password' => 'null',
         ]);
 
-        $response->assertStatus(422);
+        $response->assertUnprocessable();
 
         $this->assertGuest();
     }
@@ -86,7 +86,7 @@ class AuthenticationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertStatus(422);
+        $response->assertUnprocessable();
 
         $this->assertGuest();
     }

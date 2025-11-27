@@ -14,6 +14,6 @@ class TimestampData extends Data
     public function __construct(
         public int $value
     ) {
-        $this->timestamp = Carbon::createFromTimestampMs($this->value);
+        $this->timestamp = \Illuminate\Support\Facades\Date::createFromTimestampMs($this->value);
     }
 }

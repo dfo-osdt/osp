@@ -35,10 +35,10 @@ class AuthorController extends Controller
     public function store(Request $request): JsonResource
     {
         $validated = $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email|unique:authors,email',
-            'organization_id' => 'required|exists:organizations,id',
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'email' => ['required', 'email', 'unique:authors,email'],
+            'organization_id' => ['required', 'exists:organizations,id'],
             'orcid' => ['nullable', 'string', new Ocrid, 'unique:authors,orcid'],
         ]);
 
@@ -74,7 +74,7 @@ class AuthorController extends Controller
             $includes = $includes->merge($validated['include']);
         }
 
-        $author->load($includes->toArray());
+        $author->load($includes->all());
 
         return new AuthorResource($author);
     }
@@ -87,10 +87,10 @@ class AuthorController extends Controller
         Gate::authorize('update', $author);
 
         $validated = $request->validate([
-            'first_name' => 'string',
-            'last_name' => 'string',
+            'first_name' => ['string'],
+            'last_name' => ['string'],
             'email' => 'email|unique:authors,email,'.$author->id,
-            'organization_id' => 'exists:organizations,id',
+            'organization_id' => ['exists:organizations,id'],
             'orcid' => [
                 Rule::excludeIf(fn () => $author->orcid_verified),
                 'nullable',
@@ -98,7 +98,7 @@ class AuthorController extends Controller
                 new Ocrid,
                 Rule::unique('authors', 'orcid')->ignore($author->id),
             ],
-            'sync_all_pivots' => 'boolean',
+            'sync_all_pivots' => ['boolean'],
         ]);
 
         $syncAllPivots = $validated['sync_all_pivots'] ?? false;

@@ -104,13 +104,13 @@ class Author extends Model
     }
 
     // author full name
-    public function getFullNameAttribute(): string
+    protected function getFullNameAttribute(): string
     {
         return $this->first_name.' '.$this->last_name;
     }
 
     // author name for APA citation
-    public function getApaNameAttribute(): string
+    protected function getApaNameAttribute(): string
     {
         return $this->last_name.', '.$this->first_name;
     }
@@ -120,7 +120,7 @@ class Author extends Model
      * we store thee full ORCID iD with the URL prefix
      * in the database.
      */
-    public function getOrcidNumberAttribute(): string
+    protected function getOrcidNumberAttribute(): string
     {
         if (! $this->orcid) {
             return '';
@@ -228,19 +228,19 @@ class Author extends Model
         return $this->hasMany(\App\Models\ManuscriptPeerReviewer::class);
     }
 
-    public function scopeInternalAuthor(Builder $query): void
+    protected function scopeInternalAuthor(Builder $query): void
     {
         $Organization = Organization::getDefaultOrganization();
         $query->where('organization_id', $Organization->id);
     }
 
-    public function scopeExternalAuthor(Builder $query): void
+    protected function scopeExternalAuthor(Builder $query): void
     {
         $Organization = Organization::getDefaultOrganization();
         $query->where('organization_id', '!=', $Organization->id);
     }
 
-    public function scopeWithOrcid(Builder $query): void
+    protected function scopeWithOrcid(Builder $query): void
     {
         $query->whereNotNull('orcid');
     }

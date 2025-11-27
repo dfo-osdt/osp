@@ -8,8 +8,6 @@ use App\Actions\DeleteManuscriptRecord;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\Permissions\UserPermission;
-use App\Events\ManuscriptRecordToReviewEvent;
-use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\PlanningBinder\FlaggedManuscriptAcceptedInJournal;
 use App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint;
 use App\Http\Resources\ManuscriptRecordMetadataResource;
@@ -101,8 +99,8 @@ class ManuscriptRecordController extends Controller
 
         // validate that we have a type, title, and region_id
         $validated = $request->validate([
-            'title' => 'required|max:255',
-            'region_id' => 'required|exists:regions,id',
+            'title' => ['required', 'max:255'],
+            'region_id' => ['required', 'exists:regions,id'],
             'type' => ['required', new Enum(ManuscriptRecordType::class)],
         ]);
 
@@ -135,22 +133,22 @@ class ManuscriptRecordController extends Controller
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
-            'title' => 'string|max:255',
-            'region_id' => 'numeric|exists:regions,id',
-            'functional_area_id' => 'nullable|numeric|exists:functional_areas,id',
+            'title' => ['string', 'max:255'],
+            'region_id' => ['numeric', 'exists:regions,id'],
+            'functional_area_id' => ['nullable', 'numeric', 'exists:functional_areas,id'],
             'type' => [new Enum(ManuscriptRecordType::class)],
-            'abstract' => 'nullable|string',
-            'pls_en' => 'nullable|string',
-            'pls_fr' => 'nullable|string',
-            'pls_source_language' => 'string|in:en,fr',
-            'pls_approved_by_author' => 'boolean',
-            'relevant_to' => 'nullable|string',
-            'public_interest_information' => 'nullable|string',
-            'potential_public_interest' => 'boolean',
-            'apply_ogl' => 'boolean',
-            'no_ogl_explanation' => 'nullable|string',
-            'intends_open_access' => 'boolean',
-            'open_access_rationale' => 'nullable|string',
+            'abstract' => ['nullable', 'string'],
+            'pls_en' => ['nullable', 'string'],
+            'pls_fr' => ['nullable', 'string'],
+            'pls_source_language' => ['string', 'in:en,fr'],
+            'pls_approved_by_author' => ['boolean'],
+            'relevant_to' => ['nullable', 'string'],
+            'public_interest_information' => ['nullable', 'string'],
+            'potential_public_interest' => ['boolean'],
+            'apply_ogl' => ['boolean'],
+            'no_ogl_explanation' => ['nullable', 'string'],
+            'intends_open_access' => ['boolean'],
+            'open_access_rationale' => ['nullable', 'string'],
         ]);
 
         $manuscriptRecord->update($validated);
@@ -213,7 +211,7 @@ class ManuscriptRecordController extends Controller
             $manuscriptRecord->save();
 
             // trigger event that the record was submitted
-            ManuscriptRecordToReviewEvent::dispatch($manuscriptRecord, $reviewUser);
+            event(new \App\Events\ManuscriptRecordToReviewEvent($manuscriptRecord, $reviewUser));
         });
 
         return $this->defaultResource($manuscriptRecord);
@@ -226,7 +224,7 @@ class ManuscriptRecordController extends Controller
         Gate::authorize('withdraw', $manuscriptRecord);
 
         $validated = $request->validate([
-            'withdraw_reason' => 'required|string|max:1000',
+            'withdraw_reason' => ['required', 'string', 'max:1000'],
         ]);
 
         $manuscriptRecord->status = ManuscriptRecordStatus::WITHDRAWN;
@@ -235,7 +233,7 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->save();
         $manuscriptRecord->refresh();
 
-        ManuscriptRecordWithdrawnByAuthor::dispatch($manuscriptRecord);
+        event(new \App\Events\ManuscriptRecordWithdrawnByAuthor($manuscriptRecord));
 
         return $this->defaultResource($manuscriptRecord);
     }
@@ -248,7 +246,7 @@ class ManuscriptRecordController extends Controller
 
         // validate the request has the submitted on date
         $validated = $request->validate([
-            'submitted_to_journal_on' => 'required|date',
+            'submitted_to_journal_on' => ['required', 'date'],
         ]);
 
         $manuscriptRecord->status = ManuscriptRecordStatus::SUBMITTED;
@@ -267,7 +265,7 @@ class ManuscriptRecordController extends Controller
         // validate the request has the submitted on date
         $validated = $request->validate([
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
-            'accepted_on' => 'required|date|after_or_equal:submitted_to_journal_on',
+            'accepted_on' => ['required', 'date', 'after_or_equal:submitted_to_journal_on'],
             'journal_id' => ['required', 'exists:journals,id'],
             'submission_file' => [
                 'file',
@@ -324,8 +322,8 @@ class ManuscriptRecordController extends Controller
 
         // validate the request has the preprint url
         $validated = $request->validate([
-            'accepted_on' => 'required|date',
-            'preprint_url' => 'required|url',
+            'accepted_on' => ['required', 'date'],
+            'preprint_url' => ['required', 'url'],
         ]);
 
         $manuscriptRecord->submitted_to_journal_on = $validated['accepted_on'];
@@ -390,6 +388,6 @@ class ManuscriptRecordController extends Controller
             $relationships->push('publication');
         }
 
-        return $manuscriptRecord->load($relationships->toArray());
+        return $manuscriptRecord->load($relationships->all());
     }
 }

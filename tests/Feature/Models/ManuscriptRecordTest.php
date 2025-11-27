@@ -27,14 +27,14 @@ test('an authenticated user can create a new manuscript', function (): void {
     ]);
 
     // data to be sent to the api
-    $submit_data = $manuscript_data->only(['title', 'region_id', 'type'])->toArray();
+    $submit_data = $manuscript_data->only(['title', 'region_id', 'type'])->all();
 
     $this->postJson('/api/manuscript-records', $submit_data)->assertUnauthorized();
 
     $response = $this->actingAs($user)->postJson('/api/manuscript-records', $submit_data)->assertCreated();
 
-    expect($response->json('data'))->toMatchArray($manuscript_data->toArray());
-    expect(ManuscriptRecord::find($response->json('data.id')))->toMatchArray($manuscript_data->toArray());
+    expect($response->json('data'))->toMatchArray($manuscript_data->all());
+    expect(ManuscriptRecord::find($response->json('data.id')))->toMatchArray($manuscript_data->all());
 });
 
 test('an authenticator user can see the manuscript for which they are an author', function (): void {

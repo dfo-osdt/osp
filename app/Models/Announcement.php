@@ -67,7 +67,7 @@ class Announcement extends Model
     /**
      * Return active announcements
      */
-    public function scopeActive(Builder $query)
+    protected function scopeActive(Builder $query)
     {
         return $query->where('start_at', '<=', now())
             ->where('end_at', '>=', now());
