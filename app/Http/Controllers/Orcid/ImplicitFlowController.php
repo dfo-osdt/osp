@@ -71,6 +71,7 @@ class ImplicitFlowController extends Controller
         if ($response->failed()) {
             throw ValidationException::withMessages(['orcid' => __('Unable to retrieve ORCID iD from ORCID.')]);
         }
+
         return $response->json()['id'];
     }
 

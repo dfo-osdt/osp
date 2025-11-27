@@ -3,7 +3,6 @@
 namespace App\Http\Integrations\Orcid\Requests;
 
 use App\Http\Integrations\Orcid\Data\EmploymentData;
-use App\Http\Integrations\Orcid\Enums\ActivitiesScopeEndpoint;
 use Saloon\Http\Response;
 
 class GetEmploymentRequest extends GetActivityRequest

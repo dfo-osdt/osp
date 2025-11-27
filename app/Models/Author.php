@@ -166,6 +166,7 @@ class Author extends Model
         if (! $this->orcid_access_token) {
             return false;
         }
+
         return $this->orcid_expires_at >= now();
     }
 

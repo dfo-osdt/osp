@@ -15,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        VerifyEmail::toMailUsing(fn(User $notifiable, string $url) => (new MailMessage)->subject(__('email.auth.verify.title'))->markdown('authentication.verify_email', ['url' => $url, 'user' => $notifiable->first_name]));
+        VerifyEmail::toMailUsing(fn (User $notifiable, string $url) => (new MailMessage)->subject(__('email.auth.verify.title'))->markdown('authentication.verify_email', ['url' => $url, 'user' => $notifiable->first_name]));
 
     }
 }

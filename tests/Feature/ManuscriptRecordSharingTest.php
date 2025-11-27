@@ -109,7 +109,7 @@ test('a user can share their manuscript with a user', function (): void {
         'expires_at' => now()->addDays(5),
     ])->assertCreated();
 
-    Event::assertDispatched(fn(ItemShared $event): bool => $event->shareableItem->shareable->is($manuscript) && $event->shareableItem->user->is($sharedUser));
+    Event::assertDispatched(fn (ItemShared $event): bool => $event->shareableItem->shareable->is($manuscript) && $event->shareableItem->user->is($sharedUser));
 
     $this->assertDatabaseHas('shareables', [
         'shareable_type' => ManuscriptRecord::class,

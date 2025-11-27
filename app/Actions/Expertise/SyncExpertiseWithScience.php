@@ -94,8 +94,8 @@ class SyncExpertiseWithScience
         }
 
         $unique = $expertises
-            ->unique(fn(array $expertise) => strtolower((string) $expertise['name_en']))
-            ->unique(fn(array $expertise) => strtolower((string) $expertise['name_fr']))
+            ->unique(fn (array $expertise) => strtolower((string) $expertise['name_en']))
+            ->unique(fn (array $expertise) => strtolower((string) $expertise['name_fr']))
             ->filter(function (array $expertise) use ($termsToRemove): bool {
                 $a = strtolower($expertise['name_en']);
 

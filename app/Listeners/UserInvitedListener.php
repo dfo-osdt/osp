@@ -25,7 +25,6 @@ class UserInvitedListener implements ShouldQueue
 
     /**
      * Handle the event.
-     *
      */
     public function handle(Invited $event): void
     {
