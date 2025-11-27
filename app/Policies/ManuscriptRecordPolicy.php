@@ -16,8 +16,6 @@ class ManuscriptRecordPolicy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(User $user): bool
     {
@@ -28,8 +26,6 @@ class ManuscriptRecordPolicy
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, ManuscriptRecord $manuscriptRecord)
     {
@@ -70,8 +66,6 @@ class ManuscriptRecordPolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user)
     {
@@ -80,8 +74,6 @@ class ManuscriptRecordPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, ManuscriptRecord $manuscriptRecord)
     {
@@ -111,6 +103,7 @@ class ManuscriptRecordPolicy
 
                 // Regional editor access
                 $regionSlug = $manuscriptRecord->region->slug ?? null;
+
                 return $regionSlug && $user->can("can_edit_{$regionSlug}_mrfs");
             default:
                 return false;
@@ -119,8 +112,6 @@ class ManuscriptRecordPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, ManuscriptRecord $manuscriptRecord)
     {
@@ -138,8 +129,6 @@ class ManuscriptRecordPolicy
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, ManuscriptRecord $manuscriptRecord): bool
     {
@@ -170,6 +159,7 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
+
         return null;
     }
 
@@ -230,6 +220,7 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
+
         return null;
     }
 
@@ -253,6 +244,7 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
             return true;
         }
+
         return null;
     }
 
@@ -276,6 +268,7 @@ class ManuscriptRecordPolicy
         if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
             return true;
         }
+
         return (bool) $manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable();
     }
 
