@@ -178,6 +178,9 @@ class Author extends Model
         return $this->hasMany(\App\Models\ManuscriptAuthor::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\ManuscriptRecord, $this, \Illuminate\Database\Eloquent\Relations\Pivot>
+     */
     public function manuscriptRecords(): BelongsToMany
     {
         return $this->belongsToMany(ManuscriptRecord::class, 'manuscript_authors');
