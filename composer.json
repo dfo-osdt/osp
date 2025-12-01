@@ -40,7 +40,7 @@
     "spatie/laravel-query-builder": "^6.0",
     "spatie/laravel-ray": "^1.36.2",
     "spatie/simple-excel": "^3.6",
-    "symfony/http-client": "^7.0.7",
+    "symfony/http-client": "^8.0.0",
     "torann/geoip": "^3.0.7"
   },
   "require-dev": {
