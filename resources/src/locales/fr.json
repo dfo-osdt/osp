@@ -320,6 +320,9 @@
     "primary-pub-desc": "Document scientifique ou technique destiné à être publié dans une revue tierce, un numéro spécial, un chapitre de livre, des actes de livre ou de conférence",
     "secondary-pub-desc": "Document scientifique ou technique à publier dans une série scientifique du MPO",
     "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de la révision par la gestion de ce manuscrit.",
+    "step0": {
+      "warning": "Si votre manuscrit a déjà été révisé en dehors du portail ou a été publié, ne continuez pas, ajoutez-le plutôt comme publication."
+    },
     "step1": {
       "text": "Veuillez sélectionner le type de manuscrit que vous souhaitez créer en fonction de l'éditeur prévu."
     },
@@ -360,7 +363,16 @@
     "add-your-first-publication": "Ajoutez votre première publication",
     "awaiting-publication": "En attente de publication",
     "create-your-first-manuscript-record": "Créez votre premier formulaire du registre des manuscrits",
-    "in-progress": "En cours"
+    "in-progress": "En cours",
+    "guide-cards": {
+      "manuscript-needs-review-title": "Besoin d'une révision par la gestion?",
+      "manuscript-needs-review-description": "Créez un registre de manuscrit si votre travail doit passer par le processus de révision par la gestion du MPO avant la soumission à une revue ou une publication.",
+      "manuscript-needs-review-action": "Créer un registre de manuscrit",
+      "already-reviewed-title": "Déjà révisé?",
+      "already-reviewed-description": "Si votre manuscrit a déjà été révisé en dehors du portail ou a été publié, ajoutez-le directement comme publication pour le suivre dans le système.",
+      "already-reviewed-action": "Ajouter une publication",
+      "quick-help-title": "Pour commencer"
+    }
   },
   "date-input": {
     "hint": "Format de date ISO (AAAA-MM-JJ)"

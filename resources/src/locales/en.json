@@ -320,6 +320,9 @@
     "primary-pub-desc": "Scientific or technical document to be published in a third-party journal, special issue, book chapter, book or conference proceeding",
     "secondary-pub-desc": "Scientific or technical document to be published in a DFO Science Series",
     "select-region-text": "Please select the lead DFO region responsible for the management review of this manuscript.",
+    "step0": {
+      "warning": "If your manuscript was already reviewed outside the portal or has been published, do not continue, add it as a publication instead."
+    },
     "step1": {
       "text": "Please select the type of manuscript you want to create based on the intended publisher."
     },
@@ -360,7 +363,16 @@
     "add-your-first-publication": "Add your first publication",
     "awaiting-publication": "Awaiting Publication",
     "create-your-first-manuscript-record": "Create your first manuscript record form",
-    "in-progress": "In progress"
+    "in-progress": "In progress",
+    "guide-cards": {
+      "manuscript-needs-review-title": "Need a Management Review?",
+      "manuscript-needs-review-description": "Create a manuscript record if your work needs to go through the DFO management review process before submission to a journal or publication.",
+      "manuscript-needs-review-action": "Create Manuscript Record",
+      "already-reviewed-title": "Already Reviewed?",
+      "already-reviewed-description": "If your manuscript was already reviewed outside the portal or has been published, add it directly as a publication to track it in the system.",
+      "already-reviewed-action": "Add Publication",
+      "quick-help-title": "Getting Started"
+    }
   },
   "date-input": {
     "hint": "ISO Date Format (YYYY-MM-DD)"
