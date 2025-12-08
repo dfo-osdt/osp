@@ -302,7 +302,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     /** Secondary publications */
     protected function scopeSecondaryPublication($query)
     {
-        return $query->whereIn('journal_id', Journal::dfoSeries()->pluck('id'));
+        return $query->whereIn('journal_id', Journal::query()->dfoSeries()->pluck('id'));
     }
 
     /**

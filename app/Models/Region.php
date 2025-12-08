@@ -36,7 +36,7 @@ class Region extends Model
     {
         $role = UserRole::from($this->slug.'_editor');
 
-        return User::role($role->value)->get();
+        return User::query()->role($role->value)->get();
 
     }
 }
