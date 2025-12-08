@@ -1,50 +1,51 @@
 <script setup lang="ts">
-import type { Ref } from 'vue';
+import type { Ref } from 'vue'
 import type {
   BaseManuscriptRecord,
   ManuscriptRecordType,
-} from '../ManuscriptRecord';
-import { QForm, QStepper } from 'quasar';
-import RegionSelect from '@/models/Region/components/RegionSelect.vue';
-import { ManuscriptRecordService } from '../ManuscriptRecord';
-import ManuscriptTypeRadioSelection from './ManuscriptTypeRadioSelection.vue';
+} from '../ManuscriptRecord'
+import { QForm, QStepper } from 'quasar'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
+import { ManuscriptRecordService } from '../ManuscriptRecord'
+import ManuscriptTypeRadioSelection from './ManuscriptTypeRadioSelection.vue'
 
 // router
-const router = useRouter();
+const router = useRouter()
 
 // stepper
-const stepper: Ref<QStepper | null> = ref(null);
-const step = ref(1);
-const manuscriptDetailForm: Ref<QForm | null> = ref(null);
-const manuscriptDetailFormValid = ref(true);
-const createButtonDisabled = ref(false);
+const stepper: Ref<QStepper | null> = ref(null)
+const step = ref(1)
+const manuscriptDetailForm: Ref<QForm | null> = ref(null)
+const manuscriptDetailFormValid = ref(true)
+const createButtonDisabled = ref(false)
 
 async function next() {
   if (step.value === 3) {
     // create manuscript
-    createButtonDisabled.value = true;
-    create();
-    return;
+    createButtonDisabled.value = true
+    create()
+    return
   }
   if (step.value === 2) {
-    const valid = await manuscriptDetailForm.value?.validate();
-    manuscriptDetailFormValid.value = valid === undefined ? true : valid;
-    if (!manuscriptDetailFormValid.value) return;
+    const valid = await manuscriptDetailForm.value?.validate()
+    manuscriptDetailFormValid.value = valid === undefined ? true : valid
+    if (!manuscriptDetailFormValid.value)
+      return
   }
-  stepper.value?.next();
+  stepper.value?.next()
 }
 
 // information required to create a manuscript record
-const type: Ref<ManuscriptRecordType> = ref('primary');
-const title = ref('');
-const regionId: Ref<number | null> = ref(null);
+const type: Ref<ManuscriptRecordType> = ref('primary')
+const title = ref('')
+const regionId: Ref<number | null> = ref(null)
 
 async function create() {
   const record: BaseManuscriptRecord = {
     type: type.value,
     title: title.value,
     region_id: regionId.value ?? 1,
-  };
+  }
 
   // create the manuscript record
   await ManuscriptRecordService.create(record)
@@ -52,11 +53,11 @@ async function create() {
       router.push({
         name: 'manuscript',
         params: { id: response.data.id },
-      });
+      })
     })
     .catch((error) => {
-      console.error(error);
-    });
+      console.error(error)
+    })
 }
 </script>
 
