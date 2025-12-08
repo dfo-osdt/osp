@@ -60,7 +60,7 @@ class LoginRequest extends Login
 
         session()->regenerate();
 
-        return app(LoginResponse::class);
+        return resolve(LoginResponse::class);
     }
 
     /**

@@ -18,7 +18,7 @@ class CheckAnnouncementController extends Controller
     public function __invoke(Request $request)
     {
 
-        $announcement = Announcement::active()->orderBy('start_at', 'desc')->get();
+        $announcement = Announcement::query()->active()->orderBy('start_at', 'desc')->get();
 
         if ($announcement->isEmpty()) {
             return response()->json([], 204);
