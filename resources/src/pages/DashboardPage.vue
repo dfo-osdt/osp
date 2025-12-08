@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import GuideCard from '@/components/GuideCard.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import RecentManagementReviewStepsView from '@/models/ManagementReviewStep/views/RecentManagementReviewStepsView.vue'
@@ -69,15 +70,48 @@ const showCreatePublication = ref(false)
           />
         </div>
       </div>
+
+      <!-- Quick Help Guide Cards -->
+      <div class="q-pa-sm">
+        <div class="text-h6 text-weight-medium text-grey-8 q-mb-sm q-ml-sm">
+          {{ $t('dashboard.guide-cards.quick-help-title') }}
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-6 q-pa-sm">
+            <GuideCard
+              :title="$t('dashboard.guide-cards.manuscript-needs-review-title')"
+              :description="
+                $t('dashboard.guide-cards.manuscript-needs-review-description')
+              "
+              :action-label="
+                $t('dashboard.guide-cards.manuscript-needs-review-action')
+              "
+              icon="mdi-file-document-edit"
+              color="primary"
+              @action="showCreateManuscript = true"
+            />
+          </div>
+          <div class="col-12 col-sm-6 q-pa-sm">
+            <GuideCard
+              :title="$t('dashboard.guide-cards.already-reviewed-title')"
+              :description="
+                $t('dashboard.guide-cards.already-reviewed-description')
+              "
+              :action-label="
+                $t('dashboard.guide-cards.already-reviewed-action')
+              "
+              icon="mdi-book-check"
+              color="secondary"
+              @action="showCreatePublication = true"
+            />
+          </div>
+        </div>
+      </div>
+
       <div class="q-pa-sm">
         <ContentCard>
           <template #title>
-            <q-icon
-              name="mdi-history"
-              color="primary"
-              size="sm"
-              left
-            />
+            <q-icon name="mdi-history" color="primary" size="sm" left />
             <span>{{ $t('common.recent') }}</span>
           </template>
           <template #nav>
@@ -90,10 +124,7 @@ const showCreatePublication = ref(false)
               active-color="primary"
               class="text-grey-8"
             >
-              <q-tab
-                name="manuscripts"
-                :label="$t('common.manuscripts')"
-              />
+              <q-tab name="manuscripts" :label="$t('common.manuscripts')" />
               <q-tab name="reviews">
                 <span class="text-weight-medium q-pr-xs">{{
                   $t('common.reviews')
@@ -105,30 +136,19 @@ const showCreatePublication = ref(false)
                   floating
                   transparent
                 >
-                  {{
-                    reviewSteps.pendingReviewCount
-                  }}
+                  {{ reviewSteps.pendingReviewCount }}
                 </q-badge>
               </q-tab>
-              <q-tab
-                name="publications"
-                :label="$t('common.publications')"
-              />
+              <q-tab name="publications" :label="$t('common.publications')" />
             </q-tabs>
             <q-separator />
           </template>
 
           <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="manuscripts" class="q-pa-none">
-              <template
-                v-if="manuscripts.empty && !manuscripts.loading"
-              >
+              <template v-if="manuscripts.empty && !manuscripts.loading">
                 <NoManuscriptExistsDiv
-                  :title="
-                    $t(
-                      'dashboard.create-your-first-manuscript-record',
-                    )
-                  "
+                  :title="$t('dashboard.create-your-first-manuscript-record')"
                 />
               </template>
               <ManuscriptList
@@ -144,16 +164,8 @@ const showCreatePublication = ref(false)
                   class="q-mb-md"
                   @click="showCreateManuscript = true"
                 >
-                  {{
-                    $t(
-                      'my-manuscript-records.create-manuscript',
-                    )
-                  }}
+                  {{ $t('my-manuscript-records.create-manuscript') }}
                 </q-btn>
-                <CreateManuscriptDialog
-                  v-if="showCreateManuscript"
-                  v-model="showCreateManuscript"
-                />
               </div>
             </q-tab-panel>
             <q-tab-panel name="reviews" class="q-pa-none">
@@ -162,11 +174,7 @@ const showCreatePublication = ref(false)
             <q-tab-panel name="publications" class="q-pa-none">
               <template v-if="publications.empty">
                 <NoPublicationExistDiv
-                  :title="
-                    $t(
-                      'dashboard.add-your-first-publication',
-                    )
-                  "
+                  :title="$t('dashboard.add-your-first-publication')"
                 />
               </template>
               <PublicationList
@@ -183,14 +191,20 @@ const showCreatePublication = ref(false)
                   {{ $t('dashboard.add-publication') }}
                 </q-btn>
               </div>
-              <CreatePublicationDialog
-                v-if="showCreatePublication"
-                v-model="showCreatePublication"
-              />
             </q-tab-panel>
           </q-tab-panels>
         </ContentCard>
       </div>
+
+      <!-- Dialogs (outside tabs so they work from any tab) -->
+      <CreateManuscriptDialog
+        v-if="showCreateManuscript"
+        v-model="showCreateManuscript"
+      />
+      <CreatePublicationDialog
+        v-if="showCreatePublication"
+        v-model="showCreatePublication"
+      />
     </div>
   </MainPageLayout>
 </template>
