@@ -8,7 +8,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
 
 class ManagementReviewPendingMail extends Mailable implements ShouldQueue
 {
@@ -16,14 +15,20 @@ class ManagementReviewPendingMail extends Mailable implements ShouldQueue
     use SerializesModels;
 
     /**
+     * @var array<int>
+     */
+    public array $reviewIds;
+
+    /**
      * Create a new message instance.
      *
-     * @param  Collection<int, ManagementReviewStep>  $reviews
+     * @param  \Illuminate\Support\Collection<int, ManagementReviewStep>  $reviews
      * @return void
      */
-    public function __construct(public Collection $reviews, public User $user)
+    public function __construct($reviews, public User $user)
     {
-        //
+        // Store only the IDs to avoid serialization issues
+        $this->reviewIds = $reviews->pluck('id')->toArray();
     }
 
     /**
@@ -33,11 +38,20 @@ class ManagementReviewPendingMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
+        // Load reviews with relationships when building the email
+        $reviews = ManagementReviewStep::query()
+            ->whereIn('id', $this->reviewIds)
+            ->with('manuscriptRecord')
+            ->get();
+
         $subject = 'Weekly Summary: Pending Management Reviews / Résumé hebdomadaire: Révisions de gestion en attente';
 
         $this->subject($subject);
         $this->to($this->user->email, $this->user->fullName);
 
-        return $this->markdown('mail.management-review-pending-mail');
+        return $this->markdown('mail.management-review-pending-mail', [
+            'reviews' => $reviews,
+            'user' => $this->user,
+        ]);
     }
 }

@@ -28,14 +28,26 @@ class SendPendingManagementReviewNotifications extends Command
     {
         $this->info('Checking for pending management reviews...');
 
-        CheckPendingManagementReviews::handle();
+        $users = collect(CheckPendingManagementReviews::handle());
 
         $this->info('Pending management review notifications have been queued.');
         activity()
             ->withProperties([
                 'date' => now()->toDateString(),
+                'users_notified' => $users->pluck('email'),
             ])
             ->log('SendPendingManagementReviewNotifications completed successfully');
+
+        if ($users->isEmpty()) {
+            $this->info('No users to notify.');
+
+            return 0;
+        }
+
+        $this->table(
+            headers: ['Name', 'Email'],
+            rows: $users->map(fn ($user): array => [$user->full_name, $user->email])->all(),
+        );
 
         return 0;
     }

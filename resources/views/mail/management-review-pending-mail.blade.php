@@ -9,7 +9,7 @@ This is your weekly summary of pending management reviews. You have {{ $reviews-
 | Manuscript Title | Due Date | Pending For |
 | :------------- | :------------- | :------------- |
 @foreach($reviews as $review)
-| [{{ Str::limit($review->manuscriptRecord->title, 60) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $review->manuscript_record_id }}/reviews) | {{ $review->decision_expected_by->locale('en_CA')->isoFormat('LL') }} | {{ $review->created_at->diffForHumans() }} |
+| [{{ Str::limit($review->manuscriptRecord->title, 60) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $review->manuscript_record_id }}/reviews) | {{ $review->decision_expected_by?->locale('en_CA')->isoFormat('LL') ?? 'N/A' }} | {{ $review->created_at->diffForHumans() }} |
 @endforeach
 </x-mail::table>
 
@@ -31,7 +31,7 @@ Voici votre résumé hebdomadaire des révisions de gestion en attente. Vous ave
 | Titre du manuscrit | Date d'échéance | En attente depuis |
 | :------------- | :------------- | :------------- |
 @foreach($reviews as $review)
-| [{{ Str::limit($review->manuscriptRecord->title, 60) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $review->manuscript_record_id }}/reviews) | {{ $review->decision_expected_by->locale('fr_CA')->isoFormat('LL') }} | {{ $review->created_at->locale('fr_CA')->diffForHumans() }} |
+| [{{ Str::limit($review->manuscriptRecord->title, 60) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $review->manuscript_record_id }}/reviews) | {{ $review->decision_expected_by?->locale('fr_CA')->isoFormat('LL') ?? 'N/A' }} | {{ $review->created_at->locale('fr_CA')->diffForHumans() }} |
 @endforeach
 </x-mail::table>
 
