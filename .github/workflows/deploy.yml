@@ -20,12 +20,12 @@ jobs:
       VITE_AZURE_ENABLE_AUTH: true
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: pnpm
         uses: pnpm/action-setup@v4
       - name: Use Node.js 21.x
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: pnpm
