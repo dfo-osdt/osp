@@ -13,12 +13,11 @@ test('mail renders with reviews that have decision_expected_by dates', function 
     ]);
 
     $mailable = new ManagementReviewPendingMail($reviews, $user);
-    $mailable->build();
 
     $rendered = $mailable->render();
 
     expect($rendered)->toContain($user->first_name);
-    expect($rendered)->toContain('Weekly Summary');
+    expect($rendered)->toContain('weekly summary of pending management reviews');
     expect($rendered)->toContain('View My Reviews');
 });
 
@@ -30,12 +29,11 @@ test('mail renders with reviews that have null decision_expected_by dates', func
     ]);
 
     $mailable = new ManagementReviewPendingMail($reviews, $user);
-    $mailable->build();
 
     $rendered = $mailable->render();
 
     expect($rendered)->toContain($user->first_name);
-    expect($rendered)->toContain('Weekly Summary');
+    expect($rendered)->toContain('weekly summary of pending management reviews');
     expect($rendered)->toContain('N/A'); // Should show N/A for missing dates
 });
 
@@ -55,11 +53,10 @@ test('mail renders with mixed reviews - some with dates, some without', function
     $reviews = Collection::make([$reviewWithDate, $reviewWithoutDate]);
 
     $mailable = new ManagementReviewPendingMail($reviews, $user);
-    $mailable->build();
 
     $rendered = $mailable->render();
 
     expect($rendered)->toContain($user->first_name);
-    expect($rendered)->toContain('Weekly Summary');
+    expect($rendered)->toContain('weekly summary of pending management reviews');
     expect($rendered)->toContain('N/A'); // Should show N/A for the review without a date
 });
