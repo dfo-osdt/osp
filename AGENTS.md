@@ -46,11 +46,12 @@
 
 ## Laravel Project-Specific
 
-### Structure (Laravel 10 style - NOT migrated to Laravel 11+)
+### Structure (Laravel 10 style - NOT yet migrated to Laravel 11+ structure)
 
-- Middleware: `app/Http/Middleware/`, registered in `app/Http/Kernel.php`
-- Providers: `app/Providers/`
-- No `bootstrap/app.php` - use Kernel files instead
+- **Middleware:** `app/Http/Middleware/`, registered in `app/Http/Kernel.php` (NOT in `bootstrap/app.php`)
+- **Service Providers:** `app/Providers/` (NOT consolidated into `bootstrap/app.php`)
+- **Scheduled tasks:** `app/Console/Kernel.php` (NOT in `routes/console.php`)
+- **Note:** This project uses Laravel 12 but retains the L10 structure. Migration to L11+ structure is planned but not prioritized.
 - Models use `casts()` method, not `$casts` property
 
 ### Database & Models
