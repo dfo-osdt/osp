@@ -51,7 +51,7 @@ jobs:
     environment: staging
     steps:
       - name: Get artifact from previous step
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: app-build
           path: osp_${{github.sha}}.tar.gz
@@ -117,7 +117,7 @@ jobs:
     environment: production
     steps:
       - name: Get artifact from previous step
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: app-build
           path: osp_${{github.sha}}.tar.gz
