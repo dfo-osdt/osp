@@ -69,7 +69,7 @@ class DownloadLatestRORData
         }
 
         // is Json file already extracted?
-        $jsonFile = $base_path.'/'.Str::beforeLast($fileName, '.').'_schema_v2.json';
+        $jsonFile = $base_path.'/'.Str::beforeLast($fileName, '.').'.json';
 
         if (file_exists($jsonFile)) {
             return [
