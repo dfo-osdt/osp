@@ -738,16 +738,16 @@
         },
         {
             "name": "cmixin/business-day",
-            "version": "1.20.3",
+            "version": "1.20.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kylekatarnls/business-day.git",
-                "reference": "414302dde988a7c130fd703320c088c33caef59f"
+                "reference": "997aada4914dfb8c21a408a966f851019a012141"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/414302dde988a7c130fd703320c088c33caef59f",
-                "reference": "414302dde988a7c130fd703320c088c33caef59f",
+                "url": "https://api.github.com/repos/kylekatarnls/business-day/zipball/997aada4914dfb8c21a408a966f851019a012141",
+                "reference": "997aada4914dfb8c21a408a966f851019a012141",
                 "shasum": ""
             },
             "require": {
@@ -793,7 +793,7 @@
             "description": "Carbon mixin to handle business days",
             "support": {
                 "issues": "https://github.com/kylekatarnls/business-day/issues",
-                "source": "https://github.com/kylekatarnls/business-day/tree/1.20.3"
+                "source": "https://github.com/kylekatarnls/business-day/tree/1.20.4"
             },
             "funding": [
                 {
@@ -805,7 +805,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-10-24T10:22:25+00:00"
+            "time": "2025-12-18T07:55:02+00:00"
         },
         {
             "name": "composer/ca-bundle",
