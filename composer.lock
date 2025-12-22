@@ -6460,16 +6460,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v4.1.0",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "fa1f0b8261ed150447979eb22e373b7b7ad5a8e0"
+                "reference": "c99059c0315591f1a0db7ad6002000288ab8dc72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/fa1f0b8261ed150447979eb22e373b7b7ad5a8e0",
-                "reference": "fa1f0b8261ed150447979eb22e373b7b7ad5a8e0",
+                "url": "https://api.github.com/repos/nette/utils/zipball/c99059c0315591f1a0db7ad6002000288ab8dc72",
+                "reference": "c99059c0315591f1a0db7ad6002000288ab8dc72",
                 "shasum": ""
             },
             "require": {
@@ -6543,9 +6543,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v4.1.0"
+                "source": "https://github.com/nette/utils/tree/v4.1.1"
             },
-            "time": "2025-12-01T17:49:23+00:00"
+            "time": "2025-12-22T12:14:32+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -9135,16 +9135,16 @@
         },
         {
             "name": "saloonphp/laravel-plugin",
-            "version": "v3.7.0",
+            "version": "v3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saloonphp/laravel-plugin.git",
-                "reference": "85e423202c5da8be6c3c30f6f7dac854d0975325"
+                "reference": "19c7ab459a0b7c21b54c8eda8b5028d5b48ca577"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saloonphp/laravel-plugin/zipball/85e423202c5da8be6c3c30f6f7dac854d0975325",
-                "reference": "85e423202c5da8be6c3c30f6f7dac854d0975325",
+                "url": "https://api.github.com/repos/saloonphp/laravel-plugin/zipball/19c7ab459a0b7c21b54c8eda8b5028d5b48ca577",
+                "reference": "19c7ab459a0b7c21b54c8eda8b5028d5b48ca577",
                 "shasum": ""
             },
             "require": {
@@ -9156,6 +9156,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.48",
+                "laravel/telescope": "^5.16",
                 "orchestra/testbench": "^9.15 || ^10.7",
                 "pestphp/pest": "^3.0|^4.0",
                 "phpstan/phpstan": "^1.10.57|^2.0.2"
@@ -9197,9 +9198,9 @@
                 "sdk"
             ],
             "support": {
-                "source": "https://github.com/saloonphp/laravel-plugin/tree/v3.7.0"
+                "source": "https://github.com/saloonphp/laravel-plugin/tree/v3.8.0"
             },
-            "time": "2025-11-21T23:45:44+00:00"
+            "time": "2025-12-18T22:46:16+00:00"
         },
         {
             "name": "saloonphp/saloon",
