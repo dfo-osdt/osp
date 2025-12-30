@@ -41,6 +41,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog> $authentications
  * @property-read int|null $authentications_count
  * @property-read \App\Models\Author|null $author
+ *
+ * @method \Illuminate\Database\Eloquent\Relations\MorphMany<\Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog, $this> authentications()
+ *
  * @property-read string $full_name
  * @property-read \App\Models\Invitation|null $invitation
  * @property-read \Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog|null $latestAuthentication
@@ -304,7 +307,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
 
     public function previousSuccessfulLoginAt()
     {
-        return $this->authentications()->whereLoginSuccessful(true)->skip(1)->first()?->login_at;
+        return $this->authentications()->successful()->skip(1)->first()?->login_at;
     }
 
     /** Is this a Regional Editor */
