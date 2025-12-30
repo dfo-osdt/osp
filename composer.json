@@ -26,7 +26,7 @@
     "league/flysystem-aws-s3-v3": "^3.27",
     "microsoft/microsoft-graph": "^2.23",
     "predis/predis": "^3.0",
-    "rappasoft/laravel-authentication-log": "^5.0",
+    "rappasoft/laravel-authentication-log": "^6.0",
     "saloonphp/laravel-plugin": "^3.5",
     "saloonphp/saloon": "^3.8.1",
     "socialiteproviders/microsoft-azure": "^5.2",
