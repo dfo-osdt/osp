@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         $tableName = config('authentication-log.table_name', 'authentication_log');
-        
+
         if (! Schema::hasTable($tableName)) {
             return;
         }
@@ -61,7 +61,7 @@ return new class extends Migration
     public function down(): void
     {
         $tableName = config('authentication-log.table_name', 'authentication_log');
-        
+
         if (! Schema::hasTable($tableName)) {
             return;
         }
@@ -84,4 +84,3 @@ return new class extends Migration
         });
     }
 };
-
