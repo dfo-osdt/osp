@@ -41,6 +41,16 @@ class Kernel extends ConsoleKernel
         // send weekly pending management review summary (only on Mondays)
         $schedule->command('osp:send-pending-management-review-notifications')->weekly()->mondays()->at('14:00');  // 14h00 UTC (9am EST)
 
+        // send monthly pending journal acceptance summary (first Monday of every month)
+        $schedule->command('osp:send-pending-journal-acceptance-notifications')
+            ->weekly()
+            ->mondays()
+            ->at('14:00')  // 14h00 UTC (9am EST)
+            ->when(function () {
+                // Only run on the first Monday of the month (day 1-7)
+                return now()->day <= 7;
+            });
+
     }
 
     /**

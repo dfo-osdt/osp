@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enums\ManuscriptRecordType;
 use App\Events\Auth\Invited;
+use App\Mail\JournalAcceptancePendingMail;
 use App\Mail\ManagementReviewDueMail;
 use App\Mail\ManagementReviewPendingMail;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
@@ -14,6 +15,7 @@ use App\Models\Shareable;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ExportEmails extends Command
 {
@@ -43,7 +45,7 @@ class ExportEmails extends Command
         }
 
         // start a database transaction, we will rollback after this to leave the database clean
-        \DB::beginTransaction();
+        DB::beginTransaction();
 
         $mrfReviewComplete = new \App\Mail\ManuscriptManagementReviewComplete(ManuscriptRecord::factory([
             'type' => ManuscriptRecordType::PRIMARY,
@@ -275,7 +277,32 @@ class ExportEmails extends Command
         $markdownContent = $managementReviewPending->render();
         $this->exportFile('management-review-pending-weekly.html', $markdownContent);
 
-        \DB::rollBack();
+        // Journal acceptance pending monthly summary
+        $user = User::factory()->create();
+        $pendingManuscripts = collect([
+            ManuscriptRecord::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
+                'reviewed_at' => now()->subMonths(3),
+            ]),
+            ManuscriptRecord::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManuscriptRecordStatus::SUBMITTED,
+                'reviewed_at' => now()->subMonths(1),
+                'submitted_to_journal_on' => now()->subWeeks(3),
+            ]),
+            ManuscriptRecord::factory()->create([
+                'user_id' => $user->id,
+                'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
+                'reviewed_at' => now()->subMonth(),
+            ]),
+        ]);
+
+        $journalAcceptancePending = new JournalAcceptancePendingMail($pendingManuscripts, $user);
+        $markdownContent = $journalAcceptancePending->render();
+        $this->exportFile('journal-acceptance-pending-monthly.html', $markdownContent);
+
+        DB::rollBack();
 
         return 0;
     }

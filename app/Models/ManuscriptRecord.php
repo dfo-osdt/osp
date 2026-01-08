@@ -12,6 +12,8 @@ use App\Traits\FundableTrait;
 use App\Traits\PlannableTrait;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -403,5 +405,14 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         return $validator->passes();
     }
 
-    // / Scope methods
+    // Scope methods
+    /**
+     * Scope to filter manuscripts that are pending journal acceptance
+     * (reviewed or submitted but not yet accepted or withdrawn)
+     */
+    #[Scope]
+    protected function pendingJournalAcceptance(Builder $query): void
+    {
+        $query->whereIn('status', [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED]);
+    }
 }
