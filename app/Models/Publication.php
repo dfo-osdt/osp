@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Contracts\Fundable;
 use App\Contracts\Plannable;
+use App\Enums\ManuscriptRecordType;
 use App\Enums\MediaCollection;
 use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
@@ -303,6 +304,20 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     protected function scopeSecondaryPublication($query)
     {
         return $query->whereIn('journal_id', Journal::query()->dfoSeries()->pluck('id'));
+    }
+
+    /**
+     * Scope to filter publications that are accepted but not yet marked as published
+     * Only includes primary publications that have a manuscript record
+     */
+    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    protected function pendingPublish(\Illuminate\Database\Eloquent\Builder $query): void
+    {
+        $query->where('status', PublicationStatus::ACCEPTED)
+            ->whereNotNull('manuscript_record_id')
+            ->whereHas('manuscriptRecord', function (\Illuminate\Contracts\Database\Query\Builder $q): void {
+                $q->where('type', ManuscriptRecordType::PRIMARY);
+            });
     }
 
     /**

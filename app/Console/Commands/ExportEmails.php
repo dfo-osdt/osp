@@ -277,30 +277,123 @@ class ExportEmails extends Command
         $markdownContent = $managementReviewPending->render();
         $this->exportFile('management-review-pending-weekly.html', $markdownContent);
 
-        // Journal acceptance pending monthly summary
-        $user = User::factory()->create();
-        $pendingManuscripts = collect([
+        // Journal acceptance pending monthly summary - manuscripts only
+        $user1 = User::factory()->create();
+        $pendingManuscripts1 = collect([
             ManuscriptRecord::factory()->create([
-                'user_id' => $user->id,
+                'user_id' => $user1->id,
                 'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
                 'reviewed_at' => now()->subMonths(3),
             ]),
             ManuscriptRecord::factory()->create([
-                'user_id' => $user->id,
+                'user_id' => $user1->id,
                 'status' => \App\Enums\ManuscriptRecordStatus::SUBMITTED,
                 'reviewed_at' => now()->subMonths(1),
                 'submitted_to_journal_on' => now()->subWeeks(3),
             ]),
             ManuscriptRecord::factory()->create([
-                'user_id' => $user->id,
+                'user_id' => $user1->id,
                 'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
                 'reviewed_at' => now()->subMonth(),
             ]),
         ]);
 
-        $journalAcceptancePending = new JournalAcceptancePendingMail($pendingManuscripts, $user);
-        $markdownContent = $journalAcceptancePending->render();
-        $this->exportFile('journal-acceptance-pending-monthly.html', $markdownContent);
+        $journalAcceptancePendingManuscriptsOnly = new JournalAcceptancePendingMail($pendingManuscripts1, collect(), $user1);
+        $markdownContent = $journalAcceptancePendingManuscriptsOnly->render();
+        $this->exportFile('journal-acceptance-pending-monthly-manuscripts-only.html', $markdownContent);
+
+        // Journal acceptance pending monthly summary - with publications
+        $user2 = User::factory()->create();
+        $pendingManuscripts2 = collect([
+            ManuscriptRecord::factory()->create([
+                'user_id' => $user2->id,
+                'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
+                'reviewed_at' => now()->subMonths(2),
+            ]),
+            ManuscriptRecord::factory()->create([
+                'user_id' => $user2->id,
+                'status' => \App\Enums\ManuscriptRecordStatus::SUBMITTED,
+                'reviewed_at' => now()->subMonths(1),
+                'submitted_to_journal_on' => now()->subWeeks(2),
+            ]),
+        ]);
+
+        $acceptedManuscript1 = ManuscriptRecord::factory()->create([
+            'user_id' => $user2->id,
+            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
+            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+        ]);
+
+        $acceptedManuscript2 = ManuscriptRecord::factory()->create([
+            'user_id' => $user2->id,
+            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
+            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+        ]);
+
+        $acceptedManuscript3 = ManuscriptRecord::factory()->create([
+            'user_id' => $user2->id,
+            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
+            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+        ]);
+
+        $pendingPublications2 = collect([
+            \App\Models\Publication::factory()->create([
+                'user_id' => $user2->id,
+                'manuscript_record_id' => $acceptedManuscript1->id,
+                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'accepted_on' => now()->subMonths(3),
+            ])->load('journal'),
+            \App\Models\Publication::factory()->create([
+                'user_id' => $user2->id,
+                'manuscript_record_id' => $acceptedManuscript2->id,
+                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'accepted_on' => now()->subMonths(2),
+            ])->load('journal'),
+            \App\Models\Publication::factory()->create([
+                'user_id' => $user2->id,
+                'manuscript_record_id' => $acceptedManuscript3->id,
+                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'accepted_on' => now()->subMonth(),
+            ])->load('journal'),
+        ]);
+
+        $journalAcceptancePendingWithPublications = new JournalAcceptancePendingMail($pendingManuscripts2, $pendingPublications2, $user2);
+        $markdownContent = $journalAcceptancePendingWithPublications->render();
+        $this->exportFile('journal-acceptance-pending-monthly-with-publications.html', $markdownContent);
+
+        // Journal acceptance pending monthly summary - publications only
+        $user3 = User::factory()->create();
+
+        $acceptedManuscript4 = ManuscriptRecord::factory()->create([
+            'user_id' => $user3->id,
+            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
+            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+        ]);
+
+        $acceptedManuscript5 = ManuscriptRecord::factory()->create([
+            'user_id' => $user3->id,
+            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
+            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+        ]);
+
+        $pendingPublications3 = collect([
+            \App\Models\Publication::factory()->create([
+                'user_id' => $user3->id,
+                'manuscript_record_id' => $acceptedManuscript4->id,
+                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'accepted_on' => now()->subMonths(4),
+            ])->load('journal'),
+            \App\Models\Publication::factory()->create([
+                'user_id' => $user3->id,
+                'manuscript_record_id' => $acceptedManuscript5->id,
+                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'accepted_on' => now()->subMonths(2),
+            ])->load('journal'),
+        ]);
+
+        $journalAcceptancePendingPublicationsOnly = new JournalAcceptancePendingMail(collect(), $pendingPublications3, $user3);
+        $markdownContent = $journalAcceptancePendingPublicationsOnly->render();
+        $this->exportFile('journal-acceptance-pending-monthly-publications-only.html', $markdownContent);
 
         DB::rollBack();
 

@@ -1,8 +1,11 @@
 <?php
 
 use App\Enums\ManuscriptRecordStatus;
+use App\Enums\ManuscriptRecordType;
+use App\Enums\PublicationStatus;
 use App\Mail\JournalAcceptancePendingMail;
 use App\Models\ManuscriptRecord;
+use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -64,4 +67,28 @@ test('it logs activity when command is executed', function (): void {
     $this->assertDatabaseHas('activity_log', [
         'description' => 'SendPendingJournalAcceptanceNotifications completed successfully',
     ]);
+});
+
+test('it sends notifications when there are pending publications', function (): void {
+    Mail::fake();
+
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'type' => ManuscriptRecordType::PRIMARY,
+        'status' => ManuscriptRecordStatus::ACCEPTED,
+    ]);
+    Publication::factory()->create([
+        'user_id' => $user->id,
+        'manuscript_record_id' => $manuscript->id,
+        'status' => PublicationStatus::ACCEPTED,
+        'accepted_on' => now()->subMonths(1),
+    ]);
+
+    $this->artisan('osp:send-pending-journal-acceptance-notifications')
+        ->expectsOutput('Checking for manuscripts that need status updates...')
+        ->expectsOutput('Manuscript status update reminder notifications have been queued.')
+        ->assertExitCode(0);
+
+    Mail::assertQueued(JournalAcceptancePendingMail::class);
 });

@@ -46,10 +46,9 @@ class Kernel extends ConsoleKernel
             ->weekly()
             ->mondays()
             ->at('14:00')  // 14h00 UTC (9am EST)
-            ->when(function () {
+            ->when(
                 // Only run on the first Monday of the month (day 1-7)
-                return now()->day <= 7;
-            });
+                fn (): bool => now()->day <= 7);
 
     }
 
