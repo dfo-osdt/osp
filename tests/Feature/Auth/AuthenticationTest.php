@@ -120,4 +120,20 @@ class AuthenticationTest extends TestCase
         $response->assertJsonFragment(['last_login_at' => $user->previousSuccessfulLoginAt()]);
 
     }
+
+    public function test_oauth_users_with_null_password_can_access_authenticated_routes(): void
+    {
+        // Create a user with null password (simulating OAuth authentication)
+        $user = User::factory()->create([
+            'password' => null,
+        ]);
+
+        // Manually authenticate the user (simulating OAuth flow)
+        $this->actingAs($user);
+
+        // Verify the user can access authenticated routes without TypeErrors
+        $response = $this->get('/api/user');
+        $response->assertOk();
+        $response->assertJsonFragment(['email' => $user->email]);
+    }
 }
