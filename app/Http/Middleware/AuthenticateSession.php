@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\Http\Middleware\AuthenticateSession as SanctumAuthenticateSession;
 
@@ -21,7 +20,7 @@ class AuthenticateSession extends SanctumAuthenticateSession
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next): mixed
+    public function handle(\Illuminate\Http\Request $request, Closure $next): \Symfony\Component\HttpFoundation\Response
     {
         if (! $request->user()) {
             return $next($request);
