@@ -7946,16 +7946,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "1e0cd5370df5dd2e556a36b9c62f62e555870495"
+                "reference": "16dbf9937da8d4528ceb2145c9c7c0bd29e26374"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/1e0cd5370df5dd2e556a36b9c62f62e555870495",
-                "reference": "1e0cd5370df5dd2e556a36b9c62f62e555870495",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/16dbf9937da8d4528ceb2145c9c7c0bd29e26374",
+                "reference": "16dbf9937da8d4528ceb2145c9c7c0bd29e26374",
                 "shasum": ""
             },
             "require": {
@@ -7987,9 +7987,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.1"
             },
-            "time": "2025-08-30T15:50:23+00:00"
+            "time": "2026-01-12T11:33:04+00:00"
         },
         {
             "name": "pragmarx/google2fa",
@@ -18657,16 +18657,16 @@
         },
         {
             "name": "pestphp/pest-plugin-browser",
-            "version": "v4.2.0",
+            "version": "v4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest-plugin-browser.git",
-                "reference": "d07e6ba8978fb6985e165d668e4ecae374cbaa18"
+                "reference": "0ed837ab7e80e6fc78d36913cc0b006f8819336d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest-plugin-browser/zipball/d07e6ba8978fb6985e165d668e4ecae374cbaa18",
-                "reference": "d07e6ba8978fb6985e165d668e4ecae374cbaa18",
+                "url": "https://api.github.com/repos/pestphp/pest-plugin-browser/zipball/0ed837ab7e80e6fc78d36913cc0b006f8819336d",
+                "reference": "0ed837ab7e80e6fc78d36913cc0b006f8819336d",
                 "shasum": ""
             },
             "require": {
@@ -18720,7 +18720,7 @@
                 "unit"
             ],
             "support": {
-                "source": "https://github.com/pestphp/pest-plugin-browser/tree/v4.2.0"
+                "source": "https://github.com/pestphp/pest-plugin-browser/tree/v4.2.1"
             },
             "funding": [
                 {
@@ -18736,7 +18736,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-01-07T19:39:30+00:00"
+            "time": "2026-01-11T20:32:34+00:00"
         },
         {
             "name": "pestphp/pest-plugin-laravel",
