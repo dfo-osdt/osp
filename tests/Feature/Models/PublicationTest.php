@@ -553,7 +553,6 @@ test('publication owner can delete if pub has no MRF', function (): void {
         'manuscript_record_id' => null,
     ]);
 
-    // Owner without DELETE_PUBLICATIONS permission should be forbidden
     $response = $this->actingAs($user)->getJson("/api/publications/{$publication->id}");
     $response->assertOk();
     expect($response->json('can.delete'))->toBe(true);
