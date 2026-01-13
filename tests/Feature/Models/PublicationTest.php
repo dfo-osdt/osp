@@ -5,6 +5,7 @@ use App\Enums\SupplementaryFileType;
 use App\Models\Funder;
 use App\Models\FundingSource;
 use App\Models\Journal;
+use App\Models\ManuscriptRecord;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
 use App\Models\User;
@@ -528,11 +529,11 @@ test('deleting publication also soft deletes publication authors and funding sou
     expect(FundingSource::withTrashed()->whereIn('id', $fundingIds)->count())->toBe(1);
 });
 
-test('publication owner cannot delete without DELETE_PUBLICATIONS permission', function (): void {
+test('publication owner cannot delete if pub has MRF', function (): void {
     $user = User::factory()->create();
     $publication = Publication::factory()->create([
         'user_id' => $user->id,
-        'manuscript_record_id' => null,
+        'manuscript_record_id' => ManuscriptRecord::factory()->create()->id,
     ]);
 
     // Owner without DELETE_PUBLICATIONS permission should be forbidden
@@ -543,4 +544,21 @@ test('publication owner cannot delete without DELETE_PUBLICATIONS permission', f
     $response = $this->actingAs($user)->deleteJson("/api/publications/{$publication->id}");
     $response->assertForbidden();
     expect(Publication::query()->find($publication->id))->not->toBeNull();
+});
+
+test('publication owner can delete if pub has no MRF', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create([
+        'user_id' => $user->id,
+        'manuscript_record_id' => null,
+    ]);
+
+    // Owner without DELETE_PUBLICATIONS permission should be forbidden
+    $response = $this->actingAs($user)->getJson("/api/publications/{$publication->id}");
+    $response->assertOk();
+    expect($response->json('can.delete'))->toBe(true);
+
+    $response = $this->actingAs($user)->deleteJson("/api/publications/{$publication->id}");
+    $response->assertNoContent();
+    expect(Publication::query()->find($publication->id))->toBeNull();
 });

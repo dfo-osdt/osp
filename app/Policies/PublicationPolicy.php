@@ -164,6 +164,11 @@ class PublicationPolicy
             return false;
         }
 
+        // If owner of the publication, allow delete.
+        if ($publication->user_id === $user->id) {
+            return true;
+        }
+
         // Only users with DELETE_PUBLICATIONS permission can delete
         return $user->hasPermissionTo(UserPermission::DELETE_PUBLICATIONS);
     }
