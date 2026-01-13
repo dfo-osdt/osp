@@ -56,7 +56,7 @@ class RestoreSoftDeletedPublication extends Command
             return 0;
         }
 
-        DB::transaction(function () use ($publication) {
+        DB::transaction(function () use ($publication): void {
             // Restore the publication
             $publication->restore();
 

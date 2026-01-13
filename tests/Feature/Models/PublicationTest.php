@@ -501,10 +501,10 @@ test('only chief editor can delete publications', function (): void {
 test('deleting publication also soft deletes publication authors and funding sources', function (): void {
     $chiefEditor = User::factory()->chiefEditor()->create();
     $publication = Publication::factory()->withAuthors()->create(['manuscript_record_id' => null]);
-    
+
     // Add funding sources
     $funder = Funder::factory()->create();
-    $fundingSource = FundingSource::create([
+    $fundingSource = FundingSource::query()->create([
         'title' => 'Test Funding',
         'funder_id' => $funder->id,
         'fundable_type' => Publication::class,
@@ -522,7 +522,7 @@ test('deleting publication also soft deletes publication authors and funding sou
     // Verify soft-delete for publication authors (not hard delete)
     expect(PublicationAuthor::query()->whereIn('id', $authorIds)->count())->toBe(0);
     expect(PublicationAuthor::withTrashed()->whereIn('id', $authorIds)->count())->toBe(3);
-    
+
     // Verify soft-delete for funding sources (not hard delete)
     expect(FundingSource::query()->whereIn('id', $fundingIds)->count())->toBe(0);
     expect(FundingSource::withTrashed()->whereIn('id', $fundingIds)->count())->toBe(1);
