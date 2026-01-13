@@ -19,7 +19,6 @@ class ManagementReviewDueMail extends Mailable implements ShouldQueue
      * Create a new message instance.
      *
      * @param  Collection<int, ManagementReviewStep>  $reviews
-     * @return void
      */
     public function __construct(public Collection $reviews, public User $user)
     {

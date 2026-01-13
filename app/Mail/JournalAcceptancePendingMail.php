@@ -30,7 +30,6 @@ class JournalAcceptancePendingMail extends Mailable implements ShouldQueue
      *
      * @param  \Illuminate\Support\Collection<int, ManuscriptRecord>  $manuscripts
      * @param  \Illuminate\Support\Collection<int, Publication>  $publications
-     * @return void
      */
     public function __construct($manuscripts, $publications, public User $user)
     {

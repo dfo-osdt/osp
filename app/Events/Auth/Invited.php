@@ -14,8 +14,6 @@ class Invited
 
     /**
      * Create a new event instance.
-     *
-     * @return void
      */
     public function __construct(public Invitation $invitation, public string $password)
     {

@@ -23,7 +23,6 @@ class ManagementReviewPendingMail extends Mailable implements ShouldQueue
      * Create a new message instance.
      *
      * @param  \Illuminate\Support\Collection<int, ManagementReviewStep>  $reviews
-     * @return void
      */
     public function __construct($reviews, public User $user)
     {

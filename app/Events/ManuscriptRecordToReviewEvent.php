@@ -15,8 +15,6 @@ class ManuscriptRecordToReviewEvent
 
     /**
      * Create a new event instance.
-     *
-     * @return void
      */
     public function __construct(public ManuscriptRecord $manuscriptRecord, public User $divisionManagerUser) {}
 

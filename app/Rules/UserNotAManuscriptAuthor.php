@@ -17,8 +17,6 @@ class UserNotAManuscriptAuthor implements ValidationRule
 {
     /**
      * Create a new rule instance.
-     *
-     * @return void
      */
     public function __construct(public ManuscriptRecord $manuscriptRecord) {}
 
