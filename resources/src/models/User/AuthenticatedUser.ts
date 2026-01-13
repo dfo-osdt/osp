@@ -81,6 +81,7 @@ export type AuthenticatedUserPermissions
     | 'view_any_manuscript_record'
     | 'publish_internal_reports'
     | 'update_publications'
+    | 'delete_publications'
   // Regional MRF permissions - view access
     | 'can_view_nfl_mrfs'
     | 'can_view_mar_mrfs'

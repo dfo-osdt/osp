@@ -157,20 +157,15 @@ class PublicationPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Publication $publication)
+    public function delete(User $user, Publication $publication): bool
     {
-        // if the publication is linked to a manuscript record
-        // it can't be deleted.
+        // Cannot delete publications linked to manuscript records
         if ($publication->manuscript_record_id) {
             return false;
         }
 
-        if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
-            return true;
-        }
-
-        // is the user the owner of the publication
-        return $user->id === $publication->user_id;
+        // Only users with DELETE_PUBLICATIONS permission can delete
+        return $user->hasPermissionTo(UserPermission::DELETE_PUBLICATIONS);
     }
 
     /**

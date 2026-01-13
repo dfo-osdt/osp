@@ -2,8 +2,11 @@
 
 use App\Enums\PublicationStatus;
 use App\Enums\SupplementaryFileType;
+use App\Models\Funder;
+use App\Models\FundingSource;
 use App\Models\Journal;
 use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
@@ -440,4 +443,104 @@ test('only a chief editor can publish a secondary publication', function (): voi
 
     $response->assertOk();
     expect($publication->fresh()->status)->toBe(PublicationStatus::PUBLISHED);
+});
+
+/** Test publication deletion */
+test('a chief editor can delete a publication without manuscript record', function (): void {
+    $chiefEditor = User::factory()->chiefEditor()->create();
+    $publication = Publication::factory()->create(['manuscript_record_id' => null]);
+
+    // Check that the resource allows deletion
+    $response = $this->actingAs($chiefEditor)->getJson("/api/publications/{$publication->id}");
+    $response->assertOk();
+    expect($response->json('can.delete'))->toBe(true);
+
+    // Delete the publication
+    $response = $this->actingAs($chiefEditor)->deleteJson("/api/publications/{$publication->id}");
+    $response->assertNoContent();
+
+    // Verify soft delete
+    expect(Publication::query()->find($publication->id))->toBeNull();
+    expect(Publication::withTrashed()->find($publication->id))->not->toBeNull();
+    expect(Publication::withTrashed()->find($publication->id)->deleted_at)->not->toBeNull();
+});
+
+test('a publication with manuscript record cannot be deleted', function (): void {
+    $chiefEditor = User::factory()->chiefEditor()->create();
+    $publication = Publication::factory()->withManuscript()->create();
+
+    // Check that deletion is not allowed
+    $response = $this->actingAs($chiefEditor)->getJson("/api/publications/{$publication->id}");
+    $response->assertOk();
+    expect($response->json('can.delete'))->toBe(false);
+
+    // Attempt to delete should be forbidden
+    $response = $this->actingAs($chiefEditor)->deleteJson("/api/publications/{$publication->id}");
+    $response->assertForbidden();
+
+    // Verify not deleted
+    expect(Publication::query()->find($publication->id))->not->toBeNull();
+});
+
+test('only chief editor can delete publications', function (): void {
+    $regularUser = User::factory()->create();
+    $editor = User::factory()->editor()->create();
+    $publication = Publication::factory()->create(['manuscript_record_id' => null]);
+
+    // Regular user cannot delete
+    $response = $this->actingAs($regularUser)->deleteJson("/api/publications/{$publication->id}");
+    $response->assertForbidden();
+    expect(Publication::query()->find($publication->id))->not->toBeNull();
+
+    // Editor cannot delete (only has UPDATE_PUBLICATIONS, not DELETE_PUBLICATIONS)
+    $response = $this->actingAs($editor)->deleteJson("/api/publications/{$publication->id}");
+    $response->assertForbidden();
+    expect(Publication::query()->find($publication->id))->not->toBeNull();
+});
+
+test('deleting publication also soft deletes publication authors and funding sources', function (): void {
+    $chiefEditor = User::factory()->chiefEditor()->create();
+    $publication = Publication::factory()->withAuthors()->create(['manuscript_record_id' => null]);
+    
+    // Add funding sources
+    $funder = Funder::factory()->create();
+    $fundingSource = FundingSource::create([
+        'title' => 'Test Funding',
+        'funder_id' => $funder->id,
+        'fundable_type' => Publication::class,
+        'fundable_id' => $publication->id,
+    ]);
+
+    $publicationId = $publication->id;
+    $authorIds = $publication->publicationAuthors->pluck('id')->toArray();
+    $fundingIds = [$fundingSource->id];
+
+    // Delete the publication
+    $response = $this->actingAs($chiefEditor)->deleteJson("/api/publications/{$publicationId}");
+    $response->assertNoContent();
+
+    // Verify soft-delete for publication authors (not hard delete)
+    expect(PublicationAuthor::query()->whereIn('id', $authorIds)->count())->toBe(0);
+    expect(PublicationAuthor::withTrashed()->whereIn('id', $authorIds)->count())->toBe(3);
+    
+    // Verify soft-delete for funding sources (not hard delete)
+    expect(FundingSource::query()->whereIn('id', $fundingIds)->count())->toBe(0);
+    expect(FundingSource::withTrashed()->whereIn('id', $fundingIds)->count())->toBe(1);
+});
+
+test('publication owner cannot delete without DELETE_PUBLICATIONS permission', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create([
+        'user_id' => $user->id,
+        'manuscript_record_id' => null,
+    ]);
+
+    // Owner without DELETE_PUBLICATIONS permission should be forbidden
+    $response = $this->actingAs($user)->getJson("/api/publications/{$publication->id}");
+    $response->assertOk();
+    expect($response->json('can.delete'))->toBe(false);
+
+    $response = $this->actingAs($user)->deleteJson("/api/publications/{$publication->id}");
+    $response->assertForbidden();
+    expect(Publication::query()->find($publication->id))->not->toBeNull();
 });
