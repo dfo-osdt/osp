@@ -729,7 +729,7 @@
     "mark-as-published-tooltip": "Only a DFO Chief Editor can mark a DFO publication as published.",
     "delete-publication": "Delete Publication",
     "confirm-delete-title": "Delete Publication",
-    "confirm-delete-message": "Are you sure you want to delete this publication? This action can be undone by restoring from soft deletes.",
+    "confirm-delete-message": "Are you sure you want to delete this publication?",
     "publication-deleted-successfully": "Publication deleted successfully",
     "delete-failed": "Failed to delete publication"
   },

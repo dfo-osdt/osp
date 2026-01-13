@@ -729,7 +729,7 @@
     "mark-as-published-tooltip": "Seul un rédacteur en chef du MPO peut marquer une publication du MPO comme publiée.",
     "delete-publication": "Supprimer la publication",
     "confirm-delete-title": "Supprimer la publication",
-    "confirm-delete-message": "Êtes-vous sûr de vouloir supprimer cette publication? Cette action peut être annulée en restaurant à partir des suppressions réversibles.",
+    "confirm-delete-message": "Êtes-vous sûr de vouloir supprimer cette publication?",
     "publication-deleted-successfully": "Publication supprimée avec succès",
     "delete-failed": "Échec de la suppression de la publication"
   },
