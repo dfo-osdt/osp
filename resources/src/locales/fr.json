@@ -726,7 +726,12 @@
     "attach-supplementary-files": "Fichiers supplémentaires",
     "attach-supplementary-files-details": "Veuillez télécharger tous les fichiers supplémentaires pertinents pour vos publications.",
     "no-supplementary-files": "Aucun fichier supplémentaire joint.",
-    "mark-as-published-tooltip": "Seul un rédacteur en chef du MPO peut marquer une publication du MPO comme publiée."
+    "mark-as-published-tooltip": "Seul un rédacteur en chef du MPO peut marquer une publication du MPO comme publiée.",
+    "delete-publication": "Supprimer la publication",
+    "confirm-delete-title": "Supprimer la publication",
+    "confirm-delete-message": "Êtes-vous sûr de vouloir supprimer cette publication? Cette action peut être annulée en restaurant à partir des suppressions réversibles.",
+    "publication-deleted-successfully": "Publication supprimée avec succès",
+    "delete-failed": "Échec de la suppression de la publication"
   },
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",

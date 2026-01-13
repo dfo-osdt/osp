@@ -725,8 +725,13 @@
     "title": "Publication",
     "attach-supplementary-files": "Supplementary Files",
     "attach-supplementary-files-details": "Please upload all relevant supplementary files for your publications.",
-    "no-supplementary-files": "No supplementary files attached.",
-    "mark-as-published-tooltip": "Only a DFO Chief Editor can mark a DFO publication as published."
+    "no-supplementary-files": "No supplementary-files attached.",
+    "mark-as-published-tooltip": "Only a DFO Chief Editor can mark a DFO publication as published.",
+    "delete-publication": "Delete Publication",
+    "confirm-delete-title": "Delete Publication",
+    "confirm-delete-message": "Are you sure you want to delete this publication? This action can be undone by restoring from soft deletes.",
+    "publication-deleted-successfully": "Publication deleted successfully",
+    "delete-failed": "Failed to delete publication"
   },
   "publications-view": {
     "all-published-publications-details": "All published publications",

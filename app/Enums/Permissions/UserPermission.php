@@ -21,6 +21,7 @@ enum UserPermission: string
     case ADMINISTER_USERS = 'administer_users';
     case PUBLISH_INTERNAL_REPORTS = 'publish_internal_reports';
     case UPDATE_PUBLICATIONS = 'update_publications';
+    case DELETE_PUBLICATIONS = 'delete_publications';
 
     // Regional MRF permissions - view access
     case CAN_VIEW_NFL_MRFS = 'can_view_nfl_mrfs';

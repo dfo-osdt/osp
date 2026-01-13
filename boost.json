@@ -5,5 +5,7 @@
     "editors": [
         "claude_code"
     ],
-    "guidelines": []
+    "guidelines": [
+        "AGENTS.md"
+    ]
 }

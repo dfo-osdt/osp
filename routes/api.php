@@ -210,6 +210,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/publications/{publication}', 'show');
         Route::put('/publications/{publication}', 'update');
         Route::post('/publications', 'store');
+        Route::delete('/publications/{publication}', 'destroy');
     });
 
     Route::controller(PublicationFileController::class)->group(function () {

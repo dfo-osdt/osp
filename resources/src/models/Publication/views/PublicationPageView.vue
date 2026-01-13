@@ -80,6 +80,42 @@ const canEdit = computed(() => {
   return publication.value?.can?.update ?? false
 })
 
+const canDelete = computed(() => {
+  return publication.value?.can?.delete ?? false
+})
+
+async function confirmDelete() {
+  if (!publication.value)
+    return
+
+  $q.dialog({
+    title: t('publication-page.confirm-delete-title'),
+    message: t('publication-page.confirm-delete-message'),
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    loading.value = true
+    try {
+      await PublicationService.delete(publication.value!.data.id)
+      $q.notify({
+        type: 'positive',
+        message: t('publication-page.publication-deleted-successfully'),
+      })
+      router.back()
+    }
+    catch (error) {
+      console.error(error)
+      $q.notify({
+        type: 'negative',
+        message: t('publication-page.delete-failed'),
+      })
+    }
+    finally {
+      loading.value = false
+    }
+  })
+}
+
 // watch if there is a change
 const isDirty = ref(false)
 const disableDirtyWatcher = ref(false)
@@ -377,6 +413,14 @@ function scrollToSupplementaryFiles() {
         :publication="publication"
       />
       <q-card-actions align="right">
+        <q-btn
+          v-if="canDelete"
+          :label="t('publication-page.delete-publication')"
+          color="negative"
+          icon="delete"
+          :disable="loading"
+          @click="confirmDelete"
+        />
         <q-btn
           v-if="publication.data.status === 'accepted' && canEdit"
           :disable="!publication.can?.publish"

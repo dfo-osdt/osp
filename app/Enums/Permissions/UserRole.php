@@ -57,6 +57,7 @@ enum UserRole: string
             ],
             self::CHIEF_EDITOR => [
                 UserPermission::PUBLISH_INTERNAL_REPORTS,
+                UserPermission::DELETE_PUBLICATIONS,
                 // Merge editor permissions
                 ...self::EDITOR->permissions(),
             ],

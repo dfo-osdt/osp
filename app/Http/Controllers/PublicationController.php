@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\DeletePublication;
 use App\Enums\PublicationStatus;
 use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
@@ -13,6 +14,7 @@ use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -128,6 +130,18 @@ class PublicationController extends Controller
         $publication->update($validated);
 
         return $this->defaultResource($publication);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Publication $publication): Response
+    {
+        Gate::authorize('delete', $publication);
+
+        DeletePublication::handle($publication);
+
+        return response()->noContent();
     }
 
     /**
