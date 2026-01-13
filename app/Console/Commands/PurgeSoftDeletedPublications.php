@@ -39,24 +39,22 @@ class PurgeSoftDeletedPublications extends Command
 
         $this->table(
             headers: ['ID', 'Title', 'Deleted At'],
-            rows: $publications->map(fn ($pub) => [
+            rows: $publications->map(fn ($pub): array => [
                 $pub->id,
                 $pub->title,
                 $pub->deleted_at->format('Y-m-d H:i:s'),
             ])->all()
         );
 
-        if (! $this->option('force')) {
-            if (! $this->confirm("Are you sure you want to permanently delete {$publications->count()} publication(s)?")) {
-                $this->info('Operation cancelled.');
+        if (! $this->option('force') && ! $this->confirm("Are you sure you want to permanently delete {$publications->count()} publication(s)?")) {
+            $this->info('Operation cancelled.');
 
-                return 0;
-            }
+            return 0;
         }
 
         $count = 0;
         foreach ($publications as $publication) {
-            DB::transaction(function () use ($publication) {
+            DB::transaction(function () use ($publication): void {
                 // Force delete associated soft-deleted publication authors
                 $publication->publicationAuthors()->withTrashed()->forceDelete();
 

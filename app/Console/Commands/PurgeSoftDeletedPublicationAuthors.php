@@ -38,7 +38,7 @@ class PurgeSoftDeletedPublicationAuthors extends Command
 
         $this->table(
             headers: ['ID', 'Author', 'Publication ID', 'Publication Title', 'Deleted At'],
-            rows: $publicationAuthors->map(fn ($pubAuthor) => [
+            rows: $publicationAuthors->map(fn ($pubAuthor): array => [
                 $pubAuthor->id,
                 $pubAuthor->author->full_name ?? 'N/A',
                 $pubAuthor->publication_id,
@@ -47,12 +47,10 @@ class PurgeSoftDeletedPublicationAuthors extends Command
             ])->all()
         );
 
-        if (! $this->option('force')) {
-            if (! $this->confirm("Are you sure you want to permanently delete {$publicationAuthors->count()} publication author(s)?")) {
-                $this->info('Operation cancelled.');
+        if (! $this->option('force') && ! $this->confirm("Are you sure you want to permanently delete {$publicationAuthors->count()} publication author(s)?")) {
+            $this->info('Operation cancelled.');
 
-                return 0;
-            }
+            return 0;
         }
 
         $count = 0;

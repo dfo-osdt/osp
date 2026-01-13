@@ -38,7 +38,7 @@ class PurgeSoftDeletedFundingSources extends Command
 
         $this->table(
             headers: ['ID', 'Title', 'Fundable Type', 'Fundable ID', 'Deleted At'],
-            rows: $fundingSources->map(fn ($fundingSource) => [
+            rows: $fundingSources->map(fn ($fundingSource): array => [
                 $fundingSource->id,
                 $fundingSource->title,
                 class_basename($fundingSource->fundable_type),
@@ -47,12 +47,10 @@ class PurgeSoftDeletedFundingSources extends Command
             ])->all()
         );
 
-        if (! $this->option('force')) {
-            if (! $this->confirm("Are you sure you want to permanently delete {$fundingSources->count()} funding source(s)?")) {
-                $this->info('Operation cancelled.');
+        if (! $this->option('force') && ! $this->confirm("Are you sure you want to permanently delete {$fundingSources->count()} funding source(s)?")) {
+            $this->info('Operation cancelled.');
 
-                return 0;
-            }
+            return 0;
         }
 
         $count = 0;
