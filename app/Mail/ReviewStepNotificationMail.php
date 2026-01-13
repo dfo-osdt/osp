@@ -19,8 +19,6 @@ class ReviewStepNotificationMail extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
     public function __construct(public ManagementReviewStep $managementReviewStep)
     {

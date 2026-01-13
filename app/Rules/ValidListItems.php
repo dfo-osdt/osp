@@ -9,7 +9,6 @@ class ValidListItems implements ValidationRule
 {
     /**
      * @param  string[]  $allowedItems
-     * @return void
      */
     public function __construct(
         private readonly array $allowedItems
