@@ -38,11 +38,12 @@ class UserPublicationController extends Controller
             ->pluck('id');
 
         $baseQuery = \App\Models\Publication::query()->whereIn('id', $publicationIds)
-            ->with('manuscriptRecord',
+            ->with([
+                'manuscriptRecord',
                 'journal',
-                'publicationAuthors.author',
-                'publicationAuthors.organization',
-                'region');
+                'publicationAuthors' => fn ($q) => $q->with('author', 'organization')->chaperone('publication'),
+                'region',
+            ]);
 
         $listQuery = new PublicationListQuery($request, $baseQuery);
 
