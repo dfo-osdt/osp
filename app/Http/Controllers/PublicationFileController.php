@@ -17,11 +17,7 @@ class PublicationFileController extends Controller
      */
     public function index(Publication $publication)
     {
-        Gate::authorize('view', $publication);
-
-        $media = $publication->getMedia('publication');
-
-        // get publicatVion model and all required relations to avoid n+1
+        // Load relationships needed for PublicationPolicy
         $publication->load([
             'manuscriptRecord' => [
                 'manuscriptAuthors.author',
@@ -29,7 +25,12 @@ class PublicationFileController extends Controller
                 'shareables',
             ],
             'publicationAuthors.author',
+            'region',
         ]);
+        
+        Gate::authorize('view', $publication);
+
+        $media = $publication->getMedia('publication');
 
         $media->each(fn ($media) => $media->setRelation('model', $publication));
 
@@ -41,6 +42,8 @@ class PublicationFileController extends Controller
      */
     public function store(Request $request, Publication $publication): \App\Http\Resources\MediaResource
     {
+        // Load relationships needed for PublicationPolicy
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
@@ -53,6 +56,10 @@ class PublicationFileController extends Controller
         ]);
 
         $media = $publication->addPublicationFile($validated['pdf']);
+
+        // Load relationships on publication for MediaResource policy checks
+        $publication->load('publicationAuthors.author', 'region');
+        $media->setRelation('model', $publication);
 
         activity()
             ->performedOn($publication)
@@ -68,14 +75,7 @@ class PublicationFileController extends Controller
      */
     public function show(Request $request, Publication $publication, string $uuid)
     {
-        Gate::authorize('view', $publication);
-
-        $media = $publication->getPublicationFile($uuid);
-
-        if (! $media) {
-            throw new NotFoundHttpException('File not found.');
-        }
-        // get publicatVion model and all required relations to avoid n+1
+        // Load relationships needed for PublicationPolicy
         $publication->load([
             'manuscriptRecord' => [
                 'manuscriptAuthors.author',
@@ -83,7 +83,16 @@ class PublicationFileController extends Controller
                 'shareables',
             ],
             'publicationAuthors.author',
+            'region',
         ]);
+        
+        Gate::authorize('view', $publication);
+
+        $media = $publication->getPublicationFile($uuid);
+
+        if (! $media) {
+            throw new NotFoundHttpException('File not found.');
+        }
 
         $media->setRelation('model', $publication);
 
@@ -101,6 +110,8 @@ class PublicationFileController extends Controller
      */
     public function destroy(Publication $publication, string $uuid)
     {
+        // Load relationships needed for PublicationPolicy
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('update', $publication);
 
         try {

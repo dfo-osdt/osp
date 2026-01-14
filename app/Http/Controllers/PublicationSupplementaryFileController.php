@@ -19,12 +19,7 @@ class PublicationSupplementaryFileController extends Controller
      */
     public function index(Publication $publication)
     {
-        Gate::authorize('view', $publication);
-
-        $media = $publication->getMedia('supplementary_file');
-
-        // get publication model and all required relations
-        // for the policies to avoid n+1
+        // Load relationships needed for PublicationPolicy
         $publication->load([
             'manuscriptRecord' => [
                 'manuscriptAuthors.author',
@@ -32,7 +27,12 @@ class PublicationSupplementaryFileController extends Controller
                 'shareables',
             ],
             'publicationAuthors.author',
+            'region',
         ]);
+        
+        Gate::authorize('view', $publication);
+
+        $media = $publication->getMedia('supplementary_file');
 
         $media->each(fn ($media) => $media->setRelation('model', $publication));
 
@@ -44,6 +44,8 @@ class PublicationSupplementaryFileController extends Controller
      */
     public function store(Request $request, Publication $publication): \App\Http\Resources\MediaResource
     {
+        // Load relationships needed for PublicationPolicy
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
@@ -60,6 +62,10 @@ class PublicationSupplementaryFileController extends Controller
         $type = SupplementaryFileType::tryFrom($validated['supplementary_file_type']);
         $media = $publication->addSupplementaryFile($validated['file'], $type, $validated['description'] ?? null);
 
+        // Load relationships on publication for MediaResource policy checks
+        $publication->load('publicationAuthors.author', 'region');
+        $media->setRelation('model', $publication);
+
         activity()
             ->performedOn($publication)
             ->withProperties($media->toArray())
@@ -74,7 +80,8 @@ class PublicationSupplementaryFileController extends Controller
      */
     public function show(Request $request, Publication $publication, string $uuid)
     {
-
+        // Load relationships needed for PublicationPolicy
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('view', $publication);
 
         $media = $publication->getSupplementaryFile($uuid);
@@ -101,6 +108,8 @@ class PublicationSupplementaryFileController extends Controller
      */
     public function destroy(Publication $publication, string $uuid)
     {
+        // Load relationships needed for PublicationPolicy
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('update', $publication);
 
         try {

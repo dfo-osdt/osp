@@ -45,7 +45,8 @@ class PublicationAuthorPolicy
             return true;
         }
 
-        return $user->id === $publicationAuthor->publication->user_id;
+        return $user->can('update', $publicationAuthor->publication);
+
     }
 
     /**
