@@ -77,6 +77,7 @@ class UpdateScopusJournals extends Command
             2310, // Pollution
             2312, // Water Science and Technology
             2404, // Microbiology
+            3102, // Acoustics and Ultrasonics
         ]);
 
         $actionRegister = [
