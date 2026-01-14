@@ -405,7 +405,7 @@ test('an editor can edit any publication', function (): void {
 test('a publication author can edit the publication', function (): void {
     // Create a user (which automatically creates an associated author)
     $authorUser = User::factory()->create();
-    
+
     // Create a publication with this user's author
     $publication = Publication::factory()->create();
     \App\Models\PublicationAuthor::factory()->create([
