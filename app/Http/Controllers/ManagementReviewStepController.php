@@ -25,7 +25,7 @@ class ManagementReviewStepController extends Controller
     {
         $managementReviewStep->setRelation('manuscriptRecord', $manuscriptRecord);
         $managementReviewStep->load('user');
-        
+
         return $managementReviewStep;
     }
 
