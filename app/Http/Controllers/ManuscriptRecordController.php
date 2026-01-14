@@ -382,13 +382,14 @@ class ManuscriptRecordController extends Controller
      */
     private function loadPolicyRelationships(ManuscriptRecord $manuscriptRecord): ManuscriptRecord
     {
-        $relationships = collect(['user', 'shareables', 'region', 'manuscriptAuthors.author']);
+        $relationships = ['user', 'shareables', 'region', 'manuscriptAuthors.author'];
+
         if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
-            $relationships->put('publication.publicationAuthors', function ($query): void {
+            $relationships['publication.publicationAuthors'] = function ($query): void {
                 $query->with('author')->chaperone('publication');
-            });
+            };
         }
 
-        return $manuscriptRecord->load($relationships->all());
+        return $manuscriptRecord->load($relationships);
     }
 }
