@@ -57,6 +57,8 @@ class AuthorEmploymentController extends Controller
 
         dispatch(new \App\Jobs\SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_CREATE));
 
+        $authorEmployment->setRelation('author', $author);
+
         return AuthorEmploymentResource::make($authorEmployment);
 
     }
@@ -68,6 +70,7 @@ class AuthorEmploymentController extends Controller
     {
         $this->authorize('view', $authorEmployment);
 
+        $authorEmployment->setRelation('author', $author);
         $authorEmployment->load('organization');
 
         return AuthorEmploymentResource::make($authorEmployment);
@@ -90,6 +93,7 @@ class AuthorEmploymentController extends Controller
         $authorEmployment->update($validated);
         $authorEmployment->orcid_updated_at = null;
         $authorEmployment->save();
+        $authorEmployment->setRelation('author', $author);
         $authorEmployment->load('organization');
         $authorEmployment->refresh();
 

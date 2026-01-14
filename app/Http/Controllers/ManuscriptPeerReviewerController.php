@@ -14,6 +14,17 @@ use Illuminate\Validation\ValidationException;
 class ManuscriptPeerReviewerController extends Controller
 {
     /**
+     * Load relationships needed for the resource and policies
+     */
+    private function loadResourceRelationships(ManuscriptPeerReviewer $manuscriptPeerReviewer, ManuscriptRecord $manuscriptRecord): ManuscriptPeerReviewer
+    {
+        $manuscriptPeerReviewer->setRelation('manuscriptRecord', $manuscriptRecord);
+        $manuscriptPeerReviewer->load('author.organization');
+        
+        return $manuscriptPeerReviewer;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(ManuscriptRecord $manuscriptRecord): JsonResource
@@ -56,6 +67,8 @@ class ManuscriptPeerReviewerController extends Controller
         $manuscriptPeerReviewer->manuscript_record_id = $manuscriptRecord->id;
         $manuscriptPeerReviewer->review_date = now();
         $manuscriptPeerReviewer->save();
+        
+        $this->loadResourceRelationships($manuscriptPeerReviewer, $manuscriptRecord);
 
         return new ManuscriptPeerReviewerResource($manuscriptPeerReviewer);
 

@@ -55,6 +55,7 @@ class ManuscriptAuthorController extends Controller
         $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $manuscriptAuthor->organization_id = $author->organization_id;
         $manuscriptAuthor->save();
+        $manuscriptAuthor->setRelation('manuscriptRecord', $manuscriptRecord);
         $manuscriptAuthor->load($this->getPolicyRelationships());
 
         return ManuscriptAuthorResource::make($manuscriptAuthor);
@@ -68,6 +69,7 @@ class ManuscriptAuthorController extends Controller
         $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
 
+        $manuscriptAuthor->setRelation('manuscriptRecord', $manuscriptRecord);
         $manuscriptAuthor->load($this->getPolicyRelationships());
 
         return ManuscriptAuthorResource::make($manuscriptAuthor);
@@ -94,6 +96,7 @@ class ManuscriptAuthorController extends Controller
             $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'];
         }
         $manuscriptAuthor->save();
+        $manuscriptAuthor->setRelation('manuscriptRecord', $manuscriptRecord);
         $manuscriptAuthor->refresh()->load($this->getPolicyRelationships());
 
         return ManuscriptAuthorResource::make($manuscriptAuthor);

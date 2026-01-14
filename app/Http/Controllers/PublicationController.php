@@ -82,7 +82,11 @@ class PublicationController extends Controller
      */
     public function show(Publication $publication): JsonResource
     {
-        $publication->load('publicationAuthors.author', 'manuscriptRecord.manuscriptAuthors.author', 'region');
+        $publication->load([
+            'publicationAuthors' => fn ($q) => $q->with('author')->chaperone('publication'),
+            'manuscriptRecord.manuscriptAuthors.author',
+            'region',
+        ]);
         Gate::authorize('view', $publication);
 
         return $this->defaultResource($publication);
@@ -93,7 +97,10 @@ class PublicationController extends Controller
      */
     public function update(Request $request, Publication $publication): JsonResource
     {
-        $publication->load('publicationAuthors.author', 'region');
+        $publication->load([
+            'publicationAuthors' => fn ($q) => $q->with('author')->chaperone('publication'),
+            'region',
+        ]);
         Gate::authorize('update', $publication);
 
         // check if user is seeking to change the status from accepted to published
@@ -159,12 +166,17 @@ class PublicationController extends Controller
         $relationship = collect([
             'journal',
             'user',
-            'publicationAuthors.author',
-            'publicationAuthors.organization',
             'manuscriptRecord',
             'region',
         ]);
 
-        return new PublicationResource($publication->load($relationship->all()));
+        $publication->load($relationship->all());
+        
+        // Load publicationAuthors with chaperone to prevent circular reference
+        $publication->load([
+            'publicationAuthors' => fn ($q) => $q->with('author', 'organization')->chaperone('publication'),
+        ]);
+
+        return new PublicationResource($publication);
     }
 }

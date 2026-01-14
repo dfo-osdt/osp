@@ -15,13 +15,30 @@ use Illuminate\Validation\Rule;
 class PublicationAuthorController extends Controller
 {
     /**
+     * Load relationships needed for the resource and policies
+     */
+    private function loadResourceRelationships(PublicationAuthor $publicationAuthor, Publication $publication): PublicationAuthor
+    {
+        // Ensure publication has user_id loaded for policy checks
+        if (!$publication->relationLoaded('user')) {
+            $publication->loadMissing('user');
+        }
+        
+        $publicationAuthor->setRelation('publication', $publication);
+        $publicationAuthor->load('author.organization', 'organization');
+        
+        return $publicationAuthor;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Publication $publication): ResourceCollection
     {
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('view', $publication);
         $publicationAuthors = $publication->publicationAuthors()
-            ->with('author', 'organization')
+            ->with('author.organization', 'organization')
             ->chaperone('publication')
             ->orderBy('id')
             ->get();
@@ -34,6 +51,7 @@ class PublicationAuthorController extends Controller
      */
     public function store(Request $request, Publication $publication): JsonResource
     {
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('update', $publication);
 
         $validated = $request->validate([
@@ -50,7 +68,8 @@ class PublicationAuthorController extends Controller
         $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $publicationAuthor->organization_id = $author->organization_id;
         $publicationAuthor->save();
-        $publicationAuthor->load('author', 'organization');
+        
+        $this->loadResourceRelationships($publicationAuthor, $publication);
 
         return PublicationAuthorResource::make($publicationAuthor);
     }
@@ -60,9 +79,10 @@ class PublicationAuthorController extends Controller
      */
     public function show(Publication $publication, PublicationAuthor $publicationAuthor): JsonResource
     {
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('view', $publication);
 
-        $publicationAuthor->load('author', 'organization');
+        $this->loadResourceRelationships($publicationAuthor, $publication);
 
         return PublicationAuthorResource::make($publicationAuthor);
     }
@@ -72,6 +92,7 @@ class PublicationAuthorController extends Controller
      */
     public function update(Request $request, Publication $publication, PublicationAuthor $publicationAuthor): JsonResource
     {
+        $publication->load('publicationAuthors.author', 'region');
         $publicationAuthor->setRelation('publication', $publication);
         Gate::authorize('update', $publicationAuthor);
 
@@ -88,7 +109,9 @@ class PublicationAuthorController extends Controller
             $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'];
         }
         $publicationAuthor->save();
-        $publicationAuthor->refresh()->load('author', 'organization');
+        
+        $publicationAuthor->refresh();
+        $this->loadResourceRelationships($publicationAuthor, $publication);
 
         return PublicationAuthorResource::make($publicationAuthor);
     }
@@ -98,6 +121,7 @@ class PublicationAuthorController extends Controller
      */
     public function destroy(Publication $publication, PublicationAuthor $publicationAuthor): Response
     {
+        $publication->load('publicationAuthors.author', 'region');
         $publicationAuthor->setRelation('publication', $publication);
         Gate::authorize('delete', $publicationAuthor);
 
