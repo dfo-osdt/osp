@@ -45,8 +45,6 @@ class PublicationAuthorPolicy
             return true;
         }
 
-        $publicationAuthor->load('publication');
-
         return $user->id === $publicationAuthor->publication->user_id;
     }
 
@@ -58,8 +56,6 @@ class PublicationAuthorPolicy
         if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
             return true;
         }
-
-        $publicationAuthor->load('publication');
 
         return $user->id === $publicationAuthor->publication->user_id;
     }

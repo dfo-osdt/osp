@@ -56,11 +56,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property-read \App\Models\Region $region
  *
  * @method static \Database\Factories\PublicationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication notUnderEmbargo()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication openAccess()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication pendingPublish()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication secondaryPublication()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication underEmbargo()
@@ -327,11 +329,11 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      * - Regular users see only published publications
      */
     #[\Illuminate\Database\Eloquent\Attributes\Scope]
-    protected function forUser($query, User $user)
+    protected function forUser(\Illuminate\Database\Eloquent\Builder $query, User $user): void
     {
         // if user has permission to update all publications, show everything
         if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
-            return $query;
+            return;
         }
 
         // if user is a regional editor, show published + unpublished in their region
@@ -343,16 +345,18 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
                 ->filter()
                 ->all();
 
-            return $query->where('status', PublicationStatus::PUBLISHED)
-                ->orWhere(function ($q) use ($slugs): void {
+            $query->where('status', PublicationStatus::PUBLISHED)
+                ->orWhere(function (\Illuminate\Contracts\Database\Query\Builder $q) use ($slugs): void {
                     $q->where('status', PublicationStatus::ACCEPTED)
-                        ->whereHas('region', function ($regionQuery) use ($slugs): void {
+                        ->whereHas('region', function (\Illuminate\Contracts\Database\Query\Builder $regionQuery) use ($slugs): void {
                             $regionQuery->whereIn('slug', $slugs);
                         });
                 });
+
+            return;
         }
 
         // regular users only see published publications
-        return $query->where('status', PublicationStatus::PUBLISHED);
+        $query->where('status', PublicationStatus::PUBLISHED);
     }
 }

@@ -40,12 +40,11 @@ class ManuscriptRecordPolicy
             return true;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
             return true;
         }
 
         // is this shared with the user?
-        $manuscriptRecord->load('shareables');
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isViewable()) {
             return true;
         }
@@ -84,7 +83,7 @@ class ManuscriptRecordPolicy
                 }
 
                 // Is the the user an author on this manuscript?
-                if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+                if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
                     return true;
                 }
 
@@ -152,7 +151,7 @@ class ManuscriptRecordPolicy
             return true;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
             return true;
         }
 
@@ -173,7 +172,7 @@ class ManuscriptRecordPolicy
             return false;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
             return true;
         }
 
@@ -214,7 +213,7 @@ class ManuscriptRecordPolicy
             return true;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
             return true;
         }
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
@@ -238,7 +237,7 @@ class ManuscriptRecordPolicy
         if ($user->id === $manuscriptRecord->user_id) {
             return true;
         }
-        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
             return true;
         }
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
@@ -265,7 +264,7 @@ class ManuscriptRecordPolicy
         if ($user->id === $manuscriptRecord->user_id) {
             return true;
         }
-        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
             return true;
         }
 
@@ -277,7 +276,7 @@ class ManuscriptRecordPolicy
      */
     public function share(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        if ($manuscriptRecord->manuscriptAuthors->contains('author.user_id', $user->id)) {
+        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
             return true;
         }
 
