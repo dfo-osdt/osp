@@ -171,7 +171,7 @@ class PublicationController extends Controller
         ]);
 
         $publication->load($relationship->all());
-        
+
         // Load publicationAuthors with chaperone to prevent circular reference
         $publication->load([
             'publicationAuthors' => fn ($q) => $q->with('author', 'organization')->chaperone('publication'),

@@ -20,13 +20,13 @@ class PublicationAuthorController extends Controller
     private function loadResourceRelationships(PublicationAuthor $publicationAuthor, Publication $publication): PublicationAuthor
     {
         // Ensure publication has user_id loaded for policy checks
-        if (!$publication->relationLoaded('user')) {
+        if (! $publication->relationLoaded('user')) {
             $publication->loadMissing('user');
         }
-        
+
         $publicationAuthor->setRelation('publication', $publication);
         $publicationAuthor->load('author.organization', 'organization');
-        
+
         return $publicationAuthor;
     }
 
@@ -68,7 +68,7 @@ class PublicationAuthorController extends Controller
         $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $publicationAuthor->organization_id = $author->organization_id;
         $publicationAuthor->save();
-        
+
         $this->loadResourceRelationships($publicationAuthor, $publication);
 
         return PublicationAuthorResource::make($publicationAuthor);
@@ -109,7 +109,7 @@ class PublicationAuthorController extends Controller
             $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'];
         }
         $publicationAuthor->save();
-        
+
         $publicationAuthor->refresh();
         $this->loadResourceRelationships($publicationAuthor, $publication);
 

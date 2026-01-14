@@ -20,7 +20,7 @@ class ManuscriptPeerReviewerController extends Controller
     {
         $manuscriptPeerReviewer->setRelation('manuscriptRecord', $manuscriptRecord);
         $manuscriptPeerReviewer->load('author.organization');
-        
+
         return $manuscriptPeerReviewer;
     }
 
@@ -67,7 +67,7 @@ class ManuscriptPeerReviewerController extends Controller
         $manuscriptPeerReviewer->manuscript_record_id = $manuscriptRecord->id;
         $manuscriptPeerReviewer->review_date = now();
         $manuscriptPeerReviewer->save();
-        
+
         $this->loadResourceRelationships($manuscriptPeerReviewer, $manuscriptRecord);
 
         return new ManuscriptPeerReviewerResource($manuscriptPeerReviewer);
