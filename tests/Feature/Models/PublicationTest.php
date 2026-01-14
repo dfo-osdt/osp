@@ -402,6 +402,44 @@ test('an editor can edit any publication', function (): void {
     $response->assertJsonPath('data.region_id', 1);
 });
 
+test('a publication author can edit the publication', function (): void {
+    // Create a user (which automatically creates an associated author)
+    $authorUser = User::factory()->create();
+    
+    // Create a publication with this user's author
+    $publication = Publication::factory()->create();
+    \App\Models\PublicationAuthor::factory()->create([
+        'publication_id' => $publication->id,
+        'author_id' => $authorUser->author->id,
+    ]);
+
+    $response = $this->actingAs($authorUser)->putJson('/api/publications/'.$publication->id, [
+        'title' => 'Updated by Author',
+        'doi' => 'https://doi.org/10.5678/5678',
+        'is_open_access' => false,
+        'accepted_on' => '2021-02-01',
+        'published_on' => '2021-04-01',
+        'embargoed_until' => '2022-01-31',
+        'region_id' => 1,
+    ]);
+
+    $response->assertOk();
+    $response->assertJsonPath('data.title', 'Updated by Author');
+    $response->assertJsonPath('data.doi', 'https://doi.org/10.5678/5678');
+});
+
+test('a non-author user cannot edit someone elses publication', function (): void {
+    $publication = Publication::factory()->create();
+    $nonAuthorUser = User::factory()->create();
+
+    $response = $this->actingAs($nonAuthorUser)->putJson('/api/publications/'.$publication->id, [
+        'title' => 'Unauthorized Update',
+        'region_id' => 1,
+    ]);
+
+    $response->assertForbidden();
+});
+
 test("an editor can view and download a publication's files", function (): void {
     $publication = Publication::factory()->published()->create();
     $editor = User::factory()->editor()->create();
@@ -564,65 +602,65 @@ test('publication owner can delete if pub has no MRF', function (): void {
 
 test('media files are preserved during soft delete and deleted on force delete', function (): void {
     $chiefEditor = User::factory()->chiefEditor()->create();
-    
+
     // Create publication with media files
     $publication = Publication::factory()->published()->create(['manuscript_record_id' => null]);
-    
+
     // Verify media exists
     $publicationFiles = $publication->getMedia('publication');
     $supplementaryFiles = $publication->getMedia('supplementary_file');
-    
+
     expect($publicationFiles)->not->toBeEmpty();
     expect($supplementaryFiles)->not->toBeEmpty();
-    
+
     $publicationFileId = $publicationFiles->first()->id;
     $supplementaryFileId = $supplementaryFiles->first()->id;
     $publicationFilePath = $publicationFiles->first()->getPath();
     $supplementaryFilePath = $supplementaryFiles->first()->getPath();
-    
+
     // Verify files exist in storage
     expect(file_exists($publicationFilePath))->toBeTrue();
     expect(file_exists($supplementaryFilePath))->toBeTrue();
-    
+
     // Soft delete the publication
     $this->actingAs($chiefEditor)->deleteJson("/api/publications/{$publication->id}")->assertNoContent();
-    
+
     // Verify publication is soft deleted
     expect(Publication::query()->find($publication->id))->toBeNull();
     expect(Publication::withTrashed()->find($publication->id))->not->toBeNull();
-    
+
     // Verify media files still exist in storage (preserved during soft delete)
     expect(file_exists($publicationFilePath))->toBeTrue();
     expect(file_exists($supplementaryFilePath))->toBeTrue();
-    
+
     // Verify media records still exist in database
-    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::find($publicationFileId))->not->toBeNull();
-    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::find($supplementaryFileId))->not->toBeNull();
-    
+    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($publicationFileId))->not->toBeNull();
+    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($supplementaryFileId))->not->toBeNull();
+
     // Restore the publication
     $publication->restore();
-    
+
     // Verify publication is restored
     expect(Publication::query()->find($publication->id))->not->toBeNull();
-    
+
     // Verify media is still accessible after restoration
-    $restoredPublication = Publication::find($publication->id);
+    $restoredPublication = Publication::query()->find($publication->id);
     expect($restoredPublication->getMedia('publication'))->not->toBeEmpty();
     expect($restoredPublication->getMedia('supplementary_file'))->not->toBeEmpty();
     expect(file_exists($publicationFilePath))->toBeTrue();
     expect(file_exists($supplementaryFilePath))->toBeTrue();
-    
+
     // Now force delete the publication
     $restoredPublication->forceDelete();
-    
+
     // Verify publication is permanently deleted
     expect(Publication::withTrashed()->find($publication->id))->toBeNull();
-    
+
     // Verify media files are now deleted from storage
     expect(file_exists($publicationFilePath))->toBeFalse();
     expect(file_exists($supplementaryFilePath))->toBeFalse();
-    
+
     // Verify media records are deleted from database
-    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::find($publicationFileId))->toBeNull();
-    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::find($supplementaryFileId))->toBeNull();
+    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($publicationFileId))->toBeNull();
+    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($supplementaryFileId))->toBeNull();
 });

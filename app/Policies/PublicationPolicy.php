@@ -44,15 +44,13 @@ class PublicationPolicy
         }
 
         // if the user is an author on the publication, then they can view it
-        $users = $publication->publicationAuthors()->with('author')->get()->pluck('author.user_id');
-        if ($users->contains($user->id)) {
+        $authorUserIds = $publication->publicationAuthors->pluck('author.user_id');
+        if ($authorUserIds->contains($user->id)) {
             return true;
         }
 
         // if the publication has a manuscript record, then the users that can view it, can view this publication
         if ($publication->manuscript_record_id) {
-            $publication->load('manuscriptRecord.manuscriptAuthors.author');
-
             return $user->can('view', $publication->manuscriptRecord);
         }
 
@@ -81,8 +79,8 @@ class PublicationPolicy
         }
 
         // if the user is an author on the publication, then they can download it
-        $users = $publication->publicationAuthors()->with('author')->get()->pluck('author.user_id');
-        if ($users->contains($user->id)) {
+        $authorUserIds = $publication->publicationAuthors->pluck('author.user_id');
+        if ($authorUserIds->contains($user->id)) {
             return true;
         }
 
@@ -129,6 +127,12 @@ class PublicationPolicy
         // Regional editor access - can edit publication in their region
         $regionSlug = $publication->region->slug ?? null;
         if ($regionSlug && $user->can("can_edit_{$regionSlug}_pubs")) {
+            return true;
+        }
+
+        // if the user is an author on the publication, then they can edit it
+        $authorUserIds = $publication->publicationAuthors->pluck('author.user_id');
+        if ($authorUserIds->contains($user->id)) {
             return true;
         }
 
