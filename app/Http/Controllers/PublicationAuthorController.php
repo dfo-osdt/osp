@@ -20,7 +20,11 @@ class PublicationAuthorController extends Controller
     public function index(Publication $publication): ResourceCollection
     {
         Gate::authorize('view', $publication);
-        $publicationAuthors = $publication->publicationAuthors()->with('author', 'organization', 'publication')->orderBy('id')->get();
+        $publicationAuthors = $publication->publicationAuthors()
+            ->with('author', 'organization')
+            ->chaperone('publication')
+            ->orderBy('id')
+            ->get();
 
         return PublicationAuthorResource::collection($publicationAuthors);
     }
@@ -68,7 +72,7 @@ class PublicationAuthorController extends Controller
      */
     public function update(Request $request, Publication $publication, PublicationAuthor $publicationAuthor): JsonResource
     {
-        $publicationAuthor->load('publication');
+        $publicationAuthor->setRelation('publication', $publication);
         Gate::authorize('update', $publicationAuthor);
 
         $validated = $request->validate([
@@ -94,7 +98,7 @@ class PublicationAuthorController extends Controller
      */
     public function destroy(Publication $publication, PublicationAuthor $publicationAuthor): Response
     {
-        $publicationAuthor->load('publication');
+        $publicationAuthor->setRelation('publication', $publication);
         Gate::authorize('delete', $publicationAuthor);
 
         $publicationAuthor->delete();

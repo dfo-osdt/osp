@@ -28,7 +28,11 @@ class AuthorPublicationController extends Controller
             ->whereHas('publicationAuthors', function ($query) use ($author): void {
                 $query->where('author_id', $author->id);
             })
-            ->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization', 'region');
+            ->with([
+                'journal',
+                'publicationAuthors' => fn ($query) => $query->with('author', 'organization')->chaperone('publication'),
+                'region',
+            ]);
 
         $query = new PublicationListQuery($request, $baseQuery);
 

@@ -72,7 +72,7 @@ class AuthorController extends Controller
 
         if (isset($validated['include'])) {
             $requestedIncludes = explode(',', $validated['include']);
-            
+
             // If publications are requested, eager load nested relationships needed by policies
             if (in_array('publications', $requestedIncludes)) {
                 $includes->put('publications', function ($query): void {
