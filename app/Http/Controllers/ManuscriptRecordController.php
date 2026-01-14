@@ -384,7 +384,8 @@ class ManuscriptRecordController extends Controller
     {
         $relationships = collect(['user', 'shareables', 'region', 'manuscriptAuthors.author']);
         if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
-            $relationships->push('publication');
+            $relationships->push('publication.publicationAuthors.author');
+            $relationships->push('publication.publicationAuthors.publication');
         }
 
         return $manuscriptRecord->load($relationships->all());

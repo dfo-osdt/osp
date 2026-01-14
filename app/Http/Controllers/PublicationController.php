@@ -31,7 +31,8 @@ class PublicationController extends Controller
     {
         $limit = $this->getLimitFromRequest($request);
 
-        $baseQuery = Publication::forUser($user)
+        $baseQuery = Publication::query()
+            ->forUser($user)
             ->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization', 'region');
 
         $publicationListQuery = new PublicationListQuery($request, $baseQuery);
@@ -77,6 +78,7 @@ class PublicationController extends Controller
      */
     public function show(Publication $publication): JsonResource
     {
+        $publication->load('publicationAuthors.author', 'manuscriptRecord.manuscriptAuthors.author', 'region');
         Gate::authorize('view', $publication);
 
         return $this->defaultResource($publication);
@@ -87,6 +89,7 @@ class PublicationController extends Controller
      */
     public function update(Request $request, Publication $publication): JsonResource
     {
+        $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('update', $publication);
 
         // check if user is seeking to change the status from accepted to published
@@ -155,6 +158,7 @@ class PublicationController extends Controller
             'publicationAuthors.author',
             'publicationAuthors.organization',
             'manuscriptRecord',
+            'region',
         ]);
 
         return new PublicationResource($publication->load($relationship->all()));

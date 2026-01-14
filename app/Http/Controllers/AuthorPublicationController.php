@@ -23,7 +23,8 @@ class AuthorPublicationController extends Controller
     {
         $limit = $this->getLimitFromRequest($request);
 
-        $baseQuery = Publication::forUser($user)
+        $baseQuery = Publication::query()
+            ->forUser($user)
             ->whereHas('publicationAuthors', function ($query) use ($author): void {
                 $query->where('author_id', $author->id);
             })
