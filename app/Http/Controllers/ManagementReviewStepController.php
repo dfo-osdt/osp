@@ -19,6 +19,17 @@ use Illuminate\Validation\Rule;
 class ManagementReviewStepController extends Controller
 {
     /**
+     * Load relationships needed for the resource and policies
+     */
+    private function loadResourceRelationships(ManagementReviewStep $managementReviewStep, ManuscriptRecord $manuscriptRecord): ManagementReviewStep
+    {
+        $managementReviewStep->setRelation('manuscriptRecord', $manuscriptRecord);
+        $managementReviewStep->load('user');
+        
+        return $managementReviewStep;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(ManuscriptRecord $manuscriptRecord): JsonResource
@@ -47,6 +58,7 @@ class ManagementReviewStepController extends Controller
         ]);
 
         $managementReviewStep->update($validated);
+        $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
 
         return new ManagementReviewStepResource($managementReviewStep);
     }
@@ -84,6 +96,8 @@ class ManagementReviewStepController extends Controller
             FlagManuscriptRecordForPlanningBinderMail::commit(user_id: $managementReviewStep->user->id, manuscript_record_ulid: $manuscriptRecord->ulid);
         }
 
+        $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
+
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
@@ -119,6 +133,8 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->completed_at = now();
         $managementReviewStep->decision = ManagementReviewStepDecision::COMPLETE;
         $managementReviewStep->saveOrFail();
+
+        $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
 
         return new ManagementReviewStepResource($managementReviewStep);
 
@@ -157,6 +173,8 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->completed_at = now();
         $managementReviewStep->saveOrFail();
 
+        $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
+
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
@@ -190,6 +208,8 @@ class ManagementReviewStepController extends Controller
         $managementReviewStep->decision = ManagementReviewStepDecision::REVISION;
         $managementReviewStep->completed_at = now();
         $managementReviewStep->saveOrFail();
+
+        $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
 
         return new ManagementReviewStepResource($managementReviewStep);
     }
@@ -234,6 +254,8 @@ class ManagementReviewStepController extends Controller
 
         $manuscriptRecord->lockManuscriptFiles();
 
+        $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
+
         return new ManagementReviewStepResource($managementReviewStep);
     }
 
@@ -258,6 +280,8 @@ class ManagementReviewStepController extends Controller
         $manuscriptRecord->saveOrFail();
 
         event(new \App\Events\ManuscriptRecordWithdrawnByAuthor($manuscriptRecord));
+
+        $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
 
         return new ManagementReviewStepResource($managementReviewStep);
     }

@@ -60,6 +60,8 @@ class ManuscriptRecordFundingSourceController extends Controller
 
         $manuscriptRecord->fundingSources()->save($fundingSource);
 
+        $fundingSource->setRelation('fundable', $manuscriptRecord);
+
         return new FundingSourceResource($fundingSource->load([
             'funder',
             'fundable' => function (MorphTo $morphTo): void {
@@ -78,6 +80,8 @@ class ManuscriptRecordFundingSourceController extends Controller
     {
         $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
+
+        $fundingSource->setRelation('fundable', $manuscriptRecord);
 
         return new FundingSourceResource($fundingSource->load([
             'funder',
@@ -108,6 +112,8 @@ class ManuscriptRecordFundingSourceController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
         ]);
+
+        $fundingSource->setRelation('fundable', $manuscriptRecord);
 
         return new FundingSourceResource($fundingSource->load([
             'funder',

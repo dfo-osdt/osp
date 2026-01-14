@@ -46,6 +46,8 @@ class PublicationFundingSourceController extends Controller
 
         $publication->fundingSources()->save($fundingSource);
 
+        $fundingSource->setRelation('fundable', $publication);
+
         return new FundingSourceResource($fundingSource->load(['funder', 'fundable']));
     }
 
@@ -55,6 +57,8 @@ class PublicationFundingSourceController extends Controller
     public function show(Publication $publication, FundingSource $fundingSource): JsonResource
     {
         Gate::authorize('view', $publication);
+
+        $fundingSource->setRelation('fundable', $publication);
 
         return new FundingSourceResource($fundingSource->load(['funder', 'fundable']));
     }
@@ -77,6 +81,8 @@ class PublicationFundingSourceController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
         ]);
+
+        $fundingSource->setRelation('fundable', $publication);
 
         return new FundingSourceResource($fundingSource->load(['funder', 'fundable']));
     }

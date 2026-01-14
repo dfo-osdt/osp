@@ -124,7 +124,7 @@ test('a user cannot create a publication with an invalid DOI', function (): void
 
 test('a user view a publication via its id', function (): void {
     $user = User::factory()->create();
-    $publication = Publication::factory()->create(['user_id' => $user->id]);
+    $publication = Publication::factory()->withAuthors()->create(['user_id' => $user->id]);
 
     $response = $this->actingAs($user)->getJson('/api/publications/'.$publication->id);
 
@@ -134,7 +134,7 @@ test('a user view a publication via its id', function (): void {
 
 test('a user can update their publication', function (): void {
     $user = User::factory()->create();
-    $publication = Publication::factory()->create([
+    $publication = Publication::factory()->withAuthors()->create([
         'user_id' => $user->id,
         'status' => PublicationStatus::PUBLISHED,
     ]);
