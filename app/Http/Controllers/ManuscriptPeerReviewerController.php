@@ -20,7 +20,12 @@ class ManuscriptPeerReviewerController extends Controller
     {
         Gate::authorize('view', $manuscriptRecord);
 
-        return ManuscriptPeerReviewerResource::collection($manuscriptRecord->peerReviewers()->with(['author.organization', 'manuscriptRecord'])->get());
+        return ManuscriptPeerReviewerResource::collection(
+            $manuscriptRecord->peerReviewers()
+                ->with('author.organization')
+                ->chaperone('manuscriptRecord')
+                ->get()
+        );
 
     }
 

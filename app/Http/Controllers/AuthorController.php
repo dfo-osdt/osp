@@ -70,17 +70,14 @@ class AuthorController extends Controller
             ]
         );
 
-        if (isset($validated['include'])) {
-            $requestedIncludes = explode(',', $validated['include']);
-
-            // If publications are requested, eager load nested relationships needed by policies
-            if (in_array('publications', $requestedIncludes)) {
-                $includes->put('publications', function ($query): void {
-                    $query->with('publicationAuthors.author', 'publicationAuthors.publication', 'region');
-                });
-            } else {
-                $includes = $includes->merge($requestedIncludes);
-            }
+        // If publications are requested, eager load nested relationships needed by policies
+        if (isset($validated['include']) && str_contains($validated['include'], 'publications')) {
+            $includes->put('publications', function ($query): void {
+                $query->with([
+                    'publicationAuthors' => fn ($q) => $q->with('author')->chaperone('publication'),
+                    'region',
+                ]);
+            });
         }
 
         $author->load($includes->all());
