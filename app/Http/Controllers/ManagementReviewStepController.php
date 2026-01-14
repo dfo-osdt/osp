@@ -26,7 +26,11 @@ class ManagementReviewStepController extends Controller
         $manuscriptRecord->load('manuscriptAuthors.author');
         Gate::authorize('view', $manuscriptRecord);
 
-        $managementReviewSteps = $manuscriptRecord->managementReviewSteps()->with('user', 'manuscriptRecord')->orderBy('id')->get();
+        $managementReviewSteps = $manuscriptRecord->managementReviewSteps()
+            ->with('user')
+            ->chaperone('manuscriptRecord')
+            ->orderBy('id')
+            ->get();
 
         return ManagementReviewStepResource::collection($managementReviewSteps);
     }

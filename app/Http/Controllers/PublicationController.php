@@ -33,7 +33,11 @@ class PublicationController extends Controller
 
         $baseQuery = Publication::query()
             ->forUser($user)
-            ->with('journal', 'publicationAuthors.author', 'publicationAuthors.organization', 'region');
+            ->with([
+                'journal',
+                'publicationAuthors' => fn ($q) => $q->with('author', 'organization')->chaperone('publication'),
+                'region',
+            ]);
 
         $publicationListQuery = new PublicationListQuery($request, $baseQuery);
 
