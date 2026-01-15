@@ -26,7 +26,6 @@ class ManuscriptRecordFileController extends Controller
         $media = $manuscriptRecord->getManuscriptFiles();
 
         // get manuscript model and all required relations to avoid n+1
-        $manuscriptRecord->load('manuscriptAuthors.author', 'managementReviewSteps', 'shareables');
         $media->each(fn ($media) => $media->setRelation('model', $manuscriptRecord));
 
         return MediaResource::collection($media->sortBy('created_at', SORT_REGULAR, true));
@@ -57,6 +56,8 @@ class ManuscriptRecordFileController extends Controller
             ->causedBy($request->user())
             ->log('manuscript.file.uploaded');
 
+        $media->setRelation('model', $manuscriptRecord);
+
         return MediaResource::make($media);
     }
 
@@ -79,6 +80,8 @@ class ManuscriptRecordFileController extends Controller
         if ($download) {
             return $media;
         }
+
+        $media->setRelation('model', $manuscriptRecord);
 
         return MediaResource::make($media);
     }

@@ -27,7 +27,7 @@ class PublicationFileController extends Controller
             'publicationAuthors.author',
             'region',
         ]);
-        
+
         Gate::authorize('view', $publication);
 
         $media = $publication->getMedia('publication');
@@ -85,7 +85,7 @@ class PublicationFileController extends Controller
             'publicationAuthors.author',
             'region',
         ]);
-        
+
         Gate::authorize('view', $publication);
 
         $media = $publication->getPublicationFile($uuid);
