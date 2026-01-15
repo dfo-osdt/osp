@@ -29,7 +29,7 @@ class PublicationSupplementaryFileController extends Controller
             'publicationAuthors.author',
             'region',
         ]);
-        
+
         Gate::authorize('view', $publication);
 
         $media = $publication->getMedia('supplementary_file');

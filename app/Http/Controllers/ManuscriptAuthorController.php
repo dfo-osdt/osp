@@ -55,7 +55,6 @@ class ManuscriptAuthorController extends Controller
         $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $manuscriptAuthor->organization_id = $author->organization_id;
         $manuscriptAuthor->save();
-        $manuscriptAuthor->setRelation('manuscriptRecord', $manuscriptRecord);
         $manuscriptAuthor->load($this->getPolicyRelationships());
 
         return ManuscriptAuthorResource::make($manuscriptAuthor);
@@ -69,7 +68,6 @@ class ManuscriptAuthorController extends Controller
         $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptRecord);
 
-        $manuscriptAuthor->setRelation('manuscriptRecord', $manuscriptRecord);
         $manuscriptAuthor->load($this->getPolicyRelationships());
 
         return ManuscriptAuthorResource::make($manuscriptAuthor);
@@ -116,6 +114,10 @@ class ManuscriptAuthorController extends Controller
         return response()->noContent();
     }
 
+    /**
+     * This returns the require relationships so that we authorize
+     * via the policy without lazy loading relationships later.
+     */
     private function getPolicyRelationships(): array
     {
         return [
@@ -124,6 +126,7 @@ class ManuscriptAuthorController extends Controller
             'manuscriptRecord' => [
                 'user',
                 'shareables',
+                'manuscriptAuthors.author',
             ],
         ];
     }
