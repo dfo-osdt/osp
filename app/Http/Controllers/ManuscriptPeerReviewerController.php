@@ -6,6 +6,7 @@ use App\Enums\ManuscriptRecordType;
 use App\Http\Resources\ManuscriptPeerReviewerResource;
 use App\Models\ManuscriptPeerReviewer;
 use App\Models\ManuscriptRecord;
+use App\Traits\LoadsManuscriptRecordPolicyRelationships;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
@@ -13,6 +14,8 @@ use Illuminate\Validation\ValidationException;
 
 class ManuscriptPeerReviewerController extends Controller
 {
+    use LoadsManuscriptRecordPolicyRelationships;
+
     /**
      * Load relationships needed for the resource and policies
      */
@@ -29,6 +32,9 @@ class ManuscriptPeerReviewerController extends Controller
      */
     public function index(ManuscriptRecord $manuscriptRecord): JsonResource
     {
+
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
+
         Gate::authorize('view', $manuscriptRecord);
 
         return ManuscriptPeerReviewerResource::collection(
@@ -45,6 +51,7 @@ class ManuscriptPeerReviewerController extends Controller
      */
     public function store(ManuscriptRecord $manuscriptRecord, Request $request): JsonResource
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('update', $manuscriptRecord);
 
         if ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY) {
@@ -79,6 +86,7 @@ class ManuscriptPeerReviewerController extends Controller
      */
     public function show(ManuscriptRecord $manuscriptRecord, ManuscriptPeerReviewer $manuscriptPeerReviewer): void
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('view', $manuscriptPeerReviewer);
     }
 
@@ -87,6 +95,7 @@ class ManuscriptPeerReviewerController extends Controller
      */
     public function destroy(ManuscriptRecord $manuscriptRecord, ManuscriptPeerReviewer $manuscriptPeerReviewer)
     {
+        $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('delete', $manuscriptPeerReviewer);
 
         $manuscriptPeerReviewer->delete();
