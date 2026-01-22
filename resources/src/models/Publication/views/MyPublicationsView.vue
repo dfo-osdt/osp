@@ -2,6 +2,7 @@
 import type {
   PublicationResourceList,
 } from '../Publication'
+import { useRouteQuery } from '@vueuse/router'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
@@ -17,14 +18,16 @@ import {
 
 const { t } = useI18n()
 
+// URL query params for filter persistence
+const activeFilterId = useRouteQuery('filter', '2', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number })
+const search = useRouteQuery<string | null>('search', null)
+
 const publications = ref<PublicationResourceList>()
 const loading = ref(false)
 const showCreatePublicationDialog = ref(false)
 const authorStore = useAuthStore()
 const publicationStore = usePublicationStore()
-const activeFilterId = ref(2)
-const currentPage = ref(1)
-const search = ref<string | null>(null)
 
 publicationStore.getMyPublications()
 

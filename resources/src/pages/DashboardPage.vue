@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRouteQuery } from '@vueuse/router'
 import GuideCard from '@/components/GuideCard.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
@@ -16,7 +17,14 @@ const manuscripts = useManuscriptStore()
 const reviewSteps = useManagementReviewStepStore()
 const publications = usePublicationStore()
 
-const tab = useStorage('dashboard-recent-tab', 'manuscripts')
+// Tab state: URL takes precedence, but remember last choice in storage
+const storedTab = useStorage('dashboard-recent-tab', 'manuscripts')
+const tab = useRouteQuery('tab', storedTab.value)
+
+// Sync to storage when tab changes
+watch(tab, (newTab) => {
+  storedTab.value = newTab
+})
 
 // load the latest manuscripts
 onMounted(() => {

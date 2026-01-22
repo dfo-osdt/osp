@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PublicationResourceList } from '../Publication'
 import { watchThrottled } from '@vueuse/core'
+import { useRouteQuery } from '@vueuse/router'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ContentCard from '@/components/ContentCard.vue'
@@ -14,18 +15,26 @@ import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import PublicationList from '../components/PublicationList.vue'
 import { PublicationQuery, PublicationService } from '../Publication'
 
+// URL query params for filter persistence
+const activeFilter = useRouteQuery('filter', '1', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number })
+const search = useRouteQuery<string | null>('search', null)
+const journalId = useRouteQuery<number | null>('journal', null, {
+  transform: v => v ? Number(v) : null,
+})
+const authorId = useRouteQuery<number | null>('author', null, {
+  transform: v => v ? Number(v) : null,
+})
+const regionId = useRouteQuery<number | null>('region', null, {
+  transform: v => v ? Number(v) : null,
+})
+
 // State variables
 const publications = ref<PublicationResourceList>()
 const loading = ref(false)
-const activeFilter = ref(1)
-const currentPage = ref(1)
-const search = ref<string | null>(null)
 const showFilters = ref(false)
-const journalId = ref<number | null>(null)
 const journalSelect = ref<InstanceType<typeof JournalSelect> | null>(null)
-const authorId = ref<number | null>(null)
 const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null)
-const regionId = ref<number | null>(null)
 
 // i18n
 const { t } = useI18n()

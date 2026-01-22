@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { AuthorResourceList } from '../Author'
 import { watchThrottled } from '@vueuse/core'
+import { useRouteQuery } from '@vueuse/router'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ContentCard from '@/components/ContentCard.vue'
@@ -12,14 +13,18 @@ import OrganizationSelect from '@/models/Organization/components/OrganizationSel
 import { AuthorQuery, AuthorService } from '../Author'
 import AuthorList from '../components/AuthorList.vue'
 
+// URL query params for filter persistence
+const activeFilter = useRouteQuery('filter', '1', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number })
+const search = useRouteQuery<string | null>('search', null)
+const organizationId = useRouteQuery<number | null>('org', null, {
+  transform: v => v ? Number(v) : null,
+})
+
 // State variables
 const authors = ref<AuthorResourceList>()
 const loading = ref(false)
-const activeFilter = ref(1)
-const currentPage = ref(1)
-const search = ref<string | null>(null)
 const showFilters = ref(false)
-const organizationId = ref<number | null>(null)
 const organizationSelect = ref<InstanceType<typeof OrganizationSelect> | null>(null)
 
 // i18n
@@ -124,7 +129,7 @@ async function getAuthors() {
 
 function mainFilterClick(filterId: number) {
   activeFilter.value = filterId
-  search.value = ''
+  search.value = null
   organizationId.value = null
   currentPage.value = 1
   getAuthors()
