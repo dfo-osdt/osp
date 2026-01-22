@@ -80,8 +80,8 @@ const showCreatePublication = ref(false)
       </div>
 
       <!-- Quick Help Guide Cards -->
-      <div class="q-pa-sm">
-        <div class="text-h6 text-weight-medium text-grey-8 q-mb-sm q-ml-sm">
+      <div class="q-pa-none q-mb-md">
+        <div class="text-h6 text-weight-medium text-grey-8 q-mb-sm q-ml-sm q-mt-md">
           {{ $t('dashboard.guide-cards.quick-help-title') }}
         </div>
         <div class="row">
