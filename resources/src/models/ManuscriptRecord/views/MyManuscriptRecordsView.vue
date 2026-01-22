@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ManuscriptRecordSummaryResourceList } from '../ManuscriptRecord'
+import { useRouteQuery } from '@vueuse/router'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
@@ -18,6 +19,11 @@ const { t } = useI18n()
 
 const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
 
+// URL query params for filter persistence
+const activeFilterId = useRouteQuery('filter', '3', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number })
+const search = useRouteQuery<string | null>('search', null)
+
 // type for main filter options
 interface MainFilterOption {
   id: number
@@ -29,7 +35,6 @@ interface MainFilterOption {
 }
 
 // content filter - sidebar
-const activeFilterId = ref(3)
 const mainFilterOptions = computed<MainFilterOption[]>(() => {
   return [
     {
@@ -64,12 +69,6 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
     },
   ]
 })
-
-// pagination
-const currentPage = ref(1)
-
-// search
-const search = ref<string | null>(null)
 
 onMounted(() => {
   getManuscripts()

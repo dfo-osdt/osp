@@ -3,6 +3,7 @@ import type {
   ManuscriptRecordSummaryResourceList,
   ManuscriptRecordType,
 } from '../ManuscriptRecord'
+import { useRouteQuery } from '@vueuse/router'
 import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
@@ -18,22 +19,30 @@ import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
 
+// URL query params for filter persistence
+const activeFilter = useRouteQuery('filter', '1', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number })
+const search = useRouteQuery<string | null>('search', null)
+const regionId = useRouteQuery<number | null>('region', null, {
+  transform: v => v ? Number(v) : null,
+})
+const functionalAreaId = useRouteQuery<number | null>('area', null, {
+  transform: v => v ? Number(v) : null,
+})
+const authorId = useRouteQuery<number | null>('author', null, {
+  transform: v => v ? Number(v) : null,
+})
+const manuscriptType = useRouteQuery<ManuscriptRecordType | null>('type', null)
+
 // State variables
 const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
 const loading = ref(false)
-const activeFilter = ref(1)
-const currentPage = ref(1)
-const search = ref<string | null>(null)
 const showFilters = ref(false)
-const regionId = ref<number | null>(null)
 const regionSelect = ref<InstanceType<typeof RegionSelect> | null>(null)
-const functionalAreaId = ref<number | null>(null)
 const functionalAreaSelect = ref<InstanceType<
   typeof FunctionalAreaSelect
 > | null>(null)
-const authorId = ref<number | null>(null)
 const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null)
-const manuscriptType = ref<ManuscriptRecordType | null>(null)
 
 // i18n
 const { t } = useI18n()
