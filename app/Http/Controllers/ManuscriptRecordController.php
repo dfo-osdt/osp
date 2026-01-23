@@ -266,6 +266,8 @@ class ManuscriptRecordController extends Controller
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => ['required', 'date', 'after_or_equal:submitted_to_journal_on'],
             'journal_id' => ['required', 'exists:journals,id'],
+            'isbn' => ['nullable', 'string', 'max:25'],
+            'catalogue_number' => ['nullable', 'string', 'max:25'],
             'submission_file' => [
                 'file',
                 'mimes:doc,docx',
@@ -286,6 +288,12 @@ class ManuscriptRecordController extends Controller
             abort(422, 'A submission file is required for secondary MRFs.');
         }
 
+        // Ensure secondary manuscripts have ISBN and Catalogue Number.
+        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
+            $validated['isbn'] ?? abort(422, 'An ISBN is required for secondary MRFs.');
+            $validated['catalogue_number'] ?? abort(422, 'A Catalogue Number is required for secondary MRFs.');
+        }
+
         $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
         // if the submitted to journal date is given, set it.
         if ($validated['submitted_to_journal_on']) {
@@ -294,7 +302,11 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
         $manuscriptRecord->save();
 
-        CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null);
+        $publication = CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null, $validated['isbn'] ?? null, $validated['catalogue_number'] ?? null);
+
+        if (! $publication) {
+            abort(500, 'Failed to create publication from manuscript record.');
+        }
 
         // if the manuscript is a secondary, send an email to the submissions team
         if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {

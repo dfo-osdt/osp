@@ -231,11 +231,15 @@ export class ManuscriptRecordService {
     acceptedOn: string,
     journalId: number,
     submissionFile: File | null = null,
+    isbn: string | null = null,
+    catalogueNumber: string | null = null,
   ) {
     const formData = new FormData()
     formData.append('submitted_to_journal_on', submittedOn)
     formData.append('accepted_on', acceptedOn)
     formData.append('journal_id', journalId.toString())
+    formData.append('isbn', isbn || '')
+    formData.append('catalogue_number', catalogueNumber || '')
     if (submissionFile) {
       formData.append('submission_file', submissionFile)
     }

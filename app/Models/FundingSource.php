@@ -33,6 +33,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource whereUpdatedAt($value)
  *
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class FundingSource extends Model

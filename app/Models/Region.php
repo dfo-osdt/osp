@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Region whereNameEn($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Region whereNameFr($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Region whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Region whereSlug($value)
  *
  * @mixin \Eloquent
  */
