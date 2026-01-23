@@ -12,11 +12,16 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CreatePublicationFromManuscript
 {
-    public static function handle(ManuscriptRecord $manuscriptRecord, Journal $journal, string|UploadedFile|null $file = null): Publication
+    public static function handle(
+        ManuscriptRecord $manuscriptRecord,
+        Journal $journal,
+        string|UploadedFile|null $file = null,
+        ?string $isbn,
+        ?string $catalogueNumber): Publication
     {
 
         // create a new publication record
-        return DB::transaction(function () use ($manuscriptRecord, $journal, $file) {
+        return DB::transaction(function () use ($manuscriptRecord, $journal, $file, $isbn, $catalogueNumber) {
             $publication = $manuscriptRecord->publication()->create([
                 'title' => $manuscriptRecord->title,
                 'journal_id' => $journal->id,
@@ -24,6 +29,8 @@ class CreatePublicationFromManuscript
                 'accepted_on' => $manuscriptRecord->accepted_on,
                 'user_id' => $manuscriptRecord->user_id,
                 'region_id' => $manuscriptRecord->region_id,
+                'isbn' => $isbn,
+                'catalog_number' => $catalogueNumber,
             ]);
 
             // attach the manuscript's authors to the publication

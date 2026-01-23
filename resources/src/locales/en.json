@@ -258,8 +258,12 @@
       "password-required": "Password is required",
       "passwords-different": "Your current and new password should be different",
       "passwords-match": "Passwords do not match",
-      "url-invalid": "URL is invalid"
+      "url-invalid": "URL is invalid",
+      "isbn-invalid": "ISBN must be 13 digits"
     },
+    "isbn-hint": "13 digits only (e.g., 9780134685991)",
+    "catalogue-number": "Catalogue Number",
+    "catalogue-number-hint": "e.g., Fs97-18/409E-PDF",
     "withdraw": "Withdraw",
     "withdrawn": "Withdrawn",
     "withdrawn-on": "Withdrawn on",
