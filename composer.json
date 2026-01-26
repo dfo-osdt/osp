@@ -50,7 +50,7 @@
     "fakerphp/faker": "^1.23.1",
     "filament/upgrade": "^5.0",
     "larastan/larastan": "^3.0",
-    "laravel/boost": "^1.3",
+    "laravel/boost": "^2.0",
     "laravel/breeze": "^2.0.3",
     "laravel/pint": "^1.15.3",
     "laravel/sail": "^1.29.1",
