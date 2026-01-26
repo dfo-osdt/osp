@@ -29,7 +29,7 @@
     "@intlify/eslint-plugin-vue-i18n": "^4.1.1",
     "@quasar/vite-plugin": "^1.10.0",
     "@types/node": "^25.0.10",
-    "axios": "^1.13.2",
+    "axios": "^1.13.3",
     "eslint": "^9.39.2",
     "eslint-plugin-quasar": "^1.1.0",
     "laravel-vite-plugin": "^2.1.0",
