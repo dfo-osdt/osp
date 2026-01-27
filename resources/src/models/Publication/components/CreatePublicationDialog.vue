@@ -11,7 +11,7 @@ import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import {
   PublicationService,
 } from '../Publication'
-import DoiInput from './DoiInput.vue'
+import DoiInput from '@/components/DoiInput.vue'
 
 const today = new Date().toISOString().split('T')[0].replace(/-/g, '/')
 
