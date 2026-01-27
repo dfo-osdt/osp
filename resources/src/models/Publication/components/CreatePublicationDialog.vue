@@ -6,12 +6,12 @@ import type {
 import { QForm, QStepper } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
+import DoiInput from '@/components/DoiInput.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import {
   PublicationService,
 } from '../Publication'
-import DoiInput from '@/components/DoiInput.vue'
 
 const today = new Date().toISOString().split('T')[0].replace(/-/g, '/')
 
