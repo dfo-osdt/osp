@@ -262,6 +262,7 @@
       "isbn-invalid": "Must be a valid ISBN-13"
     },
     "isbn-hint": "13 digits only (e.g., 9780134685991)",
+    "doi-hint": "e.g., https://doi.org/10.1000/182 or 10.1000/182",
     "catalogue-number": "Catalogue Number",
     "catalogue-number-hint": "e.g., Fs97-18/409E-PDF",
     "withdraw": "Withdraw",
