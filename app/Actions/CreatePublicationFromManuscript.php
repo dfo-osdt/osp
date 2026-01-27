@@ -30,7 +30,7 @@ class CreatePublicationFromManuscript
                 'user_id' => $manuscriptRecord->user_id,
                 'region_id' => $manuscriptRecord->region_id,
                 'isbn' => $isbn,
-                'catalog_number' => $catalogueNumber,
+                'catalogue_number' => $catalogueNumber,
             ]);
 
             // attach the manuscript's authors to the publication

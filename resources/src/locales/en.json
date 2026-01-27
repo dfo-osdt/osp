@@ -259,7 +259,7 @@
       "passwords-different": "Your current and new password should be different",
       "passwords-match": "Passwords do not match",
       "url-invalid": "URL is invalid",
-      "isbn-invalid": "ISBN must be 13 digits"
+      "isbn-invalid": "Must be a valid ISBN-13"
     },
     "isbn-hint": "13 digits only (e.g., 9780134685991)",
     "catalogue-number": "Catalogue Number",

@@ -509,3 +509,123 @@ test('a user can clone a manuscript record', function (): void {
     expect($clonedManuscript->fundingSources->count())->toBe($manuscript->fundingSources->count());
 
 });
+
+// ISBN and Catalogue Number Tests for Manuscript Acceptance
+
+test('a user can mark a secondary manuscript as accepted with valid ISBN and catalogue number', function (): void {
+    $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
+    $journal = Journal::factory()->dfoSeries()->create();
+    $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => $journal->id,
+        'isbn' => '9780134685991',
+        'catalogue_number' => 'Fs97-18/409E-PDF',
+        'submission_file' => $file,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
+
+    $response->assertOk();
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->publication->isbn)->toBe('9780134685991');
+    expect($manuscript->publication->catalogue_number)->toBe('Fs97-18/409E-PDF');
+});
+
+test('a user cannot mark a secondary manuscript as accepted with an invalid ISBN', function (): void {
+    $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
+    $journal = Journal::factory()->dfoSeries()->create();
+    $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => $journal->id,
+        'isbn' => '9780134685990', // Invalid check digit
+        'catalogue_number' => 'Fs97-18/409E-PDF',
+        'submission_file' => $file,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
+
+    $response->assertStatus(422);
+    $response->assertJsonValidationErrors('isbn');
+});
+
+test('a user cannot mark a secondary manuscript as accepted with a formatted ISBN', function (): void {
+    $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
+    $journal = Journal::factory()->dfoSeries()->create();
+    $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => $journal->id,
+        'isbn' => '978-0-13-468599-1', // Contains hyphens
+        'catalogue_number' => 'Fs97-18/409E-PDF',
+        'submission_file' => $file,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
+
+    $response->assertStatus(422);
+    $response->assertJsonValidationErrors('isbn');
+});
+
+test('a secondary manuscript requires ISBN when marked as accepted', function (): void {
+    $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
+    $journal = Journal::factory()->dfoSeries()->create();
+    $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => $journal->id,
+        'isbn' => null,
+        'catalogue_number' => 'Fs97-18/409E-PDF',
+        'submission_file' => $file,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
+
+    $response->assertStatus(422);
+});
+
+test('a secondary manuscript requires catalogue number when marked as accepted', function (): void {
+    $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
+    $journal = Journal::factory()->dfoSeries()->create();
+    $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => $journal->id,
+        'isbn' => '9780134685991',
+        'catalogue_number' => null,
+        'submission_file' => $file,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
+
+    $response->assertStatus(422);
+});
+
+test('a primary manuscript does not require ISBN when marked as accepted', function (): void {
+    $manuscript = ManuscriptRecord::factory()->filled()->create([
+        'status' => ManuscriptRecordStatus::SUBMITTED,
+    ]);
+    $journal = Journal::factory()->create();
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => $journal->id,
+    ];
+
+    $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
+
+    $response->assertOk();
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+});

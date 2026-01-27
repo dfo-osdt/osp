@@ -9,6 +9,7 @@ use App\Models\Publication;
 use App\Models\User;
 use App\Queries\PublicationListQuery;
 use App\Rules\Doi;
+use App\Rules\Isbn;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
@@ -58,6 +59,8 @@ class PublicationController extends Controller
             'title' => ['required'],
             'journal_id' => ['required', 'exists:journals,id'],
             'doi' => ['nullable', 'string', new Doi],
+            'isbn' => ['nullable', 'string', new Isbn],
+            'catalogue_number' => ['nullable', 'string'],
             'accepted_on' => ['date', 'nullable'],
             'published_on' => 'date|nullable|required_if:status,'.PublicationStatus::PUBLISHED->value,
             'embargoed_until' => ['date', 'nullable'],
@@ -129,6 +132,8 @@ class PublicationController extends Controller
             'title' => ['sometimes', 'required', 'string'],
             'journal_id' => ['sometimes', 'required', 'exists:journals,id'],
             'doi' => ['string', 'nullable', new Doi],
+            'isbn' => ['nullable', 'string', new Isbn],
+            'catalogue_number' => ['nullable', 'string'],
             'accepted_on' => ['date', 'nullable', Rule::when($publication->status === PublicationStatus::PUBLISHED, ['before_or_equal:published_on']), Rule::requiredIf($publication->status === PublicationStatus::ACCEPTED)],
             'published_on' => ['date', 'nullable', 'after_or_equal:accepted_on', Rule::requiredIf($publication->status === PublicationStatus::PUBLISHED)],
             'embargoed_until' => ['date', 'nullable'],

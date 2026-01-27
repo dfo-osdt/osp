@@ -4,6 +4,7 @@ import type { ManuscriptRecordMetadataResource } from '@/models/ManuscriptRecord
 import { QForm, useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
+import IsbnInput from '@/components/IsbnInput.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
@@ -17,6 +18,7 @@ import PublicationFileManagementCard from '../components/PublicationFileManageme
 import PublicationStatusBadge from '../components/PublicationStatusBadge.vue'
 import PublicationSupplementaryFileManagementCard from '../components/PublicationSupplementaryFileManagementCard.vue'
 import { PublicationService } from '../Publication'
+import CatalogueNumberInput from '@/components/CatalogueNumberInput.vue'
 
 const props = defineProps<{
   id: number
@@ -353,6 +355,18 @@ function scrollToSupplementaryFiles() {
             :readonly="!canEdit"
             class="q-mb-md"
           />
+          <IsbnInput
+            v-model="publication.data.isbn"
+            :disable="loading"
+            :readonly="!canEdit"
+            class="q-mb-md"
+          />
+          <CatalogueNumberInput
+            v-model="publication.data.catalogue_number"
+            :disable="loading"
+            :readonly="!canEdit"
+            class="q-mb-md"
+            />
           <div class="text-body1 text-primary text-weight-medium">
             {{ t('create-publication-dialog.publication-dates') }}
           </div>
