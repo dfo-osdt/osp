@@ -195,6 +195,20 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       <p>
         {{ $t('manuscript-progress-view.submission-to-dfo-details') }}
       </p>
+      <p>
+        {{ $t('manuscript-progress-view.publication-numbers-instruction') }}
+        <a
+          href="https://intranet.ent.dfo-mpo.ca/mpo/sites/dfo-mpo/files/publishing-form-formulaire-publication-eng_0.pdf"
+          target="_blank"
+        >{{ $t('common.english') }}</a>
+        |
+        <a
+          href="https://intranet.ent.dfo-mpo.ca/mpo/sites/dfo-mpo/files/publishing-form-formulaire-publication-fra.pdf"
+          target="_blank"
+        >{{ $t('common.french') }}</a>)
+        {{ $t('manuscript-progress-view.send-form-to') }}
+        <a href="mailto:Publications.XNCR@dfo-mpo.gc.ca">Publications.XNCR@dfo-mpo.gc.ca</a>.
+      </p>
       <div class="row q-gutter-md">
         <q-btn
           v-if="

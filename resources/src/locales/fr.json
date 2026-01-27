@@ -546,6 +546,8 @@
     "submission-to-dfo-title": "Soumettre au guichet unique pour les publications scientifiques du MPO",
     "submit-title": "Soumettre le manuscrit",
     "submission-to-dfo-details": "Suite à votre soumission au groupe de publication EOS, votre manuscrit sera marqué comme accepté dans le portail. Votre travail subira ensuite une révision technique avant qu'une épreuve finale ne soit envoyée à l'auteur(e) correspondant(e) pour révision. Une fois cette étape terminée, le groupe de publication prendra des dispositions pour publier le manuscrit dans la série appropriée.",
+    "publication-numbers-instruction": "Pour soumettre au guichet unique, vous aurez besoin d'un ISBN et d'un numéro de catalogue. Pour obtenir ces numéros, veuillez remplir le formulaire de numéro de publication (",
+    "send-form-to": "et l'envoyer à",
     "completed-preprint-details": "Le manuscrit s'aligne avec la politique nationale des publications scientifiques du MPO et a été examiné par la gestion du MPO. \nÀ ce stade, vous pouvez désormais soumettre le manuscrit à un serveur de prépublication.",
     "submitted-to-preprint": "Soumettez votre manuscrit à un serveur de prépublication",
     "submitted-to-preprint-details": "Vous avez soumis votre manuscrit à un serveur de prépublication. \nSi le serveur attribue un DOI (identifiant d'objet numérique), veuillez vous assurer qu'il est fourni dans votre soumission. \nSi aucun DOI n'est disponible, une URL stable liée directement à la prépublication doit être incluse.",
