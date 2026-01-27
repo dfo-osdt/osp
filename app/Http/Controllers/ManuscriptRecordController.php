@@ -29,6 +29,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -303,9 +304,11 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
         $manuscriptRecord->save();
 
-        $publication = CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null, $validated['isbn'] ?? null, $validated['catalogue_number'] ?? null);
-
-        if (! $publication) {
+        try {
+            $publication = CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null, $validated['isbn'] ?? null, $validated['catalogue_number'] ?? null);
+        } catch (\Exception $e) {
+            Log::error('Failed to create publication from manuscript record ID '.$manuscriptRecord->id);
+            Log::error($e->getMessage());
             abort(500, 'Failed to create publication from manuscript record.');
         }
 

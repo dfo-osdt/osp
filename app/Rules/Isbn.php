@@ -19,7 +19,7 @@ class Isbn implements ValidationRule
         }
 
         // ISBN-13 must be exactly 13 digits
-        if (! preg_match('/^\d{13}$/', $value)) {
+        if (! preg_match('/^\d{13}$/', (string) $value)) {
             $fail('validation.isbn')->translate();
 
             return;

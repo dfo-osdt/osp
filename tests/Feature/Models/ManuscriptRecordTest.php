@@ -388,6 +388,8 @@ test('a user can submit their manuscript to the science pub team', function (): 
         'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
         'accepted_on' => now()->toDateTimeString(),
         'journal_id' => Journal::factory()->dfoSeries()->create()->id,
+        'isbn' => '9780134685991',
+        'catalogue_number' => 'Fs97-18/409E-PDF',
         'submission_file' => $file,
     ];
 

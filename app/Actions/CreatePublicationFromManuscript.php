@@ -16,8 +16,8 @@ class CreatePublicationFromManuscript
         ManuscriptRecord $manuscriptRecord,
         Journal $journal,
         string|UploadedFile|null $file = null,
-        ?string $isbn,
-        ?string $catalogueNumber): Publication
+        ?string $isbn = null,
+        ?string $catalogueNumber = null): Publication
     {
 
         // create a new publication record

@@ -2,6 +2,7 @@
 import type { PublicationResource } from '../Publication'
 import type { ManuscriptRecordMetadataResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import { QForm, useQuasar } from 'quasar'
+import CatalogueNumberInput from '@/components/CatalogueNumberInput.vue'
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
 import IsbnInput from '@/components/IsbnInput.vue'
@@ -18,7 +19,6 @@ import PublicationFileManagementCard from '../components/PublicationFileManageme
 import PublicationStatusBadge from '../components/PublicationStatusBadge.vue'
 import PublicationSupplementaryFileManagementCard from '../components/PublicationSupplementaryFileManagementCard.vue'
 import { PublicationService } from '../Publication'
-import CatalogueNumberInput from '@/components/CatalogueNumberInput.vue'
 
 const props = defineProps<{
   id: number
@@ -366,7 +366,7 @@ function scrollToSupplementaryFiles() {
             :disable="loading"
             :readonly="!canEdit"
             class="q-mb-md"
-            />
+          />
           <div class="text-body1 text-primary text-weight-medium">
             {{ t('create-publication-dialog.publication-dates') }}
           </div>
