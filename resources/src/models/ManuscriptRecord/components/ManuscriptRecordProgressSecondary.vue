@@ -12,6 +12,8 @@ const manuscriptRecord = defineModel<ManuscriptRecordResource>({ required: true 
 const $q = useQuasar()
 const { t } = useI18n()
 
+const publicationsEmail = 'Publications.XNCR@dfo-mpo.gc.ca'
+
 const createdSubtitle = computed(() => {
   return (
     `${t('common.created-on')
@@ -207,7 +209,7 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
           target="_blank"
         >{{ $t('common.french') }}</a>)
         {{ $t('manuscript-progress-view.send-form-to') }}
-        <a href="mailto:Publications.XNCR@dfo-mpo.gc.ca">Publications.XNCR@dfo-mpo.gc.ca</a>.
+        <a :href="`mailto:${publicationsEmail}`">{{ publicationsEmail }}</a>.
       </p>
       <div class="row q-gutter-md">
         <q-btn

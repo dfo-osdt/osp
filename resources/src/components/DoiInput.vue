@@ -18,7 +18,7 @@ const doiInput = ref<QInput | null>(null)
 const isReadOnly = computed(() => doiInput.value?.$props.readonly ?? false)
 
 // Match either full URL or just the DOI portion (10.xxxx/...)
-const doiRegex = /^(https:\/\/doi\.org\/)?10\.\d{4,9}\/[-.\w;()/:]+$/
+const doiRegex = /^(?:https:\/\/doi\.org\/)?10\.\d{4,9}\/[-.\w;()/:]+$/
 
 function normalizeDoi(val: string | null): string | null {
   if (!val)
