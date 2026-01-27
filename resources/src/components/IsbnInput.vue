@@ -11,7 +11,7 @@ const attrs = useAttrs()
 
 const { t } = useI18n()
 
-const modelValue = defineModel<string>({ default: '' })
+const modelValue = defineModel<string|null>({ default: '' })
 
 const computedRules = computed<ValidationRule[]>(() => props.rules ?? [
   (val: string) => {
@@ -21,10 +21,21 @@ const computedRules = computed<ValidationRule[]>(() => props.rules ?? [
       return t('common.required')
     return true
   },
-  (val: string) =>
-    val.length === 0
-    || /^\d{13}$/.test(val)
-    || t('common.validation.isbn-invalid'),
+  (val: string) => {
+    if (val.length === 0)
+      return true
+    if (!/^\d{13}$/.test(val))
+      return t('common.validation.isbn-invalid')
+    // Validate ISBN-13 checksum
+    let sum = 0
+    for (let i = 0; i < 12; i++) {
+      sum += Number(val[i]) * (i % 2 === 0 ? 1 : 3)
+    }
+    const checkDigit = (10 - (sum % 10)) % 10
+    if (Number(val[12]) !== checkDigit)
+      return t('common.validation.isbn-invalid')
+    return true
+  },
 ])
 
 function onPaste(event: ClipboardEvent) {

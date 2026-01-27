@@ -664,3 +664,156 @@ test('media files are preserved during soft delete and deleted on force delete',
     expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($publicationFileId))->toBeNull();
     expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($supplementaryFileId))->toBeNull();
 });
+
+// ISBN and Catalogue Number Tests
+
+test('a user can create a publication with a valid ISBN-13', function (): void {
+    $user = User::factory()->create();
+    $journal = Journal::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications', [
+        'title' => 'Test Publication',
+        'isbn' => '9780134685991',
+        'is_open_access' => true,
+        'journal_id' => $journal->id,
+        'accepted_on' => '2021-01-01',
+        'region_id' => 1,
+    ]);
+
+    $response->assertCreated();
+    $response->assertJsonPath('data.isbn', '9780134685991');
+});
+
+test('a user cannot create a publication with an invalid ISBN check digit', function (): void {
+    $user = User::factory()->create();
+    $journal = Journal::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications', [
+        'title' => 'Test Publication',
+        'isbn' => '9780134685990',
+        'is_open_access' => true,
+        'journal_id' => $journal->id,
+        'accepted_on' => '2021-01-01',
+        'region_id' => 1,
+    ]);
+
+    $response->assertStatus(422);
+    $response->assertJsonValidationErrors('isbn');
+});
+
+test('a user cannot create a publication with an ISBN with wrong number of digits', function (): void {
+    $user = User::factory()->create();
+    $journal = Journal::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications', [
+        'title' => 'Test Publication',
+        'isbn' => '978013468599',
+        'is_open_access' => true,
+        'journal_id' => $journal->id,
+        'accepted_on' => '2021-01-01',
+        'region_id' => 1,
+    ]);
+
+    $response->assertStatus(422);
+    $response->assertJsonValidationErrors('isbn');
+});
+
+test('a user cannot create a publication with a formatted ISBN', function (): void {
+    $user = User::factory()->create();
+    $journal = Journal::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications', [
+        'title' => 'Test Publication',
+        'isbn' => '978-0-13-468599-1',
+        'is_open_access' => true,
+        'journal_id' => $journal->id,
+        'accepted_on' => '2021-01-01',
+        'region_id' => 1,
+    ]);
+
+    $response->assertStatus(422);
+    $response->assertJsonValidationErrors('isbn');
+});
+
+test('a user can create a publication without an ISBN', function (): void {
+    $user = User::factory()->create();
+    $journal = Journal::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications', [
+        'title' => 'Test Publication',
+        'isbn' => null,
+        'is_open_access' => true,
+        'journal_id' => $journal->id,
+        'accepted_on' => '2021-01-01',
+        'region_id' => 1,
+    ]);
+
+    $response->assertCreated();
+    $response->assertJsonPath('data.isbn', null);
+});
+
+test('a user can create a publication with a catalogue number', function (): void {
+    $user = User::factory()->create();
+    $journal = Journal::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications', [
+        'title' => 'Test Publication',
+        'catalogue_number' => 'Fs97-18/409E-PDF',
+        'is_open_access' => true,
+        'journal_id' => $journal->id,
+        'accepted_on' => '2021-01-01',
+        'region_id' => 1,
+    ]);
+
+    $response->assertCreated();
+    $response->assertJsonPath('data.catalogue_number', 'Fs97-18/409E-PDF');
+});
+
+test('a user can create a publication without a catalogue number', function (): void {
+    $user = User::factory()->create();
+    $journal = Journal::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications', [
+        'title' => 'Test Publication',
+        'catalogue_number' => null,
+        'is_open_access' => true,
+        'journal_id' => $journal->id,
+        'accepted_on' => '2021-01-01',
+        'region_id' => 1,
+    ]);
+
+    $response->assertCreated();
+    $response->assertJsonPath('data.catalogue_number', null);
+});
+
+test('a user can update their publication with a valid ISBN', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->withAuthors()->create([
+        'user_id' => $user->id,
+        'status' => PublicationStatus::ACCEPTED,
+    ]);
+
+    $response = $this->actingAs($user)->putJson('/api/publications/'.$publication->id, [
+        'isbn' => '9780134685991',
+        'accepted_on' => $publication->accepted_on->format('Y-m-d'),
+    ]);
+
+    $response->assertOk();
+    $response->assertJsonPath('data.isbn', '9780134685991');
+});
+
+test('a user cannot update their publication with an invalid ISBN', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->withAuthors()->create([
+        'user_id' => $user->id,
+        'status' => PublicationStatus::ACCEPTED,
+    ]);
+
+    $response = $this->actingAs($user)->putJson('/api/publications/'.$publication->id, [
+        'isbn' => '9780134685990',
+        'accepted_on' => $publication->accepted_on->format('Y-m-d'),
+    ]);
+
+    $response->assertStatus(422);
+    $response->assertJsonValidationErrors('isbn');
+});

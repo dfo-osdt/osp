@@ -11,7 +11,7 @@ const attrs = useAttrs()
 
 const { t } = useI18n()
 
-const modelValue = defineModel<string>({ default: '' })
+const modelValue = defineModel<string|null>({ default: '' })
 
 const computedRules = computed<ValidationRule[]>(() => props.rules ?? [
   (val: string) => {
