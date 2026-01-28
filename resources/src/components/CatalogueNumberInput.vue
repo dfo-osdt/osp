@@ -14,10 +14,10 @@ const { t } = useI18n()
 const modelValue = defineModel<string | null>({ default: '' })
 
 const computedRules = computed<ValidationRule[]>(() => props.rules ?? [
-  (val: string) => {
+  (val: string | null) => {
     if (!props.required)
       return true
-    if (val.length === 0)
+    if (val === null || val.length === 0)
       return t('common.required')
     return true
   },
