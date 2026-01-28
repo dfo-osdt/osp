@@ -17,11 +17,12 @@ class CreatePublicationFromManuscript
         Journal $journal,
         string|UploadedFile|null $file = null,
         ?string $isbn = null,
-        ?string $catalogueNumber = null): Publication
+        ?string $catalogueNumber = null,
+        ?string $issueNumber = null): Publication
     {
 
         // create a new publication record
-        return DB::transaction(function () use ($manuscriptRecord, $journal, $file, $isbn, $catalogueNumber) {
+        return DB::transaction(function () use ($manuscriptRecord, $journal, $file, $isbn, $catalogueNumber, $issueNumber) {
             $publication = $manuscriptRecord->publication()->create([
                 'title' => $manuscriptRecord->title,
                 'journal_id' => $journal->id,
@@ -31,6 +32,7 @@ class CreatePublicationFromManuscript
                 'region_id' => $manuscriptRecord->region_id,
                 'isbn' => $isbn,
                 'catalogue_number' => $catalogueNumber,
+                'issue_number' => $issueNumber,
             ]);
 
             // attach the manuscript's authors to the publication

@@ -7,6 +7,7 @@ import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
 import DoiInput from '@/components/DoiInput.vue'
 import IsbnInput from '@/components/IsbnInput.vue'
+import IssueNumberInput from '@/components/IssueNumberInput.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
@@ -363,6 +364,12 @@ function scrollToSupplementaryFiles() {
           />
           <CatalogueNumberInput
             v-model="publication.data.catalogue_number"
+            :disable="loading"
+            :readonly="!canEdit"
+            class="q-mb-md"
+          />
+          <IssueNumberInput
+            v-model="publication.data.issue_number"
             :disable="loading"
             :readonly="!canEdit"
             class="q-mb-md"

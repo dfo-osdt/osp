@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('publications', function (Blueprint $table) {
             $table->string('isbn', 25)->nullable()->after('doi')->comment('International Standard Book Number');
-            $table->string('catalogue_number', 25)->nullable()->after('isbn')->comment('DFO Catalogue Number');
+            $table->string('catalogue_number', 25)->nullable()->after('isbn')->comment('GC Catalogue Number');
+            $table->string('issue_number', 25)->nullable()->after('catalogue_number')->comment('GC Issue Number');
         });
     }
 };
