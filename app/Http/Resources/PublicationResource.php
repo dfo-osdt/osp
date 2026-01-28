@@ -26,6 +26,7 @@ class PublicationResource extends JsonResource
                 'doi' => $this->doi,
                 'isbn' => $this->isbn,
                 'catalogue_number' => $this->catalogue_number,
+                'issue_number' => $this->issue_number,
                 'is_open_access' => $this->is_open_access,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,

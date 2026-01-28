@@ -390,6 +390,7 @@ test('a user can submit their manuscript to the science pub team', function (): 
         'journal_id' => Journal::factory()->dfoSeries()->create()->id,
         'isbn' => '9780134685991',
         'catalogue_number' => 'Fs97-18/409E-PDF',
+        'issue_number' => '409',
         'submission_file' => $file,
     ];
 
@@ -401,6 +402,7 @@ test('a user can submit their manuscript to the science pub team', function (): 
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
     expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
     expect($manuscript->publication->getMedia(MediaCollection::SUPPLEMENTARY_FILE->value)->first()->file_name)->toBe('test.docx');
+    expect($manuscript->publication->issue_number)->toBe('409');
 });
 
 test('a user can delete their manuscript record if it is a draft', function (): void {
@@ -514,7 +516,7 @@ test('a user can clone a manuscript record', function (): void {
 
 // ISBN and Catalogue Number Tests for Manuscript Acceptance
 
-test('a user can mark a secondary manuscript as accepted with valid ISBN and catalogue number', function (): void {
+test('a user can mark a secondary manuscript as accepted with valid ISBN, catalogue number, and issue number', function (): void {
     $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
     $journal = Journal::factory()->dfoSeries()->create();
     $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
@@ -525,6 +527,7 @@ test('a user can mark a secondary manuscript as accepted with valid ISBN and cat
         'journal_id' => $journal->id,
         'isbn' => '9780134685991',
         'catalogue_number' => 'Fs97-18/409E-PDF',
+        'issue_number' => '409',
         'submission_file' => $file,
     ];
 
@@ -534,6 +537,7 @@ test('a user can mark a secondary manuscript as accepted with valid ISBN and cat
     expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
     expect($manuscript->publication->isbn)->toBe('9780134685991');
     expect($manuscript->publication->catalogue_number)->toBe('Fs97-18/409E-PDF');
+    expect($manuscript->publication->issue_number)->toBe('409');
 });
 
 test('a user cannot mark a secondary manuscript as accepted with an invalid ISBN', function (): void {
@@ -576,7 +580,7 @@ test('a user cannot mark a secondary manuscript as accepted with a formatted ISB
     $response->assertJsonValidationErrors('isbn');
 });
 
-test('a secondary manuscript requires ISBN when marked as accepted', function (): void {
+test('a secondary manuscript does not require ISBN when marked as accepted', function (): void {
     $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
     $journal = Journal::factory()->dfoSeries()->create();
     $file = UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000);
@@ -592,7 +596,8 @@ test('a secondary manuscript requires ISBN when marked as accepted', function ()
 
     $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
 
-    $response->assertStatus(422);
+    $response->assertOk();
+    expect($manuscript->fresh()->publication->isbn)->toBeNull();
 });
 
 test('a secondary manuscript requires catalogue number when marked as accepted', function (): void {

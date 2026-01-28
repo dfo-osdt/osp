@@ -20,6 +20,7 @@ export interface Publication {
   doi: string | null
   isbn: string | null
   catalogue_number: string | null
+  issue_number: string | null
   is_open_access: boolean
   accepted_on: string | null
   published_on: string | null

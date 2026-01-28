@@ -7,6 +7,7 @@ import { QBtn, QCardActions, QFile, QForm } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import CatalogueNumberInput from '@/components/CatalogueNumberInput.vue'
 import IsbnInput from '@/components/IsbnInput.vue'
+import IssueNumberInput from '@/components/IssueNumberInput.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import { ManuscriptRecordService } from '../ManuscriptRecord'
 
@@ -25,6 +26,7 @@ const journalId = ref<number | null>(null)
 const submissionFile = ref<File | null>(null)
 const isbn = ref<string>('')
 const catalogueNumber = ref<string>('')
+const issueNumber = ref<string>('')
 
 const maxFileSizeMB = import.meta.env.VITE_MAX_UPLOAD_SIZE_MB || 4
 const { onFileRejected } = useFileRejectionHandler()
@@ -46,6 +48,7 @@ async function submit() {
       submissionFile.value,
       isbn.value,
       catalogueNumber.value,
+      issueNumber.value,
     )
     emit('updated', resource)
   }
@@ -74,8 +77,9 @@ async function submit() {
             (val: number | null) => val !== null || $t('common.required'),
           ]"
         />
-        <IsbnInput v-model="isbn" required class="q-mx-sm" />
+        <IsbnInput v-model="isbn" class="q-mx-sm" />
         <CatalogueNumberInput v-model="catalogueNumber" required class="q-mx-sm" />
+        <IssueNumberInput v-model="issueNumber" class="q-mx-sm" />
         <QFile
           v-model="submissionFile"
           class="q-mx-sm"

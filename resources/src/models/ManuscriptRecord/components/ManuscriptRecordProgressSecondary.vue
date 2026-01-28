@@ -207,7 +207,7 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
         <a
           href="https://intranet.ent.dfo-mpo.ca/mpo/sites/dfo-mpo/files/publishing-form-formulaire-publication-fra.pdf"
           target="_blank"
-        >{{ $t('common.french') }}</a>)
+        >{{ $t('common.french') }}</a> )
         {{ $t('manuscript-progress-view.send-form-to') }}
         <a :href="`mailto:${publicationsEmail}`">{{ publicationsEmail }}</a>.
       </p>

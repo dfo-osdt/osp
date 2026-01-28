@@ -268,8 +268,9 @@ class ManuscriptRecordController extends Controller
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => ['required', 'date', 'after_or_equal:submitted_to_journal_on'],
             'journal_id' => ['required', 'exists:journals,id'],
-            'isbn' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'string', 'max:25', new Isbn],
+            'isbn' => ['nullable', 'string', 'max:25', new Isbn],
             'catalogue_number' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'string', 'max:25'],
+            'issue_number' => ['nullable', 'string', 'max:25'],
             'submission_file' => [
                 Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY),
                 'file',
@@ -295,7 +296,7 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->save();
 
         try {
-            $publication = CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null, $validated['isbn'] ?? null, $validated['catalogue_number'] ?? null);
+            $publication = CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null, $validated['isbn'] ?? null, $validated['catalogue_number'] ?? null, $validated['issue_number'] ?? null);
         } catch (\Exception $e) {
             Log::error('Failed to create publication from manuscript record ID '.$manuscriptRecord->id, [
                 'exception' => $e,
