@@ -124,6 +124,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePlsFr($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePreprintUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord wherePublicInterestInformation($value)
+ * @method static Builder<static>|ManuscriptRecord pendingJournalAcceptance()
+ * @method static Builder<static>|ManuscriptRecord wherePlsApprovedByAuthor($value)
+ * @method static Builder<static>|ManuscriptRecord wherePlsSourceLanguage($value)
+ * @method static Builder<static>|ManuscriptRecord wherePlsTranslationApproved($value)
+ * @method static Builder<static>|ManuscriptRecord whereWithdrawReason($value)
  *
  * @mixin \Eloquent
  */

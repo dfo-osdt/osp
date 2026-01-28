@@ -87,6 +87,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereRegionId($value)
  *
+ * @property string|null $isbn International Standard Book Number
+ * @property string|null $catalogue_number GC Catalogue Number
+ * @property string|null $issue_number GC Issue Number
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereCatalogueNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereIsbn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereIssueNumber($value)
+ *
  * @mixin \Eloquent
  */
 class Publication extends Model implements Fundable, HasMedia, Plannable

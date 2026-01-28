@@ -69,6 +69,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static Builder<static>|Author whereUserId($value)
  * @method static Builder<static>|Author withOrcid()
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptRecord> $manuscriptRecords
+ * @property-read int|null $manuscript_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PublicationAuthor> $publicationAuthors
+ * @property-read int|null $publication_authors_count
+ *
  * @mixin \Eloquent
  */
 class Author extends Model

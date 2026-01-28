@@ -2,8 +2,12 @@
 import type { PublicationResource } from '../Publication'
 import type { ManuscriptRecordMetadataResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import { QForm, useQuasar } from 'quasar'
+import CatalogueNumberInput from '@/components/CatalogueNumberInput.vue'
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
+import DoiInput from '@/components/DoiInput.vue'
+import IsbnInput from '@/components/IsbnInput.vue'
+import IssueNumberInput from '@/components/IssueNumberInput.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
@@ -11,7 +15,6 @@ import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import { ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import ManagePublicationAuthorsCard from '@/models/PublicationAuthor/components/ManagePublicationAuthorsCard.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
-import DoiInput from '../components/DoiInput.vue'
 import DoiLink from '../components/DoiLink.vue'
 import PublicationFileManagementCard from '../components/PublicationFileManagementCard.vue'
 import PublicationStatusBadge from '../components/PublicationStatusBadge.vue'
@@ -349,6 +352,24 @@ function scrollToSupplementaryFiles() {
           />
           <DoiInput
             v-model="publication.data.doi"
+            :disable="loading"
+            :readonly="!canEdit"
+            class="q-mb-md"
+          />
+          <IsbnInput
+            v-model="publication.data.isbn"
+            :disable="loading"
+            :readonly="!canEdit"
+            class="q-mb-md"
+          />
+          <CatalogueNumberInput
+            v-model="publication.data.catalogue_number"
+            :disable="loading"
+            :readonly="!canEdit"
+            class="q-mb-md"
+          />
+          <IssueNumberInput
+            v-model="publication.data.issue_number"
             :disable="loading"
             :readonly="!canEdit"
             class="q-mb-md"

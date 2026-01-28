@@ -12,6 +12,8 @@ const manuscriptRecord = defineModel<ManuscriptRecordResource>({ required: true 
 const $q = useQuasar()
 const { t } = useI18n()
 
+const publicationsEmail = 'Publications.XNCR@dfo-mpo.gc.ca'
+
 const createdSubtitle = computed(() => {
   return (
     `${t('common.created-on')
@@ -194,6 +196,20 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
     >
       <p>
         {{ $t('manuscript-progress-view.submission-to-dfo-details') }}
+      </p>
+      <p>
+        {{ $t('manuscript-progress-view.publication-numbers-instruction') }}
+        <a
+          href="https://intranet.ent.dfo-mpo.ca/mpo/sites/dfo-mpo/files/publishing-form-formulaire-publication-eng_0.pdf"
+          target="_blank"
+        >{{ $t('common.english') }}</a>
+        |
+        <a
+          href="https://intranet.ent.dfo-mpo.ca/mpo/sites/dfo-mpo/files/publishing-form-formulaire-publication-fra.pdf"
+          target="_blank"
+        >{{ $t('common.french') }}</a> )
+        {{ $t('manuscript-progress-view.send-form-to') }}
+        <a :href="`mailto:${publicationsEmail}`">{{ publicationsEmail }}</a>.
       </p>
       <div class="row q-gutter-md">
         <q-btn

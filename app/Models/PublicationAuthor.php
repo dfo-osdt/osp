@@ -35,6 +35,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor wherePublicationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereUpdatedAt($value)
  *
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class PublicationAuthor extends Model

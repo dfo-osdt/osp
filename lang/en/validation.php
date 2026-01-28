@@ -57,6 +57,7 @@ return [
     "ip" => "The :attribute must be a valid IP address.",
     "ipv4" => "The :attribute must be a valid IPv4 address.",
     "ipv6" => "The :attribute must be a valid IPv6 address.",
+    "isbn" => "The :attribute must be a valid ISBN-13.",
     "json" => "The :attribute must be a valid JSON string.",
     "lt" => [
         "array" => "The :attribute must have less than :value items.",
