@@ -268,9 +268,10 @@ class ManuscriptRecordController extends Controller
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => ['required', 'date', 'after_or_equal:submitted_to_journal_on'],
             'journal_id' => ['required', 'exists:journals,id'],
-            'isbn' => ['nullable', 'string', 'max:25', new Isbn],
-            'catalogue_number' => ['nullable', 'string', 'max:25'],
+            'isbn' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'string', 'max:25', new Isbn],
+            'catalogue_number' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'string', 'max:25'],
             'submission_file' => [
+                Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY),
                 'file',
                 'mimes:doc,docx',
                 'max:'.(config('media-library.max_file_size') / 1024),
@@ -285,17 +286,6 @@ class ManuscriptRecordController extends Controller
             abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
         }
 
-        // Ensure secondary manuscripts have a submission file.
-        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $validated['submission_file']) {
-            abort(422, 'A submission file is required for secondary MRFs.');
-        }
-
-        // Ensure secondary manuscripts have ISBN and Catalogue Number.
-        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
-            $validated['isbn'] ?? abort(422, 'An ISBN is required for secondary MRFs.');
-            $validated['catalogue_number'] ?? abort(422, 'A Catalogue Number is required for secondary MRFs.');
-        }
-
         $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
         // if the submitted to journal date is given, set it.
         if ($validated['submitted_to_journal_on']) {
@@ -307,8 +297,9 @@ class ManuscriptRecordController extends Controller
         try {
             $publication = CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null, $validated['isbn'] ?? null, $validated['catalogue_number'] ?? null);
         } catch (\Exception $e) {
-            Log::error('Failed to create publication from manuscript record ID '.$manuscriptRecord->id);
-            Log::error($e->getMessage());
+            Log::error('Failed to create publication from manuscript record ID '.$manuscriptRecord->id, [
+                'exception' => $e,
+            ]);
             abort(500, 'Failed to create publication from manuscript record.');
         }
 
