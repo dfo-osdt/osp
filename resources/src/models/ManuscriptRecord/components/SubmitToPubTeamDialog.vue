@@ -3,7 +3,7 @@ import type {
   ManuscriptRecord,
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
-import { QBtn, QCardActions, QFile, QForm } from 'quasar'
+import { QBtn, QCard, QCardActions, QFile, QForm } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import CatalogueNumberInput from '@/components/CatalogueNumberInput.vue'
 import IsbnInput from '@/components/IsbnInput.vue'
@@ -77,9 +77,19 @@ async function submit() {
             (val: number | null) => val !== null || $t('common.required'),
           ]"
         />
-        <IsbnInput v-model="isbn" class="q-mx-sm" />
-        <CatalogueNumberInput v-model="catalogueNumber" required class="q-mx-sm" />
-        <IssueNumberInput v-model="issueNumber" class="q-mx-sm" />
+        <QCard flat bordered class="q-mx-sm q-pa-sm">
+          <div class="text-subtitle2">
+            {{ $t('submit-to-pub-team-dialog.publication-identifiers') }}
+          </div>
+          <p class="text-caption text-grey-8 q-mb-md">
+            {{ $t('submit-to-pub-team-dialog.publication-identifiers-hint') }}
+          </p>
+          <div class="q-gutter-y-md">
+            <CatalogueNumberInput v-model="catalogueNumber" required />
+            <IsbnInput v-model="isbn" />
+            <IssueNumberInput v-model="issueNumber" />
+          </div>
+        </QCard>
         <QFile
           v-model="submissionFile"
           class="q-mx-sm"

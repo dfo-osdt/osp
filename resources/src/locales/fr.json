@@ -917,6 +917,8 @@
   "submit-to-pub-team-dialog": {
     "text": "Félicitations! L'équipe du guichet unique pour les publications scientifiques du SEO prendra contact avec vous et/ou les auteurs correspondants peu après la soumission.",
     "title": "Soumettre au guichet unique pour les publications scientifiques",
+    "publication-identifiers": "Identifiants de publication",
+    "publication-identifiers-hint": "Un numéro de catalogue est requis. Le ISBN et le numéro de publication sont facultatifs, sauf s'ils sont fournis avec le numéro de catalogue.",
     "file-label": "Soumission de votre manuscrit (format Word)",
     "file-hint": "Télécharger votre manuscrit (.doc ou .docx, max {max} Mo)"
   },

@@ -917,6 +917,8 @@
   "submit-to-pub-team-dialog": {
     "title": "Submit to the Single Window for Science Publications",
     "text": "Congratulations! The Single Window for Science Publications team will be in touch with you and/or the corresponding author(s) shortly after the submission.",
+    "publication-identifiers": "Publication Identifiers",
+    "publication-identifiers-hint": "A Catalogue Number is required. ISBN and Issue Number are optional unless provided with the Catalogue Number.",
     "file-label": "Submitted Manuscript Document (Word format)",
     "file-hint": "Upload your manuscript document (.doc or .docx, max {max}MB)"
   },
