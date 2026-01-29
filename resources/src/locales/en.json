@@ -511,6 +511,13 @@
     "submission-for-review": "Submission for Management Review",
     "title": "Management Review"
   },
+  "management-review-quick-info": {
+    "title": "Quick Review",
+    "manuscript-pdf": "Manuscript PDF",
+    "public-interest": "Potential Public Interest",
+    "no-pdf-uploaded": "No PDF uploaded",
+    "no-public-interest": "No public interest flagged"
+  },
   "manuscript": {
     "accepted": "Accepted",
     "draft": "Draft",
