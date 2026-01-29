@@ -511,6 +511,13 @@
     "submission-for-review": "Soumission pour révision par la gestion",
     "title": "Révision par la gestion"
   },
+  "management-review-quick-info": {
+    "title": "Aperçu rapide",
+    "manuscript-pdf": "PDF du manuscrit",
+    "public-interest": "Intérêt public potentiel",
+    "no-pdf-uploaded": "Aucun PDF téléchargé",
+    "no-public-interest": "Aucun intérêt public signalé"
+  },
   "manuscript": {
     "accepted": "Accepté",
     "draft": "Brouillon",

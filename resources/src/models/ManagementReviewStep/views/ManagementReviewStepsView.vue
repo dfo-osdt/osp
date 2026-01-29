@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ManagementReviewStepResourceList } from '../ManagementReviewStep'
 import type { ManuscriptRecordResource } from '@/models/ManuscriptRecord/ManuscriptRecord'
+import type { MediaResourceList } from '@/models/Media/Media'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 import { ManuscriptRecordService } from '@/models/ManuscriptRecord/ManuscriptRecord'
 import ManagementReviewStepTimelineEntry from '../components/ManagementReviewStepTimelineEntry.vue'
@@ -19,6 +20,7 @@ const { t } = useI18n()
 const managementReviewSteps: Ref<ManagementReviewStepResourceList | null>
   = ref(null)
 const manuscriptRecord: Ref<ManuscriptRecordResource | null> = ref(null)
+const manuscriptFiles: Ref<MediaResourceList | null> = ref(null)
 
 const processStatus = computed(() => {
   if (manuscriptRecord.value === null) {
@@ -113,9 +115,20 @@ async function getManuscriptRecord() {
     })
 }
 
+async function getManuscriptFiles() {
+  await ManuscriptRecordService.listPDFs(props.id)
+    .then((response) => {
+      manuscriptFiles.value = response
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
 onMounted(() => {
   getManuscriptRecord()
   getManagementReviewSteps()
+  getManuscriptFiles()
 })
 
 async function decisionSubmitted() {
@@ -186,6 +199,7 @@ async function decisionSubmitted() {
         :key="managementReviewStep.data.id"
         v-model="managementReviewSteps.data[index]"
         :manuscript-record="manuscriptRecord"
+        :manuscript-files="manuscriptFiles"
         @decision="decisionSubmitted"
       />
     </template>
