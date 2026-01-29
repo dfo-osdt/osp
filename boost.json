@@ -1,11 +1,17 @@
 {
     "agents": [
-        "claude_code"
+        "claude_code",
+        "opencode"
     ],
-    "editors": [
-        "claude_code"
+    "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "packages": [
+        "saloonphp/laravel-plugin"
     ],
-    "guidelines": [
-        "AGENTS.md"
+    "sail": false,
+    "skills": [
+        "livewire-development",
+        "pest-testing"
     ]
 }
