@@ -107,7 +107,7 @@
     "copied": "Copied",
     "copy-to-clipboard": "Copy to clipboard",
     "corresponding-author": "DFO Corresponding Author",
-    "corresponding-author-desc": "The DFO corresponding author is the primary contact for this manuscript within the DFO Open Science Portal and management review process. This person receives notifications, manages the manuscript record, and communicates with DFO management regarding the manuscript. The DFO corresponding author may or may not be the same person as the corresponding author listed on the publication who communicates with the journal.",
+    "corresponding-author-desc": "The DFO corresponding author is the primary contact for this manuscript within the DFO Open Science Portal and manuscript management review process. This person receives notifications, manages the manuscript record, and communicates with DFO management regarding the manuscript. The DFO corresponding author may or may not be the same person as the corresponding author listed on the publication who communicates with the journal.",
     "corresponding-author-toggle": "Toggles whether this is a corresponding author",
     "create": "Create",
     "created": "Created",
@@ -162,7 +162,7 @@
     "manuscripts": "Manuscript Records",
     "my-manuscripts": "My Manuscript Records",
     "my-publications": "My Publications",
-    "my-reviews": "My Management Reviews",
+    "my-reviews": "My Manuscript Management Reviews",
     "next": "Next",
     "no": "No",
     "no-actions-required": "No actions required",
@@ -183,7 +183,7 @@
     "pending": "Pending",
     "pending-publication": "Pending Publication",
     "plain-language-summary": "Plain Language Summary",
-    "primary-publication": "A manuscript published by a third-party",
+    "primary-publication": "A manuscript published by a third-party journal",
     "publication": "Publication",
     "publication-under-embargo": "Publication under embargo",
     "publications": "Publications",
@@ -195,7 +195,7 @@
     "registered": "Registered",
     "required": "Required",
     "reset": "Reset",
-    "reviews": "Management Reviews",
+    "reviews": "Manuscript Management Reviews",
     "save": "Save",
     "saved": "Saved",
     "secondary-publication": "A manuscript to be published by DFO",
@@ -325,8 +325,8 @@
     "create-text": "Once created, you will be taken to the manuscript record form. The manuscript record form will be marked as a draft and only be visible to you and the people you invite as observers. Once the form is complete you will be able to submit it for review.",
     "enter-the-title-of-your-manuscript": "Enter the title of your manuscript",
     "primary-pub-desc": "Scientific or technical document to be published in a third-party journal, special issue, book chapter, book or conference proceeding",
-    "secondary-pub-desc": "Scientific or technical document to be published in a DFO Science Series",
-    "select-region-text": "Please select the lead DFO region responsible for the management review of this manuscript.",
+    "secondary-pub-desc": "Scientific or technical document to be published in an EOS secondary scientific and technical publication series",
+    "select-region-text": "Please select the lead DFO region responsible for the manuscript management review of this manuscript.",
     "step0": {
       "warning": "If your manuscript was already reviewed outside the portal or has been published, do not continue, add it as a publication instead."
     },
@@ -372,8 +372,8 @@
     "create-your-first-manuscript-record": "Create your first manuscript record form",
     "in-progress": "In progress",
     "guide-cards": {
-      "manuscript-needs-review-title": "Need a Management Review?",
-      "manuscript-needs-review-description": "Create a manuscript record if your work needs to go through the DFO management review process before submission to a journal or publication.",
+      "manuscript-needs-review-title": "Need a Manuscript Management Review?",
+      "manuscript-needs-review-description": "Create a manuscript record if your work needs to go through the DFO manuscript management review process before submission to a journal or publication.",
       "manuscript-needs-review-action": "Create Manuscript Record",
       "already-reviewed-title": "Already Reviewed?",
       "already-reviewed-description": "If your manuscript was already reviewed outside the portal or has been published, add it directly as a publication to track it in the system.",
@@ -388,12 +388,12 @@
     "refer": "Refer to next manager",
     "refer-desc": "You have reviewed the manuscript and are referring it to the next manager (usually an RDS or DG) for review.",
     "revision": "Revisions required",
-    "revision-desc": "Flag management review comments that should be addressed by the author before completing the review.",
+    "revision-desc": "Flag manuscript management review comments that should be addressed by the author before completing the review.",
     "reassign": "Reassign",
     "reassign-desc": "You are not the correct manager to review this manuscript and you reassign this review to the proper manager without making a recommendation.",
     "complete": "Complete",
-    "complete-desc": "Review of this manuscript for publication is complete and you are ending the management review process.",
-    "refer-desc-2": "Final review by an RDS or DG is required for this management review."
+    "complete-desc": "Review of this manuscript for publication is complete and you are ending the manuscript management review process.",
+    "refer-desc-2": "Final review by an RDS or DG is required for this manuscript management review."
   },
   "dialog": {
     "delete-manuscript": {
@@ -496,20 +496,20 @@
     "subtitle": "Please refer to the National Policy for Science Publications for more details.",
     "tip-one": "Review the manuscript for compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs) and the DFO Code of Conduct.",
     "tip-two": "Identify whether the manuscript is of potential public or media interest, solely for the purpose of briefing senior management and the Communications Branch. This information can be filled out in the Potential Public Interest section of the manuscript form. The inclusion of sensitive material (e.g. data, scientific conclusions) should not prevent publication of scientific papers.",
-    "title": "Management Review Guidelines"
+    "title": "Manuscript Management Review Guidelines"
   },
   "management-review-response": {
-    "subtitle": "Please review and address the concerns or comments raised by the management review. If changes to the manuscript are required, please upload the revised copy to the form prior to responding. Note that you can also make changes to the manuscript review form as required. If you do not agree with the concerns or comments, you can respond and ask for the management review to continue.",
-    "title": "Management Review - Author Response"
+    "subtitle": "Please review and address the concerns or comments raised by the manuscript management review. If changes to the manuscript are required, please upload the revised copy to the form prior to responding. Note that you can also make changes to the manuscript review form as required. If you do not agree with the concerns or comments, you can respond and ask for the manuscript management review to continue.",
+    "title": "Manuscript Management Review - Author Response"
   },
   "management-review-step-list": {
     "review-request-received-from": "Review request received from"
   },
   "management-review-step-view": {
-    "completion-of-management-review": "Completion of Management Review",
+    "completion-of-management-review": "Completion of Manuscript Management Review",
     "not-started-submit-your-form-to-begin": "Not Started - Submit your form to begin",
-    "submission-for-review": "Submission for Management Review",
-    "title": "Management Review"
+    "submission-for-review": "Submission for Manuscript Management Review",
+    "title": "Manuscript Management Review"
   },
   "management-review-quick-info": {
     "title": "Quick Review",
@@ -523,9 +523,9 @@
     "draft": "Draft",
     "in_review": "In Review",
     "please-select-the-lead-region": "Please select the lead region",
-    "primary": "Third-Party Publication",
+    "primary": "Third-Party Journal Publication",
     "reviewed": "Reviewed",
-    "secondary": "DFO Publication",
+    "secondary": "EOS Secondary Publication",
     "submitted": "Submitted",
     "withdrawn": "Withdrawn",
     "preprint": "Preprint"
@@ -538,14 +538,14 @@
     "accepted-details": "The manuscript was accepted for publication by the target journal and is entering the production process. Confirming this step will create a new publication record where you can upload the final manuscript and update the publication details.",
     "accepted-title": "Accepted for Publication",
     "completed-details": "The manuscript complies with Fisheries and Oceans Canada National Policy for Science Publications and has been reviewed by DFO management. At this stage, you may now submit the manuscript to your target journal.",
-    "completed-title": "Completion of Management Review",
+    "completed-title": "Completion of Manuscript Management Review",
     "created-details": "At this stage, only the applicant and authors can see and edit the manuscript record.",
     "go-to-the-publication": "Go to the Publication",
     "manuscript-record-created": "Manuscript Record Created",
     "manuscript-status-updated": "Manuscript status updated",
     "mark-as-submitted": "Mark as Submitted",
-    "submit-management": "Submit for Management Review",
-    "submit-management-details": "The manuscript is initially submitted to a division manager or director (NCR) for management review.",
+    "submit-management": "Submit for Manuscript Management Review",
+    "submit-management-details": "The manuscript is initially submitted to a division manager or director (NCR) for manuscript management review.",
     "submit-pub-details": "The manuscript was submitted for peer-review. We track this stage to gather statistics on the time it takes to get manuscripts accepted and published.",
     "submit-pub-title": "Initial Submission for publication",
     "title": "Manuscript Progress",
@@ -573,7 +573,7 @@
     "general-information": "General Information",
     "generate-pls": "Generate PLS",
     "generating-pls-please-be-patient": "Generating PLS... please be patient",
-    "lead-region-text": "Select the DFO region responsible for the management review of this manuscript. If more than one region is responsible, select the region that will lead the review.",
+    "lead-region-text": "Select the DFO region responsible for the manuscript management review of this manuscript. If more than one region is responsible, select the region that will lead the review.",
     "manuscript-saved-successfully": "Manuscript saved successfully",
     "manuscript-submitted-successfully": "The manuscript record was successfully submitted.",
     "manuscripts-working-title": "Manuscript's Working Title",
@@ -589,7 +589,7 @@
     "translating-pls-please-be-patient": "Translating PLS... please be patient",
     "potential-media-interest-question": "Is this manuscript of potential public interest?",
     "potential-media-interest-text-field-text": "Optionally, please provide any pertinent information concerning the potential public interest.",
-    "ready-to-be-marked-published": "This manuscript has completed its management review but still needs to be marked as submitted and accepted to a third-party journal by the applicant.",
+    "ready-to-be-marked-published": "This manuscript has completed its manuscript management review but still needs to be marked as submitted and accepted to a third-party journal by the applicant.",
     "relevant-text": "Describe how this manuscript is relevant to the program that funded it, how it supports the department's mandate, strategic plan and/or regional priorities. ",
     "relevant-title": "Relevance to programs/initiatives/management sector",
     "replace-manuscript": "Drop the file or click to upload a new version of the manuscript",
@@ -598,7 +598,7 @@
     "sharing-confirm-delete-title": "Confirm removal",
     "sharing-subtitle": "Share this manuscript with other users",
     "sharing-title": "Record Sharing",
-    "submit-tooltip": "Submit for management review",
+    "submit-tooltip": "Submit for manuscript management review",
     "submit-tooltip-disabled": "Please complete all sections and save to submit",
     "upload-hint": "Only PDF files are accepted. Maximum file size is {max}MB.",
     "upload-manuscript": "Drop the file or click to upload manuscript",
@@ -606,14 +606,14 @@
     "working-title-text": "Enter the manuscript's working title. You will be able to modify the title when you update this manuscript status to published.",
     "functional-area-text": "In order to improve reporting on research outputs, please select the relevant functional area for this manuscript.",
     "no-ogl-explanation": "Report Licensing",
-    "no-ogl-explanation-text-field-text": "DFO is committed to the \"Open by Design and by Default\" principle of Open Science, ensuring that all DFO publications are made available under the latest version of the \"{url}\" whenever possible. The Open Government Licence - Canada should not be applied if there are conflicting Licensing obligations.",
+    "no-ogl-explanation-text-field-text": "DFO is committed to the \"Open by Design and by Default\" model of Open Science, ensuring that all DFO publications are made available under the latest version of the \"{url}\" whenever possible. The Open Government Licence - Canada should not be applied if there are conflicting Licensing obligations.",
     "ogl-link": "Open Government Licence - Canada",
     "apply_ogl": "Should this report be licensed under the Open Government Licence - Canada?",
     "ogl-provide-explanation": "Since you answered \"No\", please provide an explanation of why an Open Government License cannot be applied to your report.",
-    "ready-to-submit": "This manuscript has completed its management review and is now ready for submission to the Science publication team.",
-    "ready-to-submit-preprint": "This manuscript has completed its management review and is now ready for submission to a preprint server.",
+    "ready-to-submit": "This manuscript has completed its manuscript management review and is now ready for submission to the Science publication team.",
+    "ready-to-submit-preprint": "This manuscript has completed its manuscript management review and is now ready for submission to a preprint server.",
     "open-access-rationale": "Open Publication",
-    "intends_open_access": "All publications must follow the open by design and by default approach. Unless an exception applies, your publications must be freely and publicly accessible upon release. Exceptions may include situations where information, data or code are sensitive for reasons of research security, proprietary interests, third-party restrictions, or are governed by legal, ethical, or confidentiality agreements. ",
+    "intends_open_access": "All publications must follow the Open by Design and by Default model. Unless an exception applies, your publications must be freely and publicly accessible upon release. Exceptions may include situations where information, data or code are sensitive for reasons of research security, proprietary interests, third-party restrictions, or are governed by legal, ethical, or confidentiality agreements. ",
     "open-access-rationale-text": "Since you answered \"No\", please provide your rationale.",
     "open-access-rationale-text-field-text": "Do you intend to make your publication open access (e.g., by publishing in an open access journal, selecting open access options in a hybrid journal, or depositing in an open repository)?",
     "pls-locale": "Plain Language Summary Source Language",
@@ -653,7 +653,7 @@
     "title": "You have nothing to review"
   },
   "no-manuscript-exists-div": {
-    "p1": "Need to publish a primary or secondary publication? You've come to the right place. Create a manuscript record and start the process of publishing your manuscript following the national policy for science publications.",
+    "p1": "Need to publish a primary or secondary publication? You've come to the right place. Create a manuscript record and start the process of publishing your manuscript following the National Policy for Science Publications.",
     "p2": "The national policy ensures a consistent treatment of scientific publications across DFO regions, recognition of the scientific impact of the Department through the use of a standard affiliation, and effective tracking of our publications to better integrate science into departmental processes."
   },
   "no-publication-exist-div": {
@@ -710,12 +710,12 @@
     },
     "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html",
-    "p2": "Authors may submit their publication to the third-party journal for peer review after the manager has deemed the publication to be in alignment with the relevant legislation, policies and directives, or if no feedback was received from the management review within 10 working days. Division Managers, National Directors, Regional Directors of Science and National Directors General may perform the management review. ",
+    "p2": "Authors may submit their publication to the third-party journal for peer review after the manager has deemed the publication to be in alignment with the relevant legislation, policies and directives, or if no feedback was received from the manuscript management review within 10 working days. Division Managers, EOS NCR Directors, Regional Directors of Science, and EOS NCR Director Generals may perform the manuscript management review. ",
     "privacy-act": "Privacy Act",
     "privacy-act-link": "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-privacy-act/pa_brief/",
     "values-and-ethics-code-for-dfo": "DFO Code of Conduct",
     "values-and-ethics-code-for-dfo-link": "https://intranet.ent.dfo-mpo.ca/hr-rh/sites/hr-rh/files/code_of_conduct_v18_sept_4_2025_-_final_0.pdf",
-    "p3": "If a manager identifies issues related to the relevant legislation, policies, and directives, they must communicate with the author(s) to request revisions or refer the publication to the respective Regional Director of Science or National Director General, and the 10-working-day timeline is paused. "
+    "p3": "If a manager identifies issues related to the relevant legislation, policies, and directives, they must communicate with the author(s) to request revisions or refer the publication to the respective Regional Director of Science or EOS NCR Director General, and the 10-working-day timeline is paused. "
   },
   "pub": {
     "general-information": "General Information"
@@ -752,8 +752,8 @@
   "publications-view": {
     "all-published-publications-details": "All published publications",
     "open-access-filter-details": "Publications published as open access",
-    "published-in-dfo-journals": "DFO Scientific and Technical Reports",
-    "secondary-publications": "DFO Publications",
+    "published-in-dfo-journals": "EOS Secondary Scientific and Technical Reports",
+    "secondary-publications": "EOS Secondary Publications",
     "under-embargo": "Under Embargo",
     "under-embargo-caption": "Publications under embargo"
   },
@@ -787,7 +787,7 @@
     "list-of-all-my-reviews": "List of all my reviews"
   },
   "reviewer-comments": {
-    "description": "Comments are required unless you complete the management review without sending it to another manager. Comments entered here should provide feedback to the subsequent management reviewer or author. Your comments will be visible to anyone with access to this manuscript record.",
+    "description": "Comments are required unless you complete the manuscript management review without sending it to another manager. Comments entered here should provide feedback to the subsequent manuscript management reviewer or author. Your comments will be visible to anyone with access to this manuscript record.",
     "title": "Manager Comments"
   },
   "shareable": {
@@ -805,9 +805,9 @@
   "submit-decision-dialog": {
     "certify-text": "I certify that, to the best of my knowledge, my review is based on the guidelines outlined in the DFO National Policy for Science publications. If applicable, I have read the comments provided by the previous manager and have considered them in my review.",
     "confirm-decision": "Confirm Review",
-    "next-reviewer": "Next Management Reviewer",
-    "next-reviewer-hint": "Search for the appropriate person to complete the management review within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
-    "no-comments-warning": "Your management review has no comments. Therefore, you can only complete this review. Please add comments to support your review if you want to select from the other options.",
+    "next-reviewer": "Next Manuscript Management Reviewer",
+    "next-reviewer-hint": "Search for the appropriate person to complete the manuscript management review within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
+    "no-comments-warning": "Your manuscript management review has no comments. Therefore, you can only complete this review. Please add comments to support your review if you want to select from the other options.",
     "select-decision": "Select your review outcome",
     "select-next-reviewer": "Select Next Manager",
     "subsequent-reviewer-is-required": "Given your review, a subsequent manager is required to complete the review",
@@ -819,19 +819,19 @@
   "submit-manuscript-dialog": {
     "step1": {
       "confirmation-text": "I certify that, to the best of my knowledge, this manuscript is in compliance with the Intellectual Property Policy/Copyright Act, the Privacy Act, the Financial Administration Act (with respect to approvals of publication costs), and the Values and Ethics Code for DFO.",
-      "subtitle": "Submission for Management Review",
+      "subtitle": "Submission for Manuscript Management Review",
       "title": "Confirm Submission"
     },
     "step2": {
-      "p1": "To submit the manuscript for management review, search for the appropriate division manager/director within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
+      "p1": "To submit the manuscript for manuscript management review, search for the appropriate division manager/director within the user list. If you cannot find their name, they are likely not yet registered, and you will be able to invite them to the portal.",
       "p2": "Note: you will not be able to select someone that is an author on this manuscript or the owner of this manuscript record.",
       "subtitle": "Division Manager/Director",
-      "title": "Select Management Reviewer"
+      "title": "Select Manuscript Management Reviewer"
     },
-    "title": "Submit Manuscript for Management Review"
+    "title": "Submit Manuscript for Manuscript Management Review"
   },
   "submitted-to-journal-dialog": {
-    "text": "Mark this manuscript as having been submitted to a journal. This step lets all users involved in the management review know that you submitted your manuscript for publication.",
+    "text": "Mark this manuscript as having been submitted to a journal. This step lets all users involved in the manuscript management review know that you submitted your manuscript for publication.",
     "title": "Update the manuscript status as submitted"
   },
   "under-construction": {
@@ -946,8 +946,8 @@
   "regional-manuscripts": {
     "all-regional-manuscripts": "All Regional Manuscripts",
     "all-manuscripts-you-can-view": "All manuscript records you have regional permissions to view",
-    "under-management-review": "Under Management Review",
-    "in-management-review-process": "Manuscripts currently in the management review process",
+    "under-management-review": "Under Manuscript Management Review",
+    "in-management-review-process": "Manuscripts currently in the manuscript management review process",
     "accepted-published-manuscripts": "Accepted by Journal or Withdrawn",
     "potential-public-interest": "Potential Public Interest",
     "manuscripts-with-public-interest": "Manuscripts flagged for potential public interest"
