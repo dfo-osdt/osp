@@ -752,8 +752,8 @@
   "publications-view": {
     "all-published-publications-details": "All published publications",
     "open-access-filter-details": "Publications published as open access",
-    "published-in-dfo-journals": "EOS Secondary Scientific and Technical Publications",
-    "secondary-publications": "EOS Secondary Scientific and Technical Publications",
+    "published-in-dfo-journals": "EOS secondary scientific and technical publications",
+    "secondary-publications": "EOS Publications",
     "under-embargo": "Under Embargo",
     "under-embargo-caption": "Publications under embargo"
   },
