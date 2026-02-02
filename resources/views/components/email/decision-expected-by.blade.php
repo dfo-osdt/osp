@@ -12,7 +12,7 @@
 @else
     @if($managementReviewStep->status == App\Enums\ManagementReviewStepStatus::PENDING)
         @if($managementReviewStep->decision_expected_by === null)
-        A response to this review is expected in a timely manner, as detailed in the Fisheries and Oceans Canada National Policy on Science Publications.
+        A response to this review is expected in a timely manner, as detailed in the Fisheries and Oceans Canada National Policy for Science Publications.
         @else
         A response to this review is required by {{ $managementReviewStep->decision_expected_by->locale('en_CA')->isoFormat('LL') }}.
         @endif
