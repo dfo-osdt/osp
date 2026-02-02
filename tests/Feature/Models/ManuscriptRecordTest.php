@@ -368,6 +368,9 @@ test('a user can mark their manuscript as accepted', function (): void {
         'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
         'accepted_on' => now()->toDateTimeString(),
         'journal_id' => Journal::factory()->create()->id,
+        'isbn' => null,
+        'catalogue_number' => null,
+        'issue_number' => null,
     ];
 
     // only the author can mark the manuscript as accepted

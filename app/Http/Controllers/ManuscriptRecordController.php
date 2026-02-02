@@ -269,7 +269,7 @@ class ManuscriptRecordController extends Controller
             'accepted_on' => ['required', 'date', 'after_or_equal:submitted_to_journal_on'],
             'journal_id' => ['required', 'exists:journals,id'],
             'isbn' => ['nullable', 'string', 'max:25', new Isbn],
-            'catalogue_number' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'string', 'max:25'],
+            'catalogue_number' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'nullable', 'string', 'max:25'],
             'issue_number' => ['nullable', 'string', 'max:25'],
             'submission_file' => [
                 Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY),
