@@ -26,12 +26,10 @@ class MultiColumnFilter implements Filter
         $searchTerms = Arr::wrap($value);
 
         // Filter out empty terms
-        $searchTerms = array_filter($searchTerms, function ($term) {
-            return is_string($term) && trim($term) !== '';
-        });
+        $searchTerms = array_filter($searchTerms, fn($term): bool => is_string($term) && trim($term) !== '');
 
         // If no valid search terms, skip filtering
-        if (empty($searchTerms)) {
+        if ($searchTerms === []) {
             return $this;
         }
 
