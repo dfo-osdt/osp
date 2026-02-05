@@ -14,8 +14,10 @@ parameters:
 
     checkModelProperties: true
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
+    ignoreErrors:
+        -
+            message: '#Call to an undefined method Illuminate\\Database\\Schema\\ForeignKeyDefinition::onDelete\(\)#'
+            path: database/migrations/*.php
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
