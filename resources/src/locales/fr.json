@@ -958,6 +958,8 @@
     "publications": "Publications",
     "publications-count": "{count} publication | {count} publications",
     "no-publications-subtitle": "Cet auteur n'a pas encore de publications",
+    "preprints-count": "{count} prépublication | {count} prépublications",
+    "no-preprints-subtitle": "Cet auteur n'a pas encore de prépublications",
     "expertise": "Domaines d'expertise",
     "no-expertise": "Aucun domaine d'expertise répertorié",
     "expertise-description": "Les domaines d'expertise aident les utilisateurs à comprendre et à faire confiance au contenu, et facilitent la recherche d'informations.",

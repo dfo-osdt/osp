@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AuthorResource } from '../Author'
+import type { PreprintResourceList } from '@/models/Preprint/Preprint'
 import type { PublicationResourceList } from '@/models/Publication/Publication'
 import { watchThrottled } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -9,6 +10,8 @@ import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import PreprintList from '@/models/Preprint/components/PreprintList.vue'
+import { PreprintQuery } from '@/models/Preprint/Preprint'
 import PublicationList from '@/models/Publication/components/PublicationList.vue'
 import { PublicationQuery } from '@/models/Publication/Publication'
 import { AuthorService } from '../Author'
@@ -22,9 +25,12 @@ const props = defineProps<{
 // State variables
 const author = ref<AuthorResource | null>(null)
 const publications = ref<PublicationResourceList>()
-const loading = ref({ author: false, publications: false })
+const preprints = ref<PreprintResourceList>()
+const loading = ref({ author: false, publications: false, preprints: false })
 const currentPage = ref(1)
+const preprintCurrentPage = ref(1)
 const search = ref<string | null>(null)
+const preprintSearch = ref<string | null>(null)
 
 // i18n
 const { t } = useI18n()
@@ -43,6 +49,14 @@ const publicationCount = computed(() => {
 
 const hasPublications = computed(() => {
   return publications.value?.data && publications.value.data.length > 0
+})
+
+const preprintCount = computed(() => {
+  return preprints.value?.meta?.total ?? 0
+})
+
+const hasPreprints = computed(() => {
+  return preprints.value?.data && preprints.value.data.length > 0
 })
 
 // Methods
@@ -91,6 +105,32 @@ async function loadPublications() {
   }
 }
 
+async function loadPreprints() {
+  if (loading.value.preprints)
+    return
+
+  // Build the query
+  let query = new PreprintQuery()
+
+  // Add search filter if present
+  if (preprintSearch?.value) {
+    query = query.filterTitle(preprintSearch.value)
+  }
+
+  query.paginate(preprintCurrentPage.value, 10)
+
+  loading.value.preprints = true
+  try {
+    preprints.value = await AuthorService.getPreprints(props.id, query)
+  }
+  catch (error) {
+    console.error('Failed to load preprints:', error)
+  }
+  finally {
+    loading.value.preprints = false
+  }
+}
+
 // Watchers
 watch(currentPage, () => {
   loadPublications()
@@ -105,6 +145,19 @@ watchThrottled(
   { throttle: 750 },
 )
 
+watch(preprintCurrentPage, () => {
+  loadPreprints()
+})
+
+watchThrottled(
+  preprintSearch,
+  () => {
+    preprintCurrentPage.value = 1
+    loadPreprints()
+  },
+  { throttle: 750 },
+)
+
 // Event handlers
 function handleAuthorUpdated() {
   loadAuthor()
@@ -114,6 +167,7 @@ function handleAuthorUpdated() {
 onMounted(async () => {
   await loadAuthor()
   await loadPublications()
+  await loadPreprints()
 })
 </script>
 
@@ -150,9 +204,10 @@ onMounted(async () => {
         </template>
       </div>
 
-      <!-- Right Column: Publications -->
+      <!-- Right Column: Publications & Preprints -->
       <div class="col-lg-grow col-md-12">
-        <ContentCard secondary>
+        <!-- Publications -->
+        <ContentCard secondary class="q-mb-lg">
           <template #title>
             {{ t('author-profile.publications') }}
           </template>
@@ -198,6 +253,58 @@ onMounted(async () => {
                 v-model="currentPage"
                 :meta="publications?.meta ?? null"
                 :disable="loading.publications"
+              />
+            </q-card-section>
+          </template>
+        </ContentCard>
+
+        <!-- Preprints -->
+        <ContentCard secondary>
+          <template #title>
+            {{ t('common.preprints') }}
+          </template>
+          <template #subtitle>
+            <template v-if="preprintCount > 0">
+              {{
+                t('author-profile.preprints-count', {
+                  count: preprintCount,
+                })
+              }}
+            </template>
+            <template v-else>
+              {{ t('author-profile.no-preprints-subtitle') }}
+            </template>
+          </template>
+          <template #title-right>
+            <SearchInput
+              v-model="preprintSearch"
+              :label="t('common.filter')"
+            />
+          </template>
+
+          <!-- Preprints Loading State -->
+          <template v-if="loading.preprints">
+            <div class="q-pa-md">
+              <q-skeleton height="60px" class="q-mb-md" />
+              <q-skeleton height="60px" class="q-mb-md" />
+              <q-skeleton height="60px" />
+            </div>
+          </template>
+
+          <!-- No Preprints Found -->
+          <template v-else-if="!hasPreprints">
+            <NoResultFoundDiv />
+          </template>
+
+          <!-- Preprints List -->
+          <template v-else>
+            <PreprintList :preprints="preprints?.data ?? []" />
+            <q-card-section>
+              <q-separator class="q-mb-md" />
+              <PaginationDiv
+                v-model="preprintCurrentPage"
+                :meta="preprints?.meta ?? null"
+                :disable="loading.preprints"
               />
             </q-card-section>
           </template>

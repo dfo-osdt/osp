@@ -958,6 +958,8 @@
     "publications": "Publications",
     "publications-count": "{count} publication | {count} publications",
     "no-publications-subtitle": "This author has no publications yet",
+    "preprints-count": "{count} preprint | {count} preprints",
+    "no-preprints-subtitle": "This author has no preprints yet",
     "expertise": "Areas of Expertise",
     "no-expertise": "No expertise areas listed",
     "expertise-description": "Areas of expertise help users understand and trust the content, and make it easier to find information they need.",
