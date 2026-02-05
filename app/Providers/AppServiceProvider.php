@@ -44,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureGates();
         $this->configureEvents();
         $this->configureServices();
+        $this->configureObservers();
 
         // https://spatie.be/docs/laravel-permission/v5/prerequisites#content-schema-limitation-in-mysql
         Schema::defaultStringLength(125);
@@ -112,5 +113,10 @@ class AppServiceProvider extends ServiceProvider
             ));
         }
 
+    }
+
+    private function configureObservers(): void
+    {
+        \App\Models\Publication::observe(\App\Observers\PublicationObserver::class);
     }
 }
