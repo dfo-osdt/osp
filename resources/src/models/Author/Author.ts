@@ -3,6 +3,7 @@ import type {
   ExpertiseResourceList,
 } from '../Expertise/Expertise'
 import type { OrganizationResource } from '../Organization/Organization'
+import type { PreprintQuery, PreprintResourceList } from '../Preprint/Preprint'
 import type { PublicationQuery, PublicationResourceList } from '../Publication/Publication'
 import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import { http } from '@/api/http'
@@ -104,6 +105,18 @@ export class AuthorService {
       url += `?${query.toQueryString()}`
     }
     const response = await http.get<PublicationResourceList>(url)
+    return response.data
+  }
+
+  /** Get the authors preprints */
+  public static async getPreprints(id: number, query?: PreprintQuery) {
+    let url = 'api/preprints'
+    if (!query) {
+      query = new PreprintQuery()
+    }
+    query.filterAuthorID([id])
+    url += `?${query.toQueryString()}`
+    const response = await http.get<PreprintResourceList>(url)
     return response.data
   }
 }
