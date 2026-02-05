@@ -15,17 +15,35 @@ class MultiColumnFilter implements Filter
         $this->columns = $columns;
     }
 
-    public function __invoke(Builder $query, $value, string $property)
+    public function __invoke(Builder $query, mixed $value, string $property)
     {
-        $attributes = $this->columns;
+        // Only accept strings or arrays, skip if invalid type
+        if (! is_string($value) && ! is_array($value)) {
+            return $this;
+        }
 
-        // is database engine postgresql? if so, use ILIKE as it is case insensitive
-        $like = config('database.default') === 'pgsql' ? 'ILIKE' : 'LIKE';
+        // Normalize value to always be an array for consistent handling
+        $searchTerms = Arr::wrap($value);
 
-        $query->where(function (Builder $query) use ($attributes, $value, $like): void {
-            foreach (Arr::wrap($attributes) as $attribute) {
-                $query->orWhere(function (\Illuminate\Contracts\Database\Query\Builder $query) use ($attribute, $value, $like): void {
-                    $query->orWhere($attribute, $like, "%{$value}%");
+        // Filter out empty terms
+        $searchTerms = array_filter($searchTerms, function ($term) {
+            return is_string($term) && trim($term) !== '';
+        });
+
+        // If no valid search terms, skip filtering
+        if (empty($searchTerms)) {
+            return $this;
+        }
+
+        $query->where(function (Builder $query) use ($searchTerms): void {
+            foreach ($searchTerms as $term) {
+                $term = trim($term);
+
+                // For each search term, check all columns
+                $query->orWhere(function (Builder $query) use ($term): void {
+                    foreach ($this->columns as $column) {
+                        $query->orWhereLike($column, "%{$term}%");
+                    }
                 });
             }
         });
