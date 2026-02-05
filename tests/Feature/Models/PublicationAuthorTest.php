@@ -105,3 +105,45 @@ test('an editor or chief editor can manage publication authors', function (): vo
     expect($publication->publicationAuthors()->count())->toBe(1);
 
 });
+
+test('a user can remove and re-add the same author to a publication', function (): void {
+    $user = \App\Models\User::factory()->create();
+    $publication = \App\Models\Publication::factory()->create([
+        'user_id' => $user->id,
+    ]);
+    $author = \App\Models\Author::factory()->create();
+
+    // Add an author
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
+        'author_id' => $author->id,
+        'is_corresponding_author' => true,
+    ])->assertCreated();
+
+    $publicationAuthorId = $response->json('data.id');
+    expect($publication->publicationAuthors()->count())->toBe(1);
+
+    // Remove the author
+    $this->actingAs($user)
+        ->deleteJson('/api/publications/'.$publication->id.'/publication-authors/'.$publicationAuthorId)
+        ->assertStatus(204);
+
+    expect($publication->publicationAuthors()->count())->toBe(0);
+
+    // Verify the author is force deleted (not soft deleted)
+    expect(PublicationAuthor::withTrashed()->find($publicationAuthorId))->toBeNull();
+
+    // Re-add the same author (should succeed)
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
+        'author_id' => $author->id,
+        'is_corresponding_author' => false,
+    ])->assertCreated();
+
+    expect($response->json('data'))->toMatchArray([
+        'publication_id' => $publication->id,
+        'author_id' => $author->id,
+        'is_corresponding_author' => false,
+        'organization_id' => $author->organization_id,
+    ]);
+
+    expect($publication->publicationAuthors()->count())->toBe(1);
+});
