@@ -125,7 +125,7 @@ class PublicationAuthorController extends Controller
         $publicationAuthor->setRelation('publication', $publication);
         Gate::authorize('delete', $publicationAuthor);
 
-        $publicationAuthor->delete();
+        $publicationAuthor->forceDelete();
 
         // response 204
         return response()->noContent();
