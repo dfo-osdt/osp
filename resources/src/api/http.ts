@@ -15,10 +15,9 @@ enum StatusCode {
   ServiceUnavailable = 503,
 }
 
-const headers: Readonly<Record<string, string | boolean>> = {
+const headers: Readonly<Record<string, string>> = {
   'Accept': 'application/json',
   'Content-Type': 'application/json; charset=utf-8',
-  'Access-Control-Allow-Credentials': true,
   'X-Requested-With': 'XMLHttpRequest',
 }
 
@@ -49,6 +48,7 @@ class Http {
       baseURL: '/',
       headers,
       withCredentials: true,
+      withXSRFToken: true,
     })
 
     // http.interceptors.request.use(injectToken, (error) => Promise.reject(error));
