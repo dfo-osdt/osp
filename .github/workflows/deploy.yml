@@ -21,6 +21,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: version
+        run: echo "value=$(git describe --tags --always)" >> $GITHUB_OUTPUT
 
       - name: pnpm
         uses: pnpm/action-setup@v4
@@ -35,6 +41,8 @@ jobs:
 
       - name: Build
         run: pnpm run build
+        env:
+          VITE_APP_VERSION: ${{ steps.version.outputs.value }}
 
       - name: Create deployment artifact
         run: tar -czf osp_${{github.sha}}.tar.gz --exclude=".git" --exclude="node_modules" *

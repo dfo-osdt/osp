@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import AnnouncementMonitor from '@/models/Announcement/components/AnnouncementMonitor.vue'
+
+const appVersion = import.meta.env.VITE_APP_VERSION ?? 'dev'
 </script>
 
 <template>
   <q-footer bordered class="bg-white text-grey-7 q-py-sm">
     <div class="row justify-between q-mx-lg">
-      <div>&nbsp;</div>
+      <div class="text-caption text-grey-5">{{ appVersion }}</div>
       <div>
         <a
           class="text-caption text-primary contact-link"
