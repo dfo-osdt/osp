@@ -31,7 +31,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile --prod
 
       - name: Build
         run: pnpm run build
@@ -95,7 +95,7 @@ jobs:
             cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
-             composer install --optimize-autoloader --no-interaction
+             composer install --optimize-autoloader --no-interaction --no-dev
              php artisan filament:install --no-interaction
              php artisan optimize:clear
              php artisan config:clear
@@ -161,7 +161,7 @@ jobs:
             cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
-             composer install --optimize-autoloader --no-interaction
+             composer install --optimize-autoloader --no-interaction --no-dev
              php artisan filament:install --no-interaction
              php artisan optimize:clear
              php artisan config:clear
