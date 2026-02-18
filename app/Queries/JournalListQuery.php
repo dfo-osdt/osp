@@ -8,6 +8,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<Journal> */
 class JournalListQuery extends QueryBuilder
 {
     public function __construct()

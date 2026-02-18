@@ -6,6 +6,7 @@ use App\Models\ManagementReviewStep;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<ManagementReviewStep> */
 class ManagementReviewStepListQuery extends QueryBuilder
 {
     public function __construct(?\Illuminate\Http\Request $request, $baseQuery = null)

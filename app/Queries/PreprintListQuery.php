@@ -8,6 +8,7 @@ use App\Models\ManuscriptRecord;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<ManuscriptRecord> */
 class PreprintListQuery extends QueryBuilder
 {
     public function __construct()

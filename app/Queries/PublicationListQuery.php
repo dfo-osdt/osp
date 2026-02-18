@@ -6,6 +6,7 @@ use App\Models\Publication;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<Publication> */
 class PublicationListQuery extends QueryBuilder
 {
     public function __construct(?\Illuminate\Http\Request $request, $baseQuery = null)

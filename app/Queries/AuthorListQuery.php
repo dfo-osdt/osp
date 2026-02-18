@@ -7,6 +7,7 @@ use App\Models\Author;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<Author> */
 class AuthorListQuery extends QueryBuilder
 {
     public function __construct()
