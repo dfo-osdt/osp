@@ -92,6 +92,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
+            set -e
             cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
@@ -103,12 +104,12 @@ jobs:
              php artisan config:cache
              php artisan migrate --force
              php artisan db:seed --class=RoleAndPermissionSeeder --force
-             sudo systemctl reload php8.4-fpm.service
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo chown -h osp.www-data $ACTIVE_RELEASE_PATH
             sudo chown -R osp.www-data $ACTIVE_RELEASE_PATH/
             sudo chown -R osp.www-data $STORAGE_PATH
             sudo chmod -R 771 $STORAGE_PATH
+            sudo systemctl reload php8.4-fpm.service
             php artisan horizon:terminate
 
   deploy-on-production:
@@ -158,6 +159,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
+            set -e
             cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
@@ -169,10 +171,10 @@ jobs:
              php artisan config:cache
              php artisan migrate --force
              php artisan db:seed --class=RoleAndPermissionSeeder --force
-             sudo systemctl reload php8.3-fpm.service
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
             sudo chown -h osp.www-data $ACTIVE_RELEASE_PATH
             sudo chown -R osp.www-data $ACTIVE_RELEASE_PATH/
             sudo chown -R osp.www-data $STORAGE_PATH
             sudo chmod -R 771 $STORAGE_PATH
+            sudo systemctl reload php8.4-fpm.service
             php artisan horizon:terminate
