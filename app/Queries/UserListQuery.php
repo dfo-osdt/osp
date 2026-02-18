@@ -7,6 +7,7 @@ use App\Models\User;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<User> */
 class UserListQuery extends QueryBuilder
 {
     public function __construct()

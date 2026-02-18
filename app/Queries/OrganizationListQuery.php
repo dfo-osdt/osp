@@ -8,6 +8,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/** @extends QueryBuilder<Organization> */
 class OrganizationListQuery extends QueryBuilder
 {
     public function __construct()
