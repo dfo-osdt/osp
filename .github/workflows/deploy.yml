@@ -92,7 +92,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
-            set -e
+            set -euo pipefail
             cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
@@ -159,7 +159,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           envs: RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
-            set -e
+            set -euo pipefail
             cd /var/www/${{secrets.SERVER}}/html/releases/${{github.sha}}
             ln -s -f $BASE_PATH/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
