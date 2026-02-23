@@ -22,7 +22,7 @@
     "vite-plugin-manifest-sri": "^0.2.0",
     "vue": "^3.5.28",
     "vue-i18n": "^11.2.8",
-    "vue-router": "^5.0.2"
+    "vue-router": "^5.0.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.4.3",
