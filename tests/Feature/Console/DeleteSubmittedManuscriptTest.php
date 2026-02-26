@@ -32,7 +32,7 @@ test('it refuses to delete a manuscript not in IN_REVIEW status', function (Manu
         ->assertExitCode(1)
         ->expectsOutputToContain('not in IN_REVIEW status');
 
-    expect(ManuscriptRecord::find($manuscript->id))->not->toBeNull();
+    expect(ManuscriptRecord::query()->find($manuscript->id))->not->toBeNull();
 })->with([
     'draft' => ManuscriptRecordStatus::DRAFT,
     'reviewed' => ManuscriptRecordStatus::REVIEWED,
