@@ -37,7 +37,7 @@
     "spatie/laravel-data": "^4.9",
     "spatie/laravel-health": "^1.29",
     "spatie/laravel-medialibrary": "^11.4.7",
-    "spatie/laravel-permission": "^6.7",
+    "spatie/laravel-permission": "^7.0",
     "spatie/laravel-query-builder": "^6.0",
     "spatie/laravel-ray": "^1.36.2",
     "spatie/simple-excel": "^3.6",
