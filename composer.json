@@ -32,7 +32,7 @@
     "saloonphp/saloon": "^3.8.1",
     "socialiteproviders/microsoft-azure": "^5.2",
     "spatie/laravel-activitylog": "^4.8",
-    "spatie/laravel-backup": "^9.0",
+    "spatie/laravel-backup": "^10.0",
     "spatie/laravel-csp": "^3.0",
     "spatie/laravel-data": "^4.9",
     "spatie/laravel-health": "^1.29",
