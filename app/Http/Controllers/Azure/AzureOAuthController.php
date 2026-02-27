@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AzureOAuthController extends Controller
@@ -46,7 +47,11 @@ class AzureOAuthController extends Controller
             return redirect("/#/auth/login?error=oauth_error&error_description=$errorDescription");
         }
 
-        $azureUser = Socialite::driver('azure')->user();
+        try {
+            $azureUser = Socialite::driver('azure')->user();
+        } catch (InvalidStateException) {
+            return redirect('/#/auth/login?error=oauth_error&error_description='.urlencode('Your session has expired. Please try again.'));
+        }
 
         $email = strtolower((string) $azureUser->getEmail());
 
