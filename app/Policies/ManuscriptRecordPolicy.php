@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\Permissions\UserPermission;
@@ -98,6 +99,18 @@ class ManuscriptRecordPolicy
                 // Existing reviewer access
                 if ($manuscriptRecord->managementReviewSteps->contains('user_id', $user->id)) {
                     return true;
+                }
+
+                // Manuscript authors can edit when flagged for follow-up (last completed step decision is revision)
+                $lastCompletedStep = $manuscriptRecord->managementReviewSteps
+                    ->where('status', \App\Enums\ManagementReviewStepStatus::COMPLETED)
+                    ->sortByDesc('completed_at')
+                    ->first();
+
+                if ($lastCompletedStep?->decision === ManagementReviewStepDecision::REVISION) {
+                    if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+                        return true;
+                    }
                 }
 
                 // Regional editor access
