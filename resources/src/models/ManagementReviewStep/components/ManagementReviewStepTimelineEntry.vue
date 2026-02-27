@@ -213,16 +213,6 @@ function withdrawManuscript() {
             @click="save"
           />
           <q-btn
-            icon="mdi-book-remove-outline"
-            color="red"
-            outline
-            :disabled="managementStep.data.comments === ''"
-            :label="
-              t('manuscript-progress-view.withdraw-manuscript')
-            "
-            @click="withdrawManuscript()"
-          />
-          <q-btn
             icon="mdi-message-reply-text-outline"
             color="primary"
             :label="t('review-step.reply')"
@@ -230,6 +220,22 @@ function withdrawManuscript() {
             @click="submitDecision()"
           />
         </q-card-actions>
+        <q-separator />
+        <q-card-section>
+          <div class="text-grey-7 text-overline text-uppercase q-mb-sm">
+            {{ t('common.other-actions') }}
+          </div>
+          <q-btn
+            icon="mdi-book-remove-outline"
+            color="primary"
+            outline
+            :disabled="managementStep.data.comments === ''"
+            :label="
+              t('manuscript-progress-view.withdraw-manuscript')
+            "
+            @click="withdrawManuscript()"
+          />
+        </q-card-section>
         <WithdrawManuscriptReplyDialog
           v-if="withdrawManuscriptDialog"
           v-model="withdrawManuscriptDialog"
