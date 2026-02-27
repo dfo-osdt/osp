@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
 
-it('redirects to login with error when azure oauth state is invalid', function () {
+it('redirects to login with error when azure oauth state is invalid', function (): void {
     Route::get('/oauth/azure/callback', [AzureOAuthController::class, 'callback']);
 
     Socialite::shouldReceive('driver')

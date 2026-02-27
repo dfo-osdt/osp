@@ -111,6 +111,10 @@ class ManuscriptRecordPolicy
                     if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
                         return true;
                     }
+
+                    if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
+                        return true;
+                    }
                 }
 
                 // Regional editor access
