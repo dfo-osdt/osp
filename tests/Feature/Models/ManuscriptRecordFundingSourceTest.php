@@ -69,6 +69,31 @@ test('a user can update an existing funding source on their manuscript', functio
     ray($response->json());
 });
 
+test('a user cannot create a funding source with a title longer than 255 characters', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $funder = \App\Models\Funder::factory()->create();
+
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/funding-sources', [
+        'funder_id' => $funder->id,
+        'title' => str_repeat('a', 256),
+        'description' => 'A description',
+    ])->assertUnprocessable()
+        ->assertJsonValidationErrors('title');
+});
+
+test('a user can create a funding source with a title up to 255 characters', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $funder = \App\Models\Funder::factory()->create();
+
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/funding-sources', [
+        'funder_id' => $funder->id,
+        'title' => str_repeat('a', 255),
+        'description' => 'A description',
+    ])->assertCreated();
+});
+
 test('a user can delete a funding source on their manuscript', function (): void {
     $unauthorizedUser = User::factory()->create();
     $authorizedUser = User::factory()->create();
