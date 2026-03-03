@@ -9,6 +9,7 @@ import type {
   NotificationGroupMember,
   NotificationGroupMemberResourceList,
 } from '@/models/NotificationGroup/NotificationGroup'
+import { useQuasar } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import ContentCard from '@/components/ContentCard.vue'
 import DateInput from '@/components/DateInput.vue'
@@ -18,7 +19,6 @@ import {
   NotificationGroupMembershipService,
 } from '@/models/NotificationGroup/NotificationGroup'
 import UserSelect from '@/models/User/components/UserSelect.vue'
-import { useQuasar } from 'quasar'
 
 const { t } = useI18n()
 const $q = useQuasar()
@@ -247,7 +247,7 @@ onMounted(() => {
 
 <template>
   <!-- Delegation Card -->
-  <ContentCard class="q-mb-lg">
+  <ContentCard secondary class="q-mb-lg">
     <template #title>
       {{ t('management-settings.delegation-title') }}
     </template>
@@ -279,8 +279,9 @@ onMounted(() => {
       </q-banner>
     </div>
 
-    <div class="q-mb-md">
+    <div class="q-mb-md text-right">
       <q-btn
+        outline
         color="primary"
         icon="mdi-plus"
         :label="t('management-settings.create-delegation')"
@@ -315,7 +316,7 @@ onMounted(() => {
   </ContentCard>
 
   <!-- Notification Group Card -->
-  <ContentCard class="q-mb-lg">
+  <ContentCard secondary class="q-mb-lg">
     <template #title>
       {{ t('management-settings.notification-group-title') }}
     </template>
@@ -323,8 +324,9 @@ onMounted(() => {
       {{ t('management-settings.notification-group-subtitle') }}
     </template>
 
-    <div class="q-mb-md">
+    <div class="q-mb-md text-right">
       <q-btn
+        outline
         color="primary"
         icon="mdi-plus"
         :label="t('management-settings.add-member')"
