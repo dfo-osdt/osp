@@ -12,7 +12,7 @@ class UserListQuery extends QueryBuilder
 {
     public function __construct()
     {
-        parent::__construct(User::query());
+        parent::__construct(User::query()->where('active', true));
 
         $this
             ->defaultSort('last_name')
