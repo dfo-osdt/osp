@@ -94,7 +94,7 @@ const stepHasNoComments = computed(() => {
  */
 const userCanCompleteReview = computed(() => {
   if (props.manuscriptType === 'secondary') {
-    return authStore.user?.can('complete_interntal_management_review') ?? false
+    return canComplete.value
   }
   return true
 })
