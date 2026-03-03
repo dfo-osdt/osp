@@ -18,10 +18,10 @@ export interface CreateNotificationGroupMemberRequest {
   expires_at?: string | null
 }
 
-export type NotificationGroupMemberResource =
-  Resource<NotificationGroupMember>
-export type NotificationGroupMemberResourceList =
-  ResourceList<NotificationGroupMember>
+export type NotificationGroupMemberResource
+  = Resource<NotificationGroupMember>
+export type NotificationGroupMemberResourceList
+  = ResourceList<NotificationGroupMember>
 
 type R = NotificationGroupMemberResource
 type RList = NotificationGroupMemberResourceList

@@ -23,7 +23,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'decision', arg: ManagementReviewStepResource): void
 }>()
-const authStore = useAuthStore()
 const { t } = useI18n()
 
 const dialog: Ref<QDialog | null> = ref(null)

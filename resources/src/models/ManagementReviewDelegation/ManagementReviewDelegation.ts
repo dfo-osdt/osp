@@ -24,10 +24,10 @@ export interface CreateDelegationRequest {
   comment?: string | null
 }
 
-export type ManagementReviewDelegationResource =
-  Resource<ManagementReviewDelegation>
-export type ManagementReviewDelegationResourceList =
-  ResourceList<ManagementReviewDelegation>
+export type ManagementReviewDelegationResource
+  = Resource<ManagementReviewDelegation>
+export type ManagementReviewDelegationResourceList
+  = ResourceList<ManagementReviewDelegation>
 
 type R = ManagementReviewDelegationResource
 type RList = ManagementReviewDelegationResourceList

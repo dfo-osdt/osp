@@ -45,7 +45,7 @@ class ManageUserDelegations extends ManageRelatedRecords
                             ->where('id', '!=', $this->record->getKey())
                             ->where('active', true)
                             ->get()
-                            ->mapWithKeys(fn (User $user) => [$user->id => $user->full_name]))
+                            ->mapWithKeys(fn (User $user): array => [$user->id => $user->full_name]))
                         ->searchable()
                         ->required(),
                     DateTimePicker::make('starts_at')
