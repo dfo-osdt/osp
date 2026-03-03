@@ -19,10 +19,16 @@ class DelegationCreatedMail extends Mailable
 
         $this->subject('Management Review Delegation Created / Délégation de révision de gestion créée');
         $this->to($mailbox);
-        $this->cc([
+        $cc = collect([
             $this->delegation->user->email,
             $this->delegation->delegate->email,
-        ]);
+        ])->merge($this->delegation->user->getNotificationGroupEmails())
+            ->merge($this->delegation->delegate->getNotificationGroupEmails())
+            ->unique()
+            ->values()
+            ->toArray();
+
+        $this->cc($cc);
 
         return $this->markdown('mail.delegation-created', [
             'delegation' => $this->delegation,
