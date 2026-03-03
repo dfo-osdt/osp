@@ -14,6 +14,8 @@ const color = computed(() => {
       return 'positive'
     case 'on_hold':
       return 'orange-5'
+    case 'reassign':
+      return 'blue-5'
     default:
       return 'orange-5'
   }

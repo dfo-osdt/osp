@@ -16,6 +16,8 @@ const status = computed(() => {
       return t('common.completed')
     case 'on_hold':
       return t('common.on_hold')
+    case 'reassign':
+      return t('common.reassigned')
     default:
       return t('common.unknown')
   }
