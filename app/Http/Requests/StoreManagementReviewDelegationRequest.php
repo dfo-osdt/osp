@@ -29,7 +29,7 @@ class StoreManagementReviewDelegationRequest extends FormRequest
 
     public function withValidator($validator): void
     {
-        $validator->after(function ($validator) {
+        $validator->after(function ($validator): void {
             $startsAt = $this->input('starts_at') ?? now();
             $endsAt = $this->input('ends_at');
 
@@ -38,7 +38,7 @@ class StoreManagementReviewDelegationRequest extends FormRequest
             $hasOverlapping = ManagementReviewDelegation::query()
                 ->where('user_id', $this->user()->id)
                 ->whereNull('ended_early_at')
-                ->where(function ($q) use ($endsAt) {
+                ->where(function (\Illuminate\Contracts\Database\Query\Builder $q) use ($endsAt): void {
                     $q->whereNull('starts_at')
                         ->orWhere('starts_at', '<', $endsAt);
                 })

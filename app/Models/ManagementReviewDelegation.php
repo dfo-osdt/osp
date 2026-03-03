@@ -69,7 +69,7 @@ class ManagementReviewDelegation extends Model
     #[Scope]
     protected function active(Builder $query): void
     {
-        $query->where(function (Builder $q) {
+        $query->where(function (Builder $q): void {
             $q->whereNull('starts_at')
                 ->orWhere('starts_at', '<=', now());
         })

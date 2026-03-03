@@ -64,7 +64,7 @@ class NotificationGroupMember extends Model
     #[Scope]
     protected function active(Builder $query): void
     {
-        $query->where(function (Builder $q) {
+        $query->where(function (Builder $q): void {
             $q->whereNull('expires_at')
                 ->orWhere('expires_at', '>', now());
         });
