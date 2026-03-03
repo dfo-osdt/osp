@@ -285,9 +285,13 @@ onMounted(() => {
         color="primary"
         icon="mdi-plus"
         :label="t('management-settings.create-delegation')"
-        :disable="!!activeDelegation"
+        :disable="!!activeDelegation || authStore.user?.is_acting_as_delegate"
         @click="showCreateDelegationDialog = true"
-      />
+      >
+        <q-tooltip v-if="authStore.user?.is_acting_as_delegate">
+          {{ t('management-settings.cannot-delegate-while-acting') }}
+        </q-tooltip>
+      </q-btn>
     </div>
 
     <q-table

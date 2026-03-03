@@ -30,6 +30,7 @@ class AuthenticatedUserResource extends JsonResource
             'roles' => $this->getRoleNames(),
             'last_login_at' => $this->previousSuccessfulLoginAt(),
             'permissions' => $this->getAllPermissions()->pluck('name'),
+            'is_acting_as_delegate' => $this->isActingAsDelegate(),
         ];
     }
 }

@@ -63,6 +63,7 @@ export interface IAuthenticatedUser {
   roles: AuthenticatedUserRoles[]
   last_login_at: null | string
   permissions: AuthenticatedUserPermissions[]
+  is_acting_as_delegate: boolean
 }
 
 /**
@@ -132,6 +133,7 @@ export class AuthenticatedUser implements IAuthenticatedUser {
   public permissions!: AuthenticatedUserPermissions[]
   public sensitivity_label!: SensitivityLabel
   public last_login_at!: string | null
+  public is_acting_as_delegate!: boolean
 
   constructor(user: IAuthenticatedUser) {
     Object.assign(this, user)

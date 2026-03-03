@@ -1001,6 +1001,7 @@
     "delegation-subtitle": "Déléguez temporairement vos révisions de gestion à un autre utilisateur lorsque vous êtes indisponible.",
     "active-delegation": "Délégation active",
     "create-delegation": "Créer une délégation",
+    "cannot-delegate-while-acting": "Vous ne pouvez pas créer une délégation pendant que vous agissez en tant que délégué pour un autre utilisateur.",
     "end-early": "Terminer plus tôt",
     "delegate": "Délégué",
     "starts-at": "Date de début",

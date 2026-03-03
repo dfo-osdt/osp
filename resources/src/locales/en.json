@@ -1001,6 +1001,7 @@
     "delegation-subtitle": "Temporarily delegate your management review assignments to another user when you are unavailable.",
     "active-delegation": "Active Delegation",
     "create-delegation": "Create Delegation",
+    "cannot-delegate-while-acting": "You cannot create a delegation while you are acting as a delegate for another user.",
     "end-early": "End Early",
     "delegate": "Delegate",
     "starts-at": "Start Date",
