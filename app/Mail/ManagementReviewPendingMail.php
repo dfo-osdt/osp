@@ -48,6 +48,11 @@ class ManagementReviewPendingMail extends Mailable implements ShouldQueue
         $this->subject($subject);
         $this->to($this->user->email, $this->user->fullName);
 
+        $notificationGroupEmails = $this->user->getNotificationGroupEmails();
+        if ($notificationGroupEmails->isNotEmpty()) {
+            $this->cc($notificationGroupEmails->toArray());
+        }
+
         return $this->markdown('mail.management-review-pending-mail', [
             'reviews' => $reviews,
             'user' => $this->user,

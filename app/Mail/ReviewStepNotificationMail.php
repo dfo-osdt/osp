@@ -41,6 +41,11 @@ class ReviewStepNotificationMail extends Mailable
             $this->cc($this->managementReviewStep->manuscriptRecord->user->email, $this->managementReviewStep->manuscriptRecord->user->fullName);
         }
 
+        $notificationGroupEmails = $this->managementReviewStep->user->getNotificationGroupEmails();
+        if ($notificationGroupEmails->isNotEmpty()) {
+            $this->cc($notificationGroupEmails->toArray());
+        }
+
         return $this->markdown('mail.review-step-notification-mail');
     }
 }
