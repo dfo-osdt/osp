@@ -95,6 +95,12 @@ const routes: RouteRecordRaw[] = [
               import('@/models/User/views/UserInvitationsView.vue'),
             name: 'settings.invitations',
           },
+          {
+            path: 'management',
+            component: () =>
+              import('@/models/User/views/ManagementSettingsView.vue'),
+            name: 'settings.management',
+          },
         ],
       },
       {

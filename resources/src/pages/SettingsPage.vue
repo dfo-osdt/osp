@@ -60,6 +60,18 @@ import MainPageLayout from '@/layouts/MainPageLayout.vue'
                 </q-item-label>
               </q-item-section>
             </q-item>
+            <q-item clickable to="/settings/management">
+              <q-item-section avatar>
+                <q-icon name="mdi-account-switch-outline" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>
+                  {{
+                    $t('management-settings.nav-title')
+                  }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </ContentCard>
       </div>
