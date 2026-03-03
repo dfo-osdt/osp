@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreManagementReviewDelegationRequest;
 use App\Http\Resources\ManagementReviewDelegationResource;
+use App\Mail\DelegationCreatedMail;
 use App\Models\ManagementReviewDelegation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ManagementReviewDelegationController extends Controller
 {
@@ -24,7 +26,9 @@ class ManagementReviewDelegationController extends Controller
     public function store(StoreManagementReviewDelegationRequest $request): JsonResource
     {
         $delegation = Auth::user()->managementReviewDelegations()->create($request->validated());
-        $delegation->load('delegate');
+        $delegation->load(['delegate', 'user']);
+
+        Mail::queue(new DelegationCreatedMail($delegation));
 
         return new ManagementReviewDelegationResource($delegation);
     }

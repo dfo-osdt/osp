@@ -2,11 +2,13 @@
 
 use App\Enums\ManagementReviewStepStatus;
 use App\Events\ManagementReviewStepCreated;
+use App\Mail\DelegationCreatedMail;
 use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 
 test('a user can list their delegations', function (): void {
     $user = User::factory()->create();
@@ -29,6 +31,20 @@ test('a user can create a delegation', function (): void {
 
     expect($response->json('data.delegate_user_id'))->toBe($delegate->id);
     expect($response->json('data.is_active'))->toBeTrue();
+});
+
+test('creating a delegation sends an email to the mailbox, delegator, and delegate', function (): void {
+    Mail::fake();
+
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    $this->actingAs($user)->postJson('/api/user/management-review-delegations', [
+        'delegate_user_id' => $delegate->id,
+        'ends_at' => now()->addDays(30)->toDateTimeString(),
+    ])->assertSuccessful();
+
+    Mail::assertQueued(DelegationCreatedMail::class);
 });
 
 test('a user can end a delegation early', function (): void {
