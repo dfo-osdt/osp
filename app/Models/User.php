@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
@@ -316,5 +317,63 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
         $regionalEditorRoles = UserRole::getRegionalEditorRoles();
 
         return $this->hasAnyRole($regionalEditorRoles);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManagementReviewDelegation, $this>
+     */
+    public function managementReviewDelegations(): HasMany
+    {
+        return $this->hasMany(ManagementReviewDelegation::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\ManagementReviewDelegation, $this>
+     */
+    public function activeDelegation(): HasOne
+    {
+        return $this->hasOne(ManagementReviewDelegation::class)->active()->latest();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\NotificationGroupMember, $this>
+     */
+    public function notificationGroupMembers(): HasMany
+    {
+        return $this->hasMany(NotificationGroupMember::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\NotificationGroupMember, $this>
+     */
+    public function notificationGroupMemberships(): HasMany
+    {
+        return $this->hasMany(NotificationGroupMember::class, 'member_user_id');
+    }
+
+    /**
+     * @return Collection<int, string>
+     */
+    public function getNotificationGroupEmails(): Collection
+    {
+        return $this->notificationGroupMembers()
+            ->active()
+            ->with('member')
+            ->get()
+            ->pluck('member.email')
+            ->filter();
+    }
+
+    public function hasActiveDelegation(): bool
+    {
+        return $this->activeDelegation()->exists();
+    }
+
+    public function isActingAsDelegate(): bool
+    {
+        return ManagementReviewDelegation::query()
+            ->active()
+            ->where('delegate_user_id', $this->id)
+            ->exists();
     }
 }
