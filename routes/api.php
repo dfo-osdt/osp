@@ -12,6 +12,7 @@ use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunctionalAreaController;
 use App\Http\Controllers\FunderController;
 use App\Http\Controllers\JournalController;
+use App\Http\Controllers\ManagementReviewDelegationController;
 use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
 use App\Http\Controllers\ManuscriptPeerReviewerController;
@@ -19,6 +20,8 @@ use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\ManuscriptRecordFileController;
 use App\Http\Controllers\ManuscriptRecordFundingSourceController;
 use App\Http\Controllers\ManuscriptRecordSharingController;
+use App\Http\Controllers\NotificationGroupMemberController;
+use App\Http\Controllers\NotificationGroupMembershipController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\FullFlowController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
@@ -233,6 +236,23 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/publications/{publication}/publication-authors', 'store');
         Route::put('/publications/{publication}/publication-authors/{publicationAuthor}', 'update');
         Route::delete('/publications/{publication}/publication-authors/{publicationAuthor}', 'destroy');
+    });
+
+    Route::controller(ManagementReviewDelegationController::class)->group(function () {
+        Route::get('/user/management-review-delegations', 'index');
+        Route::post('/user/management-review-delegations', 'store');
+        Route::delete('/user/management-review-delegations/{managementReviewDelegation}', 'destroy');
+    });
+
+    Route::controller(NotificationGroupMemberController::class)->group(function () {
+        Route::get('/user/notification-group-members', 'index');
+        Route::post('/user/notification-group-members', 'store');
+        Route::delete('/user/notification-group-members/{notificationGroupMember}', 'destroy');
+    });
+
+    Route::controller(NotificationGroupMembershipController::class)->group(function () {
+        Route::get('/user/notification-group-memberships', 'index');
+        Route::delete('/user/notification-group-memberships/{notificationGroupMember}', 'destroy');
     });
 
     Route::get('/regions', [RegionController::class, 'index']);

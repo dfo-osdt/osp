@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\Permissions\UserPermission;
+use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -68,7 +69,18 @@ class ManagementReviewStepPolicy
 
         switch ($managementReviewStep->manuscriptRecord->type) {
             case ManuscriptRecordType::SECONDARY:
-                return $user->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
+                if ($user->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW)) {
+                    return true;
+                }
+
+                // Check if user is acting as delegate for someone who has the permission
+                return ManagementReviewDelegation::query()
+                    ->active()
+                    ->where('delegate_user_id', $user->id)
+                    ->whereHas('user', function ($query) {
+                        $query->permission(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
+                    })
+                    ->exists();
             default:
                 return true;
         }
