@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Users\Users;
 use App\Enums\Permissions\UserRole;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Filament\Resources\Users\Pages\ManageUserDelegations;
+use App\Filament\Resources\Users\Pages\ManageUserNotificationGroup;
 use App\Filament\Resources\Users\Pages\ViewUser;
 use App\Filament\Resources\Users\Pages\ViewUserLogins;
 use App\Filament\Resources\Users\Pages\ViewUserLogs;
@@ -163,6 +165,8 @@ class UserResource extends Resource
             'view' => ViewUser::route('/{record}'),
             'log' => ViewUserLogs::route('/{record}/log'),
             'logins' => ViewUserLogins::route('/{record}/login'),
+            'delegations' => ManageUserDelegations::route('/{record}/delegations'),
+            'notification-group' => ManageUserNotificationGroup::route('/{record}/notification-group'),
             'edit' => EditUser::route('/{record}/edit'),
         ];
     }
@@ -174,6 +178,8 @@ class UserResource extends Resource
             EditUser::class,
             ViewUserLogs::class,
             ViewUserLogins::class,
+            ManageUserDelegations::class,
+            ManageUserNotificationGroup::class,
         ]);
     }
 }
