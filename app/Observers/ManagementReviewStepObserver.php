@@ -26,6 +26,11 @@ class ManagementReviewStepObserver
             return;
         }
 
+        // Delegation chains are intentionally not followed. The delegate step
+        // is created with saveQuietly() so the observer does not fire again.
+        // This ensures delegation from A to B is explicit — B cannot
+        // implicitly re-delegate A's reviews to C via their own delegation.
+
         $delegateStep = new ManagementReviewStep;
         $delegateStep->user_id = $delegation->delegate_user_id;
         $delegateStep->status = ManagementReviewStepStatus::PENDING;
