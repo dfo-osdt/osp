@@ -41,7 +41,7 @@ class ManageUserNotificationGroup extends ManageRelatedRecords
                     Select::make('member_user_id')
                         ->label('Member')
                         ->options(fn () => User::query()
-                            ->where('id', '!=', $this->record->id)
+                            ->where('id', '!=', $this->record->getKey())
                             ->where('active', true)
                             ->get()
                             ->mapWithKeys(fn (User $user) => [$user->id => $user->full_name]))
@@ -52,7 +52,7 @@ class ManageUserNotificationGroup extends ManageRelatedRecords
                         ->nullable(),
                 ])
                 ->mutateFormDataUsing(function (array $data): array {
-                    $data['user_id'] = $this->record->id;
+                    $data['user_id'] = $this->record->getKey();
 
                     return $data;
                 }),

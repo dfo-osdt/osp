@@ -77,9 +77,7 @@ class ManagementReviewStepPolicy
                 return ManagementReviewDelegation::query()
                     ->active()
                     ->where('delegate_user_id', $user->id)
-                    ->whereHas('user', function ($query) {
-                        $query->permission(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
-                    })
+                    ->whereIn('user_id', User::permission(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW)->select('id'))
                     ->exists();
             default:
                 return true;
