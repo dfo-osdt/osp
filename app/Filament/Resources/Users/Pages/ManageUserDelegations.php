@@ -42,7 +42,7 @@ class ManageUserDelegations extends ManageRelatedRecords
                     Select::make('delegate_user_id')
                         ->label('Delegate')
                         ->options(fn () => User::query()
-                            ->where('id', '!=', $this->record->id)
+                            ->where('id', '!=', $this->record->getKey())
                             ->where('active', true)
                             ->get()
                             ->mapWithKeys(fn (User $user) => [$user->id => $user->full_name]))
@@ -60,7 +60,7 @@ class ManageUserDelegations extends ManageRelatedRecords
                         ->nullable(),
                 ])
                 ->mutateFormDataUsing(function (array $data): array {
-                    $data['user_id'] = $this->record->id;
+                    $data['user_id'] = $this->record->getKey();
 
                     return $data;
                 }),
