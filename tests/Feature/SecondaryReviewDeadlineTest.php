@@ -8,14 +8,14 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 test('migration adds enforce_secondary_review_deadline column with correct default', function (): void {
-    $region = Region::first();
+    $region = Region::query()->first();
     expect($region->enforce_secondary_review_deadline)->toBeFalse();
 });
 
 test('secondary manuscript gets deadline when region has enforcement enabled', function (): void {
     Mail::fake();
 
-    $region = Region::first();
+    $region = Region::query()->first();
     $region->enforce_secondary_review_deadline = true;
     $region->save();
 
@@ -35,7 +35,7 @@ test('secondary manuscript gets deadline when region has enforcement enabled', f
 test('secondary manuscript gets no deadline when region does not have enforcement enabled', function (): void {
     Mail::fake();
 
-    $region = Region::first();
+    $region = Region::query()->first();
     $region->enforce_secondary_review_deadline = false;
     $region->save();
 
@@ -55,7 +55,7 @@ test('secondary manuscript gets no deadline when region does not have enforcemen
 test('reassign sets deadline for secondary manuscript when region has enforcement enabled', function (): void {
     Mail::fake();
 
-    $region = Region::first();
+    $region = Region::query()->first();
     $region->enforce_secondary_review_deadline = true;
     $region->save();
 
@@ -82,7 +82,7 @@ test('reassign sets deadline for secondary manuscript when region has enforcemen
 test('reassign does not set deadline for secondary manuscript when region has enforcement disabled', function (): void {
     Mail::fake();
 
-    $region = Region::first();
+    $region = Region::query()->first();
     $region->enforce_secondary_review_deadline = false;
     $region->save();
 
@@ -109,7 +109,7 @@ test('reassign does not set deadline for secondary manuscript when region has en
 test('revision response sets deadline for secondary manuscript when region has enforcement enabled', function (): void {
     Mail::fake();
 
-    $region = Region::first();
+    $region = Region::query()->first();
     $region->enforce_secondary_review_deadline = true;
     $region->save();
 
@@ -146,7 +146,7 @@ test('revision response sets deadline for secondary manuscript when region has e
 test('primary manuscript still gets deadline regardless of region setting', function (): void {
     Mail::fake();
 
-    $region = Region::first();
+    $region = Region::query()->first();
     $region->enforce_secondary_review_deadline = false;
     $region->save();
 

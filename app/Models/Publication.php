@@ -334,6 +334,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      * Scope publications based on user permissions
      * - Editors with UPDATE_PUBLICATIONS see all publications
      * - Regional editors see all published + unpublished in their region
+     * - Regional observers see all published + unpublished in their region
      * - Regular users see only published publications
      */
     #[\Illuminate\Database\Eloquent\Attributes\Scope]
@@ -344,13 +345,19 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
             return;
         }
 
-        // if user is a regional editor, show published + unpublished in their region
-        if ($user->isRegionalEditor()) {
-            $permissions = collect(UserPermission::getRegionalEditorPubEditPermissions())->pluck('value');
+        // if user is a regional editor or observer, show published + unpublished in their region
+        if ($user->hasRegionalRole()) {
+            // Get all regional permissions (both view and edit)
+            $permissions = collect(array_merge(
+                UserPermission::getRegionalEditorPubEditPermissions(),
+                UserPermission::getRegionalViewPermissions()
+            ))->pluck('value');
+
             $userPermissions = $user->getAllPermissions()->pluck('name');
             $slugs = $permissions->intersect($userPermissions)
                 ->map(fn ($perm): ?string => explode('_', (string) $perm)[2] ?? null)
                 ->filter()
+                ->unique()
                 ->all();
 
             $query->where('status', PublicationStatus::PUBLISHED)

@@ -109,3 +109,75 @@ test('isRegionalEditor returns false for user with no roles', function (): void 
 
     expect($user->isRegionalEditor())->toBeFalse();
 });
+
+test('isRegionalObserver returns true for all regional observer roles', function (): void {
+    $regionalRoles = [
+        UserRole::NFL_OBSERVER,
+        UserRole::MAR_OBSERVER,
+        UserRole::GLF_OBSERVER,
+        UserRole::QUE_OBSERVER,
+        UserRole::ONP_OBSERVER,
+        UserRole::ARC_OBSERVER,
+        UserRole::PAC_OBSERVER,
+        UserRole::NCR_OBSERVER,
+    ];
+
+    foreach ($regionalRoles as $role) {
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        expect($user->isRegionalObserver())->toBeTrue("Failed for role: {$role->value}");
+    }
+});
+
+test('isRegionalObserver returns false for non-regional-observer roles', function (): void {
+    $nonRegionalObserverRoles = [
+        UserRole::ADMIN,
+        UserRole::AUTHOR,
+        UserRole::DIRECTOR,
+        UserRole::EDITOR,
+        UserRole::CHIEF_EDITOR,
+        UserRole::NFL_EDITOR,
+        UserRole::MAR_EDITOR,
+    ];
+
+    foreach ($nonRegionalObserverRoles as $role) {
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        expect($user->isRegionalObserver())->toBeFalse("Failed for role: {$role->value}");
+    }
+});
+
+test('isRegionalObserver returns false for user with no roles', function (): void {
+    $user = User::factory()->create();
+
+    expect($user->isRegionalObserver())->toBeFalse();
+});
+
+test('hasRegionalRole returns true for regional editors', function (): void {
+    $user = User::factory()->create();
+    $user->assignRole(UserRole::NFL_EDITOR);
+
+    expect($user->hasRegionalRole())->toBeTrue();
+});
+
+test('hasRegionalRole returns true for regional observers', function (): void {
+    $user = User::factory()->create();
+    $user->assignRole(UserRole::QUE_OBSERVER);
+
+    expect($user->hasRegionalRole())->toBeTrue();
+});
+
+test('hasRegionalRole returns false for non-regional roles', function (): void {
+    $user = User::factory()->create();
+    $user->assignRole(UserRole::AUTHOR);
+
+    expect($user->hasRegionalRole())->toBeFalse();
+});
+
+test('hasRegionalRole returns false for user with no roles', function (): void {
+    $user = User::factory()->create();
+
+    expect($user->hasRegionalRole())->toBeFalse();
+});
