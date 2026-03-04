@@ -17,7 +17,7 @@ class DelegationCreatedMail extends Mailable
     {
         $mailbox = config('osp.manuscript_submission_email');
 
-        $this->subject('Management Review Delegation Created / Délégation de révision de gestion créée');
+        $this->subject('[FYI] Management Review Delegation Created / [PTI] Délégation de révision de gestion créée');
         $this->to($mailbox);
         $cc = collect([
             $this->delegation->user->email,
