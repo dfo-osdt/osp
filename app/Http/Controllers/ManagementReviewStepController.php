@@ -164,7 +164,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
         $decisionExpected = in_array($manuscriptRecord->type, [ManuscriptRecordType::PRIMARY, ManuscriptRecordType::PREPRINT], true)
-            || ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && $manuscriptRecord->region?->enforce_secondary_review_deadline);
+            || ($manuscriptRecord->region->enforce_secondary_review_deadline);
         $nextReviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
         $nextReviewStep->saveOrFail();
 
@@ -244,7 +244,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
         // if the manuscript record is a primary/preprint, or a secondary with enforcement, we expect a decision within X days
         $decisionExpected = in_array($manuscriptRecord->type, [ManuscriptRecordType::PRIMARY, ManuscriptRecordType::PREPRINT], true)
-            || ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && $manuscriptRecord->region?->enforce_secondary_review_deadline);
+            || ($manuscriptRecord->region->enforce_secondary_review_deadline);
         $nextReviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
         $nextReviewStep->saveOrFail();
 
