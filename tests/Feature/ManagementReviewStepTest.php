@@ -272,7 +272,7 @@ test('completed reviewers are cc\'d on subsequent review step notification email
 
     // Build the revision notification mailable and verify CCs include the DM
     $revisionStep = $manuscript->refresh()->managementReviewSteps()->where('status', ManagementReviewStepStatus::ON_HOLD)->first();
-    $mail = (new ReviewStepNotificationMail($revisionStep))->build();
+    $mail = new ReviewStepNotificationMail($revisionStep)->build();
 
     expect($mail->hasTo($author->email))->toBeTrue();
     expect($mail->hasCc($dm->email))->toBeTrue('DM (completed reviewer) should be CC\'d on revision notification');
