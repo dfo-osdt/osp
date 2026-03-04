@@ -120,6 +120,15 @@ export type AuthenticatedUserRoles
     | 'arc_editor'
     | 'pac_editor'
     | 'ncr_editor'
+  // Regional observer roles
+    | 'nfl_observer'
+    | 'mar_observer'
+    | 'glf_observer'
+    | 'que_observer'
+    | 'onp_observer'
+    | 'arc_observer'
+    | 'pac_observer'
+    | 'ncr_observer'
 
 export class AuthenticatedUser implements IAuthenticatedUser {
   public id!: number
@@ -253,6 +262,35 @@ export class AuthenticatedUser implements IAuthenticatedUser {
         return locale === 'en'
           ? 'National Capital Region Editor'
           : 'Éditeur de la Région de la capitale nationale'
+      // Regional observer roles
+      case 'nfl_observer':
+        return locale === 'en'
+          ? 'Newfoundland and Labrador Observer'
+          : 'Observateur Terre-Neuve-et-Labrador'
+      case 'mar_observer':
+        return locale === 'en'
+          ? 'Maritimes Observer'
+          : 'Observateur des Maritimes'
+      case 'glf_observer':
+        return locale === 'en' ? 'Gulf Observer' : 'Observateur du Golfe'
+      case 'que_observer':
+        return locale === 'en' ? 'Quebec Observer' : 'Observateur du Québec'
+      case 'onp_observer':
+        return locale === 'en'
+          ? 'Ontario and Prairie Observer'
+          : 'Observateur de l\'Ontario et des Prairies'
+      case 'arc_observer':
+        return locale === 'en'
+          ? 'Arctic Observer'
+          : 'Observateur de l\'Arctique'
+      case 'pac_observer':
+        return locale === 'en'
+          ? 'Pacific Observer'
+          : 'Observateur du Pacifique'
+      case 'ncr_observer':
+        return locale === 'en'
+          ? 'National Capital Region Observer'
+          : 'Observateur de la Région de la capitale nationale'
       default:
         return 'N/A'
     }
