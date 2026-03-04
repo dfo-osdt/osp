@@ -2,6 +2,7 @@
 
 namespace App\Mail\PlanningBinder;
 
+use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Models\Publication;
 use App\Models\User;
@@ -36,10 +37,27 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
     public function envelope(): Envelope
     {
 
-        $cc = config('osp.manuscript_submission_email');
-        if (empty($cc)) {
+        $ospEmail = config('osp.manuscript_submission_email');
+        if (empty($ospEmail)) {
             throw new \Exception('The manuscript submission email address is not set.');
         }
+
+        $ccEmails = collect([$ospEmail]);
+
+        $completedReviewers = $this->publication->manuscriptRecord
+            ->managementReviewSteps()
+            ->where('status', ManagementReviewStepStatus::COMPLETED)
+            ->with('user')
+            ->get()
+            ->pluck('user');
+
+        $ccEmails = $ccEmails->merge($completedReviewers->pluck('email'));
+
+        foreach ($completedReviewers as $reviewer) {
+            $ccEmails = $ccEmails->merge($reviewer->getNotificationGroupEmails());
+        }
+
+        $ccEmails = $ccEmails->unique()->diff([$this->referrer->email])->values();
 
         $title = match ($this->planningBinderItemState->manuscript_record_type) {
             ManuscriptRecordType::PRIMARY => 'Manuscript Flagged for Planning Binder Accepted In Journal - Manuscrit identifié pour le classeur de planification accepté dans un journal',
@@ -49,7 +67,7 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
 
         return new Envelope(
             to: [$this->referrer->email],
-            cc: [$cc],
+            cc: $ccEmails->all(),
             subject: $title,
         );
     }
