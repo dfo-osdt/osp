@@ -38,8 +38,8 @@ class RegionResource extends Resource
                 Section::make('Region Settings')
                     ->schema([
                         Toggle::make('enforce_secondary_review_deadline')
-                            ->label('Enforce 10-Day Review Deadline for Secondary (DFO) Publications')
-                            ->helperText('When enabled, secondary publications in this region will receive a 10-business-day review deadline with due/overdue reminders.'),
+                            ->label('Enforce Review Deadline for Secondary (DFO) Publications')
+                            ->helperText('When enabled, secondary publications in this region will receive a '.config('osp.management_review.decision_expected_business_days').'-business-day review deadline with due/overdue reminders.'),
                     ]),
             ]);
     }
