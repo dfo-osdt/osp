@@ -278,7 +278,7 @@ test('a user can cancel a scheduled (future) delegation and it is deleted', func
     $this->actingAs($user)->deleteJson("/api/user/management-review-delegations/{$delegation->id}")
         ->assertSuccessful();
 
-    expect(ManagementReviewDelegation::find($delegation->id))->toBeNull();
+    expect(ManagementReviewDelegation::query()->find($delegation->id))->toBeNull();
 });
 
 test('ending an active delegation sets ended_early_at instead of deleting', function (): void {
