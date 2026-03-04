@@ -47,7 +47,7 @@ jobs:
         run: tar -czf osp_${{github.sha}}.tar.gz --exclude=".git" --exclude="node_modules" *
 
       - name: Store artifact for distribution
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: app-build
           path: osp_${{github.sha}}.tar.gz
@@ -58,7 +58,7 @@ jobs:
     environment: staging
     steps:
       - name: Get artifact from previous step
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: app-build
           path: osp_${{github.sha}}.tar.gz
@@ -125,7 +125,7 @@ jobs:
     environment: production
     steps:
       - name: Get artifact from previous step
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: app-build
           path: osp_${{github.sha}}.tar.gz
