@@ -35,7 +35,7 @@ class NotificationGroupMembershipController extends Controller
             ->causedBy(Auth::user())
             ->log('self-removed from notification group');
 
-        Mail::send(new NotificationGroupMemberRemovedMail($notificationGroupMember));
+        Mail::queue(new NotificationGroupMemberRemovedMail($notificationGroupMember));
 
         $notificationGroupMember->delete();
 

@@ -72,7 +72,7 @@ test('a member can remove themselves from a notification group', function (): vo
 
     expect(NotificationGroupMember::query()->find($membership->id))->toBeNull();
 
-    Mail::assertSent(NotificationGroupMemberRemovedMail::class);
+    Mail::assertQueued(NotificationGroupMemberRemovedMail::class);
 });
 
 test('expired members are excluded from notification group emails', function (): void {
