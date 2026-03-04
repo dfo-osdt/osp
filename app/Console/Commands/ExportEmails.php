@@ -4,12 +4,16 @@ namespace App\Console\Commands;
 
 use App\Enums\ManuscriptRecordType;
 use App\Events\Auth\Invited;
+use App\Mail\DelegationCreatedMail;
 use App\Mail\JournalAcceptancePendingMail;
 use App\Mail\ManagementReviewDueMail;
 use App\Mail\ManagementReviewPendingMail;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
+use App\Mail\NotificationGroupMemberRemovedMail;
+use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
+use App\Models\NotificationGroupMember;
 use App\Models\Publication;
 use App\Models\Shareable;
 use App\Models\User;
@@ -394,6 +398,20 @@ class ExportEmails extends Command
         $journalAcceptancePendingPublicationsOnly = new JournalAcceptancePendingMail(collect(), $pendingPublications3, $user3);
         $markdownContent = $journalAcceptancePendingPublicationsOnly->render();
         $this->exportFile('journal-acceptance-pending-monthly-publications-only.html', $markdownContent);
+
+        // Delegation created notification
+        $delegation = ManagementReviewDelegation::factory()->create();
+        $delegation->load('user', 'delegate');
+        $delegationCreated = new DelegationCreatedMail($delegation);
+        $markdownContent = $delegationCreated->render();
+        $this->exportFile('delegation-created.html', $markdownContent);
+
+        // Notification group member removed
+        $notificationGroupMember = NotificationGroupMember::factory()->create();
+        $notificationGroupMember->load('user', 'member');
+        $notificationGroupMemberRemoved = new NotificationGroupMemberRemovedMail($notificationGroupMember);
+        $markdownContent = $notificationGroupMemberRemoved->render();
+        $this->exportFile('notification-group-member-removed.html', $markdownContent);
 
         DB::rollBack();
 
