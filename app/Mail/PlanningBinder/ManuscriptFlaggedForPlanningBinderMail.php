@@ -2,6 +2,7 @@
 
 namespace App\Mail\PlanningBinder;
 
+use App\Enums\ManagementReviewStepStatus;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
@@ -31,16 +32,33 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
      */
     public function envelope(): Envelope
     {
-        $cc = config('osp.manuscript_submission_email');
-        if (empty($cc)) {
+        $ospEmail = config('osp.manuscript_submission_email');
+        if (empty($ospEmail)) {
             throw new \Exception('The manuscript submission email address is not set.');
         }
+
+        $ccEmails = collect([$ospEmail]);
+
+        $completedReviewers = $this->manuscriptRecord
+            ->managementReviewSteps()
+            ->where('status', ManagementReviewStepStatus::COMPLETED)
+            ->with('user')
+            ->get()
+            ->pluck('user');
+
+        $ccEmails = $ccEmails->merge($completedReviewers->pluck('email'));
+
+        foreach ($completedReviewers as $reviewer) {
+            $ccEmails = $ccEmails->merge($reviewer->getNotificationGroupEmails());
+        }
+
+        $ccEmails = $ccEmails->unique()->diff([$this->user->email])->values();
 
         $subject = '[No Action Required] Manuscript Record Flagged for Planning Binder - [Aucune Action Requise] Manuscrit identifié pour le classeur de planification';
 
         return new Envelope(
             to: [$this->user->email],
-            cc: [$cc],
+            cc: $ccEmails->all(),
             subject: $subject
         );
     }
