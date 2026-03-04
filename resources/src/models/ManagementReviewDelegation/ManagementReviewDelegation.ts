@@ -13,6 +13,7 @@ export interface ManagementReviewDelegation {
   ended_early_at: string | null
   comment: string | null
   is_active: boolean
+  is_scheduled: boolean
   user?: UserResource
   delegate?: UserResource
 }
