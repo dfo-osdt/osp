@@ -59,6 +59,14 @@ class LocalTestDataSeeder extends Seeder
         ]);
         $marEditor->assignRole('mar_editor');
 
+        // create regional observer users
+        $nflObserver = \App\Models\User::factory()->create([
+            'first_name' => 'NFL',
+            'last_name' => 'Observer',
+            'email' => 'nfl.observer@test.local',
+        ]);
+        $nflObserver->assignRole('nfl_observer');
+
         // create a blank slate user
         \App\Models\User::factory()->create([
             'email' => 'new@test.local',
