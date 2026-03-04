@@ -200,8 +200,9 @@ class ManuscriptRecordController extends Controller
             $reviewStep = new ManagementReviewStep;
             $reviewStep->manuscript_record_id = $manuscriptRecord->id;
 
-            // is there an expected decision date for this manuscript type? Only primary for now.
-            $decisionExpected = in_array($manuscriptRecord->type, [ManuscriptRecordType::PRIMARY, ManuscriptRecordType::PREPRINT], true);
+            // is there an expected decision date for this manuscript type?
+            $decisionExpected = in_array($manuscriptRecord->type, [ManuscriptRecordType::PRIMARY, ManuscriptRecordType::PREPRINT], true)
+                || ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && $manuscriptRecord->region?->enforce_secondary_review_deadline);
             $reviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
             $reviewStep->user_id = $reviewUser->id;
             $reviewStep->save();

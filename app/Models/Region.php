@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name_en
  * @property string $name_fr
  * @property string $slug
+ * @property bool $enforce_secondary_review_deadline
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Region newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Region newQuery()
@@ -28,6 +29,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Region extends Model
 {
+    protected function casts(): array
+    {
+        return [
+            'enforce_secondary_review_deadline' => 'boolean',
+        ];
+    }
+
     /**
      * Return this region's editors
      *
