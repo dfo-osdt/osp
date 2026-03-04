@@ -319,6 +319,24 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
         return $this->hasAnyRole($regionalEditorRoles);
     }
 
+    /** Is this a Regional Observer */
+    public function isRegionalObserver(): bool
+    {
+        $regionalObserverRoles = UserRole::getRegionalObserverRoles();
+
+        return $this->hasAnyRole($regionalObserverRoles);
+    }
+
+    /** Is this any regional role (editor or observer) */
+    public function hasRegionalRole(): bool
+    {
+        if ($this->isRegionalEditor()) {
+            return true;
+        }
+
+        return $this->isRegionalObserver();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManagementReviewDelegation, $this>
      */

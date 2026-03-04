@@ -66,4 +66,18 @@ enum UserPermission: string
             self::CAN_EDIT_NCR_PUBS,
         ];
     }
+
+    public static function getRegionalViewPermissions(): array
+    {
+        return [
+            self::CAN_VIEW_NFL_MRFS,
+            self::CAN_VIEW_MAR_MRFS,
+            self::CAN_VIEW_GLF_MRFS,
+            self::CAN_VIEW_QUE_MRFS,
+            self::CAN_VIEW_ONP_MRFS,
+            self::CAN_VIEW_ARC_MRFS,
+            self::CAN_VIEW_PAC_MRFS,
+            self::CAN_VIEW_NCR_MRFS,
+        ];
+    }
 }

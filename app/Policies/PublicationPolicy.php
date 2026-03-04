@@ -49,6 +49,12 @@ class PublicationPolicy
             return true;
         }
 
+        // Regional editor/observer access - can view unpublished in their region
+        $regionSlug = $publication->region->slug ?? null;
+        if ($regionSlug && $user->can("can_view_{$regionSlug}_mrfs")) {
+            return true;
+        }
+
         // if the publication has a manuscript record, then the users that can view it, can view this publication
         if ($publication->manuscript_record_id) {
             return $user->can('view', $publication->manuscriptRecord);

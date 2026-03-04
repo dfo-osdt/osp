@@ -20,6 +20,16 @@ enum UserRole: string
     case PAC_EDITOR = 'pac_editor';
     case NCR_EDITOR = 'ncr_editor';
 
+    // Regional observers roles
+    case NFL_OBSERVER = 'nfl_observer';
+    case MAR_OBSERVER = 'mar_observer';
+    case GLF_OBSERVER = 'glf_observer';
+    case QUE_OBSERVER = 'que_observer';
+    case ONP_OBSERVER = 'onp_observer';
+    case ARC_OBSERVER = 'arc_observer';
+    case PAC_OBSERVER = 'pac_observer';
+    case NCR_OBSERVER = 'ncr_observer';
+
     /**
      * Get the permissions associated with the role
      *
@@ -102,6 +112,30 @@ enum UserRole: string
                 UserPermission::CAN_EDIT_NCR_MRFS,
                 UserPermission::CAN_EDIT_NCR_PUBS,
             ],
+            self::NFL_OBSERVER => [
+                UserPermission::CAN_VIEW_NFL_MRFS,
+            ],
+            self::MAR_OBSERVER => [
+                UserPermission::CAN_VIEW_MAR_MRFS,
+            ],
+            self::GLF_OBSERVER => [
+                UserPermission::CAN_VIEW_GLF_MRFS,
+            ],
+            self::QUE_OBSERVER => [
+                UserPermission::CAN_VIEW_QUE_MRFS,
+            ],
+            self::ONP_OBSERVER => [
+                UserPermission::CAN_VIEW_ONP_MRFS,
+            ],
+            self::ARC_OBSERVER => [
+                UserPermission::CAN_VIEW_ARC_MRFS,
+            ],
+            self::PAC_OBSERVER => [
+                UserPermission::CAN_VIEW_PAC_MRFS,
+            ],
+            self::NCR_OBSERVER => [
+                UserPermission::CAN_VIEW_NCR_MRFS,
+            ],
         };
 
     }
@@ -133,6 +167,15 @@ enum UserRole: string
             self::ARC_EDITOR => 'Arctic Editor',
             self::PAC_EDITOR => 'Pacific Editor',
             self::NCR_EDITOR => 'National Capital Region Editor',
+            // Regional observer labels
+            self::NFL_OBSERVER => 'Newfoundland and Labrador Observer',
+            self::MAR_OBSERVER => 'Maritimes Observer',
+            self::GLF_OBSERVER => 'Gulf Observer',
+            self::QUE_OBSERVER => 'Quebec Observer',
+            self::ONP_OBSERVER => 'Ontario and Prairie Observer',
+            self::ARC_OBSERVER => 'Arctic Observer',
+            self::PAC_OBSERVER => 'Pacific Observer',
+            self::NCR_OBSERVER => 'National Capital Region Observer',
         };
     }
 
@@ -148,5 +191,27 @@ enum UserRole: string
             self::PAC_EDITOR,
             self::NCR_EDITOR,
         ];
+    }
+
+    public static function getRegionalObserverRoles(): array
+    {
+        return [
+            self::NFL_OBSERVER,
+            self::MAR_OBSERVER,
+            self::GLF_OBSERVER,
+            self::QUE_OBSERVER,
+            self::ONP_OBSERVER,
+            self::ARC_OBSERVER,
+            self::PAC_OBSERVER,
+            self::NCR_OBSERVER,
+        ];
+    }
+
+    public static function getAllRegionalRoles(): array
+    {
+        return array_merge(
+            self::getRegionalEditorRoles(),
+            self::getRegionalObserverRoles()
+        );
     }
 }

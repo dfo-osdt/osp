@@ -130,6 +130,9 @@ class UserResource extends Resource
                         UserRole::NFL_EDITOR, UserRole::MAR_EDITOR, UserRole::GLF_EDITOR,
                         UserRole::QUE_EDITOR, UserRole::ONP_EDITOR, UserRole::ARC_EDITOR,
                         UserRole::PAC_EDITOR, UserRole::NCR_EDITOR => 'info',
+                        UserRole::NFL_OBSERVER, UserRole::MAR_OBSERVER, UserRole::GLF_OBSERVER,
+                        UserRole::QUE_OBSERVER, UserRole::ONP_OBSERVER, UserRole::ARC_OBSERVER,
+                        UserRole::PAC_OBSERVER, UserRole::NCR_OBSERVER => 'secondary',
                     })
                     ->searchable(),
             ])
