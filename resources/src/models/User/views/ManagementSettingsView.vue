@@ -289,7 +289,7 @@ onMounted(() => {
           </div>
           <div class="text-caption text-grey-7">
             {{ t('management-settings.active-delegation') }}
-            &middot;
+            -
             {{ t('management-settings.ends-at') }}: {{ formatDate(activeDelegation.data.ends_at) }}
           </div>
         </div>
