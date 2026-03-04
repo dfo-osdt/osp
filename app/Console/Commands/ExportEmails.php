@@ -409,7 +409,7 @@ class ExportEmails extends Command
         // Notification group member removed
         $notificationGroupMember = NotificationGroupMember::factory()->create();
         $notificationGroupMember->load('user', 'member');
-        $notificationGroupMemberRemoved = new NotificationGroupMemberRemovedMail($notificationGroupMember);
+        $notificationGroupMemberRemoved = new NotificationGroupMemberRemovedMail($notificationGroupMember->user, $notificationGroupMember->member);
         $markdownContent = $notificationGroupMemberRemoved->render();
         $this->exportFile('notification-group-member-removed.html', $markdownContent);
 
