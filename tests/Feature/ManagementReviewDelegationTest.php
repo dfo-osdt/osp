@@ -271,6 +271,40 @@ test('delegation activity is logged', function (): void {
     expect($delegation->activities)->not->toBeEmpty();
 });
 
+test('a user can cancel a scheduled (future) delegation and it is deleted', function (): void {
+    $user = User::factory()->create();
+    $delegation = ManagementReviewDelegation::factory()->future()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user)->deleteJson("/api/user/management-review-delegations/{$delegation->id}")
+        ->assertSuccessful();
+
+    expect(ManagementReviewDelegation::find($delegation->id))->toBeNull();
+});
+
+test('ending an active delegation sets ended_early_at instead of deleting', function (): void {
+    $user = User::factory()->create();
+    $delegation = ManagementReviewDelegation::factory()->create(['user_id' => $user->id]);
+
+    $this->actingAs($user)->deleteJson("/api/user/management-review-delegations/{$delegation->id}")
+        ->assertSuccessful();
+
+    expect($delegation->refresh()->ended_early_at)->not->toBeNull();
+});
+
+test('isScheduled returns true for future delegations', function (): void {
+    $delegation = ManagementReviewDelegation::factory()->future()->create();
+
+    expect($delegation->isScheduled())->toBeTrue();
+    expect($delegation->isActive())->toBeFalse();
+});
+
+test('isScheduled returns false for active delegations', function (): void {
+    $delegation = ManagementReviewDelegation::factory()->create();
+
+    expect($delegation->isScheduled())->toBeFalse();
+    expect($delegation->isActive())->toBeTrue();
+});
+
 test('another user cannot end someone elses delegation', function (): void {
     $user = User::factory()->create();
     $otherUser = User::factory()->create();

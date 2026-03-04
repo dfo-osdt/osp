@@ -84,6 +84,13 @@ class ManagementReviewDelegation extends Model
             && $this->ended_early_at === null;
     }
 
+    public function isScheduled(): bool
+    {
+        return $this->starts_at !== null
+            && $this->starts_at->gt(now())
+            && $this->ended_early_at === null;
+    }
+
     public function getComment(): string
     {
         return $this->comment ?? __('delegation.default_comment');

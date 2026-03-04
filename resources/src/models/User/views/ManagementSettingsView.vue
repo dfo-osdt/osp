@@ -108,6 +108,30 @@ async function endDelegationEarly(delegation: ManagementReviewDelegation) {
   })
 }
 
+async function cancelDelegation(delegation: ManagementReviewDelegation) {
+  $q.dialog({
+    title: t('management-settings.cancel-delegation-title'),
+    message: t('management-settings.cancel-delegation-message'),
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    try {
+      await ManagementReviewDelegationService.destroy(delegation.id)
+      await loadDelegations()
+      $q.notify({
+        type: 'positive',
+        message: t('management-settings.delegation-cancelled'),
+      })
+    }
+    catch {
+      $q.notify({
+        type: 'negative',
+        message: t('management-settings.delegation-cancel-error'),
+      })
+    }
+  })
+}
+
 function resetDelegationForm() {
   delegateUserId.value = null
   delegationStartsAt.value = null
@@ -255,29 +279,29 @@ onMounted(() => {
       {{ t('management-settings.delegation-subtitle') }}
     </template>
 
-    <div v-if="activeDelegation" class="q-mb-md">
-      <q-banner class="bg-blue-1 text-primary" rounded>
-        <template #avatar>
-          <q-icon name="mdi-account-switch" color="primary" />
-        </template>
-        <div>
-          <strong>{{ t('management-settings.active-delegation') }}:</strong>
-          {{ activeDelegation.data.delegate?.data.first_name }}
-          {{ activeDelegation.data.delegate?.data.last_name }}
+    <q-card v-if="activeDelegation" flat bordered class="q-mb-md">
+      <q-card-section class="row items-center no-wrap q-gutter-md">
+        <q-icon name="mdi-account-switch" color="primary" size="sm" />
+        <div class="col">
+          <div class="text-body1 text-weight-medium">
+            {{ activeDelegation.data.delegate?.data.first_name }}
+            {{ activeDelegation.data.delegate?.data.last_name }}
+          </div>
+          <div class="text-caption text-grey-7">
+            {{ t('management-settings.active-delegation') }}
+            &middot;
+            {{ t('management-settings.ends-at') }}: {{ formatDate(activeDelegation.data.ends_at) }}
+          </div>
         </div>
-        <div class="text-caption">
-          {{ t('management-settings.ends-at') }}: {{ formatDate(activeDelegation.data.ends_at) }}
-        </div>
-        <template #action>
-          <q-btn
-            flat
-            color="negative"
-            :label="t('management-settings.end-early')"
-            @click="endDelegationEarly(activeDelegation.data)"
-          />
-        </template>
-      </q-banner>
-    </div>
+        <q-btn
+          outline
+          dense
+          color="negative"
+          :label="t('management-settings.end-early')"
+          @click="endDelegationEarly(activeDelegation.data)"
+        />
+      </q-card-section>
+    </q-card>
 
     <div class="q-mb-md text-right">
       <q-btn
@@ -301,6 +325,7 @@ onMounted(() => {
         { name: 'starts_at', label: t('management-settings.starts-at'), field: (row: any) => formatDate(row.data.starts_at), align: 'left' },
         { name: 'ends_at', label: t('management-settings.ends-at'), field: (row: any) => formatDate(row.data.ends_at), align: 'left' },
         { name: 'status', label: t('management-settings.status'), field: (row: any) => row.data.is_active, align: 'left' },
+        { name: 'actions', label: '', field: () => '', align: 'right' },
       ]"
       :loading="delegationsLoading"
       flat
@@ -311,8 +336,20 @@ onMounted(() => {
       <template #body-cell-status="props">
         <q-td :props="props">
           <q-badge
-            :color="props.row.data.is_active ? 'positive' : props.row.data.ended_early_at ? 'warning' : 'grey'"
-            :label="props.row.data.is_active ? t('management-settings.active') : props.row.data.ended_early_at ? t('management-settings.ended-early') : t('management-settings.expired')"
+            :color="props.row.data.is_active ? 'positive' : props.row.data.is_scheduled ? 'info' : props.row.data.ended_early_at ? 'warning' : 'grey'"
+            :label="props.row.data.is_active ? t('management-settings.active') : props.row.data.is_scheduled ? t('management-settings.scheduled') : props.row.data.ended_early_at ? t('management-settings.ended-early') : t('management-settings.expired')"
+          />
+        </q-td>
+      </template>
+      <template #body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn
+            v-if="props.row.can?.delete"
+            flat
+            dense
+            color="negative"
+            :label="t('management-settings.cancel-delegation')"
+            @click="cancelDelegation(props.row.data)"
           />
         </q-td>
       </template>

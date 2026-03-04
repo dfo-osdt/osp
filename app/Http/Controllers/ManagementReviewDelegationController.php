@@ -39,6 +39,14 @@ class ManagementReviewDelegationController extends Controller
             abort(403);
         }
 
+        if ($managementReviewDelegation->isScheduled()) {
+            $managementReviewDelegation->load('delegate');
+            $resource = new ManagementReviewDelegationResource($managementReviewDelegation);
+            $managementReviewDelegation->delete();
+
+            return $resource;
+        }
+
         $managementReviewDelegation->update(['ended_early_at' => now()]);
         $managementReviewDelegation->load('delegate');
 
