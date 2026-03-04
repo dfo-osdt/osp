@@ -339,6 +339,9 @@ onMounted(() => {
             :color="props.row.data.is_active ? 'positive' : props.row.data.is_scheduled ? 'info' : props.row.data.ended_early_at ? 'warning' : 'grey'"
             :label="props.row.data.is_active ? t('management-settings.active') : props.row.data.is_scheduled ? t('management-settings.scheduled') : props.row.data.ended_early_at ? t('management-settings.ended-early') : t('management-settings.expired')"
           />
+          <div v-if="props.row.data.ended_early_at" class="text-caption text-grey-7">
+            {{ formatDate(props.row.data.ended_early_at) }}
+          </div>
         </q-td>
       </template>
       <template #body-cell-actions="props">
