@@ -234,6 +234,51 @@ test('a reviewer can list their reviews', function (): void {
     expect($response->json('data.0.data.manuscript_record'))->toBeTruthy();
 });
 
+test('completed reviewers are cc\'d on subsequent review step notification emails', function (): void {
+    Mail::fake();
+
+    $author = User::factory()->create();
+    $dm = User::factory()->create();
+    $rds = User::factory()->create();
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create(['user_id' => $author->id]);
+
+    // Create initial step for DM
+    $dmStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $dm->id,
+        'comments' => 'DM review comments',
+    ]);
+
+    // DM refers to RDS
+    $this->actingAs($dm)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/management-review-steps/{$dmStep->id}/refer", [
+            'next_user_id' => $rds->id,
+            'comments' => 'Referring to RDS for review',
+        ])->assertOk();
+
+    Mail::assertQueued(ReviewStepNotificationMail::class, 1);
+
+    // Get the RDS step
+    $rdsStep = $manuscript->refresh()->managementReviewSteps()->where('user_id', $rds->id)->first();
+
+    // RDS requests revision (sends back to author)
+    $this->actingAs($rds)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/management-review-steps/{$rdsStep->id}/revision", [
+            'comments' => 'Please revise section 3',
+        ])->assertOk();
+
+    Mail::assertQueued(ReviewStepNotificationMail::class, 2);
+
+    // Build the revision notification mailable and verify CCs include the DM
+    $revisionStep = $manuscript->refresh()->managementReviewSteps()->where('status', ManagementReviewStepStatus::ON_HOLD)->first();
+    $mail = (new ReviewStepNotificationMail($revisionStep))->build();
+
+    expect($mail->hasTo($author->email))->toBeTrue();
+    expect($mail->hasCc($dm->email))->toBeTrue('DM (completed reviewer) should be CC\'d on revision notification');
+    expect($mail->hasCc($rds->email))->toBeTrue('RDS (previous step reviewer) should be CC\'d on revision notification');
+});
+
 test('only a director can complete an internal managment reviw', function (): void {
     $regularReviewer = User::factory()->create();
     $director = User::factory()->withRoles([UserRole::DIRECTOR])->create();
