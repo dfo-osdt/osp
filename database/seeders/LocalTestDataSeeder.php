@@ -39,6 +39,11 @@ class LocalTestDataSeeder extends Seeder
             'email' => 'chief.editor@test.local',
         ]);
 
+        // enable secondary review deadline enforcement for NFL region
+        $nflRegion = \App\Models\Region::where('slug', 'nfl')->first();
+        $nflRegion->enforce_secondary_review_deadline = true;
+        $nflRegion->save();
+
         // create regional editor users
         $nflEditor = \App\Models\User::factory()->create([
             'first_name' => 'NFL',
@@ -93,6 +98,13 @@ class LocalTestDataSeeder extends Seeder
         // create 1 filled out secondary manuscript record for the test user
         \App\Models\ManuscriptRecord::factory()->secondary()->reviewed()->create([
             'user_id' => $user->id,
+        ]);
+
+        // create a filled secondary manuscript in the NFL region (enforcement enabled) ready to submit
+        \App\Models\ManuscriptRecord::factory()->secondary()->filled()->create([
+            'title' => 'NFL Secondary - Ready to Submit (10-day deadline enforced)',
+            'user_id' => $user->id,
+            'region_id' => $nflRegion->id,
         ]);
 
         // create 1 manuscript record for the test user with a review step
