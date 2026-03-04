@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\NotificationGroupMember;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -11,19 +11,19 @@ class NotificationGroupMemberRemovedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public NotificationGroupMember $notificationGroupMember) {}
+    public function __construct(
+        public User $owner,
+        public User $member,
+    ) {}
 
     public function build()
     {
-        $owner = $this->notificationGroupMember->user;
-        $member = $this->notificationGroupMember->member;
-
         $this->subject('Notification Group Update / Mise à jour du groupe de notification');
-        $this->to($owner->email, $owner->fullName);
+        $this->to($this->owner->email, $this->owner->fullName);
 
         return $this->markdown('mail.notification-group-member-removed', [
-            'owner' => $owner,
-            'member' => $member,
+            'owner' => $this->owner,
+            'member' => $this->member,
         ]);
     }
 }
