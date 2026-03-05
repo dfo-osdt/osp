@@ -12,8 +12,11 @@ use App\Enums\SensitivityLabel;
 use App\Enums\SupplementaryFileType;
 use App\Traits\FundableTrait;
 use App\Traits\PlannableTrait;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -293,27 +296,38 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     // Scopes
 
     /** Get the open access publications */
-    protected function scopeOpenAccess($query)
+    #[Scope]
+    protected function openAccess(Builder $query)
     {
         return $query->where('is_open_access', true);
     }
 
     /** Get the publication that are no longer under embargo */
-    protected function scopeNotUnderEmbargo($query)
+    #[Scope]
+    protected function notUnderEmbargo(Builder $query)
     {
         return $query->where('embargoed_until', '<', now())->orWhere('is_open_access', true);
     }
 
     /** Get the publications under embargo */
-    protected function scopeUnderEmbargo($query)
+    #[Scope]
+    protected function underEmbargo(Builder $query)
     {
         return $query->where('embargoed_until', '>=', now());
     }
 
     /** Secondary publications */
-    protected function scopeSecondaryPublication($query)
+    #[Scope]
+    protected function secondaryPublication(Builder $query)
     {
         return $query->whereIn('journal_id', Journal::query()->dfoSeries()->pluck('id'));
+    }
+
+    /** Published date range */
+    #[Scope]
+    protected function publishedBetween(Builder $query, string $startDate, string $endDate): void
+    {
+        $query->whereBetween('published_on', [Carbon::parse($startDate), Carbon::parse($endDate)]);
     }
 
     /**
