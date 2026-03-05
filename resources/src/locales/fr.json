@@ -115,6 +115,7 @@
     "current-affiliation": "Affiliation actuelle",
     "current-password": "Mot de passe actuel",
     "dashboard": "Tableau de bord",
+    "date-range": "Plage de dates",
     "decision-expected-by": "Révision attendue par le",
     "delete": "Supprimer",
     "deleted": "Supprimé",
@@ -753,9 +754,12 @@
   },
   "publications-view": {
     "all-published-publications-details": "Toutes les publications publiées",
+    "last-fiscal-year": "Exercice financier précédent",
     "open-access-filter-details": "Publications publiées en libre accès",
+    "published-between": "Publié entre",
     "published-in-dfo-journals": "Rapports scientifiques et techniques du MPO",
     "secondary-publications": "Publications du MPO",
+    "this-fiscal-year": "Cet exercice financier",
     "under-embargo": "Sous embargo",
     "under-embargo-caption": "Publications sous embargo"
   },

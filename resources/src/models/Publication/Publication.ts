@@ -239,6 +239,16 @@ export class PublicationQuery extends SpatieQuery {
     return this
   }
 
+  public filterFunctionalAreaId(ids: number[]) {
+    this.filter('functional_area_id', ids)
+    return this
+  }
+
+  public filterPublishedBetween(startDate: string, endDate: string) {
+    this.filter('publishedBetween', [startDate, endDate])
+    return this
+  }
+
   public sort(sort: PublicationQuerySort, direction: 'asc' | 'desc') {
     super.sort(sort, direction)
     return this
