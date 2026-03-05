@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -64,12 +65,11 @@ class Announcement extends Model
         'end_at',
     ];
 
-    /**
-     * Return active announcements
-     */
-    protected function scopeActive(Builder $query)
+    /** Return active announcements */
+    #[Scope]
+    protected function active(Builder $query): void
     {
-        return $query->where('start_at', '<=', now())
+        $query->where('start_at', '<=', now())
             ->where('end_at', '>=', now());
     }
 }

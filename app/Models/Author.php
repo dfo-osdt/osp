@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\PublicationStatus;
 use App\Traits\HasExpertises;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -236,19 +237,22 @@ class Author extends Model
         return $this->hasMany(\App\Models\ManuscriptPeerReviewer::class);
     }
 
-    protected function scopeInternalAuthor(Builder $query): void
+    #[Scope]
+    protected function internalAuthor(Builder $query): void
     {
         $Organization = Organization::getDefaultOrganization();
         $query->where('organization_id', $Organization->id);
     }
 
-    protected function scopeExternalAuthor(Builder $query): void
+    #[Scope]
+    protected function externalAuthor(Builder $query): void
     {
         $Organization = Organization::getDefaultOrganization();
         $query->where('organization_id', '!=', $Organization->id);
     }
 
-    protected function scopeWithOrcid(Builder $query): void
+    #[Scope]
+    protected function withOrcid(Builder $query): void
     {
         $query->whereNotNull('orcid');
     }
