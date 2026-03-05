@@ -702,6 +702,17 @@
       "p1": "Share your work",
       "p2": "Help us",
       "p3": "grow"
+    },
+    "stats": {
+      "publications": "Publications",
+      "manuscripts-reviewed": "Manuscripts Reviewed",
+      "authors": "Authors",
+      "published": "Published",
+      "completed-review": "Completed review",
+      "contributing": "Contributing",
+      "top-organizations": "Top External Organizations",
+      "recent-publications": "Recent Publications",
+      "by-the-numbers": "By the Numbers"
     }
   },
   "policy": {

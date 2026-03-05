@@ -32,6 +32,7 @@ use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicationFileController;
 use App\Http\Controllers\PublicationFundingSourceController;
 use App\Http\Controllers\PublicationSupplementaryFileController;
+use App\Http\Controllers\PublicStatsController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManagementReviewStepsController;
@@ -51,6 +52,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/announcements', CheckAnnouncementController::class);
+Route::get('/stats', PublicStatsController::class);
 Route::get('/orcid/callback', [FullFlowController::class, 'callback']);
 
 // Need to be authenticated to access these routes
