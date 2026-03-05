@@ -12,7 +12,6 @@ use App\Enums\SensitivityLabel;
 use App\Enums\SupplementaryFileType;
 use App\Traits\FundableTrait;
 use App\Traits\PlannableTrait;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -327,7 +326,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     #[Scope]
     protected function publishedBetween(Builder $query, string $startDate, string $endDate): void
     {
-        $query->whereBetween('published_on', [Carbon::parse($startDate), Carbon::parse($endDate)]);
+        $query->whereBetween('published_on', [\Illuminate\Support\Facades\Date::parse($startDate), \Illuminate\Support\Facades\Date::parse($endDate)]);
     }
 
     /**

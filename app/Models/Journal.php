@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -48,15 +50,17 @@ class Journal extends Model
     public static $dfoPublisher = 'Fisheries and Oceans Canada - Pêches et Océans Canada';
 
     /** Create a scope for DFO series */
-    protected function scopeDfoSeries($query)
+    #[Scope]
+    protected function dfoSeries(Builder $query): void
     {
-        return $query->where('publisher', Journal::$dfoPublisher);
+        $query->where('publisher', Journal::$dfoPublisher);
     }
 
-    /** Create a scope for DFO series */
-    protected function scopeNotDfoSeries($query)
+    /** Create a scope for non-DFO series */
+    #[Scope]
+    protected function notDfoSeries(Builder $query): void
     {
-        return $query->where('publisher', '!=', Journal::$dfoPublisher);
+        $query->where('publisher', '!=', Journal::$dfoPublisher);
     }
 
     /**
