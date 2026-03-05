@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Permissions\UserRole;
+use App\Models\FunctionalArea;
 use App\Models\Publication;
 use App\Models\Region;
 use App\Models\User;
@@ -156,4 +157,59 @@ test('can filter publications by region_id', function (): void {
     foreach ($marPublications as $pub) {
         expect($returnedIds)->not->toContain($pub->id);
     }
+});
+
+test('can filter publications by functional_area_id through manuscript record', function (): void {
+    $editor = User::factory()->create();
+    $editor->assignRole(UserRole::EDITOR);
+
+    $functionalArea = FunctionalArea::factory()->create();
+    $otherFunctionalArea = FunctionalArea::factory()->create();
+
+    $matchingPub = Publication::factory()->published()->withManuscript([
+        'functional_area_id' => $functionalArea->id,
+    ])->create();
+
+    $nonMatchingPub = Publication::factory()->published()->withManuscript([
+        'functional_area_id' => $otherFunctionalArea->id,
+    ])->create();
+
+    $noManuscriptPub = Publication::factory()->published()->create();
+
+    $response = $this->actingAs($editor)->getJson("/api/publications?filter[functional_area_id]={$functionalArea->id}");
+
+    $response->assertOk();
+    $response->assertJsonCount(1, 'data');
+
+    $returnedIds = collect($response->json('data'))->pluck('data.id')->toArray();
+    expect($returnedIds)->toContain($matchingPub->id);
+    expect($returnedIds)->not->toContain($nonMatchingPub->id);
+    expect($returnedIds)->not->toContain($noManuscriptPub->id);
+});
+
+test('can filter publications by publishedBetween date range', function (): void {
+    $editor = User::factory()->create();
+    $editor->assignRole(UserRole::EDITOR);
+
+    $inRangePub = Publication::factory()->published()->create([
+        'published_on' => '2025-06-15',
+    ]);
+
+    $beforeRangePub = Publication::factory()->published()->create([
+        'published_on' => '2025-01-01',
+    ]);
+
+    $afterRangePub = Publication::factory()->published()->create([
+        'published_on' => '2025-12-01',
+    ]);
+
+    $response = $this->actingAs($editor)->getJson('/api/publications?filter[publishedBetween]=2025-06-01,2025-06-30');
+
+    $response->assertOk();
+    $response->assertJsonCount(1, 'data');
+
+    $returnedIds = collect($response->json('data'))->pluck('data.id')->toArray();
+    expect($returnedIds)->toContain($inRangePub->id);
+    expect($returnedIds)->not->toContain($beforeRangePub->id);
+    expect($returnedIds)->not->toContain($afterRangePub->id);
 });

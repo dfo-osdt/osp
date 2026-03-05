@@ -22,12 +22,15 @@ class PublicationListQuery extends QueryBuilder
              AllowedFilter::exact('user_id'),
              AllowedFilter::exact('journal_id'),
              AllowedFilter::exact('region_id'),
+             AllowedFilter::exact('functional_area_id', 'manuscriptRecord.functional_area_id'),
              AllowedFilter::exact('publicationAuthors.author_id'),
              AllowedFilter::partial('title'),
              AllowedFilter::scope('open_access'),
              AllowedFilter::scope('not_under_embargo'),
              AllowedFilter::scope('under_embargo'),
              AllowedFilter::scope('secondary_publication'),
+             AllowedFilter::scope('publishedBetween'),
+
          ]);
     }
 }

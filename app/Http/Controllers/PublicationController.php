@@ -38,7 +38,7 @@ class PublicationController extends Controller
                 'journal',
                 'publicationAuthors' => fn ($q) => $q->with('author', 'organization')->chaperone('publication'),
                 'region',
-            ]);
+            ])->when($request->has('filter.functional_area_id'), fn ($q) => $q->with('manuscriptRecord'));
 
         $publicationListQuery = new PublicationListQuery($request, $baseQuery);
 
