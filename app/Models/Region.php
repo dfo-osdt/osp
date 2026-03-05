@@ -29,6 +29,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Region extends Model
 {
+    protected $fillable = [
+        'enforce_secondary_review_deadline',
+    ];
+
     protected function casts(): array
     {
         return [
