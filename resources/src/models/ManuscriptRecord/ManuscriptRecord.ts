@@ -335,6 +335,16 @@ export class MyManuscriptQuery extends SpatieQuery {
     return this
   }
 
+  public filterFunctionalAreaId(ids: number[]): this {
+    this.filter('functional_area_id', ids)
+    return this
+  }
+
+  public filterReviewedBetween(startDate: string, endDate: string): this {
+    this.filter('reviewedBetween', [startDate, endDate])
+    return this
+  }
+
   public includeManagementReview(): this {
     this.custom('include-reviews', 'true')
     return this
@@ -394,6 +404,11 @@ export class ManuscriptRecordListQuery extends SpatieQuery {
 
   public filterPotentialPublicInterest(interest: boolean): this {
     this.filter('potential_public_interest', interest)
+    return this
+  }
+
+  public filterReviewedBetween(startDate: string, endDate: string): this {
+    this.filter('reviewedBetween', [startDate, endDate])
     return this
   }
 

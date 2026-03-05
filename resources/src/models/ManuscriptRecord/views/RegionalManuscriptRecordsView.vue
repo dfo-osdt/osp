@@ -3,8 +3,10 @@ import type {
   ManuscriptRecordSummaryResourceList,
   ManuscriptRecordType,
 } from '../ManuscriptRecord'
+import type { DateRange } from '@/components/DateRangeInput.vue'
 import { useRouteQuery } from '@vueuse/router'
 import ContentCard from '@/components/ContentCard.vue'
+import DateRangeInput from '@/components/DateRangeInput.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
@@ -33,6 +35,21 @@ const authorId = useRouteQuery<number | null>('author', null, {
   transform: v => v ? Number(v) : null,
 })
 const manuscriptType = useRouteQuery<ManuscriptRecordType | null>('type', null)
+const reviewedFrom = useRouteQuery<string | null>('reviewedFrom', null)
+const reviewedTo = useRouteQuery<string | null>('reviewedTo', null)
+
+const dateRange = computed<DateRange | null>({
+  get() {
+    if (reviewedFrom.value && reviewedTo.value) {
+      return { from: reviewedFrom.value, to: reviewedTo.value }
+    }
+    return null
+  },
+  set(val) {
+    reviewedFrom.value = val?.from ?? null
+    reviewedTo.value = val?.to ?? null
+  },
+})
 
 // State variables
 const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
@@ -124,6 +141,9 @@ const filterCaption = computed(() => {
           : t('common.preprint')
     caption += `${t('common.type')} ${typeLabel} `
   }
+  if (dateRange.value) {
+    caption += `${t('my-manuscript-records.reviewed-between')} ${dateRange.value.from} — ${dateRange.value.to} `
+  }
   if (caption.length > 0)
     caption = `${t('common.manuscripts')} ${caption.slice(0, -1)}`
   else caption = t('common.no-filters-applied')
@@ -163,6 +183,10 @@ async function getManuscripts() {
 
   if (manuscriptType.value) {
     query = query.filterType([manuscriptType.value])
+  }
+
+  if (dateRange.value) {
+    query = query.filterReviewedBetween(dateRange.value.from, dateRange.value.to)
   }
 
   query.sort('updated_at', 'desc')
@@ -210,6 +234,11 @@ watch(authorId, () => {
 })
 
 watch(manuscriptType, () => {
+  currentPage.value = 1
+  getManuscripts()
+})
+
+watch(dateRange, () => {
   currentPage.value = 1
   getManuscripts()
 })
@@ -304,6 +333,11 @@ interface MainFilterOption {
                 <ManuscriptTypeSelect
                   v-model="manuscriptType"
                   clearable
+                />
+                <DateRangeInput
+                  v-model="dateRange"
+                  :label="$t('common.date-range')"
+                  :disable="loading"
                 />
               </q-card-section>
             </q-expansion-item>

@@ -21,6 +21,8 @@ class MyManuscriptsRecordQuery extends QueryBuilder
              AllowedFilter::exact('status'),
              AllowedFilter::exact('type'),
              AllowedFilter::partial('title'),
+             AllowedFilter::exact('functional_area_id'),
+             AllowedFilter::scope('reviewedBetween'),
          ])->allowedSorts([
              'updated_at',
              'created_at',

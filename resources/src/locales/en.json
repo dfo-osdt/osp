@@ -640,7 +640,8 @@
     "draft-manuscripts-caption": "Forms in draft state",
     "no-manuscript": "No manuscript record forms exist or are shared with you",
     "submitted-manuscripts": "Submitted Forms",
-    "submitted-manuscripts-caption": "Forms submitted for review"
+    "submitted-manuscripts-caption": "Forms submitted for review",
+    "reviewed-between": "Reviewed between"
   },
   "my-publication-view": {
     "actions-still-required": "Actions still required",

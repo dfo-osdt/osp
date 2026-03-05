@@ -27,6 +27,7 @@ class ManuscriptRecordListQuery extends QueryBuilder
              AllowedFilter::partial('title'),
              AllowedFilter::partial('abstract'),
              AllowedFilter::exact('potential_public_interest'),
+             AllowedFilter::scope('reviewedBetween'),
          ]);
     }
 }
