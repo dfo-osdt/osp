@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import type { PublicationResourceList } from '../Publication'
+import type { DateRange } from '@/components/DateRangeInput.vue'
 import { watchThrottled } from '@vueuse/core'
 import { useRouteQuery } from '@vueuse/router'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ContentCard from '@/components/ContentCard.vue'
+import DateRangeInput from '@/components/DateRangeInput.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import AuthorSelect from '@/models/Author/components/AuthorSelect.vue'
+import FunctionalAreaMultiSelect from '@/models/FunctionalArea/components/FunctionalAreaMultiSelect.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
+import { useFunctionalAreaStore } from '@/stores/FunctionalAreaStore'
 import PublicationList from '../components/PublicationList.vue'
 import { PublicationQuery, PublicationService } from '../Publication'
 
@@ -27,6 +31,30 @@ const authorId = useRouteQuery<number | null>('author', null, {
 })
 const regionId = useRouteQuery<number | null>('region', null, {
   transform: v => v ? Number(v) : null,
+})
+const functionalAreaIds = useRouteQuery<number[] | null>('functionalAreaIds', null, {
+  transform: (v) => {
+    if (!v) {
+      return null
+    }
+    const ids = String(v).split(',').map(Number).filter(n => !Number.isNaN(n))
+    return ids.length ? ids : null
+  },
+})
+const publishedFrom = useRouteQuery<string | null>('publishedFrom', null)
+const publishedTo = useRouteQuery<string | null>('publishedTo', null)
+
+const dateRange = computed<DateRange | null>({
+  get() {
+    if (publishedFrom.value && publishedTo.value) {
+      return { from: publishedFrom.value, to: publishedTo.value }
+    }
+    return null
+  },
+  set(val) {
+    publishedFrom.value = val?.from ?? null
+    publishedTo.value = val?.to ?? null
+  },
 })
 
 // State variables
@@ -91,6 +119,7 @@ const mainFilter = computed(() => {
 })
 
 const regionStore = useRegionStore()
+const functionalAreaStore = useFunctionalAreaStore()
 
 const filterCaption = computed(() => {
   let caption = ''
@@ -109,6 +138,20 @@ const filterCaption = computed(() => {
     const regionName
       = localeStore.locale === 'fr' ? region?.name_fr : region?.name_en
     caption += `${t('common.in')} ${regionName || 'NA'} `
+  }
+  if (functionalAreaIds.value?.length) {
+    const localeStore = useLocaleStore()
+    const names = functionalAreaIds.value.map((id) => {
+      const fa = functionalAreaStore.functionalAreas?.find(f => f.data.id === id)
+      if (!fa) {
+        return 'NA'
+      }
+      return localeStore.locale === 'fr' ? fa.data.name_fr : fa.data.name_en
+    })
+    caption += `${t('common.functional-area')}: ${names.join(', ')} `
+  }
+  if (dateRange.value) {
+    caption += `${t('publications-view.published-between')} ${dateRange.value.from} — ${dateRange.value.to} `
   }
   if (caption.length > 0)
     caption = `${t('common.publications')} ${caption.slice(0, -1)}`
@@ -145,6 +188,14 @@ async function getPublications() {
 
   if (regionId.value) {
     query = query.filterRegionId([regionId.value])
+  }
+
+  if (functionalAreaIds.value?.length) {
+    query = query.filterFunctionalAreaId(functionalAreaIds.value)
+  }
+
+  if (dateRange.value) {
+    query = query.filterPublishedBetween(dateRange.value.from, dateRange.value.to)
   }
 
   query.sort('title', 'asc')
@@ -187,6 +238,16 @@ watch(authorId, () => {
 })
 
 watch(regionId, () => {
+  currentPage.value = 1
+  getPublications()
+})
+
+watch(functionalAreaIds, () => {
+  currentPage.value = 1
+  getPublications()
+})
+
+watch(dateRange, () => {
   currentPage.value = 1
   getPublications()
 })
@@ -270,6 +331,16 @@ interface MainFilterOption {
                   :hide-create-author-dialog="true"
                 />
                 <RegionSelect v-model="regionId" :readonly="loading" clearable />
+                <FunctionalAreaMultiSelect
+                  v-model="functionalAreaIds"
+                  :label="$t('common.functional-area')"
+                  :disable="loading"
+                />
+                <DateRangeInput
+                  v-model="dateRange"
+                  :label="$t('common.date-range')"
+                  :disable="loading"
+                />
               </q-card-section>
             </q-expansion-item>
             <q-separator />

@@ -115,6 +115,7 @@
     "current-affiliation": "Current Affiliation",
     "current-password": "Current Password",
     "dashboard": "Dashboard",
+    "date-range": "Date Range",
     "decision-expected-by": "Review Expected By",
     "delete": "Delete",
     "deleted": "Deleted",
@@ -753,9 +754,12 @@
   },
   "publications-view": {
     "all-published-publications-details": "All published publications",
+    "last-fiscal-year": "Last Fiscal Year",
     "open-access-filter-details": "Publications published as open access",
+    "published-between": "Published between",
     "published-in-dfo-journals": "EOS secondary scientific and technical publications",
     "secondary-publications": "EOS Publications",
+    "this-fiscal-year": "This Fiscal Year",
     "under-embargo": "Under Embargo",
     "under-embargo-caption": "Publications under embargo"
   },
