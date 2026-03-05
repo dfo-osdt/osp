@@ -640,7 +640,8 @@
     "draft-manuscripts-caption": "Formulaires en cours de rédaction",
     "no-manuscript": "Aucun formulaire du registre des manuscrits n'existe ou n'est partagé avec vous",
     "submitted-manuscripts": "Formulaires soumis",
-    "submitted-manuscripts-caption": "Formulaires soumis pour révision"
+    "submitted-manuscripts-caption": "Formulaires soumis pour révision",
+    "reviewed-between": "Révisé entre"
   },
   "my-publication-view": {
     "actions-still-required": "Actions encore nécessaires",

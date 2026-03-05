@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
@@ -419,5 +420,12 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     protected function pendingJournalAcceptance(Builder $query): void
     {
         $query->whereIn('status', [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED]);
+    }
+
+    /** Reviewed date range */
+    #[Scope]
+    protected function reviewedBetween(Builder $query, string $startDate, string $endDate): void
+    {
+        $query->whereBetween('reviewed_at', [Date::parse($startDate), Date::parse($endDate)]);
     }
 }

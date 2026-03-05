@@ -2,6 +2,7 @@
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Models\Author;
+use App\Models\FunctionalArea;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
@@ -65,4 +66,50 @@ test('a user can see all their manuscript and filter them', function (): void {
     // filter by status - just accepted
     $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?include-reviews=true&filter[status]='.ManuscriptRecordStatus::ACCEPTED->value)->assertOk();
     expect($response->json('data'))->toHaveCount(1);
+});
+
+test('can filter my manuscripts by functional_area_id', function (): void {
+    $user = User::factory()->create();
+    $functionalArea = FunctionalArea::factory()->create();
+    $otherFunctionalArea = FunctionalArea::factory()->create();
+
+    ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'functional_area_id' => $functionalArea->id,
+    ]);
+
+    ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'functional_area_id' => $otherFunctionalArea->id,
+    ]);
+
+    $response = $this->actingAs($user)->getJson("/api/my/manuscript-records?filter[functional_area_id]={$functionalArea->id}");
+
+    $response->assertOk();
+    expect($response->json('data'))->toHaveCount(1);
+});
+
+test('can filter my manuscripts by reviewedBetween date range', function (): void {
+    $user = User::factory()->create();
+
+    ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'reviewed_at' => '2025-06-15',
+    ]);
+
+    ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'reviewed_at' => '2025-01-01',
+    ]);
+
+    ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'reviewed_at' => '2025-12-01',
+    ]);
+
+    $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?filter[reviewedBetween]=2025-06-01,2025-06-30');
+
+    $response->assertOk();
+    expect($response->json('data'))->toHaveCount(1);
+    expect($response->json('data.0.data.reviewed_at'))->toContain('2025-06-15');
 });

@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import type { ManuscriptRecordSummaryResourceList } from '../ManuscriptRecord'
+import type { DateRange } from '@/components/DateRangeInput.vue'
 import { useRouteQuery } from '@vueuse/router'
 import ContentCard from '@/components/ContentCard.vue'
+import DateRangeInput from '@/components/DateRangeInput.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import FunctionalAreaMultiSelect from '@/models/FunctionalArea/components/FunctionalAreaMultiSelect.vue'
+import { useFunctionalAreaStore } from '@/stores/FunctionalAreaStore'
 import CreateManuscriptDialog from '../components/CreateManuscriptDialog.vue'
 import ManuscriptList from '../components/ManuscriptList.vue'
 import NoManuscriptExistsDiv from '../components/NoManuscriptExistsDiv.vue'
@@ -23,6 +27,33 @@ const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
 const activeFilterId = useRouteQuery('filter', '3', { transform: Number })
 const currentPage = useRouteQuery('page', '1', { transform: Number })
 const search = useRouteQuery<string | null>('search', null)
+const functionalAreaIds = useRouteQuery<number[] | null>('functionalAreaIds', null, {
+  transform: (v) => {
+    if (!v) {
+      return null
+    }
+    const ids = String(v).split(',').map(Number).filter(n => !Number.isNaN(n))
+    return ids.length ? ids : null
+  },
+})
+const reviewedFrom = useRouteQuery<string | null>('reviewedFrom', null)
+const reviewedTo = useRouteQuery<string | null>('reviewedTo', null)
+
+const dateRange = computed<DateRange | null>({
+  get() {
+    if (reviewedFrom.value && reviewedTo.value) {
+      return { from: reviewedFrom.value, to: reviewedTo.value }
+    }
+    return null
+  },
+  set(val) {
+    reviewedFrom.value = val?.from ?? null
+    reviewedTo.value = val?.to ?? null
+  },
+})
+
+const showFilters = ref(false)
+const functionalAreaStore = useFunctionalAreaStore()
 
 // type for main filter options
 interface MainFilterOption {
@@ -93,6 +124,14 @@ async function getManuscripts() {
     query = query.filterTitle([search.value])
   }
 
+  if (functionalAreaIds.value?.length) {
+    query = query.filterFunctionalAreaId(functionalAreaIds.value)
+  }
+
+  if (dateRange.value) {
+    query = query.filterReviewedBetween(dateRange.value.from, dateRange.value.to)
+  }
+
   query.sort('title', 'asc')
   query.paginate(currentPage.value, 5)
   query.includeManagementReview()
@@ -128,7 +167,39 @@ const mainFilter = computed(() => {
   return mainFilterOptions.value.find(f => f.active)
 })
 
+const filterCaption = computed(() => {
+  let caption = ''
+  if (functionalAreaIds.value?.length) {
+    const localeStore = useLocaleStore()
+    const names = functionalAreaIds.value.map((id) => {
+      const fa = functionalAreaStore.functionalAreas?.find(f => f.data.id === id)
+      if (!fa) {
+        return 'NA'
+      }
+      return localeStore.locale === 'fr' ? fa.data.name_fr : fa.data.name_en
+    })
+    caption += `${t('common.functional-area')}: ${names.join(', ')} `
+  }
+  if (dateRange.value) {
+    caption += `${t('my-manuscript-records.reviewed-between')} ${dateRange.value.from} — ${dateRange.value.to} `
+  }
+  if (caption.length > 0)
+    caption = `${t('common.manuscripts')} ${caption.slice(0, -1)}`
+  else caption = t('common.no-filters-applied')
+  return caption
+})
+
 watch(currentPage, () => {
+  getManuscripts()
+})
+
+watch(functionalAreaIds, () => {
+  currentPage.value = 1
+  getManuscripts()
+})
+
+watch(dateRange, () => {
+  currentPage.value = 1
   getManuscripts()
 })
 
@@ -218,6 +289,28 @@ watchThrottled(
           </template>
           <template #title-right>
             <SearchInput v-model="search" :label="$t('common.filter')" />
+          </template>
+          <template #nav>
+            <q-expansion-item
+              v-model="showFilters"
+              icon="mdi-filter-variant"
+              :label="$t('common.filters')"
+              :caption="filterCaption"
+            >
+              <q-card-section class="column q-gutter-md">
+                <FunctionalAreaMultiSelect
+                  v-model="functionalAreaIds"
+                  :label="$t('common.functional-area')"
+                  :disable="loading"
+                />
+                <DateRangeInput
+                  v-model="dateRange"
+                  :label="$t('common.date-range')"
+                  :disable="loading"
+                />
+              </q-card-section>
+            </q-expansion-item>
+            <q-separator />
           </template>
           <template v-if="manuscripts?.data.length === 0 && !hasAnyManuscripts">
             <NoManuscriptExistsDiv
