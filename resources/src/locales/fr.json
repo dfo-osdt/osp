@@ -692,6 +692,11 @@
     "hint": "Commencez à taper pour rechercher une organisation"
   },
   "osp": {
+    "a11y": {
+      "org-external-link": "{name} (ouvre dans un nouvel onglet)",
+      "orcid-external-link": "Profil ORCID de {name} (ouvre dans un nouvel onglet)",
+      "doi-external-link": "DOI {doi} pour {title} (ouvre dans un nouvel onglet)"
+    },
     "alt": {
       "logo": "Logo PSO - un prisme divisant un seul flux lumineux en un ensemble de couleurs.",
       "main-image": "Une personne avec une grosse ampoule en guise de tête. \nUn vieux robinet de ferme fait couler de l'eau sur une petite pousse d'arbre qui pousse du sol.",

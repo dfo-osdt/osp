@@ -66,8 +66,8 @@ const displayValue = computed(() => {
 
 <style scoped>
 .metric-suffix {
-    font-size: 0.6em;
-    vertical-align: middle;
-    padding-left: 0.15em;
+  font-size: 0.6em;
+  vertical-align: middle;
+  padding-left: 0.15em;
 }
 </style>
