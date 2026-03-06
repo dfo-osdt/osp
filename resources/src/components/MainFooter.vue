@@ -7,7 +7,7 @@ const appVersion = import.meta.env.VITE_APP_VERSION ?? 'dev'
 <template>
   <q-footer bordered class="bg-white text-grey-7 q-py-sm">
     <div class="row justify-between q-mx-lg">
-      <div class="text-caption text-grey-5">
+      <div class="text-caption text-grey-7">
         {{ appVersion }}
       </div>
       <div>

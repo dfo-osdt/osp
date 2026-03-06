@@ -1,20 +1,24 @@
 <script setup lang="ts">
-// props
+import { computed, toRef } from 'vue'
+import { useCountUp } from '@/composables/useCountUp'
+
 const props = defineProps<{
   title: string
   value: number
   subtitle: string
+  suffix?: string
+  animate?: boolean
   to?: object | string
 }>()
 
-const showValue = computed(() => {
-  if (props.value === 0) {
+const animatedValue = useCountUp(toRef(props, 'value'))
+
+const displayValue = computed(() => {
+  const val = props.animate ? animatedValue.value : props.value
+  if (val === 0) {
     return '0'
   }
-  if (props.value === 10) {
-    return '10+'
-  }
-  return props.value.toLocaleString()
+  return val.toLocaleString()
 })
 </script>
 
@@ -38,7 +42,7 @@ const showValue = computed(() => {
     </q-card-section>
     <q-card-section class="q-py-none">
       <div class="text-h3 text-weight-medium">
-        {{ showValue }}
+        {{ displayValue }}<span v-if="suffix" class="metric-suffix text-grey-7">{{ suffix }}</span>
       </div>
     </q-card-section>
     <q-card-section class="q-pt-none">
@@ -49,4 +53,10 @@ const showValue = computed(() => {
   </q-card>
 </template>
 
-<style scoped></style>
+<style scoped>
+.metric-suffix {
+    font-size: 0.6em;
+    vertical-align: middle;
+    padding-left: 0.15em;
+}
+</style>

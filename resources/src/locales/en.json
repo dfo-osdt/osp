@@ -103,6 +103,7 @@
     "congratulations": "Congratulations!",
     "contact": "Contact",
     "contact-us": "Contact Us",
+    "app-version": "Application version: {version}",
     "continue": "Continue",
     "copied": "Copied",
     "copy-to-clipboard": "Copy to clipboard",
@@ -706,11 +707,16 @@
     "stats": {
       "publications": "Publications",
       "manuscripts-reviewed": "Manuscripts Reviewed",
-      "authors": "Authors",
+      "authors": "DFO Authors",
       "published": "Published",
       "completed-review": "Completed review",
       "contributing": "Contributing",
+      "external-authors": "External Contributors",
+      "external-contributing": "Collaborating",
+      "orcid-connected": "ORCID Profiles",
+      "linked-profiles": "Connected",
       "top-organizations": "Top External Organizations",
+      "external-organizations": "A Few of Our Collaborating Organizations",
       "recent-publications": "Recent Publications",
       "by-the-numbers": "By the Numbers"
     }
