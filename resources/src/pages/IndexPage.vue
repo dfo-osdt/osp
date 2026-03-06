@@ -2,8 +2,9 @@
 import { ref, computed, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { http } from '@/api/http'
-import { useCountUp } from '@/composables/useCountUp'
+import MetricCard from '@/components/MetricCard.vue'
 import OrcidIcon from '@/components/OrcidIcon.vue'
+import RorIcon from '@/components/RorIcon.vue'
 
 const $q = useQuasar()
 const authStore = useAuthStore()
@@ -13,7 +14,9 @@ interface PublicStats {
   publications_count: number
   manuscripts_reviewed_count: number
   authors_count: number
-  top_organizations: Array<{
+  external_authors_count: number
+  orcid_connected_count: number
+  external_organizations: Array<{
     id: number
     name_en: string
     name_fr: string
@@ -37,13 +40,13 @@ interface PublicStats {
 
 const stats = ref<PublicStats | null>(null)
 
-const publicationsTarget = computed(() => stats.value?.publications_count ?? 0)
-const manuscriptsTarget = computed(() => stats.value?.manuscripts_reviewed_count ?? 0)
-const authorsTarget = computed(() => stats.value?.authors_count ?? 0)
-
-const publicationsCount = useCountUp(publicationsTarget)
-const manuscriptsCount = useCountUp(manuscriptsTarget)
-const authorsCount = useCountUp(authorsTarget)
+const metricKeys = [
+  { key: 'authors_count', title: 'osp.stats.authors', subtitle: 'osp.stats.contributing' },
+  { key: 'external_authors_count', title: 'osp.stats.external-authors', subtitle: 'osp.stats.external-contributing' },
+  { key: 'orcid_connected_count', title: 'osp.stats.orcid-connected', subtitle: 'osp.stats.linked-profiles' },
+  { key: 'manuscripts_reviewed_count', title: 'osp.stats.manuscripts-reviewed', subtitle: 'osp.stats.completed-review' },
+  { key: 'publications_count', title: 'osp.stats.publications', subtitle: 'osp.stats.published' },
+] as const
 
 onMounted(async () => {
   try {
@@ -58,14 +61,18 @@ function journalTitle(journal: PublicStats['recent_publications'][number]['journ
   return journal?.title ?? ''
 }
 
-function orgName(org: PublicStats['top_organizations'][number]): string {
+function orgName(org: PublicStats['external_organizations'][number]): string {
   return localeStore.locale === 'fr' ? org.name_fr : org.name_en
+}
+
+function authorFullName(author: PublicStats['recent_publications'][number]['authors'][number]): string {
+  return `${author.last_name}, ${author.first_name}`
 }
 </script>
 
 <template>
   <q-page>
-    <section class="row q-py-xl justify-center">
+    <section class="row q-py-xl justify-center" aria-labelledby="hero-heading">
       <div class="col-11 col-lg-10">
         <div class="row">
           <div class="col-4 gt-sm">
@@ -81,16 +88,17 @@ function orgName(org: PublicStats['top_organizations'][number]): string {
             class="col-12 col-md-7 q-mt-xl"
             :class="$q.screen.lt.md ? 'text-center' : ''"
           >
-            <div class="text-h2">
-              {{ $t('osp.slogan.p1') }},
-            </div>
-            <div class="text-h1 text-weight-medium align-end">
-              {{ $t('osp.slogan.p2')
-              }}<span class="text-primary">&nbsp;{{ $t('osp.slogan.p3') }}</span>.
-            </div>
-            <div class="q-my-lg text-h5 text-grey-8">
+            <h1 id="hero-heading" class="text-weight-medium q-mt-none q-mb-none">
+              <span class="text-h2">{{ $t('osp.slogan.p1') }},</span>
+              <br>
+              <span class="text-h1 text-weight-medium">
+                {{ $t('osp.slogan.p2')
+                }}<span class="text-primary">&nbsp;{{ $t('osp.slogan.p3') }}</span>.
+              </span>
+            </h1>
+            <p class="q-my-lg text-h5 text-grey-8">
               {{ $t('osp.description') }}
-            </div>
+            </p>
             <div
               v-if="!authStore.isAuthenticated"
               class="row q-mt-xl"
@@ -115,84 +123,41 @@ function orgName(org: PublicStats['top_organizations'][number]): string {
         </div>
       </div>
     </section>
-    <section v-if="stats" class="row q-py-xl justify-center bg-grey-2">
+    <section v-if="stats" class="row q-py-xl justify-center bg-grey-2" aria-labelledby="stats-heading">
       <div class="col-11 col-lg-10">
-        <div class="text-h4 text-weight-medium q-mb-lg text-center">
+        <h2 id="stats-heading" class="text-h4 text-weight-medium q-mb-lg text-center q-mt-none">
           {{ $t('osp.stats.by-the-numbers') }}
-        </div>
+        </h2>
         <div class="row q-col-gutter-md justify-center">
-          <div class="col-12 col-sm-4">
-            <q-card flat bordered>
-              <q-card-section class="q-pb-sm">
-                <div class="text-body1 text-weight-medium text-primary">
-                  {{ $t('osp.stats.publications') }}
-                </div>
-              </q-card-section>
-              <q-card-section class="q-py-none">
-                <div class="text-h3 text-weight-medium">
-                  {{ publicationsCount }}+
-                </div>
-              </q-card-section>
-              <q-card-section class="q-pt-none">
-                <div class="text-body1 text-grey-8">
-                  {{ $t('osp.stats.published') }}
-                </div>
-              </q-card-section>
-            </q-card>
-          </div>
-          <div class="col-12 col-sm-4">
-            <q-card flat bordered>
-              <q-card-section class="q-pb-sm">
-                <div class="text-body1 text-weight-medium text-primary">
-                  {{ $t('osp.stats.manuscripts-reviewed') }}
-                </div>
-              </q-card-section>
-              <q-card-section class="q-py-none">
-                <div class="text-h3 text-weight-medium">
-                  {{ manuscriptsCount }}+
-                </div>
-              </q-card-section>
-              <q-card-section class="q-pt-none">
-                <div class="text-body1 text-grey-8">
-                  {{ $t('osp.stats.completed-review') }}
-                </div>
-              </q-card-section>
-            </q-card>
-          </div>
-          <div class="col-12 col-sm-4">
-            <q-card flat bordered>
-              <q-card-section class="q-pb-sm">
-                <div class="text-body1 text-weight-medium text-primary">
-                  {{ $t('osp.stats.authors') }}
-                </div>
-              </q-card-section>
-              <q-card-section class="q-py-none">
-                <div class="text-h3 text-weight-medium">
-                  {{ authorsCount }}+
-                </div>
-              </q-card-section>
-              <q-card-section class="q-pt-none">
-                <div class="text-body1 text-grey-8">
-                  {{ $t('osp.stats.contributing') }}
-                </div>
-              </q-card-section>
-            </q-card>
+          <div
+            v-for="metric in metricKeys"
+            :key="metric.key"
+            class="col-12 col-sm-4"
+          >
+            <MetricCard
+              :title="$t(metric.title)"
+              :value="stats[metric.key]"
+              :subtitle="$t(metric.subtitle)"
+              suffix="+"
+              animate
+            />
           </div>
         </div>
         <div
-          v-if="stats.top_organizations.length"
+          v-if="stats.external_organizations.length"
           class="q-mt-lg text-center"
         >
-          <div class="text-subtitle1 text-weight-medium q-mb-sm">
-            {{ $t('osp.stats.top-organizations') }}
-          </div>
+          <h3 class="text-subtitle1 text-weight-medium q-mb-sm q-mt-none">
+            {{ $t('osp.stats.external-organizations') }}
+          </h3>
           <div class="q-gutter-sm">
             <a
-              v-for="org in stats.top_organizations"
+              v-for="org in stats.external_organizations"
               :key="org.id"
               :href="org.ror_identifier"
               target="_blank"
               rel="noopener"
+              :aria-label="`${orgName(org)} (opens in new tab)`"
               class="text-decoration-none"
             >
               <q-chip
@@ -200,6 +165,7 @@ function orgName(org: PublicStats['top_organizations'][number]): string {
                 outline
                 color="primary"
               >
+                <RorIcon size="18px" class="q-mr-xs" />
                 {{ orgName(org) }}
               </q-chip>
             </a>
@@ -210,11 +176,12 @@ function orgName(org: PublicStats['top_organizations'][number]): string {
     <section
       v-if="stats && stats.recent_publications.length"
       class="row q-py-xl justify-center bg-grey-1"
+      aria-labelledby="publications-heading"
     >
       <div class="col-11 col-lg-10">
-        <div class="text-h4 text-weight-medium q-mb-lg text-center">
+        <h2 id="publications-heading" class="text-h4 text-weight-medium q-mb-lg text-center q-mt-none">
           {{ $t('osp.stats.recent-publications') }}
-        </div>
+        </h2>
         <q-card flat bordered>
           <q-list separator>
             <q-item
@@ -235,6 +202,7 @@ function orgName(org: PublicStats['top_organizations'][number]): string {
                       :href="author.orcid"
                       target="_blank"
                       rel="noopener"
+                      :aria-label="`${authorFullName(author)} ORCID profile (opens in new tab)`"
                       class="q-ml-xs"
                     ><OrcidIcon :unauthenticated="!author.orcid_verified" /></a>
                     {{ author.last_name }}, {{ author.first_name
@@ -242,7 +210,7 @@ function orgName(org: PublicStats['top_organizations'][number]): string {
                   </span>
                 </q-item-label>
                 <q-item-label caption>
-                  <div class="q-pt-sm flex">
+                  <div class="q-pt-sm flex flex-wrap">
                     <div>
                       {{ new Date(pub.published_on).getFullYear() }}
                     </div>
@@ -261,6 +229,7 @@ function orgName(org: PublicStats['top_organizations'][number]): string {
                         :href="`https://doi.org/${pub.doi}`"
                         target="_blank"
                         rel="noopener"
+                        :aria-label="`DOI ${pub.doi} for ${pub.title} (opens in new tab)`"
                       >{{ pub.doi }}</a>
                     </div>
                   </div>

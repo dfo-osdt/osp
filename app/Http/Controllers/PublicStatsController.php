@@ -9,6 +9,7 @@ use App\Models\Author;
 use App\Models\ManuscriptRecord;
 use App\Models\Organization;
 use App\Models\Publication;
+use App\Models\ManuscriptAuthor;
 use App\Models\PublicationAuthor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
@@ -31,25 +32,27 @@ class PublicStatsController extends Controller
                         ManuscriptRecordStatus::ACCEPTED,
                     ])
                     ->count(),
-                'authors_count' => Author::query()->whereHas('publicationAuthors')->count(),
-                'top_organizations' => Organization::query()
+                'authors_count' => Author::query()
+                    ->where('organization_id', $defaultOrg->id)
+                    ->whereHas('manuscriptAuthors')
+                    ->count(),
+                'external_authors_count' => Author::query()
+                    ->where('organization_id', '!=', $defaultOrg->id)
+                    ->whereHas('manuscriptAuthors')
+                    ->count(),
+                'orcid_connected_count' => Author::query()
+                    ->where('orcid_verified', true)
+                    ->count(),
+                'external_organizations' => Organization::query()
                     ->where('organizations.id', '!=', $defaultOrg->id)
                     ->whereNotNull('ror_identifier')
                     ->whereExists(function ($query) {
                         $query->select(DB::raw(1))
-                            ->from('publication_authors')
-                            ->whereColumn('publication_authors.organization_id', 'organizations.id')
-                            ->whereNull('publication_authors.deleted_at');
+                            ->from('manuscript_authors')
+                            ->whereColumn('manuscript_authors.organization_id', 'organizations.id');
                     })
                     ->select(['organizations.id', 'name_en', 'name_fr', 'ror_identifier'])
-                    ->selectSub(
-                        PublicationAuthor::query()
-                            ->whereColumn('publication_authors.organization_id', 'organizations.id')
-                            ->whereNull('publication_authors.deleted_at')
-                            ->select(DB::raw('count(distinct publication_id)')),
-                        'publications_count'
-                    )
-                    ->orderByDesc('publications_count')
+                    ->inRandomOrder()
                     ->limit(5)
                     ->get(),
                 'recent_publications' => Publication::query()

@@ -103,6 +103,7 @@
     "congratulations": "Toutes nos félicitations!",
     "contact": "Contact",
     "contact-us": "Contactez-nous",
+    "app-version": "Version de l'application : {version}",
     "continue": "Continuez",
     "copied": "Copié",
     "copy-to-clipboard": "Copier dans le presse-papier",
@@ -706,11 +707,16 @@
     "stats": {
       "publications": "Publications",
       "manuscripts-reviewed": "Manuscrits examinés",
-      "authors": "Auteurs",
+      "authors": "Auteurs MPO",
       "published": "Publiées",
       "completed-review": "Examen complété",
       "contributing": "Contributeurs",
+      "external-authors": "Contributeurs externes",
+      "external-contributing": "En collaboration",
+      "orcid-connected": "Profils ORCID",
+      "linked-profiles": "Connectés",
       "top-organizations": "Principales organisations externes",
+      "external-organizations": "Quelques-unes de nos organisations collaboratrices",
       "recent-publications": "Publications récentes",
       "by-the-numbers": "En chiffres"
     }

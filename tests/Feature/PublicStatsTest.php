@@ -2,8 +2,10 @@
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\PublicationStatus;
+use App\Models\Author;
 use App\Models\ManuscriptRecord;
 use App\Models\Organization;
+use App\Models\ManuscriptAuthor;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
 
@@ -24,6 +26,11 @@ test('public stats endpoint returns correct structure', function (): void {
         'status' => PublicationStatus::ACCEPTED,
     ]);
 
+    // Create DFO authors with manuscript records
+    $defaultOrg = Organization::getDefaultOrganization();
+    $dfoAuthor = Author::factory()->create(['organization_id' => $defaultOrg->id]);
+    ManuscriptAuthor::factory()->create(['author_id' => $dfoAuthor->id]);
+
     // Create reviewed manuscripts
     ManuscriptRecord::factory()->count(2)->create([
         'status' => ManuscriptRecordStatus::REVIEWED,
@@ -39,12 +46,19 @@ test('public stats endpoint returns correct structure', function (): void {
         'status' => ManuscriptRecordStatus::DRAFT,
     ]);
 
-    // External org with ROR — linked to publications via publication_authors
+    // External org with ROR — linked to manuscripts via manuscript_authors
     $externalOrg = Organization::factory()->create([
         'name_en' => 'External University',
         'name_fr' => 'Université externe',
         'ror_identifier' => '03rmrcq20',
     ]);
+    $externalAuthor = Author::factory()->create(['organization_id' => $externalOrg->id]);
+    ManuscriptAuthor::factory()->count(2)->create([
+        'author_id' => $externalAuthor->id,
+        'organization_id' => $externalOrg->id,
+    ]);
+
+    // Also link external org to publications for recent_publications test
     Publication::factory()->count(2)->create([
         'status' => PublicationStatus::PUBLISHED,
         'published_on' => now()->subMonth(),
@@ -55,19 +69,18 @@ test('public stats endpoint returns correct structure', function (): void {
         );
     });
 
-    // Org without ROR — should not appear in top_organizations
+    // Create authors with verified ORCID
+    Author::factory()->count(2)->create(['orcid_verified' => true]);
+    // Unverified ORCID — should not count
+    Author::factory()->create(['orcid_verified' => false]);
+
+    // Org without ROR linked to manuscripts — should not appear in external_organizations
     $noRorOrg = Organization::factory()->create([
         'name_en' => 'No ROR Org',
         'name_fr' => 'Org sans ROR',
         'ror_identifier' => null,
     ]);
-    Publication::factory()->create([
-        'status' => PublicationStatus::PUBLISHED,
-        'published_on' => now()->subMonths(2),
-        'doi' => '10.1234/no-ror-doi',
-    ])->publicationAuthors()->save(
-        PublicationAuthor::factory()->make(['organization_id' => $noRorOrg->id])
-    );
+    ManuscriptAuthor::factory()->create(['organization_id' => $noRorOrg->id]);
 
     $response = $this->getJson('/api/stats');
 
@@ -76,18 +89,22 @@ test('public stats endpoint returns correct structure', function (): void {
         'publications_count',
         'manuscripts_reviewed_count',
         'authors_count',
-        'top_organizations',
+        'external_authors_count',
+        'orcid_connected_count',
+        'external_organizations',
         'recent_publications',
     ]);
 
-    expect($response->json('publications_count'))->toBe(6);
+    expect($response->json('publications_count'))->toBe(5);
     expect($response->json('manuscripts_reviewed_count'))->toBe(3);
-    expect($response->json('authors_count'))->toBeGreaterThanOrEqual(3);
-    expect($response->json('top_organizations'))->toBeArray();
-    expect($response->json('top_organizations.0.ror_identifier'))->toBe('03rmrcq20');
-    expect($response->json('top_organizations.0.name_en'))->toBe('External University');
+    expect($response->json('authors_count'))->toBeGreaterThanOrEqual(1);
+    expect($response->json('external_authors_count'))->toBeGreaterThanOrEqual(1);
+    expect($response->json('orcid_connected_count'))->toBe(2);
+    expect($response->json('external_organizations'))->toBeArray();
+    // External org with ROR should be present
+    $orgNames = collect($response->json('external_organizations'))->pluck('name_en');
+    expect($orgNames)->toContain('External University');
     // Org without ROR should be excluded
-    $orgNames = collect($response->json('top_organizations'))->pluck('name_en');
     expect($orgNames)->not->toContain('No ROR Org');
     expect($response->json('recent_publications'))->toBeArray();
     expect($response->json('recent_publications'))->toHaveCount(5);
