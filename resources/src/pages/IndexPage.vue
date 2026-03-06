@@ -247,4 +247,3 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
     </section>
   </q-page>
 </template>
-
