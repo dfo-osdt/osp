@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { http } from '@/api/http'
 import MetricCard from '@/components/MetricCard.vue'
 import OrcidIcon from '@/components/OrcidIcon.vue'
 import RorIcon from '@/components/RorIcon.vue'
 
 const $q = useQuasar()
+const { t } = useI18n()
 const authStore = useAuthStore()
 const localeStore = useLocaleStore()
 
@@ -28,7 +30,7 @@ interface PublicStats {
     title: string
     doi: string
     published_on: string
-    journal: { id: number; title: string } | null
+    journal: { id: number, title: string } | null
     authors: Array<{
       first_name: string
       last_name: string
@@ -40,19 +42,22 @@ interface PublicStats {
 
 const stats = ref<PublicStats | null>(null)
 
-const metricKeys = [
-  { key: 'authors_count', title: 'osp.stats.authors', subtitle: 'osp.stats.contributing' },
-  { key: 'external_authors_count', title: 'osp.stats.external-authors', subtitle: 'osp.stats.external-contributing' },
-  { key: 'orcid_connected_count', title: 'osp.stats.orcid-connected', subtitle: 'osp.stats.linked-profiles' },
-  { key: 'manuscripts_reviewed_count', title: 'osp.stats.manuscripts-reviewed', subtitle: 'osp.stats.completed-review' },
-  { key: 'publications_count', title: 'osp.stats.publications', subtitle: 'osp.stats.published' },
-] as const
+type MetricKey = 'authors_count' | 'external_authors_count' | 'orcid_connected_count' | 'manuscripts_reviewed_count' | 'publications_count'
+
+const metrics = computed(() => [
+  { key: 'authors_count' as MetricKey, title: t('osp.stats.authors'), subtitle: t('osp.stats.contributing') },
+  { key: 'external_authors_count' as MetricKey, title: t('osp.stats.external-authors'), subtitle: t('osp.stats.external-contributing') },
+  { key: 'orcid_connected_count' as MetricKey, title: t('osp.stats.orcid-connected'), subtitle: t('osp.stats.linked-profiles') },
+  { key: 'manuscripts_reviewed_count' as MetricKey, title: t('osp.stats.manuscripts-reviewed'), subtitle: t('osp.stats.completed-review') },
+  { key: 'publications_count' as MetricKey, title: t('osp.stats.publications'), subtitle: t('osp.stats.published') },
+])
 
 onMounted(async () => {
   try {
     const response = await http.get<PublicStats>('/api/stats')
     stats.value = response.data
-  } catch {
+  }
+  catch {
     // stats are non-critical — fail silently
   }
 })
@@ -130,14 +135,14 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
         </h2>
         <div class="row q-col-gutter-md justify-center">
           <div
-            v-for="metric in metricKeys"
+            v-for="metric in metrics"
             :key="metric.key"
             class="col-12 col-sm-4"
           >
             <MetricCard
-              :title="$t(metric.title)"
+              :title="metric.title"
               :value="stats[metric.key]"
-              :subtitle="$t(metric.subtitle)"
+              :subtitle="metric.subtitle"
               suffix="+"
               animate
             />
@@ -224,7 +229,7 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
                       |
                     </div>
                     <div>
-                      DOI:
+                      {{ $t('common.doi') }}:
                       <a
                         :href="`https://doi.org/${pub.doi}`"
                         target="_blank"

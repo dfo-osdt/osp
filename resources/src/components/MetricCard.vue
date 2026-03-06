@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
-import { useCountUp } from '@/composables/useCountUp'
+import { TransitionPresets, useTransition } from '@vueuse/core'
+import { computed, onMounted, shallowRef, watch } from 'vue'
 
 const props = defineProps<{
   title: string
@@ -11,10 +11,21 @@ const props = defineProps<{
   to?: object | string
 }>()
 
-const animatedValue = useCountUp(toRef(props, 'value'))
+const source = shallowRef(0)
+onMounted(() => {
+  source.value = props.value
+})
+watch(() => props.value, (val) => {
+  source.value = val
+})
+
+const animatedValue = useTransition(source, {
+  duration: 2000,
+  easing: TransitionPresets.easeOutCubic,
+})
 
 const displayValue = computed(() => {
-  const val = props.animate ? animatedValue.value : props.value
+  const val = props.animate ? Math.round(animatedValue.value) : props.value
   if (val === 0) {
     return '0'
   }

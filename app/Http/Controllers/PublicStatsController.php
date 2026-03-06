@@ -9,8 +9,6 @@ use App\Models\Author;
 use App\Models\ManuscriptRecord;
 use App\Models\Organization;
 use App\Models\Publication;
-use App\Models\ManuscriptAuthor;
-use App\Models\PublicationAuthor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +17,10 @@ class PublicStatsController extends Controller
 {
     public function __invoke(): JsonResponse
     {
-        $stats = Cache::remember('public-stats', 86400, function () {
+        $stats = Cache::remember('public-stats', 86400, function (): array { // @phpstan-ignore argument.type
             $defaultOrg = Organization::getDefaultOrganization();
 
-            return [
+            return [ // @phpstan-ignore return.type
                 'publications_count' => Publication::query()
                     ->where('status', PublicationStatus::PUBLISHED)
                     ->count(),
@@ -46,7 +44,7 @@ class PublicStatsController extends Controller
                 'external_organizations' => Organization::query()
                     ->where('organizations.id', '!=', $defaultOrg->id)
                     ->whereNotNull('ror_identifier')
-                    ->whereExists(function ($query) {
+                    ->whereExists(function ($query): void {
                         $query->select(DB::raw(1))
                             ->from('manuscript_authors')
                             ->whereColumn('manuscript_authors.organization_id', 'organizations.id');
@@ -62,16 +60,16 @@ class PublicStatsController extends Controller
                     ->latest('published_on')
                     ->limit(5)
                     ->get(['id', 'title', 'doi', 'published_on', 'journal_id'])
-                    ->map(function (Publication $pub) {
-                        $data = $pub->only(['id', 'title', 'doi', 'published_on']);
-                        $data['journal'] = $pub->journal?->only(['id', 'title']);
-                        $data['authors'] = $pub->publicationAuthors
-                            ->filter(fn ($pa) => $pa->author !== null)
-                            ->map(fn ($pa) => new PublicAuthorResource($pa->author))
-                            ->values();
-
-                        return $data;
-                    }),
+                    ->map(fn (Publication $pub): array => [
+                        'id' => $pub->id,
+                        'title' => $pub->title,
+                        'doi' => $pub->doi,
+                        'published_on' => $pub->published_on,
+                        'journal' => $pub->journal->only(['id', 'title']),
+                        'authors' => $pub->publicationAuthors
+                            ->map(fn ($pa): PublicAuthorResource => new PublicAuthorResource($pa->author))
+                            ->values(),
+                    ]),
             ];
         });
 
