@@ -50,7 +50,7 @@ test('public stats endpoint returns correct structure', function (): void {
     $externalOrg = Organization::factory()->create([
         'name_en' => 'External University',
         'name_fr' => 'Université externe',
-        'ror_identifier' => '03rmrcq20',
+        'ror_identifier' => 'https://ror.org/03rmrcq20',
     ]);
     $externalAuthor = Author::factory()->create(['organization_id' => $externalOrg->id]);
     ManuscriptAuthor::factory()->count(2)->create([

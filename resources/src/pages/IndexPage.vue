@@ -161,8 +161,8 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
               :key="org.id"
               :href="org.ror_identifier"
               target="_blank"
-              rel="noopener"
-              :aria-label="`${orgName(org)} (opens in new tab)`"
+              rel="noopener noreferrer"
+              :aria-label="$t('osp.a11y.org-external-link', { name: orgName(org) })"
               class="text-decoration-none"
             >
               <q-chip
@@ -206,8 +206,8 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
                       v-if="author.orcid"
                       :href="author.orcid"
                       target="_blank"
-                      rel="noopener"
-                      :aria-label="`${authorFullName(author)} ORCID profile (opens in new tab)`"
+                      rel="noopener noreferrer"
+                      :aria-label="$t('osp.a11y.orcid-external-link', { name: authorFullName(author) })"
                       class="q-ml-xs"
                     ><OrcidIcon :unauthenticated="!author.orcid_verified" /></a>
                     {{ author.last_name }}, {{ author.first_name
@@ -233,8 +233,8 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
                       <a
                         :href="`https://doi.org/${pub.doi}`"
                         target="_blank"
-                        rel="noopener"
-                        :aria-label="`DOI ${pub.doi} for ${pub.title} (opens in new tab)`"
+                        rel="noopener noreferrer"
+                        :aria-label="$t('osp.a11y.doi-external-link', { doi: pub.doi, title: pub.title })"
                       >{{ pub.doi }}</a>
                     </div>
                   </div>
@@ -248,4 +248,3 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
   </q-page>
 </template>
 
-<style></style>

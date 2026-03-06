@@ -692,6 +692,11 @@
     "hint": "Start typing to search for an organization"
   },
   "osp": {
+    "a11y": {
+      "org-external-link": "{name} (opens in new tab)",
+      "orcid-external-link": "{name} ORCID profile (opens in new tab)",
+      "doi-external-link": "DOI {doi} for {title} (opens in new tab)"
+    },
     "alt": {
       "logo": "OSP logo - a prism dividing a single light stream into an array of colors.",
       "main-image": "A person with a large lightbulb as a head. An old farmhouse tap is trickling water on a small tree sprout growing from the ground.",
