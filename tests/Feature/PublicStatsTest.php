@@ -3,9 +3,9 @@
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\PublicationStatus;
 use App\Models\Author;
+use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\Organization;
-use App\Models\ManuscriptAuthor;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
 
@@ -15,7 +15,7 @@ test('public stats endpoint returns correct structure', function (): void {
         'status' => PublicationStatus::PUBLISHED,
         'published_on' => now(),
         'doi' => '10.1234/test-doi',
-    ])->each(function (Publication $pub) {
+    ])->each(function (Publication $pub): void {
         $pub->publicationAuthors()->saveMany(
             PublicationAuthor::factory()->count(2)->make()
         );
@@ -63,7 +63,7 @@ test('public stats endpoint returns correct structure', function (): void {
         'status' => PublicationStatus::PUBLISHED,
         'published_on' => now()->subMonth(),
         'doi' => '10.1234/ext-doi',
-    ])->each(function (Publication $pub) use ($externalOrg) {
+    ])->each(function (Publication $pub) use ($externalOrg): void {
         $pub->publicationAuthors()->save(
             PublicationAuthor::factory()->make(['organization_id' => $externalOrg->id])
         );
