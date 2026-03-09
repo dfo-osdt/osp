@@ -81,7 +81,7 @@ test('a user cannot add the same author twice to a manuscript record', function 
     ])->assertInvalid('author_id');
 });
 
-test('a user can add an organizational author with a custom organization to their manuscript record', function (): void {
+test('a user can add a group author with a custom organization to their manuscript record', function (): void {
     $user = \App\Models\User::factory()->create();
     $manuscript = \App\Models\ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
