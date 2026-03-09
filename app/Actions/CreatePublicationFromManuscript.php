@@ -41,6 +41,7 @@ class CreatePublicationFromManuscript
                     'author_id' => $manuscriptAuthor->author_id,
                     'organization_id' => $manuscriptAuthor->organization_id,
                     'is_corresponding_author' => $manuscriptAuthor->is_corresponding_author,
+                    'is_group_author' => $manuscriptAuthor->is_group_author,
                 ]);
             });
 
