@@ -151,7 +151,7 @@ test('a user can remove and re-add the same author to a publication', function (
     expect($publication->publicationAuthors()->count())->toBe(1);
 });
 
-test('a user can add an organizational author with a custom organization to their publication', function (): void {
+test('a user can add a group author with a custom organization to their publication', function (): void {
     $user = \App\Models\User::factory()->create();
     $publication = \App\Models\Publication::factory()->create([
         'user_id' => $user->id,
