@@ -32,7 +32,12 @@ const correspondingAuthor = computed({
   },
 })
 
+const isGroupAuthor = computed(() => props.manuscriptAuthor.data.is_group_author)
+
 const name = computed(() => {
+  if (isGroupAuthor.value) {
+    return props.manuscriptAuthor.data.organization?.data[`name_${localeStore.locale}`] ?? ''
+  }
   return `${props.manuscriptAuthor.data.author?.data.last_name}, ${props.manuscriptAuthor.data.author?.data.first_name}`
 })
 
@@ -52,15 +57,34 @@ const removable = computed(() => {
     @remove="emit('deleteManuscriptAuthor')"
   >
     <q-avatar
-      v-if="manuscriptAuthor.data.is_corresponding_author"
+      v-if="isGroupAuthor"
+      icon="mdi-account-group"
+      color="teal-6"
+      text-color="white"
+    />
+    <q-avatar
+      v-else-if="manuscriptAuthor.data.is_corresponding_author"
       icon="mdi-at"
       color="primary"
       text-color="white"
     />
-    {{ name }}
+    {{ name }}<span v-if="isGroupAuthor && manuscriptAuthor.data.is_corresponding_author" class="text-weight-bold">*</span>
     <q-menu>
       <q-list dense separator>
-        <q-item class="q-mt-sm">
+        <q-item v-if="isGroupAuthor" class="q-mt-sm">
+          <q-item-section avatar>
+            <q-avatar icon="mdi-account-group" text-color="teal-6" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-weight-medium">
+              {{ t('common.group-author') }}
+            </q-item-label>
+            <q-item-label caption>
+              {{ t('common.contact') }}: {{ manuscriptAuthor.data.author?.data.first_name }} {{ manuscriptAuthor.data.author?.data.last_name }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item :class="isGroupAuthor ? '' : 'q-mt-sm'">
           <q-item-section avatar>
             <q-avatar icon="mdi-bank" text-color="primary" />
           </q-item-section>
@@ -107,7 +131,7 @@ const removable = computed(() => {
             </div>
           </q-item-section>
         </q-item>
-        <q-item v-if="manuscriptAuthor.data.author?.data.orcid">
+        <q-item v-if="manuscriptAuthor.data.author?.data.orcid && !isGroupAuthor">
           <q-item-section avatar>
             <OrcidAvatar
               :unauthenticated="
@@ -166,7 +190,7 @@ const removable = computed(() => {
           </q-item-section>
           <q-item-section>
             <q-item-label>
-              {{ t('author.view-profile') }}
+              {{ isGroupAuthor ? t('common.view-contact-profile') : t('author.view-profile') }}
             </q-item-label>
           </q-item-section>
         </q-item>

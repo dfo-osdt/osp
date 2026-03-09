@@ -58,6 +58,8 @@ class PublicationAuthorController extends Controller
             'author_id' => ['required', 'integer', 'exists:authors,id',
                 Rule::unique('publication_authors')->where(fn ($query) => $query->where('publication_id', $publication->id)), ],
             'is_corresponding_author' => ['boolean'],
+            'is_group_author' => ['boolean'],
+            'organization_id' => ['integer', 'exists:organizations,id'],
         ]);
 
         $author = \App\Models\Author::query()->find($validated['author_id']);
@@ -66,7 +68,8 @@ class PublicationAuthorController extends Controller
         $publicationAuthor->publication_id = $publication->id;
         $publicationAuthor->author_id = $validated['author_id'];
         $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
-        $publicationAuthor->organization_id = $author->organization_id;
+        $publicationAuthor->is_group_author = $validated['is_group_author'] ?? false;
+        $publicationAuthor->organization_id = $validated['organization_id'] ?? $author->organization_id;
         $publicationAuthor->save();
 
         $this->loadResourceRelationships($publicationAuthor, $publication);
@@ -99,6 +102,7 @@ class PublicationAuthorController extends Controller
         $validated = $request->validate([
             // 'author_id' => 'integer|exists:authors,id',
             'is_corresponding_author' => ['boolean'],
+            'is_group_author' => ['boolean'],
             'organization_id' => ['integer', 'exists:organizations,id'],
         ]);
 
@@ -107,6 +111,9 @@ class PublicationAuthorController extends Controller
         }
         if (isset($validated['is_corresponding_author'])) {
             $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'];
+        }
+        if (isset($validated['is_group_author'])) {
+            $publicationAuthor->is_group_author = $validated['is_group_author'];
         }
         $publicationAuthor->save();
 

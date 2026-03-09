@@ -19,6 +19,14 @@ class ManuscriptAuthorFactory extends Factory
             'author_id' => \App\Models\Author::factory(),
             'organization_id' => \App\Models\Organization::factory(),
             'is_corresponding_author' => false,
+            'is_group_author' => false,
         ];
+    }
+
+    public function groupAuthor(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_group_author' => true,
+        ]);
     }
 }

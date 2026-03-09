@@ -16,6 +16,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $author_id
  * @property int $organization_id
  * @property bool $is_corresponding_author
+ * @property bool $is_group_author
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \App\Models\Author $author
@@ -49,6 +50,7 @@ class ManuscriptAuthor extends Model
 
     public $casts = [
         'is_corresponding_author' => 'boolean',
+        'is_group_author' => 'boolean',
     ];
 
     // update the manuscript's updated_at timestamp when the author is updated

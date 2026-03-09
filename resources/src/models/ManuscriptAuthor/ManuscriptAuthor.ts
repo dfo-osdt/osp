@@ -9,6 +9,7 @@ export interface ManuscriptAuthor {
   author_id: number
   organization_id: number
   is_corresponding_author: boolean
+  is_group_author: boolean
   organization?: OrganizationResource
   author?: AuthorResource
 }
@@ -56,11 +57,15 @@ export class ManuscriptAuthorService {
     manuscriptRecordId: number,
     authorId: number,
     isCorrespondingAuthor: boolean,
+    isGroupAuthor: boolean = false,
+    organizationId?: number | null,
   ) {
     const url = `api/manuscript-records/${manuscriptRecordId}/manuscript-authors`
     const response = await http.post<any, R>(url, {
       author_id: authorId,
       is_corresponding_author: isCorrespondingAuthor,
+      is_group_author: isGroupAuthor,
+      ...(organizationId != null && { organization_id: organizationId }),
     })
     return response.data
   }
