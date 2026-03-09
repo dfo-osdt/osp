@@ -382,6 +382,34 @@ test('a user can mark their manuscript as accepted', function (): void {
     expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
 });
 
+test('group author flag is carried over when a manuscript is accepted and a publication is created', function (): void {
+    $manuscript = ManuscriptRecord::factory()->filled()->create([
+        'status' => ManuscriptRecordStatus::SUBMITTED,
+    ]);
+
+    ManuscriptAuthor::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'is_group_author' => true,
+        'is_corresponding_author' => true,
+    ]);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => Journal::factory()->create()->id,
+        'isbn' => null,
+        'catalogue_number' => null,
+        'issue_number' => null,
+    ];
+
+    $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
+
+    $publicationAuthor = $manuscript->publication->publicationAuthors()->where('is_group_author', true)->first();
+    expect($publicationAuthor)->not->toBeNull();
+    expect($publicationAuthor->is_group_author)->toBeTrue();
+    expect($publicationAuthor->is_corresponding_author)->toBeTrue();
+});
+
 test('a user can submit their manuscript to the science pub team', function (): void {
     // create a manuscript that has been submitted
     $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
