@@ -19,6 +19,7 @@ test('a user can get the publication authors associated with a publication', fun
         'author_id',
         'organization_id',
         'is_corresponding_author',
+        'is_group_author',
         'organization',
         'author',
     ]);
@@ -40,6 +41,7 @@ test('a user can add a new publication author to their publication', function ()
         'publication_id' => $publication->id,
         'author_id' => $author->id,
         'is_corresponding_author' => true,
+        'is_group_author' => false,
         'organization_id' => $author->organization_id,
     ])->toHaveKeys([
         'id',
@@ -47,6 +49,7 @@ test('a user can add a new publication author to their publication', function ()
         'author_id',
         'organization_id',
         'is_corresponding_author',
+        'is_group_author',
         'organization',
         'author',
     ]);
@@ -146,4 +149,47 @@ test('a user can remove and re-add the same author to a publication', function (
     ]);
 
     expect($publication->publicationAuthors()->count())->toBe(1);
+});
+
+test('a user can add an organizational author with a custom organization to their publication', function (): void {
+    $user = \App\Models\User::factory()->create();
+    $publication = \App\Models\Publication::factory()->create([
+        'user_id' => $user->id,
+    ]);
+    $author = \App\Models\Author::factory()->create();
+    $organization = \App\Models\Organization::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
+        'author_id' => $author->id,
+        'is_corresponding_author' => false,
+        'is_group_author' => true,
+        'organization_id' => $organization->id,
+    ])->assertCreated();
+
+    expect($response->json('data'))->toMatchArray([
+        'publication_id' => $publication->id,
+        'author_id' => $author->id,
+        'is_corresponding_author' => false,
+        'is_group_author' => true,
+        'organization_id' => $organization->id,
+    ]);
+
+    // organization should differ from author's profile org
+    expect($response->json('data.organization_id'))->not->toBe($author->organization_id);
+});
+
+test('a user can update a publication author to be an organizational author', function (): void {
+    $user = \App\Models\User::factory()->create();
+    $publication = \App\Models\Publication::factory()->create([
+        'user_id' => $user->id,
+    ]);
+    $publicationAuthor = PublicationAuthor::factory()->create([
+        'publication_id' => $publication->id,
+    ]);
+
+    $response = $this->actingAs($user)->putJson('/api/publications/'.$publication->id.'/publication-authors/'.$publicationAuthor->id, [
+        'is_group_author' => true,
+    ])->assertOk();
+
+    expect($response->json('data.is_group_author'))->toBeTrue();
 });

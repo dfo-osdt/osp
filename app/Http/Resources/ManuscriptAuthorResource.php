@@ -25,6 +25,7 @@ class ManuscriptAuthorResource extends JsonResource
                 'author_id' => $this->author_id,
                 'organization_id' => $this->organization_id,
                 'is_corresponding_author' => $this->is_corresponding_author,
+                'is_group_author' => $this->is_group_author,
                 'organization' => OrganizationResource::make($this->whenLoaded('organization')),
                 'author' => AuthorResource::make($this->whenLoaded('author')),
             ],
