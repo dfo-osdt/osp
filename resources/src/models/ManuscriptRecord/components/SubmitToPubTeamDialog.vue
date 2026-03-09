@@ -90,6 +90,9 @@ async function submit() {
             <IssueNumberInput v-model="issueNumber" />
           </div>
         </QCard>
+        <p class="text-caption text-grey-8 q-mx-sm q-mb-none">
+          {{ $t('submit-to-pub-team-dialog.file-preference') }}
+        </p>
         <QFile
           v-model="submissionFile"
           class="q-mx-sm"
