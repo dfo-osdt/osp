@@ -953,8 +953,8 @@
     "title": "Soumettre au guichet unique pour les publications scientifiques",
     "publication-identifiers": "Identifiants de publication",
     "publication-identifiers-hint": "Un numéro de catalogue est requis. Le ISBN et le numéro de publication sont facultatifs, sauf s'ils sont fournis avec le numéro de catalogue.",
-    "file-label": "Soumission de votre manuscrit (format Word)",
-    "file-hint": "Télécharger votre manuscrit (.doc ou .docx, max {max} Mo)"
+    "file-label": "Soumission de votre manuscrit (format Word ou PDF)",
+    "file-hint": "Télécharger votre manuscrit (.doc, .docx ou .pdf, max {max} Mo)"
   },
   "azure-user-select": {
     "search-hint": "Commencez à taper un courriel pour rechercher un utilisateur du MPO"
