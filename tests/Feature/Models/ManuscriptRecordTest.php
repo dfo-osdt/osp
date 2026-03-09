@@ -408,6 +408,42 @@ test('a user can submit their manuscript to the science pub team', function (): 
     expect($manuscript->publication->issue_number)->toBe('409');
 });
 
+test('a user can submit their manuscript to the science pub team with a pdf file', function (): void {
+    $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
+    $fakePdfContent = <<<'PDF_WRAP'
+    %PDF-1.4
+    1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+    2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj
+    3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj
+    xref
+    0 4
+    0000000000 65535 f
+    0000000009 00000 n
+    0000000052 00000 n
+    0000000101 00000 n
+    trailer<</Size 4/Root 1 0 R>>
+    startxref
+    178
+    %%EOF
+    PDF_WRAP;
+    $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size(1000);
+
+    $data = [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => Journal::factory()->dfoSeries()->create()->id,
+        'isbn' => '9780134685991',
+        'catalogue_number' => 'Fs97-18/409E-PDF',
+        'issue_number' => '409',
+        'submission_file' => $file,
+    ];
+
+    $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
+
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->publication->getMedia(MediaCollection::SUPPLEMENTARY_FILE->value)->first()->file_name)->toBe('test.pdf');
+});
+
 test('a user can delete their manuscript record if it is a draft', function (): void {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->filled()->create(['user_id' => $user->id]);

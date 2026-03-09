@@ -100,7 +100,7 @@ async function submit() {
           :hint="
             $t('submit-to-pub-team-dialog.file-hint', { max: maxFileSizeMB })
           "
-          accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
           :max-file-size="maxFileSizeMB * 1e6"
           :rules="[
             (val: File | null) =>
@@ -109,7 +109,7 @@ async function submit() {
           @rejected="onFileRejected"
         >
           <template #prepend>
-            <q-icon name="mdi-file-word-outline" />
+            <q-icon name="mdi-file-document-outline" />
           </template>
         </QFile>
         <QCardActions align="right">
