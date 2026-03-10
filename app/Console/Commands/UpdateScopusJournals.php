@@ -48,6 +48,7 @@ class UpdateScopusJournals extends Command
         // list of ASJC codes we want to import
         $asjcCodes = collect([
             1000, // Multidisciplinary
+            1103, // Agricultural and Biological Sciences
             1100, // General Agricultural and Biological Sciences
             1101, // Agricultural and Biological Sciences (miscellaneous)
             1104, // Aquatic Science
