@@ -15,7 +15,7 @@ const sortedExpertises = computed(() => {
   if (!props.author.data.expertises)
     return []
 
-  return [...props.author.data.expertises].sort((a, b) => {
+  return props.author.data.expertises.toSorted((a, b) => {
     const nameA = a.data[`name_${locale.value}`] || a.data.name_en
     const nameB = b.data[`name_${locale.value}`] || b.data.name_en
     return nameA.localeCompare(nameB)

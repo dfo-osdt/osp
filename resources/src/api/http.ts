@@ -40,7 +40,7 @@ class Http {
   private instance: AxiosInstance | null = null
 
   private get http(): AxiosInstance {
-    return this.instance != null ? this.instance : this.initHttp()
+    return this.instance ?? this.initHttp()
   }
 
   initHttp() {

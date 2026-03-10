@@ -2,11 +2,14 @@
 import type { QInputProps, ValidationRule } from 'quasar'
 import { QInput } from 'quasar'
 
+const props = defineProps<IsbnInputProps>()
+const ISBN_REGEX = /^\d{13}$/
+const NON_DIGIT_REGEX = /\D/g
+
 type IsbnInputProps = Omit<QInputProps, 'modelValue' | 'label'> & {
   required?: boolean
 }
 
-const props = defineProps<IsbnInputProps>()
 const attrs = useAttrs()
 
 const { t } = useI18n()
@@ -24,7 +27,7 @@ const computedRules = computed<ValidationRule[]>(() => props.rules ?? [
   (val: string | null) => {
     if (val === null || val.length === 0)
       return true
-    if (!/^\d{13}$/.test(val))
+    if (!ISBN_REGEX.test(val))
       return t('common.validation.isbn-invalid')
     // Validate ISBN-13 checksum
     let sum = 0
@@ -40,7 +43,7 @@ const computedRules = computed<ValidationRule[]>(() => props.rules ?? [
 
 function onPaste(event: ClipboardEvent) {
   const pastedText = event.clipboardData?.getData('text') ?? ''
-  const digitsOnly = pastedText.replace(/\D/g, '')
+  const digitsOnly = pastedText.replace(NON_DIGIT_REGEX, '')
   if (digitsOnly !== pastedText) {
     event.preventDefault()
     modelValue.value = digitsOnly
