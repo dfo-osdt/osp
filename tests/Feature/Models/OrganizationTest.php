@@ -124,6 +124,24 @@ test('a user can filter organizations with comma-separated search terms', functi
         ->and($returnedIds)->not->toContain($org3->id);
 });
 
+test('a user can search organizations by abbreviation', function (): void {
+    $user = \App\Models\User::factory()->create();
+
+    $org = Organization::factory()->create([
+        'name_en' => 'United States Geological Survey',
+        'name_fr' => 'United States Geological Survey',
+        'abbr_en' => 'USGS',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->getJson('/api/organizations?filter[search]=USGS')
+        ->assertOk();
+
+    $returnedIds = collect($response->json('data'))->pluck('data.id')->all();
+
+    expect($returnedIds)->toContain($org->id);
+});
+
 test('filtering with empty search value returns all results', function (): void {
     $user = \App\Models\User::factory()->create();
 
