@@ -64,7 +64,7 @@ class UserResource extends Resource
                             ->disabled(fn () => config('osp.azure.enable_auth', false)),
                         CheckboxList::make('roles')
                             ->relationship(titleAttribute: 'name')
-                            ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
+                            ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::tryFrom($record->name)?->label() ?? $record->name)
                             ->label('Roles'),
                     ]),
                 Section::make('Change Password')
@@ -122,8 +122,8 @@ class UserResource extends Resource
                     ->sortable(),
                 TextColumn::make('roles.name')
                     ->badge()
-                    ->formatStateUsing(fn (string $state) => UserRole::from($state)->label())
-                    ->color(fn (string $state): string => match (UserRole::from($state)) {
+                    ->formatStateUsing(fn (string $state) => UserRole::tryFrom($state)?->label() ?? $state)
+                    ->color(fn (string $state): string => match (UserRole::tryFrom($state)) {
                         UserRole::AUTHOR => 'success',
                         UserRole::DIRECTOR, UserRole::EDITOR, UserRole::CHIEF_EDITOR => 'warning',
                         UserRole::ADMIN => 'danger',
@@ -133,6 +133,7 @@ class UserResource extends Resource
                         UserRole::NFL_OBSERVER, UserRole::MAR_OBSERVER, UserRole::GLF_OBSERVER,
                         UserRole::QUE_OBSERVER, UserRole::ONP_OBSERVER, UserRole::ARC_OBSERVER,
                         UserRole::PAC_OBSERVER, UserRole::NCR_OBSERVER => 'secondary',
+                        default => 'gray',
                     })
                     ->searchable(),
             ])
@@ -148,7 +149,7 @@ class UserResource extends Resource
                     ]),
                 SelectFilter::make('roles')
                     ->relationship('roles', 'name')
-                    ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::from($record->name)->label())
+                    ->getOptionLabelFromRecordUsing(fn (Role $record) => UserRole::tryFrom($record->name)?->label() ?? $record->name)
                     ->label('Role'),
                 Filter::make('no_roles')
                     ->label('No Roles')
