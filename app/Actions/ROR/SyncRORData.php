@@ -15,36 +15,12 @@ class SyncRORData
 
         $json = JsonParser::parse($jsonFilePath);
 
-        $countryCodesToImport = collect([
-            'CA',
-            'US',
-            'GB',
-            'AU',
-            'NZ',
-            'FR',
-            'DE',
-            'DK',
-            'NO',
-            'SE',
-            'CH',
-            'NL',
-            'IE',
-            'IS',
-            'GL',
-            'FI',
-            'BE',
-        ]);
-
         $update = is_callable($progressCallback);
 
         foreach ($json as $record) {
 
             // we only want to import "active" records
             if ($record['status'] !== 'active') {
-                continue;
-            }
-            // only import records with a country code we want
-            if ($countryCodesToImport->doesntContain($record['locations'][0]['geonames_details']['country_code'])) {
                 continue;
             }
 
