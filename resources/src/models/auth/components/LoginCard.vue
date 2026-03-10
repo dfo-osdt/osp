@@ -5,6 +5,8 @@ import { useQuasar } from 'quasar'
 import { extractErrorMessages } from '@/api/errors'
 import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue'
 
+const EMAIL_REGEX = /^\S[^\s@]*@\S[^\s.]*\.\S+$/
+
 const authStore = useAuthStore()
 const localeStore = useLocaleStore()
 const router = useRouter()
@@ -115,7 +117,7 @@ const emailRules = computed(() => [
   (val: string) => !!val || t('common.validation.email-required'),
   // must be valid email
   (val: string) =>
-    /^\S[^\s@]*@\S[^\s.]*\.\S+$/.test(val) || t('common.validation.email-invalid'),
+    EMAIL_REGEX.test(val) || t('common.validation.email-invalid'),
 ])
 
 const passwordRules = computed(() => [

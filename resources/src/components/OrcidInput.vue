@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { QInput } from 'quasar'
 
+const ORCID_REGEX = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/
+
 const { t } = useI18n()
 
 const [modelValue, modelModifiers] = defineModel<string, 'stripBaseUrl'>({
@@ -27,7 +29,7 @@ const [modelValue, modelModifiers] = defineModel<string, 'stripBaseUrl'>({
 const rules = [
   (val: string) =>
     val.length === 0
-    || /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/.test(val)
+    || ORCID_REGEX.test(val)
     || t('common.validation.orcid-invalid'),
   // check orcid checksum
   (val: string) => {

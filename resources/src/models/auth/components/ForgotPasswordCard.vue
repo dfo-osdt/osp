@@ -4,6 +4,8 @@ import type { ErrorResponse } from '@/api/errors'
 import { extractErrorMessages } from '@/api/errors'
 import { useSanctum } from '@/api/sanctum'
 
+const EMAIL_REGEX = /^\S[^\s@]*@\S[^\s.]*\.\S+$/
+
 const sanctum = useSanctum()
 const router = useRouter()
 const { t } = useI18n()
@@ -50,7 +52,7 @@ const emailRules = computed(() => [
   (val: string) => !!val || t('common.validation.email-required'),
   // must be valid email
   (val: string) =>
-    /^\S[^\s@]*@\S[^\s.]*\.\S+$/.test(val) || t('common.validation.email-invalid'),
+    EMAIL_REGEX.test(val) || t('common.validation.email-invalid'),
 ])
 </script>
 

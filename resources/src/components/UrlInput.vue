@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type { QInputProps, ValidationRule } from 'quasar'
 
+const props = defineProps<UrlInputProps>()
+
+const URL_REGEX = /^https?:\/\/(?:www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-\w()!@:%+.~#?&/=]*$/
+
 type UrlInputProps = Omit<QInputProps, 'modelValue' | 'lablel'> & {
   label?: string
   required?: boolean
 }
 
-const props = defineProps<UrlInputProps>()
 const attrs = useAttrs()
 
 const url = defineModel<string>({
@@ -28,7 +31,7 @@ const computedRules = computed<ValidationRule[]>(() => props.rules ?? [
   },
   (val: string) =>
     val.length === 0
-    || (/^https?:\/\/(?:www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b[-\w()!@:%+.~#?&/=]*$/.test(val))
+    || (URL_REGEX.test(val))
     || t('common.validation.url-invalid'),
 ])
 </script>

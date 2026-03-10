@@ -20,6 +20,8 @@ const props = withDefaults(
   },
 )
 
+const LEADING_NBSP_REGEX = /^(&nbsp;|\s)+/
+
 const value = useVModel(props, 'modelValue')
 
 const editor = ref<QEditor | null>(null)
@@ -68,7 +70,7 @@ watch(value, (newValue) => {
   }
 
   // Remove leading &nbsp; entities and whitespace
-  const cleaned = newValue.replace(/^(&nbsp;|\s)+/, '')
+  const cleaned = newValue.replace(LEADING_NBSP_REGEX, '')
   if (cleaned !== newValue) {
     value.value = cleaned
   }

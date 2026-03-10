@@ -12,6 +12,9 @@ import AzureUserSelect from './AzureUserSelect.vue'
 const emits = defineEmits<{
   (event: 'created', user: UserResource): void
 }>()
+
+const EMAIL_REGEX = /.[^\n\r@\u2028\u2029]*@.+\..+/
+
 const localStore = useLocaleStore()
 const authStore = useAuthStore()
 const { t } = useI18n()
@@ -67,7 +70,7 @@ const nameRules = [(val: string) => !!val || t('common.required')]
 const emailRules = [
   (val: string) => !!val || t('common.required'),
   (val: string) =>
-    /.[^\n\r@\u2028\u2029]*@.+\..+/.test(val)
+    EMAIL_REGEX.test(val)
     || t('common.validation.email-invalid'),
 ]
 </script>
