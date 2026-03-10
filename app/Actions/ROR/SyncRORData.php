@@ -25,6 +25,14 @@ class SyncRORData
             'DE',
             'DK',
             'NO',
+            'SE',
+            'CH',
+            'NL',
+            'IE',
+            'IS',
+            'GL',
+            'FI',
+            'BE',
         ]);
 
         $update = is_callable($progressCallback);
