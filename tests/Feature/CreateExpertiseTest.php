@@ -30,14 +30,13 @@ it('logs activity when creating expertise', function (): void {
     ], $user);
 
     $activity = Activity::query()
-        ->where('subject_type', Expertise::class)
-        ->where('subject_id', $expertise->id)
+        ->where('description', 'expertise.created')
         ->where('causer_id', $user->id)
         ->first();
 
     expect($activity)->not->toBeNull();
-    expect($activity->description)->toBe('expertise.created');
     expect($activity->properties->toArray())->toMatchArray([
+        'expertise_id' => $expertise->id,
         'name_en' => 'Data Science',
         'name_fr' => 'Science des données',
     ]);
