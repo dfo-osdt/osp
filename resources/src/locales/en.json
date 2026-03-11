@@ -427,8 +427,20 @@
     "invalid-signature": "Invalid Signature",
     "link-expired-text": "The signed link you're using has likely expired."
   },
+  "create-expertise-dialog": {
+    "checking-similar": "Checking for similar expertise...",
+    "click-to-select": "Click on an existing expertise to use it instead of creating a new one.",
+    "expertise-name-english": "Expertise Name (English)",
+    "expertise-name-french": "Expertise Name (French)",
+    "p1": "Once created, this expertise will be available to all users. Please make sure to use the correct terminology.",
+    "p2": "If the name of the expertise does not have an official French or English equivalent, please copy the name in both fields.",
+    "similar-found": "Similar expertise already exists:",
+    "title": "Create a New Expertise"
+  },
   "expertise": {},
   "expertise-select": {
+    "add-a-new-expertise": "Add a new expertise",
+    "cant-find": "Can't find the expertise you're looking for?",
     "hint": "Start typing to search for an expertise"
   },
   "forgot-password-card": {

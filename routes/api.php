@@ -193,7 +193,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(ExpertiseController::class)->group(function () {
         Route::get('/expertises', 'index');
+        Route::get('/expertises/similar', 'similar');
         Route::get('/expertises/{expertise}', 'show');
+        Route::post('/expertises', 'store');
     });
 
     Route::controller(AuthorExpertiseController::class)->group(function () {

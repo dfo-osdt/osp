@@ -427,8 +427,20 @@
     "invalid-signature": "Signature non valide",
     "link-expired-text": "Le lien signé que vous utilisez a probablement expiré."
   },
+  "create-expertise-dialog": {
+    "checking-similar": "Recherche d'expertise similaire...",
+    "click-to-select": "Cliquez sur une expertise existante pour l'utiliser au lieu d'en créer une nouvelle.",
+    "expertise-name-english": "Nom de l'expertise (anglais)",
+    "expertise-name-french": "Nom de l'expertise (français)",
+    "p1": "Une fois créée, cette expertise sera accessible à tous les utilisateurs. Veuillez vous assurer d'utiliser la terminologie correcte.",
+    "p2": "Si le nom de l'expertise n'a pas d'équivalent officiel français ou anglais, veuillez recopier le nom dans les deux champs.",
+    "similar-found": "Une expertise similaire existe déjà :",
+    "title": "Créer une nouvelle expertise"
+  },
   "expertise": {},
   "expertise-select": {
+    "add-a-new-expertise": "Ajouter une nouvelle expertise",
+    "cant-find": "Vous ne trouvez pas l'expertise que vous recherchez ?",
     "hint": "Commencez à taper pour rechercher une expertise"
   },
   "forgot-password-card": {
