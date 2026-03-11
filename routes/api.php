@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthorEmploymentController;
 use App\Http\Controllers\AuthorExpertiseController;
 use App\Http\Controllers\AuthorPublicationController;
 use App\Http\Controllers\Azure\AzureDirectorySearchController;
+use App\Http\Controllers\Expertise\SuggestSimilarExpertiseController;
 use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunctionalAreaController;
 use App\Http\Controllers\FunderController;
@@ -191,9 +192,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/journals/{journal}', 'show');
     });
 
+    Route::get('/expertises/similar', SuggestSimilarExpertiseController::class);
+
     Route::controller(ExpertiseController::class)->group(function () {
         Route::get('/expertises', 'index');
-        Route::get('/expertises/similar', 'similar');
         Route::get('/expertises/{expertise}', 'show');
         Route::post('/expertises', 'store');
     });
