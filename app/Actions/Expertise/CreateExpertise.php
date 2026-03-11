@@ -21,9 +21,9 @@ class CreateExpertise
         ]);
 
         activity()
-            ->performedOn($expertise)
             ->causedBy($user)
             ->withProperties([
+                'expertise_id' => $expertise->id,
                 'name_en' => $expertise->name_en,
                 'name_fr' => $expertise->name_fr,
             ])
