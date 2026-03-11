@@ -3,11 +3,13 @@
 namespace App\Actions\Organizations;
 
 use App\Models\Organization;
+use App\Traits\ComparesStringSimilarity;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class SuggestOrganizationMatches
 {
+    use ComparesStringSimilarity;
+
     /**
      * Find potential ROR matches for all unvalidated organizations.
      *
@@ -43,7 +45,6 @@ class SuggestOrganizationMatches
     {
         $candidates = collect();
 
-        // Normalize source names for comparison
         $sourceNames = collect([
             'name_en' => self::normalize($org->name_en),
             'name_fr' => self::normalize($org->name_fr),
@@ -51,7 +52,6 @@ class SuggestOrganizationMatches
             'abbr_fr' => $org->abbr_fr ? self::normalize($org->abbr_fr) : null,
         ])->filter();
 
-        // Query candidates using LIKE for each source name to narrow the search
         $candidateOrgs = Organization::query()
             ->where('is_validated', true)
             ->whereNotNull('ror_identifier')
@@ -79,13 +79,11 @@ class SuggestOrganizationMatches
             $bestScore = 0;
             $matchedOn = '';
 
-            // Compare against candidate's main names
             $targetNames = collect([
                 'name_en' => self::normalize($candidate->name_en),
                 'name_fr' => self::normalize($candidate->name_fr),
             ]);
 
-            // Also compare against all ROR name variants
             $rorNames = collect(json_decode((string) $candidate->ror_names, true) ?? [])
                 ->pluck('value')
                 ->map(fn (string $value): string => self::normalize($value));
@@ -113,57 +111,5 @@ class SuggestOrganizationMatches
         }
 
         return $candidates->sortByDesc('score')->take($maxSuggestions)->values();
-    }
-
-    /**
-     * Normalize a string for comparison.
-     */
-    private static function normalize(string $value): string
-    {
-        $value = Str::lower($value);
-        $value = Str::ascii($value);
-        // Remove common prefixes/suffixes that reduce match quality
-        $value = (string) preg_replace('/\b(the|of|de|du|des|la|le|les|l\'|d\'|und|and|et)\b/', '', $value);
-        $value = (string) preg_replace('/[^\w\s]/', '', $value);
-        $value = (string) preg_replace('/\s+/', ' ', $value);
-
-        return trim($value);
-    }
-
-    /**
-     * Extract meaningful search terms from an organization name.
-     *
-     * @return array<int, string>
-     */
-    private static function extractSearchTerms(string $name): array
-    {
-        $stopWords = ['the', 'of', 'de', 'du', 'des', 'la', 'le', 'les', 'and', 'et', 'und', 'for', 'pour'];
-
-        return collect(explode(' ', $name))
-            ->map(fn (string $word): string => trim($word, '.,;:\'"-()'))
-            ->filter(fn (string $word): bool => Str::length($word) >= 3 && ! in_array(Str::lower($word), $stopWords))
-            ->values()
-            ->all();
-    }
-
-    /**
-     * Calculate similarity score between two normalized strings (0-100).
-     */
-    private static function calculateSimilarity(string $a, string $b): int
-    {
-        // Exact match
-        if ($a === $b) {
-            return 100;
-        }
-
-        // Use similar_text percentage
-        similar_text($a, $b, $percent);
-
-        // Boost score if one string contains the other
-        if (Str::contains($a, $b) || Str::contains($b, $a)) {
-            $percent = max($percent, 80);
-        }
-
-        return (int) round($percent);
     }
 }
