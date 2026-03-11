@@ -1,105 +1,109 @@
 <script setup lang="ts">
-import type { ExpertiseResource, ExpertiseSimilarMatch } from '../Expertise';
-import type { ErrorResponse } from '@/api/errors';
-import { extractErrorMessages } from '@/api/errors';
-import BaseDialog from '@/components/BaseDialog.vue';
-import { ExpertiseService } from '../Expertise';
+import type { ExpertiseResource, ExpertiseSimilarMatch } from '../Expertise'
+import type { ErrorResponse } from '@/api/errors'
+import { extractErrorMessages } from '@/api/errors'
+import BaseDialog from '@/components/BaseDialog.vue'
+import { ExpertiseService } from '../Expertise'
 
 const props = withDefaults(
   defineProps<{
-    initialSearch?: string;
+    initialSearch?: string
   }>(),
   {
     initialSearch: '',
   },
-);
+)
 
 const emit = defineEmits<{
-  (event: 'created', payload: ExpertiseResource): void;
-  (event: 'selected', payload: ExpertiseResource): void;
-}>();
+  (event: 'created', payload: ExpertiseResource): void
+  (event: 'selected', payload: ExpertiseResource): void
+}>()
 
-const localeStore = useLocaleStore();
-const { t } = useI18n();
+const localeStore = useLocaleStore()
+const { t } = useI18n()
 
-const name_en = ref(localeStore.locale === 'en' ? props.initialSearch : '');
-const name_fr = ref(localeStore.locale === 'fr' ? props.initialSearch : '');
-const loading = ref(false);
-const errorMessage = ref<ErrorResponse | null>(null);
-const similarLoading = ref(false);
-const similarMatches = ref<ExpertiseSimilarMatch[]>([]);
-const debounceTimer = ref<ReturnType<typeof setTimeout> | null>(null);
+const name_en = ref(localeStore.locale === 'en' ? props.initialSearch : '')
+const name_fr = ref(localeStore.locale === 'fr' ? props.initialSearch : '')
+const loading = ref(false)
+const errorMessage = ref<ErrorResponse | null>(null)
+const similarLoading = ref(false)
+const similarMatches = ref<ExpertiseSimilarMatch[]>([])
+const debounceTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
 function debouncedSearch() {
   if (debounceTimer.value) {
-    clearTimeout(debounceTimer.value);
+    clearTimeout(debounceTimer.value)
   }
   debounceTimer.value = setTimeout(async () => {
-    await searchSimilar();
-  }, 400);
+    await searchSimilar()
+  }, 400)
 }
 
 async function searchSimilar() {
   if (!name_en.value && !name_fr.value) {
-    similarMatches.value = [];
-    return;
+    similarMatches.value = []
+    return
   }
-  similarLoading.value = true;
+  similarLoading.value = true
   try {
     const response = await ExpertiseService.similar(
       name_en.value,
       name_fr.value,
-    );
-    similarMatches.value = response.data;
-  } catch {
-    similarMatches.value = [];
-  } finally {
-    similarLoading.value = false;
+    )
+    similarMatches.value = response.data
+  }
+  catch {
+    similarMatches.value = []
+  }
+  finally {
+    similarLoading.value = false
   }
 }
 
 function selectExisting(match: ExpertiseSimilarMatch) {
-  emit('selected', match.expertise);
+  emit('selected', match.expertise)
 }
 
 async function createExpertise() {
-  loading.value = true;
-  errorMessage.value = null;
+  loading.value = true
+  errorMessage.value = null
   try {
     const expertise = await ExpertiseService.create({
       name_en: name_en.value,
       name_fr: name_fr.value,
-    });
-    emit('created', expertise);
-  } catch (error) {
-    errorMessage.value = extractErrorMessages(error as any);
-  } finally {
-    loading.value = false;
+    })
+    emit('created', expertise)
+  }
+  catch (error) {
+    errorMessage.value = extractErrorMessages(error as any)
+  }
+  finally {
+    loading.value = false
   }
 }
 
 onMounted(() => {
   if (props.initialSearch) {
-    searchSimilar();
+    searchSimilar()
   }
-});
+})
 
 onBeforeUnmount(() => {
   if (debounceTimer.value) {
-    clearTimeout(debounceTimer.value);
+    clearTimeout(debounceTimer.value)
   }
-});
+})
 
 function matchLabel(match: ExpertiseSimilarMatch) {
   return localeStore.locale === 'fr'
     ? match.expertise.data.name_fr
-    : match.expertise.data.name_en;
+    : match.expertise.data.name_en
 }
 
 function matchSecondaryLabel(match: ExpertiseSimilarMatch) {
   return localeStore.locale === 'fr'
     ? match.expertise.data.name_en
-    : match.expertise.data.name_fr;
+    : match.expertise.data.name_fr
 }
 </script>
 

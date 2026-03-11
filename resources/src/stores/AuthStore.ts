@@ -1,7 +1,6 @@
 import type { Ref } from 'vue'
 import type { UserAuthenticationRecord } from '../models/User/AuthenticatedUser'
 import type { SanctumUser } from '@/api/sanctum'
-import type { Locale } from '@/stores/LocaleStore'
 import { Notify } from 'quasar'
 import { useSanctum } from '@/api/sanctum'
 import { i18n } from '@/plugins/i18n'
@@ -12,7 +11,6 @@ import {
 
 export const useAuthStore = defineStore('AuthStore', () => {
   const { login: sanctumLogin, logout: sanctumLogout } = useSanctum()
-  const localeStore = useLocaleStore()
   const idleTimerMin: number = import.meta.env.VITE_IDLE_TIMER_MIN || 30
   const openAuthOnly = import.meta.env.VITE_AZURE_ENABLE_AUTH === 'true'
   const { t } = i18n.global
@@ -119,7 +117,6 @@ export const useAuthStore = defineStore('AuthStore', () => {
       email,
       password,
       remember,
-      locale: localeStore.locale as Locale,
     }
 
     // login user and get user data

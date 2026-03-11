@@ -9,7 +9,6 @@ import PasswordWithToggleInput from '@/components/PasswordWithToggleInput.vue'
 const sanctum = useSanctum()
 const router = useRouter()
 const { t } = useI18n()
-const localeStore = useLocaleStore()
 
 // get email and token from query string
 const email = ref((router.currentRoute.value.query?.email as string) || '')
@@ -34,7 +33,6 @@ async function reset() {
     token: token.value,
     password: password.value,
     password_confirmation: password_confirmation.value,
-    locale: localeStore.locale,
   }
 
   await sanctum
@@ -83,12 +81,7 @@ const passwordConfirmationRules = computed(() => [
       <p class="text-body1 text-grey-8 q-pb-lg text-center">
         {{ $t('reset-password.text', [email]) }}
       </p>
-      <q-banner
-        v-if="errorMessage"
-        dark
-        rounded
-        class="bg-negative q-mb-lg"
-      >
+      <q-banner v-if="errorMessage" dark rounded class="bg-negative q-mb-lg">
         <template #avatar>
           <q-icon name="mdi-alert-circle-outline" />
         </template>
@@ -105,12 +98,7 @@ const passwordConfirmationRules = computed(() => [
         </template>
         <div>{{ statusMessage }}</div>
       </q-banner>
-      <q-form
-        v-if="!hideForm"
-        class="q-gutter-md"
-        autofocus
-        @submit="reset"
-      >
+      <q-form v-if="!hideForm" class="q-gutter-md" autofocus @submit="reset">
         <PasswordWithToggleInput
           v-model="password"
           outlined

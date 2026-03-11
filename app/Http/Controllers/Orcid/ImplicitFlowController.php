@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Orcid;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthorResource;
-use App\Traits\LocaleTrait;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -14,8 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 class ImplicitFlowController extends Controller
 {
-    use LocaleTrait;
-
     /**
      * Handles POST request from client that has used the ORCID Implicit Flow and received
      * an access token. The access token is then used to retrieve the ORCID iD of the user
@@ -81,7 +78,7 @@ class ImplicitFlowController extends Controller
     public function redirect(Request $request): RedirectResponse
     {
         // get current locale
-        $locale = $this->getLocaleFromRequest($request);
+        $locale = app()->getLocale();
 
         $clientID = config('osp.orcid.client_id');
         $redirectURI = config('osp.orcid.redirect_uri');

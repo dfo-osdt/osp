@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Orcid;
 
 use App\Http\Integrations\Orcid\Enums\ORCIDAuthScope;
 use App\Models\User;
-use App\Traits\LocaleTrait;
 use Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,8 +20,6 @@ use Spatie\Activitylog\Facades\CauserResolver;
  */
 class FullFlowController
 {
-    use LocaleTrait;
-
     public function callback(Request $request): RedirectResponse
     {
         Log::debug('Callback from ORCID');
@@ -113,7 +110,7 @@ class FullFlowController
     public function redirect(Request $request): RedirectResponse
     {
         // get current locale
-        $locale = $this->getLocaleFromRequest($request);
+        $locale = app()->getLocale();
 
         $clientID = config('osp.orcid.client_id');
         $redirectURI = config('osp.orcid.redirect_uri');

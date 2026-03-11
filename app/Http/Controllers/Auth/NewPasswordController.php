@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Traits\LocaleTrait;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,8 +14,6 @@ use Illuminate\Validation\ValidationException;
 
 class NewPasswordController extends Controller
 {
-    use LocaleTrait;
-
     /**
      * Handle an incoming new password request.
      *
@@ -25,8 +22,6 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $this->setLocaleFromRequest($request);
-
         // log password reset attempt
         activity()
             ->causedBy($request->user())

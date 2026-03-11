@@ -11,7 +11,6 @@ const newPassword = ref('')
 const newPasswordConfirmation = ref('')
 
 const { t } = useI18n()
-const localeStore = useLocaleStore()
 const authStore = useAuthStore()
 const sanctum = useSanctum()
 const loading = ref(false)
@@ -29,7 +28,6 @@ async function changePassword() {
       current_password: password.value,
       password: newPassword.value,
       password_confirmation: newPasswordConfirmation.value,
-      locale: localeStore.locale,
     })
     .then((response) => {
       changed.value = response.data

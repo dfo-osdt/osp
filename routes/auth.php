@@ -43,7 +43,7 @@ if (! config('osp.azure.enable_auth')) {
         ->name('verification.send');
 
     Route::post('/change-password', [ChangePasswordController::class, '__invoke'])
-        ->middleware(['auth', 'respond.json', 'locale'])
+        ->middleware(['auth', 'respond.json'])
         ->name('change.password');
 
     Route::get('/verify-invitation/{id}/{hash}', [InvitedUserController::class, 'accept'])
