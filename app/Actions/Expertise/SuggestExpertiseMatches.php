@@ -16,8 +16,8 @@ class SuggestExpertiseMatches
     public static function handle(string $nameEn = '', string $nameFr = '', int $maxSuggestions = 5, int $minimumScore = 50): Collection
     {
         $sourceNames = collect([
-            'name_en' => $nameEn ? self::normalize($nameEn) : null,
-            'name_fr' => $nameFr ? self::normalize($nameFr) : null,
+            'name_en' => $nameEn !== '' && $nameEn !== '0' ? self::normalize($nameEn) : null,
+            'name_fr' => $nameFr !== '' && $nameFr !== '0' ? self::normalize($nameFr) : null,
         ])->filter();
 
         if ($sourceNames->isEmpty()) {
@@ -26,7 +26,7 @@ class SuggestExpertiseMatches
 
         $searchTerms = collect();
 
-        if ($nameEn) {
+        if ($nameEn !== '' && $nameEn !== '0') {
             $searchTerms = $searchTerms->merge(self::extractSearchTerms($nameEn));
         }
 
