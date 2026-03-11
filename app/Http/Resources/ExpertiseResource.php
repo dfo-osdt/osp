@@ -22,6 +22,7 @@ class ExpertiseResource extends JsonResource
                 'id' => $this->id,
                 'name_en' => $this->name_en,
                 'name_fr' => $this->name_fr,
+                'is_validated' => $this->is_validated,
             ],
             'can' => [
                 'update' => false,

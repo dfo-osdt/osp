@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name_en
  * @property string $name_fr
+ * @property bool $is_validated
  *
  * @method static \Database\Factories\ExpertiseFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise newModelQuery()
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereIsValidated($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereNameEn($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereNameFr($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereUpdatedAt($value)
@@ -35,4 +37,14 @@ class Expertise extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_validated' => 'boolean',
+        ];
+    }
 }
