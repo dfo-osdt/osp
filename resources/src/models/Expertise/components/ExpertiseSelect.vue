@@ -1,73 +1,73 @@
 <script setup lang="ts">
-import type { ExpertiseResource, ExpertiseResourceList } from '../Expertise';
-import { QSelect } from 'quasar';
-import { ExpertiseQuery, ExpertiseService } from '../Expertise';
-import ExpertiseChip from './ExpertiseChip.vue';
-import CreateExpertiseDialog from './CreateExpertiseDialog.vue';
+import type { ExpertiseResource, ExpertiseResourceList } from '../Expertise'
+import { QSelect } from 'quasar'
+import { ExpertiseQuery, ExpertiseService } from '../Expertise'
+import CreateExpertiseDialog from './CreateExpertiseDialog.vue'
+import ExpertiseChip from './ExpertiseChip.vue'
 
-const localeStore = useLocaleStore();
+const localeStore = useLocaleStore()
 
-const expertiseSelect = ref<QSelect | null>(null);
+const expertiseSelect = ref<QSelect | null>(null)
 
-const expertises = ref<ExpertiseResourceList>({ data: [] });
-const expertiseLoading = ref(false);
-const lastSearchTerm = ref('');
-const showCreateExpertiseDialog = ref(false);
+const expertises = ref<ExpertiseResourceList>({ data: [] })
+const expertiseLoading = ref(false)
+const lastSearchTerm = ref('')
+const showCreateExpertiseDialog = ref(false)
 
-const modelValue = defineModel<ExpertiseResource[] | undefined>();
+const modelValue = defineModel<ExpertiseResource[] | undefined>()
 
 async function filterExpertises(
   val: string,
   update: (arg: () => Promise<void>) => void,
 ) {
-  lastSearchTerm.value = val;
+  lastSearchTerm.value = val
   update(async () => {
     if (val !== '') {
-      const needle = val.toLowerCase();
-      expertiseLoading.value = true;
+      const needle = val.toLowerCase()
+      expertiseLoading.value = true
 
-      const query = new ExpertiseQuery();
+      const query = new ExpertiseQuery()
       query
         .when(
           localeStore.locale === 'fr',
-          (query) => query.filterNameFr(needle),
-          (query) => query.filterNameEn(needle),
+          query => query.filterNameFr(needle),
+          query => query.filterNameEn(needle),
         )
         .sortByNameLength(localeStore.locale)
-        .paginate(1, 100);
+        .paginate(1, 100)
 
-      expertises.value = await ExpertiseService.list(query);
-      expertiseLoading.value = false;
+      expertises.value = await ExpertiseService.list(query)
+      expertiseLoading.value = false
     }
-  });
+  })
 }
 
 function addExpertise(item: ExpertiseResource) {
-  expertiseSelect.value?.updateInputValue('', true);
+  expertiseSelect.value?.updateInputValue('', true)
   if (!modelValue.value) {
-    modelValue.value = [];
+    modelValue.value = []
   }
   const alreadySelected = modelValue.value.some(
-    (e) => e.data.id === item.data.id,
-  );
+    e => e.data.id === item.data.id,
+  )
   if (!alreadySelected) {
-    modelValue.value = [...modelValue.value, item];
+    modelValue.value = [...modelValue.value, item]
   }
-  showCreateExpertiseDialog.value = false;
+  showCreateExpertiseDialog.value = false
 }
 
 function createdExpertise(item: ExpertiseResource) {
-  addExpertise(item);
+  addExpertise(item)
 }
 
 function selectedExpertise(item: ExpertiseResource) {
-  addExpertise(item);
+  addExpertise(item)
 }
 
 function optionLabel(expertise: ExpertiseResource) {
   return localeStore.locale === 'fr'
     ? expertise.data.name_fr
-    : expertise.data.name_en;
+    : expertise.data.name_en
 }
 </script>
 
@@ -131,6 +131,7 @@ function optionLabel(expertise: ExpertiseResource) {
     <CreateExpertiseDialog
       v-if="showCreateExpertiseDialog"
       v-model="showCreateExpertiseDialog"
+      :initial-search="lastSearchTerm"
       @created="createdExpertise"
       @selected="selectedExpertise"
     />
