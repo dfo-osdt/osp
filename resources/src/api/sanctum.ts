@@ -1,16 +1,15 @@
-import type { Locale } from '@/stores/LocaleStore'
 import { http } from './http'
 
 export interface SanctumUser {
   email: string
   password: string
   remember?: boolean
-  locale?: Locale
 }
 export interface SanctumRegisterUser extends SanctumUser {
   first_name: string
   last_name: string
   password_confirmation: string
+  locale?: string
 }
 
 export interface SanctumRegisterResponse {
@@ -20,7 +19,6 @@ export interface SanctumRegisterResponse {
 
 export interface SanctumForgotPasswordRequest {
   email: string
-  locale?: Locale
 }
 
 export interface SanctumStatusResponse {
@@ -32,14 +30,12 @@ export interface SanctumResetPasswordRequest {
   password: string
   password_confirmation: string
   token: string
-  locale?: Locale
 }
 
 export interface SanctumChangePasswordRequest {
   current_password: string
   password: string
   password_confirmation: string
-  locale?: Locale
 }
 
 export function useSanctum() {
@@ -58,20 +54,20 @@ export function useSanctum() {
     )
   }
 
-  const forgotPassword = async (email: string, locale: Locale) => {
+  const forgotPassword = async (email: string) => {
     await csrf()
-    return await http.post<
-      SanctumForgotPasswordRequest,
-      SanctumStatusResponse
-    >('/forgot-password', { email, locale })
+    return await http.post<SanctumForgotPasswordRequest, SanctumStatusResponse>(
+      '/forgot-password',
+      { email },
+    )
   }
 
   const resetPassword = async (data: SanctumResetPasswordRequest) => {
     await csrf()
-    return await http.post<
-      SanctumResetPasswordRequest,
-      SanctumStatusResponse
-    >('/reset-password', data)
+    return await http.post<SanctumResetPasswordRequest, SanctumStatusResponse>(
+      '/reset-password',
+      data,
+    )
   }
 
   // Methods below will only work if the user is authenticated,
@@ -82,10 +78,10 @@ export function useSanctum() {
   }
 
   const changePassword = async (data: SanctumChangePasswordRequest) => {
-    return await http.post<
-      SanctumChangePasswordRequest,
-      SanctumStatusResponse
-    >('/change-password', data)
+    return await http.post<SanctumChangePasswordRequest, SanctumStatusResponse>(
+      '/change-password',
+      data,
+    )
   }
 
   return {

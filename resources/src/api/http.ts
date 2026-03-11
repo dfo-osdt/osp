@@ -51,7 +51,11 @@ class Http {
       withXSRFToken: true,
     })
 
-    // http.interceptors.request.use(injectToken, (error) => Promise.reject(error));
+    http.interceptors.request.use((config) => {
+      const locale = localStorage.getItem('locale') ?? 'en'
+      config.headers['Accept-Language'] = locale
+      return config
+    })
 
     http.interceptors.response.use(
       response => response,

@@ -4,14 +4,11 @@ import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import ManageAuthorEmploymentsCard from '@/models/AuthorEmployment/components/ManageAuthorEmploymentsCard.vue'
 
-const localeStore = useLocaleStore()
 const authStore = useAuthStore()
 const { t } = useI18n()
 const q = useQuasar()
 
-const url = computed(() => {
-  return `/api/user/orcid/verify?locale=${localeStore.locale}`
-})
+const url = '/api/user/orcid/verify'
 
 const isVerified = computed(() => {
   return authStore.user?.author.data.orcid_verified
@@ -46,7 +43,9 @@ async function revokeToken() {
     <q-card-section>
       <div class="row q-gutter-xl">
         <div class="col-12 col-md-1">
-          <span class="text-primary text-subtitle1">{{ t('orcid.connect-header') }}</span>
+          <span class="text-primary text-subtitle1">{{
+            t('orcid.connect-header')
+          }}</span>
         </div>
         <div class="col text-body2 q-pt-xs">
           <p>{{ t('orcid.connect-introduction') }}</p>
@@ -75,9 +74,7 @@ async function revokeToken() {
               <div>
                 <q-btn outline color="primary" :href="url">
                   <OrcidAvatar size="lg" />
-                  <span
-                    class="q-ml-md q-my-sm text-primary"
-                  >{{ t('ocrid.verify-btn-text') }}
+                  <span class="q-ml-md q-my-sm text-primary">{{ t('ocrid.verify-btn-text') }}
                   </span>
                 </q-btn>
               </div>
@@ -88,11 +85,17 @@ async function revokeToken() {
       <q-separator class="q-my-md" />
       <div class="row q-gutter-xl">
         <div class="col-12 col-md-1">
-          <span class="text-primary text-subtitle1">{{ t('orcid.employment-title') }}</span>
+          <span class="text-primary text-subtitle1">{{
+            t('orcid.employment-title')
+          }}</span>
         </div>
         <div class="col text-body2 q-pt-xs">
           <p>{{ t('orcid.employment-section-intro') }}</p>
-          <ManageAuthorEmploymentsCard v-if="authStore.user" :author-id="authStore.user?.author.data.id" :disabled="!isVerified" />
+          <ManageAuthorEmploymentsCard
+            v-if="authStore.user"
+            :author-id="authStore.user?.author.data.id"
+            :disabled="!isVerified"
+          />
         </div>
       </div>
     </q-card-section>

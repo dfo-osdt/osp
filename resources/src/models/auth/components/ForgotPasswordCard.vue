@@ -9,7 +9,6 @@ const EMAIL_REGEX = /^\S[^\s@]*@\S[^\s.]*\.\S+$/
 const sanctum = useSanctum()
 const router = useRouter()
 const { t } = useI18n()
-const localeStore = useLocaleStore()
 
 // user related data
 const email = ref((router.currentRoute.value.query?.email as string) || '')
@@ -23,7 +22,7 @@ const statusMessage = ref('')
 async function reset() {
   loading.value = true
   await sanctum
-    .forgotPassword(email.value, localeStore.locale)
+    .forgotPassword(email.value)
     .then((resp) => {
       statusMessage.value = resp.data.status
       hideForm.value = true
@@ -70,12 +69,7 @@ const emailRules = computed(() => [
       <p class="text-body1 text-grey-8 q-pb-lg">
         {{ t('forgot-password-card.text') }}
       </p>
-      <q-banner
-        v-if="errorMessage"
-        dark
-        rounded
-        class="bg-negative q-mb-lg"
-      >
+      <q-banner v-if="errorMessage" dark rounded class="bg-negative q-mb-lg">
         <template #avatar>
           <q-icon name="mdi-alert-circle-outline" />
         </template>
@@ -92,12 +86,7 @@ const emailRules = computed(() => [
         </template>
         <div>{{ statusMessage }}</div>
       </q-banner>
-      <q-form
-        v-if="!hideForm"
-        class="q-gutter-md"
-        autofocus
-        @submit="reset"
-      >
+      <q-form v-if="!hideForm" class="q-gutter-md" autofocus @submit="reset">
         <q-input
           v-model="email"
           type="email"

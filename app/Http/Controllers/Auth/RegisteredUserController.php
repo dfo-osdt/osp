@@ -6,7 +6,6 @@ use App\Actions\Accounts\RegisterUser;
 use App\DTOs\RegisterUserData;
 use App\Http\Controllers\Controller;
 use App\Rules\AuthorizedEmailDomain;
-use App\Traits\LocaleTrait;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,8 +13,6 @@ use Illuminate\Validation\Rules\Password;
 
 class RegisteredUserController extends Controller
 {
-    use LocaleTrait;
-
     /**
      * Handle an incoming registration request.
      *
@@ -23,8 +20,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $this->setLocaleFromRequest($request);
-
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -38,7 +33,7 @@ class RegisteredUserController extends Controller
             $validated['last_name'],
             $validated['email'],
             $validated['password'],
-            $validated['locale'] ?? 'en'
+            $validated['locale'] ?? app()->getLocale()
         );
 
         $user = RegisterUser::register($data);
