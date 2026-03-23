@@ -22,7 +22,7 @@ jobs:
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
       - name: pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
       - name: Use Node.js 22.x
         uses: actions/setup-node@v6
         with:
