@@ -2,21 +2,23 @@
 
 namespace App\Models;
 
+use Database\Factories\AnnouncementFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string $title_en
  * @property string $title_fr
  * @property string $text_en
  * @property string $text_fr
- * @property \Illuminate\Support\Carbon $start_at
- * @property \Illuminate\Support\Carbon $end_at
+ * @property Carbon $start_at
+ * @property Carbon $end_at
  *
  * @method static Builder<static>|Announcement active()
  * @method static \Database\Factories\AnnouncementFactory factory($count = null, $state = [])
@@ -37,7 +39,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Announcement extends Model
 {
-    /** @use HasFactory<\Database\Factories\AnnouncementFactory> */
+    /** @use HasFactory<AnnouncementFactory> */
     use HasFactory;
 
     /**

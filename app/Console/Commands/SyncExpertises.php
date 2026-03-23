@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Actions\Expertise\SyncExpertiseWithScience;
 use Illuminate\Console\Command;
 
 class SyncExpertises extends Command
@@ -27,7 +28,7 @@ class SyncExpertises extends Command
     {
         $this->info('Syncing expertises...');
 
-        $result = \App\Actions\Expertise\SyncExpertiseWithScience::handle(function ($message): void {
+        $result = SyncExpertiseWithScience::handle(function ($message): void {
             $this->info($message);
         });
 

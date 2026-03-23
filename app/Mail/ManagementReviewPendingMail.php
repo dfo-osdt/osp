@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class ManagementReviewPendingMail extends Mailable implements ShouldQueue
 {
@@ -22,7 +23,7 @@ class ManagementReviewPendingMail extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      *
-     * @param  \Illuminate\Support\Collection<int, ManagementReviewStep>  $reviews
+     * @param  Collection<int, ManagementReviewStep>  $reviews
      */
     public function __construct($reviews, public User $user)
     {

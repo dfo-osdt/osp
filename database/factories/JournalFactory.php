@@ -6,7 +6,7 @@ use App\Models\Journal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Journal>
+ * @extends Factory<Journal>
  */
 class JournalFactory extends Factory
 {

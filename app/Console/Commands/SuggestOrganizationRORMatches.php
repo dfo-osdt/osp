@@ -6,6 +6,7 @@ use App\Actions\Organizations\MergeOrganizations;
 use App\Actions\Organizations\SuggestOrganizationMatches;
 use App\Models\Organization;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\select;
@@ -100,7 +101,7 @@ class SuggestOrganizationRORMatches extends Command
     }
 
     /**
-     * @param  \Illuminate\Support\Collection<int, array{organization: Organization, score: int, matched_on: string}>  $matches
+     * @param  Collection<int, array{organization: Organization, score: int, matched_on: string}>  $matches
      */
     private function handleInteractiveMerge(Organization $source, $matches): void
     {

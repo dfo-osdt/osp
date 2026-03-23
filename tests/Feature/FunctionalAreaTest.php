@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\FunctionalArea;
 use App\Models\User;
 
 test('an authenticated user can get a list of the functional areas', function (): void {
@@ -14,6 +15,6 @@ test('an authenticated user can get a list of the functional areas', function ()
 
     ray($response->json());
     $response->assertOk();
-    $areaCount = \App\Models\FunctionalArea::query()->count();
+    $areaCount = FunctionalArea::query()->count();
     expect($response->json('data'))->toHaveCount($areaCount);
 });

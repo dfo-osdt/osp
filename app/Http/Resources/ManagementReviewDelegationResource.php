@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ManagementReviewDelegation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @mixin \App\Models\ManagementReviewDelegation
+ * @mixin ManagementReviewDelegation
  */
 class ManagementReviewDelegationResource extends JsonResource
 {

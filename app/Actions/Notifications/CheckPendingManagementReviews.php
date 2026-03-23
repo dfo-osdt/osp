@@ -29,7 +29,7 @@ class CheckPendingManagementReviews
 
             // Only send email if user has at least one review that's 4+ business days old
             if ($hasOldReview) {
-                $user = \App\Models\User::query()->findOrFail($userId);
+                $user = User::query()->findOrFail($userId);
                 Mail::queue(new ManagementReviewPendingMail($userReviews, $user));
                 Log::info("Queued management review pending email for user: {$user->full_name}");
                 $notifiedUsers[] = $user;

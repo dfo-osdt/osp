@@ -46,14 +46,14 @@ test('it merges organizations and updates all related records', function (): voi
     expect($authorEmployment->fresh()->organization_id)->toBe($targetOrg->id);
     expect($funder->fresh()->organization_id)->toBe($targetOrg->id);
 
-    expect(\App\Models\Organization::query()->find($sourceOrg->id))->toBeNull();
+    expect(Organization::query()->find($sourceOrg->id))->toBeNull();
 });
 
 test('it throws exception when trying to merge organization with itself', function (): void {
     $organization = Organization::factory()->create();
 
     MergeOrganizations::handle($organization, $organization);
-})->throws(\InvalidArgumentException::class, 'Source and target organizations cannot be the same.');
+})->throws(InvalidArgumentException::class, 'Source and target organizations cannot be the same.');
 
 test('it rolls back on error and preserves data integrity', function (): void {
     $sourceOrg = Organization::factory()->create(['name_en' => 'Source Org']);
@@ -65,11 +65,11 @@ test('it rolls back on error and preserves data integrity', function (): void {
 
     try {
         MergeOrganizations::handle($sourceOrg, $targetOrg);
-    } catch (\Exception) {
+    } catch (Exception) {
     }
 
     expect($author->fresh()->organization_id)->toBe($sourceOrg->id);
-    expect(\App\Models\Organization::query()->find($sourceOrg->id))->not->toBeNull();
+    expect(Organization::query()->find($sourceOrg->id))->not->toBeNull();
 });
 
 test('it handles organizations with no related records', function (): void {
@@ -79,5 +79,5 @@ test('it handles organizations with no related records', function (): void {
     $result = MergeOrganizations::handle($sourceOrg, $targetOrg);
 
     expect($result)->toBeTrue();
-    expect(\App\Models\Organization::query()->find($sourceOrg->id))->toBeNull();
+    expect(Organization::query()->find($sourceOrg->id))->toBeNull();
 });

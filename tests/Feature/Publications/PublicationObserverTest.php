@@ -3,6 +3,7 @@
 use App\Enums\Permissions\UserRole;
 use App\Enums\PublicationStatus;
 use App\Models\Publication;
+use App\Models\Region;
 use App\Models\User;
 
 test('regional observer sees published publications and unpublished in their region', function (): void {
@@ -78,8 +79,8 @@ test('regional observer sees unpublished publications from their region via scop
     $onpObserver = User::factory()->create();
     $onpObserver->assignRole(UserRole::ONP_OBSERVER->value);
 
-    $onpRegion = \App\Models\Region::query()->where('slug', 'onp')->firstOrFail();
-    $arcRegion = \App\Models\Region::query()->where('slug', 'arc')->firstOrFail();
+    $onpRegion = Region::query()->where('slug', 'onp')->firstOrFail();
+    $arcRegion = Region::query()->where('slug', 'arc')->firstOrFail();
 
     $acceptedOnp = Publication::factory()->create([
         'status' => PublicationStatus::ACCEPTED,
@@ -121,9 +122,9 @@ test('multiple regional observer roles allow viewing from multiple regions via s
     $multiObserver = User::factory()->create();
     $multiObserver->assignRole([UserRole::ARC_OBSERVER->value, UserRole::PAC_OBSERVER->value]);
 
-    $arcRegion = \App\Models\Region::query()->where('slug', 'arc')->firstOrFail();
-    $pacRegion = \App\Models\Region::query()->where('slug', 'pac')->firstOrFail();
-    $ncrRegion = \App\Models\Region::query()->where('slug', 'ncr')->firstOrFail();
+    $arcRegion = Region::query()->where('slug', 'arc')->firstOrFail();
+    $pacRegion = Region::query()->where('slug', 'pac')->firstOrFail();
+    $ncrRegion = Region::query()->where('slug', 'ncr')->firstOrFail();
 
     $arcPub = Publication::factory()->create([
         'status' => PublicationStatus::ACCEPTED,

@@ -3,6 +3,7 @@
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\Permissions\UserRole;
 use App\Models\ManuscriptRecord;
+use App\Models\Region;
 use App\Models\User;
 
 test('regional observer can view draft manuscript in their region', function (): void {
@@ -68,8 +69,8 @@ test('regional observer can see manuscripts from their region via scope', functi
     $arcObserver = User::factory()->create();
     $arcObserver->assignRole(UserRole::ARC_OBSERVER->value);
 
-    $arcRegion = \App\Models\Region::query()->where('slug', 'arc')->firstOrFail();
-    $marRegion = \App\Models\Region::query()->where('slug', 'mar')->firstOrFail();
+    $arcRegion = Region::query()->where('slug', 'arc')->firstOrFail();
+    $marRegion = Region::query()->where('slug', 'mar')->firstOrFail();
 
     // Create manuscripts in ARC region
     $manuscript1 = ManuscriptRecord::factory()->create([
@@ -116,9 +117,9 @@ test('user with multiple regional observer roles can access manuscripts from all
     $multiObserver = User::factory()->create();
     $multiObserver->assignRole([UserRole::NFL_OBSERVER->value, UserRole::MAR_OBSERVER->value]);
 
-    $nflRegion = \App\Models\Region::query()->where('slug', 'nfl')->firstOrFail();
-    $marRegion = \App\Models\Region::query()->where('slug', 'mar')->firstOrFail();
-    $queRegion = \App\Models\Region::query()->where('slug', 'que')->firstOrFail();
+    $nflRegion = Region::query()->where('slug', 'nfl')->firstOrFail();
+    $marRegion = Region::query()->where('slug', 'mar')->firstOrFail();
+    $queRegion = Region::query()->where('slug', 'que')->firstOrFail();
 
     $nflManuscript = ManuscriptRecord::factory()->create([
         'status' => ManuscriptRecordStatus::DRAFT,

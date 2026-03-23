@@ -2,13 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Author;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * A slim author resource for unauthenticated contexts.
  * Excludes email, user_id, and permission checks.
  *
- * @mixin \App\Models\Author
+ * @mixin Author
  */
 class PublicAuthorResource extends JsonResource
 {

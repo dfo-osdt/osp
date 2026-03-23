@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class VerifyEmailController extends Controller
@@ -12,10 +13,10 @@ class VerifyEmailController extends Controller
     /**
      * Mark the authenticated user's email address as verified.
      */
-    public function __invoke(Request $request): \Illuminate\Http\RedirectResponse
+    public function __invoke(Request $request): RedirectResponse
     {
         try {
-            $user = \App\Models\User::query()->findOrFail($request->route('id'));
+            $user = User::query()->findOrFail($request->route('id'));
         } catch (\Exception) {
             return redirect()->intended(
                 config('app.frontend_url').'#/invalid-signature'

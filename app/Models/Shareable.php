@@ -7,21 +7,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property string $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $user_id
  * @property int|null $shared_by
  * @property string $shareable_type
  * @property int $shareable_id
  * @property bool $can_edit
  * @property bool $can_delete
- * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property Carbon|null $expires_at
  * @property-read Model|\Eloquent $shareable
- * @property-read \App\Models\User|null $sharingUser
- * @property-read \App\Models\User $user
+ * @property-read User|null $sharingUser
+ * @property-read User $user
  *
  * @method static \Database\Factories\ShareableFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Shareable newModelQuery()
@@ -60,7 +61,7 @@ class Shareable extends Model
     /**
      * User with whom the shareable is shared.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -70,7 +71,7 @@ class Shareable extends Model
     /**
      * User who shared the shareable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function sharingUser(): BelongsTo
     {

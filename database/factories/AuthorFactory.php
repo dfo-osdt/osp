@@ -2,10 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Author;
+use App\Models\Expertise;
+use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Author>
+ * @extends Factory<Author>
  */
 class AuthorFactory extends Factory
 {
@@ -25,7 +28,7 @@ class AuthorFactory extends Factory
             'last_name' => $lastName,
             'email' => $email,
             'orcid' => $orcid,
-            'organization_id' => \App\Models\Organization::factory(),
+            'organization_id' => Organization::factory(),
         ];
     }
 
@@ -50,8 +53,8 @@ class AuthorFactory extends Factory
      */
     public function hasExpertises(int $qty = 1)
     {
-        return $this->afterCreating(function (\App\Models\Author $author) use ($qty) {
-            $expertise = \App\Models\Expertise::factory()->count($qty)->create();
+        return $this->afterCreating(function (Author $author) use ($qty) {
+            $expertise = Expertise::factory()->count($qty)->create();
             $author->expertises()->attach($expertise);
         });
     }

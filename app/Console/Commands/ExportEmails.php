@@ -2,14 +2,28 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\ManagementReviewStepDecision;
+use App\Enums\ManagementReviewStepStatus;
+use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Enums\PublicationStatus;
 use App\Events\Auth\Invited;
 use App\Mail\DelegationCreatedMail;
 use App\Mail\JournalAcceptancePendingMail;
 use App\Mail\ManagementReviewDueMail;
 use App\Mail\ManagementReviewPendingMail;
+use App\Mail\ManuscriptManagementReviewComplete;
+use App\Mail\ManuscriptRecordSharedMail;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
+use App\Mail\ManuscriptRecordToReviewMail;
 use App\Mail\NotificationGroupMemberRemovedMail;
+use App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail;
+use App\Mail\PlanningBinder\FlaggedManuscriptOnPrepintServerMail;
+use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail;
+use App\Mail\ReviewStepNotificationMail;
+use App\Mail\UserInvitedMail;
+use App\Mail\UserInvitedWelomeMail;
+use App\Models\Invitation;
 use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
@@ -51,19 +65,19 @@ class ExportEmails extends Command
         // start a database transaction, we will rollback after this to leave the database clean
         DB::beginTransaction();
 
-        $mrfReviewComplete = new \App\Mail\ManuscriptManagementReviewComplete(ManuscriptRecord::factory([
+        $mrfReviewComplete = new ManuscriptManagementReviewComplete(ManuscriptRecord::factory([
             'type' => ManuscriptRecordType::PRIMARY,
         ])->reviewed()->create());
         $markdownContent = $mrfReviewComplete->render();
         $this->exportFile('mrf-primary-review-complete.html', $markdownContent);
 
-        $mrfReviewComplete = new \App\Mail\ManuscriptManagementReviewComplete(ManuscriptRecord::factory([
+        $mrfReviewComplete = new ManuscriptManagementReviewComplete(ManuscriptRecord::factory([
             'type' => ManuscriptRecordType::SECONDARY,
         ])->reviewed()->create());
         $markdownContent = $mrfReviewComplete->render();
         $this->exportFile('mrf-secondary-review-complete.html', $markdownContent);
 
-        $manuscriptRecordShared = new \App\Mail\ManuscriptRecordSharedMail(Shareable::factory()->create());
+        $manuscriptRecordShared = new ManuscriptRecordSharedMail(Shareable::factory()->create());
         $markdownContent = $manuscriptRecordShared->render();
         $this->exportFile('manuscript-record-shared.html', $markdownContent);
 
@@ -72,74 +86,74 @@ class ExportEmails extends Command
         $markdownContent = $manuscriptRecordSubmittedToDFO->render();
         $this->exportFile('manuscript-record-submitted-to-dfo.html', $markdownContent);
 
-        $manuscriptRecordToReview = new \App\Mail\ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->in_review()->create(), User::factory()->create());
+        $manuscriptRecordToReview = new ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->in_review()->create(), User::factory()->create());
         $markdownContent = $manuscriptRecordToReview->render();
         $this->exportFile('manuscript-record-to-review-external.html', $markdownContent);
 
-        $manuscriptRecordToReview = new \App\Mail\ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->secondary()->in_review(true, true)->create(), User::factory()->create());
+        $manuscriptRecordToReview = new ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->secondary()->in_review(true, true)->create(), User::factory()->create());
         $markdownContent = $manuscriptRecordToReview->render();
         $this->exportFile('manuscript-record-to-review-internal.html', $markdownContent);
 
         // Next reviwer: flagged - return to author
         $mrf = ManagementReviewStep::factory([
-            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::REVISION,
+            'status' => ManagementReviewStepStatus::COMPLETED,
+            'decision' => ManagementReviewStepDecision::REVISION,
             'comments' => 'This manuscript is not ready for publication, please change X, Y and Z',
         ])->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
-            'status' => \App\Enums\ManagementReviewStepStatus::ON_HOLD,
+            'status' => ManagementReviewStepStatus::ON_HOLD,
             'previous_step_id' => $mrf->managementReviewSteps()->first()->id,
         ]));
 
-        $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
+        $reviewStepNotification = new ReviewStepNotificationMail($step);
         $markdownContent = $reviewStepNotification->render();
         $this->exportFile('review-step-notification-revision.html', $markdownContent);
 
         // Next reviwer: approved - forward to another reviewer
         $mrf = ManagementReviewStep::factory([
-            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+            'status' => ManagementReviewStepStatus::COMPLETED,
+            'decision' => ManagementReviewStepDecision::COMPLETE,
             'comments' => 'I reviewed this manuscript and it is ready for publication',
         ])->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
             'previous_step_id' => $mrf->managementReviewSteps()->first()->id,
         ]));
-        $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
+        $reviewStepNotification = new ReviewStepNotificationMail($step);
         $markdownContent = $reviewStepNotification->render();
         $this->exportFile('review-step-notification-primary-refer.html', $markdownContent);
 
         // next reviewer: secondary manuscript
         $mrf = ManagementReviewStep::factory([
-            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+            'status' => ManagementReviewStepStatus::COMPLETED,
+            'decision' => ManagementReviewStepDecision::COMPLETE,
             'comments' => 'I reviewed this manuscript and it is ready for publication',
         ])->has(ManuscriptRecord::factory()->secondary())->create()->manuscriptRecord;
         $step = $mrf->managementReviewSteps()->save(ManagementReviewStep::factory()->create([
             'previous_step_id' => $mrf->managementReviewSteps()->first()->id,
             'decision_expected_by' => null,
         ]));
-        $reviewStepNotification = new \App\Mail\ReviewStepNotificationMail($step);
+        $reviewStepNotification = new ReviewStepNotificationMail($step);
         $markdownContent = $reviewStepNotification->render();
         $this->exportFile('review-step-notification-secondary-refer.html', $markdownContent);
 
         // user invited email
-        $invitation = \App\Models\Invitation::factory()->create();
+        $invitation = Invitation::factory()->create();
         $invitedEvent = new Invited(
             $invitation,
             'temporary-password',
         );
-        $userInvited = new \App\Mail\UserInvitedMail($invitedEvent);
+        $userInvited = new UserInvitedMail($invitedEvent);
         $markdownContent = $userInvited->render();
         $this->exportFile('user-invited.html', $markdownContent);
 
-        $userInvitedWelcome = new \App\Mail\UserInvitedWelomeMail($invitedEvent);
+        $userInvitedWelcome = new UserInvitedWelomeMail($invitedEvent);
         $markdownContent = $userInvitedWelcome->render();
         $this->exportFile('user-invited-welcome.html', $markdownContent);
 
         // item flagged for planning binder - mrf
         $mrf = ManagementReviewStep::factory([
-            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+            'status' => ManagementReviewStepStatus::COMPLETED,
+            'decision' => ManagementReviewStepDecision::COMPLETE,
             'comments' => 'I reviewed this manuscript and it is ready for publication',
         ])->create()->manuscriptRecord;
         $mrf->title = 'A important manuscript the ADM should know about';
@@ -152,18 +166,18 @@ class ExportEmails extends Command
             'manuscript_record_type' => $mrf->type,
             'referrer_user_id' => $mrf->managementReviewSteps()->first()->user->id,
         ])->create();
-        $flaggedEmail = new \App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail($user, $state);
+        $flaggedEmail = new ManuscriptFlaggedForPlanningBinderMail($user, $state);
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('item-flagged-for-planning-binder-mrf.html', $markdownContent);
 
         // flagged item for planning binder - preprint
         $mrf = ManagementReviewStep::factory([
-            'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-            'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+            'status' => ManagementReviewStepStatus::COMPLETED,
+            'decision' => ManagementReviewStepDecision::COMPLETE,
             'comments' => 'I reviewed this manuscript and it is ready for publication',
         ])->create()->manuscriptRecord;
         $mrf->title = 'A important preprint the ADM should know about';
-        $mrf->type = \App\Enums\ManuscriptRecordType::PREPRINT;
+        $mrf->type = ManuscriptRecordType::PREPRINT;
         $mrf->preprint_url = 'https://example.com/preprint-url';
         $mrf->save();
 
@@ -173,7 +187,7 @@ class ExportEmails extends Command
             'referrer_user_id' => $mrf->managementReviewSteps()->first()->user->id,
         ])->create();
 
-        $flaggedEmail = new \App\Mail\PlanningBinder\FlaggedManuscriptOnPrepintServerMail($state);
+        $flaggedEmail = new FlaggedManuscriptOnPrepintServerMail($state);
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('flagged-manuscript-on-preprint-server.html', $markdownContent);
 
@@ -185,7 +199,7 @@ class ExportEmails extends Command
             'referrer_user_id' => User::factory()->create()->id,
         ])->create();
 
-        $flaggedEmail = new \App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail($state);
+        $flaggedEmail = new FlaggedManuscriptAcceptedInJournalMail($state);
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('flagged-manuscript-accepted-in-journal.html', $markdownContent);
 
@@ -197,7 +211,7 @@ class ExportEmails extends Command
             'referrer_user_id' => User::factory()->create()->id,
         ])->create();
 
-        $flaggedEmail = new \App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail($state);
+        $flaggedEmail = new FlaggedManuscriptAcceptedInJournalMail($state);
         $markdownContent = $flaggedEmail->render();
         $this->exportFile('flagged-manuscript-accepted-by-dfo.html', $markdownContent);
 
@@ -206,17 +220,17 @@ class ExportEmails extends Command
         $dueSoonReviews = collect([
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'decision_expected_by' => now()->addDay(),
             ]),
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'decision_expected_by' => now()->addBusinessDays(2),
             ]),
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'decision_expected_by' => now()->addHours(12),
             ]),
         ])->each(fn ($review) => $review->load('manuscriptRecord'));
@@ -230,22 +244,22 @@ class ExportEmails extends Command
         $mixedReviews = collect([
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'decision_expected_by' => now()->subDays(3),
             ]),
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'decision_expected_by' => now()->subDay(),
             ]),
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'decision_expected_by' => now()->addDay(),
             ]),
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'decision_expected_by' => now()->addBusinessDays(2),
             ]),
         ])->each(fn ($review) => $review->load('manuscriptRecord'));
@@ -259,19 +273,19 @@ class ExportEmails extends Command
         $pendingReviews = collect([
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'created_at' => now()->subBusinessDays(10),
                 'decision_expected_by' => now()->addBusinessDays(5),
             ]),
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'created_at' => now()->subBusinessDays(5),
                 'decision_expected_by' => now()->addBusinessDays(3),
             ]),
             ManagementReviewStep::factory()->create([
                 'user_id' => $user->id,
-                'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
+                'status' => ManagementReviewStepStatus::PENDING,
                 'created_at' => now()->subBusinessDays(2),
                 'decision_expected_by' => now()->addBusinessDay(),
             ]),
@@ -286,18 +300,18 @@ class ExportEmails extends Command
         $pendingManuscripts1 = collect([
             ManuscriptRecord::factory()->create([
                 'user_id' => $user1->id,
-                'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
+                'status' => ManuscriptRecordStatus::REVIEWED,
                 'reviewed_at' => now()->subMonths(3),
             ]),
             ManuscriptRecord::factory()->create([
                 'user_id' => $user1->id,
-                'status' => \App\Enums\ManuscriptRecordStatus::SUBMITTED,
+                'status' => ManuscriptRecordStatus::SUBMITTED,
                 'reviewed_at' => now()->subMonths(1),
                 'submitted_to_journal_on' => now()->subWeeks(3),
             ]),
             ManuscriptRecord::factory()->create([
                 'user_id' => $user1->id,
-                'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
+                'status' => ManuscriptRecordStatus::REVIEWED,
                 'reviewed_at' => now()->subMonth(),
             ]),
         ]);
@@ -311,12 +325,12 @@ class ExportEmails extends Command
         $pendingManuscripts2 = collect([
             ManuscriptRecord::factory()->create([
                 'user_id' => $user2->id,
-                'status' => \App\Enums\ManuscriptRecordStatus::REVIEWED,
+                'status' => ManuscriptRecordStatus::REVIEWED,
                 'reviewed_at' => now()->subMonths(2),
             ]),
             ManuscriptRecord::factory()->create([
                 'user_id' => $user2->id,
-                'status' => \App\Enums\ManuscriptRecordStatus::SUBMITTED,
+                'status' => ManuscriptRecordStatus::SUBMITTED,
                 'reviewed_at' => now()->subMonths(1),
                 'submitted_to_journal_on' => now()->subWeeks(2),
             ]),
@@ -324,39 +338,39 @@ class ExportEmails extends Command
 
         $acceptedManuscript1 = ManuscriptRecord::factory()->create([
             'user_id' => $user2->id,
-            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
-            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+            'type' => ManuscriptRecordType::PRIMARY,
+            'status' => ManuscriptRecordStatus::ACCEPTED,
         ]);
 
         $acceptedManuscript2 = ManuscriptRecord::factory()->create([
             'user_id' => $user2->id,
-            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
-            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+            'type' => ManuscriptRecordType::PRIMARY,
+            'status' => ManuscriptRecordStatus::ACCEPTED,
         ]);
 
         $acceptedManuscript3 = ManuscriptRecord::factory()->create([
             'user_id' => $user2->id,
-            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
-            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+            'type' => ManuscriptRecordType::PRIMARY,
+            'status' => ManuscriptRecordStatus::ACCEPTED,
         ]);
 
         $pendingPublications2 = collect([
-            \App\Models\Publication::factory()->create([
+            Publication::factory()->create([
                 'user_id' => $user2->id,
                 'manuscript_record_id' => $acceptedManuscript1->id,
-                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'status' => PublicationStatus::ACCEPTED,
                 'accepted_on' => now()->subMonths(3),
             ])->load('journal'),
-            \App\Models\Publication::factory()->create([
+            Publication::factory()->create([
                 'user_id' => $user2->id,
                 'manuscript_record_id' => $acceptedManuscript2->id,
-                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'status' => PublicationStatus::ACCEPTED,
                 'accepted_on' => now()->subMonths(2),
             ])->load('journal'),
-            \App\Models\Publication::factory()->create([
+            Publication::factory()->create([
                 'user_id' => $user2->id,
                 'manuscript_record_id' => $acceptedManuscript3->id,
-                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'status' => PublicationStatus::ACCEPTED,
                 'accepted_on' => now()->subMonth(),
             ])->load('journal'),
         ]);
@@ -370,27 +384,27 @@ class ExportEmails extends Command
 
         $acceptedManuscript4 = ManuscriptRecord::factory()->create([
             'user_id' => $user3->id,
-            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
-            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+            'type' => ManuscriptRecordType::PRIMARY,
+            'status' => ManuscriptRecordStatus::ACCEPTED,
         ]);
 
         $acceptedManuscript5 = ManuscriptRecord::factory()->create([
             'user_id' => $user3->id,
-            'type' => \App\Enums\ManuscriptRecordType::PRIMARY,
-            'status' => \App\Enums\ManuscriptRecordStatus::ACCEPTED,
+            'type' => ManuscriptRecordType::PRIMARY,
+            'status' => ManuscriptRecordStatus::ACCEPTED,
         ]);
 
         $pendingPublications3 = collect([
-            \App\Models\Publication::factory()->create([
+            Publication::factory()->create([
                 'user_id' => $user3->id,
                 'manuscript_record_id' => $acceptedManuscript4->id,
-                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'status' => PublicationStatus::ACCEPTED,
                 'accepted_on' => now()->subMonths(4),
             ])->load('journal'),
-            \App\Models\Publication::factory()->create([
+            Publication::factory()->create([
                 'user_id' => $user3->id,
                 'manuscript_record_id' => $acceptedManuscript5->id,
-                'status' => \App\Enums\PublicationStatus::ACCEPTED,
+                'status' => PublicationStatus::ACCEPTED,
                 'accepted_on' => now()->subMonths(2),
             ])->load('journal'),
         ]);

@@ -5,10 +5,11 @@ namespace Database\Factories;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use App\Models\ManuscriptRecord;
+use App\Models\PlanningBinderItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PlanningBinderItem>
+ * @extends Factory<PlanningBinderItem>
  */
 class PlanningBinderItemFactory extends Factory
 {

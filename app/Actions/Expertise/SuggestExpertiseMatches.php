@@ -4,6 +4,7 @@ namespace App\Actions\Expertise;
 
 use App\Models\Expertise;
 use App\Traits\ComparesStringSimilarity;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 class SuggestExpertiseMatches
@@ -41,7 +42,7 @@ class SuggestExpertiseMatches
         }
 
         $candidates = Expertise::query()
-            ->where(function (\Illuminate\Contracts\Database\Query\Builder $query) use ($searchTerms): void {
+            ->where(function (Builder $query) use ($searchTerms): void {
                 foreach ($searchTerms as $term) {
                     $query->orWhere('name_en', 'like', "%{$term}%")
                         ->orWhere('name_fr', 'like', "%{$term}%");

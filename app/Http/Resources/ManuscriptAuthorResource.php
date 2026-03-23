@@ -2,19 +2,22 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ManuscriptAuthor;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @mixin \App\Models\ManuscriptAuthor
+ * @mixin ManuscriptAuthor
  */
 class ManuscriptAuthorResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param  Request  $request
+     * @return array|Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {

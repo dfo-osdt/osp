@@ -2,26 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $manuscript_record_id
  * @property int $author_id
  * @property int $organization_id
  * @property bool $is_corresponding_author
  * @property bool $is_group_author
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \App\Models\Author $author
- * @property-read \App\Models\ManuscriptRecord $manuscriptRecord
- * @property-read \App\Models\Organization $organization
+ * @property-read Author $author
+ * @property-read ManuscriptRecord $manuscriptRecord
+ * @property-read Organization $organization
  *
  * @method static \Database\Factories\ManuscriptAuthorFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptAuthor newModelQuery()
@@ -68,24 +71,24 @@ class ManuscriptAuthor extends Model
     /**
      * A manuscript author belongs to a manuscript.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManuscriptRecord, $this>
+     * @return BelongsTo<ManuscriptRecord, $this>
      */
     public function manuscriptRecord(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\ManuscriptRecord::class);
+        return $this->belongsTo(ManuscriptRecord::class);
     }
 
     /** Organization
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this> */
+     * @return BelongsTo<Organization, $this> */
     public function organization(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Organization::class);
+        return $this->belongsTo(Organization::class);
     }
 
     /** Author
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Author, $this> */
+     * @return BelongsTo<Author, $this> */
     public function author(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Author::class);
+        return $this->belongsTo(Author::class);
     }
 }

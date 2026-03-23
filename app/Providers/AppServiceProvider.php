@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Enums\Permissions\UserPermission;
+use App\Models\Publication;
+use App\Observers\PublicationObserver;
 use App\Policies\MediaPolicy;
+use App\Services\MicrosoftGraphService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +15,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use SocialiteProviders\Azure\Provider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 use Spatie\Health\Checks\Checks\CacheCheck;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
 use Spatie\Health\Checks\Checks\DebugModeCheck;
@@ -97,8 +102,8 @@ class AppServiceProvider extends ServiceProvider
 
     private function configureEvents(): void
     {
-        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event): void {
-            $event->extendSocialite('azure', \SocialiteProviders\Azure\Provider::class);
+        Event::listen(function (SocialiteWasCalled $event): void {
+            $event->extendSocialite('azure', Provider::class);
         });
     }
 
@@ -106,7 +111,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Microsoft Graph Service
         if (config('osp.azure.enable_auth')) {
-            $this->app->singleton(\App\Services\MicrosoftGraphService::class, fn ($app): \App\Services\MicrosoftGraphService => new \App\Services\MicrosoftGraphService(
+            $this->app->singleton(MicrosoftGraphService::class, fn ($app): MicrosoftGraphService => new MicrosoftGraphService(
                 config('services.azure.tenant'),
                 config('services.azure.client_id'),
                 config('services.azure.client_secret')
@@ -117,6 +122,6 @@ class AppServiceProvider extends ServiceProvider
 
     private function configureObservers(): void
     {
-        \App\Models\Publication::observe(\App\Observers\PublicationObserver::class);
+        Publication::observe(PublicationObserver::class);
     }
 }

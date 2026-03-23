@@ -9,6 +9,7 @@ use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -27,8 +28,8 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
     public function __construct(
         protected PlanningBinderItemState $planningBinderItemState
     ) {
-        $this->publication = \App\Models\Publication::query()->findOrFail($this->planningBinderItemState->publication_id)->load(['manuscriptRecord', 'journal', 'region']);
-        $this->referrer = \App\Models\User::query()->findOrFail($this->planningBinderItemState->referrer_user_id);
+        $this->publication = Publication::query()->findOrFail($this->planningBinderItemState->publication_id)->load(['manuscriptRecord', 'journal', 'region']);
+        $this->referrer = User::query()->findOrFail($this->planningBinderItemState->referrer_user_id);
     }
 
     /**
@@ -97,7 +98,7 @@ class FlaggedManuscriptAcceptedInJournalMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

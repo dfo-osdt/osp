@@ -10,7 +10,7 @@ trait HasExpertises
     /**
      * Get the Expertises that belong to this HasExpertises.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany<\App\Models\Expertise, $this>
+     * @return MorphToMany<Expertise, $this>
      */
     public function expertises(): MorphToMany
     {

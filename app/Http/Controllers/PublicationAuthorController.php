@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PublicationAuthorResource;
+use App\Models\Author;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
 use Gate;
@@ -62,7 +63,7 @@ class PublicationAuthorController extends Controller
             'organization_id' => ['integer', 'exists:organizations,id'],
         ]);
 
-        $author = \App\Models\Author::query()->find($validated['author_id']);
+        $author = Author::query()->find($validated['author_id']);
 
         $publicationAuthor = new PublicationAuthor;
         $publicationAuthor->publication_id = $publication->id;

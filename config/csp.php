@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\LaravelViteNonceGenerator;
+use App\Http\OspCspPolicy;
 
 return [
 
@@ -9,7 +10,7 @@ return [
      * any class that extends `Spatie\Csp\Policies\Policy`
      */
     'presets' => [
-        App\Http\OspCspPolicy::class,
+        OspCspPolicy::class,
     ],
 
     /*
