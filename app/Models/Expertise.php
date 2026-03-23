@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,5 +47,22 @@ class Expertise extends Model
         return [
             'is_validated' => 'boolean',
         ];
+    }
+
+    protected function authors()
+    {
+        return $this->morphedByMany(Author::class, 'expertiseable');
+    }
+
+    #[Scope]
+    protected function scopeValidated($query)
+    {
+        $query->where('is_validated', true);
+    }
+
+    #[Scope]
+    protected function used($query)
+    {
+        $query->whereHas('authors');
     }
 }
