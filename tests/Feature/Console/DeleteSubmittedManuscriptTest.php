@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ManuscriptRecordStatus;
+use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Activitylog\Models\Activity;
@@ -42,6 +43,24 @@ test('it fails when manuscript id does not exist', function (): void {
     $this->artisan('osp:delete-submitted-manuscript', ['id' => 99999, '--force' => true])
         ->assertExitCode(1)
         ->expectsOutput('Manuscript record not found.');
+});
+
+test('it deletes a manuscript with chained management review steps', function (): void {
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+
+    // Create a second step referencing the first via previous_step_id
+    $firstStep = $manuscript->managementReviewSteps()->first();
+    $manuscript->managementReviewSteps()->save(
+        ManagementReviewStep::factory()->make(['previous_step_id' => $firstStep->id])
+    );
+
+    expect($manuscript->managementReviewSteps()->count())->toBe(2);
+
+    $this->artisan('osp:delete-submitted-manuscript', ['id' => $manuscript->id, '--force' => true])
+        ->assertExitCode(0);
+
+    expect(ManuscriptRecord::withTrashed()->find($manuscript->id))->toBeNull();
+    expect($manuscript->managementReviewSteps()->count())->toBe(0);
 });
 
 test('it logs activity on successful deletion', function (): void {
