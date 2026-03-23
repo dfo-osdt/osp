@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Funder;
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 
@@ -26,7 +27,7 @@ test('a user can add a new funding source to their manuscript', function (): voi
     // a manuscript with funding sources
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $authorizedUser->id]);
 
-    $funder = \App\Models\Funder::factory()->create();
+    $funder = Funder::factory()->create();
 
     $response = $this->actingAs($unauthorizedUser)->postJson('/api/manuscript-records/'.$manuscript->id.'/funding-sources', [
         'funder_id' => $funder->id,
@@ -51,7 +52,7 @@ test('a user can update an existing funding source on their manuscript', functio
     // a manuscript with funding sources
     $manuscript = ManuscriptRecord::factory()->hasFundingSources(1)->create(['user_id' => $authorizedUser->id]);
 
-    $funder = \App\Models\Funder::factory()->create();
+    $funder = Funder::factory()->create();
 
     $response = $this->actingAs($unauthorizedUser)->putJson('/api/manuscript-records/'.$manuscript->id.'/funding-sources/'.$manuscript->fundingSources->first()->id, [
         'funder_id' => $funder->id,
@@ -72,7 +73,7 @@ test('a user can update an existing funding source on their manuscript', functio
 test('a user cannot create a funding source with a title longer than 255 characters', function (): void {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
-    $funder = \App\Models\Funder::factory()->create();
+    $funder = Funder::factory()->create();
 
     $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/funding-sources', [
         'funder_id' => $funder->id,
@@ -85,7 +86,7 @@ test('a user cannot create a funding source with a title longer than 255 charact
 test('a user can create a funding source with a title up to 255 characters', function (): void {
     $user = User::factory()->create();
     $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
-    $funder = \App\Models\Funder::factory()->create();
+    $funder = Funder::factory()->create();
 
     $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/funding-sources', [
         'funder_id' => $funder->id,

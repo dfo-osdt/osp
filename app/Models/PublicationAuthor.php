@@ -2,27 +2,30 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $publication_id
  * @property int $author_id
  * @property int $organization_id
  * @property bool $is_corresponding_author
  * @property bool $is_group_author
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \App\Models\Author $author
- * @property-read \App\Models\Organization $organization
- * @property-read \App\Models\Publication $publication
+ * @property-read Author $author
+ * @property-read Organization $organization
+ * @property-read Publication $publication
  *
  * @method static \Database\Factories\PublicationAuthorFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor newModelQuery()
@@ -36,7 +39,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor wherePublicationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereUpdatedAt($value)
  *
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $deleted_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereDeletedAt($value)
@@ -77,24 +80,24 @@ class PublicationAuthor extends Model
     /**
      * A publication author belongs to a publication.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Publication, $this>
+     * @return BelongsTo<Publication, $this>
      */
     public function publication(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Publication::class);
+        return $this->belongsTo(Publication::class);
     }
 
     /** Organization
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this> */
+     * @return BelongsTo<Organization, $this> */
     public function organization(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Organization::class);
+        return $this->belongsTo(Organization::class);
     }
 
     /** Author
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Author, $this> */
+     * @return BelongsTo<Author, $this> */
     public function author(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Author::class);
+        return $this->belongsTo(Author::class);
     }
 }

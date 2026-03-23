@@ -10,6 +10,7 @@ use App\Models\Publication;
 use App\Models\PublicationAuthor;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /** Test that a user can query publications */
 test('a user can get a list of publications', function (): void {
@@ -207,7 +208,7 @@ test('a user cannot update their publication to be published without a published
 
     $response->assertStatus(422);
     $response->assertJsonValidationErrors('published_on');
-    expect(\App\Models\Publication::query()->find($publication->id)->status)->toBe(PublicationStatus::ACCEPTED);
+    expect(Publication::query()->find($publication->id)->status)->toBe(PublicationStatus::ACCEPTED);
 });
 
 test('a user can attach a new publication pdf to their publication', function (): void {
@@ -408,7 +409,7 @@ test('a publication author can edit the publication', function (): void {
 
     // Create a publication with this user's author
     $publication = Publication::factory()->create();
-    \App\Models\PublicationAuthor::factory()->create([
+    PublicationAuthor::factory()->create([
         'publication_id' => $publication->id,
         'author_id' => $authorUser->author->id,
     ]);
@@ -634,8 +635,8 @@ test('media files are preserved during soft delete and deleted on force delete',
     expect(file_exists($supplementaryFilePath))->toBeTrue();
 
     // Verify media records still exist in database
-    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($publicationFileId))->not->toBeNull();
-    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($supplementaryFileId))->not->toBeNull();
+    expect(Media::query()->find($publicationFileId))->not->toBeNull();
+    expect(Media::query()->find($supplementaryFileId))->not->toBeNull();
 
     // Restore the publication
     $publication->restore();
@@ -661,8 +662,8 @@ test('media files are preserved during soft delete and deleted on force delete',
     expect(file_exists($supplementaryFilePath))->toBeFalse();
 
     // Verify media records are deleted from database
-    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($publicationFileId))->toBeNull();
-    expect(\Spatie\MediaLibrary\MediaCollections\Models\Media::query()->find($supplementaryFileId))->toBeNull();
+    expect(Media::query()->find($publicationFileId))->toBeNull();
+    expect(Media::query()->find($supplementaryFileId))->toBeNull();
 });
 
 // ISBN and Catalogue Number Tests

@@ -42,7 +42,7 @@ class LoginRequest extends Login
             $this->throwFailureValidationException();
         }
 
-        $user = \App\Models\User::query()->findOrFail(Filament::auth()->user()->id);
+        $user = User::query()->findOrFail(Filament::auth()->user()->id);
 
         /**
          * Check if user has permission to access admin panel

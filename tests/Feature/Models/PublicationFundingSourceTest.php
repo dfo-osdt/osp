@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Funder;
 use App\Models\Publication;
 use App\Models\User;
 
@@ -26,7 +27,7 @@ test('a user can add a new funding source to their publication', function (): vo
     // a publication with funding sources
     $publication = Publication::factory()->create(['user_id' => $authorizedUser->id]);
 
-    $funder = \App\Models\Funder::factory()->create();
+    $funder = Funder::factory()->create();
 
     $response = $this->actingAs($unauthorizedUser)->postJson('/api/publications/'.$publication->id.'/funding-sources', [
         'funder_id' => $funder->id,
@@ -51,7 +52,7 @@ test('a user can update an existing funding source on their publication', functi
     // a publication with funding sources
     $publication = Publication::factory()->hasFundingSources(1)->create(['user_id' => $authorizedUser->id]);
 
-    $funder = \App\Models\Funder::factory()->create();
+    $funder = Funder::factory()->create();
 
     $response = $this->actingAs($unauthorizedUser)->putJson('/api/publications/'.$publication->id.'/funding-sources/'.$publication->fundingSources->first()->id, [
         'funder_id' => $funder->id,

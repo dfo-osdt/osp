@@ -55,7 +55,7 @@ class AzureOAuthController extends Controller
 
         $email = strtolower((string) $azureUser->getEmail());
 
-        $user = \App\Models\User::query()->where('email', $email)->first();
+        $user = User::query()->where('email', $email)->first();
 
         if ($user) {
             if (! $user->active) {

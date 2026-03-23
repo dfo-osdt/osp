@@ -4,12 +4,16 @@ namespace Database\Factories;
 
 use App\Enums\PublicationStatus;
 use App\Enums\SupplementaryFileType;
+use App\Models\Journal;
+use App\Models\ManuscriptRecord;
+use App\Models\Publication;
 use App\Models\PublicationAuthor;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Publication>
+ * @extends Factory<Publication>
  */
 class PublicationFactory extends Factory
 {
@@ -21,9 +25,9 @@ class PublicationFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'doi' => $this->getDOI(),
-            'journal_id' => \App\Models\Journal::factory(),
+            'journal_id' => Journal::factory(),
             'accepted_on' => $this->faker->date(),
-            'user_id' => \App\Models\User::factory(),
+            'user_id' => User::factory(),
             'region_id' => rand(1, 5),
         ];
     }
@@ -32,7 +36,7 @@ class PublicationFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'journal_id' => \App\Models\Journal::factory()->dfoSeries(),
+                'journal_id' => Journal::factory()->dfoSeries(),
             ];
         });
     }
@@ -40,7 +44,7 @@ class PublicationFactory extends Factory
     /**
      * Indicate that the publication is open access.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Publication>
+     * @return Factory<Publication>
      */
     public function openAccess()
     {
@@ -74,7 +78,7 @@ class PublicationFactory extends Factory
     {
         return $this->state(function (array $attributes) use ($manuscriptAttributes) {
             return [
-                'manuscript_record_id' => \App\Models\ManuscriptRecord::factory()->accepted()->state($manuscriptAttributes),
+                'manuscript_record_id' => ManuscriptRecord::factory()->accepted()->state($manuscriptAttributes),
             ];
         });
     }
@@ -83,7 +87,7 @@ class PublicationFactory extends Factory
     public function withAuthors()
     {
         return $this->afterCreating(
-            function (\App\Models\Publication $publication) {
+            function (Publication $publication) {
                 $publication->publicationAuthors()->saveMany(PublicationAuthor::factory()->count(3)->make());
             }
         );

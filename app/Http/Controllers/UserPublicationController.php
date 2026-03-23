@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PublicationResource;
+use App\Models\Publication;
 use App\Queries\PublicationListQuery;
 use App\Traits\PaginationLimitTrait;
 use Auth;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -28,16 +30,16 @@ class UserPublicationController extends Controller
          * to have thousands of records, this should not be a problem.
          * If it is, we can always review this query.
          */
-        $publicationIds = \App\Models\Publication::query()->select('id')
+        $publicationIds = Publication::query()->select('id')
             ->where('user_id', $userId)
-            ->orWhereHas('publicationAuthors', function (\Illuminate\Contracts\Database\Query\Builder $q) use ($userId): void {
-                $q->whereHas('author', function (\Illuminate\Contracts\Database\Query\Builder $q) use ($userId): void {
+            ->orWhereHas('publicationAuthors', function (Builder $q) use ($userId): void {
+                $q->whereHas('author', function (Builder $q) use ($userId): void {
                     $q->where('user_id', $userId);
                 });
             })
             ->pluck('id');
 
-        $baseQuery = \App\Models\Publication::query()->whereIn('id', $publicationIds)
+        $baseQuery = Publication::query()->whereIn('id', $publicationIds)
             ->with([
                 'manuscriptRecord',
                 'journal',

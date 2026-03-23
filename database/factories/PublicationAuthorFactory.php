@@ -2,10 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Author;
+use App\Models\Organization;
+use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PublicationAuthor>
+ * @extends Factory<PublicationAuthor>
  */
 class PublicationAuthorFactory extends Factory
 {
@@ -15,9 +19,9 @@ class PublicationAuthorFactory extends Factory
     public function definition()
     {
         return [
-            'publication_id' => \App\Models\Publication::factory(),
-            'author_id' => \App\Models\Author::factory(),
-            'organization_id' => \App\Models\Organization::factory(),
+            'publication_id' => Publication::factory(),
+            'author_id' => Author::factory(),
+            'organization_id' => Organization::factory(),
             'is_corresponding_author' => false,
             'is_group_author' => false,
         ];

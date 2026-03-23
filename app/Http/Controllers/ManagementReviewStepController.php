@@ -6,6 +6,9 @@ use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Events\ManagementReviewStepCreated;
+use App\Events\ManuscriptManagementReviewComplete;
+use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinderMail;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
@@ -84,7 +87,7 @@ class ManagementReviewStepController extends Controller
         $manuscriptRecord->saveOrFail();
 
         // send event that a manuscript record review is complete.
-        event(new \App\Events\ManuscriptManagementReviewComplete($manuscriptRecord));
+        event(new ManuscriptManagementReviewComplete($manuscriptRecord));
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
         $managementReviewStep->completed_at = now();
@@ -126,7 +129,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->saveOrFail();
 
         // send event that a management review step has been created.
-        event(new \App\Events\ManagementReviewStepCreated($nextReviewStep));
+        event(new ManagementReviewStepCreated($nextReviewStep));
 
         $managementReviewStep->comments = $validated['comments'];
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
@@ -169,7 +172,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->saveOrFail();
 
         // send event that a management review step has been created.
-        event(new \App\Events\ManagementReviewStepCreated($nextReviewStep));
+        event(new ManagementReviewStepCreated($nextReviewStep));
 
         $managementReviewStep->status = ManagementReviewStepStatus::REASSIGN;
         $managementReviewStep->completed_at = now();
@@ -204,7 +207,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->previous_step_id = $managementReviewStep->id;
         $nextReviewStep->saveOrFail();
 
-        event(new \App\Events\ManagementReviewStepCreated($nextReviewStep));
+        event(new ManagementReviewStepCreated($nextReviewStep));
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
         $managementReviewStep->decision = ManagementReviewStepDecision::REVISION;
@@ -248,7 +251,7 @@ class ManagementReviewStepController extends Controller
         $nextReviewStep->decision_expected_by = $decisionExpected ? now()->addBusinessDays(config('osp.management_review.decision_expected_business_days')) : null;
         $nextReviewStep->saveOrFail();
 
-        event(new \App\Events\ManagementReviewStepCreated($nextReviewStep));
+        event(new ManagementReviewStepCreated($nextReviewStep));
 
         $managementReviewStep->status = ManagementReviewStepStatus::COMPLETED;
         $managementReviewStep->decision = ManagementReviewStepDecision::NONE;
@@ -282,7 +285,7 @@ class ManagementReviewStepController extends Controller
         $manuscriptRecord->withdrawn_on = now();
         $manuscriptRecord->saveOrFail();
 
-        event(new \App\Events\ManuscriptRecordWithdrawnByAuthor($manuscriptRecord));
+        event(new ManuscriptRecordWithdrawnByAuthor($manuscriptRecord));
 
         $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
 

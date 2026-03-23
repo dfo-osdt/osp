@@ -5,6 +5,7 @@ namespace Tests\Feature\Auth;
 use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
@@ -103,7 +104,7 @@ class EmailVerificationTest extends TestCase
         ]);
 
         $response->assertJson(['status' => 'verification-link-sent']);
-        Notification::assertSentToTimes($user, \Illuminate\Auth\Notifications\VerifyEmail::class, 1);
+        Notification::assertSentToTimes($user, VerifyEmail::class, 1);
     }
 
     public function test_verification_email_wont_be_sent_if_already_verified(): void

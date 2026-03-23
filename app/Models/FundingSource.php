@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string $title
  * @property string|null $description
  * @property int $funder_id
  * @property string $fundable_type
  * @property int $fundable_id
  * @property-read Model|\Eloquent $fundable
- * @property-read \App\Models\Funder $funder
+ * @property-read Funder $funder
  *
  * @method static \Database\Factories\FundingSourceFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource newModelQuery()
@@ -33,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource whereUpdatedAt($value)
  *
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $deleted_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FundingSource whereDeletedAt($value)
@@ -60,7 +61,7 @@ class FundingSource extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Funder, $this>
+     * @return BelongsTo<Funder, $this>
      */
     public function funder(): BelongsTo
     {

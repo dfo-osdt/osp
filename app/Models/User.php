@@ -15,12 +15,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
+use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -28,37 +36,37 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $first_name
  * @property string $last_name
  * @property string $email
- * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property Carbon|null $email_verified_at
  * @property string|null $email_verification_token
  * @property string|null $password
  * @property string $locale
  * @property string|null $remember_token
  * @property bool $active
  * @property bool $new_password_required
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $actions
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $actions
  * @property-read int|null $actions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog> $authentications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AuthenticationLog> $authentications
  * @property-read int|null $authentications_count
- * @property-read \App\Models\Author|null $author
+ * @property-read Author|null $author
  *
  * @method \Illuminate\Database\Eloquent\Relations\MorphMany<\Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog, $this> authentications()
  *
  * @property-read string $full_name
- * @property-read \App\Models\Invitation|null $invitation
- * @property-read \Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog|null $latestAuthentication
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read Invitation|null $invitation
+ * @property-read AuthenticationLog|null $latestAuthentication
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Role> $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invitation> $sentInvitations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Invitation> $sentInvitations
  * @property-read int|null $sent_invitations_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shareable> $sharedWith
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Shareable> $sharedWith
  * @property-read int|null $shared_with_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
@@ -153,7 +161,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
      * that were invited to join the application will have one.
      * This record will not be erased when the user joins.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\Invitation, $this>
+     * @return HasOne<Invitation, $this>
      */
     public function invitation(): HasOne
     {
@@ -161,7 +169,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Shareable, $this>
+     * @return HasMany<Shareable, $this>
      */
     public function sharedWith(): HasMany
     {
@@ -171,7 +179,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     /**
      * Get the invitations sent by the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Invitation, $this>
+     * @return HasMany<Invitation, $this>
      */
     public function sentInvitations(): HasMany
     {
@@ -182,7 +190,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
      * All users should have an author profile created for them
      * upon registration.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\Author, $this>
+     * @return HasOne<Author, $this>
      */
     public function author(): HasOne
     {
@@ -203,12 +211,12 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
             return $this->author;
         }
 
-        $author = \App\Models\Author::query()->where('email', $this->email)->first();
+        $author = Author::query()->where('email', $this->email)->first();
 
         if ($author) {
             $this->author()->save($author);
         } else {
-            $author = \App\Models\Author::query()->create([
+            $author = Author::query()->create([
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
                 'email' => $this->email,
@@ -338,7 +346,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManagementReviewDelegation, $this>
+     * @return HasMany<ManagementReviewDelegation, $this>
      */
     public function managementReviewDelegations(): HasMany
     {
@@ -346,7 +354,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\ManagementReviewDelegation, $this>
+     * @return HasOne<ManagementReviewDelegation, $this>
      */
     public function activeDelegation(): HasOne
     {
@@ -354,7 +362,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\NotificationGroupMember, $this>
+     * @return HasMany<NotificationGroupMember, $this>
      */
     public function notificationGroupMembers(): HasMany
     {
@@ -362,7 +370,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\NotificationGroupMember, $this>
+     * @return HasMany<NotificationGroupMember, $this>
      */
     public function notificationGroupMemberships(): HasMany
     {

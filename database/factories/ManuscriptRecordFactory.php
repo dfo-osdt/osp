@@ -2,17 +2,22 @@
 
 namespace Database\Factories;
 
+use App\Enums\ManagementReviewStepDecision;
+use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Models\FunctionalArea;
 use App\Models\FundingSource;
+use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
+use App\Models\ManuscriptPeerReviewer;
+use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ManuscriptRecord>
+ * @extends Factory<ManuscriptRecord>
  */
 class ManuscriptRecordFactory extends Factory
 {
@@ -63,7 +68,7 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->fundingSources()->saveMany(FundingSource::factory()->count(3)->make()); // create 3 funding sources
             $manuscript->addManuscriptFile(getcwd().'/database/factories/files/BieberFever.pdf', true); // add a manuscript file
             if ($manuscript->type == ManuscriptRecordType::SECONDARY) {
-                $manuscript->peerReviewers()->saveMany(\App\Models\ManuscriptPeerReviewer::factory()->count(2)->make()); // add 2 peer reviewers for secondary manuscripts
+                $manuscript->peerReviewers()->saveMany(ManuscriptPeerReviewer::factory()->count(2)->make()); // add 2 peer reviewers for secondary manuscripts
             }
         });
     }
@@ -80,7 +85,7 @@ class ManuscriptRecordFactory extends Factory
         ])->afterCreating(function ($manuscript) use ($withAreviewstep, $secondary) {
             $manuscript->lockManuscriptFiles();
             if ($withAreviewstep) {
-                $step = $manuscript->managementReviewSteps()->save(\App\Models\ManagementReviewStep::factory()->make());
+                $step = $manuscript->managementReviewSteps()->save(ManagementReviewStep::factory()->make());
                 if ($secondary) {
                     $step->decision_expected_by = null;
                     $step->save();
@@ -100,8 +105,8 @@ class ManuscriptRecordFactory extends Factory
             'reviewed_at' => now(),
         ])->afterCreating(function ($manuscript) {
             $manuscript->managementReviewSteps()->update([
-                'status' => \App\Enums\ManagementReviewStepStatus::COMPLETED,
-                'decision' => \App\Enums\ManagementReviewStepDecision::COMPLETE,
+                'status' => ManagementReviewStepStatus::COMPLETED,
+                'decision' => ManagementReviewStepDecision::COMPLETE,
                 'comments' => 'This manuscript is approved - great job!',
                 'completed_at' => now(),
             ]);

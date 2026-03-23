@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\ManagementReviewStepDecision;
+use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\Permissions\UserPermission;
@@ -103,7 +104,7 @@ class ManuscriptRecordPolicy
 
                 // Manuscript authors can edit when flagged for follow-up (last completed step decision is revision)
                 $lastCompletedStep = $manuscriptRecord->managementReviewSteps
-                    ->where('status', \App\Enums\ManagementReviewStepStatus::COMPLETED)
+                    ->where('status', ManagementReviewStepStatus::COMPLETED)
                     ->sortByDesc('completed_at')
                     ->first();
 

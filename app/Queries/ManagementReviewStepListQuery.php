@@ -3,13 +3,14 @@
 namespace App\Queries;
 
 use App\Models\ManagementReviewStep;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /** @extends QueryBuilder<ManagementReviewStep> */
 class ManagementReviewStepListQuery extends QueryBuilder
 {
-    public function __construct(?\Illuminate\Http\Request $request, $baseQuery = null)
+    public function __construct(?Request $request, $baseQuery = null)
     {
         parent::__construct($baseQuery ?? ManagementReviewStep::query(), $request);
 

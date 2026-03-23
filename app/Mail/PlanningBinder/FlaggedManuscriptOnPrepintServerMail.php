@@ -8,6 +8,7 @@ use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -27,8 +28,8 @@ class FlaggedManuscriptOnPrepintServerMail extends Mailable
         protected PlanningBinderItemState $planningBinderItemState
 
     ) {
-        $this->manuscriptRecord = \App\Models\ManuscriptRecord::query()->where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail()->load(['region']);
-        $this->referrer = \App\Models\User::query()->findOrFail($this->planningBinderItemState->referrer_user_id);
+        $this->manuscriptRecord = ManuscriptRecord::query()->where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail()->load(['region']);
+        $this->referrer = User::query()->findOrFail($this->planningBinderItemState->referrer_user_id);
     }
 
     /**
@@ -84,7 +85,7 @@ class FlaggedManuscriptOnPrepintServerMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

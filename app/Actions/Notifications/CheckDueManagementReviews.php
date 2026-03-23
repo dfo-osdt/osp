@@ -26,7 +26,7 @@ class CheckDueManagementReviews
 
         foreach ($reviewsPerUser as $userId => $userReviews) {
 
-            $user = \App\Models\User::query()->findOrFail($userId);
+            $user = User::query()->findOrFail($userId);
             Mail::queue(new ManagementReviewDueMail($userReviews, $user));
 
         }

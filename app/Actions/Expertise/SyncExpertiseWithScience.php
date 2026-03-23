@@ -3,6 +3,7 @@
 namespace App\Actions\Expertise;
 
 use App\Models\Expertise;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Http;
 
 class SyncExpertiseWithScience
@@ -105,13 +106,13 @@ class SyncExpertiseWithScience
         foreach ($unique as $expertise) {
 
             try {
-                \App\Models\Expertise::query()->updateOrCreate([
+                Expertise::query()->updateOrCreate([
                     'name_en' => html_entity_decode((string) $expertise['name_en']),
                 ], [
                     'name_fr' => html_entity_decode((string) $expertise['name_fr']),
                     'is_validated' => true,
                 ]);
-            } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+            } catch (UniqueConstraintViolationException) {
 
                 if (is_callable($message)) {
                     $message('Duplicate expertise found: '.$expertise['name_en'].' / '.$expertise['name_fr'].PHP_EOL);

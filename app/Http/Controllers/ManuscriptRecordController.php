@@ -8,6 +8,8 @@ use App\Actions\DeleteManuscriptRecord;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\Permissions\UserPermission;
+use App\Events\ManuscriptRecordToReviewEvent;
+use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\PlanningBinder\FlaggedManuscriptAcceptedInJournal;
 use App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint;
 use App\Http\Resources\ManuscriptRecordMetadataResource;
@@ -17,6 +19,7 @@ use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
+use App\Models\Region;
 use App\Models\User;
 use App\Queries\ManuscriptRecordListQuery;
 use App\Rules\Isbn;
@@ -54,7 +57,7 @@ class ManuscriptRecordController extends Controller
 
         foreach ($regionSlugs as $slug) {
             if ($user->can("can_view_{$slug}_mrfs")) {
-                $region = \App\Models\Region::query()->where('slug', $slug)->first();
+                $region = Region::query()->where('slug', $slug)->first();
                 if ($region) {
                     $allowedRegionIds[] = $region->id;
                 }
@@ -194,7 +197,7 @@ class ManuscriptRecordController extends Controller
             }
 
             // get review user
-            $reviewUser = \App\Models\User::query()->findOrFail($validated['reviewer_user_id']);
+            $reviewUser = User::query()->findOrFail($validated['reviewer_user_id']);
 
             // create the first management review step for this record
             $reviewStep = new ManagementReviewStep;
@@ -213,7 +216,7 @@ class ManuscriptRecordController extends Controller
             $manuscriptRecord->save();
 
             // trigger event that the record was submitted
-            event(new \App\Events\ManuscriptRecordToReviewEvent($manuscriptRecord, $reviewUser));
+            event(new ManuscriptRecordToReviewEvent($manuscriptRecord, $reviewUser));
         });
 
         return $this->defaultResource($manuscriptRecord);
@@ -235,7 +238,7 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord->save();
         $manuscriptRecord->refresh();
 
-        event(new \App\Events\ManuscriptRecordWithdrawnByAuthor($manuscriptRecord));
+        event(new ManuscriptRecordWithdrawnByAuthor($manuscriptRecord));
 
         return $this->defaultResource($manuscriptRecord);
     }
@@ -281,7 +284,7 @@ class ManuscriptRecordController extends Controller
         ]);
 
         // Ensure the journal selected matches the manuscript record type.
-        $journal = \App\Models\Journal::query()->find($validated['journal_id']);
+        $journal = Journal::query()->find($validated['journal_id']);
         if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $journal->isDfoSeries()) {
             abort(422, 'Secondary MRFs must be published in a DFO series journal.');
         } elseif ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY && $journal->isDfoSeries()) {

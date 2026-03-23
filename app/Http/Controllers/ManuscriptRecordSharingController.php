@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ItemShared;
 use App\Http\Requests\ShareablePostRequest;
 use App\Http\Resources\ShareableResource;
 use App\Models\ManuscriptRecord;
@@ -20,7 +21,7 @@ class ManuscriptRecordSharingController extends Controller
     {
         $this->authorize('view', $manuscriptRecord);
 
-        return ShareableResource::collection(\App\Models\Shareable::query()->where([
+        return ShareableResource::collection(Shareable::query()->where([
             'shareable_type' => ManuscriptRecord::class,
             'shareable_id' => $manuscriptRecord->id,
         ])->with(['user', 'sharingUser'])->get());
@@ -29,13 +30,13 @@ class ManuscriptRecordSharingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ShareablePostRequest $request, ManuscriptRecord $manuscriptRecord): \App\Http\Resources\ShareableResource
+    public function store(ShareablePostRequest $request, ManuscriptRecord $manuscriptRecord): ShareableResource
     {
         $this->authorize('share', $manuscriptRecord);
 
         $validated = $request->validated();
 
-        $shareable = \App\Models\Shareable::query()->updateOrCreate([
+        $shareable = Shareable::query()->updateOrCreate([
             'shareable_type' => ManuscriptRecord::class,
             'shareable_id' => $manuscriptRecord->id,
             'user_id' => $validated['user_id'],
@@ -46,7 +47,7 @@ class ManuscriptRecordSharingController extends Controller
             'expires_at' => $validated['expires_at'],
         ]);
 
-        event(new \App\Events\ItemShared($shareable));
+        event(new ItemShared($shareable));
 
         activity()
             ->performedOn($manuscriptRecord)
@@ -60,7 +61,7 @@ class ManuscriptRecordSharingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ManuscriptRecord $manuscriptRecord, Shareable $shareable): \App\Http\Resources\ShareableResource
+    public function show(ManuscriptRecord $manuscriptRecord, Shareable $shareable): ShareableResource
     {
         $this->authorize('view', $manuscriptRecord);
 
@@ -70,7 +71,7 @@ class ManuscriptRecordSharingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ManuscriptRecord $manuscriptRecord, Shareable $shareable): \App\Http\Resources\ShareableResource
+    public function update(Request $request, ManuscriptRecord $manuscriptRecord, Shareable $shareable): ShareableResource
     {
         $this->authorize('share', $manuscriptRecord);
 

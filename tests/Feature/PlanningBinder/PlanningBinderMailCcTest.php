@@ -9,8 +9,9 @@ use App\Models\NotificationGroupMember;
 use App\Models\Publication;
 use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Envelope;
 
-function ccEmails(\Illuminate\Mail\Mailables\Envelope $envelope): array
+function ccEmails(Envelope $envelope): array
 {
     return collect($envelope->cc)->map(fn (Address $a): string => $a->address)->all();
 }

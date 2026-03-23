@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property bool $is_validated
  * @property string $name_en
  * @property string $name_fr
@@ -19,9 +21,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $ror_version
  * @property string|null $ror_names
  * @property string|null $country_code
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Author> $authors
+ * @property-read Collection<int, Author> $authors
  * @property-read int|null $authors_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptAuthor> $manuscriptAuthors
+ * @property-read Collection<int, ManuscriptAuthor> $manuscriptAuthors
  * @property-read int|null $manuscript_authors_count
  *
  * @method static \Database\Factories\OrganizationFactory factory($count = null, $state = [])
@@ -58,17 +60,17 @@ class Organization extends Model
 
     // Relationships
     /** Authors
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Author, $this> */
+     * @return HasMany<Author, $this> */
     public function authors(): HasMany
     {
-        return $this->hasMany(\App\Models\Author::class);
+        return $this->hasMany(Author::class);
     }
 
     /** ManuscriptAuthors
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptAuthor, $this> */
+     * @return HasMany<ManuscriptAuthor, $this> */
     public function manuscriptAuthors(): HasMany
     {
-        return $this->hasMany(\App\Models\ManuscriptAuthor::class);
+        return $this->hasMany(ManuscriptAuthor::class);
     }
 
     /** Get default organization */
@@ -76,6 +78,6 @@ class Organization extends Model
     {
         $org = config('osp.default_organization');
 
-        return \App\Models\Organization::query()->where('name_en', $org)->first();
+        return Organization::query()->where('name_en', $org)->first();
     }
 }

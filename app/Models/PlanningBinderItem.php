@@ -4,15 +4,17 @@ namespace App\Models;
 
 use App\Enums\ManuscriptRecordType;
 use App\Enums\PlanningBinder\PlanningBinderItemStatus;
+use Database\Factories\PlanningBinderItemFactory;
 use Glhd\Bits\Database\HasSnowflakes;
 use Glhd\Bits\Snowflake;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property Snowflake $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string $plannable_type
  * @property int $plannable_id
  * @property ManuscriptRecordType $type
@@ -22,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $anticipated_date_of_publication
  * @property string|null $communication_approach
  * @property-read Model|\Eloquent $plannable
- * @property-read \App\Models\Region|null $region
+ * @property-read Region|null $region
  *
  * @method static \Database\Factories\PlanningBinderItemFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PlanningBinderItem newModelQuery()
@@ -44,7 +46,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PlanningBinderItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\PlanningBinderItemFactory> */
+    /** @use HasFactory<PlanningBinderItemFactory> */
     use HasFactory;
 
     use HasSnowflakes;

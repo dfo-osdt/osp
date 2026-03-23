@@ -56,7 +56,7 @@ class ImplicitFlowController extends Controller
      * Documentation: https://info.orcid.org/documentation/api-tutorials/api-tutorial-get-and-authenticated-orcid-id/
      *
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     protected function getOrcidId(string $accessToken): string
     {

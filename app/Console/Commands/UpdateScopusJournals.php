@@ -110,7 +110,7 @@ class UpdateScopusJournals extends Command
             // want to import.
 
             $id = $row['Sourcerecord ID'];
-            $journal = \App\Models\Journal::query()->where('scopus_source_record_id', $id)->first();
+            $journal = Journal::query()->where('scopus_source_record_id', $id)->first();
 
             // make sure journal is active
             if ($row['Active or Inactive'] == 'Inactive') {
@@ -153,7 +153,7 @@ class UpdateScopusJournals extends Command
                     }
                 } else {
                     // create a new journal
-                    \App\Models\Journal::query()->forceCreate([
+                    Journal::query()->forceCreate([
                         'title' => $title,
                         'publisher' => $publisher,
                         'scopus_source_record_id' => $id,

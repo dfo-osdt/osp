@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\FunctionalArea;
 use Illuminate\Database\Seeder;
 
 class FunctionalAreaSeeder extends Seeder
@@ -36,7 +37,7 @@ class FunctionalAreaSeeder extends Seeder
         ];
 
         foreach ($functionalAreas as $functionalArea) {
-            \App\Models\FunctionalArea::create($functionalArea);
+            FunctionalArea::create($functionalArea);
         }
     }
 }

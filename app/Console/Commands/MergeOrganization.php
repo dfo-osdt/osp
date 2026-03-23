@@ -3,7 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Actions\Organizations\MergeOrganizations;
+use App\Models\AuthorEmployment;
+use App\Models\Funder;
+use App\Models\Organization;
+use App\Models\PublicationAuthor;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Database\Query\Builder;
 
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
@@ -19,7 +24,7 @@ class MergeOrganization extends Command
         $this->info('Merge Organization Tool');
         $this->newLine();
 
-        $unverifiedOrgs = \App\Models\Organization::query()->where('is_validated', false)->get();
+        $unverifiedOrgs = Organization::query()->where('is_validated', false)->get();
 
         if ($unverifiedOrgs->isEmpty()) {
             $this->info('No unverified organizations found.');
@@ -45,7 +50,7 @@ class MergeOrganization extends Command
             ])->all()
         );
 
-        $sourceOrg = \App\Models\Organization::query()->find($sourceOrgId);
+        $sourceOrg = Organization::query()->find($sourceOrgId);
 
         $this->newLine();
         $this->info("Selected source organization: {$sourceOrg->name_en}");
@@ -53,8 +58,8 @@ class MergeOrganization extends Command
         $targetOrg = search(
             label: 'Search for verified target organization to merge INTO:',
             options: fn (string $value) => $value !== ''
-                ? \App\Models\Organization::query()->where('is_validated', true)
-                    ->where(function (\Illuminate\Contracts\Database\Query\Builder $query) use ($value): void {
+                ? Organization::query()->where('is_validated', true)
+                    ->where(function (Builder $query) use ($value): void {
                         $query->where('name_en', 'like', "%{$value}%")
                             ->orWhere('name_fr', 'like', "%{$value}%")
                             ->orWhere('ror_identifier', 'like', "%{$value}%");
@@ -69,7 +74,7 @@ class MergeOrganization extends Command
             placeholder: 'Type to search verified organizations...',
         );
 
-        $targetOrg = \App\Models\Organization::query()->find($targetOrg);
+        $targetOrg = Organization::query()->find($targetOrg);
 
         $this->newLine();
         $this->info("Source: {$sourceOrg->name_en} (ID: {$sourceOrg->id})");
@@ -79,9 +84,9 @@ class MergeOrganization extends Command
         $relatedCounts = [
             'Authors' => $sourceOrg->authors()->count(),
             'Manuscript Authors' => $sourceOrg->manuscriptAuthors()->count(),
-            'Author Employments' => \App\Models\AuthorEmployment::query()->where('organization_id', $sourceOrg->id)->count(),
-            'Publication Authors' => \App\Models\PublicationAuthor::query()->where('organization_id', $sourceOrg->id)->count(),
-            'Funders' => \App\Models\Funder::query()->where('organization_id', $sourceOrg->id)->count(),
+            'Author Employments' => AuthorEmployment::query()->where('organization_id', $sourceOrg->id)->count(),
+            'Publication Authors' => PublicationAuthor::query()->where('organization_id', $sourceOrg->id)->count(),
+            'Funders' => Funder::query()->where('organization_id', $sourceOrg->id)->count(),
         ];
 
         $this->info('Related records that will be merged:');

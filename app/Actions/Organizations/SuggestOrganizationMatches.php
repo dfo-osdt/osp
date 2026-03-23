@@ -4,6 +4,7 @@ namespace App\Actions\Organizations;
 
 use App\Models\Organization;
 use App\Traits\ComparesStringSimilarity;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 class SuggestOrganizationMatches
@@ -55,7 +56,7 @@ class SuggestOrganizationMatches
         $candidateOrgs = Organization::query()
             ->where('is_validated', true)
             ->whereNotNull('ror_identifier')
-            ->where(function (\Illuminate\Contracts\Database\Query\Builder $query) use ($org): void {
+            ->where(function (Builder $query) use ($org): void {
                 $searchTerms = self::extractSearchTerms($org->name_en);
 
                 foreach ($searchTerms as $term) {

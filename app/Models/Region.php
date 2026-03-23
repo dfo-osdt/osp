@@ -5,11 +5,12 @@ namespace App\Models;
 use App\Enums\Permissions\UserRole;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string $name_en
  * @property string $name_fr
  * @property string $slug
@@ -43,7 +44,7 @@ class Region extends Model
     /**
      * Return this region's editors
      *
-     * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\User>
+     * @return Collection<int, User>
      */
     public function getRegionalEditors(): Collection
     {

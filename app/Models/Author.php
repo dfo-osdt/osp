@@ -7,18 +7,22 @@ use App\Traits\HasExpertises;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string $first_name
  * @property string $last_name
  * @property string|null $orcid
@@ -26,27 +30,27 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property mixed|null $orcid_access_token
  * @property string|null $orcid_token_scope
  * @property mixed|null $orcid_refresh_token
- * @property \Illuminate\Support\Carbon|null $orcid_expires_at
+ * @property Carbon|null $orcid_expires_at
  * @property string $email
  * @property int $organization_id
  * @property int|null $user_id
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AuthorEmployment> $employments
+ * @property-read Collection<int, AuthorEmployment> $employments
  * @property-read int|null $employments_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expertise> $expertises
+ * @property-read Collection<int, Expertise> $expertises
  * @property-read int|null $expertises_count
  * @property-read string $apa_name
  * @property-read string $full_name
  * @property-read string $orcid_number
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptAuthor> $manuscriptAuthors
+ * @property-read Collection<int, ManuscriptAuthor> $manuscriptAuthors
  * @property-read int|null $manuscript_authors_count
- * @property-read \App\Models\Organization $organization
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptPeerReviewer> $peerReviews
+ * @property-read Organization $organization
+ * @property-read Collection<int, ManuscriptPeerReviewer> $peerReviews
  * @property-read int|null $peer_reviews_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Publication> $publications
+ * @property-read Collection<int, Publication> $publications
  * @property-read int|null $publications_count
- * @property-read \App\Models\User|null $user
+ * @property-read User|null $user
  *
  * @method static Builder<static>|Author externalAuthor()
  * @method static \Database\Factories\AuthorFactory factory($count = null, $state = [])
@@ -70,9 +74,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static Builder<static>|Author whereUserId($value)
  * @method static Builder<static>|Author withOrcid()
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptRecord> $manuscriptRecords
+ * @property-read Collection<int, ManuscriptRecord> $manuscriptRecords
  * @property-read int|null $manuscript_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PublicationAuthor> $publicationAuthors
+ * @property-read Collection<int, PublicationAuthor> $publicationAuthors
  * @property-read int|null $publication_authors_count
  *
  * @mixin \Eloquent
@@ -178,14 +182,14 @@ class Author extends Model
 
     // Relationships
     /** ManuscriptAuthors
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptAuthor, $this> */
+     * @return HasMany<ManuscriptAuthor, $this> */
     public function manuscriptAuthors(): HasMany
     {
-        return $this->hasMany(\App\Models\ManuscriptAuthor::class);
+        return $this->hasMany(ManuscriptAuthor::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\ManuscriptRecord, $this, \Illuminate\Database\Eloquent\Relations\Pivot>
+     * @return BelongsToMany<ManuscriptRecord, $this, Pivot>
      */
     public function manuscriptRecords(): BelongsToMany
     {
@@ -193,48 +197,48 @@ class Author extends Model
     }
 
     /** PublicationAuthors
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PublicationAuthor, $this> */
+     * @return HasMany<PublicationAuthor, $this> */
     public function publicationAuthors(): HasMany
     {
-        return $this->hasMany(\App\Models\PublicationAuthor::class);
+        return $this->hasMany(PublicationAuthor::class);
     }
 
     /** Pubslihed publications
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Publication, $this> */
+     * @return BelongsToMany<Publication, $this> */
     public function publications(): BelongsToMany
     {
         return $this->belongsToMany(Publication::class, 'publication_authors')->where('status', PublicationStatus::PUBLISHED);
     }
 
     /** Organization
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this> */
+     * @return BelongsTo<Organization, $this> */
     public function organization(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Organization::class);
+        return $this->belongsTo(Organization::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\AuthorEmployment, $this>
+     * @return HasMany<AuthorEmployment, $this>
      */
     public function employments(): HasMany
     {
-        return $this->hasMany(\App\Models\AuthorEmployment::class);
+        return $this->hasMany(AuthorEmployment::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptPeerReviewer, $this>
+     * @return HasMany<ManuscriptPeerReviewer, $this>
      */
     public function peerReviews(): HasMany
     {
-        return $this->hasMany(\App\Models\ManuscriptPeerReviewer::class);
+        return $this->hasMany(ManuscriptPeerReviewer::class);
     }
 
     #[Scope]

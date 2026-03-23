@@ -40,7 +40,7 @@ class PublicationFileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Publication $publication): \App\Http\Resources\MediaResource
+    public function store(Request $request, Publication $publication): MediaResource
     {
         // Load relationships needed for PublicationPolicy
         $publication->load('publicationAuthors.author', 'region');

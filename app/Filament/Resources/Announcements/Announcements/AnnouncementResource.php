@@ -6,6 +6,7 @@ use App\Filament\Resources\Announcements\Pages\CreateAnnouncement;
 use App\Filament\Resources\Announcements\Pages\EditAnnouncement;
 use App\Filament\Resources\Announcements\Pages\ListAnnouncements;
 use App\Models\Announcement;
+use Carbon\CarbonInterface;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -22,6 +23,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Date;
 
 class AnnouncementResource extends Resource
 {
@@ -60,7 +62,7 @@ class AnnouncementResource extends Resource
                     ->schema([
                         DateTimePicker::make('start_at')
                             ->label('Start Date')
-                            ->default(fn (): \Carbon\CarbonInterface => now())
+                            ->default(fn (): CarbonInterface => now())
                             ->required()
                             ->before('end_at'),
                         DateTimePicker::make('end_at')
@@ -99,7 +101,7 @@ class AnnouncementResource extends Resource
                     ->badge(true)
                     ->label('Status')
                     ->getStateUsing(function (Announcement $record) {
-                        $now = \Illuminate\Support\Facades\Date::now();
+                        $now = Date::now();
                         if ($record->start_at > $now) {
                             return 'Upcoming';
                         }
@@ -156,7 +158,7 @@ class AnnouncementResource extends Resource
                                     TextEntry::make('status')
                                         ->badge()
                                         ->getStateUsing(function ($record) {
-                                            $now = \Illuminate\Support\Facades\Date::now();
+                                            $now = Date::now();
                                             if ($record->start_at > $now) {
                                                 return 'Upcoming';
                                             }

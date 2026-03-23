@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\Http\Middleware\AuthenticateSession as SanctumAuthenticateSession;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Custom AuthenticateSession middleware that extends Sanctum's implementation
@@ -18,9 +19,9 @@ class AuthenticateSession extends SanctumAuthenticateSession
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      */
-    public function handle(\Illuminate\Http\Request $request, Closure $next): \Symfony\Component\HttpFoundation\Response
+    public function handle(Request $request, Closure $next): Response
     {
         if (! $request->user()) {
             return $next($request);

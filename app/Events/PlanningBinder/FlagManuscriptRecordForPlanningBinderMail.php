@@ -4,6 +4,7 @@ namespace App\Events\PlanningBinder;
 
 use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail;
+use App\Models\ManuscriptRecord;
 use App\Models\PlanningBinderItem;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
@@ -34,7 +35,7 @@ class FlagManuscriptRecordForPlanningBinderMail extends Event
         // set the status to flagged
         $state->status = PlanningBinderItemStatus::FLAGGED;
 
-        $mrf = \App\Models\ManuscriptRecord::query()->where('ulid', $this->manuscript_record_ulid)->firstOrFail();
+        $mrf = ManuscriptRecord::query()->where('ulid', $this->manuscript_record_ulid)->firstOrFail();
 
         // set the type to manuscript record
         $state->manuscript_record_type = $mrf->type;
@@ -50,7 +51,7 @@ class FlagManuscriptRecordForPlanningBinderMail extends Event
     {
         // send notification to the user
         Mail::queue(new ManuscriptFlaggedForPlanningBinderMail(
-            \App\Models\User::query()->findOrFail($this->user_id),
+            User::query()->findOrFail($this->user_id),
             $state
         ));
     }
@@ -58,9 +59,9 @@ class FlagManuscriptRecordForPlanningBinderMail extends Event
     public function handle(PlanningBinderItemState $state): void
     {
 
-        $mrf = \App\Models\ManuscriptRecord::query()->where('ulid', $this->manuscript_record_ulid)->firstOrFail();
+        $mrf = ManuscriptRecord::query()->where('ulid', $this->manuscript_record_ulid)->firstOrFail();
 
-        $item = \App\Models\PlanningBinderItem::query()->find($this->planning_binder_item_id);
+        $item = PlanningBinderItem::query()->find($this->planning_binder_item_id);
 
         if (! $item) {
             $item = new PlanningBinderItem;

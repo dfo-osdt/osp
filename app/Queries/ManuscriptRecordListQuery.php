@@ -3,13 +3,14 @@
 namespace App\Queries;
 
 use App\Models\ManuscriptRecord;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /** @extends QueryBuilder<ManuscriptRecord> */
 class ManuscriptRecordListQuery extends QueryBuilder
 {
-    public function __construct(?\Illuminate\Http\Request $request, $baseQuery = null)
+    public function __construct(?Request $request, $baseQuery = null)
     {
         parent::__construct($baseQuery ?? ManuscriptRecord::query(), $request);
 

@@ -12,8 +12,10 @@
 */
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Pest\Browser\Api\PendingAwaitablePage;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class)->in('Feature', 'Browser');
+uses(TestCase::class)->in('Feature', 'Browser');
 uses(RefreshDatabase::class)->in('Feature', 'Browser');
 
 /*
@@ -40,7 +42,7 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-function assertNoRealJavascriptErrors(Pest\Browser\Api\PendingAwaitablePage $page): void
+function assertNoRealJavascriptErrors(PendingAwaitablePage $page): void
 {
     $errors = $page->script('window.__pestBrowser.jsErrors || []');
 
