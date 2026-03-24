@@ -29,14 +29,14 @@ class PreprintListQuery extends QueryBuilder
 
         $this
             ->defaultSort('accepted_on')
-            ->allowedSorts([
+            ->allowedSorts(
                 'title',
-            ])
-            ->allowedFilters([
+            )
+            ->allowedFilters(
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('user_id'),
                 AllowedFilter::partial('title'),
                 AllowedFilter::exact('manuscriptAuthors.author_id'),
-            ]);
+            );
     }
 }

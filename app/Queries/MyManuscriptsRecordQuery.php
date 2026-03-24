@@ -16,7 +16,7 @@ class MyManuscriptsRecordQuery extends QueryBuilder
 
         $this->
          defaultSort('updated_at')->
-         allowedFilters([
+         allowedFilters(
              AllowedFilter::exact('user_id'),
              AllowedFilter::exact('region_id'),
              AllowedFilter::exact('status'),
@@ -24,12 +24,12 @@ class MyManuscriptsRecordQuery extends QueryBuilder
              AllowedFilter::partial('title'),
              AllowedFilter::exact('functional_area_id'),
              AllowedFilter::scope('reviewedBetween'),
-         ])->allowedSorts([
+         )->allowedSorts(
              'updated_at',
              'created_at',
              'title',
              'type',
              'status',
-         ]);
+         );
     }
 }

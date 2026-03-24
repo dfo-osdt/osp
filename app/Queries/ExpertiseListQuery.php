@@ -17,16 +17,16 @@ class ExpertiseListQuery extends QueryBuilder
 
         $this
             ->defaultSort('name_en')
-            ->allowedSorts([
+            ->allowedSorts(
                 'name_en',
                 'name_fr',
                 AllowedSort::custom('name-en-length', new StringLengthSort, 'name_en'),
                 AllowedSort::custom('name-fr-length', new StringLengthSort, 'name_fr'),
-            ])
-            ->allowedFilters(([
+            )
+            ->allowedFilters(
                 AllowedFilter::partial('name_en'),
                 AllowedFilter::partial('name_fr'),
                 AllowedFilter::custom('search', new MultiColumnFilter('name_en', 'name_fr')),
-            ]));
+            );
     }
 }

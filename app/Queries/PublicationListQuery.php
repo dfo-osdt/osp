@@ -16,8 +16,8 @@ class PublicationListQuery extends QueryBuilder
 
         $this->
          defaultSort('title')->
-         allowedSorts(['title', 'created_at', 'updated_at', 'published_on'])->
-         allowedFilters([
+         allowedSorts('title', 'created_at', 'updated_at', 'published_on')->
+         allowedFilters(
              AllowedFilter::exact('id'),
              AllowedFilter::exact('status'),
              AllowedFilter::exact('user_id'),
@@ -31,7 +31,6 @@ class PublicationListQuery extends QueryBuilder
              AllowedFilter::scope('under_embargo'),
              AllowedFilter::scope('secondary_publication'),
              AllowedFilter::scope('publishedBetween'),
-
-         ]);
+         );
     }
 }

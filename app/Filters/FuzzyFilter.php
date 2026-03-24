@@ -15,7 +15,7 @@ class FuzzyFilter implements Filter
         $this->columns = $columns;
     }
 
-    public function __invoke(Builder $query, $value, string $property)
+    public function __invoke(Builder $query, mixed $value, string $property): void
     {
         $attributes = $this->columns;
 
@@ -34,7 +34,5 @@ class FuzzyFilter implements Filter
                 });
             }
         });
-
-        return $this;
     }
 }
