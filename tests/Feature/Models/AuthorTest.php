@@ -2,8 +2,11 @@
 
 use App\Enums\Permissions\UserRole;
 use App\Models\Author;
+use App\Models\ManuscriptAuthor;
+use App\Models\ManuscriptRecord;
 use App\Models\Organization;
 use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\User;
 
 test('a user can get list of authors', function (): void {
@@ -17,7 +20,7 @@ test('a user can get list of authors', function (): void {
     $response = $this->actingAs($user)->getJson('api/authors?limit=5&include=organization')->assertOk();
 
     expect($response->json('data'))->toHaveCount(5);
-    expect($response->json('meta.total'))->toBe(\App\Models\Author::query()->count());
+    expect($response->json('meta.total'))->toBe(Author::query()->count());
 });
 
 test('a user can create an author', function (): void {
@@ -268,16 +271,16 @@ test('an editor can update an author and sync all pivot affiliations', function 
     ]);
 
     // Create manuscripts and publications with the original organization
-    $manuscript1 = \App\Models\ManuscriptRecord::factory()->create();
-    $manuscript2 = \App\Models\ManuscriptRecord::factory()->create();
+    $manuscript1 = ManuscriptRecord::factory()->create();
+    $manuscript2 = ManuscriptRecord::factory()->create();
 
-    $manuscriptAuthor1 = \App\Models\ManuscriptAuthor::factory()->create([
+    $manuscriptAuthor1 = ManuscriptAuthor::factory()->create([
         'author_id' => $author->id,
         'manuscript_record_id' => $manuscript1->id,
         'organization_id' => $originalOrg->id,
     ]);
 
-    $manuscriptAuthor2 = \App\Models\ManuscriptAuthor::factory()->create([
+    $manuscriptAuthor2 = ManuscriptAuthor::factory()->create([
         'author_id' => $author->id,
         'manuscript_record_id' => $manuscript2->id,
         'organization_id' => $originalOrg->id,
@@ -286,13 +289,13 @@ test('an editor can update an author and sync all pivot affiliations', function 
     $publication1 = Publication::factory()->create();
     $publication2 = Publication::factory()->create();
 
-    $publicationAuthor1 = \App\Models\PublicationAuthor::factory()->create([
+    $publicationAuthor1 = PublicationAuthor::factory()->create([
         'author_id' => $author->id,
         'publication_id' => $publication1->id,
         'organization_id' => $originalOrg->id,
     ]);
 
-    $publicationAuthor2 = \App\Models\PublicationAuthor::factory()->create([
+    $publicationAuthor2 = PublicationAuthor::factory()->create([
         'author_id' => $author->id,
         'publication_id' => $publication2->id,
         'organization_id' => $originalOrg->id,
@@ -334,8 +337,8 @@ test('updating author without sync_all_pivots flag does not update pivots', func
     ]);
 
     // Create a manuscript with the original organization
-    $manuscript = \App\Models\ManuscriptRecord::factory()->create();
-    $manuscriptAuthor = \App\Models\ManuscriptAuthor::factory()->create([
+    $manuscript = ManuscriptRecord::factory()->create();
+    $manuscriptAuthor = ManuscriptAuthor::factory()->create([
         'author_id' => $author->id,
         'manuscript_record_id' => $manuscript->id,
         'organization_id' => $originalOrg->id,
@@ -370,8 +373,8 @@ test('a regular user cannot sync pivots even if they try', function (): void {
     ]);
 
     // Create a manuscript with the original organization
-    $manuscript = \App\Models\ManuscriptRecord::factory()->create();
-    $manuscriptAuthor = \App\Models\ManuscriptAuthor::factory()->create([
+    $manuscript = ManuscriptRecord::factory()->create();
+    $manuscriptAuthor = ManuscriptAuthor::factory()->create([
         'author_id' => $author->id,
         'manuscript_record_id' => $manuscript->id,
         'organization_id' => $originalOrg->id,

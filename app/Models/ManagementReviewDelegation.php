@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\ManagementReviewDelegationFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -14,16 +16,16 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $id
  * @property int $user_id
  * @property int $delegate_user_id
- * @property \Illuminate\Support\Carbon|null $starts_at
- * @property \Illuminate\Support\Carbon $ends_at
- * @property \Illuminate\Support\Carbon|null $ended_early_at
+ * @property Carbon|null $starts_at
+ * @property Carbon $ends_at
+ * @property Carbon|null $ended_early_at
  * @property string|null $comment
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class ManagementReviewDelegation extends Model
 {
-    /** @use HasFactory<\Database\Factories\ManagementReviewDelegationFactory> */
+    /** @use HasFactory<ManagementReviewDelegationFactory> */
     use HasFactory;
 
     use LogsActivity;
@@ -51,7 +53,7 @@ class ManagementReviewDelegation extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -59,7 +61,7 @@ class ManagementReviewDelegation extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function delegate(): BelongsTo
     {

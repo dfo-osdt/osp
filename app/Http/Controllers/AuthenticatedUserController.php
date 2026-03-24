@@ -13,7 +13,7 @@ class AuthenticatedUserController extends Controller
 {
     public function user(Request $request): JsonResource
     {
-        $user = \App\Models\User::query()->find($request->user()->id)->load('author.organization');
+        $user = User::query()->find($request->user()->id)->load('author.organization');
 
         return AuthenticatedUserResource::make($user);
     }

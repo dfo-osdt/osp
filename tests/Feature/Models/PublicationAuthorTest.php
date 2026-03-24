@@ -1,11 +1,14 @@
 <?php
 
+use App\Models\Author;
+use App\Models\Organization;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
+use App\Models\User;
 
 test('a user can get the publication authors associated with a publication', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $publication = \App\Models\Publication::factory()->has(PublicationAuthor::factory()->count(5))->create([
+    $user = User::factory()->create();
+    $publication = Publication::factory()->has(PublicationAuthor::factory()->count(5))->create([
         'user_id' => $user->id,
     ]);
 
@@ -26,11 +29,11 @@ test('a user can get the publication authors associated with a publication', fun
 });
 
 test('a user can add a new publication author to their publication', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $publication = \App\Models\Publication::factory()->create([
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create([
         'user_id' => $user->id,
     ]);
-    $author = \App\Models\Author::factory()->create();
+    $author = Author::factory()->create();
 
     $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
         'author_id' => $author->id,
@@ -58,11 +61,11 @@ test('a user can add a new publication author to their publication', function ()
 });
 
 test('a user cannot add the same author twice on a publication', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $publication = \App\Models\Publication::factory()->create([
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create([
         'user_id' => $user->id,
     ]);
-    $author = \App\Models\Author::factory()->create();
+    $author = Author::factory()->create();
 
     $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
         'author_id' => $author->id,
@@ -76,7 +79,7 @@ test('a user cannot add the same author twice on a publication', function (): vo
 test('an editor or chief editor can manage publication authors', function (): void {
     // create a publication with 3 authors
     $publication = Publication::factory()->has(PublicationAuthor::factory()->count(3))->create();
-    $chiefEditor = \App\Models\User::factory()->chiefEditor()->create();
+    $chiefEditor = User::factory()->chiefEditor()->create();
 
     // chief editor can edit any publication author
     $response = $this->actingAs($chiefEditor)->putJson('/api/publications/'.$publication->id.'/publication-authors/'.$publication->publicationAuthors()->first()->id, [
@@ -92,7 +95,7 @@ test('an editor or chief editor can manage publication authors', function (): vo
     expect($publication->publicationAuthors()->count())->toBe(2);
 
     // try again with an editor
-    $editor = \App\Models\User::factory()->editor()->create();
+    $editor = User::factory()->editor()->create();
 
     // editor can edit any publication author
     $response = $this->actingAs($editor)->putJson('/api/publications/'.$publication->id.'/publication-authors/'.$publication->publicationAuthors()->first()->id, [
@@ -110,11 +113,11 @@ test('an editor or chief editor can manage publication authors', function (): vo
 });
 
 test('a user can remove and re-add the same author to a publication', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $publication = \App\Models\Publication::factory()->create([
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create([
         'user_id' => $user->id,
     ]);
-    $author = \App\Models\Author::factory()->create();
+    $author = Author::factory()->create();
 
     // Add an author
     $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
@@ -152,12 +155,12 @@ test('a user can remove and re-add the same author to a publication', function (
 });
 
 test('a user can add a group author with a custom organization to their publication', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $publication = \App\Models\Publication::factory()->create([
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create([
         'user_id' => $user->id,
     ]);
-    $author = \App\Models\Author::factory()->create();
-    $organization = \App\Models\Organization::factory()->create();
+    $author = Author::factory()->create();
+    $organization = Organization::factory()->create();
 
     $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
         'author_id' => $author->id,
@@ -179,8 +182,8 @@ test('a user can add a group author with a custom organization to their publicat
 });
 
 test('a user can update a publication author to be an organizational author', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $publication = \App\Models\Publication::factory()->create([
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create([
         'user_id' => $user->id,
     ]);
     $publicationAuthor = PublicationAuthor::factory()->create([

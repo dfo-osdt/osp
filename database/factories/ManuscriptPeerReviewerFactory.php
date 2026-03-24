@@ -3,11 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\Author;
+use App\Models\ManuscriptPeerReviewer;
 use App\Models\ManuscriptRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ManuscriptPeerReviewer>
+ * @extends Factory<ManuscriptPeerReviewer>
  */
 class ManuscriptPeerReviewerFactory extends Factory
 {

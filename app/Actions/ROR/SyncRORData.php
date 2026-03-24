@@ -4,6 +4,7 @@ namespace App\Actions\ROR;
 
 use App\Models\Organization;
 use Cerbero\JsonParser\JsonParser;
+use Illuminate\Support\Facades\Date;
 
 class SyncRORData
 {
@@ -45,10 +46,10 @@ class SyncRORData
         $ror_identifier = $record['id'];
 
         $lastModified = $record['admin']['last_modified']['date'];
-        $lastModifiedAt = \Illuminate\Support\Facades\Date::parse($lastModified);
+        $lastModifiedAt = Date::parse($lastModified);
 
         // first - check if we have this record already and if version is the same
-        $alreadyUpToDate = \App\Models\Organization::query()->where('ror_identifier', $ror_identifier)->where('updated_at', $lastModified)->exists();
+        $alreadyUpToDate = Organization::query()->where('ror_identifier', $ror_identifier)->where('updated_at', $lastModified)->exists();
         if ($alreadyUpToDate) {
             return;
         }
@@ -80,7 +81,7 @@ class SyncRORData
         $country_code = $record['locations'][0]['geonames_details']['country_code'] ?? null;
 
         // find or create the organization
-        \App\Models\Organization::query()->updateOrCreate(['ror_identifier' => $ror_identifier], [
+        Organization::query()->updateOrCreate(['ror_identifier' => $ror_identifier], [
             'name_en' => $name_en,
             'name_fr' => $name_fr,
             'abbr_en' => $abbr_en,

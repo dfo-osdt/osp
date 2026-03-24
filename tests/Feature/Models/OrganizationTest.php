@@ -2,6 +2,7 @@
 
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
+use App\Models\User;
 
 test('a user can get a list of all organization', function (): void {
     //
@@ -11,16 +12,16 @@ test('a user can get a list of all organization', function (): void {
     // unauthenticated user
     $response = $this->getJson('/api/organizations')->assertUnauthorized();
 
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $response = $this->actingAs($user)->getJson('/api/organizations?limit=15')->assertOk();
 
     expect($response->json('data'))->toHaveCount(15);
-    expect($response->json('meta.total'))->toBe(\App\Models\Organization::query()->count());
+    expect($response->json('meta.total'))->toBe(Organization::query()->count());
 });
 
 test('a user can create a new organization', function (): void {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $data = [
         'name_en' => 'Test Organization',
@@ -34,11 +35,11 @@ test('a user can create a new organization', function (): void {
     ]);
 
     // make sure it exists in DB and that it is not validated.
-    expect(\App\Models\Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+    expect(Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
 });
 
 test('a user can create a new organization without the abbreviation', function (): void {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $data = [
         'name_en' => 'Test Organization',
@@ -50,11 +51,11 @@ test('a user can create a new organization without the abbreviation', function (
     ]);
 
     // make sure it exists in DB and that it is not validated.
-    expect(\App\Models\Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+    expect(Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
 });
 
 test('a user cannot create the same organization twice', function (): void {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $data = [
         'name_en' => 'Test Organization',
@@ -66,13 +67,13 @@ test('a user cannot create the same organization twice', function (): void {
     ]);
 
     // make sure it exists in DB and that it is not validated.
-    expect(\App\Models\Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
+    expect(Organization::query()->find($response->json('data.id')))->toMatchArray($data)->toHaveKey('is_validated', false);
 
     $response = $this->actingAs($user)->postJson('/api/organizations', $data)->assertStatus(422)->assertJsonValidationErrors(['name_en', 'name_fr']);
 });
 
 test('a user can see an organization', function (): void {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $organization = Organization::factory()->create();
 
@@ -84,7 +85,7 @@ test('a user can see an organization', function (): void {
 });
 
 test('a user can filter organizations with nested filter parameters', function (): void {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     Organization::factory()->count(10)->create();
 
@@ -96,7 +97,7 @@ test('a user can filter organizations with nested filter parameters', function (
 });
 
 test('a user can filter organizations with comma-separated search terms', function (): void {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $org1 = Organization::factory()->create([
         'name_en' => 'XYZ Toronto ABC',
@@ -125,7 +126,7 @@ test('a user can filter organizations with comma-separated search terms', functi
 });
 
 test('a user can search organizations by abbreviation', function (): void {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $org = Organization::factory()->create([
         'name_en' => 'United States Geological Survey',
@@ -143,7 +144,7 @@ test('a user can search organizations by abbreviation', function (): void {
 });
 
 test('filtering with empty search value returns all results', function (): void {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     // Get current count
     $totalCount = Organization::query()->count();

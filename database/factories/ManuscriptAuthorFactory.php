@@ -2,10 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Author;
+use App\Models\ManuscriptAuthor;
+use App\Models\ManuscriptRecord;
+use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ManuscriptAuthor>
+ * @extends Factory<ManuscriptAuthor>
  */
 class ManuscriptAuthorFactory extends Factory
 {
@@ -15,9 +19,9 @@ class ManuscriptAuthorFactory extends Factory
     public function definition()
     {
         return [
-            'manuscript_record_id' => \App\Models\ManuscriptRecord::factory(),
-            'author_id' => \App\Models\Author::factory(),
-            'organization_id' => \App\Models\Organization::factory(),
+            'manuscript_record_id' => ManuscriptRecord::factory(),
+            'author_id' => Author::factory(),
+            'organization_id' => Organization::factory(),
             'is_corresponding_author' => false,
             'is_group_author' => false,
         ];

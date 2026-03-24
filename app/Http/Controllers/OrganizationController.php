@@ -37,7 +37,7 @@ class OrganizationController extends Controller
             'abbr_fr' => ['nullable', 'string', 'max:10'],
         ]);
 
-        $organization = \App\Models\Organization::query()->create($validated);
+        $organization = Organization::query()->create($validated);
 
         return new OrganizationResource($organization);
     }

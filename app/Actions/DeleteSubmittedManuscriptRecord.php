@@ -19,6 +19,7 @@ class DeleteSubmittedManuscriptRecord
         }
 
         DB::transaction(function () use ($manuscriptRecord): void {
+            $manuscriptRecord->managementReviewSteps()->update(['previous_step_id' => null]);
             $manuscriptRecord->managementReviewSteps()->delete();
             $manuscriptRecord->manuscriptAuthors()->delete();
             $manuscriptRecord->peerReviewers()->delete();

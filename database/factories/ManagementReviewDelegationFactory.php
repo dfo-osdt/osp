@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\ManagementReviewDelegation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ManagementReviewDelegation>
+ * @extends Factory<ManagementReviewDelegation>
  */
 class ManagementReviewDelegationFactory extends Factory
 {

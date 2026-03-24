@@ -9,6 +9,7 @@ use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -24,7 +25,7 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
      */
     public function __construct(public User $user, public PlanningBinderItemState $planningBinderItemState)
     {
-        $this->manuscriptRecord = \App\Models\ManuscriptRecord::query()->where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail();
+        $this->manuscriptRecord = ManuscriptRecord::query()->where('ulid', $this->planningBinderItemState->manuscript_record_ulid)->firstOrFail();
     }
 
     /**
@@ -81,7 +82,7 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

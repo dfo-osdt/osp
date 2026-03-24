@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\Health\Commands\RunHealthChecksCommand;
+use Spatie\Health\Models\HealthCheckResultHistoryItem;
 
 class Kernel extends ConsoleKernel
 {
@@ -31,7 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(RunHealthChecksCommand::class)->everyMinute();
         $schedule->command('model:prune', [
             '--model' => [
-                \Spatie\Health\Models\HealthCheckResultHistoryItem::class,
+                HealthCheckResultHistoryItem::class,
             ],
         ])->daily();
 

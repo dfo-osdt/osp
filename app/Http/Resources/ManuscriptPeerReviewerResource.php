@@ -2,12 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ManuscriptPeerReviewer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @mixin \App\Models\ManuscriptPeerReviewer
+ * @mixin ManuscriptPeerReviewer
  */
 class ManuscriptPeerReviewerResource extends JsonResource
 {

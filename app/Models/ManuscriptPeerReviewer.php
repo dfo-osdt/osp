@@ -4,15 +4,17 @@ namespace App\Models;
 
 use App\Http\Integrations\Orcid\Enums\PeerReviewRole;
 use App\Http\Integrations\Orcid\Enums\PeerReviewType;
+use Database\Factories\ManuscriptPeerReviewerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property PeerReviewType $type
  * @property PeerReviewRole $role
- * @property-read \App\Models\Author|null $author
- * @property-read \App\Models\ManuscriptRecord|null $manuscriptRecord
+ * @property-read Author|null $author
+ * @property-read ManuscriptRecord|null $manuscriptRecord
  *
  * @method static \Database\Factories\ManuscriptPeerReviewerFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer newModelQuery()
@@ -20,11 +22,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer query()
  *
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $manuscript_record_id
  * @property int $author_id
- * @property \Illuminate\Support\Carbon|null $review_date
+ * @property Carbon|null $review_date
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptPeerReviewer whereCreatedAt($value)
@@ -39,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class ManuscriptPeerReviewer extends Model
 {
-    /** @use HasFactory<\Database\Factories\ManuscriptPeerReviewerFactory> */
+    /** @use HasFactory<ManuscriptPeerReviewerFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -63,7 +65,7 @@ class ManuscriptPeerReviewer extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManuscriptRecord, $this>
+     * @return BelongsTo<ManuscriptRecord, $this>
      */
     public function manuscriptRecord(): BelongsTo
     {
@@ -71,7 +73,7 @@ class ManuscriptPeerReviewer extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Author, $this>
+     * @return BelongsTo<Author, $this>
      */
     public function author(): BelongsTo
     {

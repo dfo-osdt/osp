@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Funder;
+use App\Models\FundingSource;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FundingSource>
+ * @extends Factory<FundingSource>
  */
 class FundingSourceFactory extends Factory
 {

@@ -2,33 +2,38 @@
 
 namespace App\Models;
 
+use App\Enums\ManagementReviewStepDecision;
+use App\Enums\ManagementReviewStepStatus;
 use App\Observers\ManagementReviewStepObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $manuscript_record_id
  * @property int|null $previous_step_id
  * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $completed_at
+ * @property Carbon|null $completed_at
  * @property string|null $comments
- * @property \App\Enums\ManagementReviewStepStatus $status
- * @property \App\Enums\ManagementReviewStepDecision|null $decision
- * @property \Illuminate\Support\Carbon|null $decision_expected_by
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property ManagementReviewStepStatus $status
+ * @property ManagementReviewStepDecision|null $decision
+ * @property Carbon|null $decision_expected_by
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \App\Models\ManuscriptRecord $manuscriptRecord
+ * @property-read ManuscriptRecord $manuscriptRecord
  * @property-read ManagementReviewStep|null $previousStep
- * @property-read \App\Models\User $user
+ * @property-read User $user
  *
  * @method static \Database\Factories\ManagementReviewStepFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManagementReviewStep newModelQuery()
@@ -72,16 +77,16 @@ class ManagementReviewStep extends Model
         return [
             'completed_at' => 'datetime',
             'decision_expected_by' => 'datetime',
-            'status' => \App\Enums\ManagementReviewStepStatus::class,
-            'decision' => \App\Enums\ManagementReviewStepDecision::class,
+            'status' => ManagementReviewStepStatus::class,
+            'decision' => ManagementReviewStepDecision::class,
         ];
     }
 
     // Default attributes
     protected $attributes = [
         'comments' => '',
-        'status' => \App\Enums\ManagementReviewStepStatus::PENDING,
-        'decision' => \App\Enums\ManagementReviewStepDecision::NONE,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'decision' => ManagementReviewStepDecision::NONE,
     ];
 
     // logging options
@@ -93,53 +98,53 @@ class ManagementReviewStep extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManuscriptRecord, $this>
+     * @return BelongsTo<ManuscriptRecord, $this>
      */
     public function manuscriptRecord(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\ManuscriptRecord::class);
+        return $this->belongsTo(ManuscriptRecord::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManagementReviewStep, $this>
+     * @return BelongsTo<ManagementReviewStep, $this>
      */
     public function previousStep(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\ManagementReviewStep::class, 'previous_step_id');
+        return $this->belongsTo(ManagementReviewStep::class, 'previous_step_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     #[Scope]
     protected function overdue(Builder $query): void
     {
-        $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING)
+        $query->where('status', ManagementReviewStepStatus::PENDING)
             ->where('decision_expected_by', '<', now());
     }
 
     #[Scope]
     protected function dueSoon(Builder $query, int $days = 2): void
     {
-        $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING)
+        $query->where('status', ManagementReviewStepStatus::PENDING)
             ->whereBetween('decision_expected_by', [now(), now()->addBusinessDays($days)]);
     }
 
     #[Scope]
     protected function pending(Builder $query): void
     {
-        $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING);
+        $query->where('status', ManagementReviewStepStatus::PENDING);
     }
 
     #[Scope]
     protected function pendingForDays(Builder $query, int $days = 4): void
     {
-        $query->where('status', \App\Enums\ManagementReviewStepStatus::PENDING)
+        $query->where('status', ManagementReviewStepStatus::PENDING)
             ->where('created_at', '<=', now()->subBusinessDays($days));
     }
 }

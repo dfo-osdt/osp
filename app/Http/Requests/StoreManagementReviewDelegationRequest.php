@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\ManagementReviewDelegation;
+use App\Models\User;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -38,7 +40,7 @@ class StoreManagementReviewDelegationRequest extends FormRequest
             $hasOverlapping = ManagementReviewDelegation::query()
                 ->where('user_id', $this->user()->id)
                 ->whereNull('ended_early_at')
-                ->where(function (\Illuminate\Contracts\Database\Query\Builder $q) use ($endsAt): void {
+                ->where(function (Builder $q) use ($endsAt): void {
                     $q->whereNull('starts_at')
                         ->orWhere('starts_at', '<', $endsAt);
                 })
@@ -51,7 +53,7 @@ class StoreManagementReviewDelegationRequest extends FormRequest
 
             $delegateUserId = $this->input('delegate_user_id');
             if ($delegateUserId) {
-                $delegate = \App\Models\User::query()->find($delegateUserId);
+                $delegate = User::query()->find($delegateUserId);
                 if ($delegate && $delegate->isActingAsDelegate()) {
                     $validator->errors()->add('delegate_user_id', __('This user is already acting as a delegate.'));
                 }

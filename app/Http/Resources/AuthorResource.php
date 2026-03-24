@@ -3,13 +3,14 @@
 namespace App\Http\Resources;
 
 use App\Enums\SensitivityLabel;
+use App\Models\Author;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
 /**
  * Resource for Author model.
  *
- * @mixin \App\Models\Author
+ * @mixin Author
  */
 class AuthorResource extends JsonResource
 {

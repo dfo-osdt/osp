@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,22 +23,28 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Ramsey\Uuid\UuidInterface;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * App\Models\ManuscriptRecord
  *
  * @property int $id
- * @property \Ramsey\Uuid\UuidInterface|string $ulid
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property UuidInterface|string $ulid
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  * @property ManuscriptRecordType $type primary, secondary, etc.
  * @property ManuscriptRecordStatus $status draft, submitted, etc.
  * @property string $title
@@ -58,26 +65,26 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property bool $pls_approved_by_author
  * @property bool $pls_translation_approved
  * @property int|null $functional_area_id
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \App\Models\FunctionalArea|null $functionalArea
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FundingSource> $fundingSources
+ * @property-read FunctionalArea|null $functionalArea
+ * @property-read Collection<int, FundingSource> $fundingSources
  * @property-read int|null $funding_sources_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManagementReviewStep> $managementReviewSteps
+ * @property-read Collection<int, ManagementReviewStep> $managementReviewSteps
  * @property-read int|null $management_review_steps_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptAuthor> $manuscriptAuthors
+ * @property-read Collection<int, ManuscriptAuthor> $manuscriptAuthors
  * @property-read int|null $manuscript_authors_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptPeerReviewer> $peerReviewers
+ * @property-read Collection<int, ManuscriptPeerReviewer> $peerReviewers
  * @property-read int|null $peer_reviewers_count
- * @property-read \App\Models\Publication|null $publication
- * @property-read \App\Models\Region $region
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shareable> $shareables
+ * @property-read Publication|null $publication
+ * @property-read Region $region
+ * @property-read Collection<int, Shareable> $shareables
  * @property-read int|null $shareables_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $sharedWithUsers
+ * @property-read Collection<int, User> $sharedWithUsers
  * @property-read int|null $shared_with_users_count
- * @property-read \App\Models\User $user
+ * @property-read User $user
  *
  * @method static \Database\Factories\ManuscriptRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord newModelQuery()
@@ -115,7 +122,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property bool $intends_open_access
  * @property string|null $open_access_rationale
  * @property string|null $pls_fr
- * @property-read \App\Models\PlanningBinderItem|null $planningBinderItem
+ * @property-read PlanningBinderItem|null $planningBinderItem
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereApplyOgl($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptRecord whereIntendsOpenAccess($value)
@@ -203,59 +210,59 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     /**
      * A manuscript has a lead region.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Region, $this>
+     * @return BelongsTo<Region, $this>
      */
     public function region(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Region::class);
+        return $this->belongsTo(Region::class);
     }
 
     /**
      * A manuscript has a functional area.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\FunctionalArea, $this>
+     * @return BelongsTo<FunctionalArea, $this>
      */
     public function functionalArea(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\FunctionalArea::class);
+        return $this->belongsTo(FunctionalArea::class);
     }
 
     /**
      * A manuscripts has several ManuscriptAuthors
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptAuthor, $this>
+     * @return HasMany<ManuscriptAuthor, $this>
      */
     public function manuscriptAuthors(): HasMany
     {
-        return $this->hasMany(\App\Models\ManuscriptAuthor::class)->chaperone();
+        return $this->hasMany(ManuscriptAuthor::class)->chaperone();
     }
 
     /**
      * A manuscript has a user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
      * Sharing relationships.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany<\App\Models\Shareable, $this>
+     * @return MorphMany<Shareable, $this>
      */
     public function shareables(): MorphMany
     {
-        return $this->morphMany(\App\Models\Shareable::class, 'shareable');
+        return $this->morphMany(Shareable::class, 'shareable');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany<\App\Models\User, $this>
+     * @return MorphToMany<User, $this>
      */
     public function sharedWithUsers(): MorphToMany
     {
-        return $this->morphToMany(\App\Models\User::class, 'shareable', 'shareables')
+        return $this->morphToMany(User::class, 'shareable', 'shareables')
             ->whereHas('sharedWith', function (\Illuminate\Contracts\Database\Query\Builder $query): void {
                 $query->whereNull('expires_at')
                     ->orWhere('expires_at', '>', now());
@@ -266,18 +273,18 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     /**
      * A manuscript has many management review steps.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManagementReviewStep, $this>
+     * @return HasMany<ManagementReviewStep, $this>
      */
     public function managementReviewSteps(): HasMany
     {
-        return $this->hasMany(\App\Models\ManagementReviewStep::class);
+        return $this->hasMany(ManagementReviewStep::class);
     }
 
     /**
      * A manuscript has no to many peer reviewers. Only
      * internal publications have peer reviewers.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptPeerReviewer, $this>
+     * @return HasMany<ManuscriptPeerReviewer, $this>
      */
     public function peerReviewers(): HasMany
     {
@@ -287,11 +294,11 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     /**
      * A manuscript can have one publication
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\Publication, $this>
+     * @return HasOne<Publication, $this>
      */
     public function publication(): HasOne
     {
-        return $this->hasOne(\App\Models\Publication::class);
+        return $this->hasOne(Publication::class);
     }
 
     /**
@@ -324,7 +331,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      * unpublished and should not be shared, we set the sensitivity label
      * to Protected A by default.
      */
-    public function addManuscriptFile(string|\Symfony\Component\HttpFoundation\File\UploadedFile $file, bool $preserveOriginal = false): \Spatie\MediaLibrary\MediaCollections\Models\Media
+    public function addManuscriptFile(string|UploadedFile $file, bool $preserveOriginal = false): Media
     {
         return $this->addMedia($file)
             ->withCustomProperties([
@@ -377,7 +384,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      *
      * @param  bool  $noExceptions  If true, return false instead of throwing a ValidationException on failure.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function validateIsFilled(bool $noExceptions = false): bool
     {

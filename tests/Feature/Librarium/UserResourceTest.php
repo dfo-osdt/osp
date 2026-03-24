@@ -101,7 +101,7 @@ describe('Edit User page features', function (): void {
     });
 
     it('Can edit an existing user', function (): void {
-        $this->actingAs($this->admin)->livewire(Edituser::class, ['record' => $this->record->getRouteKey()])
+        $this->actingAs($this->admin)->livewire(EditUser::class, ['record' => $this->record->getRouteKey()])
             ->fillForm([
                 'email' => "{$this->record->first_name}.{$this->record->last_name}@dfo-mpo.gc.ca",
             ])

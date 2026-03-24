@@ -1,10 +1,14 @@
 <?php
 
+use App\Models\Author;
 use App\Models\ManuscriptAuthor;
+use App\Models\ManuscriptRecord;
+use App\Models\Organization;
+use App\Models\User;
 
 test('a user can get the manuscript authors associated with a manuscript record', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $manuscript = \App\Models\ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->create([
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->has(ManuscriptAuthor::factory()->count(5))->create([
         'user_id' => $user->id,
     ]);
 
@@ -25,11 +29,11 @@ test('a user can get the manuscript authors associated with a manuscript record'
 });
 
 test('a user can add a new manuscript author to their manuscript record', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $manuscript = \App\Models\ManuscriptRecord::factory()->create([
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
     ]);
-    $author = \App\Models\Author::factory()->create();
+    $author = Author::factory()->create();
 
     $response = $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
         'author_id' => $author->id,
@@ -66,11 +70,11 @@ test('a user can add a new manuscript author to their manuscript record', functi
 });
 
 test('a user cannot add the same author twice to a manuscript record', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $manuscript = \App\Models\ManuscriptRecord::factory()->create([
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
     ]);
-    $author = \App\Models\Author::factory()->create();
+    $author = Author::factory()->create();
 
     $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
         'author_id' => $author->id,
@@ -82,12 +86,12 @@ test('a user cannot add the same author twice to a manuscript record', function 
 });
 
 test('a user can add a group author with a custom organization to their manuscript record', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $manuscript = \App\Models\ManuscriptRecord::factory()->create([
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
     ]);
-    $author = \App\Models\Author::factory()->create();
-    $organization = \App\Models\Organization::factory()->create();
+    $author = Author::factory()->create();
+    $organization = Organization::factory()->create();
 
     $response = $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
         'author_id' => $author->id,
@@ -109,8 +113,8 @@ test('a user can add a group author with a custom organization to their manuscri
 });
 
 test('a user can update a manuscript author to be an organizational author', function (): void {
-    $user = \App\Models\User::factory()->create();
-    $manuscript = \App\Models\ManuscriptRecord::factory()->create([
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
     ]);
     $manuscriptAuthor = ManuscriptAuthor::factory()->create([

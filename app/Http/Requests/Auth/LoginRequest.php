@@ -41,7 +41,7 @@ class LoginRequest extends FormRequest
      * Attempt to authenticate the request's credentials.
      *
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function authenticate(): void
     {
@@ -55,7 +55,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey(), $this->decaySeconds);
 
             // check if this user has verified their email address
-            $user = \App\Models\User::query()->where('email', $this->email)->first();
+            $user = User::query()->where('email', $this->email)->first();
             if ($user && ! $user->hasVerifiedEmail()) {
                 throw ValidationException::withMessages([
                     'email' => __('auth.failed_email_not_verified'),
@@ -74,7 +74,7 @@ class LoginRequest extends FormRequest
      * Ensure the login request is not rate limited.
      *
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function ensureIsNotRateLimited(): void
     {

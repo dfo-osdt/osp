@@ -16,12 +16,16 @@ use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -30,32 +34,32 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  * @property PublicationStatus $status accepted, published, etc.
  * @property string $title
  * @property string|null $doi
- * @property \Illuminate\Support\Carbon|null $accepted_on
- * @property \Illuminate\Support\Carbon|null $published_on
- * @property \Illuminate\Support\Carbon|null $embargoed_until
+ * @property Carbon|null $accepted_on
+ * @property Carbon|null $published_on
+ * @property Carbon|null $embargoed_until
  * @property bool $is_open_access
  * @property int|null $manuscript_record_id
  * @property int $journal_id
  * @property int $user_id
  * @property int $region_id
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FundingSource> $fundingSources
+ * @property-read Collection<int, FundingSource> $fundingSources
  * @property-read int|null $funding_sources_count
- * @property-read \App\Models\Journal $journal
- * @property-read \App\Models\ManuscriptRecord|null $manuscriptRecord
+ * @property-read Journal $journal
+ * @property-read ManuscriptRecord|null $manuscriptRecord
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PublicationAuthor> $publicationAuthors
+ * @property-read Collection<int, PublicationAuthor> $publicationAuthors
  * @property-read int|null $publication_authors_count
- * @property-read \App\Models\User $user
- * @property-read \App\Models\Region $region
+ * @property-read User $user
+ * @property-read Region $region
  *
  * @method static \Database\Factories\PublicationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication forUser(\App\Models\User $user)
@@ -85,7 +89,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication withoutTrashed()
  *
- * @property-read \App\Models\PlanningBinderItem|null $planningBinderItem
+ * @property-read PlanningBinderItem|null $planningBinderItem
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereRegionId($value)
  *
@@ -139,7 +143,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
 
     // Relationships
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Journal, $this>
+     * @return BelongsTo<Journal, $this>
      */
     public function journal(): BelongsTo
     {
@@ -150,7 +154,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      * Manuscript record - can be null as we allow creation of
      * publications without a manuscript record.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\ManuscriptRecord, $this>
+     * @return BelongsTo<ManuscriptRecord, $this>
      */
     public function manuscriptRecord(): BelongsTo
     {
@@ -158,7 +162,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -168,7 +172,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     /**
      * The Lead region for which the publication is associated with.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Region, $this>
+     * @return BelongsTo<Region, $this>
      */
     public function region(): BelongsTo
     {
@@ -176,7 +180,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PublicationAuthor, $this>
+     * @return HasMany<PublicationAuthor, $this>
      */
     public function publicationAuthors(): HasMany
     {
@@ -196,7 +200,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     /**
      * Add publication file media model.
      */
-    public function addPublicationFile(string|\Symfony\Component\HttpFoundation\File\UploadedFile $file, bool $preserveOriginal = false): Media
+    public function addPublicationFile(string|UploadedFile $file, bool $preserveOriginal = false): Media
     {
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)
@@ -326,15 +330,15 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     #[Scope]
     protected function publishedBetween(Builder $query, string $startDate, string $endDate): void
     {
-        $query->whereBetween('published_on', [\Illuminate\Support\Facades\Date::parse($startDate), \Illuminate\Support\Facades\Date::parse($endDate)]);
+        $query->whereBetween('published_on', [Date::parse($startDate), Date::parse($endDate)]);
     }
 
     /**
      * Scope to filter publications that are accepted but not yet marked as published
      * Only includes primary publications that have a manuscript record
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
-    protected function pendingPublish(\Illuminate\Database\Eloquent\Builder $query): void
+    #[Scope]
+    protected function pendingPublish(Builder $query): void
     {
         $query->where('status', PublicationStatus::ACCEPTED)
             ->whereNotNull('manuscript_record_id')
@@ -350,8 +354,8 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      * - Regional observers see all published + unpublished in their region
      * - Regular users see only published publications
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
-    protected function forUser(\Illuminate\Database\Eloquent\Builder $query, User $user): void
+    #[Scope]
+    protected function forUser(Builder $query, User $user): void
     {
         // if user has permission to update all publications, show everything
         if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {

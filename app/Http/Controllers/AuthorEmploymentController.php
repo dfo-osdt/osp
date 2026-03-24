@@ -44,7 +44,7 @@ class AuthorEmploymentController extends Controller
             abort(403, 'You are not allowed to create employments for other organizations');
         }
 
-        $authorEmployment = \App\Models\AuthorEmployment::query()->create([
+        $authorEmployment = AuthorEmployment::query()->create([
             'author_id' => $author->id,
             'organization_id' => $defaultOrganization->id,
             'role_title' => $validated['role_title'],
@@ -55,7 +55,7 @@ class AuthorEmploymentController extends Controller
 
         $authorEmployment->load('organization');
 
-        dispatch(new \App\Jobs\SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_CREATE));
+        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_CREATE));
 
         $authorEmployment->setRelation('author', $author);
 
@@ -97,7 +97,7 @@ class AuthorEmploymentController extends Controller
         $authorEmployment->load('organization');
         $authorEmployment->refresh();
 
-        dispatch(new \App\Jobs\SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_UPDATE));
+        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_UPDATE));
 
         return AuthorEmploymentResource::make($authorEmployment);
     }
@@ -109,7 +109,7 @@ class AuthorEmploymentController extends Controller
     {
         $this->authorize('delete', $authorEmployment);
 
-        dispatch(new \App\Jobs\SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_DELETE));
+        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_DELETE));
 
         $authorEmployment->delete();
 

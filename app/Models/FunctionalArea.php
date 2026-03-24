@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string $name_en
  * @property string $name_fr
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ManuscriptRecord> $manuscriptRecords
+ * @property-read Collection<int, ManuscriptRecord> $manuscriptRecords
  * @property-read int|null $manuscript_records_count
  *
  * @method static \Database\Factories\FunctionalAreaFactory factory($count = null, $state = [])
@@ -32,10 +34,10 @@ class FunctionalArea extends Model
     use HasFactory;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ManuscriptRecord, $this>
+     * @return HasMany<ManuscriptRecord, $this>
      */
     public function manuscriptRecords(): HasMany
     {
-        return $this->hasMany(\App\Models\ManuscriptRecord::class);
+        return $this->hasMany(ManuscriptRecord::class);
     }
 }

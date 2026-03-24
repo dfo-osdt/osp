@@ -43,7 +43,7 @@ class FullFlowController
 
         Log::info('Key found for ORCID callback');
 
-        $user = \App\Models\User::query()->find(Cache::pull($validated['key']));
+        $user = User::query()->find(Cache::pull($validated['key']));
 
         if (! $user) {
             Log::error('Invalid user for ORCID callback');

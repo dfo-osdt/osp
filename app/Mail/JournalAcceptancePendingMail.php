@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class JournalAcceptancePendingMail extends Mailable implements ShouldQueue
 {
@@ -28,8 +29,8 @@ class JournalAcceptancePendingMail extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      *
-     * @param  \Illuminate\Support\Collection<int, ManuscriptRecord>  $manuscripts
-     * @param  \Illuminate\Support\Collection<int, Publication>  $publications
+     * @param  Collection<int, ManuscriptRecord>  $manuscripts
+     * @param  Collection<int, Publication>  $publications
      */
     public function __construct($manuscripts, $publications, public User $user)
     {

@@ -1,7 +1,11 @@
 <?php
 
+use App\Enums\ManuscriptRecordType;
+use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use App\Events\PlanningBinder\FlaggedManuscriptAcceptedInJournal;
+use App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint;
 use App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail;
+use App\Mail\PlanningBinder\FlaggedManuscriptOnPrepintServerMail;
 use App\Models\Journal;
 use App\Models\ManuscriptRecord;
 use App\States\PlanningBinder\PlanningBinderItemState;
@@ -39,12 +43,12 @@ test('a flagged manuscript that is accepted to a journal triggers an event', fun
     Mail::assertQueued(FlaggedManuscriptAcceptedInJournalMail::class);
 
     expect($state->status)
-        ->toBe(\App\Enums\PlanningBinder\PlanningBinderItemStatus::READY);
+        ->toBe(PlanningBinderItemStatus::READY);
 
     $mrf->refresh();
     expect($mrf->planningBinderItem)->toBeNull();
     expect($mrf->publication->planningBinderItem->status)
-        ->toBe(\App\Enums\PlanningBinder\PlanningBinderItemStatus::READY);
+        ->toBe(PlanningBinderItemStatus::READY);
 
 });
 
@@ -54,7 +58,7 @@ test('a flagged manuscript that is posted on a preprint server triggers an event
     Verbs::fake();
 
     $mrf = ManuscriptRecord::factory()->reviewed()->hasPlanningBinderItem()->create();
-    $mrf->type = \App\Enums\ManuscriptRecordType::PREPRINT;
+    $mrf->type = ManuscriptRecordType::PREPRINT;
     $mrf->preprint_url = 'https://example.com/preprint-url';
     $mrf->save();
 
@@ -77,16 +81,16 @@ test('a flagged manuscript that is posted on a preprint server triggers an event
 
     $response->assertStatus(200);
 
-    Verbs::assertCommitted(\App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint::class);
-    Mail::assertQueued(\App\Mail\PlanningBinder\FlaggedManuscriptOnPrepintServerMail::class);
+    Verbs::assertCommitted(FlaggedManuscriptSubmittedToPrepint::class);
+    Mail::assertQueued(FlaggedManuscriptOnPrepintServerMail::class);
 
     expect($state->status)
-        ->toBe(\App\Enums\PlanningBinder\PlanningBinderItemStatus::READY);
+        ->toBe(PlanningBinderItemStatus::READY);
 
     $mrf->refresh();
 
     expect($mrf->planningBinderItem->status)
-        ->toBe(\App\Enums\PlanningBinder\PlanningBinderItemStatus::READY)
+        ->toBe(PlanningBinderItemStatus::READY)
         ->and($mrf->preprint_url)
         ->toBe('https://example.com/preprint-url');
 

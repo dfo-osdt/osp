@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Rules\AuthorizedEmailDomain;
 use Hash;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -30,7 +31,7 @@ class InvitedUserController extends Controller
         $validated['email'] = strtolower((string) $validated['email']);
 
         // does the user already exist?
-        if (\App\Models\User::query()->where('email', $validated['email'])->exists()) {
+        if (User::query()->where('email', $validated['email'])->exists()) {
             throw ValidationException::withMessages([
                 'email' => __('The account already exists'),
             ]);
@@ -40,7 +41,7 @@ class InvitedUserController extends Controller
         $password = Str::password(20);
 
         // create a new user
-        $user = \App\Models\User::query()->create([
+        $user = User::query()->create([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
@@ -65,9 +66,9 @@ class InvitedUserController extends Controller
         return UserResource::make($user);
     }
 
-    public function accept($id, $hash): \Illuminate\Http\RedirectResponse
+    public function accept($id, $hash): RedirectResponse
     {
-        $user = \App\Models\User::query()->find($id);
+        $user = User::query()->find($id);
         if (! $user) {
             return redirect()->intended(
                 config('app.frontend_url').'#/invalid-signature'

@@ -2,20 +2,25 @@
 
 namespace App\Http\Resources;
 
+use App\Models\FundingSource;
+use App\Models\ManuscriptRecord;
+use App\Models\Publication;
 use Auth;
 use Exception;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\FundingSource
+ * @mixin FundingSource
  */
 class FundingSourceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param  Request  $request
+     * @return array|Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
@@ -42,8 +47,8 @@ class FundingSourceResource extends JsonResource
     private function fundableType(string $type): string
     {
         return match ($type) {
-            \App\Models\ManuscriptRecord::class => 'manuscript-records',
-            \App\Models\Publication::class => 'publications',
+            ManuscriptRecord::class => 'manuscript-records',
+            Publication::class => 'publications',
             default => throw new Exception('Unknown fundable type: '.$type),
         };
     }

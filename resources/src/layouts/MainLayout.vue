@@ -66,7 +66,7 @@ watch(
       bordered
     />
     <q-page-container>
-      <router-view />
+      <router-view :key="$route.path" />
     </q-page-container>
     <MainFooter />
   </q-layout>

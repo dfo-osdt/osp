@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Shareable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\Shareable
+ * @mixin Shareable
  */
 class ShareableResource extends JsonResource
 {
@@ -27,8 +28,8 @@ class ShareableResource extends JsonResource
                 'expires_at' => $this->expires_at,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
-                'user' => $this->whenLoaded('user', fn (): \App\Http\Resources\UserResource => new UserResource($this->user)),
-                'sharingUser' => $this->whenLoaded('sharingUser', fn (): \App\Http\Resources\UserResource => new UserResource($this->sharingUser)),
+                'user' => $this->whenLoaded('user', fn (): UserResource => new UserResource($this->user)),
+                'sharingUser' => $this->whenLoaded('sharingUser', fn (): UserResource => new UserResource($this->sharingUser)),
             ],
         ];
     }

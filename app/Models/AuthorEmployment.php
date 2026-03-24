@@ -2,20 +2,24 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Database\Factories\AuthorEmploymentFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Activitylog\Models\Activity> $activities
- * @property \App\Models\Author|null $author
- * @property \App\Models\Organization|null $organization
- * @property \Carbon\Carbon $start_date
- * @property \Carbon\Carbon|null $end_date
- * @property \Carbon\Carbon|null $orcid_updated_at
+ * @property-read Collection<int, Activity> $activities
+ * @property Author|null $author
+ * @property Organization|null $organization
+ * @property Carbon $start_date
+ * @property Carbon|null $end_date
+ * @property Carbon|null $orcid_updated_at
  * @property int|null $orcid_putcode
  *
  * @method static \Database\Factories\AuthorEmploymentFactory factory($count = null, $state = [])
@@ -55,7 +59,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class AuthorEmployment extends Model
 {
-    /** @use HasFactory<\Database\Factories\AuthorEmploymentFactory> */
+    /** @use HasFactory<AuthorEmploymentFactory> */
     use HasFactory;
 
     use LogsActivity;
@@ -115,7 +119,7 @@ class AuthorEmployment extends Model
      * of the one in the author's profile as the author may
      * have had been employed by a different organization
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Organization, $this>
+     * @return BelongsTo<Organization, $this>
      */
     public function organization(): BelongsTo
     {

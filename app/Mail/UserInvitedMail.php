@@ -36,7 +36,7 @@ class UserInvitedMail extends Mailable
     /**
      * Get the message envelope.
      */
-    public function envelope(): \Illuminate\Mail\Mailables\Envelope
+    public function envelope(): Envelope
     {
         return new Envelope(
             to: [],
@@ -47,7 +47,7 @@ class UserInvitedMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): \Illuminate\Mail\Mailables\Content
+    public function content(): Content
     {
         return new Content(
             markdown: 'mail.auth.user-invited-mail',

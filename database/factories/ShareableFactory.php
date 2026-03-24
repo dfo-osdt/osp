@@ -3,11 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\ManuscriptRecord;
+use App\Models\Shareable;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shareable>
+ * @extends Factory<Shareable>
  */
 class ShareableFactory extends Factory
 {

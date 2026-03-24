@@ -3,6 +3,7 @@
 namespace App\Http\Integrations\Orcid\Data;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
 use Spatie\LaravelData\Attributes\Computed;
 use Spatie\LaravelData\Data;
 
@@ -14,6 +15,6 @@ class TimestampData extends Data
     public function __construct(
         public int $value
     ) {
-        $this->timestamp = \Illuminate\Support\Facades\Date::createFromTimestampMs($this->value);
+        $this->timestamp = Date::createFromTimestampMs($this->value);
     }
 }

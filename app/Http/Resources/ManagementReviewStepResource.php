@@ -3,19 +3,22 @@
 namespace App\Http\Resources;
 
 use App\Enums\SensitivityLabel;
+use App\Models\ManagementReviewStep;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @mixin \App\Models\ManagementReviewStep
+ * @mixin ManagementReviewStep
  */
 class ManagementReviewStepResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param  Request  $request
+     * @return array|Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {

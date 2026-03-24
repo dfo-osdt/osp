@@ -10,7 +10,7 @@ trait PlannableTrait
     /**
      * Get the PlanningBinderItems that are associated with this Plannable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne<\App\Models\PlanningBinderItem, $this>
+     * @return MorphOne<PlanningBinderItem, $this>
      */
     public function planningBinderItem(): MorphOne
     {
