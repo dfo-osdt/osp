@@ -16,8 +16,8 @@ class ManuscriptRecordListQuery extends QueryBuilder
 
         $this->
          defaultSort('-created_at')->
-         allowedSorts(['title', 'created_at', 'updated_at', 'sent_for_review_at', 'accepted_on', 'submitted_to_journal_on'])->
-         allowedFilters([
+         allowedSorts('title', 'created_at', 'updated_at', 'sent_for_review_at', 'accepted_on', 'submitted_to_journal_on')->
+         allowedFilters(
              AllowedFilter::exact('id'),
              AllowedFilter::exact('status'),
              AllowedFilter::exact('type'),
@@ -29,6 +29,6 @@ class ManuscriptRecordListQuery extends QueryBuilder
              AllowedFilter::partial('abstract'),
              AllowedFilter::exact('potential_public_interest'),
              AllowedFilter::scope('reviewedBetween'),
-         ]);
+         );
     }
 }

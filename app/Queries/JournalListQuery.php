@@ -17,17 +17,17 @@ class JournalListQuery extends QueryBuilder
 
         $this
             ->defaultSort('title')
-            ->allowedSorts([
+            ->allowedSorts(
                 'title',
                 'publisher',
                 AllowedSort::custom('title-length', new StringLengthSort, 'title'),
-            ])
-            ->allowedFilters([
+            )
+            ->allowedFilters(
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('title'),
                 AllowedFilter::custom('search', new MultiColumnFilter('title', 'issn')),
                 AllowedFilter::scope('dfo_series'),
                 AllowedFilter::scope('not_dfo_series'),
-            ]);
+            );
     }
 }

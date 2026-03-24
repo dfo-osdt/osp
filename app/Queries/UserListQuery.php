@@ -18,13 +18,13 @@ class UserListQuery extends QueryBuilder
             ->defaultSort('last_name')
             ->allowedSorts('first_name', 'last_name', 'email')
             ->allowedIncludes('author')
-            ->allowedFilters([
+            ->allowedFilters(
                 AllowedFilter::exact('id'),
                 AllowedFilter::partial('first_name'),
                 AllowedFilter::partial('last_name'),
                 AllowedFilter::partial('email'),
                 AllowedFilter::exact('organization_id'),
                 AllowedFilter::custom('search', new FuzzyFilter('first_name', 'last_name', 'email')),
-            ]);
+            );
     }
 }
