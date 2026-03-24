@@ -24,3 +24,4 @@ _ide_helper.php
 
 tests/Browser/Screenshots
 .mcp.json
+docker-compose.yml
