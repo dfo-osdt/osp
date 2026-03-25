@@ -10,7 +10,7 @@ export const useLocaleStore = defineStore('LocaleStore', () => {
   const persistentLocale = useStorage('locale', 'en', localStorage)
 
   const langs = import.meta.glob(
-    '../../../node_modules/quasar/lang/(fr|en-US).js',
+    '../../../node_modules/quasar/lang/{fr,en-US}.js',
   )
 
   const $q = useQuasar()
