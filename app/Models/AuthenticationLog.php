@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -12,9 +14,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $authenticatable_id
  * @property string|null $ip_address
  * @property string|null $user_agent
- * @property \Illuminate\Support\Carbon|null $login_at
+ * @property Carbon|null $login_at
  * @property bool $login_successful
- * @property \Illuminate\Support\Carbon|null $logout_at
+ * @property Carbon|null $logout_at
  * @property bool $cleared_by_user
  *
  * @method static Builder<static> successful()
@@ -49,7 +51,8 @@ class AuthenticationLog extends Model
         return $this->morphTo();
     }
 
-    public function scopeSuccessful(Builder $query): Builder
+    #[Scope]
+    protected function successful(Builder $query): Builder
     {
         return $query->where('login_successful', true);
     }

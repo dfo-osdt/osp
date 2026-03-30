@@ -320,7 +320,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
         return $this->morphMany(AuthenticationLog::class, 'authenticatable')->latest('login_at');
     }
 
-    public function getLatestAuthenticationAttribute(): ?AuthenticationLog
+    protected function getLatestAuthenticationAttribute(): ?AuthenticationLog
     {
         return $this->authentications()->first();
     }
