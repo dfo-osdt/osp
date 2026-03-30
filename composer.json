@@ -27,7 +27,6 @@
     "livewire/livewire": "^4.0",
     "microsoft/microsoft-graph": "^2.23",
     "predis/predis": "^3.0",
-    "rappasoft/laravel-authentication-log": "^6.0",
     "saloonphp/laravel-plugin": "^4.0",
     "saloonphp/saloon": "^4.0",
     "socialiteproviders/microsoft-azure": "^5.2",
