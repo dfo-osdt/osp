@@ -33,7 +33,6 @@
   "authentication-history-card": {
     "browser": "Agent",
     "ip_address": "IP Address",
-    "location": "Location",
     "login-at": "Login At",
     "logout-at": "Logout At",
     "subtitle": "Suspicious activity? Change your password and immediately report it to us.",

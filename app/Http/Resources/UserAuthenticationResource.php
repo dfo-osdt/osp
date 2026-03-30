@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Contracts\Support\Arrayable;
+use App\Models\AuthenticationLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
 
 /**
  * @mixin AuthenticationLog
@@ -18,7 +17,7 @@ class UserAuthenticationResource extends JsonResource
      * @param  Request  $request
      * @return array|Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         // example user agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36
         $agentArray = preg_split("/[\(\)]/", (string) $this->user_agent);
@@ -31,7 +30,6 @@ class UserAuthenticationResource extends JsonResource
             'login_at' => $this->login_at,
             'login_successful' => $this->login_successful,
             'logout_at' => $this->logout_at,
-            'location' => $this->location,
         ];
     }
 }

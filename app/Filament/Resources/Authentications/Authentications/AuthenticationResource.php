@@ -17,7 +17,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
+use App\Models\AuthenticationLog;
 
 class AuthenticationResource extends Resource
 {

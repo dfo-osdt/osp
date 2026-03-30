@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -23,8 +24,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
-use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
-use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Permission\Models\Permission;
@@ -51,7 +50,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $authentications_count
  * @property-read Author|null $author
  *
- * @method \Illuminate\Database\Eloquent\Relations\MorphMany<\Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog, $this> authentications()
+ * @method MorphMany<AuthenticationLog, $this> authentications()
  *
  * @property-read string $full_name
  * @property-read Invitation|null $invitation
@@ -95,7 +94,6 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements FilamentUser, HasLocalePreference, HasName, MustVerifyEmail
 {
-    use AuthenticationLoggable;
     use CausesActivity;
     use HasApiTokens;
     use HasFactory;
@@ -312,6 +310,19 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     {
 
         $this->notify(new PasswordResetNotification($this, $token));
+    }
+
+    /**
+     * @return MorphMany<AuthenticationLog, $this>
+     */
+    public function authentications(): MorphMany
+    {
+        return $this->morphMany(AuthenticationLog::class, 'authenticatable')->latest('login_at');
+    }
+
+    public function getLatestAuthenticationAttribute(): ?AuthenticationLog
+    {
+        return $this->authentications()->first();
     }
 
     public function previousSuccessfulLoginAt()
