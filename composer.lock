@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3569ecf75aaa72dce912130a8c0e854e",
+    "content-hash": "f4cd010f2e1157cad5f0ac0f043e7265",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2633,22 +2633,22 @@
         },
         {
             "name": "hirethunk/verbs",
-            "version": "v0.7.1",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hirethunk/verbs.git",
-                "reference": "a0e65facd58caebe69e291c0f8754d3ce74a63db"
+                "reference": "2fa6e5523ad870e7921de392b31c55bdc99c5a9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hirethunk/verbs/zipball/a0e65facd58caebe69e291c0f8754d3ce74a63db",
-                "reference": "a0e65facd58caebe69e291c0f8754d3ce74a63db",
+                "url": "https://api.github.com/repos/hirethunk/verbs/zipball/2fa6e5523ad870e7921de392b31c55bdc99c5a9b",
+                "reference": "2fa6e5523ad870e7921de392b31c55bdc99c5a9b",
                 "shasum": ""
             },
             "require": {
                 "glhd/bits": ">=0.3.0",
-                "illuminate/contracts": "^10.34|^11.0|^12.0",
-                "internachi/modularize": "^1.1.0",
+                "illuminate/contracts": "^10.34|^11.0|^12.0|^13.0",
+                "internachi/modularize": "^1.1.1",
                 "laravel/prompts": "^0.1.15|^0.2|^0.3",
                 "php": ">=8.1",
                 "spatie/laravel-package-tools": "^1.14.0",
@@ -2656,18 +2656,17 @@
                 "symfony/serializer": "^6.3|^7.0"
             },
             "require-dev": {
-                "brick/money": "^0.8.1|^0.10",
-                "internachi/modular": "^2.3",
+                "brick/money": ">=0.8.1",
+                "internachi/modular": "^2.3.0|^3.0.2",
                 "laravel/pint": "^1.13",
                 "mockery/mockery": "^1.6",
                 "nunomaduro/collision": "^7.10|^8.1",
-                "orchestra/testbench": "^8.14|^9.1.0|^10.0",
-                "orchestra/testbench-core": "^8.14|^9.1.4|^10.0",
-                "pestphp/pest": "^2.24|^3.7",
-                "pestphp/pest-plugin-arch": "^2.4|^3.0",
-                "pestphp/pest-plugin-laravel": "^2.2|^3.1",
-                "pestphp/pest-plugin-watch": "^2.0|^3.0",
-                "phpunit/phpunit": "^10.5|^11.5.3",
+                "orchestra/testbench": "^8.14|^9.1.0|^10.0|^11.0",
+                "orchestra/testbench-core": "^8.14|^9.1.4|^10.0|^11.0",
+                "pestphp/pest": "^2.24|^3.7|^4.4",
+                "pestphp/pest-plugin-arch": "^2.4|^3.0|^v4.0",
+                "pestphp/pest-plugin-laravel": "^2.2|^3.1|^4.1",
+                "phpunit/phpunit": "^10.5|^11.5.3|^12.5",
                 "projektgopher/whisky": "^0.5.1|^0.7"
             },
             "type": "library",
@@ -2708,9 +2707,9 @@
             ],
             "support": {
                 "issues": "https://github.com/hirethunk/verbs/issues",
-                "source": "https://github.com/hirethunk/verbs/tree/v0.7.1"
+                "source": "https://github.com/hirethunk/verbs/tree/v0.8.0"
             },
-            "time": "2026-02-01T01:24:58+00:00"
+            "time": "2026-03-23T20:27:16+00:00"
         },
         {
             "name": "internachi/modularize",
@@ -20122,5 +20121,5 @@
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
