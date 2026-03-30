@@ -22,7 +22,7 @@
     "laravel/sanctum": "^4.0.2",
     "laravel/socialite": "^5.16",
     "laravel/telescope": "^5.0.4",
-    "laravel/tinker": "^2.9.0",
+    "laravel/tinker": "^3.0.0",
     "league/flysystem-aws-s3-v3": "^3.27",
     "livewire/livewire": "^4.0",
     "microsoft/microsoft-graph": "^2.23",
