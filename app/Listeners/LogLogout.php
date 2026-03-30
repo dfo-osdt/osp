@@ -11,7 +11,7 @@ class LogLogout
     {
         $latest = $event->user->authentications()
             ->whereNull('logout_at')
-            ->whereTrue('login_successful')
+            ->where('login_successful', true)
             ->where('ip_address', Request::ip())
             ->where('user_agent', Request::userAgent())
             ->latest('login_at')
