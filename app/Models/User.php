@@ -25,7 +25,7 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Models\Concerns\CausesActivity;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -44,8 +44,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property bool $new_password_required
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $actions
- * @property-read int|null $actions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activitiesAsCauser
+ * @property-read int|null $activities_as_causer_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AuthenticationLog> $authentications
  * @property-read int|null $authentications_count
  * @property-read Author|null $author

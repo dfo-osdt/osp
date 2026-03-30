@@ -146,5 +146,5 @@ test('notification group member activity is logged', function (): void {
     ])->assertSuccessful();
 
     $groupMember = NotificationGroupMember::query()->first();
-    expect($groupMember->activities)->not->toBeEmpty();
+    expect($groupMember->activitiesAsSubject)->not->toBeEmpty();
 });
