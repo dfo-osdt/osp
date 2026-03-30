@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Spatie\Activitylog\Facades\CauserResolver;
+use Spatie\Activitylog\Facades\Activity as ActivityLog;
 
 /**
  * Implements the 3-legged OAuth flow for ORCID. More information can be found at
@@ -89,7 +89,7 @@ class FullFlowController
         $scope = $response->json('scope');
         $orcid = $response->json('orcid');
 
-        CauserResolver::setCauser($user);
+        ActivityLog::defaultCauser($user);
 
         $author = $user->author;
 

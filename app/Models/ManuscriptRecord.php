@@ -29,9 +29,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Ramsey\Uuid\UuidInterface;
-use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -65,8 +65,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property bool $pls_approved_by_author
  * @property bool $pls_translation_approved
  * @property int|null $functional_area_id
- * @property-read Collection<int, Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read Collection<int, Activity> $activitiesAsSubject
+ * @property-read int|null $activities_as_subject_count
  * @property-read FunctionalArea|null $functionalArea
  * @property-read Collection<int, FundingSource> $fundingSources
  * @property-read int|null $funding_sources_count
