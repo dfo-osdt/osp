@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Models\AuthenticationLog;
 use Illuminate\Auth\Events\Login;
 
 class LogSuccessfulLogin

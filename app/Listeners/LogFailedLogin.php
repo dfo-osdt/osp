@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Models\AuthenticationLog;
 use App\Models\User;
 use Illuminate\Auth\Events\Failed;
 
