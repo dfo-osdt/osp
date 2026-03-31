@@ -22,11 +22,11 @@ jobs:
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
       - name: pnpm
-        uses: pnpm/action-setup@v4
-      - name: Use Node.js 22.x
+        uses: pnpm/action-setup@v5
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
