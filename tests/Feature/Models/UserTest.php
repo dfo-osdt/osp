@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Permissions\UserRole;
+use App\Models\Author;
 use App\Models\User;
 
 test('an authenticated user can search through the users', function (): void {
@@ -180,4 +181,41 @@ test('hasRegionalRole returns false for user with no roles', function (): void {
     $user = User::factory()->create();
 
     expect($user->hasRegionalRole())->toBeFalse();
+});
+
+test('associateAuthor syncs name to existing author profile matched by email', function (): void {
+    $existingAuthor = Author::factory()->create([
+        'first_name' => 'Wrnog',
+        'last_name' => 'Nmae',
+        'email' => 'jane.smith@dfo-mpo.gc.ca',
+        'user_id' => null,
+    ]);
+
+    $user = User::factory()->make([
+        'first_name' => 'Jane',
+        'last_name' => 'Smith',
+        'email' => 'jane.smith@dfo-mpo.gc.ca',
+    ]);
+    $user->save();
+
+    $author = $user->associateAuthor();
+
+    expect($author->id)->toBe($existingAuthor->id)
+        ->and($author->first_name)->toBe('Jane')
+        ->and($author->last_name)->toBe('Smith');
+});
+
+test('associateAuthor creates a new author profile with the user name when no match exists', function (): void {
+    $user = User::factory()->make([
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => 'john.doe@dfo-mpo.gc.ca',
+    ]);
+    $user->save();
+
+    $author = $user->associateAuthor();
+
+    expect($author->first_name)->toBe('John')
+        ->and($author->last_name)->toBe('Doe')
+        ->and($author->email)->toBe('john.doe@dfo-mpo.gc.ca');
 });
