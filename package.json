@@ -20,7 +20,7 @@
     "quasar": "^2.19.2",
     "sass-embedded": "^1.98.0",
     "vite-plugin-manifest-sri": "^0.2.0",
-    "vue": "^3.5.31",
+    "vue": "^3.5.32",
     "vue-i18n": "^11.3.0",
     "vue-router": "^5.0.4"
   },
