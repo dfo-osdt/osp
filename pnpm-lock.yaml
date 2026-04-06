@@ -16,7 +16,7 @@ importers:
         version: 1.17.0
       '@vitejs/plugin-vue':
         specifier: ^6.0.5
-        version: 6.0.5(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))
+        version: 6.0.5(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))
       '@vueuse/core':
         specifier: ^14.2.1
         version: 14.2.1(vue@3.5.31(typescript@5.9.3))
@@ -59,7 +59,7 @@ importers:
         version: 4.3.0(eslint@9.39.4)(jsonc-eslint-parser@3.1.0)(vue-eslint-parser@10.4.0(eslint@9.39.4))(yaml-eslint-parser@2.0.0)
       '@quasar/vite-plugin':
         specifier: ^1.11.0
-        version: 1.11.0(@vitejs/plugin-vue@6.0.5(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3)))(quasar@2.19.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))
+        version: 1.11.0(@vitejs/plugin-vue@6.0.5(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3)))(quasar@2.19.2)(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))
       '@types/node':
         specifier: ^25.5.0
         version: 25.5.0
@@ -74,7 +74,7 @@ importers:
         version: 1.1.0
       laravel-vite-plugin:
         specifier: ^3.0.0
-        version: 3.0.0(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
+        version: 3.0.0(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
       lodash:
         specifier: ^4.17.23
         version: 4.17.23
@@ -88,11 +88,11 @@ importers:
         specifier: ^21.0.0
         version: 21.0.0(@vueuse/core@14.2.1(vue@3.5.31(typescript@5.9.3)))
       vite:
-        specifier: ^8.0.3
-        version: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+        specifier: ^8.0.5
+        version: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
       vite-plugin-vue-devtools:
         specifier: ^8.1.1
-        version: 8.1.1(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))
+        version: 8.1.1(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))
       vue-tsc:
         specifier: ^3.2.6
         version: 3.2.6(typescript@5.9.3)
@@ -2586,6 +2586,10 @@ packages:
     resolution: {integrity: sha512-oRjTw/97aTBN0RHbYCdtF1MQfvusSIBQM0IZEgzl6426+8jSC0nF1a/GmnVLpfB9yyr6g6FTqWqiZVbxrtaCIg==}
     engines: {node: 18 || 20 || >=22}
 
+  minimatch@10.2.5:
+    resolution: {integrity: sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==}
+    engines: {node: 18 || 20 || >=22}
+
   minimatch@3.1.5:
     resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
 
@@ -3223,14 +3227,14 @@ packages:
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
 
-  vite@8.0.3:
-    resolution: {integrity: sha512-B9ifbFudT1TFhfltfaIPgjo9Z3mDynBTJSUYxTjOQruf/zHH+ezCQKcoqO+h7a9Pw9Nm/OtlXAiGT1axBgwqrQ==}
+  vite@8.0.5:
+    resolution: {integrity: sha512-nmu43Qvq9UopTRfMx2jOYW5l16pb3iDC1JH6yMuPkpVbzK0k+L7dfsEDH4jRgYFmsg0sTAqkojoZgzLMlwHsCQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
       '@types/node': ^20.19.0 || >=22.12.0
       '@vitejs/devtools': ^0.1.0
-      esbuild: ^0.27.0
+      esbuild: ^0.27.0 || ^0.28.0
       jiti: '>=1.21.0'
       less: ^4.0.0
       sass: ^1.70.0
@@ -4117,11 +4121,11 @@ snapshots:
 
   '@quasar/extras@1.17.0': {}
 
-  '@quasar/vite-plugin@1.11.0(@vitejs/plugin-vue@6.0.5(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3)))(quasar@2.19.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))':
+  '@quasar/vite-plugin@1.11.0(@vitejs/plugin-vue@6.0.5(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3)))(quasar@2.19.2)(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))':
     dependencies:
-      '@vitejs/plugin-vue': 6.0.5(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))
+      '@vitejs/plugin-vue': 6.0.5(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))
       quasar: 2.19.2
-      vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+      vite: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
       vue: 3.5.31(typescript@5.9.3)
 
   '@rolldown/binding-android-arm64@1.0.0-rc.12':
@@ -4350,8 +4354,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.56.1(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.56.1(typescript@5.9.3)
-      '@typescript-eslint/types': 8.56.1
+      '@typescript-eslint/tsconfig-utils': 8.57.2(typescript@5.9.3)
+      '@typescript-eslint/types': 8.57.2
       debug: 4.4.3
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -4421,7 +4425,7 @@ snapshots:
       '@typescript-eslint/types': 8.56.1
       '@typescript-eslint/visitor-keys': 8.56.1
       debug: 4.4.3
-      minimatch: 10.2.4
+      minimatch: 10.2.5
       semver: 7.7.4
       tinyglobby: 0.2.15
       ts-api-utils: 2.5.0(typescript@5.9.3)
@@ -4476,10 +4480,10 @@ snapshots:
       '@typescript-eslint/types': 8.57.2
       eslint-visitor-keys: 5.0.1
 
-  '@vitejs/plugin-vue@6.0.5(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))':
+  '@vitejs/plugin-vue@6.0.5(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-rc.2
-      vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+      vite: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
       vue: 3.5.31(typescript@5.9.3)
 
   '@vitest/eslint-plugin@1.6.13(@typescript-eslint/eslint-plugin@8.57.2(@typescript-eslint/parser@8.57.2(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4)(typescript@5.9.3)':
@@ -5542,11 +5546,11 @@ snapshots:
 
   kolorist@1.8.0: {}
 
-  laravel-vite-plugin@3.0.0(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
+  laravel-vite-plugin@3.0.0(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
     dependencies:
       picocolors: 1.1.1
       tinyglobby: 0.2.15
-      vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+      vite: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
       vite-plugin-full-reload: 1.2.0
 
   levn@0.4.1:
@@ -5962,6 +5966,10 @@ snapshots:
       mime-db: 1.52.0
 
   minimatch@10.2.4:
+    dependencies:
+      brace-expansion: 5.0.5
+
+  minimatch@10.2.5:
     dependencies:
       brace-expansion: 5.0.5
 
@@ -6550,22 +6558,22 @@ snapshots:
 
   varint@6.0.0: {}
 
-  vite-dev-rpc@1.1.0(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
+  vite-dev-rpc@1.1.0(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
     dependencies:
       birpc: 2.9.0
-      vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
-      vite-hot-client: 2.1.0(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
+      vite: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+      vite-hot-client: 2.1.0(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
 
-  vite-hot-client@2.1.0(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
+  vite-hot-client@2.1.0(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
     dependencies:
-      vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+      vite: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
 
   vite-plugin-full-reload@1.2.0:
     dependencies:
       picocolors: 1.1.1
       picomatch: 2.3.2
 
-  vite-plugin-inspect@11.3.3(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
+  vite-plugin-inspect@11.3.3(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
     dependencies:
       ansis: 4.2.0
       debug: 4.4.3
@@ -6575,28 +6583,28 @@ snapshots:
       perfect-debounce: 2.1.0
       sirv: 3.0.2
       unplugin-utils: 0.3.1
-      vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
-      vite-dev-rpc: 1.1.0(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
+      vite: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+      vite-dev-rpc: 1.1.0(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
     transitivePeerDependencies:
       - supports-color
 
   vite-plugin-manifest-sri@0.2.0: {}
 
-  vite-plugin-vue-devtools@8.1.1(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3)):
+  vite-plugin-vue-devtools@8.1.1(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))(vue@3.5.31(typescript@5.9.3)):
     dependencies:
       '@vue/devtools-core': 8.1.1(vue@3.5.31(typescript@5.9.3))
       '@vue/devtools-kit': 8.1.1
       '@vue/devtools-shared': 8.1.1
       sirv: 3.0.2
-      vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
-      vite-plugin-inspect: 11.3.3(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
-      vite-plugin-vue-inspector: 5.4.0(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
+      vite: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+      vite-plugin-inspect: 11.3.3(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
+      vite-plugin-vue-inspector: 5.4.0(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3))
     transitivePeerDependencies:
       - '@nuxt/kit'
       - supports-color
       - vue
 
-  vite-plugin-vue-inspector@5.4.0(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
+  vite-plugin-vue-inspector@5.4.0(vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)):
     dependencies:
       '@babel/core': 7.29.0
       '@babel/plugin-proposal-decorators': 7.29.0(@babel/core@7.29.0)
@@ -6607,11 +6615,11 @@ snapshots:
       '@vue/compiler-dom': 3.5.31
       kolorist: 1.8.0
       magic-string: 0.30.21
-      vite: 8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
+      vite: 8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3)
     transitivePeerDependencies:
       - supports-color
 
-  vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3):
+  vite@8.0.5(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.5.0)(esbuild@0.27.4)(sass-embedded@1.98.0)(sass@1.98.0)(yaml@2.8.3):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.4
