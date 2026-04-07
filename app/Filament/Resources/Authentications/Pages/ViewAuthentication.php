@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Authentications\Pages;
 
 use App\Filament\Resources\Authentications\Authentications\AuthenticationResource;
