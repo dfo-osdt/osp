@@ -26,6 +26,7 @@ use App\Rules\Isbn;
 use App\Rules\UserNotAManuscriptAuthor;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -77,7 +78,7 @@ class ManuscriptRecordController extends Controller
 
         if ($hasGlobalPermission && $allowedRegionIds !== []) {
             // Both global AND regional - union of access
-            $baseQuery->where(function ($query) use ($allowedRegionIds): void {
+            $baseQuery->where(function (Builder $query) use ($allowedRegionIds): void {
                 $query->where('status', '!=', ManuscriptRecordStatus::DRAFT)
                     ->orWhereIn('region_id', $allowedRegionIds);
             });

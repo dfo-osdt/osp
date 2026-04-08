@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Authentications\Authentications;
 
 use App\Filament\Resources\Authentications\Pages\ListAuthentications;
 use App\Filament\Resources\Authentications\Pages\ViewAuthentication;
+use App\Models\AuthenticationLog;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Infolists\Components\KeyValueEntry;
@@ -17,7 +18,6 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
 
 class AuthenticationResource extends Resource
 {

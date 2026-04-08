@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Integrations\Orcid\Data;
 
 use Spatie\LaravelData\Attributes\MapName;

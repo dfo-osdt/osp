@@ -178,9 +178,9 @@ onMounted(async () => {
       <div class="col-lg-3 col-md-12">
         <!-- Author Profile Card -->
         <template v-if="author">
-          <div class="row q-gutter-lg flex justify-between">
-            <AuthorProfileCard :author="author" class="col-lg-12 col-md-6" @updated="handleAuthorUpdated" />
-            <AuthorExpertiseDisplay :author="author" class="col-lg-12 col-md-5" />
+          <div class="row q-gutter-sm flex justify-between">
+            <AuthorProfileCard :author="author" class="col-sm-12 col-md col-lg-12" @updated="handleAuthorUpdated" />
+            <AuthorExpertiseDisplay :author="author" class="col-sm-12 col-md col-lg-12" />
           </div>
         </template>
 

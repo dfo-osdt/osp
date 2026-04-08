@@ -33,7 +33,6 @@
   "authentication-history-card": {
     "browser": "Agent",
     "ip_address": "Adresse IP",
-    "location": "Emplacement",
     "login-at": "Connexion à",
     "logout-at": "Déconnexion à",
     "subtitle": "Activité suspecte? \nModifiez votre mot de passe et signalez-le-nous immédiatement.",

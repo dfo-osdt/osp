@@ -1,7 +1,9 @@
 <?php
 
 use App\Enums\Permissions\UserRole;
+use App\Models\Author;
 use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\Region;
 use App\Models\User;
 
@@ -92,4 +94,37 @@ test('user with multiple regional editor roles can update publications in all th
     expect($multiRegionalEditor->can('update', $nflPub))->toBeTrue();
     expect($multiRegionalEditor->can('update', $marPub))->toBeTrue();
     expect($multiRegionalEditor->can('update', $glfPub))->toBeFalse();
+});
+
+test('publication author can publish the publication', function (): void {
+    $authorUser = User::factory()->create();
+    $author = Author::factory()->create(['user_id' => $authorUser->id]);
+    $publication = Publication::factory()->create();
+
+    PublicationAuthor::factory()->create([
+        'publication_id' => $publication->id,
+        'author_id' => $author->id,
+    ]);
+
+    expect($authorUser->can('publish', $publication))->toBeTrue();
+});
+
+test('publication author cannot publish a DFO series publication', function (): void {
+    $authorUser = User::factory()->create();
+    $author = Author::factory()->create(['user_id' => $authorUser->id]);
+    $publication = Publication::factory()->dfoSeries()->create();
+
+    PublicationAuthor::factory()->create([
+        'publication_id' => $publication->id,
+        'author_id' => $author->id,
+    ]);
+
+    expect($authorUser->can('publish', $publication))->toBeFalse();
+});
+
+test('non-author regular user cannot publish a publication', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create();
+
+    expect($user->can('publish', $publication))->toBeFalse();
 });

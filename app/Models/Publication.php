@@ -24,9 +24,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
-use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -48,8 +48,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property int $journal_id
  * @property int $user_id
  * @property int $region_id
- * @property-read Collection<int, Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read Collection<int, Activity> $activitiesAsSubject
+ * @property-read int|null $activities_as_subject_count
  * @property-read Collection<int, FundingSource> $fundingSources
  * @property-read int|null $funding_sources_count
  * @property-read Journal $journal

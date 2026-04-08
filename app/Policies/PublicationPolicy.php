@@ -149,19 +149,25 @@ class PublicationPolicy
     /** Can the user publish this publication */
     public function publish(User $user, Publication $publication): bool
     {
-
         $isDfoSeries = $publication->journal->publisher == Journal::$dfoPublisher;
 
         if ($user->hasPermissionTo(UserPermission::PUBLISH_INTERNAL_REPORTS)) {
             return true;
         }
 
-        // is the user the owner of the publication
-        if ($user->id === $publication->user_id) {
-            return ! $isDfoSeries;
+        if ($isDfoSeries) {
+            return false;
         }
 
-        return false;
+        // is the user the owner of the publication
+        if ($user->id === $publication->user_id) {
+            return true;
+        }
+
+        // if the user is an author on the publication, they can publish it
+        $authorUserIds = $publication->publicationAuthors->pluck('author.user_id');
+
+        return $authorUserIds->contains($user->id);
     }
 
     /**

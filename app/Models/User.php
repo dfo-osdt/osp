@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -23,10 +24,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
-use Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog;
-use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Models\Concerns\CausesActivity;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -45,13 +44,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @property bool $new_password_required
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $actions
- * @property-read int|null $actions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activitiesAsCauser
+ * @property-read int|null $activities_as_causer_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AuthenticationLog> $authentications
  * @property-read int|null $authentications_count
  * @property-read Author|null $author
  *
- * @method \Illuminate\Database\Eloquent\Relations\MorphMany<\Rappasoft\LaravelAuthenticationLog\Models\AuthenticationLog, $this> authentications()
+ * @method MorphMany<AuthenticationLog, $this> authentications()
  *
  * @property-read string $full_name
  * @property-read Invitation|null $invitation
@@ -95,7 +94,6 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements FilamentUser, HasLocalePreference, HasName, MustVerifyEmail
 {
-    use AuthenticationLoggable;
     use CausesActivity;
     use HasApiTokens;
     use HasFactory;
@@ -214,6 +212,9 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
         $author = Author::query()->where('email', $this->email)->first();
 
         if ($author) {
+            $author->first_name = $this->first_name;
+            $author->last_name = $this->last_name;
+            $author->save();
             $this->author()->save($author);
         } else {
             $author = Author::query()->create([
@@ -312,6 +313,19 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     {
 
         $this->notify(new PasswordResetNotification($this, $token));
+    }
+
+    /**
+     * @return MorphMany<AuthenticationLog, $this>
+     */
+    public function authentications(): MorphMany
+    {
+        return $this->morphMany(AuthenticationLog::class, 'authenticatable')->latest('login_at');
+    }
+
+    protected function getLatestAuthenticationAttribute(): ?AuthenticationLog
+    {
+        return $this->authentications()->first();
     }
 
     public function previousSuccessfulLoginAt()

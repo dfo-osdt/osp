@@ -17,12 +17,12 @@ class ManagementReviewStepListQuery extends QueryBuilder
         $this
             ->defaultSort('id')
             ->allowedSorts('updated_at', 'created_at')
-            ->allowedIncludes(['manuscriptRecord', 'user'])
-            ->allowedFilters([
+            ->allowedIncludes('manuscriptRecord', 'user')
+            ->allowedFilters(
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('decision'),
                 AllowedFilter::exact('user_id'),
                 AllowedFilter::partial('manuscriptRecord.title'),
-            ]);
+            );
     }
 }

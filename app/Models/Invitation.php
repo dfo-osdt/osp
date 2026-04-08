@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
-use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 use Str;
 use URL;
 
@@ -21,8 +21,8 @@ use URL;
  * @property int $user_id
  * @property int|null $invited_by
  * @property Carbon|null $registered_at
- * @property-read Collection<int, Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read Collection<int, Activity> $activitiesAsSubject
+ * @property-read int|null $activities_as_subject_count
  * @property-read User|null $invitedByUser
  * @property-read User $user
  *

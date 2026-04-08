@@ -22,6 +22,14 @@ yarn-error.log
 .phpstorm.meta.php
 _ide_helper.php
 
+/opencode/
+CLAUDE.md
+
 tests/Browser/Screenshots
 .mcp.json
+<<<<<<< HEAD
 docker-compose.yml
+=======
+.playwright-mcp
+.opencode/skills
+>>>>>>> origin

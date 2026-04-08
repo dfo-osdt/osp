@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Integrations\Orcid\Requests;
 
 use App\Http\Integrations\Orcid\Enums\ActivitiesScopeEndpoint;

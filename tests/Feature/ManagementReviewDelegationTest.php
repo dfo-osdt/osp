@@ -268,7 +268,7 @@ test('delegation activity is logged', function (): void {
     ])->assertSuccessful();
 
     $delegation = ManagementReviewDelegation::query()->first();
-    expect($delegation->activities)->not->toBeEmpty();
+    expect($delegation->activitiesAsSubject)->not->toBeEmpty();
 });
 
 test('a user can cancel a scheduled (future) delegation and it is deleted', function (): void {

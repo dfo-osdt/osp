@@ -15,9 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
-use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 /**
  * @property int $id
@@ -34,8 +34,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string $email
  * @property int $organization_id
  * @property int|null $user_id
- * @property-read Collection<int, Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read Collection<int, Activity> $activitiesAsSubject
+ * @property-read int|null $activities_as_subject_count
  * @property-read Collection<int, AuthorEmployment> $employments
  * @property-read int|null $employments_count
  * @property-read Collection<int, Expertise> $expertises

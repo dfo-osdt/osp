@@ -24,7 +24,7 @@ const sortedExpertises = computed(() => {
 </script>
 
 <template>
-  <ContentCard secondary class="q-mt-lg">
+  <ContentCard secondary>
     <template #title>
       <q-icon name="mdi-book-education-outline" size="md" class="q-mr-sm" />
       {{ t('author-profile.expertise') }}

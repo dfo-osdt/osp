@@ -15,11 +15,11 @@ class MultiColumnFilter implements Filter
         $this->columns = $columns;
     }
 
-    public function __invoke(Builder $query, mixed $value, string $property)
+    public function __invoke(Builder $query, mixed $value, string $property): void
     {
         // Only accept strings or arrays, skip if invalid type
         if (! is_string($value) && ! is_array($value)) {
-            return $this;
+            return;
         }
 
         // Normalize value to always be an array for consistent handling
@@ -30,7 +30,7 @@ class MultiColumnFilter implements Filter
 
         // If no valid search terms, skip filtering
         if ($searchTerms === []) {
-            return $this;
+            return;
         }
 
         $query->where(function (Builder $query) use ($searchTerms): void {
@@ -45,7 +45,5 @@ class MultiColumnFilter implements Filter
                 });
             }
         });
-
-        return $this;
     }
 }

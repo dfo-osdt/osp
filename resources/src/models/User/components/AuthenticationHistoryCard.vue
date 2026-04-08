@@ -26,17 +26,6 @@ const columns = computed<QTableColumnProps>(() => {
       sortable: true,
     },
     {
-      name: 'location',
-      label: t('authentication-history-card.location'),
-      field: (row) => {
-        return row.location
-          ? `${row.location.city} - ${row.location.state}`
-          : '-'
-      },
-      align: 'left',
-      sortable: true,
-    },
-    {
       name: 'login_at',
       label: t('authentication-history-card.login-at'),
       field: 'login_at',
