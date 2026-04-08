@@ -55,6 +55,9 @@ class LibrariumPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->colors([
+                'primary' => Color::hex('#006153'),
             ]);
     }
 }
