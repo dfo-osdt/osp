@@ -13,17 +13,15 @@ use App\Models\ManuscriptRecord;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\RestoreAction;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
-use Filament\Infolists\Components\TextEntry;
+use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\KeyValueEntry;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -76,7 +74,7 @@ class ManuscriptsResource extends Resource
                 TextColumn::make('status')
                     ->sortable(),
                 TextColumn::make('Region.slug')
-                    ->sortable()
+                    ->sortable(),
             ])
             ->recordActions([
                 ViewAction::make(),
@@ -87,7 +85,7 @@ class ManuscriptsResource extends Resource
                     ->color('danger')
                     ->requiresConfirmation()
                     ->disabled(fn ($record) => ! auth()->user()->can('delete', $record))
-                    ->action(function ( $record) {
+                    ->action(function ($record) {
                         DeleteManuscriptRecord::handle($record);
                     }),
                 RestoreAction::make(),
