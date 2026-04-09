@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Manuscripts\Pages;
 
 use App\Filament\Resources\Manuscripts\ManuscriptsResource;
-use Filament\Actions\ViewAction;
 use Filament\Actions\Action;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditManuscripts extends EditRecord

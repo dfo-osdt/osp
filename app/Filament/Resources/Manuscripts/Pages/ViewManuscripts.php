@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Manuscripts\Pages;
 
 use App\Filament\Resources\Manuscripts\ManuscriptsResource;
-use Filament\Actions\EditAction;
 use Filament\Actions\Action;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewManuscripts extends ViewRecord
@@ -25,7 +25,7 @@ class ViewManuscripts extends ViewRecord
                 ->color('danger')
                 ->requiresConfirmation()
                 ->disabled(fn ($record) => ! auth()->user()->can('delete', $record))
-                ->action(function ( $record) {
+                ->action(function ($record) {
                     DeleteManuscriptRecord::handle($record);
                 }),
         ];
