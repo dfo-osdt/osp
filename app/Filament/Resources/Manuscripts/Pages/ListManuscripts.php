@@ -25,10 +25,10 @@ class ListManuscripts extends ListRecords
                 ->badge(fn () => $this->getTabCount()),
         ];
 
-        foreach ($this->getStatusTabs() as $key => $label) {
-            $tabs[$key] = Tab::make($label)
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', $key))
-                ->badge(fn () => $this->getTabCount($key));
+        foreach ($this->getStatusTabs() as $key => $config) {
+            $tabs[$key] = Tab::make($config['label'])
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', $config['status']))
+                ->badge(fn () => $this->getTabCount($config['status']));
         }
 
         return $tabs;
@@ -37,37 +37,21 @@ class ListManuscripts extends ListRecords
     protected function getStatusTabs(): array
     {
         return [
-            'draft' => 'Drafts',
-            'in_review' => 'In-Review',
-            'reviewed' => 'Reviewed',
-            'accepted' => 'Accepted',
+            'drafts' => ['label' => 'Drafts', 'status' => 'draft'],
+            'in_review' => ['label' => 'In-Review', 'status' => 'in_review'],
+            'reviewed' => ['label' => 'Reviewed', 'status' => 'reviewed'],
+            'accepted' => ['label' => 'Accepted', 'status' => 'accepted'],
         ];
     }
 
     protected function getTabCount(?string $status = null): int
     {
-        $query = static::getResource()::getEloquentQuery();
+        $query = clone $this->getFilteredTableQuery();
 
         if ($status !== null) {
             $query->where('status', $status);
         }
 
-        $this->applyActiveFiltersToQuery($query);
-
         return $query->count();
-    }
-
-    protected function applyActiveFiltersToQuery(Builder $query): void
-    {
-        $type = data_get($this->tableFilters, 'type.value');
-        $region = data_get($this->tableFilters, 'region.value');
-
-        if (filled($type)) {
-            $query->where('type', $type);
-        }
-
-        if (filled($region)) {
-            $query->whereHas('region', fn (Builder $q) => $q->whereKey($region));
-        }
     }
 }
