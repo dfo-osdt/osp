@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Manuscripts;
 
-use App\Actions\DeleteManuscriptRecord;
 use App\Filament\Resources\Manuscripts\Pages\EditManuscripts;
 use App\Filament\Resources\Manuscripts\Pages\ListManuscripts;
 use App\Filament\Resources\Manuscripts\Pages\ViewManuscripts;
@@ -11,9 +10,7 @@ use App\Filament\Resources\Manuscripts\Schemas\ManuscriptsInfolist;
 use App\Filament\Resources\Manuscripts\Tables\ManuscriptsTable;
 use App\Models\ManuscriptRecord;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Actions\EditAction;
-use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Resources\Resource;
@@ -21,6 +18,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -66,30 +65,35 @@ class ManuscriptsResource extends Resource
         return ManuscriptsTable::configure($table)
             ->columns([
                 TextColumn::make('id')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('title')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('type')
                     ->sortable(),
                 TextColumn::make('status')
                     ->sortable(),
                 TextColumn::make('Region.slug')
                     ->sortable(),
-            ])
+            ])->searchable(['email'])
+            ->filters([
+                SelectFilter::make('type')
+                    ->options([
+                        'primary' => 'Primary',
+                        'secondary' => 'Secondary',
+                        'preprint' => 'Pre-Print',
+                    ]),
+                SelectFilter::make('region')
+                    ->relationship('region', 'slug'),
+            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(4)
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                Action::make('delete')
-                    ->label('Delete')
-                    ->icon('heroicon-o-trash')
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->disabled(fn ($record) => ! auth()->user()->can('delete', $record))
-                    ->action(function ($record) {
-                        DeleteManuscriptRecord::handle($record);
-                    }),
-                RestoreAction::make(),
-            ]);
+            ])
+            ->bulkActions(
+                []
+            );
     }
 
     public static function getRelations(): array
