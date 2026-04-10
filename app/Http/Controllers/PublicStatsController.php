@@ -70,8 +70,8 @@ class PublicStatsController extends Controller
                         'authors' => $pub->publicationAuthors
                             ->map(fn ($pa): PublicAuthorResource => new PublicAuthorResource($pa->author))
                             ->values()
-                    ->toArray(),
-                ]),
+                            ->all(),
+                    ]),
             ];
         });
 
