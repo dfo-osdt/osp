@@ -12,6 +12,7 @@ use App\Models\ManuscriptRecord;
 use BackedEnum;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
@@ -20,6 +21,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -44,7 +46,14 @@ class ManuscriptsResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return ManuscriptsForm::configure($schema);
+        return ManuscriptsForm::configure($schema)
+            ->components([
+                Section::make('Identifiers')
+                    ->schema([
+                        TextInput::make('id')
+                            ->disabledOn('edit'),
+                    ]),
+            ]);
     }
 
     public static function infolist(Schema $schema): Schema
@@ -86,10 +95,12 @@ class ManuscriptsResource extends Resource
                     ]),
                 SelectFilter::make('region')
                     ->relationship('region', 'slug'),
+                TrashedFilter::make(),
             ], layout: FiltersLayout::AboveContent)->filtersFormColumns(4)
             ->recordActions([
                 ViewAction::make(),
-                EditAction::make(),
+                EditAction::make()
+                    ->disabled(fn ($record) => $record->trashed()),
             ])
             ->bulkActions(
                 []
