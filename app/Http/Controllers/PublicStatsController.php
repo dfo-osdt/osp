@@ -52,7 +52,8 @@ class PublicStatsController extends Controller
                     ->select(['organizations.id', 'name_en', 'name_fr', 'ror_identifier'])
                     ->inRandomOrder()
                     ->limit(5)
-                    ->get(),
+                    ->get()
+                    ->toArray(),
                 'recent_publications' => Publication::query()
                     ->where('status', PublicationStatus::PUBLISHED)
                     ->whereNotNull('doi')
@@ -68,8 +69,9 @@ class PublicStatsController extends Controller
                         'journal' => $pub->journal->only(['id', 'title']),
                         'authors' => $pub->publicationAuthors
                             ->map(fn ($pa): PublicAuthorResource => new PublicAuthorResource($pa->author))
-                            ->values(),
-                    ]),
+                            ->values()
+                    ->toArray(),
+                ]),
             ];
         });
 
