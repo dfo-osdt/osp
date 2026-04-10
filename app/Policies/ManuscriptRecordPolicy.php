@@ -23,7 +23,7 @@ class ManuscriptRecordPolicy
     {
         // this should stay false as the "draft" MRF should
         // never be seen by "anyone".
-        return false;
+        return $user->can(UserPermission::VIEW_ANY_USERS);
     }
 
     /**
