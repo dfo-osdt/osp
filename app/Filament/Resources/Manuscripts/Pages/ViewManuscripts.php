@@ -4,8 +4,8 @@ namespace App\Filament\Resources\Manuscripts\Pages;
 
 use App\Actions\DeleteSubmittedManuscriptRecord;
 use App\Filament\Resources\Manuscripts\ManuscriptsResource;
+use App\Models\ManuscriptRecord;
 use Filament\Actions\Action;
-use Filament\Actions\EditAction;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
@@ -27,7 +27,6 @@ class ViewManuscripts extends ViewRecord implements HasForms
                 ->url(fn (): string => ManuscriptsResource::getUrl('index'))
                 ->icon('heroicon-o-arrow-small-left')
                 ->color('warning'),
-            EditAction::make(),
             Action::make('delete')
                 ->label('Delete')
                 ->icon('heroicon-o-trash')
@@ -35,8 +34,14 @@ class ViewManuscripts extends ViewRecord implements HasForms
                 ->requiresConfirmation()
                 ->disabled(fn ($record) => ! auth()->user()->can('delete', $record))
                 ->action(function () {
+                    $record = $this->getRecord();
+
+                    if (! $record instanceof ManuscriptRecord) {
+                        throw new \RuntimeException('Expected a ManuscriptRecord.');
+                    }
+
                     try {
-                        DeleteSubmittedManuscriptRecord::handle($this->record);
+                        DeleteSubmittedManuscriptRecord::handle($record);
 
                         Notification::make()
                             ->title('Manuscript deleted')
