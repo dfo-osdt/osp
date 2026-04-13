@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\ManagementReviewDelegationFactory;
+use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +24,7 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[\Illuminate\Database\Eloquent\Attributes\Guarded([
+#[Guarded([
     'id',
     'created_at',
     'updated_at',

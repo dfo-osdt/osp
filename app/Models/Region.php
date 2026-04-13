@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Permissions\UserRole;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -28,7 +29,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'enforce_secondary_review_deadline',
 ])]
 class Region extends Model

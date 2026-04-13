@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Observers\ManagementReviewStepObserver;
+use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -58,7 +59,7 @@ use Spatie\Activitylog\Support\LogOptions;
  * @mixin \Eloquent
  */
 #[ObservedBy(ManagementReviewStepObserver::class)]
-#[\Illuminate\Database\Eloquent\Attributes\Guarded([
+#[Guarded([
     'id',
     'created_at',
     'updated_at',
