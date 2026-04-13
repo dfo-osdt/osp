@@ -12,7 +12,11 @@ use App\Models\ManuscriptRecord;
 use BackedEnum;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
@@ -47,12 +51,134 @@ class ManuscriptsResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return ManuscriptsForm::configure($schema)
+            ->columns(1)
             ->components([
-                Section::make('Identifiers')
-                    ->schema([
-                        TextInput::make('id')
-                            ->disabledOn('edit'),
-                    ]),
+Section::make('Record Metadata')
+            ->columns(3)
+            ->schema([
+                TextInput::make('id')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                TextInput::make('ulid')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Select::make('user_id')
+                    ->label('Creator')
+                    ->relationship('user', 'email')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                TextInput::make('type')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                TextInput::make('status')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Select::make('region_id')
+                    ->relationship('region', 'name_en')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                DateTimePicker::make('created_at')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                 DateTimePicker::make('updated_at')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                DateTimePicker::make('submitted_at')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                DateTimePicker::make('sent_for_review_at')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                DateTimePicker::make('reviewed_at')
+                    ->disabled()
+                    ->dehydrated(false),
+            ]),
+
+        Section::make('Abstract and Summaries')
+            ->columns(2)
+            ->schema([
+                Textarea::make('abstract')
+                    ->columnSpanFull()
+                    ->rows(6)
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Textarea::make('pls_en')
+                    ->label('PLS (English)')
+                    ->columnSpanFull()
+                    ->rows(5)
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Textarea::make('pls_fr')
+                    ->label('PLS (French)')
+                    ->columnSpanFull()
+                    ->rows(5)
+                    ->disabled()
+                    ->dehydrated(false),
+                Toggle::make('pls_approved_by_author')
+                    ->label('PLS Approved by Author')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Toggle::make('pls_translation_approved')
+                    ->label('PLS Translation Approved')
+                    ->disabled()
+                    ->dehydrated(false),
+            ]),
+
+        Section::make('Audience and Public Interest')
+            ->columns(1)
+            ->schema([
+                Textarea::make('relevant_to')
+                    ->rows(4)
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Toggle::make('potential_public_interest')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Textarea::make('public_interest_information')
+                    ->rows(4)
+                    ->disabled()
+                    ->dehydrated(false),
+            ]),
+
+        Section::make('Open Government and Licensing')
+            ->columns(2)
+            ->schema([
+                Toggle::make('apply_ogl')
+                    ->label('Apply OGL')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Toggle::make('intends_open_access')
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Textarea::make('no_ogl_explanation')
+                    ->columnSpanFull()
+                    ->rows(4)
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Textarea::make('open_access_rationale')
+                    ->columnSpanFull()
+                    ->rows(4)
+                    ->disabled()
+                    ->dehydrated(false),
+            ]),
             ]);
     }
 
