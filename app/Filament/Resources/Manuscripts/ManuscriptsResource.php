@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Manuscripts;
 
-use App\Filament\Resources\Manuscripts\Pages\EditManuscripts;
 use App\Filament\Resources\Manuscripts\Pages\ListManuscripts;
 use App\Filament\Resources\Manuscripts\Pages\ViewManuscripts;
 use App\Filament\Resources\Manuscripts\Schemas\ManuscriptsForm;
@@ -10,7 +9,6 @@ use App\Filament\Resources\Manuscripts\Tables\ManuscriptsTable;
 use App\Models\ManuscriptRecord;
 use BackedEnum;
 use Filament\Actions\Action;
-use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\KeyValue;
@@ -125,8 +123,6 @@ class ManuscriptsResource extends Resource
 
                 ViewAction::make()
                     ->color('warning'),
-                EditAction::make()
-                    ->disabled(fn ($record) => $record->trashed()),
             ])
             ->bulkActions(
                 []
@@ -278,7 +274,6 @@ class ManuscriptsResource extends Resource
         return [
             'index' => ListManuscripts::route('/'),
             'view' => ViewManuscripts::route('/{record}'),
-            'edit' => EditManuscripts::route('/{record}/edit'),
         ];
     }
 
