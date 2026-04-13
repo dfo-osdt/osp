@@ -6,18 +6,19 @@ use App\Filament\Resources\Manuscripts\Pages\EditManuscripts;
 use App\Filament\Resources\Manuscripts\Pages\ListManuscripts;
 use App\Filament\Resources\Manuscripts\Pages\ViewManuscripts;
 use App\Filament\Resources\Manuscripts\Schemas\ManuscriptsForm;
-use App\Filament\Resources\Manuscripts\Schemas\ManuscriptsInfolist;
 use App\Filament\Resources\Manuscripts\Tables\ManuscriptsTable;
 use App\Models\ManuscriptRecord;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -45,6 +46,7 @@ class ManuscriptsResource extends Resource
             'manuscriptAuthors.author',
             'shareables',
             'region',
+            'user',
         ]);
     }
 
@@ -52,147 +54,7 @@ class ManuscriptsResource extends Resource
     {
         return ManuscriptsForm::configure($schema)
             ->columns(1)
-            ->components([
-Section::make('Record Metadata')
-            ->columns(3)
-            ->schema([
-                TextInput::make('id')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                TextInput::make('ulid')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Select::make('user_id')
-                    ->label('Creator')
-                    ->relationship('user', 'email')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                TextInput::make('type')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                TextInput::make('status')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Select::make('region_id')
-                    ->relationship('region', 'name_en')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                DateTimePicker::make('created_at')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                 DateTimePicker::make('updated_at')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                DateTimePicker::make('submitted_at')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                DateTimePicker::make('sent_for_review_at')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                DateTimePicker::make('reviewed_at')
-                    ->disabled()
-                    ->dehydrated(false),
-            ]),
-
-        Section::make('Abstract and Summaries')
-            ->columns(2)
-            ->schema([
-                Textarea::make('abstract')
-                    ->columnSpanFull()
-                    ->rows(6)
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Textarea::make('pls_en')
-                    ->label('PLS (English)')
-                    ->columnSpanFull()
-                    ->rows(5)
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Textarea::make('pls_fr')
-                    ->label('PLS (French)')
-                    ->columnSpanFull()
-                    ->rows(5)
-                    ->disabled()
-                    ->dehydrated(false),
-                Toggle::make('pls_approved_by_author')
-                    ->label('PLS Approved by Author')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Toggle::make('pls_translation_approved')
-                    ->label('PLS Translation Approved')
-                    ->disabled()
-                    ->dehydrated(false),
-            ]),
-
-        Section::make('Audience and Public Interest')
-            ->columns(1)
-            ->schema([
-                Textarea::make('relevant_to')
-                    ->rows(4)
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Toggle::make('potential_public_interest')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Textarea::make('public_interest_information')
-                    ->rows(4)
-                    ->disabled()
-                    ->dehydrated(false),
-            ]),
-
-        Section::make('Open Government and Licensing')
-            ->columns(2)
-            ->schema([
-                Toggle::make('apply_ogl')
-                    ->label('Apply OGL')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Toggle::make('intends_open_access')
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Textarea::make('no_ogl_explanation')
-                    ->columnSpanFull()
-                    ->rows(4)
-                    ->disabled()
-                    ->dehydrated(false),
-
-                Textarea::make('open_access_rationale')
-                    ->columnSpanFull()
-                    ->rows(4)
-                    ->disabled()
-                    ->dehydrated(false),
-            ]),
-            ]);
-    }
-
-    public static function infolist(Schema $schema): Schema
-    {
-        return ManuscriptsInfolist::configure($schema)
-            ->components([
-                Section::make()
-                    ->schema([
-                        KeyValueEntry::make('attributes')
-                            ->label('Log Entry (JSON)')
-                            ->default(fn ($record) => $record->getAttributes()),
-                    ]),
-            ]);
+            ->components(static::manuscriptFormSchema(disabled: false));
     }
 
     public static function table(Table $table): Table
@@ -204,14 +66,22 @@ Section::make('Record Metadata')
                     ->searchable(),
                 TextColumn::make('title')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where(function (Builder $query) use ($search) {
+                            $query
+                                ->where('title', 'like', "%{$search}%")
+                                ->orWhereHas('user', function (Builder $query) use ($search) {
+                                    $query->where('email', 'like', "%{$search}%");
+                                });
+                        });
+                    }),
                 TextColumn::make('type')
                     ->sortable(),
                 TextColumn::make('status')
                     ->sortable(),
-                TextColumn::make('Region.slug')
+                TextColumn::make('region.slug')
                     ->sortable(),
-            ])->searchable(['email'])
+            ])
             ->filters([
                 SelectFilter::make('type')
                     ->options([
@@ -224,7 +94,37 @@ Section::make('Record Metadata')
                 TrashedFilter::make(),
             ], layout: FiltersLayout::AboveContent)->filtersFormColumns(4)
             ->recordActions([
-                ViewAction::make(),
+                Action::make('quickView')
+                    ->label('Quick View')
+                    ->icon('heroicon-o-eye')
+                    ->color('gray')
+                    ->modalHeading('Quick View')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Close')
+                    ->form([
+                        Placeholder::make('title')
+                            ->label('Title')
+                            ->content(fn ($record) => $record->title),
+
+                        KeyValue::make('quick_view_data')
+                            ->label('')
+                            ->formatStateUsing(function ($record) {
+                                return [
+                                    'Record ID' => $record->id,
+                                    'ULID' => $record->ulid,
+                                    'Type' => $record->type->value ?? $record->type,
+                                    'Status' => $record->status->value ?? $record->status,
+                                    'Owner' => $record->user->email,
+                                    'Region' => $record->region->name_en,
+                                ];
+                            })
+                            ->disabled()
+                            ->dehydrated(false),
+                    ])
+                    ->action(fn () => null),
+
+                ViewAction::make()
+                    ->color('warning'),
                 EditAction::make()
                     ->disabled(fn ($record) => $record->trashed()),
             ])
@@ -233,10 +133,143 @@ Section::make('Record Metadata')
             );
     }
 
-    public static function getRelations(): array
+    public static function manuscriptFormSchema(bool $disabled = false): array
     {
         return [
-            //
+            Section::make('Record Metadata')
+                ->columns(3)
+                ->schema([
+                    TextInput::make('id')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    TextInput::make('ulid')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Select::make('user_id')
+                        ->label('Creator')
+                        ->relationship('user', 'email')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    TextInput::make('type')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    TextInput::make('status')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Select::make('region_id')
+                        ->relationship('region', 'name_en')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    DateTimePicker::make('created_at')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    DateTimePicker::make('updated_at')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    DateTimePicker::make('submitted_at')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    DateTimePicker::make('sent_for_review_at')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    DateTimePicker::make('reviewed_at')
+                        ->disabled()
+                        ->dehydrated(false),
+                ]),
+
+            Section::make('Title')
+                ->columns(1)
+                ->schema([
+                    TextInput::make('title')
+                        ->disabled()
+                        ->dehydrated(false),
+                ]),
+
+            Section::make('Abstract and Summaries')
+                ->columns(2)
+                ->schema([
+                    Textarea::make('abstract')
+                        ->columnSpanFull()
+                        ->rows(6)
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Textarea::make('pls_en')
+                        ->label('PLS (English)')
+                        ->columnSpanFull()
+                        ->rows(5)
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Textarea::make('pls_fr')
+                        ->label('PLS (French)')
+                        ->columnSpanFull()
+                        ->rows(5)
+                        ->disabled()
+                        ->dehydrated(false),
+                    Toggle::make('pls_approved_by_author')
+                        ->label('PLS Approved by Author')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Toggle::make('pls_translation_approved')
+                        ->label('PLS Translation Approved')
+                        ->disabled()
+                        ->dehydrated(false),
+                ]),
+
+            Section::make('Audience and Public Interest')
+                ->columns(1)
+                ->schema([
+                    Textarea::make('relevant_to')
+                        ->rows(4)
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Toggle::make('potential_public_interest')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Textarea::make('public_interest_information')
+                        ->rows(4)
+                        ->disabled()
+                        ->dehydrated(false),
+                ]),
+
+            Section::make('Open Government and Licensing')
+                ->columns(2)
+                ->schema([
+                    Toggle::make('apply_ogl')
+                        ->label('Apply OGL')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Toggle::make('intends_open_access')
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Textarea::make('no_ogl_explanation')
+                        ->columnSpanFull()
+                        ->rows(4)
+                        ->disabled()
+                        ->dehydrated(false),
+
+                    Textarea::make('open_access_rationale')
+                        ->columnSpanFull()
+                        ->rows(4)
+                        ->disabled()
+                        ->dehydrated(false),
+                ]),
         ];
     }
 

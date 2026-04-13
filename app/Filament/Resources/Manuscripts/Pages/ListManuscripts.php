@@ -41,6 +41,7 @@ class ListManuscripts extends ListRecords
             'in_review' => ['label' => 'In-Review', 'status' => 'in_review'],
             'reviewed' => ['label' => 'Reviewed', 'status' => 'reviewed'],
             'accepted' => ['label' => 'Accepted', 'status' => 'accepted'],
+            'withdrawn' => ['label' => 'Withdrawn', 'status' => 'withdrawn'],
         ];
     }
 
