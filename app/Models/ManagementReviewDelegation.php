@@ -23,18 +23,17 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
+#[\Illuminate\Database\Eloquent\Attributes\Guarded([
+    'id',
+    'created_at',
+    'updated_at',
+])]
 class ManagementReviewDelegation extends Model
 {
     /** @use HasFactory<ManagementReviewDelegationFactory> */
     use HasFactory;
 
     use LogsActivity;
-
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-    ];
 
     protected function casts(): array
     {

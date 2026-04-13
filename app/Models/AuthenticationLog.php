@@ -21,20 +21,18 @@ use Illuminate\Support\Carbon;
  *
  * @method static Builder<static> successful()
  */
+#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+    'ip_address',
+    'user_agent',
+    'login_at',
+    'login_successful',
+    'logout_at',
+    'cleared_by_user',
+])]
+#[\Illuminate\Database\Eloquent\Attributes\Table(name: 'authentication_log')]
 class AuthenticationLog extends Model
 {
     public $timestamps = false;
-
-    protected $table = 'authentication_log';
-
-    protected $fillable = [
-        'ip_address',
-        'user_agent',
-        'login_at',
-        'login_successful',
-        'logout_at',
-        'cleared_by_user',
-    ];
 
     protected $casts = [
         'login_at' => 'datetime',

@@ -58,19 +58,18 @@ use Spatie\Activitylog\Support\LogOptions;
  * @mixin \Eloquent
  */
 #[ObservedBy(ManagementReviewStepObserver::class)]
+#[\Illuminate\Database\Eloquent\Attributes\Guarded([
+    'id',
+    'created_at',
+    'updated_at',
+    'user_id',
+    'manuscript_record_id',
+    'previous_step_id',
+])]
 class ManagementReviewStep extends Model
 {
     use HasFactory;
     use LogsActivity;
-
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-        'user_id',
-        'manuscript_record_id',
-        'previous_step_id',
-    ];
 
     protected function casts(): array
     {

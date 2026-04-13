@@ -40,6 +40,7 @@ use Spatie\Activitylog\Support\LogOptions;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Touches(['manuscriptRecord'])]
 class ManuscriptAuthor extends Model
 {
     use HasFactory;
@@ -55,9 +56,6 @@ class ManuscriptAuthor extends Model
         'is_corresponding_author' => 'boolean',
         'is_group_author' => 'boolean',
     ];
-
-    // update the manuscript's updated_at timestamp when the author is updated
-    protected $touches = ['manuscriptRecord'];
 
     // logging options
     public function getActivitylogOptions(): LogOptions
