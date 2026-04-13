@@ -39,16 +39,15 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+    'manuscript_record_id',
+    'author_id',
+    'review_date',
+])]
 class ManuscriptPeerReviewer extends Model
 {
     /** @use HasFactory<ManuscriptPeerReviewerFactory> */
     use HasFactory;
-
-    protected $fillable = [
-        'manuscript_record_id',
-        'author_id',
-        'review_date',
-    ];
 
     protected $attributes = [
         'role' => PeerReviewRole::REVIEWER,

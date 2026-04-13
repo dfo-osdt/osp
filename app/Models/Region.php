@@ -28,12 +28,11 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+    'enforce_secondary_review_deadline',
+])]
 class Region extends Model
 {
-    protected $fillable = [
-        'enforce_secondary_review_deadline',
-    ];
-
     protected function casts(): array
     {
         return [

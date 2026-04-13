@@ -92,6 +92,21 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+    'first_name',
+    'last_name',
+    'email',
+    'password',
+    'locale',
+])]
+#[\Illuminate\Database\Eloquent\Attributes\Hidden([
+    'password',
+    'remember_token',
+    'created_at',
+    'updated_at',
+    'email_verified_at',
+    'email_verification_token',
+])]
 class User extends Authenticatable implements FilamentUser, HasLocalePreference, HasName, MustVerifyEmail
 {
     use CausesActivity;
@@ -99,29 +114,6 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     use HasFactory;
     use HasRoles;
     use Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'password',
-        'locale',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'created_at',
-        'updated_at',
-        'email_verified_at',
-        'email_verification_token',
-    ];
 
     /**
      * The attributes that should be cast.

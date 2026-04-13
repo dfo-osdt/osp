@@ -48,6 +48,7 @@ use Spatie\Activitylog\Support\LogOptions;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Touches(['publication'])]
 class PublicationAuthor extends Model
 {
     use HasFactory;
@@ -64,9 +65,6 @@ class PublicationAuthor extends Model
         'is_corresponding_author' => 'boolean',
         'is_group_author' => 'boolean',
     ];
-
-    // update the publication's updated_at timestamp when the author is updated
-    protected $touches = ['publication'];
 
     // logging options
     public function getActivitylogOptions(): LogOptions

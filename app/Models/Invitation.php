@@ -40,23 +40,21 @@ use URL;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+    'invitation_token',
+    'invited_by',
+    'registered_at',
+])]
+#[\Illuminate\Database\Eloquent\Attributes\Hidden([
+    'invitation_token',
+])]
 class Invitation extends Model
 {
     use HasFactory;
     use LogsActivity;
 
-    protected $fillable = [
-        'invitation_token',
-        'invited_by',
-        'registered_at',
-    ];
-
     protected $casts = [
         'registered_at' => 'datetime',
-    ];
-
-    protected $hidden = [
-        'invitation_token',
     ];
 
     // logging options

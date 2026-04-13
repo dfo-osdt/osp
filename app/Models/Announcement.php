@@ -39,6 +39,14 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+    'title_en',
+    'title_fr',
+    'text_en',
+    'text_fr',
+    'start_at',
+    'end_at',
+])]
 class Announcement extends Model
 {
     /** @use HasFactory<AnnouncementFactory> */
@@ -56,18 +64,6 @@ class Announcement extends Model
             'end_at' => 'datetime',
         ];
     }
-
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [
-        'title_en',
-        'title_fr',
-        'text_en',
-        'text_fr',
-        'start_at',
-        'end_at',
-    ];
 
     /** Return active announcements */
     #[Scope]
