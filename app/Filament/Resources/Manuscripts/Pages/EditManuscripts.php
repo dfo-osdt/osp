@@ -17,7 +17,8 @@ class EditManuscripts extends EditRecord
             ViewAction::make(),
             Action::make('Manuscripts')
                 ->url(fn (): string => ManuscriptsResource::getUrl('index'))
-                ->icon('heroicon-o-arrow-small-left'),
+                ->icon('heroicon-o-arrow-small-left')
+                ->color('warning'),
         ];
     }
 }
