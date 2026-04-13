@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -21,7 +23,7 @@ use Illuminate\Support\Carbon;
  *
  * @method static Builder<static> successful()
  */
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'ip_address',
     'user_agent',
     'login_at',
@@ -29,7 +31,7 @@ use Illuminate\Support\Carbon;
     'logout_at',
     'cleared_by_user',
 ])]
-#[\Illuminate\Database\Eloquent\Attributes\Table(name: 'authentication_log')]
+#[Table(name: 'authentication_log')]
 class AuthenticationLog extends Model
 {
     public $timestamps = false;

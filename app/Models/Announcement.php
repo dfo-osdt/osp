@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Database\Factories\AnnouncementFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,7 +40,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'title_en',
     'title_fr',
     'text_en',

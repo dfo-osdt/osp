@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Integrations\Orcid\Enums\PeerReviewRole;
 use App\Http\Integrations\Orcid\Enums\PeerReviewType;
 use Database\Factories\ManuscriptPeerReviewerFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,7 +40,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'manuscript_record_id',
     'author_id',
     'review_date',

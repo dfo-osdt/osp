@@ -10,6 +10,8 @@ use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -92,14 +94,14 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @mixin \Eloquent
  */
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'first_name',
     'last_name',
     'email',
     'password',
     'locale',
 ])]
-#[\Illuminate\Database\Eloquent\Attributes\Hidden([
+#[Hidden([
     'password',
     'remember_token',
     'created_at',
