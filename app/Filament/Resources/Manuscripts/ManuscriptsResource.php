@@ -64,15 +64,13 @@ class ManuscriptsResource extends Resource
                     ->searchable(),
                 TextColumn::make('title')
                     ->sortable()
-                    ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->where(function (Builder $query) use ($search) {
-                            $query
-                                ->where('title', 'like', "%{$search}%")
-                                ->orWhereHas('user', function (Builder $query) use ($search) {
-                                    $query->where('email', 'like', "%{$search}%");
-                                });
-                        });
-                    }),
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->where(function (Builder $query) use ($search): void {
+                        $query
+                            ->where('title', 'like', "%{$search}%")
+                            ->orWhereHas('user', function (Builder $query) use ($search): void {
+                                $query->where('email', 'like', "%{$search}%");
+                            });
+                    })),
                 TextColumn::make('type')
                     ->sortable(),
                 TextColumn::make('status')
@@ -106,20 +104,18 @@ class ManuscriptsResource extends Resource
 
                         KeyValue::make('quick_view_data')
                             ->label('')
-                            ->formatStateUsing(function ($record) {
-                                return [
-                                    'Record ID' => $record->id,
-                                    'ULID' => $record->ulid,
-                                    'Type' => $record->type->value ?? $record->type,
-                                    'Status' => $record->status->value ?? $record->status,
-                                    'Owner' => $record->user->email,
-                                    'Region' => $record->region->name_en,
-                                ];
-                            })
+                            ->formatStateUsing(fn ($record): array => [
+                                'Record ID' => $record->id,
+                                'ULID' => $record->ulid,
+                                'Type' => $record->type->value ?? $record->type,
+                                'Status' => $record->status->value ?? $record->status,
+                                'Owner' => $record->user->email,
+                                'Region' => $record->region->name_en,
+                            ])
                             ->disabled()
                             ->dehydrated(false),
                     ])
-                    ->action(fn () => null),
+                    ->action(fn (): null => null),
 
                 ViewAction::make()
                     ->color('warning'),
