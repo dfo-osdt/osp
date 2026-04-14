@@ -220,7 +220,7 @@ enum UserRole: string
     public static function getPermissionsForRoles(array $roles): array
     {
         return collect($roles)
-            ->flatMap(fn (self $role) => $role->permissions())
+            ->flatMap(fn (self $role): array => $role->permissions())
             ->unique(fn ($permission) => $permission->value)
             ->all();
     }
