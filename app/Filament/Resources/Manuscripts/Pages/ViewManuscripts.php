@@ -32,7 +32,7 @@ class ViewManuscripts extends ViewRecord implements HasForms
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->disabled(fn ($record) => ! auth()->user()->can('delete', $record))
+                ->disabled(fn ($record): bool => ! auth()->user()->can('delete', $record))
                 ->action(function () {
                     $record = $this->getRecord();
 

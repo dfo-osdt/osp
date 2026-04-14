@@ -22,13 +22,13 @@ class ListManuscripts extends ListRecords
     {
         $tabs = [
             'all' => Tab::make()
-                ->badge(fn () => $this->getTabCount()),
+                ->badge(fn (): int => $this->getTabCount()),
         ];
 
         foreach ($this->getStatusTabs() as $key => $config) {
             $tabs[$key] = Tab::make($config['label'])
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', $config['status']))
-                ->badge(fn () => $this->getTabCount($config['status']));
+                ->badge(fn (): int => $this->getTabCount($config['status']));
         }
 
         return $tabs;
