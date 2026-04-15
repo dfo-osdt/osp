@@ -20,6 +20,7 @@ enum UserPermission: string
     case VIEW_PULSE = 'view_pulse';
     case VIEW_ANY_USERS = 'view_any_users';
     case VIEW_ANY_MANUSCRIPT_RECORD = 'view_any_manuscript_record';
+    case VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT = 'view_any_manuscript_record_including_draft';
     case ADMINISTER_USERS = 'administer_users';
     case PUBLISH_INTERNAL_REPORTS = 'publish_internal_reports';
     case UPDATE_PUBLICATIONS = 'update_publications';

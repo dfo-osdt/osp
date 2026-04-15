@@ -21,9 +21,8 @@ class ManuscriptRecordPolicy
      */
     public function viewAny(User $user): bool
     {
-        // this should stay false as the "draft" MRF should
-        // never be seen by "anyone".
-        return $user->can(UserPermission::VIEW_ANY_USERS);
+        // admin can see basic information for all manuscripts including in draft
+        return $user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT);
     }
 
     /**
@@ -31,6 +30,10 @@ class ManuscriptRecordPolicy
      */
     public function view(User $user, ManuscriptRecord $manuscriptRecord)
     {
+        
+        if ($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT)) {
+            return true;
+        }
 
         // owners can view their own manuscripts
         if ($user->id === $manuscriptRecord->user_id) {
