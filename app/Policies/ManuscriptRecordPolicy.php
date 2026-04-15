@@ -30,7 +30,7 @@ class ManuscriptRecordPolicy
      */
     public function view(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        
+
         if ($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT)) {
             return true;
         }

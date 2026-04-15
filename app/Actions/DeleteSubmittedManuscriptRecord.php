@@ -18,8 +18,6 @@ class DeleteSubmittedManuscriptRecord
             );
         }
 
-        
-
         DB::transaction(function () use ($manuscriptRecord): void {
             $manuscriptRecord->managementReviewSteps()->update(['previous_step_id' => null]);
             $manuscriptRecord->managementReviewSteps()->delete();
@@ -35,17 +33,6 @@ class DeleteSubmittedManuscriptRecord
 
             $manuscriptRecord->clearMediaCollection(MediaCollection::MANUSCRIPT->value);
             $manuscriptRecord->forceDelete();
-
-            activity()
-                ->performedOn($manuscriptRecord)
-                ->event('delete-in-review')
-                ->withProperties([
-                    'date' => now()->toDateString(),
-                    'manuscript_record_id' => $manuscriptRecord->id,
-                    'manuscript_record_ulid' => $manuscriptRecord->ulid,
-                    'manuscript_record_title' => $manuscriptRecord->title,
-                ])
-                ->log('DeleteSubmittedManuscript command executed successfully');    
         });
     }
 }
