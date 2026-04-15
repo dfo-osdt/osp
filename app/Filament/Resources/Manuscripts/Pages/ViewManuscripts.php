@@ -33,7 +33,7 @@ class ViewManuscripts extends ViewRecord implements HasForms
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->visible(fn ($record) => $record->status === ManuscriptRecordStatus::IN_REVIEW)
+                ->visible(fn ($record): bool => $record->status === ManuscriptRecordStatus::IN_REVIEW)
                 ->action(function () {
                     $record = $this->getRecord();
 

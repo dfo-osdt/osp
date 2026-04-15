@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Manuscripts;
 
+use App\Actions\DeleteSubmittedManuscriptRecord;
+use App\Enums\ManuscriptRecordStatus;
 use App\Filament\Resources\Manuscripts\Pages\ListManuscripts;
 use App\Filament\Resources\Manuscripts\Pages\ViewManuscripts;
 use App\Filament\Resources\Manuscripts\Schemas\ManuscriptsForm;
@@ -9,7 +11,6 @@ use App\Filament\Resources\Manuscripts\Tables\ManuscriptsTable;
 use App\Models\ManuscriptRecord;
 use BackedEnum;
 use Filament\Actions\Action;
-use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Placeholder;
@@ -17,6 +18,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -97,6 +99,36 @@ class ManuscriptsResource extends Resource
                     ->modalHeading('Quick View')
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel('Close')
+                    ->extraModalFooterActions([
+                        Action::make('delete')
+                            ->label('Delete In-Review')
+                            ->icon('heroicon-o-trash')
+                            ->color('danger')
+                            ->requiresConfirmation()
+                            ->visible(fn ($record): bool => $record->status === ManuscriptRecordStatus::IN_REVIEW)
+                            ->cancelParentActions()
+                            ->action(function ($record): void {
+                                if (! $record instanceof ManuscriptRecord) {
+                                    throw new \RuntimeException('Expected a ManuscriptRecord.');
+                                }
+
+                                try {
+                                    DeleteSubmittedManuscriptRecord::handle($record);
+
+                                    Notification::make()
+                                        ->title('Manuscript deleted')
+                                        ->success()
+                                        ->send();
+
+                                } catch (\InvalidArgumentException $e) {
+                                    Notification::make()
+                                        ->title('Unable to delete manuscript')
+                                        ->body($e->getMessage())
+                                        ->danger()
+                                        ->send();
+                                }
+                            }),
+                    ])
                     ->form([
                         Placeholder::make('title')
                             ->label('Title')
@@ -116,9 +148,6 @@ class ManuscriptsResource extends Resource
                             ->dehydrated(false),
                     ])
                     ->action(fn (): null => null),
-
-                ViewAction::make()
-                    ->color('warning'),
             ])
             ->bulkActions(
                 []
