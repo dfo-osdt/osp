@@ -14,7 +14,8 @@ class SuggestOrganizationMatches
     /**
      * Find potential ROR matches for all unvalidated organizations.
      *
-     * @return Collection<int, array{source: Organization, matches: Collection}>
+     * @return Collection<int, array{source: Organization, matches: Collection<int, array{organization: Organization, score: int, matched_on: string}>
+}>
      */
     public static function handle(int $maxSuggestions = 5, int $minimumScore = 50): Collection
     {
