@@ -22,7 +22,7 @@ class ViewUserLogs extends ManageRelatedRecords
 {
     protected static string $resource = UserResource::class;
 
-    protected static string $relationship = 'actions';
+    protected static string $relationship = 'activitiesAsCauser';
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
