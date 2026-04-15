@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Manuscripts\Pages;
 
 use App\Actions\DeleteSubmittedManuscriptRecord;
+use App\Enums\ManuscriptRecordStatus;
 use App\Filament\Resources\Manuscripts\ManuscriptsResource;
 use App\Models\ManuscriptRecord;
 use Filament\Actions\Action;
@@ -28,11 +29,11 @@ class ViewManuscripts extends ViewRecord implements HasForms
                 ->icon('heroicon-o-arrow-small-left')
                 ->color('warning'),
             Action::make('delete')
-                ->label('Delete')
+                ->label('Delete In-Review')
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->requiresConfirmation()
-                ->disabled(fn ($record): bool => ! auth()->user()->can('delete', $record))
+                ->visible(fn ($record) => $record->status === ManuscriptRecordStatus::IN_REVIEW)
                 ->action(function () {
                     $record = $this->getRecord();
 

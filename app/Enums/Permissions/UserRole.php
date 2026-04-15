@@ -58,8 +58,8 @@ enum UserRole: string
                 UserPermission::VIEW_PULSE,
                 UserPermission::VIEW_ANY_USERS,
                 UserPermission::ADMINISTER_USERS,
-                // Merge Regional Editors permissions
-                ...self::getPermissionsForRoles(self::getAllRegionalRoles()),
+                UserPermission::VIEW_ANY_MANUSCRIPT_RECORD,
+                UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT,
             ],
             self::EDITOR => [
                 UserPermission::UPDATE_AUTHORS,
@@ -215,13 +215,5 @@ enum UserRole: string
             self::getRegionalEditorRoles(),
             self::getRegionalObserverRoles()
         );
-    }
-
-    public static function getPermissionsForRoles(array $roles): array
-    {
-        return collect($roles)
-            ->flatMap(fn (self $role): array => $role->permissions())
-            ->unique(fn ($permission) => $permission->value)
-            ->all();
     }
 }
