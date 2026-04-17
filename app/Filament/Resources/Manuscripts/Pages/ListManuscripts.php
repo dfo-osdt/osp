@@ -67,7 +67,7 @@ class ListManuscripts extends ListRecords
 
         $query = $this->filterTableQuery($query);
 
-        if ($status !== null) {
+        if ($status instanceof ManuscriptRecordStatus) {
             $query->where('status', $status->value);
         }
 
