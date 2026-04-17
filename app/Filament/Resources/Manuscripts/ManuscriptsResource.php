@@ -91,11 +91,7 @@ class ManuscriptsResource extends Resource
                             ->requiresConfirmation()
                             ->visible(fn ($record): bool => $record->status === ManuscriptRecordStatus::IN_REVIEW)
                             ->cancelParentActions()
-                            ->action(function ($record): void {
-                                if (! $record instanceof ManuscriptRecord) {
-                                    throw new \RuntimeException('Expected a ManuscriptRecord.');
-                                }
-
+                            ->action(function (ManuscriptRecord $record): void {
                                 try {
                                     DeleteSubmittedManuscriptRecord::handle($record);
 
