@@ -17,12 +17,12 @@ describe('List Manuscripts tabs', function (): void {
         ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::REVIEWED]);
 
         $component = $this->actingAs($admin)->livewire(ListManuscripts::class)
-            ->set('activeTab', 'drafts');
+            ->set('activeTab', 'draft');
 
         $tabs = $component->instance()->getTabs();
 
         expect($tabs['all']->getBadge())->toBe(3)
-            ->and($tabs['drafts']->getBadge())->toBe(1)
+            ->and($tabs['draft']->getBadge())->toBe(1)
             ->and($tabs['in_review']->getBadge())->toBe(1)
             ->and($tabs['reviewed']->getBadge())->toBe(1);
     });
