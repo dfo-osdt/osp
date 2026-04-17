@@ -28,7 +28,7 @@ class ListManuscripts extends ListRecords
 
         foreach ($this->getStatusTabs() as $key => $config) {
             $tabs[$key] = Tab::make($config['label'])
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', $config['status']))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', $config['status']->value))
                 ->badge(fn (): int => $this->getTabCount($config['status']));
         }
 
@@ -47,13 +47,13 @@ class ListManuscripts extends ListRecords
             ->mapWithKeys(fn (ManuscriptRecordStatus $status): array => [
                 $status->value => [
                     'label' => Str::headline($status->value),
-                    'status' => $status->value,
+                    'status' => $status,
                 ],
             ])
             ->all();
     }
 
-    protected function getTabCount(?string $status = null): int
+    protected function getTabCount(?ManuscriptRecordStatus $status = null): int
     {
         $query = $this->getTableQuery();
 
@@ -68,7 +68,7 @@ class ListManuscripts extends ListRecords
         $query = $this->filterTableQuery($query);
 
         if ($status !== null) {
-            $query->where('status', $status);
+            $query->where('status', $status->value);
         }
 
         return $query->count();
