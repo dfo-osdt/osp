@@ -2,6 +2,7 @@
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
+use App\Enums\Permissions\UserPermission;
 use App\Enums\Permissions\UserRole;
 use App\Models\ManuscriptRecord;
 use App\Models\Region;
@@ -38,6 +39,23 @@ test('users with VIEW_ANY_MANUSCRIPT_RECORD see all non-draft manuscripts', func
     // Verify no drafts are included
     $statuses = collect($response->json('data'))->pluck('data.status')->toArray();
     expect($statuses)->not->toContain(ManuscriptRecordStatus::DRAFT->value);
+});
+
+test('users with VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT have global manuscript index access', function (): void {
+    $user = User::factory()->create();
+    $user->givePermissionTo(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT);
+
+    ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::DRAFT]);
+    ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::IN_REVIEW]);
+
+    $response = $this->actingAs($user)->getJson('/api/manuscript-records');
+    $response->assertOk();
+
+    expect($response->json('data'))->toHaveCount(2);
+
+    $statuses = collect($response->json('data'))->pluck('data.status')->toArray();
+    expect($statuses)->toContain(ManuscriptRecordStatus::IN_REVIEW->value)
+        ->toContain(ManuscriptRecordStatus::DRAFT->value);
 });
 
 test('global permission users cannot see draft manuscripts', function (): void {
