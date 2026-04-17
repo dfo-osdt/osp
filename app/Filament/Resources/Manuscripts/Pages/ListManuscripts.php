@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Str;
 
 class ListManuscripts extends ListRecords
 {
@@ -36,13 +37,20 @@ class ListManuscripts extends ListRecords
 
     protected function getStatusTabs(): array
     {
-        return [
-            'drafts' => ['label' => 'Drafts', 'status' => ManuscriptRecordStatus::DRAFT->value],
-            'in_review' => ['label' => 'In-Review', 'status' => ManuscriptRecordStatus::IN_REVIEW->value],
-            'reviewed' => ['label' => 'Reviewed', 'status' => ManuscriptRecordStatus::REVIEWED->value],
-            'accepted' => ['label' => 'Accepted', 'status' => ManuscriptRecordStatus::ACCEPTED->value],
-            'withdrawn' => ['label' => 'Withdrawn', 'status' => ManuscriptRecordStatus::WITHDRAWN->value],
-        ];
+        return collect([
+            ManuscriptRecordStatus::DRAFT,
+            ManuscriptRecordStatus::IN_REVIEW,
+            ManuscriptRecordStatus::REVIEWED,
+            ManuscriptRecordStatus::ACCEPTED,
+            ManuscriptRecordStatus::WITHDRAWN,
+        ])
+            ->mapWithKeys(fn (ManuscriptRecordStatus $status): array => [
+                $status->value => [
+                    'label' => Str::headline($status->value),
+                    'status' => $status->value,
+                ],
+            ])
+            ->all();
     }
 
     protected function getTabCount(?string $status = null): int
