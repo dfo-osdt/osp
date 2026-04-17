@@ -51,8 +51,10 @@ class ManuscriptRecordController extends Controller
         $limit = $this->getLimitFromRequest($request);
 
         $hasGlobalPermission = $user->hasPermissionTo(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD);
+        $hasGlobalIncludingDraftPermission = $user->hasPermissionTo(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT);
 
         // Check for regional view permissions
+        // TODO: use Permission enum to build this list.
         $regionSlugs = ['nfl', 'mar', 'glf', 'que', 'onp', 'arc', 'pac', 'ncr'];
         $allowedRegionIds = [];
 
@@ -65,7 +67,7 @@ class ManuscriptRecordController extends Controller
             }
         }
 
-        if (! $hasGlobalPermission && $allowedRegionIds === []) {
+        if (! $hasGlobalPermission && ! $hasGlobalIncludingDraftPermission && $allowedRegionIds === []) {
             abort(403, 'Insufficient permissions to view manuscript records');
         }
 
@@ -76,18 +78,20 @@ class ManuscriptRecordController extends Controller
                 ],
                 'region', 'shareables', 'managementReviewSteps.user']);
 
-        if ($hasGlobalPermission && $allowedRegionIds !== []) {
-            // Both global AND regional - union of access
-            $baseQuery->where(function (Builder $query) use ($allowedRegionIds): void {
-                $query->where('status', '!=', ManuscriptRecordStatus::DRAFT)
-                    ->orWhereIn('region_id', $allowedRegionIds);
-            });
-        } elseif ($hasGlobalPermission) {
-            // Only global - all non-drafts
-            $baseQuery->where('status', '!=', ManuscriptRecordStatus::DRAFT);
-        } else {
-            // Only regional - all from assigned regions
-            $baseQuery->whereIn('region_id', $allowedRegionIds);
+        if (! $hasGlobalIncludingDraftPermission) {
+            if ($hasGlobalPermission && $allowedRegionIds !== []) {
+                // Both global AND regional - union of access
+                $baseQuery->where(function (Builder $query) use ($allowedRegionIds): void {
+                    $query->where('status', '!=', ManuscriptRecordStatus::DRAFT)
+                        ->orWhereIn('region_id', $allowedRegionIds);
+                });
+            } elseif ($hasGlobalPermission) {
+                // Only global - all non-drafts
+                $baseQuery->where('status', '!=', ManuscriptRecordStatus::DRAFT);
+            } else {
+                // Only regional - all from assigned regions
+                $baseQuery->whereIn('region_id', $allowedRegionIds);
+            }
         }
 
         $manuscriptListQuery = new ManuscriptRecordListQuery($request, $baseQuery);

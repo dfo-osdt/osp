@@ -58,7 +58,6 @@ enum UserRole: string
                 UserPermission::VIEW_PULSE,
                 UserPermission::VIEW_ANY_USERS,
                 UserPermission::ADMINISTER_USERS,
-                UserPermission::VIEW_ANY_MANUSCRIPT_RECORD,
                 UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT,
             ],
             self::EDITOR => [
