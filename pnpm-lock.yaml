@@ -98,8 +98,8 @@ importers:
         version: 3.2.6(typescript@6.0.2)
     optionalDependencies:
       '@rollup/rollup-linux-x64-gnu':
-        specifier: ^4.60.1
-        version: 4.60.1
+        specifier: ^4.60.2
+        version: 4.60.2
 
 packages:
 
@@ -1173,8 +1173,8 @@ packages:
     os: [linux]
     libc: [glibc]
 
-  '@rollup/rollup-linux-x64-gnu@4.60.1':
-    resolution: {integrity: sha512-77PpsFQUCOiZR9+LQEFg9GClyfkNXj1MP6wRnzYs0EeWbPcHs02AXu4xuUbM1zhwn3wqaizle3AEYg5aeoohhg==}
+  '@rollup/rollup-linux-x64-gnu@4.60.2':
+    resolution: {integrity: sha512-UQjrkIdWrKI626Du8lCQ6MJp/6V1LAo2bOK9OTu4mSn8GGXIkPXk/Vsp4bLHCd9Z9Iz2OTEaokUE90VweJgIYQ==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
@@ -4293,7 +4293,7 @@ snapshots:
   '@rollup/rollup-linux-x64-gnu@4.60.0':
     optional: true
 
-  '@rollup/rollup-linux-x64-gnu@4.60.1':
+  '@rollup/rollup-linux-x64-gnu@4.60.2':
     optional: true
 
   '@rollup/rollup-linux-x64-musl@4.60.0':
@@ -4409,8 +4409,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.56.1(typescript@6.0.2)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.56.1(typescript@6.0.2)
-      '@typescript-eslint/types': 8.56.1
+      '@typescript-eslint/tsconfig-utils': 8.58.2(typescript@6.0.2)
+      '@typescript-eslint/types': 8.58.2
       debug: 4.4.3
       typescript: 6.0.2
     transitivePeerDependencies:
