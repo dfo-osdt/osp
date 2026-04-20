@@ -3211,16 +3211,16 @@
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.3.16",
+            "version": "v0.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "11e7d5f93803a2190b00e145142cb00a33d17ad2"
+                "reference": "6a82ac19a28b916ae0885828795dbd4c59d9a818"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/11e7d5f93803a2190b00e145142cb00a33d17ad2",
-                "reference": "11e7d5f93803a2190b00e145142cb00a33d17ad2",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/6a82ac19a28b916ae0885828795dbd4c59d9a818",
+                "reference": "6a82ac19a28b916ae0885828795dbd4c59d9a818",
                 "shasum": ""
             },
             "require": {
@@ -3264,9 +3264,9 @@
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.3.16"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.17"
             },
-            "time": "2026-03-23T14:35:33+00:00"
+            "time": "2026-04-20T16:07:33+00:00"
         },
         {
             "name": "laravel/pulse",
@@ -14025,23 +14025,23 @@
         },
         {
             "name": "voku/portable-ascii",
-            "version": "2.0.3",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/voku/portable-ascii.git",
-                "reference": "b1d923f88091c6bf09699efcd7c8a1b1bfd7351d"
+                "reference": "d870a33f0f79d2b4579740b0620200221ee44aeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/b1d923f88091c6bf09699efcd7c8a1b1bfd7351d",
-                "reference": "b1d923f88091c6bf09699efcd7c8a1b1bfd7351d",
+                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/d870a33f0f79d2b4579740b0620200221ee44aeb",
+                "reference": "d870a33f0f79d2b4579740b0620200221ee44aeb",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0"
+                "php": ">=7.1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~6.0 || ~7.0 || ~9.0"
+                "phpunit/phpunit": "~8.5 || ~9.6 || ~10.5 || ~11.5"
             },
             "suggest": {
                 "ext-intl": "Use Intl for transliterator_transliterate() support"
@@ -14071,7 +14071,7 @@
             ],
             "support": {
                 "issues": "https://github.com/voku/portable-ascii/issues",
-                "source": "https://github.com/voku/portable-ascii/tree/2.0.3"
+                "source": "https://github.com/voku/portable-ascii/tree/2.1.0"
             },
             "funding": [
                 {
@@ -14095,7 +14095,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-21T01:49:47+00:00"
+            "time": "2026-04-16T23:10:39+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -16471,16 +16471,16 @@
         },
         {
             "name": "larastan/larastan",
-            "version": "v3.9.5",
+            "version": "v3.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larastan/larastan.git",
-                "reference": "aa637ef3c9102490e0fa9a7ea4fbdbbce4471f34"
+                "reference": "9ad17e83e96b63536cb6ac39c3d40d29ff9cf636"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larastan/larastan/zipball/aa637ef3c9102490e0fa9a7ea4fbdbbce4471f34",
-                "reference": "aa637ef3c9102490e0fa9a7ea4fbdbbce4471f34",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/9ad17e83e96b63536cb6ac39c3d40d29ff9cf636",
+                "reference": "9ad17e83e96b63536cb6ac39c3d40d29ff9cf636",
                 "shasum": ""
             },
             "require": {
@@ -16549,7 +16549,7 @@
             ],
             "support": {
                 "issues": "https://github.com/larastan/larastan/issues",
-                "source": "https://github.com/larastan/larastan/tree/v3.9.5"
+                "source": "https://github.com/larastan/larastan/tree/v3.9.6"
             },
             "funding": [
                 {
@@ -16557,7 +16557,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-11T20:10:30+00:00"
+            "time": "2026-04-16T10:02:43+00:00"
         },
         {
             "name": "laravel/boost",
@@ -17922,11 +17922,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.47",
+            "version": "2.1.50",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/79015445d8bd79e62b29140f12e5bfced1dcca65",
-                "reference": "79015445d8bd79e62b29140f12e5bfced1dcca65",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
+                "reference": "d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
                 "shasum": ""
             },
             "require": {
@@ -17971,7 +17971,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-13T15:49:08+00:00"
+            "time": "2026-04-17T13:10:32+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -20007,5 +20007,5 @@
     "platform-overrides": {
         "php": "8.4"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
