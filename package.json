@@ -30,7 +30,7 @@
     "@quasar/vite-plugin": "^1.11.0",
     "@types/node": "^25.6.0",
     "axios": "^1.15.0",
-    "eslint": "^10.2.0",
+    "eslint": "^10.2.1",
     "eslint-plugin-quasar": "^1.1.0",
     "laravel-vite-plugin": "^3.0.1",
     "lodash": "^4.18.1",
