@@ -10,6 +10,7 @@ import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
+import ExpertiseSelect from '@/models/Expertise/components/ExpertiseSelect.vue'
 import { AuthorQuery, AuthorService } from '../Author'
 import AuthorList from '../components/AuthorList.vue'
 
@@ -18,14 +19,17 @@ const activeFilter = useRouteQuery('filter', '1', { transform: Number })
 const currentPage = useRouteQuery('page', '1', { transform: Number })
 const search = useRouteQuery<string | null>('search', null)
 const organizationId = useRouteQuery<number | null>('org', null, {
-  transform: v => v ? Number(v) : null,
+    transform: v => v ? Number(v) : null,
 })
+const expertiseId = useRouteQuery<string | null>('expertise', null)
 
 // State variables
 const authors = ref<AuthorResourceList>()
 const loading = ref(false)
 const showFilters = ref(false)
 const organizationSelect = ref<InstanceType<typeof OrganizationSelect> | null>(null)
+const expertiseSelect = ref<InstanceType<typeof ExpertiseSelect> | null>(null)
+const selectedExpertise = ref<ExpertiseResource | null>(null)
 
 // i18n
 const { t } = useI18n()
@@ -89,6 +93,13 @@ const filterCaption = computed(() => {
     const name = localeStore.isFr() ? name_fr : name_en
     caption += `${t('common.from')} ${name || name_en || 'NA'}`
   }
+
+    if (expertiseId.value) {
+        const { name_en, name_fr } = expertiseSelect?.value?.selectedExpertise?.data || {}
+        const name = localeStore.isFr() ? name_fr : name_en
+        caption += `${t('common.from')} ${name || name_en || 'NA'}`
+    }
+ 
   if (caption.length > 0)
     caption = `${t('common.authors')} ${caption.slice(0, -1)}`
   else caption = t('common.no-filters-applied')
@@ -118,12 +129,16 @@ async function getAuthors() {
     query = query.filterOrganizationId(organizationId.value)
   }
 
-  query.sort('last_name', 'asc')
-  query.include('organization')
-  query.paginate(currentPage.value, 10)
+    if (expertiseId.value) {
+        query = query.filterExpertiseId(expertiseId.value)
+    }
+    query.sort('last_name', 'asc')
+    query.include('organization')
+    query.include('expertises')
+    query.paginate(currentPage.value, 10)
 
-  loading.value = true
-  authors.value = await AuthorService.list(query)
+    loading.value = true
+    authors.value = await AuthorService.list(query)
   loading.value = false
 }
 
@@ -131,6 +146,7 @@ function mainFilterClick(filterId: number) {
   activeFilter.value = filterId
   search.value = null
   organizationId.value = null
+    expertiseId.value = null
   currentPage.value = 1
   getAuthors()
 }
@@ -145,9 +161,16 @@ watch(organizationId, () => {
   getAuthors()
 })
 
+watch(selectedExpertise, (value) => {
+    console.log('Selected expertise:', value)
+    console.log('Setting expertiseId:', value?.data?.id ?? null)
+
+    expertiseId.value = value?.data?.id ?? null
+})
+
 watchThrottled(
-  search,
-  () => {
+    search,
+    () => {
     currentPage.value = 1
     getAuthors()
   },
@@ -221,13 +244,18 @@ interface MainFilterOption {
               :label="$t('common.filters')"
               :caption="filterCaption"
             >
-              <q-card-section class="column q-gutter-md">
-                <OrganizationSelect
-                  ref="organizationSelect"
-                  v-model="organizationId"
-                  :label="$t('common.organization')"
-                  :disable="mainFilter?.id === 2"
-                />
+                <q-card-section class="column q-gutter-md">
+                    <OrganizationSelect
+                        ref="organizationSelect"
+                        v-model="organizationId"
+                        :label="$t('common.organization')"
+                        :disable="mainFilter?.id === 2"
+                    />
+                    <ExpertiseSelect
+                        ref="expertiseSelect"
+                        v-model="selectedExpertise"
+                        :label="$t('common.expertise')"
+                    />
               </q-card-section>
             </q-expansion-item>
             <q-separator />
