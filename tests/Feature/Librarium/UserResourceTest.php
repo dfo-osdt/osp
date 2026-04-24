@@ -55,14 +55,28 @@ describe('List Users table features', function (): void {
     });
 
     it('Columns can be sorted', function (): void {
+        $records = User::factory()->count(5)->sequence(
+            ['first_name' => 'SortCaseAda', 'last_name' => 'SortCaseZulu', 'email' => 'sort-case-ada@example.com'],
+            ['first_name' => 'SortCaseBea', 'last_name' => 'SortCaseYoung', 'email' => 'sort-case-bea@example.com'],
+            ['first_name' => 'SortCaseCia', 'last_name' => 'SortCaseXavier', 'email' => 'sort-case-cia@example.com'],
+            ['first_name' => 'SortCaseDia', 'last_name' => 'SortCaseWright', 'email' => 'sort-case-dia@example.com'],
+            ['first_name' => 'SortCaseEma', 'last_name' => 'SortCaseVoss', 'email' => 'sort-case-ema@example.com'],
+        )->create();
+
         collect([
             'first_name',
             'last_name',
-        ])->each(fn ($column) => $this->actingAs($this->admin)->livewire(ListUsers::class)
-            ->sortTable($column)
-            ->assertCanSeeTableRecords($this->records->sortBy($column), inOrder: true)
-            ->sortTable($column, 'desc')
-            ->assertCanSeeTableRecords($this->records->sortByDesc($column), inOrder: true));
+        ])->each(function (string $column) use ($records): void {
+            $sortedAsc = User::query()->whereKey($records->modelKeys())->orderBy($column)->get();
+            $sortedDesc = User::query()->whereKey($records->modelKeys())->orderByDesc($column)->get();
+
+            $this->actingAs($this->admin)->livewire(ListUsers::class)
+                ->searchTable('sort-case-')
+                ->sortTable($column)
+                ->assertCanSeeTableRecords($sortedAsc, inOrder: true)
+                ->sortTable($column, 'desc')
+                ->assertCanSeeTableRecords($sortedDesc, inOrder: true);
+        });
     });
 
     it('Columns can be searched', function (): void {
