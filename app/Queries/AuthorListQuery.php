@@ -25,6 +25,13 @@ class AuthorListQuery extends QueryBuilder
                 AllowedFilter::partial('email'),
                 AllowedFilter::exact('organization_id'),
                 AllowedFilter::exact('orcid'),
+                AllowedFilter::callback('expertise_id', function (Builder $query, $value): void {
+                    logger()->info('Filtering by expertise_id', ['value' => $value]);
+
+                    $query->whereHas('expertises', function (Builder $query) use ($value): void {
+                        $query->where('expertises.id', $value);
+                    });
+                }),
                 AllowedFilter::custom('search', new FuzzyFilter('first_name', 'last_name', 'email')),
                 AllowedFilter::scope('internal_author'),
                 AllowedFilter::scope('external_author'),
