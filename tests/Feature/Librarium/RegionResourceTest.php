@@ -47,11 +47,16 @@ describe('List Regions table features', function (): void {
         collect([
             'name_en',
             'name_fr',
-        ])->each(fn ($column) => $this->actingAs($this->admin)->livewire(ListRegions::class)
-            ->sortTable($column)
-            ->assertCanSeeTableRecords($this->records->sortBy($column), inOrder: true)
-            ->sortTable($column, 'desc')
-            ->assertCanSeeTableRecords($this->records->sortByDesc($column), inOrder: true));
+        ])->each(function (string $column): void {
+            $sortedAsc = Region::query()->orderBy($column)->get();
+            $sortedDesc = Region::query()->orderByDesc($column)->get();
+
+            $this->actingAs($this->admin)->livewire(ListRegions::class)
+                ->sortTable($column)
+                ->assertCanSeeTableRecords($sortedAsc, inOrder: true)
+                ->sortTable($column, 'desc')
+                ->assertCanSeeTableRecords($sortedDesc, inOrder: true);
+        });
     });
 
     it('Columns can be searched', function (): void {
