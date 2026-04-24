@@ -21,9 +21,9 @@ describe('List Manuscripts tabs', function (): void {
 
         $tabs = $component->instance()->getTabs();
 
-        expect($tabs['all']->getBadge())->toBe(3)
-            ->and($tabs['draft']->getBadge())->toBe(1)
-            ->and($tabs['in_review']->getBadge())->toBe(1)
-            ->and($tabs['reviewed']->getBadge())->toBe(1);
+        expect((int) $tabs['all']->getBadge())->toBe(3)
+            ->and((int) $tabs['draft']->getBadge())->toBe(1)
+            ->and((int) $tabs['in_review']->getBadge())->toBe(1)
+            ->and((int) $tabs['reviewed']->getBadge())->toBe(1);
     });
 });
