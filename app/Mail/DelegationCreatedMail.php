@@ -26,7 +26,7 @@ class DelegationCreatedMail extends Mailable
             ->merge($this->delegation->delegate->getNotificationGroupEmails())
             ->unique()
             ->values()
-            ->toArray();
+            ->all();
 
         $this->cc($cc);
 
