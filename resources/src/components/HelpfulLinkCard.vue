@@ -1,13 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   title: string
   description: string
   url?: string
 }>()
-
-function openUrl() {
-  window.open(props.url, '_blank', 'noopener,noreferrer')
-}
 </script>
 
 <template>
@@ -17,21 +13,17 @@ function openUrl() {
     bordered
     class="helpful-link-card"
     :class="{ 'cursor-pointer': url }"
-    @click="url && openUrl()"
+    :tag="url ? 'a' : 'div'"
+    :href="url"
+    target="_blank"
+    rel="noopener noreferrer"
   >
     <q-card-section class="q-pb-sm">
       <div v-if="url" class="absolute-right q-pa-sm">
-        <q-btn
-          round
-          outline
-          size="sm"
-          icon="mdi-arrow-right"
+        <q-icon
+          name="mdi-arrow-right"
           color="primary"
-          :href="url"
-          target="_blank"
-          rel="noopener noreferrer"
-          :aria-label="title"
-          @click.stop
+          size="sm"
         />
       </div>
       <div
