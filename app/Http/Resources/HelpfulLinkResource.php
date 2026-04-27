@@ -19,6 +19,7 @@ class HelpfulLinkResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'order' => $this->order,
             'title_en' => $this->title_en,
             'title_fr' => $this->title_fr,

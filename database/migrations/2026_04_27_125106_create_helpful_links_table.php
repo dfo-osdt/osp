@@ -18,8 +18,8 @@ return new class extends Migration
             $table->boolean('is_visible')->default(true);
             $table->string('title_en', 255);
             $table->string('title_fr', 255);
-            $table->string('url_en', 255);
-            $table->string('url_fr', 255);
+            $table->string('url_en', 255)->nullable();
+            $table->string('url_fr', 255)->nullable();
             $table->string('description_en', 512);
             $table->string('description_fr', 512);
         });

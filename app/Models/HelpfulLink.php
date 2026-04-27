@@ -20,11 +20,11 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int $order
- * @property int $is_visible
+ * @property bool $is_visible
  * @property string $title_en
  * @property string $title_fr
- * @property string $url_en
- * @property string $url_fr
+ * @property string|null $url_en
+ * @property string|null $url_fr
  * @property string $description_en
  * @property string $description_fr
  *
@@ -48,4 +48,11 @@ class HelpfulLink extends Model
 {
     /** @use HasFactory<HelpfulLinkFactory> */
     use HasFactory;
+
+    public function casts(): array
+    {
+        return [
+            'is_visible' => 'boolean',
+        ];
+    }
 }
