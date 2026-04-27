@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 
 /**
  * @method static \Database\Factories\HelpfulLinkFactory factory($count = null, $state = [])
@@ -50,6 +51,8 @@ class HelpfulLink extends Model
 {
     /** @use HasFactory<HelpfulLinkFactory> */
     use HasFactory;
+
+    use LogsActivity;
 
     public function casts(): array
     {
