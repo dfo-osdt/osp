@@ -28,12 +28,13 @@ jobs:
         id: version
         run: echo "value=$(git describe --tags --always)" >> $GITHUB_OUTPUT
 
-      - name: pnpm
-        uses: pnpm/action-setup@v6
       - name: Use Node.js 24.x
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+
+      - name: pnpm
+        uses: pnpm/action-setup@v6
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
