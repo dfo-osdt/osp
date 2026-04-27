@@ -38,6 +38,15 @@ interface PublicStats {
       orcid_verified: boolean
     }>
   }>
+  helpful_links: Array<{
+    order: number
+    title_en: string
+    title_fr: string
+    url_en: string
+    url_fr: string
+    description_en: string
+    description_fr: string
+  }>
 }
 
 const stats = ref<PublicStats | null>(null)
@@ -244,6 +253,10 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
           </q-list>
         </q-card>
       </div>
+    </section>
+    <section v-if="stats?.helpful_links" class="row q-py-xl justify-center bg-grey-2" aria-labelledby="helpful_links">
+      <pre>{{ stats?.helpful_links }}</pre>
+
     </section>
   </q-page>
 </template>
