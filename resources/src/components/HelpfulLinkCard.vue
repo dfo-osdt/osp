@@ -12,11 +12,11 @@ function openUrl() {
 
 <template>
   <q-card
+    v-ripple="!!url"
     flat
     bordered
     class="helpful-link-card"
     :class="{ 'cursor-pointer': url }"
-    v-ripple="!!url"
     @click="url && openUrl()"
   >
     <q-card-section class="q-pb-sm">

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\HelpfulLinks\Schemas;
 
 use Filament\Forms\Components\Textarea;
