@@ -40,6 +40,7 @@ interface PublicStats {
     }>
   }>
   helpful_links: Array<{
+    id: number
     order: number
     title_en: string
     title_fr: string
@@ -267,7 +268,7 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
         <div class="row q-col-gutter-md">
           <div
             v-for="link in stats.helpful_links"
-            :key="link.order"
+            :key="link.id"
             class="col-12 col-sm-6 col-md-4"
           >
             <HelpfulLinkCard

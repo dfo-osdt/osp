@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\ManuscriptRecordStatus;
+use App\Models\HelpfulLink;
+use Illuminate\Support\Facades\Cache;
 use App\Enums\PublicationStatus;
 use App\Models\Author;
 use App\Models\ManuscriptAuthor;
@@ -93,6 +95,7 @@ test('public stats endpoint returns correct structure', function (): void {
         'orcid_connected_count',
         'external_organizations',
         'recent_publications',
+        'helpful_links',
     ]);
 
     expect($response->json('publications_count'))->toBe(5);
@@ -114,6 +117,15 @@ test('public stats endpoint returns correct structure', function (): void {
     expect($firstPub['authors'])->toHaveCount(2);
     expect($firstPub['authors'][0])->toHaveKeys(['first_name', 'last_name', 'orcid', 'orcid_verified']);
     expect($firstPub['authors'][0])->not->toHaveKey('email');
+
+    // Helpful links: only visible ones should appear
+    HelpfulLink::factory()->create(['title_en' => 'Visible Link', 'is_visible' => true]);
+    HelpfulLink::factory()->create(['title_en' => 'Hidden Link', 'is_visible' => false]);
+    Cache::forget('public-stats');
+    $response = $this->getJson('/api/stats');
+    $titles = collect($response->json('helpful_links'))->pluck('title_en');
+    expect($titles)->toContain('Visible Link');
+    expect($titles)->not->toContain('Hidden Link');
 });
 
 test('public stats endpoint does not require authentication', function (): void {
