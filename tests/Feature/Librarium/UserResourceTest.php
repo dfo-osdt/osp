@@ -4,7 +4,9 @@ namespace Tests\Feature\Librarium;
 
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Filament\Resources\Users\Pages\ViewUserLogs;
 use App\Models\User;
+use Spatie\Activitylog\Models\Activity;
 
 describe('Access control for User Resources', function (): void {
 
@@ -27,6 +29,23 @@ describe('Access control for User Resources', function (): void {
 
     it('Can render the index page', function (): void {
         $this->actingAs($this->admin)->get(ListUsers::getUrl())->assertOk();
+    });
+
+    it('Can render the user logs page', function (): void {
+        activity()
+            ->causedBy($this->record)
+            ->event('updated')
+            ->withProperties(['changed' => ['email' => $this->record->email]])
+            ->log('user.updated');
+
+        $relatedActivities = Activity::query()
+            ->where('causer_id', $this->record->id)
+            ->where('causer_type', User::class)
+            ->get();
+
+        $this->actingAs($this->admin)->livewire(ViewUserLogs::class, ['record' => $this->record->getRouteKey()])
+            ->assertOk()
+            ->assertCanSeeTableRecords($relatedActivities);
     });
 
     it('Can render logout button', function (): void {})->todo();
