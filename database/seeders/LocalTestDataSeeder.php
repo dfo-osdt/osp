@@ -6,6 +6,7 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Enums\PublicationStatus;
 use App\Models\Announcement;
 use App\Models\Author;
+use App\Models\HelpfulLink;
 use App\Models\Invitation;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
@@ -274,6 +275,9 @@ class LocalTestDataSeeder extends Seeder
         // let's add a few preprints
         ManuscriptRecord::factory()->publishedPreprint()->count(5)->create();
 
+        HelpfulLink::factory()->count(3)->create();
+
         activity()->enableLogging();
+
     }
 }

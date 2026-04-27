@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\PublicationStatus;
+use App\Http\Resources\HelpfulLinkResource;
 use App\Http\Resources\PublicAuthorResource;
 use App\Models\Author;
+use App\Models\HelpfulLink;
 use App\Models\ManuscriptRecord;
 use App\Models\Organization;
 use App\Models\Publication;
@@ -17,10 +19,10 @@ class PublicStatsController extends Controller
 {
     public function __invoke(): JsonResponse
     {
-        $stats = Cache::remember('public-stats', 86400, function (): array { // @phpstan-ignore argument.type
+        $stats = Cache::remember('public-stats', 86400, function (): array {
             $defaultOrg = Organization::getDefaultOrganization();
 
-            return [ // @phpstan-ignore return.type
+            return [
                 'publications_count' => Publication::query()
                     ->where('status', PublicationStatus::PUBLISHED)
                     ->count(),
@@ -65,13 +67,17 @@ class PublicStatsController extends Controller
                         'id' => $pub->id,
                         'title' => $pub->title,
                         'doi' => $pub->doi,
-                        'published_on' => $pub->published_on,
+                        'published_on' => $pub->published_on?->toDateString(),
                         'journal' => $pub->journal->only(['id', 'title']),
                         'authors' => $pub->publicationAuthors
-                            ->map(fn ($pa): PublicAuthorResource => new PublicAuthorResource($pa->author))
+                            ->map(fn ($pa): array => (new PublicAuthorResource($pa->author))->resolve())
                             ->values()
                             ->all(),
-                    ]),
+                    ])
+                    ->all(),
+                'helpful_links' => HelpfulLinkResource::collection(
+                    HelpfulLink::query()->where('is_visible', true)->orderBy('order')->get()
+                )->resolve(),
             ];
         });
 
