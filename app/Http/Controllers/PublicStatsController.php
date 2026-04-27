@@ -70,7 +70,7 @@ class PublicStatsController extends Controller
                         'published_on' => $pub->published_on?->toDateString(),
                         'journal' => $pub->journal->only(['id', 'title']),
                         'authors' => $pub->publicationAuthors
-                            ->map(fn ($pa): array => (new PublicAuthorResource($pa->author))->resolve())
+                            ->map(fn ($pa): array => new PublicAuthorResource($pa->author)->resolve())
                             ->values()
                             ->all(),
                     ])

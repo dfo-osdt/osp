@@ -1,15 +1,15 @@
 <?php
 
 use App\Enums\ManuscriptRecordStatus;
-use App\Models\HelpfulLink;
-use Illuminate\Support\Facades\Cache;
 use App\Enums\PublicationStatus;
 use App\Models\Author;
+use App\Models\HelpfulLink;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\Organization;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
+use Illuminate\Support\Facades\Cache;
 
 test('public stats endpoint returns correct structure', function (): void {
     // Create some published publications with DOIs and authors
