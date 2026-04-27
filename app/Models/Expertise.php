@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereNameEn($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereNameFr($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise scopeValidated()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expertise used()
  *
  * @mixin \Eloquent
  */

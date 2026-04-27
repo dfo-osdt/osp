@@ -6,10 +6,12 @@ use Database\Factories\NotificationGroupMemberFactory;
 use Illuminate\Database\Eloquent\Attributes\Guarded;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 
@@ -20,6 +22,24 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property Carbon|null $expires_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Collection<int, Activity> $activitiesAsSubject
+ * @property-read int|null $activities_as_subject_count
+ * @property-read User $member
+ * @property-read User $user
+ *
+ * @method static Builder<static>|NotificationGroupMember active()
+ * @method static \Database\Factories\NotificationGroupMemberFactory factory($count = null, $state = [])
+ * @method static Builder<static>|NotificationGroupMember newModelQuery()
+ * @method static Builder<static>|NotificationGroupMember newQuery()
+ * @method static Builder<static>|NotificationGroupMember query()
+ * @method static Builder<static>|NotificationGroupMember whereCreatedAt($value)
+ * @method static Builder<static>|NotificationGroupMember whereExpiresAt($value)
+ * @method static Builder<static>|NotificationGroupMember whereId($value)
+ * @method static Builder<static>|NotificationGroupMember whereMemberUserId($value)
+ * @method static Builder<static>|NotificationGroupMember whereUpdatedAt($value)
+ * @method static Builder<static>|NotificationGroupMember whereUserId($value)
+ *
+ * @mixin \Eloquent
  */
 #[Guarded([
     'id',

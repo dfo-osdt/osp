@@ -100,6 +100,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereCatalogueNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereIsbn($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Publication whereIssueNumber($value)
+ * @method static Builder<static>|Publication publishedBetween(string $startDate, string $endDate)
  *
  * @mixin \Eloquent
  */

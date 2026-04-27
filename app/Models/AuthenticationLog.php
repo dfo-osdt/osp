@@ -22,6 +22,23 @@ use Illuminate\Support\Carbon;
  * @property bool $cleared_by_user
  *
  * @method static Builder<static> successful()
+ *
+ * @property-read Model $authenticatable
+ *
+ * @method static Builder<static>|AuthenticationLog newModelQuery()
+ * @method static Builder<static>|AuthenticationLog newQuery()
+ * @method static Builder<static>|AuthenticationLog query()
+ * @method static Builder<static>|AuthenticationLog whereAuthenticatableId($value)
+ * @method static Builder<static>|AuthenticationLog whereAuthenticatableType($value)
+ * @method static Builder<static>|AuthenticationLog whereClearedByUser($value)
+ * @method static Builder<static>|AuthenticationLog whereId($value)
+ * @method static Builder<static>|AuthenticationLog whereIpAddress($value)
+ * @method static Builder<static>|AuthenticationLog whereLoginAt($value)
+ * @method static Builder<static>|AuthenticationLog whereLoginSuccessful($value)
+ * @method static Builder<static>|AuthenticationLog whereLogoutAt($value)
+ * @method static Builder<static>|AuthenticationLog whereUserAgent($value)
+ *
+ * @mixin \Eloquent
  */
 #[Fillable([
     'ip_address',

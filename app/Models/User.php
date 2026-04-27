@@ -92,6 +92,15 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
  *
+ * @property-read ManagementReviewDelegation|null $activeDelegation
+ * @property-read AuthenticationLog|null $latest_authentication
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ManagementReviewDelegation> $managementReviewDelegations
+ * @property-read int|null $management_review_delegations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, NotificationGroupMember> $notificationGroupMembers
+ * @property-read int|null $notification_group_members_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, NotificationGroupMember> $notificationGroupMemberships
+ * @property-read int|null $notification_group_memberships_count
+ *
  * @mixin \Eloquent
  */
 #[Fillable([

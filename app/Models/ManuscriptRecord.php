@@ -137,6 +137,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @method static Builder<static>|ManuscriptRecord wherePlsSourceLanguage($value)
  * @method static Builder<static>|ManuscriptRecord wherePlsTranslationApproved($value)
  * @method static Builder<static>|ManuscriptRecord whereWithdrawReason($value)
+ * @method static Builder<static>|ManuscriptRecord reviewedBetween(string $startDate, string $endDate)
  *
  * @mixin \Eloquent
  */

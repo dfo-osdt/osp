@@ -46,6 +46,7 @@ use Spatie\Activitylog\Support\LogOptions;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PublicationAuthor whereIsGroupAuthor($value)
  *
  * @mixin \Eloquent
  */
