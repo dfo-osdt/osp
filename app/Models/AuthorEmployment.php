@@ -55,6 +55,8 @@ use Spatie\Activitylog\Support\LogOptions;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AuthorEmployment whereUpdatedAt($value)
  *
+ * @property-read int|null $activities_as_subject_count
+ *
  * @mixin \Eloquent
  */
 class AuthorEmployment extends Model

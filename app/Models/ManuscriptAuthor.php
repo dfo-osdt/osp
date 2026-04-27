@@ -38,6 +38,7 @@ use Spatie\Activitylog\Support\LogOptions;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptAuthor whereManuscriptRecordId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptAuthor whereOrganizationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptAuthor whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ManuscriptAuthor whereIsGroupAuthor($value)
  *
  * @mixin \Eloquent
  */
