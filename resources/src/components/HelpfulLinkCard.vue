@@ -20,11 +20,9 @@ defineProps<{
   >
     <q-card-section class="q-pb-sm">
       <div v-if="url" class="absolute-right q-pa-sm">
-        <q-icon
-          name="mdi-arrow-right"
-          color="primary"
-          size="sm"
-        />
+        <div class="arrow-btn">
+          <q-icon name="mdi-arrow-right" color="primary" size="xs" />
+        </div>
       </div>
       <div
         class="text-h6 text-weight-medium text-primary"
@@ -46,5 +44,23 @@ defineProps<{
   height: 100%;
   display: flex;
   flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.helpful-link-card:hover {
+  background-color: color-mix(in srgb, var(--q-primary) 8%, white);
+}
+
+.arrow-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--q-primary);
 }
 </style>
