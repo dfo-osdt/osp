@@ -27,5 +27,6 @@ CLAUDE.md
 
 tests/Browser/Screenshots
 .mcp.json
+docker-compose.yml
 .playwright-mcp
 .opencode/skills
