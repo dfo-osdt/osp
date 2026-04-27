@@ -3,6 +3,7 @@ import { useQuasar } from 'quasar'
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { http } from '@/api/http'
+import HelpfulLinkCard from '@/components/HelpfulLinkCard.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import OrcidIcon from '@/components/OrcidIcon.vue'
 import RorIcon from '@/components/RorIcon.vue'
@@ -254,9 +255,29 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
         </q-card>
       </div>
     </section>
-    <section v-if="stats?.helpful_links" class="row q-py-xl justify-center bg-grey-2" aria-labelledby="helpful_links">
-      <pre>{{ stats?.helpful_links }}</pre>
-
+    <section
+      v-if="stats?.helpful_links?.length"
+      class="row q-py-xl justify-center bg-grey-2"
+      aria-labelledby="helpful-links-heading"
+    >
+      <div class="col-11 col-lg-10">
+        <h2 id="helpful-links-heading" class="text-h4 text-weight-medium q-mb-lg text-center q-mt-none">
+          {{ $t('osp.stats.helpful-links') }}
+        </h2>
+        <div class="row q-col-gutter-md">
+          <div
+            v-for="link in stats.helpful_links"
+            :key="link.order"
+            class="col-12 col-sm-6 col-md-4"
+          >
+            <HelpfulLinkCard
+              :title="localeStore.locale === 'fr' ? link.title_fr : link.title_en"
+              :description="localeStore.locale === 'fr' ? link.description_fr : link.description_en"
+              :url="localeStore.locale === 'fr' ? link.url_fr || link.url_en : link.url_en || link.url_fr || undefined"
+            />
+          </div>
+        </div>
+      </div>
     </section>
   </q-page>
 </template>
