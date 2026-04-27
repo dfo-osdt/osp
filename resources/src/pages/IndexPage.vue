@@ -265,7 +265,7 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
         <h2 id="helpful-links-heading" class="text-h4 text-weight-medium q-mb-lg text-center q-mt-none">
           {{ $t('osp.stats.helpful-links') }}
         </h2>
-        <div class="row q-col-gutter-md">
+        <div class="row q-col-gutter-md justify-center">
           <div
             v-for="link in stats.helpful_links"
             :key="link.id"
