@@ -28,6 +28,7 @@ async function filterExpertises(
 
       const query = new ExpertiseQuery()
       query
+        .filterUsed()
         .when(
           localeStore.locale === 'fr',
           query => query.filterNameFr(needle),

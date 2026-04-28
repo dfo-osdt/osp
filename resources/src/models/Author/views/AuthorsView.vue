@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AuthorResourceList } from '../Author'
+import type { ExpertiseResource } from '@/models/Expertise'
 import { watchThrottled } from '@vueuse/core'
 import { useRouteQuery } from '@vueuse/router'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -29,7 +30,7 @@ const loading = ref(false)
 const showFilters = ref(false)
 const organizationSelect = ref<InstanceType<typeof OrganizationSelect> | null>(null)
 const expertiseSelect = ref<InstanceType<typeof ExpertiseSelect> | null>(null)
-const selectedExpertise = ref<ExpertiseResource | null>(null)
+const selectedExpertises = ref<ExpertiseResource []>([])
 
 // i18n
 const { t } = useI18n()
@@ -37,97 +38,97 @@ const localeStore = useLocaleStore()
 
 // Main filter options
 const mainFilterOptions = computed<MainFilterOption[]>(() => {
-  return [
-    {
-      id: 1,
-      label: t('authors-view.all-authors'),
-      caption: t('authors-view.all-authors-caption'),
-      icon: 'mdi-all-inclusive',
-      active: activeFilter.value === 1,
-      filter: (query: AuthorQuery): AuthorQuery => {
-        return query
-      },
-    },
-    {
-      id: 2,
-      label: t('authors-view.dfo-authors'),
-      caption: t('authors-view.dfo-authors-caption'),
-      icon: 'mdi-account-arrow-left-outline',
-      active: activeFilter.value === 2,
-      filter: (query: AuthorQuery): AuthorQuery => {
-        return query.filterInternalAuthor()
-      },
-    },
-    {
-      id: 3,
-      label: t('authors-view.external-authors'),
-      caption: t('authors-view.external-authors-caption'),
-      icon: 'mdi-account-arrow-right-outline',
-      active: activeFilter.value === 3,
-      filter: (query: AuthorQuery): AuthorQuery => {
-        return query.filterExternalAuthor()
-      },
-    },
-    {
-      id: 4,
-      label: t('authors-view.with-orcid'),
-      caption: t('authors-view.with-orcid-caption'),
-      icon: 'mdi-account-school-outline',
-      active: activeFilter.value === 4,
-      filter: (query: AuthorQuery): AuthorQuery => {
-        return query.filterWithOrcid()
-      },
-    },
-  ]
+    return [
+        {
+            id: 1,
+            label: t('authors-view.all-authors'),
+            caption: t('authors-view.all-authors-caption'),
+            icon: 'mdi-all-inclusive',
+            active: activeFilter.value === 1,
+            filter: (query: AuthorQuery): AuthorQuery => {
+                return query
+            },
+        },
+        {
+            id: 2,
+            label: t('authors-view.dfo-authors'),
+            caption: t('authors-view.dfo-authors-caption'),
+            icon: 'mdi-account-arrow-left-outline',
+            active: activeFilter.value === 2,
+            filter: (query: AuthorQuery): AuthorQuery => {
+                return query.filterInternalAuthor()
+            },
+        },
+        {
+            id: 3,
+            label: t('authors-view.external-authors'),
+            caption: t('authors-view.external-authors-caption'),
+            icon: 'mdi-account-arrow-right-outline',
+            active: activeFilter.value === 3,
+            filter: (query: AuthorQuery): AuthorQuery => {
+                return query.filterExternalAuthor()
+            },
+        },
+        {
+            id: 4,
+            label: t('authors-view.with-orcid'),
+            caption: t('authors-view.with-orcid-caption'),
+            icon: 'mdi-account-school-outline',
+            active: activeFilter.value === 4,
+            filter: (query: AuthorQuery): AuthorQuery => {
+                return query.filterWithOrcid()
+            },
+        },
+    ]
 })
 
 // Computed properties
 const mainFilter = computed(() => {
-  return mainFilterOptions.value.find(f => f.active)
+    return mainFilterOptions.value.find(f => f.active)
 })
 
 const filterCaption = computed(() => {
-  let caption = ''
-  if (organizationId.value) {
-    const { name_en, name_fr } = organizationSelect?.value?.selectedOrganization?.data || {}
-    const name = localeStore.isFr() ? name_fr : name_en
-    caption += `${t('common.from')} ${name || name_en || 'NA'}`
-  }
+    let caption = ''
+    if (organizationId.value) {
+        const { name_en, name_fr } = organizationSelect?.value?.selectedOrganization?.data || {}
+        const name = localeStore.isFr() ? name_fr : name_en
+        caption += `${t('common.from')} ${name || name_en || 'NA'}`
+    }
 
     if (expertiseId.value) {
         const { name_en, name_fr } = expertiseSelect?.value?.selectedExpertise?.data || {}
         const name = localeStore.isFr() ? name_fr : name_en
         caption += `${t('common.from')} ${name || name_en || 'NA'}`
     }
- 
-  if (caption.length > 0)
-    caption = `${t('common.authors')} ${caption.slice(0, -1)}`
-  else caption = t('common.no-filters-applied')
-  return caption
+    
+    if (caption.length > 0)
+        caption = `${t('common.authors')} ${caption.slice(0, -1)}`
+    else caption = t('common.no-filters-applied')
+    return caption
 })
 
 // Methods
 async function getAuthors() {
-  if (loading.value)
-    return
-  // build the query
-  let query = new AuthorQuery()
+    if (loading.value)
+        return
+    // build the query
+    let query = new AuthorQuery()
 
-  // apply the active main filters
-  mainFilterOptions.value.forEach((f) => {
-    if (f.active) {
-      query = f.filter(query)
+    // apply the active main filters
+    mainFilterOptions.value.forEach((f) => {
+        if (f.active) {
+            query = f.filter(query)
+        }
+    })
+
+    // is there a search term?
+    if (search?.value) {
+        query = query.filterSearch(search.value)
     }
-  })
 
-  // is there a search term?
-  if (search?.value) {
-    query = query.filterSearch(search.value)
-  }
-
-  if (organizationId.value) {
-    query = query.filterOrganizationId(organizationId.value)
-  }
+    if (organizationId.value) {
+        query = query.filterOrganizationId(organizationId.value)
+    }
 
     if (expertiseId.value) {
         query = query.filterExpertiseId(expertiseId.value)
@@ -139,57 +140,57 @@ async function getAuthors() {
 
     loading.value = true
     authors.value = await AuthorService.list(query)
-  loading.value = false
+    loading.value = false
 }
 
 function mainFilterClick(filterId: number) {
-  activeFilter.value = filterId
-  search.value = null
-  organizationId.value = null
+    activeFilter.value = filterId
+    search.value = null
+    organizationId.value = null
     expertiseId.value = null
-  currentPage.value = 1
-  getAuthors()
+    selectedExpertises.value = []
+    currentPage.value = 1
+    getAuthors()
 }
 
 // Watchers
 watch(currentPage, () => {
-  getAuthors()
+    getAuthors()
 })
 
 watch(organizationId, () => {
-  currentPage.value = 1
-  getAuthors()
+    currentPage.value = 1
+    getAuthors()
 })
 
-watch(selectedExpertise, (value) => {
-    console.log('Selected expertise:', value)
-    console.log('Setting expertiseId:', value?.data?.id ?? null)
-
-    expertiseId.value = value?.data?.id ?? null
-})
+watch(selectedExpertises, () => {
+    expertiseId.value = selectedExpertises.value[0]?.data.id ?? null
+    currentPage.value = 1
+    getAuthors()
+}, { deep: true })
 
 watchThrottled(
     search,
     () => {
-    currentPage.value = 1
-    getAuthors()
-  },
-  { throttle: 750 },
+        currentPage.value = 1
+        getAuthors()
+    },
+    { throttle: 750 },
 )
 
 // Lifecycle hooks
 onMounted(() => {
-  getAuthors()
+    getAuthors()
 })
 
 // Type definitions
 interface MainFilterOption {
-  id: number
-  label: string
-  caption?: string
-  icon: string
-  active: boolean
-  filter: (query: AuthorQuery) => AuthorQuery
+    id: number
+    label: string
+    caption?: string
+    icon: string
+    active: boolean
+    filter: (query: AuthorQuery) => AuthorQuery
 }
 </script>
 
@@ -253,7 +254,7 @@ interface MainFilterOption {
                     />
                     <ExpertiseSelect
                         ref="expertiseSelect"
-                        v-model="selectedExpertise"
+                        v-model="selectedExpertises"
                         :label="$t('common.expertise')"
                     />
               </q-card-section>

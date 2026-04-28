@@ -4,6 +4,7 @@ namespace App\Queries;
 
 use App\Filters\FuzzyFilter;
 use App\Models\Author;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -26,10 +27,8 @@ class AuthorListQuery extends QueryBuilder
                 AllowedFilter::exact('organization_id'),
                 AllowedFilter::exact('orcid'),
                 AllowedFilter::callback('expertise_id', function (Builder $query, $value): void {
-                    logger()->info('Filtering by expertise_id', ['value' => $value]);
-
                     $query->whereHas('expertises', function (Builder $query) use ($value): void {
-                        $query->where('expertises.id', $value);
+                        $query->whereKey($value);
                     });
                 }),
                 AllowedFilter::custom('search', new FuzzyFilter('first_name', 'last_name', 'email')),
