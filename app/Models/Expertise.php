@@ -52,7 +52,7 @@ class Expertise extends Model
         ];
     }
 
-    protected function authors()
+    public function authors()
     {
         return $this->morphedByMany(Author::class, 'expertiseable');
     }

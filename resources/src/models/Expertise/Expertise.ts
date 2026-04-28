@@ -66,6 +66,10 @@ export class ExpertiseQuery extends SpatieQuery {
     return this.filter('name_fr', name)
   }
 
+    public filterUsed() {
+        return this.filter('used', true)
+    }
+
   public search(search: string) {
     return this.filter('search', search)
   }
