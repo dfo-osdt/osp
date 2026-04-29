@@ -172,10 +172,10 @@ export class AuthorQuery extends SpatieQuery {
     return this
   }
 
-    public filterExpertiseId(expertiseId: string) {
-        this.filter('expertise_id', expertiseId)
-        return this
-    }
+  public filterExpertiseId(expertiseId: string) {
+    this.filter('expertise_id', expertiseId)
+    return this
+  }
 
   public sort(sort: AuthorQuerySort, direction: 'asc' | 'desc') {
     super.sort(sort, direction)
