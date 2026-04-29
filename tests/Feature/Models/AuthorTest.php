@@ -2,6 +2,7 @@
 
 use App\Enums\Permissions\UserRole;
 use App\Models\Author;
+use App\Models\Expertise;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\Organization;
@@ -21,6 +22,20 @@ test('a user can get list of authors', function (): void {
 
     expect($response->json('data'))->toHaveCount(5);
     expect($response->json('meta.total'))->toBe(Author::query()->count());
+});
+
+test('a user can get a list of authors with a specific expertise', function (): void {
+    $expertise = Expertise::factory()->create();
+    Author::factory()->count(5)->create()->each(function (Author $author) use ($expertise) {
+        $author->expertises()->attach($expertise);
+    });
+    Author::factory()->count(5)->create();
+
+    $user = User::factory()->create();
+    $response = $this->actingAs($user)->getJson('api/authors?limit=10&filter[expertise_id]='.$expertise->id)->assertOk();
+
+    expect($response->json('data'))->toHaveCount(5);
+
 });
 
 test('a user can create an author', function (): void {
