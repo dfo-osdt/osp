@@ -114,7 +114,7 @@ function sortExpertise(expertise: ExpertiseResource[] | undefined) {
     </template>
     <template v-if="editMode">
       <div>
-        <ExpertiseSelect v-model="expertises" />
+        <ExpertiseSelect v-model="expertises" multiple :enable-expertise-creation="true" />
       </div>
       <div class="flex justify-end">
         <q-btn
