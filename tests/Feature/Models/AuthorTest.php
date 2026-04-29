@@ -26,7 +26,7 @@ test('a user can get list of authors', function (): void {
 
 test('a user can get a list of authors with a specific expertise', function (): void {
     $expertise = Expertise::factory()->create();
-    Author::factory()->count(5)->create()->each(function (Author $author) use ($expertise) {
+    Author::factory()->count(5)->create()->each(function (Author $author) use ($expertise): void {
         $author->expertises()->attach($expertise);
     });
     Author::factory()->count(5)->create();
