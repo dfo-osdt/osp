@@ -101,6 +101,10 @@ function optionLabel(expertise: ExpertiseResource) {
     ? expertise.data.name_fr
     : expertise.data.name_en
 }
+
+defineExpose({
+  selectedExpertise,
+})
 </script>
 
 <template>

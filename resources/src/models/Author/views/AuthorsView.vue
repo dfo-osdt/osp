@@ -96,7 +96,7 @@ const filterCaption = computed(() => {
   }
 
   if (expertiseId.value) {
-    const { name_en, name_fr } = expertiseSelect?.value?.selectedExpertise?.data || {}
+    const { name_en, name_fr } = selectedExpertises.value[0]?.data || {}
     const name = localeStore.isFr() ? name_fr : name_en
     caption += `${t('common.from')} ${name || name_en || 'NA'}`
   }
