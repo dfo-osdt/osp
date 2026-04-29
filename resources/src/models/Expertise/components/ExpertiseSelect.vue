@@ -5,6 +5,13 @@ import { ExpertiseQuery, ExpertiseService } from '../Expertise'
 import CreateExpertiseDialog from './CreateExpertiseDialog.vue'
 import ExpertiseChip from './ExpertiseChip.vue'
 
+const props = defineProps<{
+  enableExpertiseCreation?: boolean
+  showLabel?: boolean
+  onlyUsedExpertises?: boolean
+  multiple?: boolean
+}>()
+
 const localeStore = useLocaleStore()
 
 const expertiseSelect = ref<QSelect | null>(null)
@@ -15,6 +22,23 @@ const lastSearchTerm = ref('')
 const showCreateExpertiseDialog = ref(false)
 
 const modelValue = defineModel<ExpertiseResource[] | undefined>()
+
+const internalModel = computed({
+  get() {
+    if (props.multiple) {
+      return modelValue.value ?? []
+    }
+    return modelValue.value?.[0] ?? null
+  },
+  set(val: ExpertiseResource | ExpertiseResource[] | null) {
+    if (props.multiple) {
+      modelValue.value = (val as ExpertiseResource[]) ?? []
+    }
+    else {
+      modelValue.value = val ? [val as ExpertiseResource] : []
+    }
+  },
+})
 
 async function filterExpertises(
   val: string,
@@ -27,8 +51,8 @@ async function filterExpertises(
       expertiseLoading.value = true
 
       const query = new ExpertiseQuery()
+
       query
-        .filterUsed()
         .when(
           localeStore.locale === 'fr',
           query => query.filterNameFr(needle),
@@ -36,6 +60,10 @@ async function filterExpertises(
         )
         .sortByNameLength(localeStore.locale)
         .paginate(1, 100)
+
+      if (props.onlyUsedExpertises) {
+        query.filterUsed()
+      }
 
       expertises.value = await ExpertiseService.list(query)
       expertiseLoading.value = false
@@ -45,14 +73,17 @@ async function filterExpertises(
 
 function addExpertise(item: ExpertiseResource) {
   expertiseSelect.value?.updateInputValue('', true)
-  if (!modelValue.value) {
-    modelValue.value = []
+  if (props.multiple) {
+    if (!modelValue.value) {
+      modelValue.value = []
+    }
+    const alreadySelected = modelValue.value.some(e => e.data.id === item.data.id)
+    if (!alreadySelected) {
+      modelValue.value = [...modelValue.value, item]
+    }
   }
-  const alreadySelected = modelValue.value.some(
-    e => e.data.id === item.data.id,
-  )
-  if (!alreadySelected) {
-    modelValue.value = [...modelValue.value, item]
+  else {
+    modelValue.value = [item]
   }
   showCreateExpertiseDialog.value = false
 }
@@ -75,15 +106,17 @@ function optionLabel(expertise: ExpertiseResource) {
 <template>
   <QSelect
     ref="expertiseSelect"
-    v-model="modelValue"
+    v-model="internalModel"
     :options="expertises.data"
     use-input
     :hint="$t('expertise-select.hint')"
     stack-label
     :option-label="optionLabel"
     outlined
-    multiple
+    :multiple="multiple"
+    :label="showLabel ? $t('common.area-of-expertise') : ''"
     :loading="expertiseLoading"
+    :clearable="multiple ? false : true"
     @filter="filterExpertises"
   >
     <template #no-option>
@@ -102,7 +135,7 @@ function optionLabel(expertise: ExpertiseResource) {
           </q-item-section>
         </q-item>
         <q-separator />
-        <q-item clickable @click="showCreateExpertiseDialog = true">
+        <q-item v-if="enableExpertiseCreation" clickable @click="showCreateExpertiseDialog = true">
           <q-item-section>
             {{ $t('expertise-select.cant-find') }}
           </q-item-section>
@@ -122,7 +155,7 @@ function optionLabel(expertise: ExpertiseResource) {
         </q-item>
       </template>
     </template>
-    <template #selected-item="scope">
+    <template v-if="multiple" #selected-item="scope">
       <ExpertiseChip
         :model-value="scope.opt"
         removable

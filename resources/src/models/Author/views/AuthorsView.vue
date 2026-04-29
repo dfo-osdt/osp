@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AuthorResourceList } from '../Author'
-import type { ExpertiseResource } from '@/models/Expertise'
+import type { ExpertiseResource } from '@/models/Expertise/Expertise'
 import { watchThrottled } from '@vueuse/core'
 import { useRouteQuery } from '@vueuse/router'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -255,7 +255,8 @@ interface MainFilterOption {
                 <ExpertiseSelect
                   ref="expertiseSelect"
                   v-model="selectedExpertises"
-                  :label="$t('common.expertise')"
+                  show-label
+                  only-used-expertises
                 />
               </q-card-section>
             </q-expansion-item>
