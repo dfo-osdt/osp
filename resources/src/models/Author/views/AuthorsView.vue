@@ -102,7 +102,7 @@ const filterCaption = computed(() => {
   }
 
   if (caption.length > 0)
-    caption = `${t('common.authors')} ${caption.slice(0, -1)}`
+    caption = `${t('common.authors')} ${caption.trim()}`
   else caption = t('common.no-filters-applied')
   return caption
 })
