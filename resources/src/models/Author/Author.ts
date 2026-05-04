@@ -3,11 +3,12 @@ import type {
   ExpertiseResourceList,
 } from '../Expertise/Expertise'
 import type { OrganizationResource } from '../Organization/Organization'
-import type { PreprintQuery, PreprintResourceList } from '../Preprint/Preprint'
+import type { PreprintResourceList } from '../Preprint/Preprint'
 import type { PublicationQuery, PublicationResourceList } from '../Publication/Publication'
 import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
+import { PreprintQuery } from '../Preprint/Preprint'
 
 export interface Author {
   readonly id: number

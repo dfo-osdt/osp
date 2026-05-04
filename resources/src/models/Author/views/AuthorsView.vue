@@ -22,15 +22,25 @@ const search = useRouteQuery<string | null>('search', null)
 const organizationId = useRouteQuery<number | null>('org', null, {
   transform: v => v ? Number(v) : null,
 })
-const expertiseId = useRouteQuery<string | null>('expertise', null)
+const expertiseId = useRouteQuery<string | null>('expertise', null, {
+  transform: (v) => {
+    if (typeof v !== 'string') {
+      return null
+    }
+
+    return /^[0-9a-hjkmnp-tv-z]{26}$/i.test(v) ? v : null
+  },
+})
 
 // State variables
 const authors = ref<AuthorResourceList>()
 const loading = ref(false)
 const showFilters = ref(false)
 const organizationSelect = ref<InstanceType<typeof OrganizationSelect> | null>(null)
-const expertiseSelect = ref<InstanceType<typeof ExpertiseSelect> | null>(null)
-const selectedExpertises = ref<ExpertiseResource []>([])
+const selectedExpertises = ref<ExpertiseResource[]>([])
+const selectedExpertiseId = computed(() => {
+  return selectedExpertises.value[0]?.data.id ?? null
+})
 
 // i18n
 const { t } = useI18n()
@@ -98,12 +108,15 @@ const filterCaption = computed(() => {
   if (expertiseId.value) {
     const { name_en, name_fr } = selectedExpertises.value[0]?.data || {}
     const name = localeStore.isFr() ? name_fr : name_en
-    caption += `${t('common.from')} ${name || name_en || 'NA'}`
+    caption += `${t('common.with-expertise-in')} ${name || name_en || 'NA'}`
   }
 
-  if (caption.length > 0)
+  if (caption.length > 0) {
     caption = `${t('common.authors')} ${caption.trim()}`
-  else caption = t('common.no-filters-applied')
+  }
+  else {
+    caption = t('common.no-filters-applied')
+  }
   return caption
 })
 
@@ -163,11 +176,14 @@ watch(organizationId, () => {
   getAuthors()
 })
 
-watch(selectedExpertises, () => {
-  expertiseId.value = selectedExpertises.value[0]?.data.id ?? null
+watch(selectedExpertiseId, (id) => {
+  expertiseId.value = id
+})
+
+watch(expertiseId, () => {
   currentPage.value = 1
   getAuthors()
-}, { deep: true })
+})
 
 watchThrottled(
   search,
@@ -253,7 +269,6 @@ interface MainFilterOption {
                   :disable="mainFilter?.id === 2"
                 />
                 <ExpertiseSelect
-                  ref="expertiseSelect"
                   v-model="selectedExpertises"
                   show-label
                   only-used-expertises
