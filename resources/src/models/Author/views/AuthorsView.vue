@@ -11,6 +11,7 @@ import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import ExpertiseSelect from '@/models/Expertise/components/ExpertiseSelect.vue'
+import { ExpertiseService } from '@/models/Expertise/Expertise'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
 import { AuthorQuery, AuthorService } from '../Author'
 import AuthorList from '../components/AuthorList.vue'
@@ -22,15 +23,7 @@ const search = useRouteQuery<string | null>('search', null)
 const organizationId = useRouteQuery<number | null>('org', null, {
   transform: v => v ? Number(v) : null,
 })
-const expertiseId = useRouteQuery<string | null>('expertise', null, {
-  transform: (v) => {
-    if (typeof v !== 'string') {
-      return null
-    }
-
-    return /^[0-9a-hjkmnp-tv-z]{26}$/i.test(v) ? v : null
-  },
-})
+const expertiseId = useRouteQuery<string | null>('expertise', null)
 
 // State variables
 const authors = ref<AuthorResourceList>()
@@ -38,8 +31,18 @@ const loading = ref(false)
 const showFilters = ref(false)
 const organizationSelect = ref<InstanceType<typeof OrganizationSelect> | null>(null)
 const selectedExpertises = ref<ExpertiseResource[]>([])
-const selectedExpertiseId = computed(() => {
-  return selectedExpertises.value[0]?.data.id ?? null
+
+onMounted(async () => {
+  if (expertiseId.value) {
+    try {
+      const expertise = await ExpertiseService.get(expertiseId.value)
+      selectedExpertises.value = [expertise]
+    }
+    catch (e) {
+      console.error('Failed to fetch expertise for expertiseId:', expertiseId.value, e)
+      expertiseId.value = null
+    }
+  }
 })
 
 // i18n
@@ -108,7 +111,7 @@ const filterCaption = computed(() => {
   if (expertiseId.value) {
     const { name_en, name_fr } = selectedExpertises.value[0]?.data || {}
     const name = localeStore.isFr() ? name_fr : name_en
-    caption += `${t('common.with-expertise-in')} ${name || name_en || 'NA'}`
+    caption += ` ${t('common.with-expertise-in')} ${name || name_en || 'NA'}`
   }
 
   if (caption.length > 0) {
@@ -176,13 +179,18 @@ watch(organizationId, () => {
   getAuthors()
 })
 
-watch(selectedExpertiseId, (id) => {
-  expertiseId.value = id
-})
-
 watch(expertiseId, () => {
   currentPage.value = 1
   getAuthors()
+})
+
+watch(selectedExpertises, () => {
+  if (selectedExpertises.value.length > 0) {
+    expertiseId.value = String(selectedExpertises.value[0].data.id)
+  }
+  else {
+    expertiseId.value = null
+  }
 })
 
 watchThrottled(
