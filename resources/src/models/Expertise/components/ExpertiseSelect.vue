@@ -40,6 +40,14 @@ const internalModel = computed({
   },
 })
 
+onMounted(() => {
+  if (modelValue.value && modelValue.value.length > 0) {
+    modelValue.value.forEach(async (expertise) => {
+      addExpertise(expertise)
+    })
+  }
+})
+
 async function filterExpertises(
   val: string,
   update: (arg: () => Promise<void>) => void,
