@@ -137,8 +137,9 @@ export const useAuthStore = defineStore('AuthStore', () => {
    */
   async function logout() {
     loading.value = true
-    await sanctumLogout().then(() => {
-      user.value = null
+
+    try {
+      await sanctumLogout()
 
       const msg = t('auth.logged-out-successfully')
 
@@ -148,8 +149,13 @@ export const useAuthStore = defineStore('AuthStore', () => {
           color: 'primary',
         })
       }, 500)
-    })
-    loading.value = false
+    }
+    catch {
+    }
+    finally {
+      user.value = null
+      loading.value = false
+    }
   }
 
   /**
