@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
+use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -21,9 +22,9 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
         return 'Publications';
     }
 
-    public function query()
+    public function query(): Builder
     {
-        return $this->query->with('manuscriptRecord.functionalArea');
+        return $this->query->with('manuscriptRecord.functionalArea')->getQuery();
     }
 
     public function headings(): array
@@ -53,9 +54,9 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
     {
         return [
             $publication->title,
-            $publication->journal?->title,
-            $publication->journal?->publisher,
-            $publication->journal?->issn ? trim((string) $publication->journal->issn) : null,
+            $publication->journal->title,
+            $publication->journal->publisher,
+            $publication->journal->issn ? trim((string) $publication->journal->issn) : null,
             $publication->published_on?->format('Y'),
             $publication->published_on?->format('Y-m-d'),
             $publication->accepted_on?->format('Y-m-d'),
@@ -65,8 +66,8 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
             $publication->doi,
             $publication->isbn,
             $publication->catalogue_number,
-            $publication->region ? $publication->region->name_en.' / '.$publication->region->name_fr : null,
-            $publication->manuscriptRecord?->functionalArea
+            $publication->region->name_en.' / '.$publication->region->name_fr,
+            $publication->manuscriptRecord->functionalArea
                 ? $publication->manuscriptRecord->functionalArea->name_en.' / '.$publication->manuscriptRecord->functionalArea->name_fr
                 : null,
             $publication->publicationAuthors->count(),

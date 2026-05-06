@@ -406,23 +406,19 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      */
     public function toRis(): string
     {
-        $isDfo = $this->journal?->isDfoSeries() ?? false;
+        $isDfo = $this->journal->isDfoSeries();
 
         $lines = [];
         $lines[] = 'TY  - '.($isDfo ? 'RPRT' : 'JOUR');
         $lines[] = 'TI  - '.$this->title;
 
         foreach ($this->publicationAuthors ?? [] as $pubAuthor) {
-            if ($pubAuthor->author) {
-                $lines[] = 'AU  - '.$pubAuthor->author->last_name.', '.$pubAuthor->author->first_name;
+            $lines[] = 'AU  - '.$pubAuthor->author->last_name.', '.$pubAuthor->author->first_name;
+            $affiliation = $pubAuthor->organization->name_en;
+            if ($pubAuthor->organization->ror_identifier) {
+                $affiliation .= ' ('.$pubAuthor->organization->ror_identifier.')';
             }
-            if ($pubAuthor->organization) {
-                $affiliation = $pubAuthor->organization->name_en;
-                if ($pubAuthor->organization->ror_identifier) {
-                    $affiliation .= ' ('.$pubAuthor->organization->ror_identifier.')';
-                }
-                $lines[] = 'AD  - '.$affiliation;
-            }
+            $lines[] = 'AD  - '.$affiliation;
         }
 
         if ($this->published_on) {
@@ -430,12 +426,10 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
             $lines[] = 'DA  - '.$this->published_on->format('Y/m/d');
         }
 
-        if ($this->journal) {
-            $lines[] = 'JO  - '.$this->journal->title;
-            $lines[] = 'PB  - '.$this->journal->publisher;
-            if ($this->journal->issn) {
-                $lines[] = 'SN  - '.trim((string) $this->journal->issn);
-            }
+        $lines[] = 'JO  - '.$this->journal->title;
+        $lines[] = 'PB  - '.$this->journal->publisher;
+        if ($this->journal->issn) {
+            $lines[] = 'SN  - '.trim((string) $this->journal->issn);
         }
         if ($this->doi) {
             $lines[] = 'DO  - '.str_replace('https://doi.org/', '', $this->doi);

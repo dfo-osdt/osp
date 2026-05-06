@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
+use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -21,9 +22,9 @@ class PublicationAuthorsSheet implements FromQuery, ShouldAutoSize, WithHeadings
         return 'Authors / Auteurs';
     }
 
-    public function query()
+    public function query(): Builder
     {
-        return $this->query;
+        return $this->query->getQuery();
     }
 
     public function headings(): array
@@ -46,10 +47,10 @@ class PublicationAuthorsSheet implements FromQuery, ShouldAutoSize, WithHeadings
             ->map(fn ($pa): array => [
                 $publication->title,
                 $publication->published_on?->format('Y-m-d'),
-                $pa->author?->apa_name,
-                $pa->author?->orcid,
-                $pa->organization ? $pa->organization->name_en.' / '.$pa->organization->name_fr : null,
-                $pa->organization?->ror_identifier,
+                $pa->author->apa_name,
+                $pa->author->orcid,
+                $pa->organization->name_en.' / '.$pa->organization->name_fr,
+                $pa->organization->ror_identifier,
                 $pa->is_corresponding_author ? 'Yes' : 'No',
             ])
             ->all();
