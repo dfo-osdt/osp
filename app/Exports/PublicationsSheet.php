@@ -4,7 +4,6 @@ namespace App\Exports;
 
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
-use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -22,15 +21,16 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
         return 'Publications';
     }
 
-    public function query(): Builder
+    public function query(): PublicationListQuery
     {
-        return $this->query
-            ->with([
-                'journal',
-                'region',
-                'manuscriptRecord.functionalArea',
-                'publicationAuthors',
-            ]);
+        $this->query->with([
+            'journal',
+            'region',
+            'manuscriptRecord.functionalArea',
+            'publicationAuthors',
+        ]);
+
+        return $this->query;
     }
 
     public function headings(): array
@@ -58,6 +58,12 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
     /** @param Publication $publication */
     public function map($publication): array
     {
+        $functionalArea = null;
+
+        if ($publication->manuscript_record_id !== null && $publication->manuscriptRecord->functionalArea !== null) {
+            $functionalArea = $publication->manuscriptRecord->functionalArea->name_en.' / '.$publication->manuscriptRecord->functionalArea->name_fr;
+        }
+
         return [
             $publication->title,
             $publication->journal->title,
@@ -73,9 +79,7 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
             $publication->isbn,
             $publication->catalogue_number,
             $publication->region->name_en.' / '.$publication->region->name_fr,
-            $publication->manuscriptRecord->functionalArea
-                ? $publication->manuscriptRecord->functionalArea->name_en.' / '.$publication->manuscriptRecord->functionalArea->name_fr
-                : null,
+            $functionalArea,
             $publication->publicationAuthors->count(),
         ];
     }

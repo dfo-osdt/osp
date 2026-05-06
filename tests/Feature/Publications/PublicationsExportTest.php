@@ -22,3 +22,17 @@ test('a user can export publications to excel', function (): void {
     $response->assertOk();
     $response->assertDownload('publications.xlsx');
 });
+
+test('a user can export publications to excel when publication has no manuscript', function (): void {
+    $user = User::factory()->create();
+
+    Publication::factory()
+        ->published()
+        ->withAuthors()
+        ->create();
+
+    $response = $this->actingAs($user)->get('/api/publications/export?format=excel');
+
+    $response->assertOk();
+    $response->assertDownload('publications.xlsx');
+});
