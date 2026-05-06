@@ -327,6 +327,13 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
         return $query->whereIn('journal_id', Journal::query()->dfoSeries()->pluck('id'));
     }
 
+    /** Primary publications are those that are not secondary publications */
+    #[Scope]
+    protected function primaryPublication(Builder $query)
+    {
+        return $query->whereNotIn('journal_id', Journal::query()->dfoSeries()->pluck('id'));
+    }
+
     /** Published date range */
     #[Scope]
     protected function publishedBetween(Builder $query, string $startDate, string $endDate): void
@@ -391,5 +398,57 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
 
         // regular users only see published publications
         $query->where('status', PublicationStatus::PUBLISHED);
+    }
+
+    /**
+     * Generate a RIS citation string for this publication.
+     * Requires journal and publicationAuthors.author to be loaded.
+     */
+    public function toRis(): string
+    {
+        $isDfo = $this->journal?->isDfoSeries() ?? false;
+
+        $lines = [];
+        $lines[] = 'TY  - '.($isDfo ? 'RPRT' : 'JOUR');
+        $lines[] = 'TI  - '.$this->title;
+
+        foreach ($this->publicationAuthors ?? [] as $pubAuthor) {
+            if ($pubAuthor->author) {
+                $lines[] = 'AU  - '.$pubAuthor->author->last_name.', '.$pubAuthor->author->first_name;
+            }
+            if ($pubAuthor->organization) {
+                $affiliation = $pubAuthor->organization->name_en;
+                if ($pubAuthor->organization->ror_identifier) {
+                    $affiliation .= ' ('.$pubAuthor->organization->ror_identifier.')';
+                }
+                $lines[] = 'AD  - '.$affiliation;
+            }
+        }
+
+        if ($this->published_on) {
+            $lines[] = 'PY  - '.$this->published_on->format('Y');
+            $lines[] = 'DA  - '.$this->published_on->format('Y/m/d');
+        }
+
+        if ($this->journal) {
+            $lines[] = 'JO  - '.$this->journal->title;
+            $lines[] = 'PB  - '.$this->journal->publisher;
+            if ($this->journal->issn) {
+                $lines[] = 'SN  - '.trim($this->journal->issn);
+            }
+        }
+        if ($this->doi) {
+            $lines[] = 'DO  - '.str_replace('https://doi.org/', '', $this->doi);
+        }
+        if ($this->catalogue_number) {
+            $lines[] = 'SN  - '.$this->catalogue_number;
+        }
+        if ($this->isbn) {
+            $lines[] = 'SN  - '.$this->isbn;
+        }
+
+        $lines[] = 'ER  - ';
+
+        return implode("\r\n", $lines)."\r\n";
     }
 }

@@ -30,6 +30,7 @@ class PublicationListQuery extends QueryBuilder
              AllowedFilter::scope('not_under_embargo'),
              AllowedFilter::scope('under_embargo'),
              AllowedFilter::scope('secondary_publication'),
+             AllowedFilter::scope('primary_publication'),
              AllowedFilter::scope('publishedBetween'),
          );
     }
