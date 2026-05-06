@@ -43,7 +43,7 @@ class PublicationAuthorsSheet implements FromQuery, ShouldAutoSize, WithHeadings
     public function map($publication): array
     {
         return $publication->publicationAuthors
-            ->map(fn ($pa) => [
+            ->map(fn ($pa): array => [
                 $publication->title,
                 $publication->published_on?->format('Y-m-d'),
                 $pa->author?->apa_name,
@@ -52,7 +52,7 @@ class PublicationAuthorsSheet implements FromQuery, ShouldAutoSize, WithHeadings
                 $pa->organization?->ror_identifier,
                 $pa->is_corresponding_author ? 'Yes' : 'No',
             ])
-            ->toArray();
+            ->all();
     }
 
     public function styles(Worksheet $sheet): array

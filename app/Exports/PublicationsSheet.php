@@ -55,7 +55,7 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
             $publication->title,
             $publication->journal?->title,
             $publication->journal?->publisher,
-            $publication->journal?->issn ? trim($publication->journal->issn) : null,
+            $publication->journal?->issn ? trim((string) $publication->journal->issn) : null,
             $publication->published_on?->format('Y'),
             $publication->published_on?->format('Y-m-d'),
             $publication->accepted_on?->format('Y-m-d'),
