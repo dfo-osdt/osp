@@ -434,7 +434,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
             $lines[] = 'JO  - '.$this->journal->title;
             $lines[] = 'PB  - '.$this->journal->publisher;
             if ($this->journal->issn) {
-                $lines[] = 'SN  - '.trim($this->journal->issn);
+                $lines[] = 'SN  - '.trim((string) $this->journal->issn);
             }
         }
         if ($this->doi) {

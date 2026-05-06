@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\DeletePublication;
 use App\Enums\PublicationStatus;
+use App\Exports\PublicationsExport;
 use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
 use App\Models\User;
@@ -15,13 +16,12 @@ use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Exports\PublicationsExport;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PublicationController extends Controller
 {
@@ -186,8 +186,8 @@ class PublicationController extends Controller
             return Excel::download(new PublicationsExport($query), 'publications.xlsx');
         }
 
-        return response()->streamDownload(function () use ($query) {
-            $query->lazy()->each(function (Publication $publication) {
+        return response()->streamDownload(function () use ($query): void {
+            $query->lazy()->each(function (Publication $publication): void {
                 echo $publication->toRis()."\r\n";
             });
         }, 'publications.ris', ['Content-Type' => 'application/x-research-info-systems']);
