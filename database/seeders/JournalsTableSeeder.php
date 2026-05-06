@@ -22,7 +22,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Canadian contractor reports of hydrography and ocean sciences',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5425',
+                'issn' => '1488-5425',
             ],
             1 => [
                 'id' => 2,
@@ -31,7 +31,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Rapports canadiens des entrepreneurs sur l\'hydrographie et les sciences océaniques',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5514',
+                'issn' => '1488-5514',
             ],
             2 => [
                 'id' => 3,
@@ -40,7 +40,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Canadian data reports of fisheries and aquatic sciences',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5395',
+                'issn' => '1488-5395',
             ],
             3 => [
                 'id' => 4,
@@ -49,7 +49,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Rapports statistiques canadiens des sciences halieutiques et aquatiques',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5506',
+                'issn' => '1488-5506',
             ],
             4 => [
                 'id' => 5,
@@ -58,7 +58,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Canadian industry reports of fisheries and aquatic sciences',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5409',
+                'issn' => '1488-5409',
             ],
             5 => [
                 'id' => 6,
@@ -67,7 +67,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Rapports canadiens à l\'industrie sur les sciences halieutiques et aquatiques',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5476',
+                'issn' => '1488-5476',
             ],
             6 => [
                 'id' => 7,
@@ -76,7 +76,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Canadian manuscript reports of fisheries and aquatic sciences',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5387',
+                'issn' => '1488-5387',
             ],
             7 => [
                 'id' => 8,
@@ -85,7 +85,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Rapports manuscrits canadiens des sciences halieutiques et aquatiques',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5468',
+                'issn' => '1488-5468',
             ],
             8 => [
                 'id' => 9,
@@ -94,7 +94,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Canadian technical reports of fisheries and aquatic sciences',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5379',
+                'issn' => '1488-5379',
             ],
             9 => [
                 'id' => 10,
@@ -103,7 +103,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Rapports techniques canadiens des sciences halieutiques et aquatiques',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-545X',
+                'issn' => '1488-545X',
             ],
             10 => [
                 'id' => 11,
@@ -112,7 +112,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Canadian technical reports of hydrography and ocean sciences',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5417',
+                'issn' => '1488-5417',
             ],
             11 => [
                 'id' => 12,
@@ -121,7 +121,7 @@ class JournalsTableSeeder extends Seeder
                 'title' => 'Rapports techniques canadiens sur l\'hydrographie et les sciences océaniques',
                 'scopus_source_record_id' => null,
                 'publisher' => 'Fisheries and Oceans Canada - Pêches et Océans Canada',
-                'issn' => ' 1488-5484',
+                'issn' => '1488-5484',
             ],
             12 => [
                 'id' => 13,

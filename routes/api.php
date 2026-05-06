@@ -216,6 +216,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(PublicationController::class)->group(function () {
         Route::get('/publications', 'index');
+        Route::get('/publications/export', 'export');
         Route::get('/publications/{publication}', 'show');
         Route::put('/publications/{publication}', 'update');
         Route::post('/publications', 'store');

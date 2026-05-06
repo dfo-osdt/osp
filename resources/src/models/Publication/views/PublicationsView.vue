@@ -32,15 +32,29 @@ const authorId = useRouteQuery<number | null>('author', null, {
 const regionId = useRouteQuery<number | null>('region', null, {
   transform: v => v ? Number(v) : null,
 })
-const functionalAreaIds = useRouteQuery<number[] | null>('functionalAreaIds', null, {
-  transform: (v) => {
-    if (!v) {
+
+const functionalAreaIdsRaw = useRouteQuery<string | string[] | null>('functionalAreaIds', null)
+
+const functionalAreaIds = computed<number[] | null>({
+  get() {
+    const v = functionalAreaIdsRaw.value
+    if (!v)
       return null
-    }
-    const ids = String(v).split(',').map(Number).filter(n => !Number.isNaN(n))
+    const arr = Array.isArray(v) ? v : String(v).split(',')
+    const ids = arr.map(Number).filter(n => !Number.isNaN(n))
     return ids.length ? ids : null
   },
+  set(ids: number[] | null) {
+    if (!ids || ids.length === 0) {
+      functionalAreaIdsRaw.value = null
+    }
+    else {
+      // Use array form for multiple params, or join(',') for comma-separated
+      functionalAreaIdsRaw.value = ids.map(String)
+    }
+  },
 })
+
 const publishedFrom = useRouteQuery<string | null>('publishedFrom', null)
 const publishedTo = useRouteQuery<string | null>('publishedTo', null)
 
@@ -110,6 +124,16 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
         return query.filterSecondaryPublication()
       },
     },
+    {
+      id: 5,
+      label: t('publications-view.primary-publications'),
+      caption: t('publications-view.not-published-in-dfo-journals'),
+      icon: 'mdi-book-education-outline',
+      active: activeFilter.value === 5,
+      filter: (query: PublicationQuery): PublicationQuery => {
+        return query.filterPrimaryPublication()
+      },
+    },
   ]
 })
 
@@ -160,20 +184,15 @@ const filterCaption = computed(() => {
 })
 
 // Methods
-async function getPublications() {
-  if (loading.value)
-    return
-  // build the query
+function buildFilterQuery(): PublicationQuery {
   let query = new PublicationQuery()
 
-  // apply the active main filters
   mainFilterOptions.value.forEach((f) => {
     if (f.active) {
       query = f.filter(query)
     }
   })
 
-  // is there a search term?
   if (search?.value) {
     query = query.filterTitle(search.value)
   }
@@ -198,6 +217,23 @@ async function getPublications() {
     query = query.filterPublishedBetween(dateRange.value.from, dateRange.value.to)
   }
 
+  return query
+}
+
+const exportUrls = computed(() => {
+  const query = buildFilterQuery()
+  query.sort('title', 'asc')
+  return {
+    ris: PublicationService.exportUrl('ris', query),
+    excel: PublicationService.exportUrl('excel', query),
+  }
+})
+
+async function getPublications() {
+  if (loading.value)
+    return
+
+  const query = buildFilterQuery()
   query.sort('title', 'asc')
   query.paginate(currentPage.value, 10)
 
@@ -307,7 +343,38 @@ interface MainFilterOption {
             {{ mainFilter?.caption }}
           </template>
           <template #title-right>
-            <SearchInput v-model="search" :label="$t('common.filter')" />
+            <div class="row items-center no-wrap q-gutter-sm">
+              <SearchInput v-model="search" :label="$t('common.filter')" />
+              <div class="inline-block">
+                <q-tooltip>{{ $t('publications-view.export') }}</q-tooltip>
+                <q-btn-dropdown flat dense icon="mdi-download-outline">
+                  <q-list>
+                    <q-item clickable tag="a" :href="exportUrls.ris" download="publications.ris">
+                      <q-item-section avatar>
+                        <q-icon name="mdi-book-open-outline" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ $t('publications-view.export-ris') }}</q-item-label>
+                        <q-item-label caption>
+                          {{ $t('publications-view.export-ris-caption') }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                    <q-item clickable tag="a" :href="exportUrls.excel" download="publications.xlsx">
+                      <q-item-section avatar>
+                        <q-icon name="mdi-microsoft-excel" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ $t('publications-view.export-excel') }}</q-item-label>
+                        <q-item-label caption>
+                          {{ $t('publications-view.export-excel-caption') }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-btn-dropdown>
+              </div>
+            </div>
           </template>
           <template #nav>
             <q-expansion-item

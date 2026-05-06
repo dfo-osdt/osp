@@ -15,8 +15,10 @@ use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Exports\PublicationsExport;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
@@ -163,6 +165,32 @@ class PublicationController extends Controller
         DeletePublication::handle($publication);
 
         return response()->noContent();
+    }
+
+    /**
+     * Export all matching publications as RIS or Excel.
+     */
+    public function export(#[CurrentUser] User $user, Request $request)
+    {
+        $baseQuery = Publication::query()
+            ->forUser($user)
+            ->with([
+                'journal',
+                'publicationAuthors' => fn ($q) => $q->with('author', 'organization')->chaperone('publication'),
+                'region',
+            ]);
+
+        $query = new PublicationListQuery($request, $baseQuery);
+
+        if ($request->input('format') === 'excel') {
+            return Excel::download(new PublicationsExport($query), 'publications.xlsx');
+        }
+
+        return response()->streamDownload(function () use ($query) {
+            $query->lazy()->each(function (Publication $publication) {
+                echo $publication->toRis()."\r\n";
+            });
+        }, 'publications.ris', ['Content-Type' => 'application/x-research-info-systems']);
     }
 
     /**

@@ -74,6 +74,15 @@ export class PublicationService {
     return response.data
   }
 
+  /** Build a download URL for the given export format with the current filters applied */
+  public static exportUrl(format: 'ris' | 'excel', query?: PublicationQuery): string {
+    let url = `api/publications/export?format=${format}`
+    if (query) {
+      url += `&${query.toQueryString()}`
+    }
+    return url
+  }
+
   /** Find a publication by id */
   public static async find(id: number) {
     const response = await http.get<R>(`api/publications/${id}`)
@@ -236,6 +245,11 @@ export class PublicationQuery extends SpatieQuery {
 
   public filterSecondaryPublication() {
     this.filter('secondary_publication', true)
+    return this
+  }
+
+  public filterPrimaryPublication() {
+    this.filter('primary_publication', true)
     return this
   }
 
