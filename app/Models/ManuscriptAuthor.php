@@ -85,6 +85,9 @@ class ManuscriptAuthor extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    /** Check if the manuscript author is internal.
+     *
+     */
     public function isInternal(): bool
     {
         $defaultOrganization = Organization::getDefaultOrganization();

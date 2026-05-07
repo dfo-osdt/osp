@@ -19,6 +19,8 @@ const emit = defineEmits([
 ])
 
 const localeStore = useLocaleStore()
+const { t } = useI18n()
+
 const { copy, copied, isSupported } = useClipboard()
 
 const correspondingAuthor = ref(
@@ -28,6 +30,8 @@ const correspondingAuthor = ref(
 const isGroupAuthor = computed(
   () => props.publicationAuthor.data.is_group_author,
 )
+
+const isInternal = computed(() => props.publicationAuthor.data.is_internal)
 
 const name = computed(() => {
   if (isGroupAuthor.value) {
@@ -60,18 +64,36 @@ const removable = computed(() => {
       icon="mdi-account-group"
       color="teal-6"
       text-color="white"
-    />
+    >
+      <q-tooltip>
+        {{ t('common.group-author') }}
+      </q-tooltip>
+    </q-avatar>
     <q-avatar
       v-else-if="publicationAuthor.data.is_corresponding_author"
       icon="mdi-at"
       color="primary"
       text-color="white"
-    />
+    >
+      <q-tooltip>
+        {{ t('common.corresponding-author') }}
+      </q-tooltip>
+    </q-avatar>
     {{ name
     }}<span
       v-if="isGroupAuthor && publicationAuthor.data.is_corresponding_author"
       class="text-weight-bold"
     >*</span>
+    <q-icon
+      :name="isInternal ? 'mdi-fish' : 'mdi-earth'"
+      :color="isInternal ? 'primary' : 'grey-y'"
+      size="18px"
+      class="q-ml-xs"
+    >
+      <q-tooltip>
+        {{ isInternal ? t('common.internal-author') : t('common.external-author') }}
+      </q-tooltip>
+    </q-icon>
     <q-menu>
       <q-list dense separator>
         <q-item v-if="isGroupAuthor">

@@ -94,6 +94,16 @@ class PublicationAuthor extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    /** Check if the publication author is internal.
+     *
+     */
+    public function isInternal(): bool
+    {
+        $defaultOrganization = Organization::getDefaultOrganization();
+
+        return $this->organization_id === $defaultOrganization->id;
+    }
+
     /** Author
      * @return BelongsTo<Author, $this> */
     public function author(): BelongsTo
