@@ -41,6 +41,8 @@ const name = computed(() => {
   return `${props.manuscriptAuthor.data.author?.data.last_name}, ${props.manuscriptAuthor.data.author?.data.first_name}`
 })
 
+const isInternal = computed(() => props.manuscriptAuthor.data.is_internal)
+
 const removable = computed(() => {
   if (props.readonly) {
     return false
@@ -61,14 +63,32 @@ const removable = computed(() => {
       icon="mdi-account-group"
       color="teal-6"
       text-color="white"
-    />
+    >
+      <q-tooltip>
+        {{ t('common.group-author') }}
+      </q-tooltip>
+    </q-avatar>
     <q-avatar
       v-else-if="manuscriptAuthor.data.is_corresponding_author"
       icon="mdi-at"
       color="primary"
       text-color="white"
-    />
+    >
+      <q-tooltip>
+        {{ t('common.corresponding-author') }}
+      </q-tooltip>
+    </q-avatar>
     {{ name }}<span v-if="isGroupAuthor && manuscriptAuthor.data.is_corresponding_author" class="text-weight-bold">*</span>
+    <q-icon
+      :name="isInternal ? 'mdi-fish' : 'mdi-earth'"
+      :color="isInternal ? 'primary' : 'grey-y'"
+      size="18px"
+      class="q-ml-xs"
+    >
+      <q-tooltip>
+        {{ isInternal ? t('common.internal-author') : t('common.external-author') }}
+      </q-tooltip>
+    </q-icon>
     <q-menu>
       <q-list dense separator>
         <q-item v-if="isGroupAuthor" class="q-mt-sm">
