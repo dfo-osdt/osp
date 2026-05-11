@@ -79,9 +79,7 @@ class Organization extends Model
     {
         $org = config('osp.default_organization');
 
-        return Cache::rememberForever('default_organization', function () use ($org) {
-            return self::query()->where('name_en', $org)->firstOrFail();
-        });
+        return Cache::rememberForever('default_organization', fn () => self::query()->where('name_en', $org)->firstOrFail());
 
     }
 }

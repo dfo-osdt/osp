@@ -41,7 +41,6 @@ const name = computed(() => {
   return `${props.manuscriptAuthor.data.author?.data.last_name}, ${props.manuscriptAuthor.data.author?.data.first_name}`
 })
 
-
 const defaultOrganiztionId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
 const isInternal = computed(() => props.manuscriptAuthor.data.organization_id === defaultOrganiztionId)
 
