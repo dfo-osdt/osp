@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $id
@@ -78,6 +79,9 @@ class Organization extends Model
     {
         $org = config('osp.default_organization');
 
-        return Organization::query()->where('name_en', $org)->first();
+        return Cache::rememberForever('default_organization', function () use ($org) {
+            return self::query()->where('name_en', $org)->firstOrFail();
+        });
+
     }
 }
