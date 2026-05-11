@@ -10,7 +10,6 @@ export interface ManuscriptAuthor {
   organization_id: number
   is_corresponding_author: boolean
   is_group_author: boolean
-  is_internal: boolean
   organization?: OrganizationResource
   author?: AuthorResource
 }
