@@ -31,7 +31,8 @@ const isGroupAuthor = computed(
   () => props.publicationAuthor.data.is_group_author,
 )
 
-const isInternal = computed(() => props.publicationAuthor.data.organization_id === 1)
+const defaultOrganiztionId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
+const isInternal = computed(() => props.publicationAuthor.data.organization_id === defaultOrganiztionId)
 
 const name = computed(() => {
   if (isGroupAuthor.value) {
