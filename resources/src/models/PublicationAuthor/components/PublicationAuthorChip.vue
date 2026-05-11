@@ -31,7 +31,7 @@ const isGroupAuthor = computed(
   () => props.publicationAuthor.data.is_group_author,
 )
 
-const isInternal = computed(() => props.publicationAuthor.data.is_internal)
+const isInternal = computed(() => props.publicationAuthor.data.organization_id === 1)
 
 const name = computed(() => {
   if (isGroupAuthor.value) {
@@ -86,7 +86,8 @@ const removable = computed(() => {
     >*</span>
     <q-icon
       :name="isInternal ? 'mdi-fish' : 'mdi-earth'"
-      :color="isInternal ? 'primary' : 'grey-y'"
+      :color="isInternal ? 'primary' : 'grey-7'"
+      :aria-label="isInternal ? t('common.internal-author') : t('common.external-author')"
       size="18px"
       class="q-ml-xs"
     >

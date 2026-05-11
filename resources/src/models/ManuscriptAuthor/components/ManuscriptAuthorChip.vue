@@ -41,7 +41,7 @@ const name = computed(() => {
   return `${props.manuscriptAuthor.data.author?.data.last_name}, ${props.manuscriptAuthor.data.author?.data.first_name}`
 })
 
-const isInternal = computed(() => props.manuscriptAuthor.data.is_internal)
+const isInternal = computed(() => props.manuscriptAuthor.data.organization_id === 1)
 
 const removable = computed(() => {
   if (props.readonly) {
@@ -81,7 +81,8 @@ const removable = computed(() => {
     {{ name }}<span v-if="isGroupAuthor && manuscriptAuthor.data.is_corresponding_author" class="text-weight-bold">*</span>
     <q-icon
       :name="isInternal ? 'mdi-fish' : 'mdi-earth'"
-      :color="isInternal ? 'primary' : 'grey-y'"
+      :color="isInternal ? 'primary' : 'grey-7'"
+      :aria-label="isInternal ? t('common.internal-author') : t('common.external-author')"
       size="18px"
       class="q-ml-xs"
     >
