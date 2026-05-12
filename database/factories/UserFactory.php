@@ -52,6 +52,10 @@ class UserFactory extends Factory
 
     /**
      * Every user has an author record
+     *
+     * @return $this
+     *
+     * @phpstan-return static
      */
     public function configure()
     {
@@ -79,10 +83,8 @@ class UserFactory extends Factory
 
     /**
      * Indicate that the model's email address should be unverified.
-     *
-     * @return static
      */
-    public function unverified()
+    public function unverified(): static
     {
         return $this->state(function (array $attributes) {
             return [
