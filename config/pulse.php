@@ -103,7 +103,7 @@ return [
     |
     */
 
-    'cache' => env('PULSE_CACHE_DRIVER', 'pulse'),
+    'cache' => env('PULSE_CACHE_DRIVER'),
 
     /*
     |--------------------------------------------------------------------------
