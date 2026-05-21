@@ -92,6 +92,12 @@ return [
             'driver' => 'octane',
         ],
 
+        'pulse' => [
+            'driver' => 'file',
+            'path' => storage_path('framework/cache/pulse'),
+            'serializable_classes' => true, // Allow all classes for Pulse cache only
+        ],
+
     ],
 
     /*
