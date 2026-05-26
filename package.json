@@ -18,7 +18,7 @@
     "pinia": "^3.0.4",
     "playwright": "^1.60.0",
     "quasar": "^2.19.3",
-    "sass-embedded": "^1.99.0",
+    "sass-embedded": "^1.100.0",
     "vite-plugin-manifest-sri": "^0.2.0",
     "vue": "^3.5.34",
     "vue-i18n": "^11.4.4",
