@@ -7,9 +7,9 @@ use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
 use App\Queries\ManagementReviewStepListQuery;
 use App\Traits\PaginationLimitTrait;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class UserManagementReviewStepsController extends Controller
 {
