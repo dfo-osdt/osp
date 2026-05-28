@@ -586,7 +586,13 @@
     "submit-preprint-title": "Marquez comme publié",
     "edit-preprint-title": "Modifier la soumission de préparation",
     "go-to-the-preprint": "Afficher la prépublication (externe)",
-    "preprint-url": "URL de prépublication"
+    "preprint-url": "URL de prépublication",
+    "unsubmit": "Annuler la soumission",
+    "unsubmit-title": "Annuler l'envoi du manuscrit ?",
+    "unsubmit-details": "Cela ramènera le manuscrit à l'état de brouillon afin qu'il puisse être modifié à nouveau.",
+    "unsubmit-failed": "Impossible de retirer le manuscrit"
+
+
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",

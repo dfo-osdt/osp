@@ -202,6 +202,24 @@ class ManuscriptRecordPolicy
     }
 
     /**
+     * A user can unsubmit a manuscript
+     */
+    public function unsubmitForReview(User $user, ManuscriptRecord $manuscriptRecord): bool
+    {
+        // can only unsubmit if the manuscript is in review
+        if ($manuscriptRecord->status !== ManuscriptRecordStatus::IN_REVIEW) {
+            return false;
+        }
+
+        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+            return true;
+        }
+
+        // can only unsubmit if the user is the owner of the manuscript
+        return $user->id === $manuscriptRecord->user_id;
+    }
+
+    /**
      * A user can withdraw a manuscript from review
      */
     public function withdraw(User $user, ManuscriptRecord $manuscriptRecord)

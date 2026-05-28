@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\CloneManuscriptRecord;
 use App\Actions\CreatePublicationFromManuscript;
 use App\Actions\DeleteManuscriptRecord;
+use App\Actions\UnsubmitManuscriptManagementReview;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\Permissions\UserPermission;
@@ -28,6 +29,7 @@ use App\Traits\PaginationLimitTrait;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -223,6 +225,16 @@ class ManuscriptRecordController extends Controller
             // trigger event that the record was submitted
             event(new ManuscriptRecordToReviewEvent($manuscriptRecord, $reviewUser));
         });
+
+        return $this->defaultResource($manuscriptRecord);
+    }
+
+    public function unsubmitForReview(Request $request, ManuscriptRecord $manuscriptRecord): JsonResource
+    {
+        $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
+        Gate::authorize('unsubmitForReview', $manuscriptRecord);
+
+        UnsubmitManuscriptManagementReview::handle($manuscriptRecord);
 
         return $this->defaultResource($manuscriptRecord);
     }

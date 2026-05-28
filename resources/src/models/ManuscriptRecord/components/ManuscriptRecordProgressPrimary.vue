@@ -2,6 +2,7 @@
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
+import { ManuscriptRecordService } from '../ManuscriptRecord'
 import { useQuasar } from 'quasar'
 import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue'
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
@@ -81,6 +82,10 @@ const managementReviewIcon = computed(() => {
   return 'mdi-thumb-up-outline'
 })
 
+const canUnsubmitForReview = computed(() => {
+  return manuscriptRecord.value?.data.status === 'in_review'
+})
+
 const submittedToJournalSubtitle = computed(() => {
   if (manuscriptRecord.value === null) {
     return ''
@@ -139,6 +144,47 @@ const withdrawnSubtitle = computed(() => {
   )
 })
 
+const unsubmitLoading = ref(false)
+
+function confirmUnsubmitManuscript() {
+  $q.dialog({
+    title: t('manuscript-progress-view.unsubmit-title'),
+    message: t('manuscript-progress-view.unsubmit-details'),
+    cancel: true,
+    persistent: true,
+    ok: {
+      label: t('common.confirm'),
+      color: 'negative',
+    },
+  }).onOk(() => {
+    unsubmitManuscript()
+  })
+}
+
+async function unsubmitManuscript() {
+  if (!manuscriptRecord.value) {
+    return
+  }
+ unsubmitLoading.value = true
+
+  try {
+    const record = await ManuscriptRecordService.unsubmitForReview(
+      manuscriptRecord.value.data.id,
+    )
+
+    updateManuscriptandNotify(record)
+  }
+  catch {
+    $q.notify({
+      message: t('manuscript-progress-view.unsubmit-failed'),
+      color: 'negative',
+      icon: 'mdi-alert-circle-outline',
+    })
+  }
+  finally {
+    unsubmitLoading.value = false
+  }
+}
 // submitted to journal dialog
 const showSubmittedToJournalDialog = ref(false)
 
@@ -216,6 +262,14 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       <p>
         {{ $t('manuscript-progress-view.completed-details') }}
       </p>
+      <q-btn
+  v-if="canUnsubmitForReview"
+  color="negative"
+  outline
+  icon="mdi-undo"
+  :label="$t('manuscript-progress-view.unsubmit')"
+  @click="confirmUnsubmitManuscript()"
+/>
     </q-timeline-entry>
     <q-timeline-entry
       v-if="manuscriptRecord.data.status !== 'withdrawn'"
