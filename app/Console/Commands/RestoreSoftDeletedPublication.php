@@ -6,22 +6,10 @@ use App\Models\Publication;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
+#[\Illuminate\Console\Attributes\Description('Restore a soft-deleted publication and its related data')]
+#[\Illuminate\Console\Attributes\Signature('osp:restore-soft-deleted-publication {id : The ID of the publication to restore}')]
 class RestoreSoftDeletedPublication extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:restore-soft-deleted-publication {id : The ID of the publication to restore}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Restore a soft-deleted publication and its related data';
-
     /**
      * Execute the console command.
      */

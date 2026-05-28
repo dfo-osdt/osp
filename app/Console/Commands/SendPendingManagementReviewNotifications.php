@@ -5,22 +5,10 @@ namespace App\Console\Commands;
 use App\Actions\Notifications\CheckPendingManagementReviews;
 use Illuminate\Console\Command;
 
+#[\Illuminate\Console\Attributes\Description('Send weekly email notifications for pending management reviews')]
+#[\Illuminate\Console\Attributes\Signature('osp:send-pending-management-review-notifications')]
 class SendPendingManagementReviewNotifications extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:send-pending-management-review-notifications';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Send weekly email notifications for pending management reviews';
-
     /**
      * Execute the console command.
      */

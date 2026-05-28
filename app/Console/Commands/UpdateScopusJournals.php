@@ -12,22 +12,10 @@ use Str;
  * journals in the database with the information from the file. This file can
  * be found here: https://www.scopus.com/home.uri
  */
+#[\Illuminate\Console\Attributes\Description('Update the journals in the database with the information from the Scopus Source List file.')]
+#[\Illuminate\Console\Attributes\Signature('osp:update-scopus-journals {file}')]
 class UpdateScopusJournals extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:update-scopus-journals {file}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Update the journals in the database with the information from the Scopus Source List file.';
-
     /**
      * Execute the console command.
      */

@@ -11,15 +11,13 @@ use Illuminate\Support\Collection;
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\select;
 
-class SuggestOrganizationRORMatches extends Command
-{
-    protected $signature = 'osp:suggest-ror-matches
+#[\Illuminate\Console\Attributes\Description('Suggest ROR matches for manually created organizations')]
+#[\Illuminate\Console\Attributes\Signature('osp:suggest-ror-matches
                             {--min-score=50 : Minimum similarity score (0-100)}
                             {--max-suggestions=5 : Maximum suggestions per organization}
-                            {--merge : Interactively merge matched organizations}';
-
-    protected $description = 'Suggest ROR matches for manually created organizations';
-
+                            {--merge : Interactively merge matched organizations}')]
+class SuggestOrganizationRORMatches extends Command
+{
     public function handle(): int
     {
         $minScore = (int) $this->option('min-score');

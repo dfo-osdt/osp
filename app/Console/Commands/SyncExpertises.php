@@ -5,22 +5,10 @@ namespace App\Console\Commands;
 use App\Actions\Expertise\SyncExpertiseWithScience;
 use Illuminate\Console\Command;
 
+#[\Illuminate\Console\Attributes\Description('Sync the local database with the expertise taxonomy from the profiles registry at profils-profiles.science.gc.ca')]
+#[\Illuminate\Console\Attributes\Signature('osp:sync-expertises')]
 class SyncExpertises extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:sync-expertises';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Sync the local database with the expertise taxonomy from the profiles registry at profils-profiles.science.gc.ca';
-
     /**
      * Execute the console command.
      */

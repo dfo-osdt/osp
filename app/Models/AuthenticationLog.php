@@ -49,10 +49,9 @@ use Illuminate\Support\Carbon;
     'cleared_by_user',
 ])]
 #[Table(name: 'authentication_log')]
+#[\Illuminate\Database\Eloquent\Attributes\WithoutTimestamps]
 class AuthenticationLog extends Model
 {
-    public $timestamps = false;
-
     protected $casts = [
         'login_at' => 'datetime',
         'logout_at' => 'datetime',
