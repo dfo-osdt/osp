@@ -7,6 +7,7 @@ use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Events\ManagementReviewStepCreated;
+use App\Models\ManagementReviewDelegation;
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\PlanningBinder\FlagManuscriptRecordForPlanningBinderMail;
@@ -174,6 +175,36 @@ class ManagementReviewStepController extends Controller
         // send event that a management review step has been created.
         event(new ManagementReviewStepCreated($nextReviewStep));
 
+        $managementReviewStep->status = ManagementReviewStepStatus::REASSIGN;
+        $managementReviewStep->completed_at = now();
+        $managementReviewStep->saveOrFail();
+
+        $this->loadResourceRelationships($managementReviewStep, $manuscriptRecord);
+
+        return new ManagementReviewStepResource($managementReviewStep);
+    }
+
+    public function forward(ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
+    {
+        Gate::authorize('forward', $managementReviewStep);
+
+        $delegation = ManagementReviewDelegation::query()
+            ->active()
+            ->where('user_id', $managementReviewStep->user_id)
+            ->firstOrFail();
+
+        $nextReviewStep = new ManagementReviewStep;
+        $nextReviewStep->user_id = $delegation->delegate_user_id;
+        $nextReviewStep->status = ManagementReviewStepStatus::PENDING;
+        $nextReviewStep->decision = ManagementReviewStepDecision::NONE;
+        $nextReviewStep->manuscript_record_id = $manuscriptRecord->id;
+        $nextReviewStep->previous_step_id = $managementReviewStep->id;
+        $nextReviewStep->decision_expected_by = $managementReviewStep->decision_expected_by;
+        $nextReviewStep->saveOrFail();
+
+        event(new ManagementReviewStepCreated($nextReviewStep));
+
+        $managementReviewStep->comments = $delegation->getComment();
         $managementReviewStep->status = ManagementReviewStepStatus::REASSIGN;
         $managementReviewStep->completed_at = now();
         $managementReviewStep->saveOrFail();

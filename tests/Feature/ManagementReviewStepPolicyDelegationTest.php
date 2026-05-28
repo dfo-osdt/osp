@@ -33,6 +33,60 @@ test('delegate can complete SECONDARY review when delegator has COMPLETE_INTERNT
     expect($delegate->can('complete', $step))->toBeTrue();
 });
 
+test('user can complete SECONDARY review when forwarded step came from a Director', function (): void {
+    Event::fake();
+
+    $director = User::factory()->create();
+    $director->assignRole(UserRole::DIRECTOR);
+
+    $nonDirector = User::factory()->create();
+
+    $manuscript = ManuscriptRecord::factory()->secondary()->in_review(withAreviewstep: false)->create();
+
+    $originalStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $director->id,
+        'status' => ManagementReviewStepStatus::REASSIGN,
+    ]);
+
+    $forwardedStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $nonDirector->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $originalStep->id,
+    ]);
+    $forwardedStep->setRelation('manuscriptRecord', $manuscript);
+    $forwardedStep->load('previousStep.user');
+
+    expect($nonDirector->can('complete', $forwardedStep))->toBeTrue();
+});
+
+test('user cannot complete SECONDARY review when forwarded step came from a non-Director', function (): void {
+    Event::fake();
+
+    $nonDirectorA = User::factory()->create();
+    $nonDirectorB = User::factory()->create();
+
+    $manuscript = ManuscriptRecord::factory()->secondary()->in_review(withAreviewstep: false)->create();
+
+    $originalStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $nonDirectorA->id,
+        'status' => ManagementReviewStepStatus::REASSIGN,
+    ]);
+
+    $forwardedStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $nonDirectorB->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $originalStep->id,
+    ]);
+    $forwardedStep->setRelation('manuscriptRecord', $manuscript);
+    $forwardedStep->load('previousStep.user');
+
+    expect($nonDirectorB->can('complete', $forwardedStep))->toBeFalse();
+});
+
 test('delegate cannot complete SECONDARY review when delegator lacks COMPLETE_INTERNTAL_MANAGEMENT_REVIEW permission', function (): void {
     Event::fake();
 

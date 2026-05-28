@@ -43,6 +43,7 @@ export interface ManagementReviewStep {
   user?: UserResource
   previous_step?: ManagementReviewStepResource
   can_complete: boolean
+  can_forward: boolean
 }
 
 export type ManagementReviewStepResource = Resource<ManagementReviewStep>
@@ -192,6 +193,18 @@ export class ManagementReviewStepService {
     const response = await http.put<DecisionStep, R>(
       `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/withdraw`,
       { comments: step.comments },
+    )
+    return response.data
+  }
+
+  /**
+   * Forward a pending management review step to the step owner's active delegate.
+   * Only available to users with the forward_management_review_step permission.
+   */
+  public static async forward(step: ManagementReviewStep) {
+    const response = await http.put<Record<string, never>, R>(
+      `api/manuscript-records/${step.manuscript_record_id}/management-review-steps/${step.id}/forward`,
+      {},
     )
     return response.data
   }

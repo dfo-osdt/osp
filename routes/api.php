@@ -122,6 +122,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/revision', 'revision');
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/revision-response', 'revisionResponse');
         Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/withdraw', 'withdraw');
+        Route::put('/manuscript-records/{manuscriptRecord}/management-review-steps/{managementReviewStep}/forward', 'forward');
     });
 
     Route::controller(ManuscriptRecordController::class)->group(function () {

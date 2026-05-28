@@ -41,6 +41,7 @@ class ManagementReviewStepResource extends JsonResource
                 'previous_step' => ManagementReviewStepResource::make($this->whenLoaded('previousStep')),
                 'user' => UserResource::make($this->whenLoaded('user')),
                 'can_complete' => Auth::user()->can('complete', $this->resource),
+                'can_forward' => Auth::user()->can('forward', $this->resource),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

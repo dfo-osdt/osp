@@ -78,8 +78,10 @@ export type AuthenticatedUserPermissions
     | 'create_organizations'
     | 'create_author_employments'
     | 'complete_interntal_management_review'
+    | 'forward_management_review_step'
     | 'view_any_users'
     | 'view_any_manuscript_record'
+    | 'view_any_manuscript_record_including_draft'
     | 'publish_internal_reports'
     | 'update_publications'
     | 'delete_publications'
@@ -204,8 +206,8 @@ export class AuthenticatedUser implements IAuthenticatedUser {
    * Users with view_any_manuscript_record or specific regional permissions can access
    */
   canViewRegionalManuscripts(): boolean {
-    // Users with view_any_manuscript_record can access regional view
-    if (this.can('view_any_manuscript_record')) {
+    // Users with view_any_manuscript_record (or the superset including_draft) can access regional view
+    if (this.can('view_any_manuscript_record') || this.can('view_any_manuscript_record_including_draft')) {
       return true
     }
 

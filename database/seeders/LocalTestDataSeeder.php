@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ManagementReviewStepDecision;
+use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\PublicationStatus;
+use App\Models\ManagementReviewDelegation;
 use App\Models\Announcement;
 use App\Models\Author;
 use App\Models\HelpfulLink;
@@ -217,6 +220,40 @@ class LocalTestDataSeeder extends Seeder
             'email' => 'admin@test.local',
         ]);
         $adminUser->assignRole('admin');
+
+        // Forward-to-delegate scenario:
+        // DM reviewed and referred to RDS; RDS went on leave without setting up a delegation.
+        // Admin added RDS→DM delegation via librarium after the fact.
+        // Admin can now click "Forward to Delegate" on RDS's pending step.
+        $forwardDemoManuscript = ManuscriptRecord::factory()->in_review(false)->create([
+            'title' => 'Forward-to-Delegate Demo (RDS pending, delegation set post-hoc)',
+            'user_id' => $user->id,
+        ]);
+
+        $dmReferStep = ManagementReviewStep::factory()->create([
+            'manuscript_record_id' => $forwardDemoManuscript->id,
+            'user_id' => $dmUser->id,
+            'status' => ManagementReviewStepStatus::COMPLETED,
+            'decision' => ManagementReviewStepDecision::COMPLETE,
+            'completed_at' => now()->subDays(2),
+            'comments' => 'Reviewed — forwarding to RDS for final approval.',
+        ]);
+
+        // Step created BEFORE the delegation so the observer does not auto-reassign it
+        ManagementReviewStep::factory()->create([
+            'manuscript_record_id' => $forwardDemoManuscript->id,
+            'user_id' => $rdsUser->id,
+            'status' => ManagementReviewStepStatus::PENDING,
+            'previous_step_id' => $dmReferStep->id,
+            'decision_expected_by' => now()->addDays(3),
+        ]);
+
+        // Delegation added after the fact by admin via librarium (rds@test.local → dm@test.local)
+        ManagementReviewDelegation::factory()->create([
+            'user_id' => $rdsUser->id,
+            'delegate_user_id' => $dmUser->id,
+            'comment' => 'RDS is on leave — please handle reviews on my behalf.',
+        ]);
 
         // add an announcement
 

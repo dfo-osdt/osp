@@ -36,6 +36,10 @@ const canUpdate = computed(() => {
   return !!managementStep.value.can?.update
 })
 
+const canForward = computed(() => {
+  return !!managementStep.value.data.can_forward
+})
+
 const userName = computed(() => {
   if (!managementStep.value.data.user) {
     return t('common.unknown')
@@ -155,6 +159,27 @@ async function submitDecision() {
 const withdrawManuscriptDialog = ref(false)
 function withdrawManuscript() {
   withdrawManuscriptDialog.value = true
+}
+
+const isForwarding = ref(false)
+async function forwardToDelegate() {
+  $q.dialog({
+    title: t('review-step.forward-to-delegate'),
+    message: t('review-step.forward-to-delegate-confirm'),
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    isForwarding.value = true
+    try {
+      const updated = await ManagementReviewStepService.forward(managementStep.value.data)
+      managementStep.value = updated
+      emit('decision', updated)
+      $q.notify({ message: t('review-step.forwarded'), type: 'positive' })
+    }
+    finally {
+      isForwarding.value = false
+    }
+  })
 }
 </script>
 
@@ -393,6 +418,16 @@ function withdrawManuscript() {
       </q-card>
     </template>
     <template v-else>
+      <div v-if="canForward && managementStep.data.status === 'pending'" class="q-mb-sm">
+        <q-btn
+          icon="mdi-account-arrow-right-outline"
+          color="orange-8"
+          outline
+          :label="t('review-step.forward-to-delegate')"
+          :loading="isForwarding"
+          @click="forwardToDelegate"
+        />
+      </div>
       <q-card
         v-if="
           managementStep.data.status !== 'pending'

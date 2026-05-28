@@ -835,7 +835,10 @@
     "submit-decision": "Soumettre l'évaluation",
     "your-response": "Votre réponse : {0}",
     "your-review": "Votre révision: {0}",
-    "comments-required": "Un commentaire s'impose."
+    "comments-required": "Un commentaire s'impose.",
+    "forward-to-delegate": "Transférer au délégué",
+    "forward-to-delegate-confirm": "Cela transférera l'évaluation en attente au délégué actif du responsable. L'étape originale sera marquée comme réassignée.",
+    "forwarded": "L'étape d'évaluation a été transférée au délégué."
   },
   "review-step-view": {
     "all-my-reviews": "Toutes mes revues",
