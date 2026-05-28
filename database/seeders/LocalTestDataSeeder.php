@@ -6,12 +6,12 @@ use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\PublicationStatus;
-use App\Models\ManagementReviewDelegation;
 use App\Models\Announcement;
 use App\Models\Author;
 use App\Models\HelpfulLink;
 use App\Models\Invitation;
 use App\Models\Journal;
+use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
@@ -225,7 +225,7 @@ class LocalTestDataSeeder extends Seeder
         // DM reviewed and referred to RDS; RDS went on leave without setting up a delegation.
         // Admin added RDS→DM delegation via librarium after the fact.
         // Admin can now click "Forward to Delegate" on RDS's pending step.
-        $forwardDemoManuscript = ManuscriptRecord::factory()->in_review(false)->create([
+        $forwardDemoManuscript = ManuscriptRecord::factory()->secondary()->in_review(false)->create([
             'title' => 'Forward-to-Delegate Demo (RDS pending, delegation set post-hoc)',
             'user_id' => $user->id,
         ]);
