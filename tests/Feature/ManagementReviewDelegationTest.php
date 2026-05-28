@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ManagementReviewStepStatus;
+use App\Enums\Permissions\UserRole;
 use App\Events\ManagementReviewStepCreated;
 use App\Mail\DelegationCreatedMail;
 use App\Models\ManagementReviewDelegation;
@@ -312,4 +313,147 @@ test('another user cannot end someone elses delegation', function (): void {
 
     $this->actingAs($otherUser)->deleteJson("/api/user/management-review-delegations/{$delegation->id}")
         ->assertForbidden();
+});
+
+test('admin can forward a pending step to the active delegate', function (): void {
+    Event::fake([ManagementReviewStepCreated::class]);
+
+    $admin = User::factory()->create();
+    $admin->assignRole(UserRole::ADMIN);
+
+    $rds = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    // Create step before delegation so the observer does not auto-reassign it
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $rds->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+    ]);
+
+    ManagementReviewDelegation::factory()->create([
+        'user_id' => $rds->id,
+        'delegate_user_id' => $delegate->id,
+    ]);
+
+    $this->actingAs($admin)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/management-review-steps/{$step->id}/forward")
+        ->assertSuccessful();
+
+    $step->refresh();
+    expect($step->status)->toBe(ManagementReviewStepStatus::REASSIGN);
+    expect($step->completed_at)->not->toBeNull();
+
+    $delegateStep = ManagementReviewStep::query()
+        ->where('user_id', $delegate->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->first();
+
+    expect($delegateStep)->not->toBeNull();
+    expect($delegateStep->previous_step_id)->toBe($step->id);
+    expect($delegateStep->status)->toBe(ManagementReviewStepStatus::PENDING);
+
+    Event::assertDispatched(ManagementReviewStepCreated::class);
+});
+
+test('non-admin cannot forward a pending step', function (): void {
+    $user = User::factory()->create();
+    $rds = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    ManagementReviewDelegation::factory()->create([
+        'user_id' => $rds->id,
+        'delegate_user_id' => $delegate->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $rds->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+    ]);
+
+    $this->actingAs($user)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/management-review-steps/{$step->id}/forward")
+        ->assertForbidden();
+});
+
+test('admin cannot forward when step user has no active delegation', function (): void {
+    $admin = User::factory()->create();
+    $admin->assignRole(UserRole::ADMIN);
+
+    $rds = User::factory()->create();
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $rds->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+    ]);
+
+    $this->actingAs($admin)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/management-review-steps/{$step->id}/forward")
+        ->assertForbidden();
+});
+
+test('admin cannot forward a non-pending step', function (): void {
+    $admin = User::factory()->create();
+    $admin->assignRole(UserRole::ADMIN);
+
+    $rds = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    ManagementReviewDelegation::factory()->create([
+        'user_id' => $rds->id,
+        'delegate_user_id' => $delegate->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $rds->id,
+        'status' => ManagementReviewStepStatus::ON_HOLD,
+    ]);
+
+    $this->actingAs($admin)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/management-review-steps/{$step->id}/forward")
+        ->assertForbidden();
+});
+
+test('forwarded step carries over decision_expected_by from original', function (): void {
+    Event::fake([ManagementReviewStepCreated::class]);
+
+    $admin = User::factory()->create();
+    $admin->assignRole(UserRole::ADMIN);
+
+    $rds = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    $deadline = now()->addDays(5)->startOfMinute();
+    // Create step before delegation so the observer does not auto-reassign it
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $rds->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'decision_expected_by' => $deadline,
+    ]);
+
+    ManagementReviewDelegation::factory()->create([
+        'user_id' => $rds->id,
+        'delegate_user_id' => $delegate->id,
+    ]);
+
+    $this->actingAs($admin)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/management-review-steps/{$step->id}/forward")
+        ->assertSuccessful();
+
+    $delegateStep = ManagementReviewStep::query()
+        ->where('user_id', $delegate->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->first();
+
+    expect($delegateStep->decision_expected_by->startOfMinute()->toDateTimeString())
+        ->toBe($deadline->toDateTimeString());
 });

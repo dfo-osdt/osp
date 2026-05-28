@@ -74,14 +74,37 @@ class ManagementReviewStepPolicy
                 }
 
                 // Check if user is acting as delegate for someone who has the permission
-                return ManagementReviewDelegation::query()
+                if (ManagementReviewDelegation::query()
                     ->active()
                     ->where('delegate_user_id', $user->id)
                     ->whereIn('user_id', User::query()->permission(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW)->select('id'))
-                    ->exists();
+                    ->exists()) {
+                    return true;
+                }
+
+                // Check if this step was forwarded from someone who has the permission
+                $previousUser = $managementReviewStep->previousStep?->user;
+
+                return $previousUser?->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW) ?? false;
             default:
                 return true;
         }
+    }
+
+    public function forward(User $user, ManagementReviewStep $managementReviewStep): bool
+    {
+        if (! $user->can(UserPermission::FORWARD_MANAGEMENT_REVIEW_STEP)) {
+            return false;
+        }
+
+        if ($managementReviewStep->status !== ManagementReviewStepStatus::PENDING) {
+            return false;
+        }
+
+        return ManagementReviewDelegation::query()
+            ->active()
+            ->where('user_id', $managementReviewStep->user_id)
+            ->exists();
     }
 
     public function withdraw(User $user, ManagementReviewStep $managementReviewStep)

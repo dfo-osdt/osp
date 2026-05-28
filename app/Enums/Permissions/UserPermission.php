@@ -14,6 +14,7 @@ enum UserPermission: string
     case CREATE_ORGANIZATIONS = 'create_organizations';
     case CREATE_AUTHOR_EMPLOYMENTS = 'create_author_employments';
     case COMPLETE_INTERNTAL_MANAGEMENT_REVIEW = 'complete_interntal_management_review';
+    case FORWARD_MANAGEMENT_REVIEW_STEP = 'forward_management_review_step';
     case VIEW_LIBRARIUM = 'view_librarium';
     case VIEW_TELESCOPE = 'view_telescope';
     case VIEW_HORIZON = 'view_horizon';

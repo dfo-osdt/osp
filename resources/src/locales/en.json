@@ -168,6 +168,7 @@
     "my-manuscripts": "My Manuscript Records",
     "my-publications": "My Publications",
     "my-reviews": "My Management Reviews",
+    "all-reviews": "All Management Reviews",
     "next": "Next",
     "no": "No",
     "no-actions-required": "No actions required",
@@ -835,11 +836,16 @@
     "submit-decision": "Submit Review",
     "your-response": "Your Response : {0}",
     "your-review": "Your Review : {0}",
-    "comments-required": "A comment is required."
+    "comments-required": "A comment is required.",
+    "forward-to-delegate": "Forward to Delegate",
+    "forward-to-delegate-confirm": "This will forward the pending review to the assignee's active delegate. The original step will be marked as reassigned.",
+    "forwarded": "Review step forwarded to delegate."
   },
   "review-step-view": {
     "all-my-reviews": "All My Reviews",
-    "list-of-all-my-reviews": "List of all my reviews"
+    "list-of-all-my-reviews": "List of all my reviews",
+    "all-reviews": "All Reviews",
+    "list-of-all-reviews": "List of all management reviews"
   },
   "reviewer-comments": {
     "description": "Comments are required unless you complete the manuscript management review without sending it to another manager. Comments entered here should provide feedback to the subsequent manuscript management reviewer or author. Your comments will be visible to anyone with access to this manuscript record.",

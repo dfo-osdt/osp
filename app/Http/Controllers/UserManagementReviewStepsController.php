@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Permissions\UserPermission;
 use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewStep;
 use App\Queries\ManagementReviewStepListQuery;
@@ -19,10 +20,16 @@ class UserManagementReviewStepsController extends Controller
      */
     public function index(Request $request): ResourceCollection
     {
-        $userId = Auth::id();
+        $user = Auth::user();
+        $canViewAll = $user->canAny([
+            UserPermission::VIEW_ANY_MANUSCRIPT_RECORD->value,
+            UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT->value,
+        ]);
 
         $limit = $this->getLimitFromRequest($request);
-        $baseQuery = ManagementReviewStep::query()->where('user_id', $userId)->with('manuscriptRecord.user', 'previousStep.user');
+        $baseQuery = ManagementReviewStep::query()
+            ->when(! $canViewAll, fn ($q) => $q->where('user_id', $user->id))
+            ->with('manuscriptRecord.user', 'previousStep.user');
         $listQuery = new ManagementReviewStepListQuery($request, $baseQuery);
 
         return ManagementReviewStepResource::collection($listQuery->paginate($limit)->appends($request->query()));
