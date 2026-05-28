@@ -586,7 +586,11 @@
     "submitted-to-preprint-details": "You've submitted your manuscript to a preprint server. If the server assigns a DOI (Digital Object Identifier), please ensure that it is provided in your submission. If no DOI is available, a stable URL linking directly to the preprint should be included.",
     "go-to-the-preprint": "View preprint (external)",
     "edit-preprint-title": "Edit Preprint Submission",
-    "preprint-url": "Preprint URL"
+    "preprint-url": "Preprint URL",
+    "unsubmit": "Unsubmit",
+    "unsubmit-title": "Unsubmit manuscript?",
+    "unsubmit-details": "This will return the manuscript to draft so it can be edited again.",
+    "unsubmit-failed": "Unable to unsubmit manuscript."
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",

@@ -134,6 +134,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/manuscript-records', 'store');
         // actions
         Route::put('manuscript-records/{manuscriptRecord}/submit-for-review', 'submitForReview');
+        Route::put('manuscript-records/{manuscriptRecord}/unsubmit-for-review', 'unsubmitForReview');
         Route::put('manuscript-records/{manuscriptRecord}/withdraw', 'withdraw');
         Route::put('manuscript-records/{manuscriptRecord}/submitted', 'submitted');
         Route::put('manuscript-records/{manuscriptRecord}/submitted-to-preprint', 'submittedToPreprint');
