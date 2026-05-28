@@ -304,3 +304,21 @@ test('only a director can complete an internal managment reviw', function (): vo
         ])
         ->assertOk();
 });
+
+test('mismatched manuscript and management review step route parameters return not found', function (): void {
+    $reviewer = User::factory()->create();
+    $manuscriptA = ManuscriptRecord::factory()->in_review()->create();
+    $manuscriptB = ManuscriptRecord::factory()->in_review()->create();
+
+    $stepForB = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscriptB->id,
+        'user_id' => $reviewer->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+    ]);
+
+    $this->actingAs($reviewer)
+        ->putJson("/api/manuscript-records/{$manuscriptA->id}/management-review-steps/{$stepForB->id}", [
+            'comments' => 'x',
+        ])
+        ->assertNotFound();
+});

@@ -61,6 +61,34 @@ test('user can complete SECONDARY review when forwarded step came from a Directo
     expect($nonDirector->can('complete', $forwardedStep))->toBeTrue();
 });
 
+test('user cannot complete SECONDARY review when step was referred by a Director', function (): void {
+    Event::fake();
+
+    $director = User::factory()->create();
+    $director->assignRole(UserRole::DIRECTOR);
+
+    $nonDirector = User::factory()->create();
+
+    $manuscript = ManuscriptRecord::factory()->secondary()->in_review(withAreviewstep: false)->create();
+
+    $originalStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $director->id,
+        'status' => ManagementReviewStepStatus::COMPLETED,
+    ]);
+
+    $referredStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $nonDirector->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $originalStep->id,
+    ]);
+    $referredStep->setRelation('manuscriptRecord', $manuscript);
+    $referredStep->load('previousStep.user');
+
+    expect($nonDirector->can('complete', $referredStep))->toBeFalse();
+});
+
 test('user cannot complete SECONDARY review when forwarded step came from a non-Director', function (): void {
     Event::fake();
 

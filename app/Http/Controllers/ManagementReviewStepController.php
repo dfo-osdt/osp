@@ -22,6 +22,11 @@ use Illuminate\Validation\Rule;
 
 class ManagementReviewStepController extends Controller
 {
+    private function ensureStepBelongsToManuscript(ManagementReviewStep $managementReviewStep, ManuscriptRecord $manuscriptRecord): void
+    {
+        abort_unless($managementReviewStep->manuscript_record_id === $manuscriptRecord->id, 404);
+    }
+
     /**
      * Load relationships needed for the resource and policies
      */
@@ -55,6 +60,7 @@ class ManagementReviewStepController extends Controller
      */
     public function update(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
+        $this->ensureStepBelongsToManuscript($managementReviewStep, $manuscriptRecord);
         Gate::authorize('update', $managementReviewStep);
 
         $validated = $request->validate([
@@ -70,6 +76,7 @@ class ManagementReviewStepController extends Controller
     // actions
     public function complete(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
+        $this->ensureStepBelongsToManuscript($managementReviewStep, $manuscriptRecord);
         Gate::authorize('complete', $managementReviewStep);
 
         $validated = $request->validate([
@@ -111,6 +118,7 @@ class ManagementReviewStepController extends Controller
      */
     public function refer(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
+        $this->ensureStepBelongsToManuscript($managementReviewStep, $manuscriptRecord);
         Gate::authorize('decide', $managementReviewStep);
 
         $validated = $request->validate([
@@ -146,6 +154,7 @@ class ManagementReviewStepController extends Controller
 
     public function reassign(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
+        $this->ensureStepBelongsToManuscript($managementReviewStep, $manuscriptRecord);
         Gate::authorize('decide', $managementReviewStep);
 
         $validated = $request->validate([
@@ -186,6 +195,7 @@ class ManagementReviewStepController extends Controller
 
     public function forward(ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
+        $this->ensureStepBelongsToManuscript($managementReviewStep, $manuscriptRecord);
         Gate::authorize('forward', $managementReviewStep);
 
         $delegation = ManagementReviewDelegation::query()
@@ -216,6 +226,7 @@ class ManagementReviewStepController extends Controller
 
     public function revision(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
+        $this->ensureStepBelongsToManuscript($managementReviewStep, $manuscriptRecord);
         Gate::authorize('decide', $managementReviewStep);
 
         $validated = $request->validate([
@@ -252,6 +263,7 @@ class ManagementReviewStepController extends Controller
 
     public function revisionResponse(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
+        $this->ensureStepBelongsToManuscript($managementReviewStep, $manuscriptRecord);
         Gate::authorize('update', $managementReviewStep);
 
         $validated = $request->validate([
@@ -298,6 +310,7 @@ class ManagementReviewStepController extends Controller
 
     public function withdraw(Request $request, ManuscriptRecord $manuscriptRecord, ManagementReviewStep $managementReviewStep): JsonResource
     {
+        $this->ensureStepBelongsToManuscript($managementReviewStep, $manuscriptRecord);
         Gate::authorize('withdraw', $managementReviewStep);
 
         $validated = $request->validate([

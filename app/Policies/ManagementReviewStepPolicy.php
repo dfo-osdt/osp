@@ -83,9 +83,15 @@ class ManagementReviewStepPolicy
                 }
 
                 // Check if this step was forwarded from someone who has the permission
-                $previousUser = $managementReviewStep->previousStep?->user;
+                $previousStep = $managementReviewStep->previousStep;
 
-                return $previousUser?->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW) ?? false;
+                if ($previousStep?->status !== ManagementReviewStepStatus::REASSIGN) {
+                    return false;
+                }
+
+                $previousUser = $previousStep->user;
+
+                return $previousUser->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
             default:
                 return true;
         }
