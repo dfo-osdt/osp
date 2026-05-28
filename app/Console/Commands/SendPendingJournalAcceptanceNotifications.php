@@ -3,10 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Actions\Notifications\CheckPendingJournalAcceptance;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[\Illuminate\Console\Attributes\Description('Send monthly reminder emails to update manuscript status for reviewed manuscripts not yet marked as accepted')]
-#[\Illuminate\Console\Attributes\Signature('osp:send-pending-journal-acceptance-notifications')]
+#[Description('Send monthly reminder emails to update manuscript status for reviewed manuscripts not yet marked as accepted')]
+#[Signature('osp:send-pending-journal-acceptance-notifications')]
 class SendPendingJournalAcceptanceNotifications extends Command
 {
     /**

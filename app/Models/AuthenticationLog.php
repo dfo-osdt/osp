@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -49,7 +50,7 @@ use Illuminate\Support\Carbon;
     'cleared_by_user',
 ])]
 #[Table(name: 'authentication_log')]
-#[\Illuminate\Database\Eloquent\Attributes\WithoutTimestamps]
+#[WithoutTimestamps]
 class AuthenticationLog extends Model
 {
     protected $casts = [

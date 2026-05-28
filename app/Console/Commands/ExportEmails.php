@@ -32,11 +32,13 @@ use App\Models\Publication;
 use App\Models\Shareable;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-#[\Illuminate\Console\Attributes\Description('Export emails templates to the specified directory. This command should only be used in a local/dev environment.')]
-#[\Illuminate\Console\Attributes\Signature('osp:export-emails {--output=storage/exports/markdown}')]
+#[Description('Export emails templates to the specified directory. This command should only be used in a local/dev environment.')]
+#[Signature('osp:export-emails {--output=storage/exports/markdown}')]
 class ExportEmails extends Command
 {
     /**

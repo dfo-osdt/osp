@@ -4,10 +4,12 @@ namespace App\Console\Commands;
 
 use App\Actions\ROR\DownloadLatestRORData;
 use App\Actions\ROR\SyncRORData;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[\Illuminate\Console\Attributes\Description('Download and Synchronize ROR Organizations with latest data dump')]
-#[\Illuminate\Console\Attributes\Signature('osp:update-ror-organizations')]
+#[Description('Download and Synchronize ROR Organizations with latest data dump')]
+#[Signature('osp:update-ror-organizations')]
 class UpdateROROrganizations extends Command
 {
     /**

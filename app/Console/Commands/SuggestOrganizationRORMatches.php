@@ -5,14 +5,16 @@ namespace App\Console\Commands;
 use App\Actions\Organizations\MergeOrganizations;
 use App\Actions\Organizations\SuggestOrganizationMatches;
 use App\Models\Organization;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\select;
 
-#[\Illuminate\Console\Attributes\Description('Suggest ROR matches for manually created organizations')]
-#[\Illuminate\Console\Attributes\Signature('osp:suggest-ror-matches
+#[Description('Suggest ROR matches for manually created organizations')]
+#[Signature('osp:suggest-ror-matches
                             {--min-score=50 : Minimum similarity score (0-100)}
                             {--max-suggestions=5 : Maximum suggestions per organization}
                             {--merge : Interactively merge matched organizations}')]
