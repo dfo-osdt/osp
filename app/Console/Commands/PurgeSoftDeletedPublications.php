@@ -6,22 +6,10 @@ use App\Models\Publication;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
+#[\Illuminate\Console\Attributes\Description('Permanently delete soft-deleted publications from the database')]
+#[\Illuminate\Console\Attributes\Signature('osp:purge-soft-deleted-publications {--force : Skip confirmation}')]
 class PurgeSoftDeletedPublications extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:purge-soft-deleted-publications {--force : Skip confirmation}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Permanently delete soft-deleted publications from the database';
-
     /**
      * Execute the console command.
      */

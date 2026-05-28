@@ -7,12 +7,10 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Models\ManuscriptRecord;
 use Illuminate\Console\Command;
 
+#[\Illuminate\Console\Attributes\Description('Permanently delete a submitted manuscript record and all its associated data')]
+#[\Illuminate\Console\Attributes\Signature('osp:delete-submitted-manuscript {id : The manuscript record ID} {--force : Skip confirmation}')]
 class DeleteSubmittedManuscript extends Command
 {
-    protected $signature = 'osp:delete-submitted-manuscript {id : The manuscript record ID} {--force : Skip confirmation}';
-
-    protected $description = 'Permanently delete a submitted manuscript record and all its associated data';
-
     public function handle(): int
     {
         $manuscriptRecord = ManuscriptRecord::withTrashed()->find($this->argument('id'));

@@ -35,22 +35,10 @@ use App\States\PlanningBinder\PlanningBinderItemState;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
+#[\Illuminate\Console\Attributes\Description('Export emails templates to the specified directory. This command should only be used in a local/dev environment.')]
+#[\Illuminate\Console\Attributes\Signature('osp:export-emails {--output=storage/exports/markdown}')]
 class ExportEmails extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:export-emails {--output=storage/exports/markdown}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Export emails templates to the specified directory. This command should only be used in a local/dev environment.';
-
     /**
      * Execute the console command.
      */

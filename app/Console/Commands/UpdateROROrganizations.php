@@ -6,22 +6,10 @@ use App\Actions\ROR\DownloadLatestRORData;
 use App\Actions\ROR\SyncRORData;
 use Illuminate\Console\Command;
 
+#[\Illuminate\Console\Attributes\Description('Download and Synchronize ROR Organizations with latest data dump')]
+#[\Illuminate\Console\Attributes\Signature('osp:update-ror-organizations')]
 class UpdateROROrganizations extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:update-ror-organizations';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Download and Synchronize ROR Organizations with latest data dump';
-
     /**
      * Execute the console command.
      */

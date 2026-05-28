@@ -13,12 +13,10 @@ use Illuminate\Contracts\Database\Query\Builder;
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 
+#[\Illuminate\Console\Attributes\Description('Merge an unverified organization into a verified organization')]
+#[\Illuminate\Console\Attributes\Signature('osp:merge-organization')]
 class MergeOrganization extends Command
 {
-    protected $signature = 'osp:merge-organization';
-
-    protected $description = 'Merge an unverified organization into a verified organization';
-
     public function handle(): ?int
     {
         $this->info('Merge Organization Tool');

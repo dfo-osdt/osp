@@ -5,22 +5,10 @@ namespace App\Console\Commands;
 use App\Models\FundingSource;
 use Illuminate\Console\Command;
 
+#[\Illuminate\Console\Attributes\Description('Permanently delete soft-deleted funding sources from the database')]
+#[\Illuminate\Console\Attributes\Signature('osp:purge-soft-deleted-funding-sources {--force : Skip confirmation}')]
 class PurgeSoftDeletedFundingSources extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:purge-soft-deleted-funding-sources {--force : Skip confirmation}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Permanently delete soft-deleted funding sources from the database';
-
     /**
      * Execute the console command.
      */

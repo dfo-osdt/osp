@@ -5,22 +5,10 @@ namespace App\Console\Commands;
 use App\Actions\Notifications\CheckDueManagementReviews;
 use Illuminate\Console\Command;
 
+#[\Illuminate\Console\Attributes\Description('Send email notifications for due and overdue management reviews (only runs on business days)')]
+#[\Illuminate\Console\Attributes\Signature('osp:send-due-management-review-notifications {--force : Force execution even on non-business days}')]
 class SendDueManagementReviewNotifications extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'osp:send-due-management-review-notifications {--force : Force execution even on non-business days}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Send email notifications for due and overdue management reviews (only runs on business days)';
-
     /**
      * Execute the console command.
      */
