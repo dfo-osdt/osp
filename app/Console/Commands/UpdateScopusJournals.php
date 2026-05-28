@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Journal;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use Str;
@@ -12,8 +14,8 @@ use Str;
  * journals in the database with the information from the file. This file can
  * be found here: https://www.scopus.com/home.uri
  */
-#[\Illuminate\Console\Attributes\Description('Update the journals in the database with the information from the Scopus Source List file.')]
-#[\Illuminate\Console\Attributes\Signature('osp:update-scopus-journals {file}')]
+#[Description('Update the journals in the database with the information from the Scopus Source List file.')]
+#[Signature('osp:update-scopus-journals {file}')]
 class UpdateScopusJournals extends Command
 {
     /**

@@ -7,14 +7,16 @@ use App\Models\AuthorEmployment;
 use App\Models\Funder;
 use App\Models\Organization;
 use App\Models\PublicationAuthor;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Database\Query\Builder;
 
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 
-#[\Illuminate\Console\Attributes\Description('Merge an unverified organization into a verified organization')]
-#[\Illuminate\Console\Attributes\Signature('osp:merge-organization')]
+#[Description('Merge an unverified organization into a verified organization')]
+#[Signature('osp:merge-organization')]
 class MergeOrganization extends Command
 {
     public function handle(): ?int

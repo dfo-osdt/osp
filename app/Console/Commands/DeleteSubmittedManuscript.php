@@ -5,10 +5,12 @@ namespace App\Console\Commands;
 use App\Actions\DeleteSubmittedManuscriptRecord;
 use App\Enums\ManuscriptRecordStatus;
 use App\Models\ManuscriptRecord;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[\Illuminate\Console\Attributes\Description('Permanently delete a submitted manuscript record and all its associated data')]
-#[\Illuminate\Console\Attributes\Signature('osp:delete-submitted-manuscript {id : The manuscript record ID} {--force : Skip confirmation}')]
+#[Description('Permanently delete a submitted manuscript record and all its associated data')]
+#[Signature('osp:delete-submitted-manuscript {id : The manuscript record ID} {--force : Skip confirmation}')]
 class DeleteSubmittedManuscript extends Command
 {
     public function handle(): int

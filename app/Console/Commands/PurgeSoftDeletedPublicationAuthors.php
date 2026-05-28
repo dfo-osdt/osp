@@ -3,10 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Models\PublicationAuthor;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[\Illuminate\Console\Attributes\Description('Permanently delete soft-deleted publication authors from the database')]
-#[\Illuminate\Console\Attributes\Signature('osp:purge-soft-deleted-publication-authors {--force : Skip confirmation}')]
+#[Description('Permanently delete soft-deleted publication authors from the database')]
+#[Signature('osp:purge-soft-deleted-publication-authors {--force : Skip confirmation}')]
 class PurgeSoftDeletedPublicationAuthors extends Command
 {
     /**
