@@ -2,11 +2,11 @@
 import type {
   ManuscriptRecordResource,
 } from '../ManuscriptRecord'
-import { ManuscriptRecordService } from '../ManuscriptRecord'
 import { useQuasar } from 'quasar'
 import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue'
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
 import SubmittedToJournalDialog from '../components/SubmittedToJournalDialog.vue'
+import UnsubmitManuscriptButton from './UnsubmitManuscriptButton.vue'
 import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
 
 const manuscriptRecord = defineModel<ManuscriptRecordResource>({ required: true })
@@ -144,47 +144,11 @@ const withdrawnSubtitle = computed(() => {
   )
 })
 
-const unsubmitLoading = ref(false)
 
-function confirmUnsubmitManuscript() {
-  $q.dialog({
-    title: t('manuscript-progress-view.unsubmit-title'),
-    message: t('manuscript-progress-view.unsubmit-details'),
-    cancel: true,
-    persistent: true,
-    ok: {
-      label: t('common.confirm'),
-      color: 'negative',
-    },
-  }).onOk(() => {
-    unsubmitManuscript()
-  })
+function unsubmitForReview(record: ManuscriptRecordResource) {
+  manuscriptRecord.value = record
 }
 
-async function unsubmitManuscript() {
-  if (!manuscriptRecord.value) {
-    return
-  }
- unsubmitLoading.value = true
-
-  try {
-    const record = await ManuscriptRecordService.unsubmitForReview(
-      manuscriptRecord.value.data.id,
-    )
-
-    updateManuscriptandNotify(record)
-  }
-  catch {
-    $q.notify({
-      message: t('manuscript-progress-view.unsubmit-failed'),
-      color: 'negative',
-      icon: 'mdi-alert-circle-outline',
-    })
-  }
-  finally {
-    unsubmitLoading.value = false
-  }
-}
 // submitted to journal dialog
 const showSubmittedToJournalDialog = ref(false)
 
@@ -207,6 +171,8 @@ function withdrawManuscript(record: ManuscriptRecordResource) {
   showWithdrawManuscriptDialog.value = false
   updateManuscriptandNotify(record)
 }
+
+
 
 function updateManuscriptandNotify(record: ManuscriptRecordResource) {
   manuscriptRecord.value = record
@@ -262,13 +228,10 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
       <p>
         {{ $t('manuscript-progress-view.completed-details') }}
       </p>
-      <q-btn
+      <UnsubmitManuscriptButton
   v-if="canUnsubmitForReview"
-  color="negative"
-  outline
-  icon="mdi-undo"
-  :label="$t('manuscript-progress-view.unsubmit')"
-  @click="confirmUnsubmitManuscript()"
+  :manuscript-record-id="manuscriptRecord.data.id"
+  @unsubmitted="unsubmitForReview"
 />
     </q-timeline-entry>
     <q-timeline-entry

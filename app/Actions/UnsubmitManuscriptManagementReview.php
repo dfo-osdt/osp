@@ -12,7 +12,7 @@ class UnsubmitManuscriptManagementReview
     {
         if ($manuscriptRecord->status !== ManuscriptRecordStatus::IN_REVIEW) {
             throw new \InvalidArgumentException(
-                "Only manuscript records in review can be unsubmitted."
+                'Only manuscript records in review can be unsubmitted.'
             );
         }
 
@@ -25,10 +25,10 @@ class UnsubmitManuscriptManagementReview
             $manuscriptRecord->refresh();
 
             activity()
-            ->performedOn($manuscriptRecord)
-            ->causedBy(auth()->user())
-            ->event('unsubmitted')
-            ->log('Manuscript was unsubmitted for manuscript management review');
+                ->performedOn($manuscriptRecord)
+                ->causedBy(auth()->user())
+                ->event('unsubmitted')
+                ->log('Manuscript was unsubmitted for manuscript management review');
         });
-    } 
+    }
 }
