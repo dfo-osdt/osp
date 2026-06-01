@@ -6,8 +6,8 @@ import { useQuasar } from 'quasar'
 import AcceptedByJournalDialog from '../components/AcceptedByJournalDialog.vue'
 import ManuscriptStatusSpan from '../components/ManuscriptStatusSpan.vue'
 import SubmittedToJournalDialog from '../components/SubmittedToJournalDialog.vue'
-import UnsubmitManuscriptButton from './UnsubmitManuscriptButton.vue'
 import WithdrawManuscriptDialog from '../components/WithdrawManuscriptDialog.vue'
+import UnsubmitManuscriptButton from './UnsubmitManuscriptButton.vue'
 
 const manuscriptRecord = defineModel<ManuscriptRecordResource>({ required: true })
 
@@ -144,7 +144,6 @@ const withdrawnSubtitle = computed(() => {
   )
 })
 
-
 function unsubmitForReview(record: ManuscriptRecordResource) {
   manuscriptRecord.value = record
 }
@@ -171,8 +170,6 @@ function withdrawManuscript(record: ManuscriptRecordResource) {
   showWithdrawManuscriptDialog.value = false
   updateManuscriptandNotify(record)
 }
-
-
 
 function updateManuscriptandNotify(record: ManuscriptRecordResource) {
   manuscriptRecord.value = record
@@ -229,10 +226,10 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
         {{ $t('manuscript-progress-view.completed-details') }}
       </p>
       <UnsubmitManuscriptButton
-  v-if="canUnsubmitForReview"
-  :manuscript-record-id="manuscriptRecord.data.id"
-  @unsubmitted="unsubmitForReview"
-/>
+        v-if="canUnsubmitForReview"
+        :manuscript-record-id="manuscriptRecord.data.id"
+        @unsubmitted="unsubmitForReview"
+      />
     </q-timeline-entry>
     <q-timeline-entry
       v-if="manuscriptRecord.data.status !== 'withdrawn'"

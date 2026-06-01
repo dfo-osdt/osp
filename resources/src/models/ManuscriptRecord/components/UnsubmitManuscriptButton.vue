@@ -3,8 +3,8 @@
   lang="ts"
 >
 import type { ManuscriptRecordResource } from '../ManuscriptRecord'
-import { ref } from 'vue'
 import { useQuasar } from 'quasar'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ManuscriptRecordService } from '../ManuscriptRecord'
 
@@ -37,24 +37,24 @@ function confirmUnsubmitManuscript() {
 }
 
 async function unsubmitManuscript() {
-    loading.value = true
+  loading.value = true
 
-    try {
-        const manuscriptRecord = await ManuscriptRecordService.unsubmitForReview(
-  props.manuscriptRecordId,
-)
-        emit('unsubmitted', manuscriptRecord)
-    }
-    catch {
-        $q.notify({
-        message: t('manuscript-progress-view.unsubmit-failed'),
-        color: 'negative',
-        icon: 'mdi-alert-circle-outline',
-        })
-    }
-    finally {
-        loading.value = false
-    }
+  try {
+    const manuscriptRecord = await ManuscriptRecordService.unsubmitForReview(
+      props.manuscriptRecordId,
+    )
+    emit('unsubmitted', manuscriptRecord)
+  }
+  catch {
+    $q.notify({
+      message: t('manuscript-progress-view.unsubmit-failed'),
+      color: 'negative',
+      icon: 'mdi-alert-circle-outline',
+    })
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>
 
