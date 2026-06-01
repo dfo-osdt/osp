@@ -212,12 +212,12 @@ export class ManuscriptRecordService {
     return response.data
   }
 
-/** Unsubmit this manuscript record */
-public static async unsubmitForReview(id: number) {
-  const response = await http.put(`${this.baseURL}/${id}/unsubmit-for-review`)
+  /** Unsubmit this manuscript record */
+  public static async unsubmitForReview(id: number) {
+    const response = await http.put(`${this.baseURL}/${id}/unsubmit-for-review`)
 
-  return response.data
-}
+    return response.data
+  }
 
   /** Mark this manuscript as being submitted to a journal */
   public static async submitted(id: number, date: string) {
