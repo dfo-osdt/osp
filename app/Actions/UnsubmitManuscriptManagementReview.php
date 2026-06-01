@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Enums\ManuscriptRecordStatus;
+use App\Events\ManuscriptManagementReviewUnsubmittedEvent;
 use App\Models\ManuscriptRecord;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +16,8 @@ class UnsubmitManuscriptManagementReview
                 'Only manuscript records in review can be unsubmitted.'
             );
         }
+
+        $reviewUser = $manuscriptRecord->managementReviewSteps()->latest()->first()->user; // store the review user for contact before deleting the review steps
 
         DB::transaction(function () use ($manuscriptRecord): void {
             $manuscriptRecord->managementReviewSteps()->delete();
@@ -30,5 +33,8 @@ class UnsubmitManuscriptManagementReview
                 ->event('unsubmitted')
                 ->log('Manuscript was unsubmitted for manuscript management review');
         });
+
+        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUser)); // trigger email reviewer and author process
+
     }
 }
