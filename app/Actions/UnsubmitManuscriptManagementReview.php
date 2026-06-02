@@ -17,9 +17,10 @@ class UnsubmitManuscriptManagementReview
             );
         }
 
-        $reviewUser = $manuscriptRecord->managementReviewSteps()->latest()->first()->user; // store the review user for contact before deleting the review steps
+        $reviewUsers = $manuscriptRecord->managementReviewSteps->values(); // store the reviewer steps for contact before deleting the review steps
 
         DB::transaction(function () use ($manuscriptRecord): void {
+            $manuscriptRecord->managementReviewSteps()->update(['previous_step_id' => null]);
             $manuscriptRecord->managementReviewSteps()->delete();
 
             $manuscriptRecord->status = ManuscriptRecordStatus::DRAFT;
@@ -34,7 +35,7 @@ class UnsubmitManuscriptManagementReview
                 ->log('Manuscript was unsubmitted for manuscript management review');
         });
 
-        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUser)); // trigger email reviewer and author process
+        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUsers)); // trigger email reviewer and author process
 
     }
 }
