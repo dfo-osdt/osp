@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -18,26 +22,26 @@ class ManuscriptManagementReviewUnsubmittedMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public ManuscriptRecord $manuscriptRecord, public User $user)
+    public function __construct(public ManuscriptRecord $manuscriptRecord, public User $reviewUser)
     {
-        $manuscriptRecord->load('user', 'manuscriptAuthors.author.user');
+        //
     }
 
-    public function build()
+    public function envelope(): Envelope
     {
-        $this->subject('Manuscript Unsubmitted from Manuscript Management Review - Manuscrit retiré de l\'examen de gestion du manuscrit : '.$this->manuscriptRecord->title);
-        $this->to($this->user->email, $this->user->fullName);
-        $this->cc($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->fullName);
+        return new Envelope(
+            subject: 'Manuscript Unsubmitted from Manuscript Management Review - Manuscrit retiré de l\'examen de gestion du manuscrit : '.$this->manuscriptRecord->title,
+        );
+    }
 
-        // cc all authors
-        $this->cc(
-            $this->manuscriptRecord->manuscriptAuthors
-                ->pluck('author.user.email')
-                ->filter(fn ($email): bool => $email !== null)
-                ->forget($this->user->email) // don't send to reviewer twice
-                ->toArray());
-
-        return $this->markdown('mail.manuscriptRecord.manuscript-unsubmitted-from-management-review');
-
+    public function content(): Content
+    {
+        return new Content(
+            markdown: 'mail.manuscriptRecord.manuscript-unsubmitted-from-management-review',
+            with: [
+                'manuscriptRecord' => $this->manuscriptRecord,
+                'user' => $this->reviewUser,
+            ],
+        );
     }
 }
