@@ -25,23 +25,30 @@ function confirmUnsubmitManuscript() {
   $q.dialog({
     title: t('manuscript-progress-view.unsubmit-title'),
     message: t('manuscript-progress-view.unsubmit-details'),
+    prompt: {
+      model: '',
+      type: 'textarea',
+      label: t('manuscript-progress-view.unsubmit-reason-label'),
+      isValid: val => val.trim().length > 2,
+    },
     cancel: true,
     persistent: false,
     ok: {
       label: t('common.confirm'),
       color: 'negative',
     },
-  }).onOk(() => {
-    unsubmitManuscript()
+  }).onOk((value: string) => {
+    unsubmitManuscript(value)
   })
 }
 
-async function unsubmitManuscript() {
+async function unsubmitManuscript(reason: string) {
   loading.value = true
 
   try {
     const manuscriptRecord = await ManuscriptRecordService.unsubmitForReview(
       props.manuscriptRecordId,
+      reason,
     )
     emit('unsubmitted', manuscriptRecord)
   }

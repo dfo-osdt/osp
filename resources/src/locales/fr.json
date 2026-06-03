@@ -590,7 +590,8 @@
     "unsubmit": "Annuler la soumission",
     "unsubmit-title": "Annuler l'envoi du manuscrit ?",
     "unsubmit-details": "Cela ramènera le manuscrit à l'état de brouillon afin qu'il puisse être modifié à nouveau.",
-    "unsubmit-failed": "Impossible de retirer le manuscrit"
+    "unsubmit-failed": "Impossible de retirer le manuscrit",
+    "unsubmit-reason-label": "Raison du retrait de la soumission (obligatoire)"
 
   },
   "mrf": {

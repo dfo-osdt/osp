@@ -590,7 +590,8 @@
     "unsubmit": "Unsubmit",
     "unsubmit-title": "Unsubmit manuscript?",
     "unsubmit-details": "This will return the manuscript to draft so it can be edited again.",
-    "unsubmit-failed": "Unable to unsubmit manuscript."
+    "unsubmit-failed": "Unable to unsubmit manuscript.",
+    "unsubmit-reason-label": "Reason for unsubmission (required)"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
