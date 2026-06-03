@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 return [
@@ -118,6 +120,11 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    'serializable_classes' => [
+        // Needed by Laravel Pulse
+        Collection::class,
+        stdClass::class,
+        CarbonImmutable::class,
+    ],
 
 ];
