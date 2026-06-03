@@ -22,10 +22,10 @@ class RoleAndPermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         collect(UserPermission::cases())
-            ->each(fn ($permission) => Permission::findOrCreate($permission->value));
+            ->each(fn ($permission) => Permission::findOrCreate($permission));
 
         collect(UserRole::cases())->each(function ($userRole) {
-            $role = Role::findOrCreate($userRole->value);
+            $role = Role::findOrCreate($userRole);
             $role->syncPermissions($userRole->permissionValues());
         });
     }
