@@ -5,3 +5,6 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - axios@1.17.0
+  - dompurify@3.4.8
