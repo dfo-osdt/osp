@@ -213,8 +213,11 @@ export class ManuscriptRecordService {
   }
 
   /** Unsubmit this manuscript record */
-  public static async unsubmitForReview(id: number) {
-    const response = await http.put(`${this.baseURL}/${id}/unsubmit-for-review`)
+  public static async unsubmitForReview(
+    id: number,
+    reason: string,
+  ): Promise<ManuscriptRecordResource> {
+    const response = await http.put<UnsubmitReviewReason, ManuscriptRecordResource>(`${this.baseURL}/${id}/unsubmit-for-review`, { reason })
 
     return response.data
   }
@@ -426,6 +429,10 @@ export class ManuscriptRecordListQuery extends SpatieQuery {
     super.sort(name, direction)
     return this
   }
+}
+
+interface UnsubmitReviewReason {
+  reason: string
 }
 
 type ManuscriptQuerySort

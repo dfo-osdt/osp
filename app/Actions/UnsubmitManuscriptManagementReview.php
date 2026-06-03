@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class UnsubmitManuscriptManagementReview
 {
-    public static function handle(ManuscriptRecord $manuscriptRecord): void
+    public static function handle(ManuscriptRecord $manuscriptRecord, string $reason): void
     {
         if ($manuscriptRecord->status !== ManuscriptRecordStatus::IN_REVIEW) {
             throw new \InvalidArgumentException(
@@ -17,9 +17,14 @@ class UnsubmitManuscriptManagementReview
             );
         }
 
+        $old = [
+            'status' => $manuscriptRecord->status->value,
+            'sent_for_review_at' => $manuscriptRecord->sent_for_review_at,
+        ]; // Store old status for activity log
+        $reason = trim($reason); // Ensure reason is not just whitespace
         $reviewUsers = $manuscriptRecord->managementReviewSteps->values(); // store the reviewer steps for contact before deleting the review steps
 
-        DB::transaction(function () use ($manuscriptRecord): void {
+        DB::transaction(function () use ($manuscriptRecord, $reason, $old): void {
             $manuscriptRecord->managementReviewSteps()->update(['previous_step_id' => null]);
             $manuscriptRecord->managementReviewSteps()->delete();
 
@@ -32,6 +37,14 @@ class UnsubmitManuscriptManagementReview
                 ->performedOn($manuscriptRecord)
                 ->causedBy(auth()->user())
                 ->event('unsubmitted')
+                ->withProperties([
+                    'reason' => $reason,
+                    'old' => $old,
+                    'attributes' => [
+                        'status' => $manuscriptRecord->status->value,
+                        'sent_for_review_at' => $manuscriptRecord->sent_for_review_at,
+                    ],
+                ])
                 ->log('Manuscript was unsubmitted for manuscript management review');
         });
 

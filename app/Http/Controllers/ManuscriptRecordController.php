@@ -233,7 +233,14 @@ class ManuscriptRecordController extends Controller
         $manuscriptRecord = $this->loadPolicyRelationships($manuscriptRecord);
         Gate::authorize('unsubmitForReview', $manuscriptRecord);
 
-        UnsubmitManuscriptManagementReview::handle($manuscriptRecord);
+        $validated = $request->validate([
+            'reason' => ['required', 'string', 'min:3', 'max:1000'],
+        ]);
+
+        UnsubmitManuscriptManagementReview::handle(
+            manuscriptRecord: $manuscriptRecord,
+            reason: $validated['reason'],
+        );
 
         return $this->defaultResource($manuscriptRecord);
     }
