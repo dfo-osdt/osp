@@ -22,6 +22,7 @@ import ManuscriptStatusBadge from '../components/ManuscriptStatusBadge.vue'
 import ManuscriptTypeBadge from '../components/ManuscriptTypeBadge.vue'
 import PlainLanguageSummarySection from '../components/PlainLanguageSummarySection.vue'
 import SubmitManuscriptDialog from '../components/SubmitManuscriptDialog.vue'
+import UnsubmitManuscriptButton from '../components/UnsubmitManuscriptButton.vue'
 import YesNoBooleanOptionGroup from '../components/YesNoBooleanOptionGroup.vue'
 import {
   ManuscriptRecordService,
@@ -289,6 +290,16 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
                 icon="mdi-delete-outline"
                 :label="$t('common.delete')"
                 @deleted="$router.push({ name: 'dashboard' })"
+              />
+              <UnsubmitManuscriptButton
+                v-if="manuscriptResource.data.can_unsubmit_for_review"
+                :manuscript-record-id="manuscriptResource.data.id"
+                flat
+                size="sm"
+                color="red"
+                icon="mdi-undo"
+                :label="$t('manuscript-progress-view.unsubmit')"
+                @unsubmitted="onSubmitted"
               />
             </div>
           </div>

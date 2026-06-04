@@ -87,7 +87,7 @@ const canUnsubmitForReview = computed(() => {
     return false
   }
 
-  return Boolean(manuscriptRecord.value.can?.update && manuscriptRecord.value.data.can_unsubmit_for_review)
+  return Boolean(manuscriptRecord.value.data.can_unsubmit_for_review)
 })
 
 const submittedToJournalSubtitle = computed(() => {
