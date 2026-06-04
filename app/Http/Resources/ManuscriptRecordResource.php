@@ -71,6 +71,7 @@ class ManuscriptRecordResource extends JsonResource
                 // special model permissions
                 'can_attach_manuscript' => Auth::user()->can('attachManuscript', $this->resource),
                 'can_resubmit_preprint' => Auth::user()->can('submitToPreprint', $this->resource),
+                'can_unsubmit_for_review' => Auth::user()->can('unsubmitForReview', $this->resource),
             ],
             'can' => [
                 'update' => Auth::user()->can('update', $this->resource),

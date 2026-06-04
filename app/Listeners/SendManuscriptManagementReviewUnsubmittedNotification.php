@@ -23,33 +23,28 @@ class SendManuscriptManagementReviewUnsubmittedNotification
      */
     public function handle(ManuscriptManagementReviewUnsubmittedEvent $event): void
     {
-        $event->manuscriptRecord->load('user', 'manuscriptAuthors.author');
-        $event->reviewUsers->each(fn ($reviewUser) => $reviewUser->load('user'));
-
-        // Get latest Manuscript Management Reviewer
         $to = $event->reviewUsers->last();
 
         if (! $to) {
-            return; // No reviewer to notify
+            return;
         }
 
-        // get reviewer emails
+        $event->manuscriptRecord->load('user', 'manuscriptAuthors.author');
+        $event->reviewUsers->each(fn ($reviewUser) => $reviewUser->load('user'));
+
         $reviewEmails = $event->reviewUsers
             ->pluck('user.email')
             ->filter()
             ->values();
 
-        // get authors emails
         $authorEmails = $event->manuscriptRecord->manuscriptAuthors
             ->pluck('author.email')
             ->filter(fn ($email): bool => $email !== null)
             ->values();
 
-        // cc all authors and reviewers
         $ccEmails = $authorEmails
             ->merge($reviewEmails);
 
-        // deduplicate and remove the TO recipient
         $ccEmails = $ccEmails
             ->unique()
             ->diff([$to->user->email])

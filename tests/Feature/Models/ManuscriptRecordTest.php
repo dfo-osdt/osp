@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
@@ -13,6 +14,7 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Activitylog\Models\Activity;
 
 test('an authenticated user can create a new manuscript', function (): void {
     $user = User::factory()->create();
@@ -291,6 +293,61 @@ test('a MRF author can edit and submit a filled manuscript record', function ():
     expect($manuscript->managementReviewSteps()->count())->toBe(1);
     expect($manuscript->managementReviewSteps()->first()->user_id)->toBe($reviewerUser->id);
     expect($manuscript->managementReviewSteps()->first()->status)->toBe(ManagementReviewStepStatus::PENDING);
+});
+
+test('an owner can unsubmit an in review manuscript and unlock manuscript files', function (): void {
+    Event::fake();
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $reviewer = $manuscript->managementReviewSteps()->first()?->user;
+
+    $manuscript->managementReviewSteps()->first()?->update([
+        'status' => ManagementReviewStepStatus::COMPLETED,
+        'decision' => ManagementReviewStepDecision::REVISION,
+        'comments' => 'Please revise methods section',
+        'completed_at' => now(),
+    ]);
+
+    $this->actingAs($manuscript->user)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/unsubmit-for-review", [
+            'reason' => 'Need to update manuscript after co-author feedback.',
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.status', ManuscriptRecordStatus::DRAFT->value)
+        ->assertJsonPath('data.sent_for_review_at', null)
+        ->assertJsonPath('data.can_unsubmit_for_review', false);
+
+    $manuscript->refresh();
+
+    expect($manuscript->status)->toBe(ManuscriptRecordStatus::DRAFT);
+    expect($manuscript->managementReviewSteps()->count())->toBe(0);
+    expect($manuscript->getLastManuscriptFile()?->getCustomProperty('locked'))->toBeFalse();
+
+    $activity = Activity::query()
+        ->where('subject_type', ManuscriptRecord::class)
+        ->where('subject_id', $manuscript->id)
+        ->where('event', 'unsubmitted')
+        ->latest('id')
+        ->first();
+
+    expect($activity)->not->toBeNull();
+
+    $oldProperties = data_get($activity?->properties?->toArray(), 'old');
+    expect($oldProperties)->toHaveKeys(['status', 'sent_for_review_at', 'management_review_steps']);
+    expect(data_get($oldProperties, 'management_review_steps.0.user_id'))->toBe($reviewer?->id);
+    expect(data_get($oldProperties, 'management_review_steps.0.decision'))->toBe(ManagementReviewStepDecision::REVISION->value);
+    expect(data_get($oldProperties, 'management_review_steps.0.comments'))->toBe('Please revise methods section');
+});
+
+test('an unsubmit reason with fewer than three non whitespace characters is rejected', function (): void {
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+
+    $this->actingAs($manuscript->user)
+        ->putJson("/api/manuscript-records/{$manuscript->id}/unsubmit-for-review", [
+            'reason' => '  a',
+        ])
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['reason']);
 });
 
 test('a user can withdraw a manuscript record', function (): void {

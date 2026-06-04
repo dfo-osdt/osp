@@ -68,6 +68,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   // special model permissions
   can_attach_manuscript: boolean
   can_resubmit_preprint: boolean
+  can_unsubmit_for_review: boolean
 }
 
 export type ManuscriptRecordSummary = Omit<

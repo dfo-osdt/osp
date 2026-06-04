@@ -380,6 +380,17 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     }
 
     /**
+     * Unlock all manuscript files.
+     */
+    public function unlockManuscriptFiles(): void
+    {
+        $this->getManuscriptFiles()->each(function ($media): void {
+            $media->setCustomProperty('locked', false);
+            $media->save();
+        });
+    }
+
+    /**
      * Validate this manuscript record is filled and can be
      * submitted for internal review.
      *
