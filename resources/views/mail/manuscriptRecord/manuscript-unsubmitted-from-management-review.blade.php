@@ -5,6 +5,8 @@
 
 A manuscript record submission has been unsubmitted from the Manuscript Management Review queue by {{ $unsubmittedBy->fullName }} and returned to draft.
 
+**Reason for unsubmission:**<br /> {{ $reason }}
+
 A Manuscript Management Review is no longer expected for this manuscript record. If you have any questions, please contact the author.
 
 <x-mail::panel>
@@ -24,6 +26,8 @@ A Manuscript Management Review is no longer expected for this manuscript record.
 # Bonjour {{ $user->first_name }},
 
 Une soumission au registre du manuscrit a été retirée de la révision par la gestion par {{ $unsubmittedBy->fullName }} et remise à l'état de brouillon.
+
+**Raison du retrait de la soumission :**<br /> {{ $reason }}
 
 Une révision par la gestion du manuscrit n'est plus requise pour ce dossier de manuscrit. Si vous avez des questions, veuillez communiquer avec l'auteur.
 

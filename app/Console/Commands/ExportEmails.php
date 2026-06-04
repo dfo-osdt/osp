@@ -89,7 +89,12 @@ class ExportEmails extends Command
         $unsubmittedManuscript->load('user', 'manuscriptAuthors.author');
         $reviewUser = $unsubmittedManuscript->managementReviewSteps()->with('user')->first()->user;
         $unsubmittedBy = $unsubmittedManuscript->user;
-        $manuscriptManagementReviewUnsubmitted = new ManuscriptManagementReviewUnsubmittedMail($unsubmittedManuscript, $reviewUser, $unsubmittedBy);
+        $manuscriptManagementReviewUnsubmitted = new ManuscriptManagementReviewUnsubmittedMail(
+            $unsubmittedManuscript,
+            $reviewUser,
+            $unsubmittedBy,
+            'Need to update manuscript details before review resumes.',
+        );
         $markdownContent = $manuscriptManagementReviewUnsubmitted->render();
         $this->exportFile('manuscript-management-review-unsubmitted.html', $markdownContent);
 

@@ -22,7 +22,7 @@ class ManuscriptManagementReviewUnsubmittedMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public ManuscriptRecord $manuscriptRecord, public User $reviewUser, public User $unsubmittedBy)
+    public function __construct(public ManuscriptRecord $manuscriptRecord, public User $reviewUser, public User $unsubmittedBy, public string $reason)
     {
         //
     }
@@ -42,6 +42,7 @@ class ManuscriptManagementReviewUnsubmittedMail extends Mailable
                 'manuscriptRecord' => $this->manuscriptRecord,
                 'user' => $this->reviewUser,
                 'unsubmittedBy' => $this->unsubmittedBy,
+                'reason' => $this->reason,
             ],
         );
     }
