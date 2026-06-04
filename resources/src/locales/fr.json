@@ -587,8 +587,8 @@
     "edit-preprint-title": "Modifier la soumission de préparation",
     "go-to-the-preprint": "Afficher la prépublication (externe)",
     "preprint-url": "URL de prépublication",
-    "unsubmit": "Annuler la soumission",
-    "unsubmit-title": "Annuler l'envoi du manuscrit ?",
+    "unsubmit": "Retirer la soumission",
+    "unsubmit-title": "Retirer la soumission du manuscrit ?",
     "unsubmit-details": "Cela ramènera le manuscrit à l'état de brouillon afin qu'il puisse être modifié à nouveau.",
     "unsubmit-failed": "Impossible de retirer le manuscrit",
     "unsubmit-reason-label": "Raison du retrait de la soumission (obligatoire)"

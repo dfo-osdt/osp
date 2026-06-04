@@ -13,6 +13,7 @@ use App\Mail\JournalAcceptancePendingMail;
 use App\Mail\ManagementReviewDueMail;
 use App\Mail\ManagementReviewPendingMail;
 use App\Mail\ManuscriptManagementReviewComplete;
+use App\Mail\ManuscriptManagementReviewUnsubmittedMail;
 use App\Mail\ManuscriptRecordSharedMail;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Mail\ManuscriptRecordToReviewMail;
@@ -83,6 +84,14 @@ class ExportEmails extends Command
         $manuscriptRecordToReview = new ManuscriptRecordToReviewMail(ManuscriptRecord::factory()->secondary()->in_review(true, true)->create(), User::factory()->create());
         $markdownContent = $manuscriptRecordToReview->render();
         $this->exportFile('manuscript-record-to-review-internal.html', $markdownContent);
+
+        $unsubmittedManuscript = ManuscriptRecord::factory()->in_review()->create();
+        $unsubmittedManuscript->load('user', 'manuscriptAuthors.author');
+        $reviewUser = $unsubmittedManuscript->managementReviewSteps()->with('user')->first()->user;
+        $unsubmittedBy = $unsubmittedManuscript->user;
+        $manuscriptManagementReviewUnsubmitted = new ManuscriptManagementReviewUnsubmittedMail($unsubmittedManuscript, $reviewUser, $unsubmittedBy);
+        $markdownContent = $manuscriptManagementReviewUnsubmitted->render();
+        $this->exportFile('manuscript-management-review-unsubmitted.html', $markdownContent);
 
         // Next reviwer: flagged - return to author
         $mrf = ManagementReviewStep::factory([
