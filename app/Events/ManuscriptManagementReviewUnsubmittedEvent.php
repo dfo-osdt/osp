@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Events;
 
 use App\Models\ManuscriptRecord;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -19,7 +20,7 @@ class ManuscriptManagementReviewUnsubmittedEvent
     /**
      * Create a new event instance.
      */
-    public function __construct(public ManuscriptRecord $manuscriptRecord, public Collection $reviewUsers)
+    public function __construct(public ManuscriptRecord $manuscriptRecord, public Collection $reviewUsers, public User $unsubmittedBy)
     {
         //
     }
