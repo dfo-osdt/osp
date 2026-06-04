@@ -32,6 +32,7 @@ class UnsubmitManuscriptManagementReview
 
         $reason = trim($reason);
         $reviewUsers = $manuscriptRecord->managementReviewSteps->values();
+        $unsubmittedBy = auth()->user();
 
         DB::transaction(function () use ($manuscriptRecord, $reason, $old): void {
             $manuscriptRecord->managementReviewSteps()->update(['previous_step_id' => null]);
@@ -58,6 +59,6 @@ class UnsubmitManuscriptManagementReview
                 ->log('Manuscript was unsubmitted for manuscript management review');
         });
 
-        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUsers));
+        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUsers, $unsubmittedBy));
     }
 }

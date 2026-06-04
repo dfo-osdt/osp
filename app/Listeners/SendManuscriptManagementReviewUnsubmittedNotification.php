@@ -53,6 +53,6 @@ class SendManuscriptManagementReviewUnsubmittedNotification
 
         Mail::to($to->user->email, $to->user->fullName)
             ->cc($ccEmails)
-            ->queue(new ManuscriptManagementReviewUnsubmittedMail($event->manuscriptRecord, $to->user));
+            ->queue(new ManuscriptManagementReviewUnsubmittedMail($event->manuscriptRecord, $to->user, $event->unsubmittedBy));
     }
 }

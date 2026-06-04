@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-A manuscript record submission from {{ $manuscriptRecord->user->fullname }} has been unsubmitted from the Manuscript Management Review queue and returned to draft.
+A manuscript record submission has been unsubmitted from the Manuscript Management Review queue by {{ $unsubmittedBy->fullName }} and returned to draft.
 
 A Manuscript Management Review is no longer expected for this manuscript record. If you have any questions, please contact the author.
 
@@ -23,9 +23,9 @@ A Manuscript Management Review is no longer expected for this manuscript record.
 
 # Bonjour {{ $user->first_name }},
 
-Une soumission de dossier de manuscrit de {{ $manuscriptRecord->user->fullname }} a été retirée de la file d'attente de l'examen de gestion du manuscrit et remise à l'état de brouillon.
+Une soumission au registre du manuscrit a été retirée de la révision par la gestion par {{ $unsubmittedBy->fullName }} et remise à l'état de brouillon.
 
-Un examen de gestion du manuscrit n'est plus requis pour ce dossier de manuscrit. Si vous avez des questions, veuillez communiquer avec l'auteur.
+Une révision par la gestion du manuscrit n'est plus requise pour ce dossier de manuscrit. Si vous avez des questions, veuillez communiquer avec l'auteur.
 
 <x-mail::panel>
 # Résumé du manuscrit
