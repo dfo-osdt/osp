@@ -20,7 +20,7 @@ class ManuscriptManagementReviewUnsubmittedEvent
     /**
      * Create a new event instance.
      */
-    public function __construct(public ManuscriptRecord $manuscriptRecord, public Collection $reviewUsers, public User $unsubmittedBy)
+    public function __construct(public ManuscriptRecord $manuscriptRecord, public Collection $reviewUsers, public User $unsubmittedBy, public string $reason)
     {
         //
     }

@@ -59,6 +59,6 @@ class UnsubmitManuscriptManagementReview
                 ->log('Manuscript was unsubmitted for manuscript management review');
         });
 
-        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUsers, $unsubmittedBy));
+        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUsers, $unsubmittedBy, $reason));
     }
 }
