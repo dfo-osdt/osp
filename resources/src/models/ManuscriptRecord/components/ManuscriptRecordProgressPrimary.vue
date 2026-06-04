@@ -83,7 +83,11 @@ const managementReviewIcon = computed(() => {
 })
 
 const canUnsubmitForReview = computed(() => {
-  return manuscriptRecord.value?.data.status === 'in_review'
+  if (manuscriptRecord.value?.data.status !== 'in_review') {
+    return false
+  }
+
+  return Boolean(manuscriptRecord.value.can?.update && manuscriptRecord.value.data.can_unsubmit_for_review)
 })
 
 const submittedToJournalSubtitle = computed(() => {

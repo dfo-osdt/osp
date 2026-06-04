@@ -20,9 +20,18 @@ class UnsubmitManuscriptManagementReview
         $old = [
             'status' => $manuscriptRecord->status->value,
             'sent_for_review_at' => $manuscriptRecord->sent_for_review_at,
-        ]; // Store old status for activity log
-        $reason = trim($reason); // Ensure reason is not just whitespace
-        $reviewUsers = $manuscriptRecord->managementReviewSteps->values(); // store the reviewer steps for contact before deleting the review steps
+            'management_review_steps' => $manuscriptRecord->managementReviewSteps
+                ->map(fn ($reviewStep): array => [
+                    'user_id' => $reviewStep->user_id,
+                    'decision' => $reviewStep->decision?->value,
+                    'comments' => $reviewStep->comments,
+                ])
+                ->values()
+                ->all(),
+        ];
+
+        $reason = trim($reason);
+        $reviewUsers = $manuscriptRecord->managementReviewSteps->values();
 
         DB::transaction(function () use ($manuscriptRecord, $reason, $old): void {
             $manuscriptRecord->managementReviewSteps()->update(['previous_step_id' => null]);
@@ -30,6 +39,7 @@ class UnsubmitManuscriptManagementReview
 
             $manuscriptRecord->status = ManuscriptRecordStatus::DRAFT;
             $manuscriptRecord->sent_for_review_at = null;
+            $manuscriptRecord->unlockManuscriptFiles();
             $manuscriptRecord->save();
             $manuscriptRecord->refresh();
 
@@ -48,7 +58,6 @@ class UnsubmitManuscriptManagementReview
                 ->log('Manuscript was unsubmitted for manuscript management review');
         });
 
-        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUsers)); // trigger email reviewer and author process
-
+        event(new ManuscriptManagementReviewUnsubmittedEvent($manuscriptRecord, $reviewUsers));
     }
 }

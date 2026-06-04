@@ -36,7 +36,7 @@ class ManuscriptRecordPolicy
         }
 
         // owners can view their own manuscripts
-        if ($user->id === $manuscriptRecord->user_id) {
+        if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
         }
 
@@ -45,7 +45,7 @@ class ManuscriptRecordPolicy
             return true;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+        if ($this->isAuthor($user, $manuscriptRecord)) {
             return true;
         }
 
@@ -83,12 +83,12 @@ class ManuscriptRecordPolicy
     {
         switch ($manuscriptRecord->status) {
             case ManuscriptRecordStatus::DRAFT:
-                if ($user->id === $manuscriptRecord->user_id) {
+                if ($this->isOwner($user, $manuscriptRecord)) {
                     return true;
                 }
 
                 // Is the the user an author on this manuscript?
-                if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+                if ($this->isAuthor($user, $manuscriptRecord)) {
                     return true;
                 }
 
@@ -112,7 +112,7 @@ class ManuscriptRecordPolicy
                     ->first();
 
                 if ($lastCompletedStep?->decision === ManagementReviewStepDecision::REVISION) {
-                    if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+                    if ($this->isAuthor($user, $manuscriptRecord)) {
                         return true;
                     }
 
@@ -137,7 +137,7 @@ class ManuscriptRecordPolicy
     {
         // can delete if the manuscript is in draft state
         if ($manuscriptRecord->status === ManuscriptRecordStatus::DRAFT) {
-            if ($user->id === $manuscriptRecord->user_id) {
+            if ($this->isOwner($user, $manuscriptRecord)) {
                 return true;
             }
 
@@ -168,11 +168,11 @@ class ManuscriptRecordPolicy
         }
 
         // can attach if the manuscript is the owner of the manuscript
-        if ($user->id === $manuscriptRecord->user_id) {
+        if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+        if ($this->isAuthor($user, $manuscriptRecord)) {
             return true;
         }
 
@@ -193,12 +193,11 @@ class ManuscriptRecordPolicy
             return false;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+        if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
         }
 
-        // can only submit if the user is the owner of the manuscript
-        return $user->id === $manuscriptRecord->user_id;
+        return $this->isAuthor($user, $manuscriptRecord);
     }
 
     /**
@@ -211,12 +210,11 @@ class ManuscriptRecordPolicy
             return false;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+        if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
         }
 
-        // can only unsubmit if the user is the owner of the manuscript
-        return $user->id === $manuscriptRecord->user_id;
+        return $this->isAuthor($user, $manuscriptRecord);
     }
 
     /**
@@ -234,7 +232,7 @@ class ManuscriptRecordPolicy
         }
 
         // can only withdraw if the user is the owner of the manuscript
-        return $user->id === $manuscriptRecord->user_id;
+        return $this->isOwner($user, $manuscriptRecord);
     }
 
     /**
@@ -248,11 +246,11 @@ class ManuscriptRecordPolicy
         }
 
         // can only mark as submitted if the user is the owner of the manuscript
-        if ($user->id === $manuscriptRecord->user_id) {
+        if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
         }
 
-        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+        if ($this->isAuthor($user, $manuscriptRecord)) {
             return true;
         }
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
@@ -273,10 +271,10 @@ class ManuscriptRecordPolicy
         }
 
         // can only mark as accepted if the user is the owner of the manuscript
-        if ($user->id === $manuscriptRecord->user_id) {
+        if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
         }
-        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+        if ($this->isAuthor($user, $manuscriptRecord)) {
             return true;
         }
         if ($manuscriptRecord->shareables->firstWhere('user_id', $user->id)?->isEditable()) {
@@ -300,10 +298,10 @@ class ManuscriptRecordPolicy
         }
 
         // A user can do this multiple times, for example, if they made a mistake in the URL or date.
-        if ($user->id === $manuscriptRecord->user_id) {
+        if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
         }
-        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+        if ($this->isAuthor($user, $manuscriptRecord)) {
             return true;
         }
 
@@ -315,11 +313,23 @@ class ManuscriptRecordPolicy
      */
     public function share(User $user, ManuscriptRecord $manuscriptRecord)
     {
-        if ($manuscriptRecord->manuscriptAuthors->contains(fn ($ma): bool => $ma->author->user_id === $user->id)) {
+        if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
         }
 
+        return $this->isAuthor($user, $manuscriptRecord);
+    }
+
+    private function isOwner(User $user, ManuscriptRecord $manuscriptRecord): bool
+    {
         return $user->id === $manuscriptRecord->user_id;
+    }
+
+    private function isAuthor(User $user, ManuscriptRecord $manuscriptRecord): bool
+    {
+        return $manuscriptRecord->manuscriptAuthors->contains(
+            fn ($manuscriptAuthor): bool => $manuscriptAuthor->author->user_id === $user->id
+        );
     }
 
     public function updateMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media): bool
