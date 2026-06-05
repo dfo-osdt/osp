@@ -42,8 +42,12 @@ class SendManuscriptManagementReviewUnsubmittedNotification
             ->filter(fn ($email): bool => $email !== null)
             ->values();
 
+        $notificationGroupEmails = $event->reviewUsers
+            ->flatMap(fn ($reviewUser) => $reviewUser->user?->getNotificationGroupEmails() ?? collect());
+
         $ccEmails = $authorEmails
-            ->merge($reviewEmails);
+            ->merge($reviewEmails)
+            ->merge($notificationGroupEmails);
 
         $ccEmails = $ccEmails
             ->unique()
