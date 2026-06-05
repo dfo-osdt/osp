@@ -43,6 +43,11 @@ class ManuscriptRecordToReviewMail extends Mailable
                 ->forget($this->user->email) // don't send to the user twice
                 ->toArray());
 
+        $notificationGroupEmails = $this->user->getNotificationGroupEmails();
+        if ($notificationGroupEmails->isNotEmpty()) {
+            $this->cc($notificationGroupEmails->all());
+        }
+
         return $this->markdown('mail.manuscriptRecord.manuscriptRecordToReview');
     }
 }

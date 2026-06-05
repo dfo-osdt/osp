@@ -1,9 +1,13 @@
 <?php
 
+use App\Events\ManuscriptManagementReviewUnsubmittedEvent;
 use App\Mail\ManagementReviewDueMail;
 use App\Mail\ManagementReviewPendingMail;
+use App\Mail\ManuscriptManagementReviewUnsubmittedMail;
+use App\Mail\ManuscriptRecordToReviewMail;
 use App\Mail\NotificationGroupMemberRemovedMail;
 use App\Models\ManagementReviewStep;
+use App\Models\ManuscriptRecord;
 use App\Models\NotificationGroupMember;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -135,6 +139,53 @@ test('ManagementReviewPendingMail includes notification group CCs', function ():
 
     $ccAddresses = collect($mail->cc)->pluck('address');
     expect($ccAddresses)->toContain($ccMember->email);
+});
+
+test('ManuscriptRecordToReviewMail includes notification group CCs', function (): void {
+    $user = User::factory()->create();
+    $ccMember = User::factory()->create();
+
+    NotificationGroupMember::factory()->create([
+        'user_id' => $user->id,
+        'member_user_id' => $ccMember->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->create();
+
+    $mail = new ManuscriptRecordToReviewMail($manuscript, $user);
+    $mail->build();
+
+    $ccAddresses = collect($mail->cc)->pluck('address');
+    expect($ccAddresses)->toContain($ccMember->email);
+});
+
+test('ManuscriptManagementReviewUnsubmittedMail includes notification group CCs', function (): void {
+    Mail::fake();
+
+    $reviewer = User::factory()->create();
+    $ccMember = User::factory()->create();
+
+    NotificationGroupMember::factory()->create([
+        'user_id' => $reviewer->id,
+        'member_user_id' => $ccMember->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->create();
+    $reviewStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $reviewer->id,
+    ]);
+
+    event(new ManuscriptManagementReviewUnsubmittedEvent(
+        $manuscript,
+        collect([$reviewStep]),
+        User::factory()->create(),
+        'Test reason'
+    ));
+
+    Mail::assertQueued(ManuscriptManagementReviewUnsubmittedMail::class, function ($mail) use ($ccMember): bool {
+        return collect($mail->cc)->pluck('address')->contains($ccMember->email);
+    });
 });
 
 test('notification group member activity is logged', function (): void {
