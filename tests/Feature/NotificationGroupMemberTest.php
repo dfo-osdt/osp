@@ -183,9 +183,7 @@ test('ManuscriptManagementReviewUnsubmittedMail includes notification group CCs'
         'Test reason'
     ));
 
-    Mail::assertQueued(ManuscriptManagementReviewUnsubmittedMail::class, function ($mail) use ($ccMember): bool {
-        return collect($mail->cc)->pluck('address')->contains($ccMember->email);
-    });
+    Mail::assertQueued(ManuscriptManagementReviewUnsubmittedMail::class, fn ($mail): bool => collect($mail->cc)->pluck('address')->contains($ccMember->email));
 });
 
 test('notification group member activity is logged', function (): void {
