@@ -322,6 +322,9 @@ async function submit() {
           <p class="q-ma-md">
             {{ $t('submit-decision-dialog.planning-binder-tex') }}
           </p>
+          <p class="q-ma-md text-weight-bold text-primary">
+            {{ $t('submit-decision-dialog.planning-binder-responsibility') }}
+          </p>
           <YesNoBooleanOptionGroup
             v-model="submitToBinder"
             class="q-mr-lg"

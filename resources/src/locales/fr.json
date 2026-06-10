@@ -878,7 +878,8 @@
     "your-decision": "Votre revue",
     "no-comments-warning-cant-complete": "Un commentaire de révision est nécessaire pour continuer.",
     "confirm-planning-binder": "Classeur de planification",
-    "planning-binder-tex": "Veuillez indiquer si cette publication doit être ajoutée à la section des publications scientifiques du classeur de planification envoyé au SMA."
+    "planning-binder-tex": "Veuillez indiquer si cette publication doit être ajoutée à la section des publications scientifiques du classeur de planification envoyé au SMA.",
+    "planning-binder-responsibility": "Il est de la responsabilité de la région d'inclure la publication dans le classeur de planification."
   },
   "submit-manuscript-dialog": {
     "step1": {
