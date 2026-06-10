@@ -21,28 +21,28 @@
     "sass-embedded": "^1.100.0",
     "vite-plugin-manifest-sri": "^0.2.0",
     "vue": "^3.5.35",
-    "vue-i18n": "^11.4.4",
+    "vue-i18n": "^11.4.5",
     "vue-router": "^5.1.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",
     "@intlify/eslint-plugin-vue-i18n": "^4.5.1",
     "@quasar/vite-plugin": "^1.12.0",
-    "@types/node": "^25.9.1",
+    "@types/node": "^25.9.2",
     "axios": "^1.17.0",
     "eslint": "^10.4.1",
     "eslint-plugin-quasar": "^1.1.0",
     "laravel-vite-plugin": "^3.1.0",
     "lodash": "^4.18.1",
-    "prettier": "^3.8.3",
+    "prettier": "^3.8.4",
     "typescript": "^6.0.3",
     "unplugin-auto-import": "^21.0.0",
     "vite": "^8.0.16",
     "vite-plugin-vue-devtools": "^8.1.2",
-    "vue-tsc": "^3.3.3"
+    "vue-tsc": "^3.3.4"
   },
-  "packageManager": "pnpm@11.5.1+sha512.93f7b57422ea7068257235b4c16eb60762eb68e1dc23723199cc739043ea9be2c4143274a399d8c6defa2b1176226d9ca1c4b63482d6200c1a8fbaa78c1d1485",
+  "packageManager": "pnpm@11.5.3+sha512.7ac1c919341c213a34dc0d02afb7143c5c26ac26ee8c4782deea821b8ac64d2134a081fd8941dae6e29bbb48f58dfc2b7fbceeccc07cb2f09d219d342a4969ed",
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.61.0"
+    "@rollup/rollup-linux-x64-gnu": "^4.61.1"
   }
 }
