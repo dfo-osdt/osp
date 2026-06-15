@@ -64,8 +64,8 @@ importers:
         specifier: ^25.9.3
         version: 25.9.3
       axios:
-        specifier: ^1.17.0
-        version: 1.17.0
+        specifier: ^1.18.0
+        version: 1.18.0
       eslint:
         specifier: ^10.5.0
         version: 10.5.0
@@ -1302,8 +1302,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@1.17.0:
-    resolution: {integrity: sha512-J8SwNxprqqpbfenehxWYXE7CW+wM1BB4w3+N+g+/Wx40xM4rsLrfPmHHxSWIxJLYDgSY/HqlFPIYb2/S3rxafw==}
+  axios@1.18.0:
+    resolution: {integrity: sha512-E32NzpYKp++W7XRe52rHiXV2ehxmh3wbdgO7MHeFM+vqxLBYHzt0ElkiImtOBxtOmyp0yoC8C6uESVV84Y2/hw==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -4034,8 +4034,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.60.1(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.60.1(typescript@6.0.3)
-      '@typescript-eslint/types': 8.60.1
+      '@typescript-eslint/tsconfig-utils': 8.61.0(typescript@6.0.3)
+      '@typescript-eslint/types': 8.61.0
       debug: 4.4.3
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -4400,7 +4400,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.17.0:
+  axios@1.18.0:
     dependencies:
       follow-redirects: 1.16.0
       form-data: 4.0.6
