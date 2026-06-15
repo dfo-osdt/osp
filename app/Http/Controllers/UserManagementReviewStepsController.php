@@ -21,14 +21,10 @@ class UserManagementReviewStepsController extends Controller
     public function index(Request $request): ResourceCollection
     {
         $user = Auth::user();
-        $canViewAll = $user->canAny([
-            UserPermission::VIEW_ANY_MANUSCRIPT_RECORD->value,
-            UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT->value,
-        ]);
 
         $limit = $this->getLimitFromRequest($request);
         $baseQuery = ManagementReviewStep::query()
-            ->when(! $canViewAll, fn ($q) => $q->where('user_id', $user->id))
+            ->where('user_id', $user->id)
             ->with('manuscriptRecord.user', 'previousStep.user');
         $listQuery = new ManagementReviewStepListQuery($request, $baseQuery);
 
