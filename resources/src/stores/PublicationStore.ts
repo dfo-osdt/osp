@@ -3,6 +3,7 @@ import type {
   PublicationResource,
 } from '@/models/Publication/Publication'
 import {
+  PublicationQuery,
   PublicationService,
 } from '@/models/Publication/Publication'
 
@@ -25,7 +26,9 @@ export const usePublicationStore = defineStore('PublicationStore', () => {
       return // don't load if we're already loading
     if (publications.value === undefined || force) {
       loading.value = true
-      const response = await PublicationService.getMyPublications()
+      const query = new PublicationQuery()
+      query.sort('updated_at', 'desc').paginate(1, 20)
+      const response = await PublicationService.getMyPublications(query)
       publications.value = response.data
       loading.value = false
     }
@@ -40,15 +43,7 @@ export const usePublicationStore = defineStore('PublicationStore', () => {
   const recentPublications = computed(() => {
     if (publications.value === undefined)
       return []
-    return publications.value
-      .sort((a, b) => {
-        if (a.data.updated_at > b.data.updated_at)
-          return -1
-        if (a.data.updated_at < b.data.updated_at)
-          return 1
-        return 0
-      })
-      .slice(0, 5)
+    return publications.value.slice(0, 5)
   })
 
   /**

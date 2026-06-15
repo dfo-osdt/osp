@@ -29,7 +29,7 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
       loading.value = true
 
       const query = new MyManuscriptQuery()
-      query.sort('updated_at', 'desc').paginate(1, 10)
+      query.sort('updated_at', 'desc').paginate(1, 20)
 
       const response
         = await ManuscriptRecordService.getMyManuscripts(query)
@@ -47,15 +47,7 @@ export const useManuscriptStore = defineStore('ManuscriptStore', () => {
   const recentManuscripts = computed(() => {
     if (manuscripts.value === undefined)
       return []
-    return manuscripts.value
-      .sort((a, b) => {
-        if (a.data.updated_at > b.data.updated_at)
-          return -1
-        if (a.data.updated_at < b.data.updated_at)
-          return 1
-        return 0
-      })
-      .slice(0, 5)
+    return manuscripts.value.slice(0, 5)
   })
 
   // Manuscript in progress - where status is 'draft', 'in_review', 'reviewed, or 'submitted'
