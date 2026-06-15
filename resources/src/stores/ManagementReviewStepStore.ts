@@ -29,8 +29,8 @@ export const useManagementReviewStepStore = defineStore(
       if (managementReviewSteps.value === undefined || force) {
         loading.value = true
         const query = new ManagementReviewQuery()
-        query.sort('updated_at', 'asc')
-        query.paginate(1, 10)
+        query.sort('updated_at', 'desc')
+        query.paginate(1, 20)
         managementReviewSteps.value
           = await ManagementReviewStepService.listMy(query)
         loading.value = false
@@ -43,19 +43,10 @@ export const useManagementReviewStepStore = defineStore(
       return managementReviewSteps.value.data.length === 0
     })
 
-    // returns the last 5 management review steps in reverse order (most recent update first)
     const recent = computed(() => {
       if (managementReviewSteps.value === undefined)
         return []
-      return managementReviewSteps.value.data
-        .sort((a, b) => {
-          if (a.data.updated_at > b.data.updated_at)
-            return -1
-          if (a.data.updated_at < b.data.updated_at)
-            return 1
-          return 0
-        })
-        .slice(0, 5)
+      return managementReviewSteps.value.data.slice(0, 5)
     })
 
     const pendingReviewCount = computed(() => {
