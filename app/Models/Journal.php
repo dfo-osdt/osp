@@ -14,10 +14,10 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property string $title_en
- * @property string|null $title_fr
+ * @property string $title
  * @property string|null $scopus_source_record_id Scopus source record ID
  * @property string $publisher
+ * @property string|null $issn
  * @property-read Collection<int, Publication> $publications
  * @property-read int|null $publications_count
  *
@@ -33,10 +33,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereTitleEn($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereTitleFr($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereUpdatedAt($value)
- *
- * @property string $title
- * @property string|null $issn
- *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal notDfoSeries()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereIssn($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Journal whereTitle($value)

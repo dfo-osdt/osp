@@ -8,7 +8,7 @@ use App\Models\ManuscriptRecord;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
 
-test('delegate can complete SECONDARY review when delegator has COMPLETE_INTERNTAL_MANAGEMENT_REVIEW permission', function (): void {
+test('delegate can complete SECONDARY review when delegator has COMPLETE_INTERNAL_MANAGEMENT_REVIEW permission', function (): void {
     Event::fake();
 
     $delegator = User::factory()->create();
@@ -115,11 +115,11 @@ test('user cannot complete SECONDARY review when forwarded step came from a non-
     expect($nonDirectorB->can('complete', $forwardedStep))->toBeFalse();
 });
 
-test('delegate cannot complete SECONDARY review when delegator lacks COMPLETE_INTERNTAL_MANAGEMENT_REVIEW permission', function (): void {
+test('delegate cannot complete SECONDARY review when delegator lacks COMPLETE_INTERNAL_MANAGEMENT_REVIEW permission', function (): void {
     Event::fake();
 
     $delegator = User::factory()->create();
-    // delegator has no director role, so no COMPLETE_INTERNTAL_MANAGEMENT_REVIEW permission
+    // delegator has no director role, so no COMPLETE_INTERNAL_MANAGEMENT_REVIEW permission
 
     $delegate = User::factory()->create();
 
