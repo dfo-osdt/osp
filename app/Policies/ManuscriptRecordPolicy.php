@@ -81,6 +81,11 @@ class ManuscriptRecordPolicy
      */
     public function update(User $user, ManuscriptRecord $manuscriptRecord)
     {
+
+        if ($user->can(UserPermission::EDIT_ALL_MANUSCRIPT_RECORDS)) {
+            return true;
+        }
+
         switch ($manuscriptRecord->status) {
             case ManuscriptRecordStatus::DRAFT:
                 if ($this->isOwner($user, $manuscriptRecord)) {
