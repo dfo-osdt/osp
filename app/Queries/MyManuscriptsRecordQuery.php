@@ -2,6 +2,7 @@
 
 namespace App\Queries;
 
+use App\Filters\MultiColumnFilter;
 use App\Models\ManuscriptRecord;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -22,6 +23,7 @@ class MyManuscriptsRecordQuery extends QueryBuilder
              AllowedFilter::exact('status'),
              AllowedFilter::exact('type'),
              AllowedFilter::partial('title'),
+             AllowedFilter::custom('search', new MultiColumnFilter('title', 'ulid')),
              AllowedFilter::exact('functional_area_id'),
              AllowedFilter::scope('reviewedBetween'),
          )->allowedSorts(

@@ -331,6 +331,12 @@ export class MyManuscriptQuery extends SpatieQuery {
     return this
   }
 
+  /** Search by title or ULID */
+  public filterSearch(search: string): this {
+    this.filter('search', search)
+    return this
+  }
+
   public filterRegionId(regionId: number[]): this {
     this.filter('region_id', regionId)
     return this
@@ -380,6 +386,12 @@ export class ManuscriptRecordListQuery extends SpatieQuery {
 
   public filterTitle(title: string): this {
     this.filter('title', title)
+    return this
+  }
+
+  /** Search by title or ULID */
+  public filterSearch(search: string): this {
+    this.filter('search', search)
     return this
   }
 
