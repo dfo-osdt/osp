@@ -69,7 +69,7 @@ class ManagementReviewStepPolicy
 
         switch ($managementReviewStep->manuscriptRecord->type) {
             case ManuscriptRecordType::SECONDARY:
-                if ($user->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW)) {
+                if ($user->can(UserPermission::COMPLETE_INTERNAL_MANAGEMENT_REVIEW)) {
                     return true;
                 }
 
@@ -77,7 +77,7 @@ class ManagementReviewStepPolicy
                 if (ManagementReviewDelegation::query()
                     ->active()
                     ->where('delegate_user_id', $user->id)
-                    ->whereIn('user_id', User::query()->permission(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW)->select('id'))
+                    ->whereIn('user_id', User::query()->permission(UserPermission::COMPLETE_INTERNAL_MANAGEMENT_REVIEW)->select('id'))
                     ->exists()) {
                     return true;
                 }
@@ -91,7 +91,7 @@ class ManagementReviewStepPolicy
 
                 $previousUser = $previousStep->user;
 
-                return $previousUser->can(UserPermission::COMPLETE_INTERNTAL_MANAGEMENT_REVIEW);
+                return $previousUser->can(UserPermission::COMPLETE_INTERNAL_MANAGEMENT_REVIEW);
             default:
                 return true;
         }

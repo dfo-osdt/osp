@@ -13,7 +13,7 @@ enum UserPermission: string
     case SYNCHRONIZE_AUTHOR_AFFILIATIONS = 'synchronize_author_affiliations';
     case CREATE_ORGANIZATIONS = 'create_organizations';
     case CREATE_AUTHOR_EMPLOYMENTS = 'create_author_employments';
-    case COMPLETE_INTERNTAL_MANAGEMENT_REVIEW = 'complete_interntal_management_review';
+    case COMPLETE_INTERNAL_MANAGEMENT_REVIEW = 'complete_internal_management_review';
     case FORWARD_MANAGEMENT_REVIEW_STEP = 'forward_management_review_step';
     case VIEW_LIBRARIUM = 'view_librarium';
     case VIEW_TELESCOPE = 'view_telescope';
@@ -22,6 +22,7 @@ enum UserPermission: string
     case VIEW_ANY_USERS = 'view_any_users';
     case VIEW_ANY_MANUSCRIPT_RECORD = 'view_any_manuscript_record';
     case VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT = 'view_any_manuscript_record_including_draft';
+    case EDIT_ALL_MANUSCRIPT_RECORDS = 'edit_all_manuscript_records';
     case ADMINISTER_USERS = 'administer_users';
     case PUBLISH_INTERNAL_REPORTS = 'publish_internal_reports';
     case UPDATE_PUBLICATIONS = 'update_publications';
