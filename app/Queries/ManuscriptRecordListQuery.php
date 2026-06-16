@@ -2,6 +2,7 @@
 
 namespace App\Queries;
 
+use App\Filters\MultiColumnFilter;
 use App\Models\ManuscriptRecord;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -27,6 +28,7 @@ class ManuscriptRecordListQuery extends QueryBuilder
              AllowedFilter::exact('manuscriptAuthors.author_id'),
              AllowedFilter::partial('title'),
              AllowedFilter::partial('abstract'),
+             AllowedFilter::custom('search', new MultiColumnFilter('title', 'ulid')),
              AllowedFilter::exact('potential_public_interest'),
              AllowedFilter::scope('reviewedBetween'),
          );

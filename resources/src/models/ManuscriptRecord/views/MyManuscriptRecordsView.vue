@@ -121,7 +121,7 @@ async function getManuscripts() {
 
   // is there a search term?
   if (search?.value) {
-    query = query.filterTitle([search.value])
+    query = query.filterSearch(search.value)
   }
 
   if (functionalAreaIds.value?.length) {

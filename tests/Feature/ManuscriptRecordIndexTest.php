@@ -314,6 +314,29 @@ test('manuscripts support partial text search on title', function (): void {
     expect($response->json('data.0.data.title'))->toContain('Climate');
 });
 
+test('manuscripts support search by title or ulid', function (): void {
+    $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
+
+    $byTitle = ManuscriptRecord::factory()->create([
+        'title' => 'Climate Change Research',
+        'status' => ManuscriptRecordStatus::IN_REVIEW,
+    ]);
+    $byUlid = ManuscriptRecord::factory()->create([
+        'title' => 'Ocean Biology Study',
+        'status' => ManuscriptRecordStatus::IN_REVIEW,
+    ]);
+
+    $response = $this->actingAs($user)->getJson('/api/manuscript-records?filter[search]=climate');
+    $response->assertOk();
+    expect($response->json('data'))->toHaveCount(1);
+    expect($response->json('data.0.data.id'))->toBe($byTitle->id);
+
+    $response = $this->actingAs($user)->getJson('/api/manuscript-records?filter[search]='.$byUlid->ulid);
+    $response->assertOk();
+    expect($response->json('data'))->toHaveCount(1);
+    expect($response->json('data.0.data.id'))->toBe($byUlid->id);
+});
+
 // Pagination Tests
 test('manuscripts respect default pagination limit', function (): void {
     $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();

@@ -89,6 +89,29 @@ test('can filter my manuscripts by functional_area_id', function (): void {
     expect($response->json('data'))->toHaveCount(1);
 });
 
+test('can search my manuscripts by title or ulid', function (): void {
+    $user = User::factory()->create();
+
+    $byTitle = ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'title' => 'Climate Change Research',
+    ]);
+    $byUlid = ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'title' => 'Ocean Biology Study',
+    ]);
+
+    $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?filter[search]=climate');
+    $response->assertOk();
+    expect($response->json('data'))->toHaveCount(1);
+    expect($response->json('data.0.data.id'))->toBe($byTitle->id);
+
+    $response = $this->actingAs($user)->getJson('/api/my/manuscript-records?filter[search]='.$byUlid->ulid);
+    $response->assertOk();
+    expect($response->json('data'))->toHaveCount(1);
+    expect($response->json('data.0.data.id'))->toBe($byUlid->id);
+});
+
 test('can filter my manuscripts by reviewedBetween date range', function (): void {
     $user = User::factory()->create();
 
