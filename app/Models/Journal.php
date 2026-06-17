@@ -47,6 +47,9 @@ class Journal extends Model
     // production database it will will also need to be changed in the database!
     public static $dfoPublisher = 'Fisheries and Oceans Canada - Pêches et Océans Canada';
 
+    // make all fields mass assignable
+    protected $guarded = [];
+
     /** Create a scope for DFO series */
     #[Scope]
     protected function dfoSeries(Builder $query): void
