@@ -31,6 +31,7 @@ class ManuscriptRecordListQuery extends QueryBuilder
              AllowedFilter::custom('search', new MultiColumnFilter('title', 'ulid')),
              AllowedFilter::exact('potential_public_interest'),
              AllowedFilter::scope('reviewedBetween'),
+             AllowedFilter::scope('overdueReview'),
          );
     }
 }

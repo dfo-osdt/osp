@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\ManagementReviewStepStatus;
 use App\Models\ManuscriptRecord;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
@@ -33,6 +34,9 @@ class ManuscriptRecordSummaryResource extends JsonResource
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
                 'sent_for_review_at' => $this->sent_for_review_at,
+                'business_days_in_review' => $this->sent_for_review_at
+                    ? (int) \Carbon\Carbon::parse($this->sent_for_review_at)->diffInBusinessDays(now())
+                    : null,
                 'reviewed_at' => $this->reviewed_at,
                 'submitted_to_journal_on' => $this->submitted_to_journal_on,
                 'accepted_on' => $this->accepted_on,
@@ -41,6 +45,24 @@ class ManuscriptRecordSummaryResource extends JsonResource
                 'region' => RegionResource::make($this->whenLoaded('region')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
                 'user' => UserResource::make($this->whenLoaded('user')),
+                'active_management_review_step' => $this->when(
+                    $this->relationLoaded('managementReviewSteps'),
+                    function () {
+                        $pending = $this->managementReviewSteps
+                            ->first(fn ($s) => $s->status === ManagementReviewStepStatus::PENDING);
+
+                        if ($pending === null) {
+                            return null;
+                        }
+
+                        return [
+                            'user_id' => $pending->user_id,
+                            'user_name' => $pending->relationLoaded('user') ? $pending->user->full_name : null,
+                            'decision_expected_by' => $pending->decision_expected_by,
+                            'is_overdue' => $pending->decision_expected_by !== null && $pending->decision_expected_by->isPast(),
+                        ];
+                    }
+                ),
             ],
             'can' => [
                 'delete' => $request->user()->can('delete', $this->resource),

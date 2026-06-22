@@ -116,6 +116,7 @@
     "current-password": "Current Password",
     "dashboard": "Dashboard",
     "date-range": "Date Range",
+    "day-abbr": "d",
     "decision-expected-by": "Review Expected By",
     "delete": "Delete",
     "deleted": "Deleted",
@@ -173,6 +174,8 @@
     "no-actions-required": "No actions required",
     "no-authors": "No authors",
     "no-filters-applied": "No filters applied",
+    "overdue": "Overdue",
+    "sort-by": "Sort by",
     "no-results-found": "No Results Found",
     "no-results-found-for": "No results found for",
     "no-results-found-hint": "Try adjusting your search criteria or filters to find what you're looking for.",
@@ -1015,7 +1018,9 @@
     "in-management-review-process": "Manuscripts currently in the manuscript management review process",
     "accepted-published-manuscripts": "Accepted by Journal or Withdrawn",
     "potential-public-interest": "Potential Public Interest",
-    "manuscripts-with-public-interest": "Manuscripts flagged for potential public interest"
+    "manuscripts-with-public-interest": "Manuscripts flagged for potential public interest",
+    "late-reviews": "Late Reviews",
+    "reviews-past-deadline": "Manuscripts in review where the deadline has passed"
   },
   "author-profile": {
     "title": "Author Profile",

@@ -116,6 +116,7 @@
     "current-password": "Mot de passe actuel",
     "dashboard": "Tableau de bord",
     "date-range": "Plage de dates",
+    "day-abbr": "j",
     "decision-expected-by": "Révision attendue par le",
     "delete": "Supprimer",
     "deleted": "Supprimé",
@@ -173,6 +174,8 @@
     "no-actions-required": "Aucune action requise",
     "no-authors": "Aucun auteur",
     "no-filters-applied": "Aucun filtre appliqué",
+    "overdue": "En retard",
+    "sort-by": "Trier par",
     "no-results-found": "Aucun résultat trouvé",
     "no-results-found-for": "Aucun résultat trouvé pour",
     "no-results-found-hint": "Essayez d'ajuster vos critères de recherche ou vos filtres pour trouver ce que vous cherchez.",
@@ -592,7 +595,6 @@
     "unsubmit-details": "Cela ramènera le manuscrit à l'état de brouillon afin qu'il puisse être modifié à nouveau.",
     "unsubmit-failed": "Impossible de retirer le manuscrit",
     "unsubmit-reason-label": "Raison du retrait de la soumission (obligatoire)"
-
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",
@@ -1016,7 +1018,9 @@
     "in-management-review-process": "Manuscrits actuellement dans le processus de révision de gestion",
     "accepted-published-manuscripts": "Accepté par journal ou retiré",
     "potential-public-interest": "Intérêt public potentiel",
-    "manuscripts-with-public-interest": "Manuscrits signalés pour un intérêt public potentiel"
+    "manuscripts-with-public-interest": "Manuscrits signalés pour un intérêt public potentiel",
+    "late-reviews": "Révisions en retard",
+    "reviews-past-deadline": "Manuscrits en révision dont l'échéance est dépassée"
   },
   "author-profile": {
     "title": "Profil de l'auteur",

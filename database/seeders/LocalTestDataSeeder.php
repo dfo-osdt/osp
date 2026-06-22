@@ -24,12 +24,11 @@ use Illuminate\Database\Seeder;
 
 class LocalTestDataSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         activity()->disableLogging();
+
+        // ── Reference data ────────────────────────────────────────────────────
 
         $this->call([
             ExpertisesTableSeeder::class,
@@ -37,26 +36,24 @@ class LocalTestDataSeeder extends Seeder
             DfoSeriesJournalSeeder::class,
         ]);
 
-        // create an editor user
+        $nflRegion = Region::where('slug', 'nfl')->first();
+        $nflRegion->enforce_secondary_review_deadline = true;
+        $nflRegion->save();
+
+        // ── Users ─────────────────────────────────────────────────────────────
+
         User::factory()->editor()->create([
             'first_name' => 'Editor',
             'last_name' => 'User',
             'email' => 'editor@test.local',
         ]);
 
-        // create an chief editor user
         User::factory()->chiefEditor()->create([
             'first_name' => 'Chief Editor',
             'last_name' => 'User',
             'email' => 'chief.editor@test.local',
         ]);
 
-        // enable secondary review deadline enforcement for NFL region
-        $nflRegion = Region::where('slug', 'nfl')->first();
-        $nflRegion->enforce_secondary_review_deadline = true;
-        $nflRegion->save();
-
-        // create regional editor users
         $nflEditor = User::factory()->create([
             'first_name' => 'NFL',
             'last_name' => 'Editor',
@@ -71,7 +68,6 @@ class LocalTestDataSeeder extends Seeder
         ]);
         $marEditor->assignRole('mar_editor');
 
-        // create regional observer users
         $nflObserver = User::factory()->create([
             'first_name' => 'NFL',
             'last_name' => 'Observer',
@@ -79,7 +75,6 @@ class LocalTestDataSeeder extends Seeder
         ]);
         $nflObserver->assignRole('nfl_observer');
 
-        // create a blank slate user
         User::factory()->create([
             'email' => 'new@test.local',
         ]);
@@ -90,55 +85,83 @@ class LocalTestDataSeeder extends Seeder
             'email' => 'author@test.local',
         ]);
 
-        // create 5 invitations for the test user
+        $dmUser = User::factory()->create([
+            'first_name' => 'Division',
+            'last_name' => 'Manager',
+            'email' => 'dm@test.local',
+        ]);
+
+        $rdsUser = User::factory()->create([
+            'first_name' => 'RDS',
+            'last_name' => 'User',
+            'email' => 'rds@test.local',
+        ]);
+        $rdsUser->assignRole('director');
+
+        $markAuthor = Author::factory()->create([
+            'first_name' => 'Mark',
+            'last_name' => 'LaFlamme',
+            'email' => 'mark.laflamme@dfo-mpo.gc.ca',
+            'organization_id' => 1,
+            'orcid' => 'https://orcid.org/0000-0001-5955-7098',
+        ]);
+
+        $markUser = User::factory()->create([
+            'first_name' => 'Mark',
+            'last_name' => 'LaFlamme',
+            'email' => 'mark.laflamme@dfo-mpo.gc.ca',
+        ]);
+
+        $adminUser = User::factory()->create([
+            'first_name' => 'Admin',
+            'last_name' => 'User',
+            'email' => 'admin@test.local',
+        ]);
+        $adminUser->assignRole('admin');
+
+        // ── Author user manuscripts ───────────────────────────────────────────
+
         Invitation::factory()->count(5)->create([
             'invited_by' => $user->id,
         ]);
 
-        // create 1 manuscript records for the test user
         ManuscriptRecord::factory()
             ->has(ManuscriptAuthor::factory()->count(5))
             ->has(Shareable::factory()->state(['shared_by' => $user->id])->count(2))
-            ->count(1)
             ->create([
                 'title' => 'Shared Manuscript',
                 'user_id' => $user->id,
             ]);
 
-        // create 1 manuscript records that is accepted for the test user
         ManuscriptRecord::factory()->reviewed()->create([
             'user_id' => $user->id,
         ]);
 
-        // create 1 filled out manuscript record for the test user
         ManuscriptRecord::factory()->filled()->create([
             'user_id' => $user->id,
         ]);
 
-        // create 1 filled out secondary manuscript record for the test user
         ManuscriptRecord::factory()->secondary()->reviewed()->create([
             'user_id' => $user->id,
         ]);
 
-        // create a filled secondary manuscript in the NFL region (enforcement enabled) ready to submit
         ManuscriptRecord::factory()->secondary()->filled()->create([
             'title' => 'NFL Secondary - Ready to Submit (10-day deadline enforced)',
             'user_id' => $user->id,
             'region_id' => $nflRegion->id,
         ]);
 
-        // create 1 manuscript record for the test user with a review step
         $toReview = ManuscriptRecord::factory()->in_review(false)->create([
             'user_id' => $user->id,
         ]);
 
-        // create 1 secondary manuscript record for the test user with a review step
         $toReviewSec = ManuscriptRecord::factory()->secondary()->in_review(false)->create([
             'title' => 'Secondary Manuscript ready to review',
             'user_id' => $user->id,
         ]);
 
-        // create 2 publications without a manuscript record for the test user
+        // ── Publications ──────────────────────────────────────────────────────
+
         Publication::factory()->count(2)
             ->has(PublicationAuthor::factory([
                 'author_id' => $user->author->id,
@@ -160,14 +183,8 @@ class LocalTestDataSeeder extends Seeder
                 'accepted_on' => now()->subMonths(11),
             ]);
 
-        // create a division manager user
-        $dmUser = User::factory()->create([
-            'first_name' => 'Division',
-            'last_name' => 'Manager',
-            'email' => 'dm@test.local',
-        ]);
+        // ── Management review steps ───────────────────────────────────────────
 
-        // give the division manager a management review step
         ManagementReviewStep::factory()->create([
             'user_id' => $dmUser->id,
             'manuscript_record_id' => $toReview->id,
@@ -179,30 +196,20 @@ class LocalTestDataSeeder extends Seeder
             'decision_expected_by' => null,
         ]);
 
-        // create a rds user
-        $rdsUser = User::factory()->create([
-            'first_name' => 'RDS',
-            'last_name' => 'User',
-            'email' => 'rds@test.local',
-        ]);
-        $rdsUser->assignRole('director');
-
-        // Make an author for Mark
-        $markAuthor = Author::factory()->create([
-            'first_name' => 'Mark',
-            'last_name' => 'LaFlamme',
-            'email' => 'mark.laflamme@dfo-mpo.gc.ca',
-            'organization_id' => 1,
-            'orcid' => 'https://orcid.org/0000-0001-5955-7098',
+        $overdueManuscript = ManuscriptRecord::factory()->in_review(false)->create([
+            'title' => 'Overdue Manuscript - 15 days in review',
+            'user_id' => $user->id,
+            'sent_for_review_at' => now()->subDays(15),
         ]);
 
-        $markUser = User::factory()->create([
-            'first_name' => 'Mark',
-            'last_name' => 'LaFlamme',
-            'email' => 'mark.laflamme@dfo-mpo.gc.ca',
+        ManagementReviewStep::factory()->create([
+            'user_id' => $dmUser->id,
+            'manuscript_record_id' => $overdueManuscript->id,
+            'decision_expected_by' => now()->subDays(5),
         ]);
 
-        // create a manuscript record for Mark
+        // ── Mark LaFlamme ─────────────────────────────────────────────────────
+
         $marksManuscript = ManuscriptRecord::factory()->filled()->create([
             'user_id' => $markUser->id,
         ]);
@@ -214,17 +221,11 @@ class LocalTestDataSeeder extends Seeder
             'organization_id' => $markAuthor->organization_id,
         ]));
 
-        $adminUser = User::factory()->create([
-            'first_name' => 'Admin',
-            'last_name' => 'User',
-            'email' => 'admin@test.local',
-        ]);
-        $adminUser->assignRole('admin');
-
-        // Forward-to-delegate scenario:
+        // ── Forward-to-delegate demo ──────────────────────────────────────────
         // DM reviewed and referred to RDS; RDS went on leave without setting up a delegation.
         // Admin added RDS→DM delegation via librarium after the fact.
         // Admin can now click "Forward to Delegate" on RDS's pending step.
+
         $forwardDemoManuscript = ManuscriptRecord::factory()->secondary()->in_review(false)->create([
             'title' => 'Forward-to-Delegate Demo (RDS pending, delegation set post-hoc)',
             'user_id' => $user->id,
@@ -248,14 +249,57 @@ class LocalTestDataSeeder extends Seeder
             'decision_expected_by' => now()->addDays(3),
         ]);
 
-        // Delegation added after the fact by admin via librarium (rds@test.local → dm@test.local)
         ManagementReviewDelegation::factory()->create([
             'user_id' => $rdsUser->id,
             'delegate_user_id' => $dmUser->id,
             'comment' => 'RDS is on leave — please handle reviews on my behalf.',
         ]);
 
-        // add an announcement
+        // ── Regional manuscripts (NFL / MAR) ──────────────────────────────────
+
+        ManuscriptRecord::factory()->create([
+            'title' => 'NFL Draft Manuscript',
+            'status' => ManuscriptRecordStatus::DRAFT,
+            'region_id' => $nflRegion->id,
+            'user_id' => $user->id,
+        ]);
+
+        ManuscriptRecord::factory()->create([
+            'title' => 'MAR Draft Manuscript',
+            'status' => ManuscriptRecordStatus::DRAFT,
+            'region_id' => 2,
+            'user_id' => $user->id,
+        ]);
+
+        ManuscriptRecord::factory()->in_review()->create([
+            'title' => 'NFL In Review Manuscript',
+            'region_id' => $nflRegion->id,
+            'user_id' => $user->id,
+        ]);
+
+        ManuscriptRecord::factory()->in_review()->create([
+            'title' => 'MAR In Review Manuscript',
+            'region_id' => 2,
+            'user_id' => $user->id,
+        ]);
+
+        ManuscriptRecord::factory()->reviewed()->create([
+            'title' => 'NFL Reviewed Manuscript',
+            'region_id' => $nflRegion->id,
+            'user_id' => $user->id,
+        ]);
+
+        ManuscriptRecord::factory()->reviewed()->create([
+            'title' => 'MAR Reviewed Manuscript',
+            'region_id' => 2,
+            'user_id' => $user->id,
+        ]);
+
+        // ── Miscellaneous ─────────────────────────────────────────────────────
+
+        ManuscriptRecord::factory()->publishedPreprint()->count(5)->create();
+
+        HelpfulLink::factory()->count(3)->create();
 
         Announcement::factory()->create([
             'title_en' => 'Test Announcement',
@@ -264,57 +308,6 @@ class LocalTestDataSeeder extends Seeder
             'text_fr' => 'Ceci est une annonce de test.',
         ]);
 
-        // create draft manuscripts for regional editors testing
-        ManuscriptRecord::factory()->create([
-            'title' => 'NFL Draft Manuscript',
-            'status' => ManuscriptRecordStatus::DRAFT,
-            'region_id' => 1, // NFL region
-            'user_id' => $user->id,
-        ]);
-
-        ManuscriptRecord::factory()->create([
-            'title' => 'MAR Draft Manuscript',
-            'status' => ManuscriptRecordStatus::DRAFT,
-            'region_id' => 2, // MAR region
-            'user_id' => $user->id,
-        ]);
-
-        // create in_review manuscripts for regional editors testing
-        ManuscriptRecord::factory()->create([
-            'title' => 'NFL In Review Manuscript',
-            'status' => ManuscriptRecordStatus::IN_REVIEW,
-            'region_id' => 1, // NFL region
-            'user_id' => $user->id,
-        ]);
-
-        ManuscriptRecord::factory()->create([
-            'title' => 'MAR In Review Manuscript',
-            'status' => ManuscriptRecordStatus::IN_REVIEW,
-            'region_id' => 2, // MAR region
-            'user_id' => $user->id,
-        ]);
-
-        // create reviewed manuscripts for regional editors testing (non-editable)
-        ManuscriptRecord::factory()->create([
-            'title' => 'NFL Reviewed Manuscript',
-            'status' => ManuscriptRecordStatus::REVIEWED,
-            'region_id' => 1, // NFL region
-            'user_id' => $user->id,
-        ]);
-
-        ManuscriptRecord::factory()->create([
-            'title' => 'MAR Reviewed Manuscript',
-            'status' => ManuscriptRecordStatus::REVIEWED,
-            'region_id' => 2, // MAR region
-            'user_id' => $user->id,
-        ]);
-
-        // let's add a few preprints
-        ManuscriptRecord::factory()->publishedPreprint()->count(5)->create();
-
-        HelpfulLink::factory()->count(3)->create();
-
         activity()->enableLogging();
-
     }
 }

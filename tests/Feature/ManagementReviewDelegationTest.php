@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Delegations\ReassignPendingStepsOnDelegationEnd;
 use App\Console\Commands\ReassignExpiredDelegationSteps;
 use App\Console\Commands\ReassignStartedDelegationSteps;
 use App\Enums\ManagementReviewStepStatus;
@@ -635,7 +636,7 @@ test('ending a delegation early reassigns to next active delegate when one exist
     $delegation->update(['ended_early_at' => now()]);
 
     // Directly call the action since two active delegations can't coexist via the API
-    \App\Actions\Delegations\ReassignPendingStepsOnDelegationEnd::handle($delegation);
+    ReassignPendingStepsOnDelegationEnd::handle($delegation);
 
     $delegateStep->refresh();
     expect($delegateStep->status)->toBe(ManagementReviewStepStatus::REASSIGN);

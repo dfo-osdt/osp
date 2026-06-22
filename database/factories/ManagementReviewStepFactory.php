@@ -23,8 +23,7 @@ class ManagementReviewStepFactory extends Factory
         return [
             'manuscript_record_id' => ManuscriptRecord::factory()
                 ->filled()
-                ->create(['status' => ManuscriptRecordStatus::IN_REVIEW])
-                ->id,
+                ->state(['status' => ManuscriptRecordStatus::IN_REVIEW]),
             'user_id' => User::factory(),
             'completed_at' => null,
             'comments' => null,

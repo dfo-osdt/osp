@@ -22,6 +22,7 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
     params: { id: manuscript.data.id },
   })
 }
+
 </script>
 
 <template>
@@ -70,6 +71,20 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
             </template>
           </template>
         </q-item-label>
+        <q-item-label
+          v-if="manuscript.data.active_management_review_step"
+          caption
+        >
+          <q-icon name="mdi-account-clock-outline" size="xs" class="q-mr-xs" />
+          {{ manuscript.data.active_management_review_step.user_name }}
+          <q-badge
+            v-if="manuscript.data.active_management_review_step.is_overdue"
+            color="negative"
+            class="q-ml-xs"
+          >
+            {{ $t('common.overdue') }}
+          </q-badge>
+        </q-item-label>
       </q-item-section>
       <q-item-section side top>
         <span>
@@ -78,6 +93,16 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
             class="q-mr-xs"
           />
           <ManuscriptStatusBadge :status="manuscript.data.status" />
+          <q-chip
+            v-if="manuscript.data.business_days_in_review != null"
+            dense
+            outline
+            :color="manuscript.data.active_management_review_step?.is_overdue ? 'negative' : 'grey'"
+            class="q-ml-xs"
+            icon="mdi-clock-outline"
+          >
+            {{ manuscript.data.business_days_in_review }}{{ $t('common.day-abbr') }}
+          </q-chip>
           <CloneManuscriptButton
             flat
             icon="mdi-content-duplicate"
