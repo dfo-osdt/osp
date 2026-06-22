@@ -127,6 +127,16 @@ test('a user can attach and download a pdf version of their manuscript to a manu
     $response->assertStatus(422);
     expect($response->json('errors.pdf.0'))->toContain('The pdf must not be greater than');
 
+    // long filenames are trimmed to 255 characters rather than rejected
+    $veryLongFileName = str_repeat('a', 300).'.pdf';
+    $file = UploadedFile::fake()->createWithContent($veryLongFileName, $fakePdfContent)->size(1000);
+    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
+        'pdf' => $file,
+    ]);
+    $response->assertCreated();
+    expect(mb_strlen((string) $response->json('data.file_name')))->toBeLessThanOrEqual(255);
+    $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}/files/{$response->json('data.uuid')}");
+
     $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size($kbLimit);
 
     $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [

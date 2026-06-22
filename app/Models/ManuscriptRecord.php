@@ -10,6 +10,7 @@ use App\Enums\MediaCollection;
 use App\Enums\SensitivityLabel;
 use App\Traits\FundableTrait;
 use App\Traits\PlannableTrait;
+use App\Traits\TrimsMediaFileName;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -149,6 +150,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     use LogsActivity;
     use PlannableTrait;
     use SoftDeletes;
+    use TrimsMediaFileName;
 
     protected $ulid;
 
@@ -334,12 +336,15 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function addManuscriptFile(string|UploadedFile $file, bool $preserveOriginal = false): Media
     {
+        $name = $file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file);
+
         return $this->addMedia($file)
             ->withCustomProperties([
                 'locked' => false,
                 'sensitivity_label' => SensitivityLabel::ProtectedA,
             ])
             ->preservingOriginal($preserveOriginal)
+            ->usingFileName($this->trimFileName($name))
             ->toMediaCollection(MediaCollection::MANUSCRIPT->value);
     }
 

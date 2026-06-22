@@ -12,6 +12,7 @@ use App\Enums\SensitivityLabel;
 use App\Enums\SupplementaryFileType;
 use App\Traits\FundableTrait;
 use App\Traits\PlannableTrait;
+use App\Traits\TrimsMediaFileName;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -112,6 +113,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     use LogsActivity;
     use PlannableTrait;
     use SoftDeletes;
+    use TrimsMediaFileName;
 
     public $guarded = [
         'id',
@@ -203,8 +205,11 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      */
     public function addPublicationFile(string|UploadedFile $file, bool $preserveOriginal = false): Media
     {
+        $name = $file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file);
+
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)
+            ->usingFileName($this->trimFileName($name))
             ->toMediaCollection(MediaCollection::PUBLICATION->value);
     }
 
@@ -253,9 +258,12 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
             $properties['sensitivity_label'] = SensitivityLabel::ProtectedA->value;
         }
 
+        $name = $file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file);
+
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)
             ->withCustomProperties($properties)
+            ->usingFileName($this->trimFileName($name))
             ->toMediaCollection(MediaCollection::SUPPLEMENTARY_FILE->value);
     }
 
