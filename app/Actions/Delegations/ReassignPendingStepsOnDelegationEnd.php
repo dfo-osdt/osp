@@ -14,7 +14,7 @@ class ReassignPendingStepsOnDelegationEnd
     {
         $steps = ManagementReviewStep::pending()
             ->where('user_id', $delegation->delegate_user_id)
-            ->whereHas('previousStep', fn ($q) => $q->where('user_id', $delegation->user_id))
+            ->whereHas('previousStep', fn (\Illuminate\Contracts\Database\Query\Builder $q) => $q->where('user_id', $delegation->user_id))
             ->get();
 
         if ($steps->isEmpty()) {
