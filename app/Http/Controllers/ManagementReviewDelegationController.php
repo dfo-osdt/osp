@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Delegations\ReassignPendingStepsOnDelegationEnd;
+use App\Actions\Delegations\ReassignPendingStepsOnDelegationStart;
 use App\Http\Requests\StoreManagementReviewDelegationRequest;
 use App\Http\Resources\ManagementReviewDelegationResource;
 use App\Mail\DelegationCreatedMail;
@@ -30,6 +32,10 @@ class ManagementReviewDelegationController extends Controller
 
         Mail::queue(new DelegationCreatedMail($delegation));
 
+        if ($delegation->isActive()) {
+            ReassignPendingStepsOnDelegationStart::handle($delegation);
+        }
+
         return new ManagementReviewDelegationResource($delegation);
     }
 
@@ -48,6 +54,7 @@ class ManagementReviewDelegationController extends Controller
         }
 
         $managementReviewDelegation->update(['ended_early_at' => now()]);
+        ReassignPendingStepsOnDelegationEnd::handle($managementReviewDelegation);
         $managementReviewDelegation->load('delegate');
 
         return new ManagementReviewDelegationResource($managementReviewDelegation);
