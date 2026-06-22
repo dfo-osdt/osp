@@ -4,10 +4,10 @@ namespace App\Http\Resources;
 
 use App\Enums\ManagementReviewStepStatus;
 use App\Models\ManuscriptRecord;
-use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Date;
 
 /**
  * @mixin ManuscriptRecord
@@ -36,7 +36,7 @@ class ManuscriptRecordSummaryResource extends JsonResource
                 'updated_at' => $this->updated_at,
                 'sent_for_review_at' => $this->sent_for_review_at,
                 'business_days_in_review' => $this->sent_for_review_at
-                    ? (int) \Illuminate\Support\Facades\Date::parse($this->sent_for_review_at)->diffInBusinessDays(now())
+                    ? (int) Date::parse($this->sent_for_review_at)->diffInBusinessDays(now())
                     : null,
                 'reviewed_at' => $this->reviewed_at,
                 'submitted_to_journal_on' => $this->submitted_to_journal_on,
