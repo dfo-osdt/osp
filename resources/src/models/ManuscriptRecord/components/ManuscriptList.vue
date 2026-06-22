@@ -22,7 +22,6 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
     params: { id: manuscript.data.id },
   })
 }
-
 </script>
 
 <template>

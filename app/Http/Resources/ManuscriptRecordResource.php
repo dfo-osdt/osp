@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Models\ManuscriptRecord;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -56,7 +57,7 @@ class ManuscriptRecordResource extends JsonResource
                 'updated_at' => $this->updated_at,
                 'sent_for_review_at' => $this->sent_for_review_at,
                 'business_days_in_review' => $this->sent_for_review_at
-                    ? (int) \Carbon\Carbon::parse($this->sent_for_review_at)->diffInBusinessDays(now())
+                    ? (int) \Illuminate\Support\Facades\Date::parse($this->sent_for_review_at)->diffInBusinessDays(now())
                     : null,
                 'reviewed_at' => $this->reviewed_at,
                 'submitted_to_journal_on' => $this->submitted_to_journal_on,
