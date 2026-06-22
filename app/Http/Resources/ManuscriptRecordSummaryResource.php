@@ -49,18 +49,22 @@ class ManuscriptRecordSummaryResource extends JsonResource
                 'active_management_review_step' => $this->when(
                     $this->relationLoaded('managementReviewSteps'),
                     function (): ?array {
-                        $pending = $this->managementReviewSteps
-                            ->first(fn ($s): bool => $s->status === ManagementReviewStepStatus::PENDING);
+                        $active = $this->managementReviewSteps
+                            ->first(fn ($s): bool => in_array($s->status, [
+                                ManagementReviewStepStatus::PENDING,
+                                ManagementReviewStepStatus::ON_HOLD,
+                            ]));
 
-                        if ($pending === null) {
+                        if ($active === null) {
                             return null;
                         }
 
                         return [
-                            'user_id' => $pending->user_id,
-                            'user_name' => $pending->relationLoaded('user') ? $pending->user->full_name : null,
-                            'decision_expected_by' => $pending->decision_expected_by,
-                            'is_overdue' => $pending->decision_expected_by !== null && $pending->decision_expected_by->isPast(),
+                            'user_id' => $active->user_id,
+                            'user_name' => $active->relationLoaded('user') ? $active->user->full_name : null,
+                            'status' => $active->status,
+                            'decision_expected_by' => $active->decision_expected_by,
+                            'is_overdue' => $active->decision_expected_by !== null && $active->decision_expected_by->isPast(),
                         ];
                     }
                 ),

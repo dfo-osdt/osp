@@ -74,15 +74,21 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
           v-if="manuscript.data.active_management_review_step"
           caption
         >
-          <q-icon name="mdi-account-clock-outline" size="xs" class="q-mr-xs" />
-          {{ manuscript.data.active_management_review_step.user_name }}
-          <q-badge
-            v-if="manuscript.data.active_management_review_step.is_overdue"
-            color="negative"
-            class="q-ml-xs"
-          >
-            {{ $t('common.overdue') }}
-          </q-badge>
+          <template v-if="manuscript.data.active_management_review_step.status === 'on_hold'">
+            <q-icon name="mdi-pause-circle-outline" size="xs" class="q-mr-xs" />
+            {{ $t('common.on_hold') }}
+          </template>
+          <template v-else>
+            <q-icon name="mdi-account-clock-outline" size="xs" class="q-mr-xs" />
+            {{ manuscript.data.active_management_review_step.user_name }}
+            <q-badge
+              v-if="manuscript.data.active_management_review_step.is_overdue"
+              color="negative"
+              class="q-ml-xs"
+            >
+              {{ $t('common.overdue') }}
+            </q-badge>
+          </template>
         </q-item-label>
       </q-item-section>
       <q-item-section side top>

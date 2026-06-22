@@ -75,6 +75,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
 export interface ActiveManagementReviewStep {
   user_id: number
   user_name: string | null
+  status: 'pending' | 'on_hold'
   decision_expected_by: string | null
   is_overdue: boolean
 }

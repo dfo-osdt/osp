@@ -213,7 +213,7 @@ async function getManuscripts() {
     query = query.filterReviewedBetween(dateRange.value.from, dateRange.value.to)
   }
 
-  const sort = sortOptions[sortIndex.value] ?? sortOptions.value[0]
+  const sort = sortOptions.value[sortIndex.value] ?? sortOptions.value[0]
   query.sort(sort.field, sort.direction)
   query.paginate(currentPage.value, 10)
 
