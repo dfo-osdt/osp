@@ -40,6 +40,8 @@ class LocalTestDataSeeder extends Seeder
         $nflRegion->enforce_secondary_review_deadline = true;
         $nflRegion->save();
 
+        $marRegion = Region::where('slug', 'mar')->first();
+
         // ── Users ─────────────────────────────────────────────────────────────
 
         User::factory()->editor()->create([
@@ -267,7 +269,7 @@ class LocalTestDataSeeder extends Seeder
         ManuscriptRecord::factory()->create([
             'title' => 'MAR Draft Manuscript',
             'status' => ManuscriptRecordStatus::DRAFT,
-            'region_id' => 2,
+            'region_id' => $marRegion->id,
             'user_id' => $user->id,
         ]);
 
@@ -279,7 +281,7 @@ class LocalTestDataSeeder extends Seeder
 
         ManuscriptRecord::factory()->in_review()->create([
             'title' => 'MAR In Review Manuscript',
-            'region_id' => 2,
+            'region_id' => $marRegion->id,
             'user_id' => $user->id,
         ]);
 
@@ -291,7 +293,7 @@ class LocalTestDataSeeder extends Seeder
 
         ManuscriptRecord::factory()->reviewed()->create([
             'title' => 'MAR Reviewed Manuscript',
-            'region_id' => 2,
+            'region_id' => $marRegion->id,
             'user_id' => $user->id,
         ]);
 
