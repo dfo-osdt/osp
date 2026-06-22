@@ -7,6 +7,7 @@ use App\Enums\ManagementReviewStepStatus;
 use App\Events\ManagementReviewStepCreated;
 use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
+use Illuminate\Contracts\Database\Query\Builder;
 
 class ReassignPendingStepsOnDelegationEnd
 {
@@ -14,7 +15,7 @@ class ReassignPendingStepsOnDelegationEnd
     {
         $steps = ManagementReviewStep::pending()
             ->where('user_id', $delegation->delegate_user_id)
-            ->whereHas('previousStep', fn (\Illuminate\Contracts\Database\Query\Builder $q) => $q->where('user_id', $delegation->user_id))
+            ->whereHas('previousStep', fn (Builder $q) => $q->where('user_id', $delegation->user_id))
             ->get();
 
         if ($steps->isEmpty()) {
