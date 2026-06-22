@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\ManagementReviewSteps;
 
-use App\Enums\ManagementReviewStepDecision;
+use App\Actions\AdminReassignManagementReviewStep;
 use App\Enums\ManagementReviewStepStatus;
-use App\Events\ManagementReviewStepCreated;
 use App\Filament\Resources\ManagementReviewSteps\Pages\ListManagementReviewSteps;
 use App\Models\ManagementReviewStep;
 use App\Models\User;
@@ -88,26 +87,7 @@ class ManagementReviewStepsResource extends Resource
                         /** @var User $admin */
                         $admin = Auth::user();
 
-                        $attribution = "Action performed by Admin ({$admin->email})";
-                        $comment = filled($data['comment'])
-                            ? "{$data['comment']}\n\n{$attribution}"
-                            : $attribution;
-
-                        $newStep = new ManagementReviewStep;
-                        $newStep->user_id = $data['next_user_id'];
-                        $newStep->status = ManagementReviewStepStatus::PENDING;
-                        $newStep->decision = ManagementReviewStepDecision::NONE;
-                        $newStep->manuscript_record_id = $record->manuscript_record_id;
-                        $newStep->previous_step_id = $record->id;
-                        $newStep->decision_expected_by = $record->decision_expected_by;
-                        $newStep->saveOrFail();
-
-                        event(new ManagementReviewStepCreated($newStep));
-
-                        $record->status = ManagementReviewStepStatus::REASSIGN;
-                        $record->comments = $comment;
-                        $record->completed_at = now();
-                        $record->saveQuietly();
+                        AdminReassignManagementReviewStep::handle($record, $admin, $data['next_user_id'], $data['comment']);
 
                         Notification::make()
                             ->title('Step reassigned successfully')

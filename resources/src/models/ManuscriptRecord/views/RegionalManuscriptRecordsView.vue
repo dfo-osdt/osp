@@ -29,6 +29,9 @@ interface SortOption {
 }
 
 const { t } = useI18n()
+const localeStore = useLocaleStore()
+const regionStore = useRegionStore()
+const functionalAreaStore = useFunctionalAreaStore()
 
 const sortOptions = computed<SortOption[]>(() => [
   { label: t('common.sort-recently-updated'), field: 'updated_at', direction: 'desc' },
@@ -71,14 +74,7 @@ const dateRange = computed<DateRange | null>({
 const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
 const loading = ref(false)
 const showFilters = ref(false)
-const regionSelect = ref<InstanceType<typeof RegionSelect> | null>(null)
-const functionalAreaSelect = ref<InstanceType<
-  typeof FunctionalAreaSelect
-> | null>(null)
 const authorSelect = ref<InstanceType<typeof AuthorSelect> | null>(null)
-
-// i18n
-const { t } = useI18n()
 
 // Main filter options
 const mainFilterOptions = computed<MainFilterOption[]>(() => {
@@ -143,15 +139,17 @@ const mainFilter = computed(() => {
 
 const filterCaption = computed(() => {
   let caption = ''
-  // For RegionSelect, we need to access the store since it doesn't expose selectedRegion
+  const locale = localeStore.locale
   if (regionId.value) {
-    caption += `${t('common.in')} ${t('common.dfo-region')} `
+    const region = regionStore.regions?.find(r => r.id === regionId.value)
+    const regionName = region ? (locale === 'fr' ? region.name_fr : region.name_en) : ''
+    caption += `${t('common.in')} ${regionName} `
   }
-  // For FunctionalAreaSelect, we need to access the store since it doesn't expose selectedFunctionalArea
   if (functionalAreaId.value) {
-    caption += `${t('common.for')} ${t('common.functional-area')} `
+    const fa = functionalAreaStore.functionalAreas?.find(fa => fa.data.id === functionalAreaId.value)
+    const faName = fa ? (locale === 'fr' ? fa.data.name_fr : fa.data.name_en) : ''
+    caption += `${t('common.for')} ${faName} `
   }
-  // AuthorSelect properly exposes selectedAuthor
   if (authorId.value) {
     const { first_name, last_name }
       = authorSelect?.value?.selectedAuthor?.data || {}
@@ -215,7 +213,7 @@ async function getManuscripts() {
     query = query.filterReviewedBetween(dateRange.value.from, dateRange.value.to)
   }
 
-  const sort = sortOptions[sortIndex.value] ?? sortOptions[0]
+  const sort = sortOptions[sortIndex.value] ?? sortOptions.value[0]
   query.sort(sort.field, sort.direction)
   query.paginate(currentPage.value, 10)
 
@@ -353,13 +351,11 @@ interface MainFilterOption {
                   :disable="loading"
                 />
                 <RegionSelect
-                  ref="regionSelect"
                   v-model="regionId"
                   clearable
                   :disable="loading"
                 />
                 <FunctionalAreaSelect
-                  ref="functionalAreaSelect"
                   v-model="functionalAreaId"
                   clearable
                   :label="$t('common.functional-area')"
