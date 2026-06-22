@@ -28,11 +28,13 @@ interface SortOption {
   direction: 'asc' | 'desc'
 }
 
-const sortOptions: SortOption[] = [
-  { label: 'Recently updated', field: 'updated_at', direction: 'desc' },
-  { label: 'Longest in review', field: 'sent_for_review_at', direction: 'asc' },
-  { label: 'Newest in review', field: 'sent_for_review_at', direction: 'desc' },
-]
+const { t } = useI18n()
+
+const sortOptions = computed<SortOption[]>(() => [
+  { label: t('common.sort-recently-updated'), field: 'updated_at', direction: 'desc' },
+  { label: t('common.sort-longest-in-review'), field: 'sent_for_review_at', direction: 'asc' },
+  { label: t('common.sort-newest-in-review'), field: 'sent_for_review_at', direction: 'desc' },
+])
 
 // URL query params for filter persistence
 const activeFilter = useRouteQuery('filter', '1', { transform: Number })
