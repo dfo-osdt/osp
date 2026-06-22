@@ -55,6 +55,9 @@ class ManuscriptRecordResource extends JsonResource
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
                 'sent_for_review_at' => $this->sent_for_review_at,
+                'business_days_in_review' => $this->sent_for_review_at
+                    ? (int) \Carbon\Carbon::parse($this->sent_for_review_at)->diffInBusinessDays(now())
+                    : null,
                 'reviewed_at' => $this->reviewed_at,
                 'submitted_to_journal_on' => $this->submitted_to_journal_on,
                 'accepted_on' => $this->accepted_on,

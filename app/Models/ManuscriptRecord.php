@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Contracts\Fundable;
 use App\Contracts\Plannable;
+use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\MediaCollection;
@@ -451,5 +452,16 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     protected function reviewedBetween(Builder $query, string $startDate, string $endDate): void
     {
         $query->whereBetween('reviewed_at', [Date::parse($startDate), Date::parse($endDate)]);
+    }
+
+    /** Manuscripts in review with at least one pending step past its deadline */
+    #[Scope]
+    protected function overdueReview(Builder $query): void
+    {
+        $query->whereHas('managementReviewSteps', fn (Builder $q) => $q
+            ->where('status', ManagementReviewStepStatus::PENDING)
+            ->whereNotNull('decision_expected_by')
+            ->where('decision_expected_by', '<', now())
+        );
     }
 }

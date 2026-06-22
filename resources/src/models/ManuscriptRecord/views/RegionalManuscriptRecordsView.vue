@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {
+  ManuscriptRecordListQuerySort,
   ManuscriptRecordSummaryResourceList,
   ManuscriptRecordType,
 } from '../ManuscriptRecord'
@@ -21,9 +22,22 @@ import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
 
+interface SortOption {
+  label: string
+  field: ManuscriptRecordListQuerySort
+  direction: 'asc' | 'desc'
+}
+
+const sortOptions: SortOption[] = [
+  { label: 'Recently updated', field: 'updated_at', direction: 'desc' },
+  { label: 'Longest in review', field: 'sent_for_review_at', direction: 'asc' },
+  { label: 'Newest in review', field: 'sent_for_review_at', direction: 'desc' },
+]
+
 // URL query params for filter persistence
 const activeFilter = useRouteQuery('filter', '1', { transform: Number })
 const currentPage = useRouteQuery('page', '1', { transform: Number })
+const sortIndex = useRouteQuery('sort', '0', { transform: Number })
 const search = useRouteQuery<string | null>('search', null)
 const regionId = useRouteQuery<number | null>('region', null, {
   transform: v => v ? Number(v) : null,
@@ -105,6 +119,16 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       active: activeFilter.value === 4,
       filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
         return query.filterPotentialPublicInterest(true)
+      },
+    },
+    {
+      id: 5,
+      label: t('regional-manuscripts.late-reviews'),
+      caption: t('regional-manuscripts.reviews-past-deadline'),
+      icon: 'mdi-clock-alert-outline',
+      active: activeFilter.value === 5,
+      filter: (query: ManuscriptRecordListQuery): ManuscriptRecordListQuery => {
+        return query.filterStatus(['in_review']).filterOverdueReview(true)
       },
     },
   ]
@@ -189,7 +213,8 @@ async function getManuscripts() {
     query = query.filterReviewedBetween(dateRange.value.from, dateRange.value.to)
   }
 
-  query.sort('updated_at', 'desc')
+  const sort = sortOptions[sortIndex.value] ?? sortOptions[0]
+  query.sort(sort.field, sort.direction)
   query.paginate(currentPage.value, 10)
 
   loading.value = true
@@ -239,6 +264,11 @@ watch(manuscriptType, () => {
 })
 
 watch(dateRange, () => {
+  currentPage.value = 1
+  getManuscripts()
+})
+
+watch(sortIndex, () => {
   currentPage.value = 1
   getManuscripts()
 })
@@ -310,6 +340,16 @@ interface MainFilterOption {
               :caption="filterCaption"
             >
               <q-card-section class="column q-gutter-md">
+                <q-select
+                  v-model="sortIndex"
+                  :options="sortOptions.map((o, i) => ({ label: o.label, value: i }))"
+                  :label="$t('common.sort-by')"
+                  emit-value
+                  map-options
+                  outlined
+                  dense
+                  :disable="loading"
+                />
                 <RegionSelect
                   ref="regionSelect"
                   v-model="regionId"

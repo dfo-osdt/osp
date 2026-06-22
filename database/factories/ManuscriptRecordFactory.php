@@ -85,7 +85,7 @@ class ManuscriptRecordFactory extends Factory
         ])->afterCreating(function ($manuscript) use ($withAreviewstep, $secondary) {
             $manuscript->lockManuscriptFiles();
             if ($withAreviewstep) {
-                $step = $manuscript->managementReviewSteps()->save(ManagementReviewStep::factory()->make());
+                $step = $manuscript->managementReviewSteps()->save(ManagementReviewStep::factory()->make(['manuscript_record_id' => $manuscript->id]));
                 if ($secondary) {
                     $step->decision_expected_by = null;
                     $step->save();

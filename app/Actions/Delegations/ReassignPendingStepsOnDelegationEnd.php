@@ -26,7 +26,7 @@ class ReassignPendingStepsOnDelegationEnd
             ->latest()
             ->first();
 
-        $nextUserId = $nextDelegation?->delegate_user_id ?? $delegation->user_id;
+        $nextUserId = $nextDelegation->delegate_user_id ?? $delegation->user_id;
         $comment = __('delegation.delegation_ended_comment');
 
         foreach ($steps as $step) {

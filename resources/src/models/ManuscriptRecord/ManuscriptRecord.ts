@@ -54,6 +54,7 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   open_access_rationale: string
   preprint_url: string
   readonly sent_for_review_at: string | null
+  readonly business_days_in_review: number | null
   readonly reviewed_at: string | null
   submitted_to_journal_on: string | null
   accepted_on: string | null
@@ -71,6 +72,13 @@ export interface ManuscriptRecord extends BaseManuscriptRecord {
   can_unsubmit_for_review: boolean
 }
 
+export interface ActiveManagementReviewStep {
+  user_id: number
+  user_name: string | null
+  decision_expected_by: string | null
+  is_overdue: boolean
+}
+
 export type ManuscriptRecordSummary = Omit<
   ManuscriptRecord,
   | 'abstract'
@@ -80,7 +88,9 @@ export type ManuscriptRecordSummary = Omit<
   | 'manuscript_pdf'
   | 'publication'
   | 'can_attach_manuscript'
->
+> & {
+  active_management_review_step?: ActiveManagementReviewStep | null
+}
 
 export interface ManuscriptRecordMetadata {
   id: number
@@ -435,6 +445,11 @@ export class ManuscriptRecordListQuery extends SpatieQuery {
     return this
   }
 
+  public filterOverdueReview(overdue: boolean): this {
+    this.filter('overdueReview', overdue)
+    return this
+  }
+
   public sort(
     name: ManuscriptRecordListQuerySort,
     direction: 'asc' | 'desc',
@@ -455,7 +470,7 @@ type ManuscriptQuerySort
     | 'status'
     | 'type'
 
-type ManuscriptRecordListQuerySort
+export type ManuscriptRecordListQuerySort
   = | 'title'
     | 'created_at'
     | 'updated_at'
