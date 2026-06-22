@@ -38,6 +38,12 @@ class Kernel extends ConsoleKernel
             ],
         ])->daily();
 
+        // reassign pending steps when scheduled delegations go active
+        $schedule->command('osp:reassign-started-delegation-steps')->daily()->at('08:00');  // 08h00 UTC (3am EST)
+
+        // reassign pending steps when delegations expire naturally
+        $schedule->command('osp:reassign-expired-delegation-steps')->daily()->at('08:00');  // 08h00 UTC (3am EST)
+
         // send management review notifications (only on business days)
         $schedule->command('osp:send-due-management-review-notifications')->daily()->at('14:00');  // 14h00 UTC (9am EST)
 

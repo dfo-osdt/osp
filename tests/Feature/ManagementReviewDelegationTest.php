@@ -1,5 +1,7 @@
 <?php
 
+use App\Console\Commands\ReassignExpiredDelegationSteps;
+use App\Console\Commands\ReassignStartedDelegationSteps;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\Permissions\UserRole;
 use App\Events\ManagementReviewStepCreated;
@@ -456,4 +458,380 @@ test('forwarded step carries over decision_expected_by from original', function 
 
     expect($delegateStep->decision_expected_by->startOfMinute()->toDateTimeString())
         ->toBe($deadline->toDateTimeString());
+});
+
+// --- Delegation lifecycle: start ---
+
+test('creating an active delegation forwards existing pending steps to the delegate', function (): void {
+    Event::fake([ManagementReviewStepCreated::class]);
+
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+    ]);
+
+    $this->actingAs($user)->postJson('/api/user/management-review-delegations', [
+        'delegate_user_id' => $delegate->id,
+        'ends_at' => now()->addDays(30)->toDateTimeString(),
+    ])->assertSuccessful();
+
+    $step->refresh();
+    expect($step->status)->toBe(ManagementReviewStepStatus::REASSIGN);
+    expect($step->completed_at)->not->toBeNull();
+
+    $delegateStep = ManagementReviewStep::query()
+        ->where('user_id', $delegate->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->first();
+
+    expect($delegateStep)->not->toBeNull();
+    expect($delegateStep->previous_step_id)->toBe($step->id);
+    expect($delegateStep->status)->toBe(ManagementReviewStepStatus::PENDING);
+
+    Event::assertDispatched(ManagementReviewStepCreated::class);
+});
+
+test('creating a scheduled (future) delegation does not forward existing pending steps', function (): void {
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+    ]);
+
+    $this->actingAs($user)->postJson('/api/user/management-review-delegations', [
+        'delegate_user_id' => $delegate->id,
+        'starts_at' => now()->addDays(7)->toDateTimeString(),
+        'ends_at' => now()->addDays(37)->toDateTimeString(),
+    ])->assertSuccessful();
+
+    $step->refresh();
+    expect($step->status)->toBe(ManagementReviewStepStatus::PENDING);
+
+    $delegateStep = ManagementReviewStep::query()
+        ->where('user_id', $delegate->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->first();
+
+    expect($delegateStep)->toBeNull();
+});
+
+test('creating a delegation does not forward non-pending steps', function (): void {
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::ON_HOLD,
+    ]);
+
+    $this->actingAs($user)->postJson('/api/user/management-review-delegations', [
+        'delegate_user_id' => $delegate->id,
+        'ends_at' => now()->addDays(30)->toDateTimeString(),
+    ])->assertSuccessful();
+
+    expect($step->refresh()->status)->toBe(ManagementReviewStepStatus::ON_HOLD);
+
+    $delegateStep = ManagementReviewStep::query()
+        ->where('user_id', $delegate->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->first();
+
+    expect($delegateStep)->toBeNull();
+});
+
+// --- Delegation lifecycle: end ---
+
+test('ending a delegation early reassigns delegate pending steps back to original user', function (): void {
+    Event::fake([ManagementReviewStepCreated::class]);
+
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    $delegation = ManagementReviewDelegation::factory()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $delegate->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $originalStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::REASSIGN,
+        'completed_at' => now(),
+    ]);
+    $delegateStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $delegate->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $originalStep->id,
+    ]);
+
+    $this->actingAs($user)
+        ->deleteJson("/api/user/management-review-delegations/{$delegation->id}")
+        ->assertSuccessful();
+
+    $delegateStep->refresh();
+    expect($delegateStep->status)->toBe(ManagementReviewStepStatus::REASSIGN);
+    expect($delegateStep->completed_at)->not->toBeNull();
+
+    $returnedStep = ManagementReviewStep::query()
+        ->where('user_id', $user->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->where('status', ManagementReviewStepStatus::PENDING)
+        ->first();
+
+    expect($returnedStep)->not->toBeNull();
+    expect($returnedStep->previous_step_id)->toBe($delegateStep->id);
+
+    Event::assertDispatched(ManagementReviewStepCreated::class);
+});
+
+test('ending a delegation early reassigns to next active delegate when one exists', function (): void {
+    Event::fake([ManagementReviewStepCreated::class]);
+
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+    $nextDelegate = User::factory()->create();
+
+    $delegation = ManagementReviewDelegation::factory()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $delegate->id,
+        'ends_at' => now()->addHour(),
+    ]);
+
+    // Create the next active delegation for the same user
+    ManagementReviewDelegation::factory()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $nextDelegate->id,
+        'starts_at' => null,
+        'ends_at' => now()->addDays(30),
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $originalStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::REASSIGN,
+        'completed_at' => now(),
+    ]);
+    $delegateStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $delegate->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $originalStep->id,
+    ]);
+
+    $delegation->update(['ended_early_at' => now()]);
+
+    // Directly call the action since two active delegations can't coexist via the API
+    \App\Actions\Delegations\ReassignPendingStepsOnDelegationEnd::handle($delegation);
+
+    $delegateStep->refresh();
+    expect($delegateStep->status)->toBe(ManagementReviewStepStatus::REASSIGN);
+
+    $newStep = ManagementReviewStep::query()
+        ->where('user_id', $nextDelegate->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->where('status', ManagementReviewStepStatus::PENDING)
+        ->first();
+
+    expect($newStep)->not->toBeNull();
+    expect($newStep->previous_step_id)->toBe($delegateStep->id);
+});
+
+test('ending a delegation does not touch delegate steps not originating from this delegation', function (): void {
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+    $otherUser = User::factory()->create();
+
+    $delegation = ManagementReviewDelegation::factory()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $delegate->id,
+    ]);
+
+    // A step for delegate whose previous step belongs to a different user (not $user)
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $otherOriginalStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $otherUser->id,
+        'status' => ManagementReviewStepStatus::REASSIGN,
+        'completed_at' => now(),
+    ]);
+    $unrelatedStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $delegate->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $otherOriginalStep->id,
+    ]);
+
+    $this->actingAs($user)
+        ->deleteJson("/api/user/management-review-delegations/{$delegation->id}")
+        ->assertSuccessful();
+
+    expect($unrelatedStep->refresh()->status)->toBe(ManagementReviewStepStatus::PENDING);
+});
+
+test('expired delegation command reassigns pending delegate steps to original user', function (): void {
+    Event::fake([ManagementReviewStepCreated::class]);
+
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    $delegation = ManagementReviewDelegation::factory()->expired()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $delegate->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $originalStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::REASSIGN,
+        'completed_at' => now()->subDays(2),
+    ]);
+    $delegateStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $delegate->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $originalStep->id,
+    ]);
+
+    $this->artisan(ReassignExpiredDelegationSteps::class)->assertExitCode(0);
+
+    $delegateStep->refresh();
+    expect($delegateStep->status)->toBe(ManagementReviewStepStatus::REASSIGN);
+
+    $returnedStep = ManagementReviewStep::query()
+        ->where('user_id', $user->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->where('status', ManagementReviewStepStatus::PENDING)
+        ->first();
+
+    expect($returnedStep)->not->toBeNull();
+    expect($returnedStep->previous_step_id)->toBe($delegateStep->id);
+
+    Event::assertDispatched(ManagementReviewStepCreated::class);
+});
+
+test('expired delegation command does not process early-ended delegations', function (): void {
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    ManagementReviewDelegation::factory()->endedEarly()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $delegate->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $originalStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::REASSIGN,
+        'completed_at' => now()->subDay(),
+    ]);
+    $delegateStep = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $delegate->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $originalStep->id,
+    ]);
+
+    $this->artisan(ReassignExpiredDelegationSteps::class)->assertExitCode(0);
+
+    expect($delegateStep->refresh()->status)->toBe(ManagementReviewStepStatus::PENDING);
+});
+
+// --- Scheduled delegation start ---
+
+test('started delegation command forwards steps created during the scheduling window', function (): void {
+    Event::fake([ManagementReviewStepCreated::class]);
+
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    // Delegation was scheduled in the future, is now active (starts_at just passed)
+    ManagementReviewDelegation::factory()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $delegate->id,
+        'starts_at' => now()->subHour(),   // just went active
+        'ends_at' => now()->addDays(7),
+    ]);
+
+    // Step was created before the delegation went active (during scheduling window)
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+    ]);
+
+    $this->artisan(ReassignStartedDelegationSteps::class)->assertExitCode(0);
+
+    $step->refresh();
+    expect($step->status)->toBe(ManagementReviewStepStatus::REASSIGN);
+    expect($step->completed_at)->not->toBeNull();
+
+    $delegateStep = ManagementReviewStep::query()
+        ->where('user_id', $delegate->id)
+        ->where('manuscript_record_id', $manuscript->id)
+        ->first();
+
+    expect($delegateStep)->not->toBeNull();
+    expect($delegateStep->previous_step_id)->toBe($step->id);
+    expect($delegateStep->status)->toBe(ManagementReviewStepStatus::PENDING);
+
+    Event::assertDispatched(ManagementReviewStepCreated::class);
+});
+
+test('started delegation command does not process immediate (non-scheduled) delegations', function (): void {
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    // Create the step first so the observer does not auto-reassign it
+    $manuscript = ManuscriptRecord::factory()->in_review()->create();
+    $step = ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $user->id,
+        'status' => ManagementReviewStepStatus::PENDING,
+    ]);
+
+    // Immediate delegation (starts_at = null) — command must skip it (whereNotNull filter)
+    ManagementReviewDelegation::factory()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $delegate->id,
+        'starts_at' => null,
+        'ends_at' => now()->addDays(7),
+    ]);
+
+    $this->artisan(ReassignStartedDelegationSteps::class)->assertExitCode(0);
+
+    expect($step->refresh()->status)->toBe(ManagementReviewStepStatus::PENDING);
+});
+
+test('started delegation command is idempotent — already forwarded steps are not re-processed', function (): void {
+    $user = User::factory()->create();
+    $delegate = User::factory()->create();
+
+    ManagementReviewDelegation::factory()->create([
+        'user_id' => $user->id,
+        'delegate_user_id' => $delegate->id,
+        'starts_at' => now()->subDays(3),
+        'ends_at' => now()->addDays(4),
+    ]);
+
+    // No pending steps for user — all already forwarded when command ran on day 1
+    $this->artisan(ReassignStartedDelegationSteps::class)->assertExitCode(0);
+
+    expect(ManagementReviewStep::query()->where('user_id', $delegate->id)->count())->toBe(0);
 });
