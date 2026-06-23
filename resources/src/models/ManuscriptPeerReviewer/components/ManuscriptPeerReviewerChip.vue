@@ -20,7 +20,7 @@ const name = computed(() => {
   return `${props.manuscriptPeerReviewer.data.author?.data.last_name}, ${props.manuscriptPeerReviewer.data.author?.data.first_name}`
 })
 
-const defaultOrganizationId = Number(import.meta.env.VITE_DEFAULT_ORGANIZATION_ID) || 1
+const defaultOrganizationId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
 const isInternal = computed(() => props.manuscriptPeerReviewer.data.author?.data.organization_id === defaultOrganizationId)
 
 const removable = computed(() => {
