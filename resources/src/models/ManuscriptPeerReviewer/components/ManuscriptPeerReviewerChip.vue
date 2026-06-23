@@ -14,10 +14,14 @@ const emit = defineEmits<{
 
 const localeStore = useLocaleStore()
 const { copy, copied, isSupported } = useClipboard()
+const { t } = useI18n()
 
 const name = computed(() => {
   return `${props.manuscriptPeerReviewer.data.author?.data.last_name}, ${props.manuscriptPeerReviewer.data.author?.data.first_name}`
 })
+
+const defaultOrganizationId = Number(import.meta.env.VITE_DEFAULT_ORGANIZATION_ID) || 1
+const isInternal = computed(() => props.manuscriptPeerReviewer.data.author?.data.organization_id === defaultOrganizationId)
 
 const removable = computed(() => {
   if (props.readonly) {
@@ -35,6 +39,17 @@ const removable = computed(() => {
     @remove="emit('delete', props.manuscriptPeerReviewer)"
   >
     {{ name }}
+    <q-icon
+      :name="isInternal ? 'mdi-fish' : 'mdi-earth'"
+      :color="isInternal ? 'primary' : 'grey-7'"
+      :aria-label="isInternal ? t('common.internal-author') : t('common.external-author')"
+      size="18px"
+      class="q-ml-xs"
+    >
+      <q-tooltip>
+        {{ isInternal ? t('common.internal-author') : t('common.external-author') }}
+      </q-tooltip>
+    </q-icon>
     <q-menu>
       <q-list dense separator>
         <q-item class="q-mt-sm">
