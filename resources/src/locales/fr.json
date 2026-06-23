@@ -123,7 +123,7 @@
     "description": "Description",
     "dfo-region": "Région MPO",
     "dismiss": "Fermer",
-    "division-manager": "Chef de division",
+    "division-manager": "Gestionnaire de division",
     "doi": "DOI",
     "edit": "Modifier",
     "email": "Courriel",
@@ -403,7 +403,7 @@
   },
   "decision": {
     "refer": "Référer au prochain responsable",
-    "refer-desc": "Vous avez examiné le manuscrit et vous le transmettez au prochain responsable (généralement un RDS ou un DG) pour examen.",
+    "refer-desc": "Vous avez examiné le manuscrit et vous le transmettez au prochain responsable (généralement un DRS ou un DG) pour examen.",
     "revision": "Révisions requises",
     "revision-desc": "Signalez les commentaires de gestion qui doivent être pris en compte par l'auteur avant de compléter l'évaluation.",
     "reassign": "Réassigner",
@@ -574,7 +574,7 @@
     "manuscript-status-updated": "Statut du manuscrit mis à jour",
     "mark-as-submitted": "Marquer comme soumis",
     "submit-management": "Soumettre pour la révision par la gestion",
-    "submit-management-details": "Le manuscrit est initialement soumis à un chef de division ou directeur (NCR) pour examen par la gestion.",
+    "submit-management-details": "Le manuscrit est initialement soumis à un gestionnaire de division ou directeur (NCR) pour examen par la gestion.",
     "submit-pub-details": "Le manuscrit a été soumis pour la révision par les pairs. \nNous suivons cette étape pour recueillir des statistiques sur le temps nécessaire pour que les manuscrits soient acceptés et publiés.",
     "submit-pub-title": "Soumission initiale pour publication",
     "title": "Progrès du manuscrit",
@@ -762,7 +762,7 @@
     "intellectual-property-policy-copyright-act-link": "https://www.dfo-mpo.gc.ca/terms-avis/copyright-droits-fra.htm",
     "message": {
       "p1": "Réviser le manuscrit pour vérifier qu'il respecte le {copyrightsAct}, la {privacyAct}, la loi sur la gestion financière (en ce qui concerne les approbations des coûts de publication) et le {dfoCodeOfConduct}.",
-      "p2": " Il identifiera également les cas où un manuscrit présente un intérêt potentiel pour le public, dans le seul but d'informer les Communications et le RDS ou DG. Des exemples de sujets d'intérêt public potentiel, incluent des sujets liés à l'actualité ou à l'intérêt des parties prenantes. Il peut s'agir d'histoires intéressantes pour illustrer les projets de recherches menés au MPO ou des sujets d'études qui sont plus controversées. L'inclusion de matériel potentiellement sensible n'empêchera pas la publication d'un manuscrit."
+      "p2": " Il identifiera également les cas où un manuscrit présente un intérêt potentiel pour le public, dans le seul but d'informer les Communications et le DRS ou DG. Des exemples de sujets d'intérêt public potentiel, incluent des sujets liés à l'actualité ou à l'intérêt des parties prenantes. Il peut s'agir d'histoires intéressantes pour illustrer les projets de recherches menés au MPO ou des sujets d'études qui sont plus controversées. L'inclusion de matériel potentiellement sensible n'empêchera pas la publication d'un manuscrit."
     },
     "national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
     "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html",
@@ -893,9 +893,9 @@
       "title": "Confirmer la soumission"
     },
     "step2": {
-      "p1": "Pour soumettre le manuscrit pour la révision par la gestion, recherchez le responsable/chef de division approprié dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
+      "p1": "Pour soumettre le manuscrit pour la révision par la gestion, recherchez le responsable/gestionnaire de division approprié dans la liste des utilisateurs. \nSi vous ne trouvez pas leur nom, ils ne sont probablement pas encore inscrits et vous pourrez les inviter sur le portail.",
       "p2": "Note : \nvous ne pourrez pas sélectionner quelqu'un qui est l'auteur de ce manuscrit ou le propriétaire de ce registre de manuscrit.",
-      "subtitle": "Chef de division/Directeur",
+      "subtitle": "Gestionnaire de division/Directeur",
       "title": "Sélectionnez le réviseur de gestion"
     },
     "title": "Soumettre le manuscrit pour la révision par la gestion"
