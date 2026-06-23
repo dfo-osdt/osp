@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ManuscriptAuthorResource } from '../ManuscriptAuthor'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
+import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId'
 import RORLinkSpan from '@/models/Organization/components/RORLinkSpan.vue'
 
 const props = withDefaults(
@@ -41,8 +42,8 @@ const name = computed(() => {
   return `${props.manuscriptAuthor.data.author?.data.last_name}, ${props.manuscriptAuthor.data.author?.data.first_name}`
 })
 
-const defaultOrganiztionId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
-const isInternal = computed(() => props.manuscriptAuthor.data.organization_id === defaultOrganiztionId)
+const defaultOrganizationId = useDefaultOrganizationId()
+const isInternal = computed(() => props.manuscriptAuthor.data.organization_id === defaultOrganizationId)
 
 const removable = computed(() => {
   if (props.readonly) {

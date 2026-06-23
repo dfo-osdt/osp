@@ -5,6 +5,7 @@ import type {
 } from '../Organization'
 import { QSelect } from 'quasar'
 import { SpatieQuery } from '@/api/SpatieQuery'
+import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId'
 import {
   OrganizationService,
 } from '../Organization'
@@ -28,7 +29,7 @@ const selectedOrganization = ref<OrganizationResource | null>(null)
 const lastSearchTerm = ref('')
 const organizationsLoading = ref(false)
 const showCreateOrganizationDialog = ref(false)
-const defaultOrganiztionId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
+const defaultOrganizationId = useDefaultOrganizationId()
 
 defineExpose({
   selectedOrganization,
@@ -56,7 +57,7 @@ onMounted(async () => {
   }
   if (props.modelValue === null && props.showDefaultOrganization) {
     selectedOrganization.value = await OrganizationService.find(
-      defaultOrganiztionId,
+      defaultOrganizationId,
     )
   }
 })

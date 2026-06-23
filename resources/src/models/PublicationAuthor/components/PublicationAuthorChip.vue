@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PublicationAuthorResource } from '../PublicationAuthor'
+import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId'
 import RORLinkSpan from '@/models/Organization/components/RORLinkSpan.vue'
 import OrcidAvatar from '../../../components/OrcidAvatar.vue'
 
@@ -31,8 +32,8 @@ const isGroupAuthor = computed(
   () => props.publicationAuthor.data.is_group_author,
 )
 
-const defaultOrganiztionId = Number(import.meta.env.VITE_OSP_DEFAULT_ORG_ID) || 1
-const isInternal = computed(() => props.publicationAuthor.data.organization_id === defaultOrganiztionId)
+const defaultOrganizationId = useDefaultOrganizationId()
+const isInternal = computed(() => props.publicationAuthor.data.organization_id === defaultOrganizationId)
 
 const name = computed(() => {
   if (isGroupAuthor.value) {
