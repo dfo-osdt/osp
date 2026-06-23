@@ -7,6 +7,7 @@ use App\Enums\Permissions\UserRole;
 use App\Models\ManuscriptRecord;
 use App\Models\Region;
 use App\Models\User;
+use Illuminate\Support\Facades\Date;
 
 // Authorization Tests
 test('unauthenticated users cannot access manuscript index', function (): void {
@@ -376,6 +377,49 @@ test('manuscript pagination works with filtering', function (): void {
 
     expect($response->json('data'))->toHaveCount(8);
     expect($response->json('meta.total'))->toBe(15); // Total filtered results
+});
+
+test('business days in review uses reviewed_at when present', function (): void {
+    Date::setTestNow('2026-01-12 10:00:00');
+
+    try {
+        $user = User::factory()->withRoles([UserRole::DIRECTOR])->create();
+
+        $reviewedManuscript = ManuscriptRecord::factory()->create([
+            'status' => ManuscriptRecordStatus::REVIEWED,
+            'sent_for_review_at' => '2026-01-05 09:00:00',
+            'reviewed_at' => '2026-01-08 09:00:00',
+        ]);
+
+        $inReviewManuscript = ManuscriptRecord::factory()->create([
+            'status' => ManuscriptRecordStatus::IN_REVIEW,
+            'sent_for_review_at' => '2026-01-08 09:00:00',
+            'reviewed_at' => null,
+        ]);
+
+        $response = $this->actingAs($user)->getJson('/api/manuscript-records');
+        $response->assertOk();
+
+        $manuscriptsById = collect($response->json('data'))->keyBy('data.id');
+
+        $reviewedBusinessDays = $manuscriptsById->get($reviewedManuscript->id)['data']['business_days_in_review'];
+        $inReviewBusinessDays = $manuscriptsById->get($inReviewManuscript->id)['data']['business_days_in_review'];
+
+        $expectedReviewedBusinessDays = (int) Date::parse($reviewedManuscript->sent_for_review_at)
+            ->diffInBusinessDays(Date::parse($reviewedManuscript->reviewed_at));
+
+        $expectedInReviewBusinessDays = (int) Date::parse($inReviewManuscript->sent_for_review_at)
+            ->diffInBusinessDays(now());
+
+        $reviewedBusinessDaysIfCountedToNow = (int) Date::parse($reviewedManuscript->sent_for_review_at)
+            ->diffInBusinessDays(now());
+
+        expect($reviewedBusinessDays)->toBe($expectedReviewedBusinessDays)
+            ->and($inReviewBusinessDays)->toBe($expectedInReviewBusinessDays)
+            ->and($reviewedBusinessDays)->not->toBe($reviewedBusinessDaysIfCountedToNow);
+    } finally {
+        Date::setTestNow();
+    }
 });
 
 // Data Integrity Tests
