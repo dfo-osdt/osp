@@ -18,7 +18,7 @@ import AuthorList from '../components/AuthorList.vue'
 
 // URL query params for filter persistence
 const activeFilter = useRouteQuery('filter', '1', { transform: Number })
-const currentPage = useRouteQuery('page', '1', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number, mode: 'push' })
 const search = useRouteQuery<string | null>('search', null)
 const organizationId = useRouteQuery<number | null>('org', null, {
   transform: v => v ? Number(v) : null,

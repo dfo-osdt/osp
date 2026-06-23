@@ -25,7 +25,7 @@ const manuscripts = ref<ManuscriptRecordSummaryResourceList>()
 
 // URL query params for filter persistence
 const activeFilterId = useRouteQuery('filter', '3', { transform: Number })
-const currentPage = useRouteQuery('page', '1', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number, mode: 'push' })
 const search = useRouteQuery<string | null>('search', null)
 const functionalAreaIds = useRouteQuery<number[] | null>('functionalAreaIds', null, {
   transform: (v) => {
