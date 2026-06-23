@@ -41,7 +41,7 @@ const sortOptions = computed<SortOption[]>(() => [
 
 // URL query params for filter persistence
 const activeFilter = useRouteQuery('filter', '1', { transform: Number })
-const currentPage = useRouteQuery('page', '1', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number, mode: 'push' })
 const sortIndex = useRouteQuery('sort', '0', { transform: Number })
 const search = useRouteQuery<string | null>('search', null)
 const regionId = useRouteQuery<number | null>('region', null, {

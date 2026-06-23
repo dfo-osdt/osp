@@ -20,7 +20,7 @@ const { t } = useI18n()
 
 // URL query params for filter persistence
 const activeFilterId = useRouteQuery('filter', '2', { transform: Number })
-const currentPage = useRouteQuery('page', '1', { transform: Number })
+const currentPage = useRouteQuery('page', '1', { transform: Number, mode: 'push' })
 const search = useRouteQuery<string | null>('search', null)
 
 const publications = ref<PublicationResourceList>()
