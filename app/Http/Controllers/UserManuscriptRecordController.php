@@ -41,7 +41,7 @@ class UserManuscriptRecordController extends Controller
                 $q->where('user_id', $userId);
             });
 
-        if ($request->get('include-reviews') === 'true') {
+        if ($request->input('include-reviews') === 'true') {
             $manuscriptIds->orWhereHas('managementReviewSteps', function ($q) use ($userId): void {
                 $q->where('user_id', $userId);
             });
@@ -54,7 +54,9 @@ class UserManuscriptRecordController extends Controller
                 'organization',
             ],
             'shareables',
-            'managementReviewSteps',
+            'managementReviewSteps' => [
+                'user',
+            ],
             'region',
         ];
 
