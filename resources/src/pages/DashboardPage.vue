@@ -3,6 +3,7 @@ import { useRouteQuery } from '@vueuse/router'
 import GuideCard from '@/components/GuideCard.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
+import EditorDashboardView from '@/models/EditorDashboard/views/EditorDashboardView.vue'
 import RecentManagementReviewStepsView from '@/models/ManagementReviewStep/views/RecentManagementReviewStepsView.vue'
 import CreateManuscriptDialog from '@/models/ManuscriptRecord/components/CreateManuscriptDialog.vue'
 import ManuscriptList from '@/models/ManuscriptRecord/components/ManuscriptList.vue'
@@ -13,9 +14,17 @@ import PublicationList from '@/models/Publication/components/PublicationList.vue
 import ContentCard from '../components/ContentCard.vue'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
 const manuscripts = useManuscriptStore()
 const reviewSteps = useManagementReviewStepStore()
 const publications = usePublicationStore()
+
+// Editors and chief editors land on the editor overview by default, with the
+// option to switch to their personal author dashboard.
+const personalView = useStorage('dashboard-personal-view', false)
+const showEditorDashboard = computed(
+  () => authStore.isEditor && !personalView.value,
+)
 
 // Tab state: URL takes precedence, but remember last choice in storage
 const storedTab = useStorage('dashboard-recent-tab', 'manuscripts')
@@ -63,7 +72,24 @@ const showCreatePublication = ref(false)
 
 <template>
   <MainPageLayout icon="mdi-view-dashboard" :title="$t('common.dashboard')">
-    <div class="q-pa-md">
+    <div v-if="authStore.isEditor" class="row justify-end q-px-md q-pt-md">
+      <q-btn
+        flat
+        no-caps
+        color="primary"
+        :icon="showEditorDashboard ? 'mdi-account' : 'mdi-clipboard-text-multiple'"
+        :label="
+          showEditorDashboard
+            ? $t('editor-dashboard.view-my-dashboard')
+            : $t('editor-dashboard.view-editor-dashboard')
+        "
+        @click="personalView = !personalView"
+      />
+    </div>
+
+    <EditorDashboardView v-if="showEditorDashboard" />
+
+    <div v-else class="q-pa-md">
       <div class="row">
         <div
           v-for="card in data"

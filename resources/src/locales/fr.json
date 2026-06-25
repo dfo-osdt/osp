@@ -398,6 +398,22 @@
       "quick-help-title": "Pour commencer"
     }
   },
+  "editor-dashboard": {
+    "awaiting-single-window": "En attente du guichet unique",
+    "awaiting-single-window-subtitle": "Registres approuvés non encore soumis",
+    "in-single-window": "Au guichet unique",
+    "in-single-window-subtitle": "Acceptées, en attente de publication",
+    "in-planning-binder": "Au cahier de planification",
+    "in-planning-binder-subtitle": "Suivies pour les communications",
+    "due-queue": "File d'attente",
+    "due-queue-subtitle": "Publications du MPO acceptées au guichet unique, les plus anciennes d'abord",
+    "accepted-on": "Acceptée le",
+    "age": "Âge",
+    "planning-binder": "Cahier",
+    "flagged-tooltip": "Signalée pour le cahier de planification",
+    "view-my-dashboard": "Voir mon tableau de bord",
+    "view-editor-dashboard": "Voir le tableau de bord de l'éditeur"
+  },
   "date-input": {
     "hint": "Format de date ISO (AAAA-MM-JJ)"
   },

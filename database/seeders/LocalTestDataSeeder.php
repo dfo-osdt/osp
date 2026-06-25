@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
+use App\Enums\ManuscriptRecordType;
+use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use App\Enums\PublicationStatus;
 use App\Models\Announcement;
 use App\Models\Author;
@@ -15,6 +17,7 @@ use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
+use App\Models\PlanningBinderItem;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
 use App\Models\Region;
@@ -184,6 +187,73 @@ class LocalTestDataSeeder extends Seeder
                 'published_on' => now()->subMonths(10),
                 'accepted_on' => now()->subMonths(11),
             ]);
+
+        // ── Editor dashboard: EOS (secondary) pipeline ────────────────────────
+        // Secondary MRFs approved by management (status = reviewed) but not yet
+        // submitted to the Single Window → "Awaiting Single Window" count.
+        $awaitingSubmission = [
+            ['title' => 'EOS Coastal Habitat Assessment — awaiting submission', 'region_id' => $nflRegion->id],
+            ['title' => 'EOS Atlantic Salmon Stock Review — awaiting submission', 'region_id' => $marRegion->id],
+            ['title' => 'EOS Snow Crab Survey — awaiting submission', 'region_id' => $nflRegion->id],
+            ['title' => 'EOS Eelgrass Mapping — awaiting submission', 'region_id' => $marRegion->id],
+            ['title' => 'EOS Marine Protected Area Monitoring — awaiting submission', 'region_id' => $nflRegion->id],
+        ];
+
+        foreach ($awaitingSubmission as $row) {
+            ManuscriptRecord::factory()->secondary()->reviewed()->create([
+                'title' => $row['title'],
+                'region_id' => $row['region_id'],
+                'user_id' => $user->id,
+            ]);
+        }
+
+        // Secondary publications accepted in the Single Window awaiting publication
+        // → the editor "due queue" (oldest first). Some are flagged for the
+        // planning binder, which re-associates the binder item to the publication.
+        $dfoJournal = Journal::query()->dfoSeries()->first();
+
+        $dueQueue = [
+            ['title' => 'EOS Cod Recovery Strategy', 'catalogue_number' => 'Fs97-18/401E-PDF', 'days_ago' => 96, 'region_id' => $nflRegion->id, 'flagged' => true],
+            ['title' => 'EOS Lobster Settlement Index super long title that we could see at any time in one of our reports', 'catalogue_number' => 'Fs97-18/402E-PDF', 'days_ago' => 74, 'region_id' => $marRegion->id, 'flagged' => false],
+            ['title' => 'EOS Capelin Spawning Forecast', 'catalogue_number' => 'Fs97-18/403E-PDF', 'days_ago' => 58, 'region_id' => $nflRegion->id, 'flagged' => true],
+            ['title' => 'EOS Right Whale Distribution', 'catalogue_number' => 'Fs97-18/404E-PDF', 'days_ago' => 41, 'region_id' => $marRegion->id, 'flagged' => true],
+            ['title' => 'EOS Herring Acoustic Survey', 'catalogue_number' => 'Fs97-18/405E-PDF', 'days_ago' => 33, 'region_id' => $nflRegion->id, 'flagged' => false],
+            ['title' => 'EOS Scallop Biomass Update', 'catalogue_number' => 'Fs97-18/406E-PDF', 'days_ago' => 19, 'region_id' => $marRegion->id, 'flagged' => false],
+            ['title' => 'EOS Seal Population Census', 'catalogue_number' => 'Fs97-18/407E-PDF', 'days_ago' => 8, 'region_id' => $nflRegion->id, 'flagged' => false],
+        ];
+
+        foreach ($dueQueue as $row) {
+            $publication = Publication::factory()->create([
+                'title' => $row['title'],
+                'catalogue_number' => $row['catalogue_number'],
+                'status' => PublicationStatus::ACCEPTED,
+                'user_id' => $user->id,
+                'journal_id' => $dfoJournal->id,
+                'region_id' => $row['region_id'],
+                'accepted_on' => now()->subDays($row['days_ago']),
+                'published_on' => null,
+            ]);
+
+            PublicationAuthor::factory()->create([
+                'publication_id' => $publication->id,
+                'is_corresponding_author' => true,
+            ]);
+
+            PublicationAuthor::factory()->create([
+                'publication_id' => $publication->id,
+                'is_corresponding_author' => false,
+            ]);
+
+            if ($row['flagged']) {
+                PlanningBinderItem::factory()->create([
+                    'plannable_type' => Publication::class,
+                    'plannable_id' => $publication->id,
+                    'type' => ManuscriptRecordType::SECONDARY,
+                    'status' => PlanningBinderItemStatus::READY,
+                    'region_id' => $row['region_id'],
+                ]);
+            }
+        }
 
         // ── Management review steps ───────────────────────────────────────────
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthorEmploymentController;
 use App\Http\Controllers\AuthorExpertiseController;
 use App\Http\Controllers\AuthorPublicationController;
 use App\Http\Controllers\Azure\AzureDirectorySearchController;
+use App\Http\Controllers\EditorDashboardController;
 use App\Http\Controllers\Expertise\SuggestSimilarExpertiseController;
 use App\Http\Controllers\ExpertiseController;
 use App\Http\Controllers\FunctionalAreaController;
@@ -174,6 +175,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/publications/{publication}/funding-sources/{fundingSource}', 'update');
         Route::delete('/publications/{publication}/funding-sources/{fundingSource}', 'destroy');
     });
+
+    // national editor dashboard (editors + chief editors)
+    Route::get('/editor-dashboard', EditorDashboardController::class);
 
     // routes for user specific resources
     Route::prefix('my')->group(function () {
