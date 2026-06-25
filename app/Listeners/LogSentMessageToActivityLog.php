@@ -4,24 +4,24 @@ namespace App\Listeners;
 
 use Illuminate\Mail\Events\MessageSent;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
 
 class LogSentMessageToActivityLog
 {
     /**
-     * Record every outgoing email - recipients, subject and full body - in the
-     * activity log so sent mail is fully auditable and can be correlated with
-     * the mail server logs via the message id.
+     * Record every outgoing email - recipients and subject - in the activity
+     * log so sent mail is auditable and can be correlated with the mail server
+     * logs via the message id.
+     *
+     * The message body is intentionally not stored: some emails (password
+     * resets, signed verification links) embed secrets in the body that must
+     * not be persisted to a readable audit table.
      */
     public function handle(MessageSent $event): void
     {
         $message = $event->message;
 
-        if (! $message instanceof Email) {
-            return;
-        }
-
         activity('email')
+            ->event('sent')
             ->withProperties([
                 'message_id' => $event->sent->getMessageId(),
                 'subject' => $message->getSubject(),
@@ -30,7 +30,6 @@ class LogSentMessageToActivityLog
                 'cc' => $this->addresses($message->getCc()),
                 'bcc' => $this->addresses($message->getBcc()),
                 'reply_to' => $this->addresses($message->getReplyTo()),
-                'text' => $this->body($message->getTextBody()),
             ])
             ->log('Email sent');
     }
@@ -45,17 +44,5 @@ class LogSentMessageToActivityLog
             fn (Address $address): string => $address->toString(),
             $addresses,
         );
-    }
-
-    /**
-     * @param  resource|string|null  $body
-     */
-    private function body(mixed $body): ?string
-    {
-        if (is_resource($body)) {
-            return (string) stream_get_contents($body);
-        }
-
-        return $body;
     }
 }
