@@ -18,9 +18,9 @@ on:
   pull_request:
     branches: [main]
     paths-ignore:
-      - '**/*.md'
+      - "**/*.md"
   schedule:
-    - cron: '39 13 * * 0'
+    - cron: "39 13 * * 0"
 
 jobs:
   analyze:
@@ -60,7 +60,7 @@ jobs:
         # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
@@ -98,4 +98,4 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
         with:
-          category: '/language:${{matrix.language}}'
+          category: "/language:${{matrix.language}}"
