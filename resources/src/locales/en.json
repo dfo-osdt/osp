@@ -398,6 +398,22 @@
       "quick-help-title": "Getting Started"
     }
   },
+  "editor-dashboard": {
+    "awaiting-single-window": "Awaiting Single Window",
+    "awaiting-single-window-subtitle": "Approved EOS records not yet submitted",
+    "in-single-window": "In Single Window",
+    "in-single-window-subtitle": "Accepted, awaiting publication",
+    "in-planning-binder": "In Planning Binder",
+    "in-planning-binder-subtitle": "Tracked for communications",
+    "due-queue": "Due Queue",
+    "due-queue-subtitle": "EOS publications accepted in the Single Window, oldest first",
+    "accepted-on": "Accepted On",
+    "age": "Age",
+    "planning-binder": "Binder",
+    "flagged-tooltip": "Flagged for the planning binder",
+    "view-my-dashboard": "View my dashboard",
+    "view-editor-dashboard": "View editor dashboard"
+  },
   "date-input": {
     "hint": "ISO Date Format (YYYY-MM-DD)"
   },

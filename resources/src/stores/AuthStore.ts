@@ -30,6 +30,12 @@ export const useAuthStore = defineStore('AuthStore', () => {
     return user.value?.canViewRegionalManuscripts() ?? false
   })
 
+  // National editors and chief editors share the update_publications
+  // permission, which regional editors and observers do not have.
+  const isEditor = computed(() => {
+    return user.value?.can('update_publications') ?? false
+  })
+
   /**
    * Internal function to check if user is still logged in by
    * interrogating user api point. Used to hydrate this
@@ -187,6 +193,7 @@ export const useAuthStore = defineStore('AuthStore', () => {
     user,
     isAuthenticated,
     canViewRegionalManuscripts,
+    isEditor,
     login,
     logout,
     refreshUser,
