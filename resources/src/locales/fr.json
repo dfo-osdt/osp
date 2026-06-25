@@ -409,8 +409,8 @@
     "due-queue-subtitle": "Publications du MPO acceptées au guichet unique, les plus anciennes d'abord",
     "accepted-on": "Acceptée le",
     "age": "Âge",
-    "planning-binder": "Cahier",
-    "flagged-tooltip": "Signalée pour le cahier de planification",
+    "planning-binder": "Classeur",
+    "flagged-tooltip": "Signalée pour le classeur de planification",
     "view-my-dashboard": "Voir mon tableau de bord",
     "view-editor-dashboard": "Voir le tableau de bord de l'éditeur"
   },
