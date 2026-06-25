@@ -45,7 +45,7 @@ class EditorDashboardController extends Controller
                 'planningBinderItem',
                 'publicationAuthors.author',
             ])
-            ->orderBy('accepted_on')
+            ->oldest('accepted_on')
             ->orderBy('id')
             ->paginate($limit)
             ->appends($request->query());
