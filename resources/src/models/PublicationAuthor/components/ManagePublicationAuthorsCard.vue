@@ -34,9 +34,7 @@ const hasNoAuthors = computed(() => {
 
 const hasNoCorrespondingAuthor = computed(() => {
   return (
-    publicationAuthors.value.data.filter(
-      item => item.data.is_corresponding_author,
-    ).length === 0
+    !publicationAuthors.value.data.some(item => item.data.is_corresponding_author)
   )
 })
 
