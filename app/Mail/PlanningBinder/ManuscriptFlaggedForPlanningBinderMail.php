@@ -38,7 +38,7 @@ class ManuscriptFlaggedForPlanningBinderMail extends Mailable implements ShouldQ
             throw new \Exception('The manuscript submission email address is not set.');
         }
 
-        $ccEmails = collect([$ospEmail]);
+        $ccEmails = collect();
 
         $completedReviewers = $this->manuscriptRecord
             ->managementReviewSteps()

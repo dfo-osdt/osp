@@ -41,7 +41,7 @@ test('ManuscriptFlaggedForPlanningBinderMail CCs completed reviewers and their n
     $cc = ccEmails($mail->envelope());
 
     expect($cc)
-        ->toContain(config('osp.manuscript_submission_email'))
+        ->not()->toContain(config('osp.manuscript_submission_email'))
         ->toContain($completedReviewer->email)
         ->toContain($notificationGroupMember->member->email);
 });
@@ -71,7 +71,7 @@ test('FlaggedManuscriptOnPrepintServerMail CCs completed reviewers and their not
     $cc = ccEmails($mail->envelope());
 
     expect($cc)
-        ->toContain(config('osp.manuscript_submission_email'))
+        ->not()->toContain(config('osp.manuscript_submission_email'))
         ->toContain($completedReviewer->email)
         ->toContain($notificationGroupMember->member->email);
 });
@@ -106,7 +106,7 @@ test('FlaggedManuscriptAcceptedInJournalMail CCs completed reviewers and their n
     $cc = ccEmails($mail->envelope());
 
     expect($cc)
-        ->toContain(config('osp.manuscript_submission_email'))
+        ->not()->toContain(config('osp.manuscript_submission_email'))
         ->toContain($completedReviewer->email)
         ->toContain($notificationGroupMember->member->email);
 });
