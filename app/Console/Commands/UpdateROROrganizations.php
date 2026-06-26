@@ -26,6 +26,8 @@ class UpdateROROrganizations extends Command
     {
         $this->info('Checking for the latest ROR data version...');
 
+        activity('ror')->log('Checking for the latest ROR data version...');
+
         $latest = DownloadLatestRORData::latestVersion();
 
         if (! $latest) {
@@ -37,7 +39,10 @@ class UpdateROROrganizations extends Command
         $version = $latest['version'];
 
         if (! $this->option('force') && Cache::get(self::VERSION_CACHE_KEY) === $version) {
-            $this->info("Already up to date (version {$version}). Nothing to do.");
+
+            $msg = "Already up to date (version {$version}). Nothing to do.";
+            $this->info($msg);
+            activity('ror')->log($msg);
 
             return self::SUCCESS;
         }
@@ -51,7 +56,9 @@ class UpdateROROrganizations extends Command
             }, $latest);
 
             if (! $rorPath) {
-                $this->error('Unable to download ROR data dump.');
+                $msg = 'Unable to download and extract ROR data dump.';
+                $this->error($msg);
+                activity('ror')->log($msg);
 
                 return self::FAILURE;
             }
@@ -70,7 +77,9 @@ class UpdateROROrganizations extends Command
 
             Cache::forever(self::VERSION_CACHE_KEY, $version);
 
-            $this->info(PHP_EOL.'Done! Synced ROR version '.$version);
+            $msg = "Done! Synced ROR version {$version}.";
+            $this->info(PHP_EOL.$msg);
+            activity('ror')->log($msg);
 
             return self::SUCCESS;
         } finally {
