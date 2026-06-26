@@ -50,6 +50,14 @@ class Kernel extends ConsoleKernel
         // send weekly pending management review summary (only on Mondays)
         $schedule->command('osp:send-pending-management-review-notifications')->weekly()->mondays()->at('14:00');  // 14h00 UTC (9am EST)
 
+        // refresh ROR organizations weekly (only syncs when a new dump version is published)
+        $schedule->command('osp:update-ror-organizations')
+            ->weekly()
+            ->mondays()
+            ->at('03:00')  // 03h00 UTC
+            ->withoutOverlapping()
+            ->runInBackground();
+
         // send monthly pending journal acceptance summary (first Monday of every month)
         $schedule->command('osp:send-pending-journal-acceptance-notifications')
             ->weekly()
