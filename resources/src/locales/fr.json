@@ -399,7 +399,7 @@
     }
   },
   "editor-dashboard": {
-    "awaiting-scientific-publication": "En attente des publications scientifiques",
+    "awaiting-scientific-publication": "Arrive sous peu",
     "awaiting-scientific-publication-subtitle": "Registres approuvés non encore soumis",
     "in-scientific-publication": "Avec l'équipe des publications scientifiques",
     "in-scientific-publication-subtitle": "Acceptées, en attente de publication",
@@ -781,7 +781,7 @@
       "p2": " Il identifiera également les cas où un manuscrit présente un intérêt potentiel pour le public, dans le seul but d'informer les Communications et le DRS ou DG. Des exemples de sujets d'intérêt public potentiel, incluent des sujets liés à l'actualité ou à l'intérêt des parties prenantes. Il peut s'agir d'histoires intéressantes pour illustrer les projets de recherches menés au MPO ou des sujets d'études qui sont plus controversées. L'inclusion de matériel potentiellement sensible n'empêchera pas la publication d'un manuscrit."
     },
     "national-policy-for-science-publications": "Politique nationale sur les publications scientifiques de Pêches et Océans Canada",
-    "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-fra.html",
+    "national-policy-for-science-publications-link": "https://intranet.ent.dfo-mpo.ca/science/fr/node/2304",
     "p2": "Les auteurs peuvent soumettre leur publication au journal tiers pour l'examen par les pairs après que le gestionnaire a jugé que la publication était alignée sur la législation, les politiques et les directives pertinentes, ou si aucun commentaire n'a été reçu de l'examen de la direction dans les 10 jours ouvrables. Les directeurs de division, les directeurs nationaux, les directeurs régionaux des sciences et les directeurs nationaux généraux peuvent effectuer l'examen de la gestion.",
     "privacy-act": "Loi sur la protection des renseignements personnels",
     "privacy-act-link": "https://www.priv.gc.ca/fr/sujets-lies-a-la-protection-de-la-vie-privee/lois-sur-la-protection-des-renseignements-personnels-au-canada/la-loi-sur-la-protection-des-renseignements-personnels/lprp_survol/",
