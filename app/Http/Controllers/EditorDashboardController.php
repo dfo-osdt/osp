@@ -18,7 +18,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 /**
  * National overview for editors and chief editors of the EOS (secondary)
  * publication pipeline. Surfaces a glanceable set of counts together with the
- * "due queue" of secondary publications accepted in the Single Window that are
+ * "due queue" of secondary publications accepted by Science Publications that are
  * awaiting publication.
  */
 class EditorDashboardController extends Controller
@@ -34,7 +34,7 @@ class EditorDashboardController extends Controller
 
         $limit = $this->getLimitFromRequest($request);
 
-        // The due queue: secondary publications accepted in the Single Window
+        // The due queue: secondary publications accepted by Science Publications
         // but not yet published, oldest first so the most overdue are on top.
         $queue = Publication::query()
             ->secondaryPublication()
@@ -57,19 +57,19 @@ class EditorDashboardController extends Controller
     /**
      * Top-line counts for the editor dashboard stat strip.
      *
-     * @return array{awaiting_single_window: int, in_single_window: int, in_planning_binder: int}
+     * @return array{awaiting_scientific_publication: int, in_scientific_publication: int, in_planning_binder: int}
      */
     private function counts(): array
     {
         // Secondary MRFs management has approved (reviewed) but the author has
-        // not yet submitted to the Single Window (which marks them accepted).
-        $awaitingSingleWindow = ManuscriptRecord::query()
+        // not yet submitted to Science Publications (which marks them accepted).
+        $awaitingScientificPublication = ManuscriptRecord::query()
             ->where('type', ManuscriptRecordType::SECONDARY)
             ->where('status', ManuscriptRecordStatus::REVIEWED)
             ->count();
 
-        // Secondary publications accepted in the Single Window, awaiting publication.
-        $inSingleWindow = Publication::query()
+        // Secondary publications accepted by Science Publications, awaiting publication.
+        $inScientificPublication = Publication::query()
             ->secondaryPublication()
             ->where('status', PublicationStatus::ACCEPTED)
             ->count();
@@ -82,8 +82,8 @@ class EditorDashboardController extends Controller
             ->count();
 
         return [
-            'awaiting_single_window' => $awaitingSingleWindow,
-            'in_single_window' => $inSingleWindow,
+            'awaiting_scientific_publication' => $awaitingScientificPublication,
+            'in_scientific_publication' => $inScientificPublication,
             'in_planning_binder' => $inPlanningBinder,
         ];
     }

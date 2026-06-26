@@ -22,14 +22,14 @@ const loading = ref(false)
 
 const metrics = computed(() => [
   {
-    title: t('editor-dashboard.awaiting-single-window'),
-    value: counts.value?.awaiting_single_window ?? 0,
-    subtitle: t('editor-dashboard.awaiting-single-window-subtitle'),
+    title: t('editor-dashboard.awaiting-scientific-publication'),
+    value: counts.value?.awaiting_scientific_publication ?? 0,
+    subtitle: t('editor-dashboard.awaiting-scientific-publication-subtitle'),
   },
   {
-    title: t('editor-dashboard.in-single-window'),
-    value: counts.value?.in_single_window ?? 0,
-    subtitle: t('editor-dashboard.in-single-window-subtitle'),
+    title: t('editor-dashboard.in-scientific-publication'),
+    value: counts.value?.in_scientific_publication ?? 0,
+    subtitle: t('editor-dashboard.in-scientific-publication-subtitle'),
   },
   {
     title: t('editor-dashboard.in-planning-binder'),

@@ -190,7 +190,7 @@ class LocalTestDataSeeder extends Seeder
 
         // ── Editor dashboard: EOS (secondary) pipeline ────────────────────────
         // Secondary MRFs approved by management (status = reviewed) but not yet
-        // submitted to the Single Window → "Awaiting Single Window" count.
+        // submitted to Science Publications → "Awaiting Science Publications count.
         $awaitingSubmission = [
             ['title' => 'EOS Coastal Habitat Assessment — awaiting submission', 'region_id' => $nflRegion->id],
             ['title' => 'EOS Atlantic Salmon Stock Review — awaiting submission', 'region_id' => $marRegion->id],
@@ -207,7 +207,7 @@ class LocalTestDataSeeder extends Seeder
             ]);
         }
 
-        // Secondary publications accepted in the Single Window awaiting publication
+        // Secondary publications accepted by Science Publications awaiting publication
         // → the editor "due queue" (oldest first). Some are flagged for the
         // planning binder, which re-associates the binder item to the publication.
         $dfoJournal = Journal::query()->dfoSeries()->first();

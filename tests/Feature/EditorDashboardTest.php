@@ -43,8 +43,8 @@ it('forbids regional editors and plain authors', function (UserRole $role): void
     'author' => UserRole::AUTHOR,
 ]);
 
-it('counts secondary MRFs awaiting submission to the single window', function (): void {
-    // reviewed secondary MRFs => awaiting single window
+it('counts secondary MRFs awaiting submission to science publications', function (): void {
+    // reviewed secondary MRFs => awaiting science publication
     ManuscriptRecord::factory()->secondary()->reviewed()->count(2)->create();
     // a primary reviewed MRF must be ignored
     ManuscriptRecord::factory()->reviewed()->create();
@@ -54,7 +54,7 @@ it('counts secondary MRFs awaiting submission to the single window', function ()
     $this->actingAs(editor())
         ->getJson('/api/editor-dashboard')
         ->assertOk()
-        ->assertJsonPath('counts.awaiting_single_window', 2);
+        ->assertJsonPath('counts.awaiting_scientific_publication', 2);
 });
 
 it('counts and lists only secondary accepted publications in the due queue', function (): void {
@@ -68,7 +68,7 @@ it('counts and lists only secondary accepted publications in the due queue', fun
     $response = $this->actingAs(editor())
         ->getJson('/api/editor-dashboard')
         ->assertOk()
-        ->assertJsonPath('counts.in_single_window', 3);
+        ->assertJsonPath('counts.in_scientific_publication', 3);
 
     expect($response->json('data'))->toHaveCount(3);
 });

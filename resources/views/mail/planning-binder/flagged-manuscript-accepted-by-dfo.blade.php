@@ -8,7 +8,7 @@ You are receiving this email because {{ $referrer->full_name }} has flagged this
 
 It is the region's responsibility to include the publication in the planning binder.
 
-The Single Window for Science Publications will hold off on publishing this manuscript until ADM approval via the planning binder. If this manuscript was flagged for the planning binder by mistake please notify DFO.OpenScience-ScienceOuverte.MPO@dfo-mpo.gc.ca
+The Science Publications team will hold off on publishing this manuscript until ADM approval via the planning binder. If this manuscript was flagged for the planning binder by mistake please notify DFO.OpenScience-ScienceOuverte.MPO@dfo-mpo.gc.ca
 
 <x-mail::panel>
 **Title**: {{ $publication->title}}<br/>
@@ -36,7 +36,7 @@ Vous recevez ce courriel parce que {{ $referrer->full_name }} a signalé ce manu
 
 Il est de la responsabilité de la région d'inclure la publication dans le classeur de planification.
 
-Le Guichet unique pour les publications scientifiques retardera la publication de ce manuscrit jusqu'à l'approbation du SMA via le classeur de planification. Si ce manuscrit a été signalé par erreur pour le classeur de planification, veuillez en informer DFO.OpenScience-ScienceOuverte.MPO@dfo-mpo.gc.ca
+L'équipe des publications scientifiques retardera la publication de ce manuscrit jusqu'à l'approbation du SMA via le classeur de planification. Si ce manuscrit a été signalé par erreur pour le classeur de planification, veuillez en informer DFO.OpenScience-ScienceOuverte.MPO@dfo-mpo.gc.ca
 
 <x-mail::panel>
 **Titre**: {{ $publication->title}}<br/>
