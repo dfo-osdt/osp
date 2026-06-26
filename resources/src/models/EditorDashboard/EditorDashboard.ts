@@ -5,8 +5,8 @@ import type { Resource, ResourceList } from '../Resource'
 import { http } from '@/api/http'
 
 /**
- * A single row of the editor "due queue": a secondary publication accepted in
- * the Single Window that is awaiting publication.
+ * A single row of the editor "due queue": a secondary publication accepted by
+ * Science Publications that is awaiting publication.
  */
 export interface EditorQueuePublication {
   readonly id: number
@@ -24,8 +24,8 @@ export interface EditorQueuePublication {
 }
 
 export interface EditorDashboardCounts {
-  awaiting_single_window: number
-  in_single_window: number
+  awaiting_scientific_publication: number
+  in_scientific_publication: number
   in_planning_binder: number
 }
 
