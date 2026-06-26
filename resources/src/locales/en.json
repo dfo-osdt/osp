@@ -399,7 +399,7 @@
     }
   },
   "editor-dashboard": {
-    "awaiting-scientific-publication": "Awaiting on Scientific Publication",
+    "awaiting-scientific-publication": "Coming soon..",
     "awaiting-scientific-publication-subtitle": "Approved EOS records not yet submitted",
     "in-scientific-publication": "With Scientific Publication Team",
     "in-scientific-publication-subtitle": "Accepted, awaiting publication",
@@ -781,7 +781,7 @@
       "p2": "Identifies when a manuscript is of potential public interest for the sole purpose of informing RDS, DG and DFO Communications. Examples of topics of potential public interest could include subjects related to current events, or of stakeholder interest. These can include interesting stories to showcase DFO research or studies that are more controversial. The inclusion of potentially sensitive material will not prevent the publication of a manuscript."
     },
     "national-policy-for-science-publications": "Fisheries and Oceans Canada National Policy for Science Publications",
-    "national-policy-for-science-publications-link": "https://www.dfo-mpo.gc.ca/about-notre-sujet/publications/science/policy-politique/index-eng.html",
+    "national-policy-for-science-publications-link": "https://intranet.ent.dfo-mpo.ca/science/en/node/2304",
     "p2": "Authors may submit their publication to the third-party publication for peer review after the manager has deemed the publication to be in alignment with the relevant legislation, policies and directives, or if no feedback was received from the manuscript management review within 10 working days. Division Managers, EOS NCR Directors, Regional Directors of Science, and EOS NCR Director Generals may perform the manuscript management review. ",
     "privacy-act": "Privacy Act",
     "privacy-act-link": "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-privacy-act/pa_brief/",
