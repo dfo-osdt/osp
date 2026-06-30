@@ -14,6 +14,7 @@ use App\Http\Resources\ManagementReviewStepResource;
 use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
@@ -81,7 +82,15 @@ class ManagementReviewStepController extends Controller
 
         $validated = $request->validate([
             'comments' => ['string', 'nullable'],
-            'flag_for_planning_binder' => ['boolean'],
+            'flag_for_planning_binder' => [
+                'required',
+                'boolean',
+                function (string $attribute, mixed $value, Closure $fail) use ($manuscriptRecord) {
+                    if ($value && ! $manuscriptRecord->potential_public_interest) {
+                        $fail(__('A publication can only be flagged for the planning binder when it has been identified as being of potential public interest.'));
+                    }
+                },
+            ],
         ]);
 
         if (isset($validated['comments'])) {
