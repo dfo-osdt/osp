@@ -7,7 +7,7 @@ use App\Models\ManagementReviewStep;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * @mixin ManagementReviewStep
@@ -40,12 +40,13 @@ class ManagementReviewStepResource extends JsonResource
                 'manuscript_record' => ManuscriptRecordSummaryResource::make($this->whenLoaded('manuscriptRecord')),
                 'previous_step' => ManagementReviewStepResource::make($this->whenLoaded('previousStep')),
                 'user' => UserResource::make($this->whenLoaded('user')),
-                'can_complete' => Auth::user()->can('complete', $this->resource),
-                'can_forward' => Auth::user()->can('forward', $this->resource),
+                'can_complete' => Gate::allows('complete', $this->resource),
+                'can_flag_to_binder' => Gate::allows('complete', $this->resource) && $this->relationLoaded('manuscriptRecord') && $this->manuscriptRecord->potential_public_interest,
+                'can_forward' => Gate::allows('forward', $this->resource),
             ],
             'can' => [
-                'update' => Auth::user()->can('update', $this->resource),
-                'delete' => Auth::user()->can('delete', $this->resource),
+                'update' => Gate::allows('update', $this->resource),
+                'delete' => Gate::allows('delete', $this->resource),
             ],
         ];
     }

@@ -899,8 +899,9 @@
     "your-decision": "Votre revue",
     "no-comments-warning-cant-complete": "Un commentaire de révision est nécessaire pour continuer.",
     "confirm-planning-binder": "Classeur de planification",
-    "planning-binder-tex": "Veuillez indiquer si cette publication doit être ajoutée à la section des publications scientifiques du classeur de planification envoyé au SMA.",
-    "planning-binder-responsibility": "Il est de la responsabilité de la région d'inclure la publication dans le classeur de planification."
+    "planning-binder-tex": "Veuillez indiquer si cette publication sera ajoutée à la section des publications scientifiques du classeur de planification envoyé au SMA.",
+    "planning-binder-responsibility": "Il est de la responsabilité de la région d'inclure la publication dans le classeur de planification.",
+    "cannot-flag-to-binder": "Cette publication ne peut pas être marquée pour le classeur de planification, car elle n'a pas été identifiée comme présentant un intérêt public potentiel dans le registre du manuscrit. Ce marquage sert uniquement à informer la haute direction. Si cette publication y est admissible, veuillez mettre à jour le registre du manuscrit avant de finaliser votre révision."
   },
   "submit-manuscript-dialog": {
     "step1": {

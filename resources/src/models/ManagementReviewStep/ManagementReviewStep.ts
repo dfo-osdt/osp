@@ -43,6 +43,7 @@ export interface ManagementReviewStep {
   user?: UserResource
   previous_step?: ManagementReviewStepResource
   can_complete: boolean
+  can_flag_to_binder: boolean
   can_forward: boolean
 }
 

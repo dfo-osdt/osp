@@ -159,7 +159,7 @@ test('a reviewer can approve and complete the review of a third-party manuscript
     Verbs::fake();
 
     $reviewer = User::factory()->create();
-    $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create();
+    $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create(['potential_public_interest' => true]);
 
     $this->actingAs($reviewer)
         ->putJson(
@@ -200,6 +200,27 @@ test('a reviewer can approve and complete the review of a third-party manuscript
     expect($manuscript->refresh()->status)->toBe(ManuscriptRecordStatus::REVIEWED);
 
     Mail::assertQueued(ManuscriptManagementReviewComplete::class);
+});
+
+test('a reviewer cannot flag for planning binder when the manuscript is not of potential public interest', function (): void {
+    Mail::fake();
+    Verbs::fake();
+
+    $reviewer = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->in_review()->has(ManagementReviewStep::factory()->for($reviewer))->create(['potential_public_interest' => false]);
+
+    $this->actingAs($reviewer)
+        ->putJson(
+            '/api/manuscript-records/'.$manuscript->id.'/management-review-steps/'.$manuscript->managementReviewSteps->first()->id.'/complete',
+            [
+                'flag_for_planning_binder' => true,
+                'comments' => 'a comment here',
+            ]
+        )
+        ->assertJsonValidationErrorFor('flag_for_planning_binder');
+
+    Verbs::assertNotCommitted(FlagManuscriptRecordForPlanningBinderMail::class);
+    expect($manuscript->refresh()->status)->not->toBe(ManuscriptRecordStatus::REVIEWED);
 });
 
 test('a reviewer can reassign and send to the next reviewer', function (): void {

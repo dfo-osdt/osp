@@ -54,7 +54,7 @@ const decision: Ref<Decision> = canComplete.value
 
 const nextUserId = ref<number | null>(null)
 
-const submitToBinder = ref<boolean | null>(null)
+const submitToBinder = ref<boolean | null>(props.managementReviewStep.can_flag_to_binder ? null : false)
 /** Decision flow variables */
 const agreeToTerms = ref(false)
 
@@ -319,14 +319,15 @@ async function submit() {
           icon="mdi-file-document-check-outline"
           :done="step > 2"
         >
-          <p class="q-ma-md">
+          <p class="q-ma-md" :class="!props.managementReviewStep.can_flag_to_binder ? 'text-grey-6' : ''">
             {{ $t('submit-decision-dialog.planning-binder-tex') }}
           </p>
-          <p class="q-ma-md text-weight-bold text-primary">
+          <p class="q-ma-md text-weight-bold" :class="!props.managementReviewStep.can_flag_to_binder ? 'text-grey-6' : 'text-primary'">
             {{ $t('submit-decision-dialog.planning-binder-responsibility') }}
           </p>
           <YesNoBooleanOptionGroup
             v-model="submitToBinder"
+            :disable="!props.managementReviewStep.can_flag_to_binder"
             class="q-mr-lg"
             align="right"
           />
@@ -387,6 +388,18 @@ async function submit() {
             </template>
             <span v-if="!canComplete">{{ $t('submit-decision-dialog.no-comments-warning-cant-complete') }}</span>
             <span v-else>{{ $t('submit-decision-dialog.no-comments-warning') }}</span>
+          </q-banner>
+          <q-banner
+            v-if="step === 2 && decision === 'complete' && !props.managementReviewStep.can_flag_to_binder"
+            class="bg-primary text-white"
+          >
+            <template #avatar>
+              <q-icon
+                name="mdi-flag-off-outline"
+                size="md"
+              />
+            </template>
+            <span>{{ $t('submit-decision-dialog.cannot-flag-to-binder') }}</span>
           </q-banner>
         </template>
       </QStepper>

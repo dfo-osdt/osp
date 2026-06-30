@@ -899,8 +899,9 @@
     "your-decision": "Your Review",
     "no-comments-warning-cant-complete": "A review comment is required to proceed.",
     "confirm-planning-binder": "Planning Binder",
-    "planning-binder-tex": "Please indicate whether this publication should be added to the scientific publications section of the planning binder that is sent to the ADM.",
-    "planning-binder-responsibility": "It is the region's responsibility to include the publication in the planning binder."
+    "planning-binder-tex": "Please indicate whether this publication will be added to the scientific publications section of the planning binder that is sent to the ADM.",
+    "planning-binder-responsibility": "It is the region's responsibility to include the publication in the planning binder.",
+    "cannot-flag-to-binder": "This publication can't be flagged for the planning binder because it wasn't identified as being of potential public interest on the manuscript record. This flag is used solely to brief senior management. If this paper qualifies, update the manuscript record before completing your review."
   },
   "submit-manuscript-dialog": {
     "step1": {
