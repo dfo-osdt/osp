@@ -32,5 +32,6 @@
   "Email domain not allowed": "Domaine de courriel non autorisé",
   "Problem with registration, please contact support": "Problème avec l'inscription, veuillez contacter le support",
   "The account already exists": "Le compte existe déjà",
-  "An error occurred while searching for users in the directory.": "Une erreur s'est produite lors de la recherche d'utilisateurs dans l'annuaire."
+  "An error occurred while searching for users in the directory.": "Une erreur s'est produite lors de la recherche d'utilisateurs dans l'annuaire.",
+  "A publication can only be flagged for the planning binder when it has been identified as being of potential public interest.": "Une publication ne peut être marquée pour le classeur de planification que si elle a été identifiée comme présentant un intérêt public potentiel."
 }
