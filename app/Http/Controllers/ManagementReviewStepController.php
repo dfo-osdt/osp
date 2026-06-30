@@ -85,7 +85,7 @@ class ManagementReviewStepController extends Controller
             'flag_for_planning_binder' => [
                 'required',
                 'boolean',
-                function (string $attribute, mixed $value, Closure $fail) use ($manuscriptRecord) {
+                function (string $attribute, mixed $value, Closure $fail) use ($manuscriptRecord): void {
                     if ($value && ! $manuscriptRecord->potential_public_interest) {
                         $fail(__('A publication can only be flagged for the planning binder when it has been identified as being of potential public interest.'));
                     }
