@@ -146,7 +146,7 @@ class Author extends Model
     {
         return Attribute::make(
             get: fn ($value) => $value,
-            set: fn ($value) => strtolower((string) $value),
+            set: fn ($value): string => strtolower((string) $value),
         );
     }
 
