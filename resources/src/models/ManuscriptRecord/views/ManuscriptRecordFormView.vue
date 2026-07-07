@@ -221,7 +221,7 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
 <template>
   <div class="q-px-md">
     <div class="q-mt-md q-mb-lg row justify-between">
-      <div class="col-8 q-pr-lg">
+      <div class="col-6 q-pr-lg">
         <div class="text-h4 text-primary">
           {{ $t('common.manuscript-record-form') }}
         </div>
