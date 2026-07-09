@@ -191,7 +191,10 @@ class ManuscriptRecordController extends Controller
             ],
         ]);
 
-        DB::transaction(function () use ($manuscriptRecord, $validated): void {
+        // get review user
+        $reviewUser = User::query()->findOrFail($validated['reviewer_user_id']);
+
+        DB::transaction(function () use ($manuscriptRecord, $reviewUser): void {
 
             // validate that the record has all the required fields
             $manuscriptRecord->validateIsFilled();
@@ -201,9 +204,6 @@ class ManuscriptRecordController extends Controller
             if ($manuscriptRecord->user_id !== Auth::id()) {
                 $manuscriptRecord->user_id = Auth::id();
             }
-
-            // get review user
-            $reviewUser = User::query()->findOrFail($validated['reviewer_user_id']);
 
             // create the first management review step for this record
             $reviewStep = new ManagementReviewStep;
@@ -220,10 +220,11 @@ class ManuscriptRecordController extends Controller
             $manuscriptRecord->sent_for_review_at = now();
             $manuscriptRecord->lockManuscriptFiles();
             $manuscriptRecord->save();
-
-            // trigger event that the record was submitted
-            event(new ManuscriptRecordToReviewEvent($manuscriptRecord, $reviewUser));
         });
+
+        // trigger event that the record was submitted, dispatched after the
+        // transaction commits so a slow/queued listener can't hold DB locks open
+        event(new ManuscriptRecordToReviewEvent($manuscriptRecord, $reviewUser));
 
         return $this->defaultResource($manuscriptRecord);
     }
