@@ -345,7 +345,7 @@
     "secondary-pub-desc": "Scientific or technical document to be published in an EOS secondary scientific and technical publication series",
     "select-region-text": "Please select the lead DFO region responsible for the manuscript management review of this manuscript.",
     "step0": {
-      "warning": "If your manuscript was already reviewed outside the portal or has been published, do not continue, add it as a publication instead."
+      "warning": "If your manuscript has already had its management review completed outside the portal or has been published, do not continue, add it as a publication instead."
     },
     "step1": {
       "text": "Please select the type of manuscript you want to create based on the intended publisher."
