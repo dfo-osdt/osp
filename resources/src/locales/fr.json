@@ -345,7 +345,7 @@
     "secondary-pub-desc": "Document scientifique ou technique à publier dans une série scientifique du MPO",
     "select-region-text": "Veuillez sélectionner la région principale du MPO responsable de la révision par la gestion de ce manuscrit.",
     "step0": {
-      "warning": "Si votre manuscrit a déjà été révisé en dehors du portail ou a été publié, ne continuez pas, ajoutez-le plutôt comme publication."
+      "warning": "Si votre manuscrit a déjà été révisé par la gestion en dehors du portail ou a été publié, ne continuez pas, ajoutez-le plutôt comme publication."
     },
     "step1": {
       "text": "Veuillez sélectionner le type de manuscrit que vous souhaitez créer en fonction de l'éditeur prévu."
