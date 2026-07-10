@@ -393,7 +393,7 @@
       "manuscript-needs-review-description": "Create a manuscript record if your work needs to go through the DFO manuscript management review process before submission to a journal or publication.",
       "manuscript-needs-review-action": "Create Manuscript Record",
       "already-reviewed-title": "Already Reviewed?",
-      "already-reviewed-description": "If your manuscript was already reviewed outside the portal or has been published, add it directly as a publication to track it in the system.",
+      "already-reviewed-description": "If your manuscript had its management review completed outside the portal or has been published, add it directly as a publication to track it in the system.",
       "already-reviewed-action": "Add Publication",
       "quick-help-title": "Getting Started"
     }
