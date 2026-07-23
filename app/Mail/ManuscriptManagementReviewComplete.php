@@ -20,7 +20,7 @@ class ManuscriptManagementReviewComplete extends Mailable
      */
     public function __construct(public ManuscriptRecord $manuscriptRecord)
     {
-        $manuscriptRecord->load('user', 'manuscriptAuthors.author', 'managementReviewSteps.user');
+        $manuscriptRecord->load('user', 'manuscriptAuthors.author', 'managementReviewSteps.user', 'region');
         $this->secondaryManuscript = $manuscriptRecord->type == ManuscriptRecordType::SECONDARY;
 
     }
@@ -41,7 +41,13 @@ class ManuscriptManagementReviewComplete extends Mailable
 
         $notificationGroupEmails = $this->manuscriptRecord->user->getNotificationGroupEmails();
 
-        $cc = $reviewers->merge($authors)->merge($editors)->merge($notificationGroupEmails)->unique()->
+        // Third-party (and preprint) manuscripts proceed directly to publication without
+        // further DFO review, so the regional notification group is CC'd for situational awareness.
+        $regionalNotificationGroupEmails = $this->secondaryManuscript
+            ? collect()
+            : $this->manuscriptRecord->region->getNotificationGroupEmails();
+
+        $cc = $reviewers->merge($authors)->merge($editors)->merge($notificationGroupEmails)->merge($regionalNotificationGroupEmails)->unique()->
             filter(fn ($email): bool => $email !== $this->manuscriptRecord->user->email)->
             filter(fn ($email) => Str::of($email)->endsWith(config('osp.allowed_registration_email_domains')))->
             toArray();

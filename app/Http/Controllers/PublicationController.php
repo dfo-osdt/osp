@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\DeletePublication;
 use App\Enums\PublicationStatus;
+use App\Events\PublicationAccepted;
 use App\Exports\PublicationsExport;
 use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
@@ -79,6 +80,10 @@ class PublicationController extends Controller
         $publication = new Publication($validated);
         $publication->user_id = $request->user()->id;
         $publication->save();
+
+        if ($publication->status === PublicationStatus::ACCEPTED) {
+            event(new PublicationAccepted($publication));
+        }
 
         return $this->defaultResource($publication);
     }

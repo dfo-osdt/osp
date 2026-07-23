@@ -6,7 +6,9 @@ use App\Enums\Permissions\UserRole;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection as SupportCollection;
 
 /**
  * @property int $id
@@ -53,5 +55,29 @@ class Region extends Model
 
         return User::query()->role($role->value)->get();
 
+    }
+
+    /**
+     * @return HasMany<RegionNotificationGroupMember, $this>
+     */
+    public function notificationGroupMembers(): HasMany
+    {
+        return $this->hasMany(RegionNotificationGroupMember::class);
+    }
+
+    /**
+     * Emails for this region's notification group, forwarded to include
+     * each member's own individual notification group.
+     *
+     * @return SupportCollection<int, string>
+     */
+    public function getNotificationGroupEmails(): SupportCollection
+    {
+        $members = $this->notificationGroupMembers()->with('user')->get()->pluck('user');
+
+        return $members->pluck('email')
+            ->merge($members->flatMap(fn (User $user): SupportCollection => $user->getNotificationGroupEmails()))
+            ->filter()
+            ->unique();
     }
 }

@@ -13,6 +13,7 @@ use App\Events\ManuscriptRecordToReviewEvent;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Events\PlanningBinder\FlaggedManuscriptAcceptedInJournal;
 use App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint;
+use App\Events\PublicationAccepted;
 use App\Http\Resources\ManuscriptRecordMetadataResource;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Http\Resources\ManuscriptRecordSummaryResource;
@@ -331,6 +332,8 @@ class ManuscriptRecordController extends Controller
             ]);
             abort(500, 'Failed to create publication from manuscript record.');
         }
+
+        event(new PublicationAccepted($publication));
 
         // if the manuscript is a secondary, send an email to the submissions team
         if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY) {
