@@ -6,10 +6,12 @@ namespace App\Filament\Resources\Regions\Regions;
 
 use App\Filament\Resources\Regions\Pages\EditRegion;
 use App\Filament\Resources\Regions\Pages\ListRegions;
+use App\Filament\Resources\Regions\Pages\ManageRegionNotificationGroup;
 use App\Models\Region;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -91,6 +93,15 @@ class RegionResource extends Resource
         return [
             'index' => ListRegions::route('/'),
             'edit' => EditRegion::route('/{record}/edit'),
+            'notification-group' => ManageRegionNotificationGroup::route('/{record}/notification-group'),
         ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            EditRegion::class,
+            ManageRegionNotificationGroup::class,
+        ]);
     }
 }
