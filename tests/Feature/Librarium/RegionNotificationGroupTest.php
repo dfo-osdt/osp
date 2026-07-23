@@ -56,4 +56,22 @@ describe('Manage Region Notification Group', function (): void {
             'id' => $membership->id,
         ]);
     });
+
+    it('Adding a member is recorded in the activity log with the admin as causer', function (): void {
+        $member = User::factory()->create(['active' => true]);
+
+        $this->actingAs($this->admin)
+            ->livewire(ManageRegionNotificationGroup::class, ['record' => $this->region->getRouteKey()])
+            ->callAction(CreateAction::class, [
+                'user_id' => $member->id,
+            ]);
+
+        $groupMember = RegionNotificationGroupMember::query()
+            ->where('region_id', $this->region->id)
+            ->where('user_id', $member->id)
+            ->firstOrFail();
+
+        expect($groupMember->activitiesAsSubject)->not->toBeEmpty();
+        expect($groupMember->activitiesAsSubject->first()->causer_id)->toBe($this->admin->id);
+    });
 });
