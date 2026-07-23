@@ -258,7 +258,7 @@ test('the PublicationAccepted event does not send mail when there are no recipie
         'user_id' => $owner->id,
     ]);
 
-    expect((new PublicationAcceptedMail($publication))->recipientEmails())->toBeEmpty();
+    expect(new PublicationAcceptedMail($publication)->recipientEmails())->toBeEmpty();
 });
 
 test('creating a publication via the API does not queue an acceptance notification before authors are added', function (): void {
