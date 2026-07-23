@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\CreatePublicationFromManuscript;
 use App\Enums\ManuscriptRecordType;
 use App\Events\PublicationAccepted;
 use App\Mail\ManuscriptManagementReviewComplete;
@@ -157,7 +158,7 @@ test('the PublicationAccepted event does not send mail when there are no recipie
     Mail::assertNothingQueued();
 });
 
-test('creating a publication via the API dispatches the PublicationAccepted event', function (): void {
+test('creating a publication via the API does not queue an acceptance notification before authors are added', function (): void {
     Mail::fake();
 
     $region = Region::query()->first();
@@ -179,5 +180,27 @@ test('creating a publication via the API dispatches the PublicationAccepted even
         'region_id' => $region->id,
     ])->assertSuccessful();
 
-    Mail::assertQueued(PublicationAcceptedMail::class, fn ($mail): bool => $mail->recipientEmails()->contains($groupMember->email));
+    Mail::assertNothingQueued();
+});
+
+test('creating a publication from a manuscript queues an acceptance notification', function (): void {
+    Mail::fake();
+
+    $region = Region::query()->first();
+    $groupMember = User::factory()->isFromAuthorizedDomain()->create();
+
+    RegionNotificationGroupMember::factory()->create([
+        'region_id' => $region->id,
+        'user_id' => $groupMember->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->accepted()->create([
+        'region_id' => $region->id,
+    ]);
+    $journal = Journal::factory()->create();
+
+    $publication = CreatePublicationFromManuscript::handle($manuscript, $journal);
+
+    Mail::assertQueued(PublicationAcceptedMail::class, fn ($mail): bool => $mail->publication->is($publication)
+        && $mail->recipientEmails()->contains($groupMember->email));
 });

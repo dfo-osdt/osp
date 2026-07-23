@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Enums\PublicationStatus;
 use App\Enums\SupplementaryFileType;
+use App\Events\PublicationAccepted;
 use App\Models\Journal;
 use App\Models\ManuscriptRecord;
 use App\Models\Publication;
@@ -65,6 +66,8 @@ class CreatePublicationFromManuscript
                     "Submission to Science Publications / Soumission à l'équipe de publications scientifiques"
                 );
             }
+
+            DB::afterCommit(fn () => event(new PublicationAccepted($publication)));
 
             return $publication;
         });
