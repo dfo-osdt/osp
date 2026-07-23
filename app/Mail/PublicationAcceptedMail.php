@@ -24,10 +24,11 @@ class PublicationAcceptedMail extends Mailable implements ShouldQueue
     {
         $publication->load(
             'user',
+            'user.notificationGroupMembers.member',
             'journal',
             'region',
-            'publicationAuthors.author',
-            'manuscriptRecord.managementReviewSteps.user',
+            'publicationAuthors.author.user.notificationGroupMembers.member',
+            'manuscriptRecord.managementReviewSteps.user.notificationGroupMembers.member',
         );
     }
 
@@ -43,20 +44,32 @@ class PublicationAcceptedMail extends Mailable implements ShouldQueue
     }
 
     /**
-     * The regional notification group, the manuscript's managers (management review
-     * step reviewers), and the publication's authors.
+     * All users in the recipient set and their notification groups, plus
+     * publication author emails that are not linked to a user account.
      *
      * @return Collection<int, string>
      */
     public function recipientEmails(): Collection
     {
-        $regionalNotificationGroupEmails = $this->publication->region->getNotificationGroupEmails();
+        $managerUsers = $this->publication->manuscriptRecord?->managementReviewSteps->pluck('user') ?? collect();
 
-        $managerEmails = $this->publication->manuscriptRecord?->managementReviewSteps->pluck('user.email') ?? collect();
+        $authorUsers = $this->publication->publicationAuthors->pluck('author.user')->filter();
 
-        $authorEmails = $this->publication->publicationAuthors->pluck('author.email');
+        $users = collect([$this->publication->user])
+            ->merge($managerUsers)
+            ->merge($authorUsers)
+            ->filter();
 
-        return $regionalNotificationGroupEmails->merge($managerEmails)->merge($authorEmails)
+        $userEmails = $users->pluck('email')
+            ->merge($users->flatMap(fn ($user): Collection => $user->getNotificationGroupEmails()));
+
+        $nonUserAuthorEmails = $this->publication->publicationAuthors
+            ->filter(fn ($publicationAuthor): bool => $publicationAuthor->author->user === null)
+            ->pluck('author.email');
+
+        return $userEmails
+            ->merge($this->publication->region->getNotificationGroupEmails())
+            ->merge($nonUserAuthorEmails)
             ->filter()
             ->unique()
             ->filter(fn ($email): bool => Str::of($email)->endsWith(config('osp.allowed_registration_email_domains')))

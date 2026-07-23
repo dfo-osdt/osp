@@ -18,7 +18,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 test('a region notification group includes each member\'s individual notification group', function (): void {
-    $region = Region::query()->first();
+    $region = Region::query()
+        ->whereDoesntHave('notificationGroupMembers')
+        ->first();
     $groupMember = User::factory()->create();
     $forwardedMember = User::factory()->create();
 
@@ -144,18 +146,119 @@ test('the PublicationAccepted event notifies the publication\'s authors', functi
         && $mail->recipientEmails()->contains($author->email));
 });
 
-test('the PublicationAccepted event does not send mail when there are no recipients', function (): void {
+test('the PublicationAccepted event notifies the publication owner', function (): void {
     Mail::fake();
 
     $region = Region::query()->first();
+    $owner = User::factory()->isFromAuthorizedDomain()->create();
 
     $publication = Publication::factory()->create([
         'region_id' => $region->id,
+        'user_id' => $owner->id,
     ]);
 
     event(new PublicationAccepted($publication));
 
-    Mail::assertNothingQueued();
+    Mail::assertQueued(PublicationAcceptedMail::class, fn ($mail): bool => $mail->publication->is($publication)
+        && $mail->recipientEmails()->contains($owner->email));
+});
+
+test('the PublicationAccepted event notifies the publication owner notification group', function (): void {
+    Mail::fake();
+
+    $region = Region::query()->first();
+    $owner = User::factory()->isFromAuthorizedDomain()->create();
+    $notificationGroupMember = User::factory()->isFromAuthorizedDomain()->create();
+
+    NotificationGroupMember::factory()->create([
+        'user_id' => $owner->id,
+        'member_user_id' => $notificationGroupMember->id,
+    ]);
+
+    $publication = Publication::factory()->create([
+        'region_id' => $region->id,
+        'user_id' => $owner->id,
+    ]);
+
+    event(new PublicationAccepted($publication));
+
+    Mail::assertQueued(PublicationAcceptedMail::class, fn ($mail): bool => $mail->publication->is($publication)
+        && $mail->recipientEmails()->contains($notificationGroupMember->email));
+});
+
+test('the PublicationAccepted event notifies manuscript manager notification groups', function (): void {
+    Mail::fake();
+
+    $region = Region::query()->first();
+    $manager = User::factory()->isFromAuthorizedDomain()->create();
+    $notificationGroupMember = User::factory()->isFromAuthorizedDomain()->create();
+
+    NotificationGroupMember::factory()->create([
+        'user_id' => $manager->id,
+        'member_user_id' => $notificationGroupMember->id,
+    ]);
+
+    $manuscript = ManuscriptRecord::factory()->create(['region_id' => $region->id]);
+    ManagementReviewStep::factory()->create([
+        'manuscript_record_id' => $manuscript->id,
+        'user_id' => $manager->id,
+    ]);
+
+    $publication = Publication::factory()->create([
+        'region_id' => $region->id,
+        'manuscript_record_id' => $manuscript->id,
+    ]);
+
+    event(new PublicationAccepted($publication));
+
+    Mail::assertQueued(PublicationAcceptedMail::class, fn ($mail): bool => $mail->publication->is($publication)
+        && $mail->recipientEmails()->contains($notificationGroupMember->email));
+});
+
+test('the PublicationAccepted event notifies publication author user notification groups', function (): void {
+    Mail::fake();
+
+    $region = Region::query()->first();
+    $authorUser = User::factory()->isFromAuthorizedDomain()->create();
+    $notificationGroupMember = User::factory()->isFromAuthorizedDomain()->create();
+
+    NotificationGroupMember::factory()->create([
+        'user_id' => $authorUser->id,
+        'member_user_id' => $notificationGroupMember->id,
+    ]);
+
+    $author = Author::factory()->isFromAuthorizedDomain()->create([
+        'user_id' => $authorUser->id,
+    ]);
+
+    $publication = Publication::factory()->create([
+        'region_id' => $region->id,
+    ]);
+    PublicationAuthor::factory()->create([
+        'publication_id' => $publication->id,
+        'author_id' => $author->id,
+    ]);
+
+    event(new PublicationAccepted($publication));
+
+    Mail::assertQueued(PublicationAcceptedMail::class, fn ($mail): bool => $mail->publication->is($publication)
+        && $mail->recipientEmails()->contains($notificationGroupMember->email));
+});
+
+test('the PublicationAccepted event does not send mail when there are no recipients', function (): void {
+    $region = Region::query()
+        ->whereDoesntHave('notificationGroupMembers')
+        ->first();
+    $owner = User::factory()->create([
+        'email' => 'owner@external.test',
+    ]);
+
+    $publication = Publication::factory()->create([
+        'region_id' => $region->id,
+        'user_id' => $owner->id,
+    ]);
+
+    expect((new PublicationAcceptedMail($publication))->recipientEmails())->toBeEmpty();
 });
 
 test('creating a publication via the API does not queue an acceptance notification before authors are added', function (): void {
