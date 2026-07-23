@@ -37,7 +37,7 @@ class PublicationAcceptedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            to: $this->recipientEmails()->toArray(),
+            to: $this->recipientEmails()->all(),
             subject: 'Publication Accepted - Publication acceptée : '.$this->publication->title,
         );
     }
