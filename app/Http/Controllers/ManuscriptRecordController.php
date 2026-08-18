@@ -95,7 +95,7 @@ class ManuscriptRecordController extends Controller
             }
         }
 
-        $manuscriptListQuery = new ManuscriptRecordListQuery($request, $baseQuery);
+        $manuscriptListQuery = new ManuscriptRecordListQuery($baseQuery, $request);
 
         return ManuscriptRecordSummaryResource::collection($manuscriptListQuery->paginate($limit));
     }

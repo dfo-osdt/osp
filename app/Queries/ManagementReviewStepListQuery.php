@@ -3,6 +3,8 @@
 namespace App\Queries;
 
 use App\Models\ManagementReviewStep;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -10,9 +12,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 /** @extends QueryBuilder<ManagementReviewStep> */
 class ManagementReviewStepListQuery extends QueryBuilder
 {
-    public function __construct(?Request $request, $baseQuery = null)
+    public function __construct(Builder|Relation|null $subject = null, ?Request $request = null)
     {
-        parent::__construct($baseQuery ?? ManagementReviewStep::query(), $request);
+        parent::__construct($subject ?? ManagementReviewStep::query(), $request);
 
         $this
             ->defaultSort('id')

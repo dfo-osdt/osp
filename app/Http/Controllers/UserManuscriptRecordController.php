@@ -63,7 +63,7 @@ class UserManuscriptRecordController extends Controller
         $baseQuery = ManuscriptRecord::query()->whereIn('id', $manuscriptIds)
             ->with($relationship);
 
-        $listQuery = new MyManuscriptsRecordQuery($request, $baseQuery);
+        $listQuery = new MyManuscriptsRecordQuery($baseQuery, $request);
 
         return ManuscriptRecordSummaryResource::collection($listQuery->paginate($limit)->appends($request->query()));
     }

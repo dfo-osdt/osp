@@ -4,15 +4,18 @@ namespace App\Queries;
 
 use App\Filters\FuzzyFilter;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /** @extends QueryBuilder<User> */
 class UserListQuery extends QueryBuilder
 {
-    public function __construct()
+    public function __construct(Builder|Relation|null $subject = null, ?Request $request = null)
     {
-        parent::__construct(User::query()->where('active', true));
+        parent::__construct($subject ?? User::query()->where('active', true), $request);
 
         $this
             ->defaultSort('last_name')

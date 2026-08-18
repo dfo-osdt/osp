@@ -5,15 +5,17 @@ namespace App\Queries;
 use App\Filters\FuzzyFilter;
 use App\Models\Author;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /** @extends QueryBuilder<Author> */
 class AuthorListQuery extends QueryBuilder
 {
-    public function __construct()
+    public function __construct(Builder|Relation|null $subject = null, ?Request $request = null)
     {
-        parent::__construct(Author::query());
+        parent::__construct($subject ?? Author::query(), $request);
 
         $this
             ->defaultSort('last_name')

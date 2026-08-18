@@ -3,6 +3,8 @@
 namespace App\Queries;
 
 use App\Models\Publication;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -10,9 +12,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 /** @extends QueryBuilder<Publication> */
 class PublicationListQuery extends QueryBuilder
 {
-    public function __construct(?Request $request, $baseQuery = null)
+    public function __construct(Builder|Relation|null $subject = null, ?Request $request = null)
     {
-        parent::__construct($baseQuery ?? Publication::query(), $request);
+        parent::__construct($subject ?? Publication::query(), $request);
 
         $this->
          defaultSort('title')->

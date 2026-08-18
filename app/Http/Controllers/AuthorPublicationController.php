@@ -34,7 +34,7 @@ class AuthorPublicationController extends Controller
                 'region',
             ]);
 
-        $query = new PublicationListQuery($request, $baseQuery);
+        $query = new PublicationListQuery($baseQuery, $request);
 
         return PublicationResource::collection($query->paginate($limit));
     }

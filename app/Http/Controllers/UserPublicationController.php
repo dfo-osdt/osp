@@ -47,7 +47,7 @@ class UserPublicationController extends Controller
                 'region',
             ]);
 
-        $listQuery = new PublicationListQuery($request, $baseQuery);
+        $listQuery = new PublicationListQuery($baseQuery, $request);
 
         return PublicationResource::collection($listQuery->paginate($limit)->appends($request->query()));
     }
