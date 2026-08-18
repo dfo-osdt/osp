@@ -25,7 +25,7 @@ class UserManagementReviewStepsController extends Controller
         $baseQuery = ManagementReviewStep::query()
             ->where('user_id', $user->id)
             ->with('manuscriptRecord.user', 'previousStep.user');
-        $listQuery = new ManagementReviewStepListQuery($request, $baseQuery);
+        $listQuery = new ManagementReviewStepListQuery($baseQuery, $request);
 
         return ManagementReviewStepResource::collection($listQuery->paginate($limit)->appends($request->query()));
     }

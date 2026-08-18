@@ -42,7 +42,7 @@ class PublicationController extends Controller
                 'region',
             ])->when($request->has('filter.functional_area_id'), fn ($q) => $q->with('manuscriptRecord'));
 
-        $publicationListQuery = new PublicationListQuery($request, $baseQuery);
+        $publicationListQuery = new PublicationListQuery($baseQuery, $request);
 
         return PublicationResource::collection($publicationListQuery->paginate($limit));
     }
@@ -180,7 +180,7 @@ class PublicationController extends Controller
                 'region',
             ]);
 
-        $query = new PublicationListQuery($request, $baseQuery);
+        $query = new PublicationListQuery($baseQuery, $request);
 
         if ($request->input('format') === 'excel') {
             return Excel::download(new PublicationsExport($query), 'publications.xlsx');

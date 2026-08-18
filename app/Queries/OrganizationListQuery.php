@@ -4,6 +4,9 @@ namespace App\Queries;
 
 use App\Filters\MultiColumnFilter;
 use App\Models\Organization;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -11,9 +14,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 /** @extends QueryBuilder<Organization> */
 class OrganizationListQuery extends QueryBuilder
 {
-    public function __construct()
+    public function __construct(Builder|Relation|null $subject = null, ?Request $request = null)
     {
-        parent::__construct(Organization::query());
+        parent::__construct($subject ?? Organization::query(), $request);
 
         $this
             ->defaultSort('name_'.app()->getLocale())

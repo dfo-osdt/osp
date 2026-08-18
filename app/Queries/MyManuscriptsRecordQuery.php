@@ -4,6 +4,8 @@ namespace App\Queries;
 
 use App\Filters\MultiColumnFilter;
 use App\Models\ManuscriptRecord;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -11,9 +13,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 /** @extends QueryBuilder<ManuscriptRecord> */
 class MyManuscriptsRecordQuery extends QueryBuilder
 {
-    public function __construct(?Request $request, $baseQuery = null)
+    public function __construct(Builder|Relation|null $subject = null, ?Request $request = null)
     {
-        parent::__construct($baseQuery ?? ManuscriptRecord::query(), $request);
+        parent::__construct($subject ?? ManuscriptRecord::query(), $request);
 
         $this->
          defaultSort('updated_at')->

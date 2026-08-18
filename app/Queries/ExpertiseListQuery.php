@@ -4,6 +4,9 @@ namespace App\Queries;
 
 use App\Filters\MultiColumnFilter;
 use App\Models\Expertise;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -11,9 +14,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 /** @extends QueryBuilder<Expertise> */
 class ExpertiseListQuery extends QueryBuilder
 {
-    public function __construct()
+    public function __construct(Builder|Relation|null $subject = null, ?Request $request = null)
     {
-        parent::__construct(Expertise::query());
+        parent::__construct($subject ?? Expertise::query(), $request);
 
         $this
             ->defaultSort('name_en')
