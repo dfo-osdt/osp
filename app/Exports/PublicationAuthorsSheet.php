@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
+use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -21,14 +22,14 @@ class PublicationAuthorsSheet implements FromQuery, ShouldAutoSize, WithHeadings
         return 'Authors / Auteurs';
     }
 
-    public function query(): PublicationListQuery
+    public function query(): Builder
     {
         $this->query->with([
             'publicationAuthors.author',
             'publicationAuthors.organization',
         ]);
 
-        return $this->query;
+        return $this->query->getQuery();
     }
 
     public function headings(): array
