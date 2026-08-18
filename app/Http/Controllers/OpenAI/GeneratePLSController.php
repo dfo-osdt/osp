@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Log;
  */
 class GeneratePLSController extends Controller
 {
-    private bool $useOllama = false;
+    private readonly bool $useOllama;
 
-    private ?string $ollamaModel = null;
+    private readonly ?string $ollamaModel;
 
     public function __construct()
     {
