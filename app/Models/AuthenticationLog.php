@@ -53,6 +53,7 @@ use Illuminate\Support\Carbon;
 #[WithoutTimestamps]
 class AuthenticationLog extends Model
 {
+    #[\Override]
     protected $casts = [
         'login_at' => 'datetime',
         'logout_at' => 'datetime',

@@ -10,6 +10,7 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewActivityLog extends ViewRecord
 {
+    #[\Override]
     protected static string $resource = ActivityLogResource::class;
 
     protected function getHeaderActions(): array

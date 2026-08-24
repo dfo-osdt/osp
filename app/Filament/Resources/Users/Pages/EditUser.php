@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Password;
  */
 class EditUser extends EditRecord
 {
+    #[\Override]
     protected static string $resource = UserResource::class;
 
     protected function getHeaderActions(): array

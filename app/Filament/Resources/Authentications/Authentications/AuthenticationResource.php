@@ -21,12 +21,16 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AuthenticationResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = AuthenticationLog::class;
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Audit Logs';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Authentications';
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function table(Table $table): Table

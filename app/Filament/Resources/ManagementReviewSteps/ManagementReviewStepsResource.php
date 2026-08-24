@@ -19,10 +19,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ManagementReviewStepsResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = ManagementReviewStep::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-check';
 
+    #[\Override]
     protected static ?string $navigationLabel = 'Review Steps';
 
     public static function table(Table $table): Table

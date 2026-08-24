@@ -9,5 +9,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateJournal extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = JournalResource::class;
 }

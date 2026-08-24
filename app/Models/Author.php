@@ -87,6 +87,7 @@ class Author extends Model
     use HasFactory;
     use LogsActivity;
 
+    #[\Override]
     public $guarded = [
         'id',
         'created_at',
@@ -97,6 +98,7 @@ class Author extends Model
         'orcid_refresh_token',
     ];
 
+    #[\Override]
     protected $casts = [
         'orcid_verified' => 'boolean',
         'orcid_access_token' => 'encrypted',

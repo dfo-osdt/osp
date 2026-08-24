@@ -21,8 +21,10 @@ use Filament\Tables\Table;
 
 class RegionResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Region::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-globe-americas';
 
     public static function canCreate(): bool

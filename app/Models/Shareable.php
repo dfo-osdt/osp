@@ -46,12 +46,14 @@ class Shareable extends Model
     use HasFactory;
     use HasUlids;
 
+    #[\Override]
     public $casts = [
         'expires_at' => 'datetime',
         'can_edit' => 'boolean',
         'can_delete' => 'boolean',
     ];
 
+    #[\Override]
     public $guarded = [
         'id',
         'created_at',

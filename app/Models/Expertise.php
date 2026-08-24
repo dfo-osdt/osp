@@ -36,6 +36,7 @@ class Expertise extends Model
     use HasFactory;
     use HasUlids;
 
+    #[\Override]
     public $guarded = [
         'id',
         'created_at',

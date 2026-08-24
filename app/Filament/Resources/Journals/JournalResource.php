@@ -18,10 +18,13 @@ use Filament\Tables\Table;
 
 class JournalResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Journal::class;
 
+    #[\Override]
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BookOpen;
 
+    #[\Override]
     protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema

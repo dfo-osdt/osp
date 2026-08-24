@@ -67,6 +67,7 @@ class AuthorEmployment extends Model
     use LogsActivity;
     use SoftDeletes;
 
+    #[\Override]
     public $guarded = [
         'id',
         'created_at',

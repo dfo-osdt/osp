@@ -9,5 +9,6 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListRegions extends ListRecords
 {
+    #[\Override]
     protected static string $resource = RegionResource::class;
 }

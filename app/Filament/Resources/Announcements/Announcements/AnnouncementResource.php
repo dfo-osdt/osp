@@ -29,8 +29,10 @@ use Illuminate\Support\Facades\Date;
 
 class AnnouncementResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Announcement::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bell';
 
     public static function form(Schema $schema): Schema

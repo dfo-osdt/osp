@@ -24,10 +24,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ManuscriptsResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = ManuscriptRecord::class;
 
+    #[\Override]
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    #[\Override]
     protected static ?string $recordTitleAttribute = 'id';
 
     public static function getEloquentQuery(): Builder

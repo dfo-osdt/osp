@@ -9,7 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateAnnouncement extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = AnnouncementResource::class;
 
+    #[\Override]
     protected static bool $canCreateAnother = false;
 }

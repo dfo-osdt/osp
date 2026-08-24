@@ -9,5 +9,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateHelpfulLink extends CreateRecord
 {
+    #[\Override]
     protected static string $resource = HelpfulLinkResource::class;
 }

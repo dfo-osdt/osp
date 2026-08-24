@@ -131,6 +131,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
      *
      * @var array<string, string>
      */
+    #[\Override]
     protected $casts = [
         'email_verified_at' => 'datetime',
         'active' => 'boolean',

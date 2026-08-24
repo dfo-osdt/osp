@@ -11,6 +11,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListAuthentications extends ListRecords
 {
+    #[\Override]
     protected static string $resource = AuthenticationResource::class;
 
     protected function getHeaderActions(): array

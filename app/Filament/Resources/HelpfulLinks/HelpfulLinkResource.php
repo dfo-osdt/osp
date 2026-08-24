@@ -18,10 +18,13 @@ use Filament\Tables\Table;
 
 class HelpfulLinkResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = HelpfulLink::class;
 
+    #[\Override]
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    #[\Override]
     protected static ?string $recordTitleAttribute = 'title_en';
 
     public static function form(Schema $schema): Schema

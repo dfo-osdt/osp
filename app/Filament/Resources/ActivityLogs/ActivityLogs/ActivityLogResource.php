@@ -20,10 +20,13 @@ use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = Activity::class;
 
+    #[\Override]
     protected static string|\UnitEnum|null $navigationGroup = 'Audit Logs';
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function table(Table $table): Table

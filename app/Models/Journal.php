@@ -48,6 +48,7 @@ class Journal extends Model
     public static $dfoPublisher = 'Fisheries and Oceans Canada - Pêches et Océans Canada';
 
     // make all fields mass assignable
+    #[\Override]
     protected $guarded = [];
 
     /** Create a scope for DFO series */

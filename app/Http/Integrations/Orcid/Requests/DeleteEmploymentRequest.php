@@ -14,6 +14,7 @@ class DeleteEmploymentRequest extends Request
     /**
      * The HTTP method of the request
      */
+    #[\Override]
     protected Method $method = Method::DELETE;
 
     protected ActivitiesScopeEndpoint $endpoint = ActivitiesScopeEndpoint::EMPLOYMENT;

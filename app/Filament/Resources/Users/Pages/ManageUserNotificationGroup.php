@@ -17,10 +17,13 @@ use Filament\Tables\Table;
 
 class ManageUserNotificationGroup extends ManageRelatedRecords
 {
+    #[\Override]
     protected static string $resource = UserResource::class;
 
+    #[\Override]
     protected static string $relationship = 'notificationGroupMembers';
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bell';
 
     public static function getNavigationLabel(): string

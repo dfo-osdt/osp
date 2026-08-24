@@ -16,6 +16,7 @@ class PostEmploymentRequest extends Request implements HasBody
     /**
      * The HTTP method of the request
      */
+    #[\Override]
     protected Method $method = Method::POST;
 
     public function __construct(protected readonly EmploymentData $employmentData) {}
