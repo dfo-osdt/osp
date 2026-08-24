@@ -1,6 +1,4 @@
-import fs from 'node:fs'
-import { homedir } from 'node:os'
-import path, { resolve } from 'node:path'
+import path from 'node:path'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { quasar } from '@quasar/vite-plugin'
 import vue from '@vitejs/plugin-vue'
@@ -30,14 +28,14 @@ export default defineConfig({
     }),
 
     quasar({
-      sassVariables: path.resolve(__dirname, 'resources/src/styles/variables.scss'),
+      sassVariables: path.resolve(import.meta.dirname, 'resources/src/styles/variables.scss'),
     }),
 
     // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
     VueI18nPlugin({
       runtimeOnly: true,
       compositionOnly: true,
-      include: [path.resolve(__dirname, 'resources/src/locales/**')],
+      include: [path.resolve(import.meta.dirname, 'resources/src/locales/**')],
     }),
 
     // https://github.com/antfu/unplugin-auto-import
@@ -59,35 +57,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './resources/src'),
+      '@': path.resolve(import.meta.dirname, './resources/src'),
     },
   },
-  server: detectServerConfig('osp.test'),
 })
-
-// see: Making Vite and Valet play nice together
-// https://freek.dev/2276-making-vite-and-valet-play-nice-together
-function detectServerConfig(host: string) {
-  const keyPath = resolve(homedir(), `.config/valet/Certificates/${host}.key`)
-  const certificatePath = resolve(
-    homedir(),
-    `.config/valet/Certificates/${host}.crt`,
-  )
-
-  if (!fs.existsSync(keyPath)) {
-    return {}
-  }
-
-  if (!fs.existsSync(certificatePath)) {
-    return {}
-  }
-
-  return {
-    hmr: { host },
-    host,
-    https: {
-      key: fs.readFileSync(keyPath),
-      cert: fs.readFileSync(certificatePath),
-    },
-  }
-}
