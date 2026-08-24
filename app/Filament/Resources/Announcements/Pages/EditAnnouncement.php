@@ -10,6 +10,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditAnnouncement extends EditRecord
 {
+    #[\Override]
     protected static string $resource = AnnouncementResource::class;
 
     // protected function getHeaderActions(): array

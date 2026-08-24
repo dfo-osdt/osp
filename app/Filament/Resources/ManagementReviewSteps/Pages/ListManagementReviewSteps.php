@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListManagementReviewSteps extends ListRecords
 {
+    #[\Override]
     protected static string $resource = ManagementReviewStepsResource::class;
 
     protected function getHeaderActions(): array

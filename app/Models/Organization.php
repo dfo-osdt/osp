@@ -49,11 +49,13 @@ class Organization extends Model
 {
     use HasFactory;
 
+    #[\Override]
     public $guarded = [
         'id',
         'created_at',
     ];
 
+    #[\Override]
     public $casts = [
         'is_validated' => 'boolean',
     ];

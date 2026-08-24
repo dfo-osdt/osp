@@ -63,6 +63,7 @@ class PlanningBinderItem extends Model
         ];
     }
 
+    #[\Override]
     protected $guarded = [];
 
     public function region()

@@ -48,12 +48,14 @@ class ManuscriptAuthor extends Model
     use HasFactory;
     use LogsActivity;
 
+    #[\Override]
     public $guarded = [
         'id',
         'created_at',
         'updated_at',
     ];
 
+    #[\Override]
     public $casts = [
         'is_corresponding_author' => 'boolean',
         'is_group_author' => 'boolean',

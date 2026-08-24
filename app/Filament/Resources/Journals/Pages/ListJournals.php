@@ -10,6 +10,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListJournals extends ListRecords
 {
+    #[\Override]
     protected static string $resource = JournalResource::class;
 
     protected function getHeaderActions(): array

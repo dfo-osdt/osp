@@ -9,5 +9,6 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditRegion extends EditRecord
 {
+    #[\Override]
     protected static string $resource = RegionResource::class;
 }

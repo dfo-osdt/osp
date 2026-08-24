@@ -48,6 +48,7 @@ class FundingSource extends Model
     use HasFactory;
     use SoftDeletes;
 
+    #[\Override]
     public $guarded = [
         'id',
         'created_at',

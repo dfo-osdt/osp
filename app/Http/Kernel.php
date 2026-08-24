@@ -39,6 +39,7 @@ class Kernel extends HttpKernel
      *
      * @var array<int, class-string|string>
      */
+    #[\Override]
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         // \App\Http\Middleware\TrustProxies::class,
@@ -55,6 +56,7 @@ class Kernel extends HttpKernel
      *
      * @var array<string, array<int, class-string|string>>
      */
+    #[\Override]
     protected $middlewareGroups = [
         'web' => [
             EncryptCookies::class,
@@ -81,6 +83,7 @@ class Kernel extends HttpKernel
      *
      * @var array<string, class-string|string>
      */
+    #[\Override]
     protected $routeMiddleware = [
         'auth' => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,

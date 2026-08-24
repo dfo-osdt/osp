@@ -155,6 +155,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
 
     protected $ulid;
 
+    #[\Override]
     public $guarded = [
         'id',
         'ulid',
@@ -166,6 +167,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         'reviewed_at',
     ];
 
+    #[\Override]
     protected $casts = [
         'submitted_at' => 'datetime',
         'type' => ManuscriptRecordType::class,
@@ -178,6 +180,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     ];
 
     // default values for optional fields
+    #[\Override]
     protected $attributes = [
         'abstract' => '',
         'pls_en' => '',

@@ -10,6 +10,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditJournal extends EditRecord
 {
+    #[\Override]
     protected static string $resource = JournalResource::class;
 
     protected function getHeaderActions(): array

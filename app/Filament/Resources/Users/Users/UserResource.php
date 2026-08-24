@@ -38,10 +38,13 @@ use Spatie\Permission\Contracts\Role;
 
 class UserResource extends Resource
 {
+    #[\Override]
     protected static ?string $model = User::class;
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
+    #[\Override]
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Schema $schema): Schema

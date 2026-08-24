@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 
 class ListManuscripts extends ListRecords
 {
+    #[\Override]
     protected static string $resource = ManuscriptsResource::class;
 
     protected function getHeaderActions(): array

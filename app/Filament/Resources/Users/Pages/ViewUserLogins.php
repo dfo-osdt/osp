@@ -20,10 +20,13 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ViewUserLogins extends ManageRelatedRecords
 {
+    #[\Override]
     protected static string $resource = UserResource::class;
 
+    #[\Override]
     protected static string $relationship = 'authentications';
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getNavigationLabel(): string

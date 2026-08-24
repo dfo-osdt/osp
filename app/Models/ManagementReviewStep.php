@@ -83,6 +83,7 @@ class ManagementReviewStep extends Model
     }
 
     // Default attributes
+    #[\Override]
     protected $attributes = [
         'comments' => '',
         'status' => ManagementReviewStepStatus::PENDING,

@@ -10,6 +10,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditHelpfulLink extends EditRecord
 {
+    #[\Override]
     protected static string $resource = HelpfulLinkResource::class;
 
     protected function getHeaderActions(): array

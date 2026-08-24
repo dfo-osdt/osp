@@ -10,6 +10,7 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewAuthentication extends ViewRecord
 {
+    #[\Override]
     protected static string $resource = AuthenticationResource::class;
 
     protected function getHeaderActions(): array

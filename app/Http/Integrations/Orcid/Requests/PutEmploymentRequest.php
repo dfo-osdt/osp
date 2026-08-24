@@ -17,6 +17,7 @@ class PutEmploymentRequest extends Request implements HasBody
     /**
      * The HTTP method of the request
      */
+    #[\Override]
     protected Method $method = Method::PUT;
 
     public function __construct(

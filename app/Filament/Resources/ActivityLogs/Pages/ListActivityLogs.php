@@ -11,6 +11,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListActivityLogs extends ListRecords
 {
+    #[\Override]
     protected static string $resource = ActivityLogResource::class;
 
     protected function getHeaderActions(): array

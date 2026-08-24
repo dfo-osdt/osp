@@ -20,10 +20,13 @@ use Spatie\Activitylog\Models\Activity;
 
 class ViewUserLogs extends ManageRelatedRecords
 {
+    #[\Override]
     protected static string $resource = UserResource::class;
 
+    #[\Override]
     protected static string $relationship = 'activitiesAsCauser';
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getNavigationLabel(): string

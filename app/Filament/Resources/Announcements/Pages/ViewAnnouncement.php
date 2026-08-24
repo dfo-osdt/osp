@@ -10,6 +10,7 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewAnnouncement extends ViewRecord
 {
+    #[\Override]
     protected static string $resource = AnnouncementResource::class;
 
     protected function getHeaderActions(): array

@@ -14,6 +14,7 @@ class GetActivityRequest extends Request
     /**
      * The HTTP method of the request
      */
+    #[\Override]
     protected Method $method = Method::GET;
 
     public function __construct(

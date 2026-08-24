@@ -18,10 +18,13 @@ use Filament\Tables\Table;
 
 class ManageUserDelegations extends ManageRelatedRecords
 {
+    #[\Override]
     protected static string $resource = UserResource::class;
 
+    #[\Override]
     protected static string $relationship = 'managementReviewDelegations';
 
+    #[\Override]
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-arrow-path';
 
     public static function getNavigationLabel(): string

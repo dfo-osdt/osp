@@ -50,6 +50,7 @@ class ManuscriptPeerReviewer extends Model
     /** @use HasFactory<ManuscriptPeerReviewerFactory> */
     use HasFactory;
 
+    #[\Override]
     protected $attributes = [
         'role' => PeerReviewRole::REVIEWER,
         'type' => PeerReviewType::REVIEW,

@@ -55,6 +55,7 @@ class Invitation extends Model
     use HasFactory;
     use LogsActivity;
 
+    #[\Override]
     protected $casts = [
         'registered_at' => 'datetime',
     ];

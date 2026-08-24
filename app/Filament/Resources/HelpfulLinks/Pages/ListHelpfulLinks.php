@@ -10,6 +10,7 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListHelpfulLinks extends ListRecords
 {
+    #[\Override]
     protected static string $resource = HelpfulLinkResource::class;
 
     protected function getHeaderActions(): array

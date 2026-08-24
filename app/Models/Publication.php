@@ -115,12 +115,14 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     use SoftDeletes;
     use TrimsMediaFileName;
 
+    #[\Override]
     public $guarded = [
         'id',
         'created_at',
         'updated_at',
     ];
 
+    #[\Override]
     public $casts = [
         'is_open_access' => 'boolean',
         'accepted_on' => 'date',
@@ -129,6 +131,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
         'status' => PublicationStatus::class,
     ];
 
+    #[\Override]
     public $attributes = [
         // default is false
         'is_open_access' => false,
