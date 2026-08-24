@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\ManagementReviewStepCreated;
 use App\Mail\ReviewStepNotificationMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class SendManagementReviewNotification implements ShouldQueue
 {

@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\PublicationAccepted;
 use App\Mail\PublicationAcceptedMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class SendPublicationAcceptedNotification implements ShouldQueue
 {

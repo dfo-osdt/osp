@@ -6,10 +6,10 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Queries\UserListQuery;
 use App\Traits\PaginationLimitTrait;
-use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {

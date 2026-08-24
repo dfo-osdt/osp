@@ -6,8 +6,8 @@ use App\Models\Journal;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Spatie\SimpleExcel\SimpleExcelReader;
-use Str;
 
 /**
  * This command will take the a "Scopus Source List" excel file and update the

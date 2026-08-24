@@ -6,11 +6,11 @@ use App\Http\Resources\PublicationAuthorResource;
 use App\Models\Author;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
-use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class PublicationAuthorController extends Controller
