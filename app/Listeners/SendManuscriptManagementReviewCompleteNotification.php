@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\ManuscriptManagementReviewComplete;
 use App\Mail\ManuscriptManagementReviewComplete as MailManuscriptManagementReviewComplete;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class SendManuscriptManagementReviewCompleteNotification implements ShouldQueue
 {

@@ -7,7 +7,7 @@ use App\Mail\UserInvitedMail;
 use App\Mail\UserInvitedWelomeMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class UserInvitedListener implements ShouldQueue
 {

@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Resources\FundingSourceResource;
 use App\Models\FundingSource;
 use App\Models\Publication;
-use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class PublicationFundingSourceController extends Controller
 {

@@ -6,10 +6,10 @@ use App\Http\Resources\PublicationResource;
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
 use App\Traits\PaginationLimitTrait;
-use Auth;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class UserPublicationController extends Controller
 {

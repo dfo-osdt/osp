@@ -8,10 +8,10 @@ use App\Http\Resources\UserResource;
 use App\Models\Invitation;
 use App\Models\User;
 use App\Rules\AuthorizedEmailDomain;
-use Hash;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 

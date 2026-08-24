@@ -5,11 +5,11 @@ namespace App\Http\Resources;
 use App\Models\FundingSource;
 use App\Models\ManuscriptRecord;
 use App\Models\Publication;
-use Auth;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @mixin FundingSource
