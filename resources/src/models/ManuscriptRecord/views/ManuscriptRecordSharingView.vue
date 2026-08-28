@@ -16,6 +16,10 @@ const props = defineProps<{
   id: number
 }>()
 
+const emit = defineEmits<{
+  (event: 'updateManuscript', arg: ManuscriptRecordResource): void
+}>()
+
 const shareableService = new ShareableService('manuscript-records', props.id)
 const shareables = ref<ShareableResourceList | undefined>(undefined)
 const manuscript = ref<ManuscriptRecordResource | undefined>(undefined)
@@ -26,6 +30,7 @@ onMounted(async () => {
   shareables.value = await shareableService.list()
   manuscript.value = await ManuscriptRecordService.find(props.id)
   loading.value = false
+  emit('updateManuscript', manuscript.value)
 })
 
 const authStore = useAuthStore()
