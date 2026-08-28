@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Enums\ManuscriptRecordType;
 use App\Enums\PublicationStatus;
 use App\Enums\SupplementaryFileType;
 use App\Events\PublicationAccepted;
@@ -34,6 +35,7 @@ class CreatePublicationFromManuscript
                 'isbn' => $isbn,
                 'catalogue_number' => $catalogueNumber,
                 'issue_number' => $issueNumber,
+                'is_open_access' => $manuscriptRecord->type === ManuscriptRecordType::SECONDARY,
             ]);
 
             // attach the manuscript's authors to the publication
