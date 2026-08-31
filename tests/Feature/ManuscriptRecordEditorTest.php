@@ -123,7 +123,7 @@ test('regional editor cannot edit non-editable statuses', function (): void {
     $nonEditableStatuses = [
         ManuscriptRecordStatus::REVIEWED,
         ManuscriptRecordStatus::SUBMITTED,
-        ManuscriptRecordStatus::ACCEPTED,
+        ManuscriptRecordStatus::COMPLETED,
         ManuscriptRecordStatus::WITHDRAWN,
     ];
 

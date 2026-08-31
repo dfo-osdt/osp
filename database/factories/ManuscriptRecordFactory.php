@@ -120,7 +120,7 @@ class ManuscriptRecordFactory extends Factory
     {
         return $this->reviewed()->state([
             'title' => 'A manuscript record that has been accepted for publication',
-            'status' => ManuscriptRecordStatus::ACCEPTED,
+            'status' => ManuscriptRecordStatus::COMPLETED,
             'submitted_to_journal_on' => now(),
             'accepted_on' => now(),
         ]);

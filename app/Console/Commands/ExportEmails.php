@@ -343,19 +343,19 @@ class ExportEmails extends Command
         $acceptedManuscript1 = ManuscriptRecord::factory()->create([
             'user_id' => $user2->id,
             'type' => ManuscriptRecordType::PRIMARY,
-            'status' => ManuscriptRecordStatus::ACCEPTED,
+            'status' => ManuscriptRecordStatus::COMPLETED,
         ]);
 
         $acceptedManuscript2 = ManuscriptRecord::factory()->create([
             'user_id' => $user2->id,
             'type' => ManuscriptRecordType::PRIMARY,
-            'status' => ManuscriptRecordStatus::ACCEPTED,
+            'status' => ManuscriptRecordStatus::COMPLETED,
         ]);
 
         $acceptedManuscript3 = ManuscriptRecord::factory()->create([
             'user_id' => $user2->id,
             'type' => ManuscriptRecordType::PRIMARY,
-            'status' => ManuscriptRecordStatus::ACCEPTED,
+            'status' => ManuscriptRecordStatus::COMPLETED,
         ]);
 
         $pendingPublications2 = collect([
@@ -389,13 +389,13 @@ class ExportEmails extends Command
         $acceptedManuscript4 = ManuscriptRecord::factory()->create([
             'user_id' => $user3->id,
             'type' => ManuscriptRecordType::PRIMARY,
-            'status' => ManuscriptRecordStatus::ACCEPTED,
+            'status' => ManuscriptRecordStatus::COMPLETED,
         ]);
 
         $acceptedManuscript5 = ManuscriptRecord::factory()->create([
             'user_id' => $user3->id,
             'type' => ManuscriptRecordType::PRIMARY,
-            'status' => ManuscriptRecordStatus::ACCEPTED,
+            'status' => ManuscriptRecordStatus::COMPLETED,
         ]);
 
         $pendingPublications3 = collect([
