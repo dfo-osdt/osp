@@ -21,7 +21,7 @@
     "sass-embedded": "^1.103.1",
     "vite-plugin-manifest-sri": "^0.2.0",
     "vue": "^3.5.41",
-    "vue-i18n": "^11.4.9",
+    "vue-i18n": "^11.4.10",
     "vue-router": "^5.2.0"
   },
   "devDependencies": {
