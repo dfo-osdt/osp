@@ -14,7 +14,7 @@ Before you begin, ensure you have the following prerequisites installed:
 - [PHP 8.3](https://www.php.net/) (see [php.net](https://www.php.net/))
 - [WSL](https://docs.microsoft.com/en-us/windows/wsl/install) if you are on Windows
 - [Redis](https://redis.io/)
-- [MySQL](https://www.mysql.com/) (to mimic production, though SQLite can be used for development)
+- [MySQL 8.4.9](https://www.mysql.com/) (to mimic production, though SQLite can be used for development). MySQL 9.7 is not supported until Laravel Pulse supports its generated-column restrictions.
 
 1. Install dependencies:
 
