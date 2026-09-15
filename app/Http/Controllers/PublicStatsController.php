@@ -29,7 +29,7 @@ class PublicStatsController extends Controller
                 'manuscripts_reviewed_count' => ManuscriptRecord::query()
                     ->whereIn('status', [
                         ManuscriptRecordStatus::REVIEWED,
-                        ManuscriptRecordStatus::ACCEPTED,
+                        ManuscriptRecordStatus::COMPLETED,
                     ])
                     ->count(),
                 'authors_count' => Author::query()

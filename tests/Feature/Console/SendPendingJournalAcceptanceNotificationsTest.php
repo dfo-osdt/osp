@@ -36,7 +36,7 @@ test('it does not send notifications when there are no pending manuscripts', fun
     $user = User::factory()->create();
     ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
         'reviewed_at' => now()->subMonths(2),
         'accepted_on' => now()->subWeek(),
     ]);
@@ -76,7 +76,7 @@ test('it sends notifications when there are pending publications', function (): 
     $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
         'type' => ManuscriptRecordType::PRIMARY,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
     ]);
     Publication::factory()->create([
         'user_id' => $user->id,

@@ -564,7 +564,7 @@
     "no-public-interest": "No public interest flagged"
   },
   "manuscript": {
-    "accepted": "Accepted",
+    "completed": "Completed",
     "draft": "Draft",
     "in_review": "In Review",
     "please-select-the-lead-region": "Please select the lead region",

@@ -16,7 +16,7 @@ export type ManuscriptRecordStatus
     | 'in_review'
     | 'reviewed'
     | 'submitted'
-    | 'accepted'
+    | 'completed'
     | 'withdrawn'
 
 /**

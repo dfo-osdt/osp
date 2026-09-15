@@ -40,7 +40,7 @@ test('public stats endpoint returns correct structure', function (): void {
 
     // Create an accepted manuscript
     ManuscriptRecord::factory()->create([
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
     ]);
 
     // Create a draft manuscript — should not count

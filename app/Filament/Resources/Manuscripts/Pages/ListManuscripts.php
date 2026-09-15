@@ -42,7 +42,7 @@ class ListManuscripts extends ListRecords
             ManuscriptRecordStatus::DRAFT,
             ManuscriptRecordStatus::IN_REVIEW,
             ManuscriptRecordStatus::REVIEWED,
-            ManuscriptRecordStatus::ACCEPTED,
+            ManuscriptRecordStatus::COMPLETED,
             ManuscriptRecordStatus::WITHDRAWN,
         ])
             ->mapWithKeys(fn (ManuscriptRecordStatus $status): array => [

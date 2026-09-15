@@ -17,8 +17,8 @@ const statusLabel = computed(() => {
       return t('manuscript.reviewed')
     case 'submitted':
       return t('manuscript.submitted')
-    case 'accepted':
-      return t('manuscript.accepted')
+    case 'completed':
+      return t('manuscript.completed')
     case 'withdrawn':
       return t('manuscript.withdrawn')
     default:

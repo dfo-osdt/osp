@@ -19,7 +19,7 @@ class PreprintListQuery extends QueryBuilder
         parent::__construct(
             $subject ?? ManuscriptRecord::query()
                 ->where('type', ManuscriptRecordType::PREPRINT)
-                ->where('status', ManuscriptRecordStatus::ACCEPTED)
+                ->where('status', ManuscriptRecordStatus::COMPLETED)
                 ->with([
                     'manuscriptAuthors.author',
                     'manuscriptAuthors.organization',
