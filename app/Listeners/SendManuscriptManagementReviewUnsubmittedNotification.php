@@ -55,7 +55,7 @@ class SendManuscriptManagementReviewUnsubmittedNotification
             ->values()
             ->all();
 
-        Mail::to($to->user->email, $to->user->fullName)
+        Mail::to($to->user->email, $to->user->full_name)
             ->cc($ccEmails)
             ->queue(new ManuscriptManagementReviewUnsubmittedMail($event->manuscriptRecord, $to->user, $event->unsubmittedBy, $event->reason));
     }

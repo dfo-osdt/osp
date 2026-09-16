@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-A manuscript record submission has been unsubmitted from the Manuscript Management Review queue by {{ $unsubmittedBy->fullName }} and returned to draft.
+A manuscript record submission has been unsubmitted from the Manuscript Management Review queue by {{ $unsubmittedBy->full_name }} and returned to draft.
 
 **Reason for unsubmission:**<br /> {{ $reason }}
 
@@ -25,7 +25,7 @@ A Manuscript Management Review is no longer expected for this manuscript record.
 
 # Bonjour {{ $user->first_name }},
 
-Une soumission au registre du manuscrit a été retirée de la révision par la gestion par {{ $unsubmittedBy->fullName }} et remise à l'état de brouillon.
+Une soumission au registre du manuscrit a été retirée de la révision par la gestion par {{ $unsubmittedBy->full_name }} et remise à l'état de brouillon.
 
 **Raison du retrait de la soumission :**<br /> {{ $reason }}
 
