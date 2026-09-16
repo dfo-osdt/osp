@@ -67,7 +67,7 @@ class Announcement extends Model
     }
 
     /** Return active announcements
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
+     * @param Builder<static> $query */
     #[Scope]
     protected function active(Builder $query): void
     {

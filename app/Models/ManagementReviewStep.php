@@ -123,7 +123,7 @@ class ManagementReviewStep extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function overdue(Builder $query): void
@@ -133,7 +133,7 @@ class ManagementReviewStep extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function dueSoon(Builder $query, int $days = 2): void
@@ -143,7 +143,7 @@ class ManagementReviewStep extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function pending(Builder $query): void
@@ -152,7 +152,7 @@ class ManagementReviewStep extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function pendingForDays(Builder $query, int $days = 4): void
