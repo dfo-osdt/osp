@@ -53,14 +53,6 @@ use Illuminate\Support\Carbon;
 #[WithoutTimestamps]
 class AuthenticationLog extends Model
 {
-    #[\Override]
-    protected $casts = [
-        'login_at' => 'datetime',
-        'logout_at' => 'datetime',
-        'login_successful' => 'boolean',
-        'cleared_by_user' => 'boolean',
-    ];
-
     /**
      * @return MorphTo<Model, $this>
      */
@@ -69,9 +61,23 @@ class AuthenticationLog extends Model
         return $this->morphTo();
     }
 
+    /**
+     * @param  Builder<static>  $query
+     * @return Builder<static>
+     */
     #[Scope]
     protected function successful(Builder $query): Builder
     {
         return $query->where('login_successful', true);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'login_at' => 'datetime',
+            'logout_at' => 'datetime',
+            'login_successful' => 'boolean',
+            'cleared_by_user' => 'boolean',
+        ];
     }
 }

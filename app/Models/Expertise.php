@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -53,17 +57,26 @@ class Expertise extends Model
         ];
     }
 
-    public function authors()
+    /**
+     * @return MorphToMany<Author, $this>
+     */
+    public function authors(): MorphToMany
     {
         return $this->morphedByMany(Author::class, 'expertiseable');
     }
 
+    /**
+     * @param  Builder<static>  $query
+     */
     #[Scope]
     protected function scopeValidated($query)
     {
         $query->where('is_validated', true);
     }
 
+    /**
+     * @param  Builder<static>  $query
+     */
     #[Scope]
     protected function used($query)
     {

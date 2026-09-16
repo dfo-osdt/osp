@@ -127,18 +127,6 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     use Notifiable;
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    #[\Override]
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'active' => 'boolean',
-        'new_password_required' => 'boolean',
-    ];
-
-    /**
      * Make sure that the email is always stored as lowercase to prevent duplicates.
      */
     protected function email(): Attribute
@@ -152,9 +140,9 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     /**
      * Get the full name of the user.
      */
-    protected function getFullNameAttribute(): string
+    protected function fullName(): Attribute
     {
-        return $this->first_name.' '.$this->last_name;
+        return Attribute::make(get: fn (): string => $this->first_name.' '.$this->last_name);
     }
 
     // relationships
@@ -299,7 +287,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
      */
     public function getFilamentName(): string
     {
-        return $this->getFullNameAttribute();
+        return $this->full_name;
     }
 
     /**
@@ -327,9 +315,9 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
         return $this->morphMany(AuthenticationLog::class, 'authenticatable')->latest('login_at');
     }
 
-    protected function getLatestAuthenticationAttribute(): ?AuthenticationLog
+    protected function latestAuthentication(): Attribute
     {
-        return $this->authentications()->first();
+        return Attribute::make(get: fn () => $this->authentications()->first());
     }
 
     public function previousSuccessfulLoginAt()
@@ -419,5 +407,19 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
             ->active()
             ->where('delegate_user_id', $this->id)
             ->exists();
+    }
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'active' => 'boolean',
+            'new_password_required' => 'boolean',
+        ];
     }
 }

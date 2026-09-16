@@ -98,14 +98,6 @@ class Author extends Model
         'orcid_refresh_token',
     ];
 
-    #[\Override]
-    protected $casts = [
-        'orcid_verified' => 'boolean',
-        'orcid_access_token' => 'encrypted',
-        'orcid_refresh_token' => 'encrypted',
-        'orcid_expires_at' => 'datetime',
-    ];
-
     // logging options
     public function getActivitylogOptions(): LogOptions
     {
@@ -115,16 +107,14 @@ class Author extends Model
             ->logExcept(['orcid_access_token', 'orcid_refresh_token']);
     }
 
-    // author full name
-    protected function getFullNameAttribute(): string
+    protected function fullName(): Attribute
     {
-        return $this->first_name.' '.$this->last_name;
+        return Attribute::make(get: fn (): string => $this->first_name.' '.$this->last_name);
     }
 
-    // author name for APA citation
-    protected function getApaNameAttribute(): string
+    protected function apaName(): Attribute
     {
-        return $this->last_name.', '.$this->first_name;
+        return Attribute::make(get: fn (): string => $this->last_name.', '.$this->first_name);
     }
 
     /**
@@ -132,13 +122,15 @@ class Author extends Model
      * we store thee full ORCID iD with the URL prefix
      * in the database.
      */
-    protected function getOrcidNumberAttribute(): string
+    protected function orcidNumber(): Attribute
     {
-        if (! $this->orcid) {
-            return '';
-        }
+        return Attribute::make(get: function (): string {
+            if (! $this->orcid) {
+                return '';
+            }
 
-        return substr($this->orcid, -19);
+            return substr($this->orcid, -19);
+        });
     }
 
     /**
@@ -243,6 +235,9 @@ class Author extends Model
         return $this->hasMany(ManuscriptPeerReviewer::class);
     }
 
+    /**
+     * @param  Builder<static>  $query
+     */
     #[Scope]
     protected function internalAuthor(Builder $query): void
     {
@@ -250,6 +245,9 @@ class Author extends Model
         $query->where('organization_id', $Organization->id);
     }
 
+    /**
+     * @param  Builder<static>  $query
+     */
     #[Scope]
     protected function externalAuthor(Builder $query): void
     {
@@ -257,9 +255,22 @@ class Author extends Model
         $query->where('organization_id', '!=', $Organization->id);
     }
 
+    /**
+     * @param  Builder<static>  $query
+     */
     #[Scope]
     protected function withOrcid(Builder $query): void
     {
         $query->whereNotNull('orcid');
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'orcid_verified' => 'boolean',
+            'orcid_access_token' => 'encrypted',
+            'orcid_refresh_token' => 'encrypted',
+            'orcid_expires_at' => 'datetime',
+        ];
     }
 }

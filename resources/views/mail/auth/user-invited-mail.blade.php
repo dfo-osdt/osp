@@ -1,7 +1,7 @@
 <x-mail::message>
 # {{ __('Hello') }} {{ $user->first_name }},
 
-{{ __('email.auth.invitation.p1', ['name' => $invitedBy->fullName, 'email' => $invitedBy->email]) }}
+{{ __('email.auth.invitation.p1', ['name' => $invitedBy->full_name, 'email' => $invitedBy->email]) }}
 
 {{ __('email.auth.invitation.p2') }}
 

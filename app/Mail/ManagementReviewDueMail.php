@@ -44,7 +44,7 @@ class ManagementReviewDueMail extends Mailable implements ShouldQueue
         }
 
         $this->subject($subject);
-        $this->to($this->user->email, $this->user->fullName);
+        $this->to($this->user->email, $this->user->full_name);
 
         $notificationGroupEmails = $this->user->getNotificationGroupEmails();
         if ($notificationGroupEmails->isNotEmpty()) {

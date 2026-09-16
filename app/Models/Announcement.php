@@ -66,7 +66,8 @@ class Announcement extends Model
         ];
     }
 
-    /** Return active announcements */
+    /** Return active announcements
+     * @param Builder<static> $query */
     #[Scope]
     protected function active(Builder $query): void
     {

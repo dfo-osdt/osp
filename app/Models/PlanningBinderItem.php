@@ -9,6 +9,7 @@ use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use Database\Factories\PlanningBinderItemFactory;
 use Glhd\Bits\Database\HasSnowflakes;
 use Glhd\Bits\Snowflake;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -46,6 +47,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
+#[Unguarded]
 class PlanningBinderItem extends Model
 {
     /** @use HasFactory<PlanningBinderItemFactory> */
@@ -62,9 +64,6 @@ class PlanningBinderItem extends Model
             'status' => PlanningBinderItemStatus::class,
         ];
     }
-
-    #[\Override]
-    protected $guarded = [];
 
     public function region()
     {

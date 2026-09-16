@@ -91,6 +91,9 @@ class ManagementReviewDelegation extends Model
         return $this->belongsTo(User::class, 'delegate_user_id');
     }
 
+    /**
+     * @param  Builder<static>  $query
+     */
     #[Scope]
     protected function active(Builder $query): void
     {

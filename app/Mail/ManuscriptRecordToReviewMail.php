@@ -32,8 +32,8 @@ class ManuscriptRecordToReviewMail extends Mailable
     public function build()
     {
         $this->subject('Manuscript Record Submitted - Registre du manuscrit Soumis : '.$this->manuscriptRecord->title);
-        $this->to($this->user->email, $this->user->fullName);
-        $this->cc($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->fullName);
+        $this->to($this->user->email, $this->user->full_name);
+        $this->cc($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->full_name);
 
         // cc all authors that are registered (have a user account)
         $this->cc(
