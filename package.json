@@ -10,14 +10,14 @@
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^11.2.5",
-    "@quasar/extras": "^2.0.4",
-    "@vitejs/plugin-vue": "^6.0.8",
+    "@quasar/extras": "^2.1.0",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vueuse/core": "^14.4.0",
     "@vueuse/router": "^14.4.0",
     "dompurify": "^3.4.15",
     "pinia": "^4.0.3",
     "playwright": "^1.63.0",
-    "quasar": "^2.32.2",
+    "quasar": "^2.32.3",
     "sass-embedded": "^1.104.1",
     "vite-plugin-manifest-sri": "^0.2.0",
     "vue": "^3.5.42",
@@ -28,7 +28,7 @@
     "@antfu/eslint-config": "^9.5.1",
     "@intlify/eslint-plugin-vue-i18n": "^4.5.1",
     "@quasar/vite-plugin": "^2.0.2",
-    "@types/node": "^26.5.1",
+    "@types/node": "^26.6.0",
     "axios": "^1.20.0",
     "eslint": "^10.10.0",
     "eslint-plugin-quasar": "^1.1.0",
@@ -43,6 +43,6 @@
   },
   "packageManager": "pnpm@12.4.1+sha512.2e81e399d73fe8390dab25e06aa788ab7a5908248d2f5a370f82b481147a6a7a367bf8048f9a6fdb6460f21a66f0542dedb8b94ca2c8723596741920b1656d4c",
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.63.2"
+    "@rollup/rollup-linux-x64-gnu": "^4.63.3"
   }
 }
