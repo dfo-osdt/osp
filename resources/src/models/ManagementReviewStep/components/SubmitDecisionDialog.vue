@@ -285,7 +285,6 @@ async function submit() {
           :title="$t('submit-decision-dialog.select-next-reviewer')"
           icon="mdi-account-search"
           :error="validationError"
-          style="min-height: 275px"
           :disable="nextReviewerStepDisabled"
           :done="step > 2"
         >

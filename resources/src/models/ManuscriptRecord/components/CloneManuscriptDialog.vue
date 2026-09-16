@@ -74,7 +74,6 @@ async function clone() {
             :title="$t('common.type-of-publication')"
             icon="mdi-call-split"
             :done="step > 1"
-            style="min-height: 275px"
           >
             <div class="q-mb-md">
               {{ $t('clone-manuscript-record-dialog.step1.text') }}
@@ -86,7 +85,6 @@ async function clone() {
             :title="$t('common.clone')"
             icon="mdi-content-copy"
             :done="step > 2"
-            style="min-height: 275px"
           >
             <div class="q-pa-md">
               {{

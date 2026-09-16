@@ -115,7 +115,7 @@ async function create() {
       <q-separator />
       <q-step
         :name="1" :title="$t('create-publication-dialog.before-your-start')" icon="mdi-call-split"
-        active-icon="mdi-information-variant" :done="step > 1" style="min-height: 275px"
+        active-icon="mdi-information-variant" :done="step > 1"
       >
         <div class="text-body1 text-primary text-weight-medium q-mb-md">
           {{ $t('create-publication-dialog.before-continuing') }}
@@ -132,7 +132,7 @@ async function create() {
       </q-step>
       <q-step
         :name="2" :title="$t('create-publication-dialog.publication-details')"
-        icon="mdi-file-document-edit-outline" :error="!detailsValid" :done="step > 2" style="min-height: 275px"
+        icon="mdi-file-document-edit-outline" :error="!detailsValid" :done="step > 2"
       >
         <QForm ref="detailsForm" class="q-ma-md">
           <div class="text-body1 text-primary text-weight-medium">
@@ -162,7 +162,7 @@ async function create() {
       </q-step>
       <q-step
         :name="3" :title="$t('create-publication-dialog.dates-and-access')" icon="mdi-calendar"
-        :error="!datesValid" :done="step > 3" style="min-height: 275px"
+        :error="!datesValid" :done="step > 3"
       >
         <QForm ref="datesForm">
           <div class="text-body1 text-primary text-weight-medium">

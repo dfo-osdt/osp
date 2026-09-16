@@ -118,7 +118,6 @@ async function submit() {
           :title="$t('submit-manuscript-dialog.step2.title')"
           icon="mdi-account-search"
           :error="validationError"
-          style="min-height: 275px"
         >
           <div
             class="q-mx-md text-body1 text-primary text-weight-medium"
