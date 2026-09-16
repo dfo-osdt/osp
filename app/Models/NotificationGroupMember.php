@@ -84,7 +84,7 @@ class NotificationGroupMember extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function active(Builder $query): void

@@ -9,6 +9,7 @@ use App\Enums\PlanningBinder\PlanningBinderItemStatus;
 use Database\Factories\PlanningBinderItemFactory;
 use Glhd\Bits\Database\HasSnowflakes;
 use Glhd\Bits\Snowflake;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -46,7 +47,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-#[\Illuminate\Database\Eloquent\Attributes\Unguarded]
+#[Unguarded]
 class PlanningBinderItem extends Model
 {
     /** @use HasFactory<PlanningBinderItemFactory> */

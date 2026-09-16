@@ -102,6 +102,7 @@ class Invitation extends Model
     {
         return Str::random(40);
     }
+
     protected function casts(): array
     {
         return [

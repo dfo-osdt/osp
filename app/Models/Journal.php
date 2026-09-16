@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,7 +40,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-#[\Illuminate\Database\Eloquent\Attributes\Unguarded]
+#[Unguarded]
 class Journal extends Model
 {
     use HasFactory;
@@ -49,7 +50,7 @@ class Journal extends Model
     public static $dfoPublisher = 'Fisheries and Oceans Canada - Pêches et Océans Canada';
 
     /** Create a scope for DFO series
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
+     * @param Builder<static> $query */
     #[Scope]
     protected function dfoSeries(Builder $query): void
     {
@@ -57,7 +58,7 @@ class Journal extends Model
     }
 
     /** Create a scope for non-DFO series
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
+     * @param Builder<static> $query */
     #[Scope]
     protected function notDfoSeries(Builder $query): void
     {

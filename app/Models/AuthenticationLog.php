@@ -62,14 +62,15 @@ class AuthenticationLog extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
-     * @return \Illuminate\Database\Eloquent\Builder<static>
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
     #[Scope]
     protected function successful(Builder $query): Builder
     {
         return $query->where('login_successful', true);
     }
+
     protected function casts(): array
     {
         return [

@@ -107,14 +107,14 @@ class Author extends Model
             ->logExcept(['orcid_access_token', 'orcid_refresh_token']);
     }
 
-    protected function fullName(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function fullName(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => $this->first_name.' '.$this->last_name);
+        return Attribute::make(get: fn (): string => $this->first_name.' '.$this->last_name);
     }
 
-    protected function apaName(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function apaName(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => $this->last_name.', '.$this->first_name);
+        return Attribute::make(get: fn (): string => $this->last_name.', '.$this->first_name);
     }
 
     /**
@@ -122,12 +122,13 @@ class Author extends Model
      * we store thee full ORCID iD with the URL prefix
      * in the database.
      */
-    protected function orcidNumber(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function orcidNumber(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
+        return Attribute::make(get: function (): string {
             if (! $this->orcid) {
                 return '';
             }
+
             return substr($this->orcid, -19);
         });
     }
@@ -235,7 +236,7 @@ class Author extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function internalAuthor(Builder $query): void
@@ -245,7 +246,7 @@ class Author extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function externalAuthor(Builder $query): void
@@ -255,13 +256,14 @@ class Author extends Model
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function withOrcid(Builder $query): void
     {
         $query->whereNotNull('orcid');
     }
+
     protected function casts(): array
     {
         return [

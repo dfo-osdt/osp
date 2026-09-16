@@ -431,7 +431,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     /**
      * Scope to filter manuscripts that are pending journal acceptance
      * (reviewed or submitted but not yet accepted or withdrawn)
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     *
+     * @param  Builder<static>  $query
      */
     #[Scope]
     protected function pendingJournalAcceptance(Builder $query): void
@@ -440,7 +441,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     }
 
     /** Reviewed date range
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
+     * @param Builder<static> $query */
     #[Scope]
     protected function reviewedBetween(Builder $query, string $startDate, string $endDate): void
     {
@@ -448,7 +449,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     }
 
     /** Manuscripts in review with at least one pending step past its deadline
-     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
+     * @param Builder<static> $query */
     #[Scope]
     protected function overdueReview(Builder $query): void
     {
@@ -458,6 +459,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
             ->where('decision_expected_by', '<', now())
         );
     }
+
     protected function casts(): array
     {
         return [

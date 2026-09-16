@@ -140,9 +140,9 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     /**
      * Get the full name of the user.
      */
-    protected function fullName(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function fullName(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn(): string => $this->first_name.' '.$this->last_name);
+        return Attribute::make(get: fn (): string => $this->first_name.' '.$this->last_name);
     }
 
     // relationships
@@ -315,9 +315,9 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
         return $this->morphMany(AuthenticationLog::class, 'authenticatable')->latest('login_at');
     }
 
-    protected function latestAuthentication(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function latestAuthentication(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn() => $this->authentications()->first());
+        return Attribute::make(get: fn () => $this->authentications()->first());
     }
 
     public function previousSuccessfulLoginAt()
@@ -408,6 +408,7 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
             ->where('delegate_user_id', $this->id)
             ->exists();
     }
+
     /**
      * The attributes that should be cast.
      *
