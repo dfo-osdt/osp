@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -56,7 +57,10 @@ class Expertise extends Model
         ];
     }
 
-    public function authors()
+    /**
+     * @return MorphToMany<Author, $this>
+     */
+    public function authors(): MorphToMany
     {
         return $this->morphedByMany(Author::class, 'expertiseable');
     }
