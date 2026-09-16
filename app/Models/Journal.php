@@ -39,6 +39,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Unguarded]
 class Journal extends Model
 {
     use HasFactory;
@@ -47,18 +48,16 @@ class Journal extends Model
     // production database it will will also need to be changed in the database!
     public static $dfoPublisher = 'Fisheries and Oceans Canada - Pêches et Océans Canada';
 
-    // make all fields mass assignable
-    #[\Override]
-    protected $guarded = [];
-
-    /** Create a scope for DFO series */
+    /** Create a scope for DFO series
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function dfoSeries(Builder $query): void
     {
         $query->where('publisher', Journal::$dfoPublisher);
     }
 
-    /** Create a scope for non-DFO series */
+    /** Create a scope for non-DFO series
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function notDfoSeries(Builder $query): void
     {

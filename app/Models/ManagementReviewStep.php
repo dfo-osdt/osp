@@ -122,6 +122,9 @@ class ManagementReviewStep extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     */
     #[Scope]
     protected function overdue(Builder $query): void
     {
@@ -129,6 +132,9 @@ class ManagementReviewStep extends Model
             ->where('decision_expected_by', '<', now());
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     */
     #[Scope]
     protected function dueSoon(Builder $query, int $days = 2): void
     {
@@ -136,12 +142,18 @@ class ManagementReviewStep extends Model
             ->whereBetween('decision_expected_by', [now(), now()->addBusinessDays($days)]);
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     */
     #[Scope]
     protected function pending(Builder $query): void
     {
         $query->where('status', ManagementReviewStepStatus::PENDING);
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     */
     #[Scope]
     protected function pendingForDays(Builder $query, int $days = 4): void
     {

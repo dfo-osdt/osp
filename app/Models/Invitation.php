@@ -55,11 +55,6 @@ class Invitation extends Model
     use HasFactory;
     use LogsActivity;
 
-    #[\Override]
-    protected $casts = [
-        'registered_at' => 'datetime',
-    ];
-
     // logging options
     public function getActivitylogOptions(): LogOptions
     {
@@ -106,5 +101,11 @@ class Invitation extends Model
     public static function generateInvitationToken(): string
     {
         return Str::random(40);
+    }
+    protected function casts(): array
+    {
+        return [
+            'registered_at' => 'datetime',
+        ];
     }
 }

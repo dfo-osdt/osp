@@ -167,18 +167,6 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         'reviewed_at',
     ];
 
-    #[\Override]
-    protected $casts = [
-        'submitted_at' => 'datetime',
-        'type' => ManuscriptRecordType::class,
-        'status' => ManuscriptRecordStatus::class,
-        'potential_public_interest' => 'boolean',
-        'apply_ogl' => 'boolean',
-        'intends_open_access' => 'boolean',
-        'pls_approved_by_author' => 'boolean',
-        'pls_translation_approved' => 'boolean',
-    ];
-
     // default values for optional fields
     #[\Override]
     protected $attributes = [
@@ -443,6 +431,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     /**
      * Scope to filter manuscripts that are pending journal acceptance
      * (reviewed or submitted but not yet accepted or withdrawn)
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
      */
     #[Scope]
     protected function pendingJournalAcceptance(Builder $query): void
@@ -450,14 +439,16 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         $query->whereIn('status', [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED]);
     }
 
-    /** Reviewed date range */
+    /** Reviewed date range
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function reviewedBetween(Builder $query, string $startDate, string $endDate): void
     {
         $query->whereBetween('reviewed_at', [Date::parse($startDate), Date::parse($endDate)]);
     }
 
-    /** Manuscripts in review with at least one pending step past its deadline */
+    /** Manuscripts in review with at least one pending step past its deadline
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function overdueReview(Builder $query): void
     {
@@ -466,5 +457,18 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
             ->whereNotNull('decision_expected_by')
             ->where('decision_expected_by', '<', now())
         );
+    }
+    protected function casts(): array
+    {
+        return [
+            'submitted_at' => 'datetime',
+            'type' => ManuscriptRecordType::class,
+            'status' => ManuscriptRecordStatus::class,
+            'potential_public_interest' => 'boolean',
+            'apply_ogl' => 'boolean',
+            'intends_open_access' => 'boolean',
+            'pls_approved_by_author' => 'boolean',
+            'pls_translation_approved' => 'boolean',
+        ];
     }
 }
