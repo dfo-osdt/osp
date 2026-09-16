@@ -83,7 +83,6 @@ async function create() {
             :title="$t('common.type-of-publication')"
             icon="mdi-call-split"
             :done="step > 1"
-            style="min-height: 275px"
           >
             <div class="q-mb-md">
               {{ $t('create-manuscript-record-dialog.step1.text') }}
@@ -102,7 +101,6 @@ async function create() {
             icon="mdi-file-document-edit-outline"
             :done="step > 2"
             :error="!manuscriptDetailFormValid"
-            style="min-height: 275px"
           >
             <QForm ref="manuscriptDetailForm">
               <div class="q-mb-md">
@@ -141,7 +139,6 @@ async function create() {
             :title="$t('common.create')"
             icon="mdi-file-document-check"
             :done="step > 3"
-            style="min-height: 275px"
           >
             <div class="q-pa-md">
               {{ $t('create-manuscript-record-dialog.create-text') }}
