@@ -59,7 +59,7 @@ class JournalAcceptancePendingMail extends Mailable implements ShouldQueue
         $subject = 'Monthly Reminder: Update Your Manuscript Status / Rappel mensuel: Mettre à jour le statut de vos manuscrits';
 
         $this->subject($subject);
-        $this->to($this->user->email, $this->user->fullName);
+        $this->to($this->user->email, $this->user->full_name);
 
         return $this->markdown('mail.journal-acceptance-pending-mail', [
             'manuscripts' => $manuscripts,

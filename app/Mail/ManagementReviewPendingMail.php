@@ -47,7 +47,7 @@ class ManagementReviewPendingMail extends Mailable implements ShouldQueue
         $subject = 'Weekly Summary: Pending Management Reviews / Résumé hebdomadaire: Révisions de gestion en attente';
 
         $this->subject($subject);
-        $this->to($this->user->email, $this->user->fullName);
+        $this->to($this->user->email, $this->user->full_name);
 
         $notificationGroupEmails = $this->user->getNotificationGroupEmails();
         if ($notificationGroupEmails->isNotEmpty()) {

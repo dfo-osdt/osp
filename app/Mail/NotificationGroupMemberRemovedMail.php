@@ -19,7 +19,7 @@ class NotificationGroupMemberRemovedMail extends Mailable
     public function build()
     {
         $this->subject('Notification Group Update / Mise à jour du groupe de notification');
-        $this->to($this->owner->email, $this->owner->fullName);
+        $this->to($this->owner->email, $this->owner->full_name);
 
         return $this->markdown('mail.notification-group-member-removed', [
             'owner' => $this->owner,

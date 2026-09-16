@@ -35,7 +35,7 @@ class ReviewStepNotificationMail extends Mailable
     public function build()
     {
         $this->subject('Manuscript Management Review [action required] / Révision par la gestion [action requise]: '.$this->managementReviewStep->manuscriptRecord->title);
-        $this->to($this->managementReviewStep->user->email, $this->managementReviewStep->user->fullName);
+        $this->to($this->managementReviewStep->user->email, $this->managementReviewStep->user->full_name);
 
         $ccEmails = collect();
 

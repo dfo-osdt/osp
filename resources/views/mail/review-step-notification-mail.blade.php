@@ -4,11 +4,11 @@
 *(le français suit)*
 
 @if($previousStep->decision == App\Enums\ManagementReviewStepDecision::REVISION)
-{{ $previousStep->user->fullName }} has flagged the manuscript titled "{{ $manuscriptRecord->title }}". Please review and address the comments below.
+{{ $previousStep->user->full_name }} has flagged the manuscript titled "{{ $manuscriptRecord->title }}". Please review and address the comments below.
 <p>Completion of the management review is pending your revisions, as per the comments below.</p>
 <p>When ready, please click the button below to upload your revised manuscript and to restart the management review.</p>
 @else
-{{ $previousStep->user->fullName }} has identified you as the next management reviewer for the manuscript titled "{{ $manuscriptRecord->title }}".
+{{ $previousStep->user->full_name }} has identified you as the next management reviewer for the manuscript titled "{{ $manuscriptRecord->title }}".
 @endif
 
 <x-email.decision-expected-by locale="en" :managementReviewStep="$managementReviewStep" />
@@ -44,11 +44,11 @@ Review Manuscript
 # Bonjour {{ $managementReviewStep->user->first_name }},
 
 @if($previousStep->decision == App\Enums\ManagementReviewStepDecision::REVISION)
-{{ $previousStep->user->fullName }} a signalé des révisions nécessaires sur le manuscrit intitulé "{{ $manuscriptRecord->title }}". Veuillez examiner et traiter les commentaires ci-dessous.
+{{ $previousStep->user->full_name }} a signalé des révisions nécessaires sur le manuscrit intitulé "{{ $manuscriptRecord->title }}". Veuillez examiner et traiter les commentaires ci-dessous.
 <p>La révision de gestion est en attente de vos modifications, comme indiqué dans les commentaires ci-dessous.</p>
 <p>Lorsque vous êtes prêt, veuillez cliquer sur le bouton ci-dessous pour télécharger votre manuscrit révisé et redémarrer la révision de gestion.</p>
 @else
-{{ $previousStep->user->fullName }} vous a identifié comme le prochain gestionnaire de la révision pour le manuscrit intitulé "{{ $manuscriptRecord->title }}".
+{{ $previousStep->user->full_name }} vous a identifié comme le prochain gestionnaire de la révision pour le manuscrit intitulé "{{ $manuscriptRecord->title }}".
 @endif
 
 <x-email.decision-expected-by locale="fr" :managementReviewStep="$managementReviewStep" />
