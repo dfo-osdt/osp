@@ -46,6 +46,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
+#[\Illuminate\Database\Eloquent\Attributes\Unguarded]
 class PlanningBinderItem extends Model
 {
     /** @use HasFactory<PlanningBinderItemFactory> */
@@ -62,9 +63,6 @@ class PlanningBinderItem extends Model
             'status' => PlanningBinderItemStatus::class,
         ];
     }
-
-    #[\Override]
-    protected $guarded = [];
 
     public function region()
     {

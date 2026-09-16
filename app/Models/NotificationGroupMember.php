@@ -83,6 +83,9 @@ class NotificationGroupMember extends Model
         return $this->belongsTo(User::class, 'member_user_id');
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     */
     #[Scope]
     protected function active(Builder $query): void
     {

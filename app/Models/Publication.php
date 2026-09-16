@@ -309,43 +309,48 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     }
 
     // Scopes
-
-    /** Get the open access publications */
+    /** Get the open access publications
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function openAccess(Builder $query)
     {
         return $query->where('is_open_access', true);
     }
 
-    /** Get the publication that are no longer under embargo */
+    /** Get the publication that are no longer under embargo
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function notUnderEmbargo(Builder $query)
     {
         return $query->where('embargoed_until', '<', now())->orWhere('is_open_access', true);
     }
 
-    /** Get the publications under embargo */
+    /** Get the publications under embargo
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function underEmbargo(Builder $query)
     {
         return $query->where('embargoed_until', '>=', now());
     }
 
-    /** Secondary publications */
+    /** Secondary publications
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function secondaryPublication(Builder $query)
     {
         return $query->whereIn('journal_id', Journal::query()->dfoSeries()->pluck('id'));
     }
 
-    /** Primary publications are those that are not secondary publications */
+    /** Primary publications are those that are not secondary publications
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function primaryPublication(Builder $query)
     {
         return $query->whereNotIn('journal_id', Journal::query()->dfoSeries()->pluck('id'));
     }
 
-    /** Published date range */
+    /** Published date range
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query */
     #[Scope]
     protected function publishedBetween(Builder $query, string $startDate, string $endDate): void
     {
@@ -355,6 +360,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     /**
      * Scope to filter publications that are accepted but not yet marked as published
      * Only includes primary publications that have a manuscript record
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
      */
     #[Scope]
     protected function pendingPublish(Builder $query): void
@@ -372,6 +378,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      * - Regional editors see all published + unpublished in their region
      * - Regional observers see all published + unpublished in their region
      * - Regular users see only published publications
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
      */
     #[Scope]
     protected function forUser(Builder $query, User $user): void

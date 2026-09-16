@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
@@ -58,12 +60,18 @@ class Expertise extends Model
         return $this->morphedByMany(Author::class, 'expertiseable');
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     */
     #[Scope]
     protected function scopeValidated($query)
     {
         $query->where('is_validated', true);
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder<static> $query
+     */
     #[Scope]
     protected function used($query)
     {
