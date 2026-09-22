@@ -9,7 +9,7 @@ use App\Models\ManuscriptRecord;
 test('primary mrf creates not open access publication when accepted', function (): void {
     $mrf = ManuscriptRecord::factory()->create([
         'type' => ManuscriptRecordType::PRIMARY,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
     ]);
     $journal = Journal::factory()->create();
     $publication = CreatePublicationFromManuscript::handle($mrf, $journal);
@@ -20,7 +20,7 @@ test('primary mrf creates not open access publication when accepted', function (
 test('secondary mrf creates open access publication when accepted', function (): void {
     $mrf = ManuscriptRecord::factory()->create([
         'type' => ManuscriptRecordType::SECONDARY,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
     ]);
     $journal = Journal::factory()->create();
     $publication = CreatePublicationFromManuscript::handle($mrf, $journal);

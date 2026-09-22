@@ -52,7 +52,7 @@ test('it does not include manuscripts that have been accepted', function (): voi
     $user = User::factory()->create();
     ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
         'reviewed_at' => now()->subMonths(2),
         'accepted_on' => now()->subWeeks(1),
     ]);
@@ -177,7 +177,7 @@ test('it sends email for accepted primary publications not yet published', funct
     $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
         'type' => ManuscriptRecordType::PRIMARY,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
     ]);
     Publication::factory()->create([
         'user_id' => $user->id,
@@ -200,7 +200,7 @@ test('it does not include publications that are already published', function ():
     $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
         'type' => ManuscriptRecordType::PRIMARY,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
     ]);
     Publication::factory()->create([
         'user_id' => $user->id,
@@ -238,7 +238,7 @@ test('it does not include publications for secondary manuscripts', function (): 
     $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
         'type' => ManuscriptRecordType::SECONDARY,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
     ]);
     Publication::factory()->create([
         'user_id' => $user->id,
@@ -268,7 +268,7 @@ test('it groups manuscripts and publications by user in single email', function 
     $manuscript = ManuscriptRecord::factory()->create([
         'user_id' => $user->id,
         'type' => ManuscriptRecordType::PRIMARY,
-        'status' => ManuscriptRecordStatus::ACCEPTED,
+        'status' => ManuscriptRecordStatus::COMPLETED,
     ]);
     Publication::factory()->create([
         'user_id' => $user->id,

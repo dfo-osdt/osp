@@ -69,7 +69,7 @@ class ManuscriptRecordResource extends JsonResource
                 'functional_area' => FunctionalAreaResource::make($this->whenLoaded('functionalArea')),
                 'manuscript_authors' => ManuscriptAuthorResource::collection($this->whenLoaded('manuscriptAuthors')),
                 'user' => UserResource::make($this->whenLoaded('user')),
-                'publication' => $this->when($this->status === ManuscriptRecordStatus::ACCEPTED && $this->type !== ManuscriptRecordType::PREPRINT, PublicationResource::make($this->whenLoaded('publication'))),
+                'publication' => $this->when($this->status === ManuscriptRecordStatus::COMPLETED && $this->type !== ManuscriptRecordType::PREPRINT, PublicationResource::make($this->whenLoaded('publication'))),
                 'funding_sources' => FundingSourceResource::collection($this->whenLoaded('fundingSources')),
                 // if this manuscript is accepted, include the publication id
                 // special model permissions

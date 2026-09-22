@@ -168,7 +168,7 @@ class ManuscriptRecordPolicy
 
         // cannot attach a manuscript if the manuscript has been accepted to a publication
         // user should update the publication instead
-        if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
+        if ($manuscriptRecord->status === ManuscriptRecordStatus::COMPLETED) {
             return false;
         }
 
@@ -298,7 +298,7 @@ class ManuscriptRecordPolicy
         }
 
         // can only mark as accepted if the manuscript is reviewed, submitted, or accepted (correction)
-        if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED, ManuscriptRecordStatus::ACCEPTED])) {
+        if (! in_array($manuscriptRecord->status, [ManuscriptRecordStatus::REVIEWED, ManuscriptRecordStatus::SUBMITTED, ManuscriptRecordStatus::COMPLETED])) {
             return false;
         }
 

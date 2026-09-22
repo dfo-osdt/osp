@@ -30,7 +30,7 @@ test('users with VIEW_ANY_MANUSCRIPT_RECORD see all non-draft manuscripts', func
     ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::DRAFT]);
     ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::IN_REVIEW]);
     ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::SUBMITTED]);
-    ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::ACCEPTED]);
+    ManuscriptRecord::factory()->create(['status' => ManuscriptRecordStatus::COMPLETED]);
 
     $response = $this->actingAs($user)->getJson('/api/manuscript-records');
     $response->assertOk();

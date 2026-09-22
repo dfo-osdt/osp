@@ -315,7 +315,7 @@ class ManuscriptRecordController extends Controller
             abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
         }
 
-        $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
+        $manuscriptRecord->status = ManuscriptRecordStatus::COMPLETED;
         // if the submitted to journal date is given, set it.
         if ($validated['submitted_to_journal_on']) {
             $manuscriptRecord->submitted_to_journal_on = $validated['submitted_to_journal_on'];
@@ -363,7 +363,7 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord->submitted_to_journal_on = $validated['accepted_on'];
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
-        $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
+        $manuscriptRecord->status = ManuscriptRecordStatus::COMPLETED;
 
         $manuscriptRecord->preprint_url = $validated['preprint_url'];
         $manuscriptRecord->save();
@@ -420,7 +420,7 @@ class ManuscriptRecordController extends Controller
     {
         $relationships = ['user', 'shareables', 'region', 'manuscriptAuthors.author'];
 
-        if ($manuscriptRecord->status === ManuscriptRecordStatus::ACCEPTED) {
+        if ($manuscriptRecord->status === ManuscriptRecordStatus::COMPLETED) {
             $relationships['publication.publicationAuthors'] = function ($query): void {
                 $query->with('author')->chaperone('publication');
             };

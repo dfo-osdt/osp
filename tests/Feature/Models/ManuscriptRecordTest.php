@@ -382,7 +382,7 @@ test('a user can withdraw a manuscript record', function (): void {
 
 test('a user cannot withdraw a manuscript record that was accepted', function (): void {
     $manuscript = ManuscriptRecord::factory()->filled()->create();
-    $manuscript->status = ManuscriptRecordStatus::ACCEPTED;
+    $manuscript->status = ManuscriptRecordStatus::COMPLETED;
     $manuscript->save();
 
     $this->actingAs($manuscript->user)->putJson("/api/manuscript-records/{$manuscript->id}/withdraw")->assertForbidden();
@@ -445,7 +445,7 @@ test('a user can mark their manuscript as accepted', function (): void {
 
     $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
 
-    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::COMPLETED);
     expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
 });
 
@@ -497,7 +497,7 @@ test('a user can submit their manuscript to the science pub team', function (): 
 
     $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
 
-    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::COMPLETED);
     expect($manuscript->publication->manuscript_record_id)->toBe($manuscript->id);
     expect($manuscript->publication->getMedia(MediaCollection::SUPPLEMENTARY_FILE->value)->first()->file_name)->toBe('test.docx');
     expect($manuscript->publication->issue_number)->toBe('409');
@@ -535,7 +535,7 @@ test('a user can submit their manuscript to the science pub team with a pdf file
 
     $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
 
-    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::COMPLETED);
     expect($manuscript->publication->getMedia(MediaCollection::SUPPLEMENTARY_FILE->value)->first()->file_name)->toBe('test.pdf');
 });
 
@@ -668,7 +668,7 @@ test('a user can mark a secondary manuscript as accepted with valid ISBN, catalo
     $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
 
     $response->assertOk();
-    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::COMPLETED);
     expect($manuscript->publication->isbn)->toBe('9780134685991');
     expect($manuscript->publication->catalogue_number)->toBe('Fs97-18/409E-PDF');
     expect($manuscript->publication->issue_number)->toBe('409');
@@ -768,5 +768,5 @@ test('a primary manuscript does not require ISBN when marked as accepted', funct
     $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
 
     $response->assertOk();
-    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::COMPLETED);
 });

@@ -17,7 +17,7 @@ const color = computed(() => {
       return 'orange'
     case 'submitted':
       return 'orange'
-    case 'accepted':
+    case 'completed':
       return 'green'
     case 'withdrawn':
       return 'red'
