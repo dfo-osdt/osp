@@ -21,6 +21,7 @@ return new class extends Migration
 
         $exists = DB::table('organizations')
             ->where('name_en', 'Independent Researcher')
+            ->whereNull('ror_identifier')
             ->exists();
 
         if ($exists) {
@@ -34,15 +35,5 @@ return new class extends Migration
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        DB::table('organizations')
-            ->where('name_en', 'Independent Researcher')
-            ->delete();
     }
 };

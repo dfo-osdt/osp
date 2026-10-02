@@ -94,6 +94,7 @@ return [
         "checksum" => "Le :attribute n'a pas de somme de contrôle ORCID ID valide.",
         "format" => "Le :attribute doit être un format ORCID ID valide."
     ],
+    "reserved_organization_name" => "Ce nom est réservé. Utilisez plutôt l'option chercheur(se) indépendant(e).",
     "password" => [
         "letters" => "Le mot de passe doit contenir au moins une lettre.",
         "mixed" => "Le mot de passe doit contenir au moins une majuscule et une minuscule.",

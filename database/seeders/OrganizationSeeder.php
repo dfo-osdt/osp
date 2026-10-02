@@ -33,7 +33,7 @@ class OrganizationSeeder extends Seeder
         });
 
         Organization::firstOrCreate(
-            ['name_en' => config('osp.independent_organization')],
+            ['name_en' => config('osp.independent_organization'), 'ror_identifier' => null],
             [
                 'name_fr' => 'Chercheur(se) indépendant(e)',
                 'is_validated' => true,

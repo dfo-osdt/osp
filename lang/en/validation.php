@@ -94,6 +94,7 @@ return [
         "checksum" => "The :attribute does not have a valid ORCID ID checksum.",
         "format" => "The :attribute must be a valid ORCID ID format."
     ],
+    "reserved_organization_name" => "This name is reserved. Use the independent researcher option instead.",
     "password" => [
         "letters" => "The :attribute must contain at least one letter.",
         "mixed" => "The :attribute must contain at least one uppercase and one lowercase letter.",
