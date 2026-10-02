@@ -3,6 +3,7 @@
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 test('a user can get a list of all organization', function (): void {
     //
@@ -155,4 +156,44 @@ test('filtering with empty search value returns all results', function (): void 
 
     // Empty filter should return all organizations (respecting pagination)
     expect($response->json('meta.total'))->toBe($totalCount);
+});
+
+test('a ROR organization with the same name is never resolved as the independent organization', function (): void {
+    $seededSentinel = Organization::query()
+        ->where('name_en', config('osp.independent_organization'))
+        ->sole();
+
+    // Bypass the observer to simulate a homonym already present in the database
+    DB::table('organizations')->insert([
+        'name_en' => config('osp.independent_organization'),
+        'name_fr' => 'Homonyme ROR',
+        'ror_identifier' => 'https://ror.org/00000test',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    // Recreate the sentinel so the ROR homonym has the lower id, as in production
+    $sentinel = $seededSentinel->replicate();
+    $seededSentinel->delete();
+    $sentinel->save();
+
+    expect(Organization::getIndependentOrganization()->id)->toBe($sentinel->id);
+});
+
+test('an organization cannot be created with the reserved independent researcher name', function (string $name): void {
+    Organization::factory()->create(['name_en' => $name]);
+})->with([
+    'exact name' => ['Independent Researcher'],
+    'different case and spacing' => [' independent researcher '],
+])->throws(InvalidArgumentException::class, 'the name is reserved for independent researchers');
+
+test('a user cannot create an organization with the reserved independent researcher name', function (): void {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->postJson('/api/organizations', [
+        'name_en' => 'independent researcher',
+        'name_fr' => 'Chercheur indépendant',
+    ])->assertUnprocessable()->assertJsonValidationErrors([
+        'name_en' => 'This name is reserved. Use the independent researcher option instead.',
+    ]);
 });

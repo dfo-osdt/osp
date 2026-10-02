@@ -67,6 +67,15 @@ class SyncRORData
 
         $name_fr = collect($record['names'])->filter(fn (array $name): bool => in_array('label', $name['types']) && $name['lang'] === 'fr')->first()['value'] ?? $ror_display_name;
 
+        // the independent researcher name is reserved for our sentinel organization
+        if (Organization::isIndependentName($name_en)) {
+            activity()
+                ->withProperties(['ror_identifier' => $ror_identifier, 'name_en' => $name_en])
+                ->log('ROR record skipped: name reserved for independent researchers');
+
+            return;
+        }
+
         // acronyms - ROR 2.0 datasets doens't have lang well implemeted on acronyms yet. Assume EN first.
         $acronyms = collect($record['names'])->filter(fn (array $name): bool => in_array('acronym', $name['types']))->pluck('value')->toArray();
 

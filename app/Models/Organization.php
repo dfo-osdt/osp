@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\OrganizationObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -45,6 +47,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
+#[ObservedBy(OrganizationObserver::class)]
 class Organization extends Model
 {
     use HasFactory;
@@ -86,16 +89,27 @@ class Organization extends Model
     /**
      * Get the sentinel organization used as the affiliation
      * of independent researchers (no institutional affiliation).
+     * ROR records are ignored so a homonym imported from ROR
+     * can never be mistaken for the sentinel.
      */
     public static function getIndependentOrganization(): Organization
     {
         return once(fn (): Organization => self::query()
             ->where('name_en', config('osp.independent_organization'))
+            ->whereNull('ror_identifier')
             ->firstOrFail());
     }
 
     public function isIndependent(): bool
     {
         return $this->id === self::getIndependentOrganization()->id;
+    }
+
+    /**
+     * Is this name reserved for the independent researcher organization?
+     */
+    public static function isIndependentName(?string $name): bool
+    {
+        return strcasecmp(trim((string) $name), (string) config('osp.independent_organization')) === 0;
     }
 }

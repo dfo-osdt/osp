@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use App\Queries\OrganizationListQuery;
+use App\Rules\NotReservedOrganizationName;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -31,7 +32,7 @@ class OrganizationController extends Controller
     public function store(Request $request): JsonResource
     {
         $validated = $request->validate([
-            'name_en' => ['required', 'string', 'max:200', 'unique:organizations,name_en'],
+            'name_en' => ['required', 'string', 'max:200', 'unique:organizations,name_en', new NotReservedOrganizationName],
             'name_fr' => ['required', 'string', 'max:200', 'unique:organizations,name_fr'],
             'abbr_en' => ['nullable', 'string', 'max:10'],
             'abbr_fr' => ['nullable', 'string', 'max:10'],
