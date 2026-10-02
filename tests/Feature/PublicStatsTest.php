@@ -128,6 +128,20 @@ test('public stats endpoint returns correct structure', function (): void {
     expect($titles)->not->toContain('Hidden Link');
 });
 
+test('independent authors count as external but their organization is not listed', function (): void {
+    $independentAuthor = Author::factory()->independent()->create();
+    ManuscriptAuthor::factory()->create([
+        'author_id' => $independentAuthor->id,
+        'organization_id' => $independentAuthor->organization_id,
+    ]);
+
+    $response = $this->getJson('/api/stats')->assertOk();
+
+    expect($response->json('external_authors_count'))->toBe(1);
+    expect(collect($response->json('external_organizations'))->pluck('id'))
+        ->not->toContain($independentAuthor->organization_id);
+});
+
 test('public stats endpoint does not require authentication', function (): void {
     $response = $this->getJson('/api/stats');
 

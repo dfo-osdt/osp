@@ -82,4 +82,20 @@ class Organization extends Model
 
         return self::query()->where('name_en', $org)->firstOrFail();
     }
+
+    /**
+     * Get the sentinel organization used as the affiliation
+     * of independent researchers (no institutional affiliation).
+     */
+    public static function getIndependentOrganization(): Organization
+    {
+        return once(fn (): Organization => self::query()
+            ->where('name_en', config('osp.independent_organization'))
+            ->firstOrFail());
+    }
+
+    public function isIndependent(): bool
+    {
+        return $this->id === self::getIndependentOrganization()->id;
+    }
 }

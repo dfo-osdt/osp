@@ -30,6 +30,7 @@ class AuthorResource extends JsonResource
                 'email' => $this->email,
                 'user_id' => $this->user_id,
                 'organization_id' => $this->organization_id,
+                'is_independent' => $this->isIndependent(),
                 'sensitivity_label' => SensitivityLabel::ProtectedA,
                 'organization' => OrganizationResource::make($this->whenLoaded('organization')),
                 'expertises' => ExpertiseResource::collection($this->whenLoaded('expertises')),

@@ -55,6 +55,16 @@ test('it throws exception when trying to merge organization with itself', functi
     MergeOrganizations::handle($organization, $organization);
 })->throws(InvalidArgumentException::class, 'Source and target organizations cannot be the same.');
 
+test('it refuses to merge the independent researcher organization', function (string $side): void {
+    $independentOrganization = Organization::getIndependentOrganization();
+    $otherOrganization = Organization::factory()->create();
+
+    $side === 'source'
+        ? MergeOrganizations::handle($independentOrganization, $otherOrganization)
+        : MergeOrganizations::handle($otherOrganization, $independentOrganization);
+})->with(['source', 'target'])
+    ->throws(InvalidArgumentException::class, 'The independent researcher organization cannot be merged.');
+
 test('it rolls back on error and preserves data integrity', function (): void {
     $sourceOrg = Organization::factory()->create(['name_en' => 'Source Org']);
     $targetOrg = Organization::factory()->create(['name_en' => 'Target Org']);

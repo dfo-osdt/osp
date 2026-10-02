@@ -17,6 +17,7 @@ const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
 const organizationId = ref<number | null>(null)
+const isIndependent = ref(false)
 const orcId = ref('')
 const errorMessage = ref('')
 const showPersonalEmailWarning = ref(false)
@@ -37,7 +38,7 @@ const personalEmailDomains = [
 watchEffect(() => {
   if (email.value) {
     const emailDomain = email.value.split('@')[1]?.toLowerCase()
-    showPersonalEmailWarning.value = personalEmailDomains.includes(emailDomain)
+    showPersonalEmailWarning.value = !isIndependent.value && personalEmailDomains.includes(emailDomain)
   }
   else {
     showPersonalEmailWarning.value = false
@@ -45,7 +46,7 @@ watchEffect(() => {
 })
 
 async function createAuthor() {
-  if (organizationId.value === null) {
+  if (!isIndependent.value && organizationId.value === null) {
     return
   }
 
@@ -54,7 +55,9 @@ async function createAuthor() {
     first_name: firstName.value,
     last_name: lastName.value,
     email: email.value,
-    organization_id: organizationId.value,
+    ...(isIndependent.value
+      ? { is_independent: true }
+      : { organization_id: organizationId.value as number }),
     orcid: orcId.value,
   }
 
@@ -135,7 +138,16 @@ async function createAuthor() {
             </div>
           </div>
 
+          <q-toggle
+            v-model="isIndependent"
+            :label="$t('common.independent-researcher')"
+          />
+          <div class="text-caption text-grey-7 q-mb-md">
+            {{ $t('common.independent-researcher-hint') }}
+          </div>
+
           <OrganizationSelect
+            v-if="!isIndependent"
             v-model="organizationId"
             show-default-organization
             :label="$t('common.affiliation')"

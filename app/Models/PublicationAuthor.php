@@ -102,4 +102,12 @@ class PublicationAuthor extends Model
     {
         return $this->belongsTo(Author::class);
     }
+
+    /**
+     * Was the author an independent researcher (no affiliation) for this record?
+     */
+    public function isIndependent(): bool
+    {
+        return $this->organization_id === Organization::getIndependentOrganization()->id;
+    }
 }

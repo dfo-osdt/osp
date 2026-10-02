@@ -49,6 +49,16 @@ class AuthorFactory extends Factory
     }
 
     /**
+     * An independent researcher without an institutional affiliation
+     */
+    public function independent()
+    {
+        return $this->state(fn (array $attributes) => [
+            'organization_id' => Organization::getIndependentOrganization()->id,
+        ]);
+    }
+
+    /**
      * Has expertise
      */
     public function hasExpertises(int $qty = 1)

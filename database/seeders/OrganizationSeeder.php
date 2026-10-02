@@ -31,5 +31,13 @@ class OrganizationSeeder extends Seeder
                 'is_validated' => true,
             ]);
         });
+
+        Organization::firstOrCreate(
+            ['name_en' => config('osp.independent_organization')],
+            [
+                'name_fr' => 'Chercheur(se) indépendant(e)',
+                'is_validated' => true,
+            ],
+        );
     }
 }
