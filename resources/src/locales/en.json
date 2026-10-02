@@ -144,6 +144,8 @@
     "funding-sources": "Funding Sources",
     "go-to-manuscript-form": "Go to Manuscript Form",
     "go-to-potential-public-interest-section": "Go to Potential Public Interest Section",
+    "independent-researcher": "Independent researcher (no current affiliation)",
+    "independent-researcher-hint": "For co-authors without an institutional affiliation, e.g. retired, between positions, or working independently.",
     "other-actions": "Other actions",
     "hide": "Hide",
     "i-need-to-take-action": "I need to take action",

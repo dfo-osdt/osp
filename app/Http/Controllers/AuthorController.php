@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\Permissions\UserPermission;
 use App\Http\Resources\AuthorResource;
 use App\Models\Author;
+use App\Models\Organization;
 use App\Queries\AuthorListQuery;
 use App\Rules\Ocrid;
 use App\Rules\ValidListItems;
@@ -38,9 +39,12 @@ class AuthorController extends Controller
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:authors,email'],
-            'organization_id' => ['required', 'exists:organizations,id'],
+            'is_independent' => ['boolean'],
+            'organization_id' => ['required_unless:is_independent,true', 'exists:organizations,id'],
             'orcid' => ['nullable', 'string', new Ocrid, 'unique:authors,orcid'],
         ]);
+
+        $validated = $this->resolveIndependentOrganization($validated);
 
         $author = (new Author)->create($validated);
 
@@ -96,6 +100,7 @@ class AuthorController extends Controller
             'first_name' => ['string'],
             'last_name' => ['string'],
             'email' => 'email|unique:authors,email,'.$author->id,
+            'is_independent' => ['boolean'],
             'organization_id' => ['exists:organizations,id'],
             'orcid' => [
                 Rule::excludeIf(fn () => $author->orcid_verified),
@@ -109,6 +114,8 @@ class AuthorController extends Controller
 
         $syncAllPivots = $validated['sync_all_pivots'] ?? false;
         unset($validated['sync_all_pivots']);
+
+        $validated = $this->resolveIndependentOrganization($validated);
 
         // does this user have a user_id? If so, the name and email are controller
         // via the user model. We don't want to update those here.
@@ -146,5 +153,22 @@ class AuthorController extends Controller
         $author->load('organization');
 
         return new AuthorResource($author);
+    }
+
+    /**
+     * When the author is flagged as an independent researcher, replace
+     * the affiliation with the independent researcher organization.
+     *
+     * @param  array<string, mixed>  $validated
+     * @return array<string, mixed>
+     */
+    private function resolveIndependentOrganization(array $validated): array
+    {
+        if ($validated['is_independent'] ?? false) {
+            $validated['organization_id'] = Organization::getIndependentOrganization()->id;
+        }
+        unset($validated['is_independent']);
+
+        return $validated;
     }
 }

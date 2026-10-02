@@ -127,3 +127,20 @@ test('a user can update a manuscript author to be an organizational author', fun
 
     expect($response->json('data.is_group_author'))->toBeTrue();
 });
+
+test('adding an independent author to a manuscript record keeps them independent', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+    ]);
+    $author = Author::factory()->independent()->create();
+
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated()->assertJson([
+        'data' => [
+            'organization_id' => Organization::getIndependentOrganization()->id,
+            'is_independent' => true,
+        ],
+    ]);
+});

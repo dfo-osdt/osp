@@ -36,6 +36,11 @@ return [
     */
     'default_organization' => 'Fisheries and Oceans Canada',
 
+    /*
+        The sentinel organization used as the affiliation of independent researchers.
+    */
+    'independent_organization' => 'Independent Researcher',
+
     /**
      * The ORCID integration
      */

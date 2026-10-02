@@ -20,6 +20,7 @@ export interface Author {
   email: string
   user_id: number | null
   organization_id: number
+  is_independent?: boolean
   sentivity_label: SensitivityLabel
   // relationships
   organization?: OrganizationResource

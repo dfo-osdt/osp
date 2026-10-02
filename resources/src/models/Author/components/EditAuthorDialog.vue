@@ -22,6 +22,14 @@ const firstName = ref(props.author.data.first_name)
 const lastName = ref(props.author.data.last_name)
 const email = ref(props.author.data.email)
 const organizationId = ref<number | null>(props.author.data.organization_id)
+const isIndependent = ref(props.author.data.is_independent ?? false)
+
+// Leaving independent status requires picking a real affiliation
+watch(isIndependent, (independent) => {
+  if (!independent && props.author.data.is_independent) {
+    organizationId.value = null
+  }
+})
 const orcId = ref(props.author.data.orcid || '')
 const syncAllPivots = ref(false)
 const errorMessage = ref('')
@@ -53,7 +61,7 @@ const canSyncAllPivots = computed(() => {
 watchEffect(() => {
   if (email.value) {
     const emailDomain = email.value.split('@')[1]?.toLowerCase()
-    showPersonalEmailWarning.value = personalEmailDomains.includes(emailDomain)
+    showPersonalEmailWarning.value = !isIndependent.value && personalEmailDomains.includes(emailDomain)
   }
   else {
     showPersonalEmailWarning.value = false
@@ -61,7 +69,7 @@ watchEffect(() => {
 })
 
 async function updateAuthor() {
-  if (organizationId.value === null) {
+  if (!isIndependent.value && organizationId.value === null) {
     return
   }
 
@@ -71,7 +79,9 @@ async function updateAuthor() {
     first_name: firstName.value,
     last_name: lastName.value,
     email: email.value,
-    organization_id: organizationId.value,
+    ...(isIndependent.value
+      ? { is_independent: true }
+      : { organization_id: organizationId.value as number }),
     orcid: orcId.value,
     sync_all_pivots: syncAllPivots.value,
   }
@@ -165,7 +175,16 @@ async function updateAuthor() {
             </div>
           </div>
 
+          <q-toggle
+            v-model="isIndependent"
+            :label="$t('common.independent-researcher')"
+          />
+          <div class="text-caption text-grey-7 q-mb-md">
+            {{ $t('common.independent-researcher-hint') }}
+          </div>
+
           <OrganizationSelect
+            v-if="!isIndependent"
             v-model="organizationId"
             show-default-organization
             :label="$t('common.affiliation')"

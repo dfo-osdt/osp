@@ -54,6 +54,7 @@ use Spatie\Activitylog\Support\LogOptions;
  *
  * @method static Builder<static>|Author externalAuthor()
  * @method static \Database\Factories\AuthorFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Author independentAuthor()
  * @method static Builder<static>|Author internalAuthor()
  * @method static Builder<static>|Author newModelQuery()
  * @method static Builder<static>|Author newQuery()
@@ -174,6 +175,14 @@ class Author extends Model
         return $this->orcid_expires_at >= now();
     }
 
+    /**
+     * Is this author currently an independent researcher (no affiliation)?
+     */
+    public function isIndependent(): bool
+    {
+        return $this->organization_id === Organization::getIndependentOrganization()->id;
+    }
+
     // Relationships
     /** ManuscriptAuthors
      * @return HasMany<ManuscriptAuthor, $this> */
@@ -253,6 +262,15 @@ class Author extends Model
     {
         $Organization = Organization::getDefaultOrganization();
         $query->where('organization_id', '!=', $Organization->id);
+    }
+
+    /**
+     * @param  Builder<static>  $query
+     */
+    #[Scope]
+    protected function independentAuthor(Builder $query): void
+    {
+        $query->where('organization_id', Organization::getIndependentOrganization()->id);
     }
 
     /**

@@ -59,6 +59,42 @@ test('a user can create an author', function (): void {
     ]);
 });
 
+test('a user can create an independent author without an affiliation', function (): void {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('api/authors', [
+        'first_name' => 'Jane',
+        'last_name' => 'Doe',
+        'email' => 'jane.doe@gmail.com',
+        'is_independent' => true,
+    ]);
+
+    $independentOrganization = Organization::getIndependentOrganization();
+
+    $response->assertCreated()->assertJson([
+        'data' => [
+            'organization_id' => $independentOrganization->id,
+            'is_independent' => true,
+        ],
+    ]);
+    expect(Author::query()->where('email', 'jane.doe@gmail.com')->value('organization_id'))
+        ->toBe($independentOrganization->id);
+});
+
+test('a user cannot create an author without an affiliation unless independent', function (array $data): void {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->postJson('api/authors', [
+        'first_name' => 'Jane',
+        'last_name' => 'Doe',
+        'email' => 'jane.doe@gmail.com',
+        ...$data,
+    ])->assertUnprocessable()->assertJsonValidationErrors('organization_id');
+})->with([
+    'flag omitted' => [[]],
+    'flag false' => [['is_independent' => false]],
+]);
+
 test('a user can create an author with an ORCID', function (): void {
     $user = User::factory()->create();
 
@@ -340,6 +376,29 @@ test('an editor can update an author and sync all pivot affiliations', function 
     $publicationAuthor2->refresh();
     expect($publicationAuthor1->organization_id)->toBe($newOrg->id);
     expect($publicationAuthor2->organization_id)->toBe($newOrg->id);
+});
+
+test('an editor can mark an author as independent and sync all pivot affiliations', function (): void {
+    $user = User::factory()->withRoles([UserRole::EDITOR])->create();
+    $author = Author::factory()->create();
+    $manuscriptAuthor = ManuscriptAuthor::factory()->create([
+        'author_id' => $author->id,
+        'organization_id' => $author->organization_id,
+    ]);
+    $publicationAuthor = PublicationAuthor::factory()->create([
+        'author_id' => $author->id,
+        'organization_id' => $author->organization_id,
+    ]);
+
+    $this->actingAs($user)->putJson('api/authors/'.$author->id, [
+        'is_independent' => true,
+        'sync_all_pivots' => true,
+    ])->assertOk()->assertJsonPath('data.is_independent', true);
+
+    $independentOrganizationId = Organization::getIndependentOrganization()->id;
+    expect($author->fresh()->organization_id)->toBe($independentOrganizationId)
+        ->and($manuscriptAuthor->fresh()->organization_id)->toBe($independentOrganizationId)
+        ->and($publicationAuthor->fresh()->organization_id)->toBe($independentOrganizationId);
 });
 
 test('updating author without sync_all_pivots flag does not update pivots', function (): void {

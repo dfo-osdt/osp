@@ -34,6 +34,13 @@ const orcidInputHint = computed(() => {
   return t('manage-author-profile-card.orcid-not-verified')
 })
 
+// Leaving independent status requires picking a real affiliation
+function onIndependentChange(independent: boolean) {
+  if (!independent && author.value) {
+    author.value.data.organization_id = null as unknown as number
+  }
+}
+
 onMounted(async () => {
   getAuthor()
 })
@@ -115,7 +122,19 @@ async function save() {
               )
             "
           />
+          <div class="col-12">
+            <q-toggle
+              v-model="author.data.is_independent"
+              :label="t('common.independent-researcher')"
+              :disable="hasOwner"
+              @update:model-value="onIndependentChange"
+            />
+            <div class="text-caption text-grey-7">
+              {{ t('common.independent-researcher-hint') }}
+            </div>
+          </div>
           <OrganizationSelect
+            v-if="!author.data.is_independent"
             v-model="author.data.organization_id"
             class="col-12 col-md-6"
             :label="t('common.current-affiliation')"

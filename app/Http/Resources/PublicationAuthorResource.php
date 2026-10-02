@@ -29,6 +29,7 @@ class PublicationAuthorResource extends JsonResource
                 'organization_id' => $this->organization_id,
                 'is_corresponding_author' => $this->is_corresponding_author,
                 'is_group_author' => $this->is_group_author,
+                'is_independent' => $this->isIndependent(),
                 'organization' => OrganizationResource::make($this->whenLoaded('organization')),
                 'author' => AuthorResource::make($this->whenLoaded('author')),
             ],

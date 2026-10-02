@@ -13,6 +13,10 @@ class MergeOrganizations
             throw new \InvalidArgumentException('Source and target organizations cannot be the same.');
         }
 
+        if ($sourceOrganization->isIndependent() || $targetOrganization->isIndependent()) {
+            throw new \InvalidArgumentException('The independent researcher organization cannot be merged.');
+        }
+
         return DB::transaction(function () use ($sourceOrganization, $targetOrganization) {
             DB::table('authors')
                 ->where('organization_id', $sourceOrganization->id)
