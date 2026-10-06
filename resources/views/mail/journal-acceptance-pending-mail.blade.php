@@ -19,6 +19,10 @@ You have {{ $manuscripts->count() }} {{ $manuscripts->count() === 1 ? 'manuscrip
 </x-mail::table>
 
 If any of these manuscripts have been accepted by a journal, please update their status in the system. If you're still waiting for acceptance, no action is needed.
+
+<x-mail::button :url="config('app.frontend_url').'#/my-manuscripts?filter=4'">
+View My Manuscripts
+</x-mail::button>
 @endif
 
 @if($publications->count() > 0)
@@ -35,11 +39,11 @@ You have {{ $publications->count() }} {{ $publications->count() === 1 ? 'publica
 </x-mail::table>
 
 Please update the publication record with the final details (DOI, publication date, etc.) and attach the accepted copy of the paper, then mark them as published.
-@endif
 
-<x-mail::button :url="config('app.frontend_url').'#/manuscripts'">
-View My Manuscripts & Publications
+<x-mail::button :url="config('app.frontend_url').'#/my-publications?filter=3'">
+View My Publications
 </x-mail::button>
+@endif
 
 <x-email.regards locale="en" />
 
@@ -63,6 +67,10 @@ Vous avez {{ $manuscripts->count() }} {{ $manuscripts->count() === 1 ? 'manuscri
 </x-mail::table>
 
 Si l'un de ces manuscrits a été accepté par une revue, veuillez mettre à jour son statut dans le système. Si vous attendez toujours l'acceptation, aucune action n'est nécessaire.
+
+<x-mail::button :url="config('app.frontend_url').'#/my-manuscripts?filter=4'">
+Voir mes manuscrits
+</x-mail::button>
 @endif
 
 @if($publications->count() > 0)
@@ -79,11 +87,11 @@ Vous avez {{ $publications->count() }} {{ $publications->count() === 1 ? 'public
 </x-mail::table>
 
 Veuillez mettre à jour le dossier de publication avec les détails finaux (DOI, date de publication, etc.) et joindre la copie acceptée de l'article, puis les marquer comme publiées.
-@endif
 
-<x-mail::button :url="config('app.frontend_url').'#/manuscripts'">
-Voir mes manuscrits et publications
+<x-mail::button :url="config('app.frontend_url').'#/my-publications?filter=3'">
+Voir mes publications
 </x-mail::button>
+@endif
 
 <x-email.regards locale="fr" />
 
