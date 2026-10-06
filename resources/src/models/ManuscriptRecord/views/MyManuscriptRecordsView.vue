@@ -95,7 +95,17 @@ const mainFilterOptions = computed<MainFilterOption[]>(() => {
       icon: 'mdi-file-check',
       active: activeFilterId.value === 3,
       filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
-        return query.filterStatus(['in_review', 'completed'])
+        return query.filterStatus(['in_review', 'reviewed'])
+      },
+    },
+    {
+      id: 4,
+      label: t('my-manuscript-records.action-required-manuscripts'),
+      caption: t('my-manuscript-records.action-required-manuscripts-caption'),
+      icon: 'mdi-alert-circle-outline',
+      active: activeFilterId.value === 4,
+      filter: (query: MyManuscriptQuery): MyManuscriptQuery => {
+        return query.filterStatus(['reviewed', 'submitted'])
       },
     },
   ]

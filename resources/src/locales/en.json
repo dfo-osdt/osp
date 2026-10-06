@@ -566,7 +566,7 @@
     "no-public-interest": "No public interest flagged"
   },
   "manuscript": {
-    "accepted": "Accepted",
+    "accepted": "Completed",
     "draft": "Draft",
     "in_review": "In Review",
     "please-select-the-lead-region": "Please select the lead region",
@@ -682,6 +682,8 @@
     "pls-content-title": "Plain Language Summaries"
   },
   "my-manuscript-records": {
+    "action-required-manuscripts": "Action Required",
+    "action-required-manuscripts-caption": "Reviewed forms that need your updates",
     "all-manuscripts": "All Record Forms",
     "all-manuscripts-caption": "Includes ones shared with me",
     "create-manuscript": "Create a record",
@@ -693,7 +695,10 @@
     "reviewed-between": "Reviewed between"
   },
   "my-publication-view": {
-    "actions-still-required": "Actions still required",
+    "action-required": "Action Required",
+    "action-required-caption": "Add the final publication details and accepted copy",
+    "with-science-publications": "With Science Publications",
+    "with-science-publications-caption": "Handled by Science Publications, no action needed",
     "all-publications": "All Publications",
     "create-publication": "Create Publication",
     "i-am-responsible-for-this-publication-record": "I am responsible for this publication record",

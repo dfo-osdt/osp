@@ -92,3 +92,41 @@ test('it sends notifications when there are pending publications', function (): 
 
     Mail::assertQueued(JournalAcceptancePendingMail::class);
 });
+
+test('the reminder email links pending manuscripts to my manuscripts', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'status' => ManuscriptRecordStatus::REVIEWED,
+        'reviewed_at' => now()->subMonths(2),
+    ]);
+
+    $mailable = new JournalAcceptancePendingMail(collect([$manuscript]), collect(), $user);
+    $frontendUrl = config('app.frontend_url');
+
+    $mailable->assertSeeInHtml($frontendUrl.'#/my-manuscripts?filter=4', false);
+    $mailable->assertSeeInHtml($frontendUrl.'#/manuscript/'.$manuscript->id, false);
+    $mailable->assertDontSeeInHtml($frontendUrl.'#/my-publications', false);
+});
+
+test('the reminder email links pending publications to my publications', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create([
+        'user_id' => $user->id,
+        'type' => ManuscriptRecordType::PRIMARY,
+        'status' => ManuscriptRecordStatus::ACCEPTED,
+    ]);
+    $publication = Publication::factory()->create([
+        'user_id' => $user->id,
+        'manuscript_record_id' => $manuscript->id,
+        'status' => PublicationStatus::ACCEPTED,
+        'accepted_on' => now()->subMonths(1),
+    ]);
+
+    $mailable = new JournalAcceptancePendingMail(collect(), collect([$publication]), $user);
+    $frontendUrl = config('app.frontend_url');
+
+    $mailable->assertSeeInHtml($frontendUrl.'#/my-publications?filter=3', false);
+    $mailable->assertSeeInHtml($frontendUrl.'#/publication/'.$publication->id, false);
+    $mailable->assertDontSeeInHtml($frontendUrl.'#/my-manuscripts', false);
+});

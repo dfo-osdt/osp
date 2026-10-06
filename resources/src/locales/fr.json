@@ -566,7 +566,7 @@
     "no-public-interest": "Aucun intérêt public signalé"
   },
   "manuscript": {
-    "accepted": "Accepté",
+    "accepted": "Complété",
     "draft": "Brouillon",
     "in_review": "En revue",
     "please-select-the-lead-region": "Veuillez sélectionner la région principale",
@@ -682,6 +682,8 @@
     "open-access-rationale": "Publication ouverte"
   },
   "my-manuscript-records": {
+    "action-required-manuscripts": "Action requise",
+    "action-required-manuscripts-caption": "Formulaires révisés qui nécessitent vos mises à jour",
     "all-manuscripts": "Tous les formulaires",
     "all-manuscripts-caption": "Inclut ceux partagés avec moi",
     "create-manuscript": "Créer une entrée",
@@ -693,7 +695,10 @@
     "reviewed-between": "Révisé entre"
   },
   "my-publication-view": {
-    "actions-still-required": "Actions encore nécessaires",
+    "action-required": "Action requise",
+    "action-required-caption": "Ajoutez les détails finaux et la copie acceptée",
+    "with-science-publications": "Aux Publications scientifiques",
+    "with-science-publications-caption": "Traitée par les Publications scientifiques, aucune action requise",
     "all-publications": "Toutes les publications",
     "create-publication": "Créer une publication",
     "i-am-responsible-for-this-publication-record": "Je suis responsable de ce registre de publication",
