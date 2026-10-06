@@ -37,7 +37,7 @@ You have {{ $publications->count() }} {{ $publications->count() === 1 ? 'publica
 Please update the publication record with the final details (DOI, publication date, etc.) and attach the accepted copy of the paper, then mark them as published.
 @endif
 
-<x-mail::button :url="config('app.frontend_url').'#/manuscripts'">
+<x-mail::button :url="config('app.frontend_url').'#/my-manuscripts'">
 View My Manuscripts & Publications
 </x-mail::button>
 
@@ -81,7 +81,7 @@ Vous avez {{ $publications->count() }} {{ $publications->count() === 1 ? 'public
 Veuillez mettre à jour le dossier de publication avec les détails finaux (DOI, date de publication, etc.) et joindre la copie acceptée de l'article, puis les marquer comme publiées.
 @endif
 
-<x-mail::button :url="config('app.frontend_url').'#/manuscripts'">
+<x-mail::button :url="config('app.frontend_url').'#/my-manuscripts'">
 Voir mes manuscrits et publications
 </x-mail::button>
 
