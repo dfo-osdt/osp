@@ -73,12 +73,22 @@ const mainFilterOptions = computed((): MainFilterOption[] => [
   },
   {
     id: 3,
-    label: t('common.in-progress'),
-    caption: t('my-publication-view.actions-still-required'),
-    icon: 'mdi-progress-clock',
+    label: t('my-publication-view.action-required'),
+    caption: t('my-publication-view.action-required-caption'),
+    icon: 'mdi-alert-circle-outline',
     active: activeFilterId.value === 3,
     filter: (query: PublicationQuery): PublicationQuery => {
-      return query.filterStatus(['accepted'])
+      return query.filterStatus(['accepted']).filterPrimaryPublication()
+    },
+  },
+  {
+    id: 5,
+    label: t('my-publication-view.with-science-publications'),
+    caption: t('my-publication-view.with-science-publications-caption'),
+    icon: 'mdi-account-group-outline',
+    active: activeFilterId.value === 5,
+    filter: (query: PublicationQuery): PublicationQuery => {
+      return query.filterStatus(['accepted']).filterSecondaryPublication()
     },
   },
   {
