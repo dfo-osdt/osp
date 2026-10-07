@@ -110,6 +110,16 @@ function optionLabel(expertise: ExpertiseResource) {
     : expertise.data.name_en
 }
 
+const showCreateAfterOptions = computed(() => {
+  const needle = lastSearchTerm.value.trim().toLowerCase()
+  if (!props.enableExpertiseCreation || needle === '') {
+    return false
+  }
+  return !expertises.value.data.some(
+    expertise => optionLabel(expertise)?.trim().toLowerCase() === needle,
+  )
+})
+
 defineExpose({
   selectedExpertise,
 })
@@ -166,6 +176,27 @@ defineExpose({
           </q-item-section>
         </q-item>
       </template>
+    </template>
+    <template v-if="showCreateAfterOptions" #after-options>
+      <q-separator />
+      <q-item clickable @click="showCreateExpertiseDialog = true">
+        <q-item-section>
+          {{ $t('expertise-select.cant-find') }}
+        </q-item-section>
+        <q-item-section side>
+          <q-btn
+            icon="mdi-plus"
+            color="primary"
+            size="sm"
+            round
+            @click="showCreateExpertiseDialog = true"
+          >
+            <q-tooltip class="text-body2">
+              {{ $t('expertise-select.add-a-new-expertise') }}
+            </q-tooltip>
+          </q-btn>
+        </q-item-section>
+      </q-item>
     </template>
     <template v-if="multiple" #selected-item="scope">
       <ExpertiseChip
