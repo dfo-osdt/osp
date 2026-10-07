@@ -54,7 +54,7 @@ class PublicationAuthorPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, PublicationAuthor $publicationAuthor)
+    public function delete(User $user, PublicationAuthor $publicationAuthor): bool
     {
         if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
             return true;
