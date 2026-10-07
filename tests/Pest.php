@@ -12,11 +12,20 @@
 */
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Vite;
 use Pest\Browser\Api\PendingAwaitablePage;
 use Tests\TestCase;
 
 uses(TestCase::class)->in('Feature', 'Browser');
 uses(RefreshDatabase::class)->in('Feature', 'Browser');
+
+/**
+ * The browser plugin rewrites URLs inside served JS files, which breaks
+ * their SRI hashes and silently blocks the app from booting.
+ */
+pest()->beforeEach(function (): void {
+    Vite::useIntegrityKey(false);
+})->in('Browser');
 
 /*
 |--------------------------------------------------------------------------
