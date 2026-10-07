@@ -34,7 +34,7 @@ class ManagementReviewStepPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, ManagementReviewStep $managementReviewStep)
+    public function update(User $user, ManagementReviewStep $managementReviewStep): bool
     {
         // is the status pending or on hold?
         $allowedStatuses = collect([
@@ -50,7 +50,7 @@ class ManagementReviewStepPolicy
         return $user->id === $managementReviewStep->user_id;
     }
 
-    public function decide(User $user, ManagementReviewStep $managementReviewStep)
+    public function decide(User $user, ManagementReviewStep $managementReviewStep): bool
     {
         // is the status pending?
         if ($managementReviewStep->status !== ManagementReviewStepStatus::PENDING) {
@@ -113,7 +113,7 @@ class ManagementReviewStepPolicy
             ->exists();
     }
 
-    public function withdraw(User $user, ManagementReviewStep $managementReviewStep)
+    public function withdraw(User $user, ManagementReviewStep $managementReviewStep): bool
     {
         // is the status on hold?
         if ($managementReviewStep->status !== ManagementReviewStepStatus::ON_HOLD) {

@@ -108,7 +108,7 @@ class PublicationPolicy
         return false;
     }
 
-    public function deleteMedia(User $user, Publication $publication, Media $media)
+    public function deleteMedia(User $user, Publication $publication, Media $media): bool
     {
         return $this->update($user, $publication);
     }
@@ -124,7 +124,7 @@ class PublicationPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Publication $publication)
+    public function update(User $user, Publication $publication): bool
     {
         if ($user->hasPermissionTo(UserPermission::UPDATE_PUBLICATIONS)) {
             return true;

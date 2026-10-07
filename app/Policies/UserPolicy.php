@@ -39,7 +39,7 @@ class UserPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model)
+    public function update(User $user, User $model): bool
     {
 
         if ($user->can(UserPermission::ADMINISTER_USERS)) {

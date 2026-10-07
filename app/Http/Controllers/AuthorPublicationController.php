@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PublicationResource;
 use App\Models\Author;
 use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\User;
 use App\Queries\PublicationListQuery;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -30,7 +32,10 @@ class AuthorPublicationController extends Controller
             })
             ->with([
                 'journal',
-                'publicationAuthors' => fn ($query) => $query->with('author', 'organization')->chaperone('publication'),
+                'publicationAuthors' => function ($query) {
+                    /** @var HasMany<PublicationAuthor, Publication> $query */
+                    return $query->with('author', 'organization')->chaperone('publication');
+                },
                 'region',
             ]);
 

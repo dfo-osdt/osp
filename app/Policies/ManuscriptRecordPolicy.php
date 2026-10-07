@@ -28,7 +28,7 @@ class ManuscriptRecordPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ManuscriptRecord $manuscriptRecord)
+    public function view(User $user, ManuscriptRecord $manuscriptRecord): bool
     {
 
         if ($user->can(UserPermission::VIEW_ANY_MANUSCRIPT_RECORD_INCLUDING_DRAFT)) {
@@ -191,7 +191,7 @@ class ManuscriptRecordPolicy
     /**
      * A user can submit this manuscript for review
      */
-    public function submitForReview(User $user, ManuscriptRecord $manuscriptRecord)
+    public function submitForReview(User $user, ManuscriptRecord $manuscriptRecord): bool
     {
         // can only submit if the manuscript is in draft state
         if ($manuscriptRecord->status !== ManuscriptRecordStatus::DRAFT) {
@@ -225,7 +225,7 @@ class ManuscriptRecordPolicy
     /**
      * A user can withdraw a manuscript from review
      */
-    public function withdraw(User $user, ManuscriptRecord $manuscriptRecord)
+    public function withdraw(User $user, ManuscriptRecord $manuscriptRecord): bool
     {
         $allowedStatus = collect([
             ManuscriptRecordStatus::SUBMITTED,
@@ -289,7 +289,7 @@ class ManuscriptRecordPolicy
         return null;
     }
 
-    public function submitToPreprint(User $user, ManuscriptRecord $manuscriptRecord)
+    public function submitToPreprint(User $user, ManuscriptRecord $manuscriptRecord): bool
     {
 
         // make sure it's a preprrint
@@ -316,7 +316,7 @@ class ManuscriptRecordPolicy
     /**
      * Which users can share this manuscript?
      */
-    public function share(User $user, ManuscriptRecord $manuscriptRecord)
+    public function share(User $user, ManuscriptRecord $manuscriptRecord): bool
     {
         if ($this->isOwner($user, $manuscriptRecord)) {
             return true;
@@ -351,7 +351,7 @@ class ManuscriptRecordPolicy
         return $this->update($user, $manuscriptRecord);
     }
 
-    public function downloadMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media)
+    public function downloadMedia(User $user, ManuscriptRecord $manuscriptRecord, Media $media): bool
     {
         return $this->view($user, $manuscriptRecord);
     }

@@ -40,7 +40,7 @@ class AuthorPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Author $author)
+    public function update(User $user, Author $author): bool
     {
         // Editors can always edit authors
         if ($user->can(UserPermission::UPDATE_AUTHORS)) {
