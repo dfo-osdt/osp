@@ -22,8 +22,8 @@
 {{-- Footer --}}
 @slot('footer')
 @component('mail::footer')
-<p>This is an automated message. Please do not reply to this email. If you believe you have received this email in error, please contact the Open Science Portal team by visiting the <a href="{{config('app.frontend_url')}}">Open Science Portal</a></p>
-<p>Ceci est un message automatisé. Veuillez ne pas répondre à ce courriel. Si vous croyez avoir reçu ce courriel par erreur, veuillez contacter l'équipe du Portail de la science ouverte en visitant le <a href="{{config('app.frontend_url')}}">Portail de la science ouverte</a></p>
+<p>This is an automated message. Please do not reply to this email. If you believe you have received this email in error, please contact the Open Science Portal team at <a href="mailto:DFO.SciencePublications-PublicationsScientifiques.MPO@dfo-mpo.gc.ca">DFO.SciencePublications-PublicationsScientifiques.MPO@dfo-mpo.gc.ca</a> or by visiting the <a href="{{config('app.frontend_url')}}">Open Science Portal</a></p>
+<p>Ceci est un message automatisé. Veuillez ne pas répondre à ce courriel. Si vous croyez avoir reçu ce courriel par erreur, veuillez contacter l'équipe du Portail de la science ouverte à <a href="mailto:DFO.SciencePublications-PublicationsScientifiques.MPO@dfo-mpo.gc.ca">DFO.SciencePublications-PublicationsScientifiques.MPO@dfo-mpo.gc.ca</a> ou en visitant le <a href="{{config('app.frontend_url')}}">Portail de la science ouverte</a></p>
 <p>---</p>
 <p>© {{ date('Y') }} Open Science Portal - Portail Science Ouverte.</p>
 @endcomponent

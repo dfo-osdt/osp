@@ -13,7 +13,7 @@ const appVersion = import.meta.env.VITE_APP_VERSION ?? 'dev'
       <div>
         <a
           class="text-caption text-primary contact-link"
-          href="mailto:DFO.OpenScience-ScienceOuverte.MPO@dfo-mpo.gc.ca"
+          href="mailto:DFO.SciencePublications-PublicationsScientifiques.MPO@dfo-mpo.gc.ca"
         >{{ $t('common.contact-us') }}</a>
       </div>
       <div class="text-caption">
