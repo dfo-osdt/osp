@@ -148,7 +148,7 @@ async function save() {
         </div>
         <DateInput
           v-model="expires_at"
-          label="Expires On"
+          :label="$t('shareable.expires-at')"
           :min-date="tomorrow"
           clearable
         />
