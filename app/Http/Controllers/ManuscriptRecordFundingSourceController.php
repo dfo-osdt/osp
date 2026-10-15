@@ -27,7 +27,6 @@ class ManuscriptRecordFundingSourceController extends Controller
 
         $fundingSources = $manuscriptRecord->fundingSources;
 
-        /** @phpstan-ignore-next-line */
         return FundingSourceResource::collection($fundingSources->load([
             'funder',
             'fundable' => function (MorphTo $morphTo): void {
