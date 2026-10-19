@@ -1022,7 +1022,7 @@
     "publication-identifiers-hint": "A Catalogue Number is required. ISBN and Issue Number are optional unless provided with the Catalogue Number.",
     "file-label": "Submitted Manuscript Document",
     "file-hint": "Upload your manuscript document (.doc or .docx, max {max}MB)",
-    "file-preference": "Word format (.doc, .docx) is required. Please submit a .doc or .docx file only."
+    "file-preference": "Science Publications requires manuscripts to be submitted as a Word document (.doc or .docx)."
   },
   "azure-user-select": {
     "search-hint": "Start typing an email to search for a DFO user"

@@ -1022,7 +1022,7 @@
     "publication-identifiers-hint": "Un numéro de catalogue est requis. Le ISBN et le numéro de publication sont facultatifs, sauf s'ils sont fournis avec le numéro de catalogue.",
     "file-label": "Soumission de votre manuscrit",
     "file-hint": "Télécharger votre manuscrit (.doc ou .docx, max {max} Mo)",
-    "file-preference": "Le format Word (.doc, .docx) est requis. Veuillez soumettre uniquement un fichier .doc ou .docx."
+    "file-preference": "Les Publications scientifiques exigent que les manuscrits soient soumis en format Word (.doc ou .docx)."
   },
   "azure-user-select": {
     "search-hint": "Commencez à taper un courriel pour rechercher un utilisateur du MPO"
