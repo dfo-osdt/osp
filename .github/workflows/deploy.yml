@@ -15,7 +15,7 @@ jobs:
     runs-on: self-hosted
     env:
       VITE_IDLE_TIMER_MIN: 30
-      VITE_OSP_DEFAULT_ORG: 1
+      VITE_OSP_DEFAULT_ORG_ID: 1
       VITE_MAX_UPLOAD_SIZE_MB: 200
       VITE_AZURE_ENABLE_AUTH: true
     steps:
