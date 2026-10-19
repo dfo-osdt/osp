@@ -615,7 +615,9 @@
     "unsubmit-title": "Unsubmit manuscript?",
     "unsubmit-details": "This will return the manuscript to draft so it can be edited again.",
     "unsubmit-failed": "Unable to unsubmit manuscript.",
-    "unsubmit-reason-label": "Reason for unsubmission (required)"
+    "unsubmit-reason-label": "Reason for unsubmission (required)",
+    "formatting-checklist-instruction": "Make sure your manuscript follows the Science Publications Formatting Checklist before submitting. You will be asked to confirm this when you submit.",
+    "view-formatting-checklist": "View the checklist:"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Abstract must be at least 250 characters",
@@ -1022,7 +1024,17 @@
     "publication-identifiers-hint": "A Catalogue Number is required. ISBN and Issue Number are optional unless provided with the Catalogue Number.",
     "file-label": "Submitted Manuscript Document",
     "file-hint": "Upload your manuscript document (.doc or .docx, max {max}MB)",
-    "file-preference": "Science Publications requires manuscripts to be submitted as a Word document (.doc or .docx)."
+    "file-preference": "Science Publications requires manuscripts to be submitted as a Word document (.doc or .docx).",
+    "step1": {
+      "title": "Formatting Checklist",
+      "subtitle": "Science Publications Formatting Checklist",
+      "explanation": "Before submitting, your manuscript must be formatted according to the Science Publications Formatting Checklist. Manuscripts that do not follow the checklist will be returned to the authors for revision, which will delay publication.",
+      "view-checklist": "View the checklist:",
+      "confirmation-text": "I certify that I have reviewed the Science Publications Formatting Checklist and that this manuscript follows all of its requirements."
+    },
+    "step2": {
+      "title": "Submission Details"
+    }
   },
   "azure-user-select": {
     "search-hint": "Start typing an email to search for a DFO user"

@@ -615,7 +615,9 @@
     "unsubmit-title": "Retirer la soumission du manuscrit ?",
     "unsubmit-details": "Cela ramènera le manuscrit à l'état de brouillon afin qu'il puisse être modifié à nouveau.",
     "unsubmit-failed": "Impossible de retirer le manuscrit",
-    "unsubmit-reason-label": "Raison du retrait de la soumission (obligatoire)"
+    "unsubmit-reason-label": "Raison du retrait de la soumission (obligatoire)",
+    "formatting-checklist-instruction": "Assurez-vous que votre manuscrit respecte la liste de vérification de la mise en forme des Publications scientifiques avant de le soumettre. Il vous sera demandé de le confirmer lors de la soumission.",
+    "view-formatting-checklist": "Consulter la liste de vérification :"
   },
   "mrf": {
     "abstract-must-be-at-least-250-characters": "Le résumé doit comporter au moins 250 caractères",
@@ -1022,7 +1024,17 @@
     "publication-identifiers-hint": "Un numéro de catalogue est requis. Le ISBN et le numéro de publication sont facultatifs, sauf s'ils sont fournis avec le numéro de catalogue.",
     "file-label": "Soumission de votre manuscrit",
     "file-hint": "Télécharger votre manuscrit (.doc ou .docx, max {max} Mo)",
-    "file-preference": "Les Publications scientifiques exigent que les manuscrits soient soumis en format Word (.doc ou .docx)."
+    "file-preference": "Les Publications scientifiques exigent que les manuscrits soient soumis en format Word (.doc ou .docx).",
+    "step1": {
+      "title": "Liste de vérification de la mise en forme",
+      "subtitle": "Liste de vérification de la mise en forme des Publications scientifiques",
+      "explanation": "Avant la soumission, votre manuscrit doit être mis en forme conformément à la liste de vérification de la mise en forme des Publications scientifiques. Les manuscrits qui ne respectent pas la liste de vérification seront retournés aux auteurs pour révision, ce qui retardera la publication.",
+      "view-checklist": "Consulter la liste de vérification :",
+      "confirmation-text": "J'atteste avoir pris connaissance de la liste de vérification de la mise en forme des Publications scientifiques et que ce manuscrit en respecte toutes les exigences."
+    },
+    "step2": {
+      "title": "Détails de la soumission"
+    }
   },
   "azure-user-select": {
     "search-hint": "Commencez à taper un courriel pour rechercher un utilisateur du MPO"

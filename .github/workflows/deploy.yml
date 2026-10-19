@@ -18,6 +18,8 @@ jobs:
       VITE_OSP_DEFAULT_ORG_ID: 1
       VITE_MAX_UPLOAD_SIZE_MB: 200
       VITE_AZURE_ENABLE_AUTH: true
+      VITE_FORMATTING_CHECKLIST_URL_EN: ${{ vars.FORMATTING_CHECKLIST_URL_EN }}
+      VITE_FORMATTING_CHECKLIST_URL_FR: ${{ vars.FORMATTING_CHECKLIST_URL_FR }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
