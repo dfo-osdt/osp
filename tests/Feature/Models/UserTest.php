@@ -40,6 +40,12 @@ test('a user can update their profile', function (): void {
     expect($response->json('data.email'))->toBe($user->email);
 
     expect($response->json('data.author.data'))->toMatchArray(collect($data)->only('first_name', 'last_name')->all());
+
+    $this->assertDatabaseHas('authors', [
+        'user_id' => $user->id,
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+    ]);
 });
 
 test('a user can see their authentication history', function (): void {
