@@ -209,6 +209,7 @@ declare global {
   const useFocus: typeof import('@vueuse/core').useFocus
   const useFocusWithin: typeof import('@vueuse/core').useFocusWithin
   const useFormChild: typeof import('quasar')['useFormChild']
+  const useFormattingChecklistLinks: typeof import('./composables/useFormattingChecklistLinks').useFormattingChecklistLinks
   const useFps: typeof import('@vueuse/core').useFps
   const useFullscreen: typeof import('@vueuse/core').useFullscreen
   const useFunctionalAreaStore: typeof import('./stores/FunctionalAreaStore').useFunctionalAreaStore
@@ -555,6 +556,7 @@ declare module 'vue' {
     readonly useFileSystemAccess: UnwrapRef<typeof import('@vueuse/core')['useFileSystemAccess']>
     readonly useFocus: UnwrapRef<typeof import('@vueuse/core')['useFocus']>
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>
+    readonly useFormattingChecklistLinks: UnwrapRef<typeof import('./composables/useFormattingChecklistLinks')['useFormattingChecklistLinks']>
     readonly useFps: UnwrapRef<typeof import('@vueuse/core')['useFps']>
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
     readonly useFunctionalAreaStore: UnwrapRef<typeof import('./stores/FunctionalAreaStore')['useFunctionalAreaStore']>

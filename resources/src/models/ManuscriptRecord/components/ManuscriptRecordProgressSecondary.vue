@@ -14,6 +14,8 @@ const { t } = useI18n()
 
 const publicationsEmail = 'Publications.XNCR@dfo-mpo.gc.ca'
 
+const checklistLinks = useFormattingChecklistLinks()
+
 const createdSubtitle = computed(() => {
   return (
     `${t('common.created-on')
@@ -211,6 +213,21 @@ function updateManuscriptandNotify(record: ManuscriptRecordResource) {
         {{ $t('manuscript-progress-view.send-form-to') }}
         <a :href="`mailto:${publicationsEmail}`">{{ publicationsEmail }}</a>.
       </p>
+      <q-banner dense rounded class="bg-blue-1 q-mb-md">
+        <template #avatar>
+          <q-icon name="mdi-clipboard-check-outline" color="primary" />
+        </template>
+        {{ $t('manuscript-progress-view.formatting-checklist-instruction') }}
+        <div v-if="checklistLinks.length > 0" class="q-mt-xs">
+          {{ $t('manuscript-progress-view.view-formatting-checklist') }}
+          <template v-for="(link, index) in checklistLinks" :key="link.url">
+            <template v-if="index > 0">
+              |
+            </template>
+            <a :href="link.url" target="_blank">{{ link.label }}</a>
+          </template>
+        </div>
+      </q-banner>
       <div class="row q-gutter-md">
         <q-btn
           v-if="
