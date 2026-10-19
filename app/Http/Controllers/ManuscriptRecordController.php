@@ -302,7 +302,7 @@ class ManuscriptRecordController extends Controller
             'submission_file' => [
                 Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY),
                 'file',
-                'mimes:doc,docx,pdf',
+                'mimes:doc,docx',
                 'max:'.(config('media-library.max_file_size') / 1024),
             ],
         ]);

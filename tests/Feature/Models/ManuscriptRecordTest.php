@@ -503,7 +503,7 @@ test('a user can submit their manuscript to the science pub team', function (): 
     expect($manuscript->publication->issue_number)->toBe('409');
 });
 
-test('a user can submit their manuscript to the science pub team with a pdf file', function (): void {
+test('a user receives a validation error when submitting a PDF to the science pub team', function (): void {
     $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
     $fakePdfContent = <<<'PDF_WRAP'
     %PDF-1.4
@@ -533,10 +533,10 @@ test('a user can submit their manuscript to the science pub team with a pdf file
         'submission_file' => $file,
     ];
 
-    $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data)->assertOk();
+    $response = $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", $data);
 
-    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED);
-    expect($manuscript->publication->getMedia(MediaCollection::SUPPLEMENTARY_FILE->value)->first()->file_name)->toBe('test.pdf');
+    $response->assertUnprocessable()
+        ->assertJsonValidationErrors('submission_file');
 });
 
 test('a user can delete their manuscript record if it is a draft', function (): void {

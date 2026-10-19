@@ -103,7 +103,7 @@ async function submit() {
           :hint="
             $t('submit-to-pub-team-dialog.file-hint', { max: maxFileSizeMB })
           "
-          accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
+          accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           :max-file-size="maxFileSizeMB * 1e6"
           :rules="[
             (val: File | null) =>
