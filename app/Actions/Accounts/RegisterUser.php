@@ -22,7 +22,9 @@ class RegisterUser
             }
 
             // User exists but is not active (has not registered), so update the user
-            // with the new password.
+            // with the registration details.
+            $user->first_name = $data->first_name;
+            $user->last_name = $data->last_name;
             $user->password = Hash::make($data->password);
             $user->save();
 
