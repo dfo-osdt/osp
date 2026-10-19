@@ -196,29 +196,21 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
      */
     public function associateAuthor(): Author
     {
-        // if user has already been associated with an author, return that author
-        if ($this->author) {
-            return $this->author;
-        }
+        $author = $this->author ?? Author::query()->where('email', $this->email)->first();
 
-        $author = Author::query()->where('email', $this->email)->first();
-
-        if ($author) {
-            $author->first_name = $this->first_name;
-            $author->last_name = $this->last_name;
-            $author->save();
-            $this->author()->save($author);
-        } else {
+        if (! $author) {
             $author = Author::query()->create([
                 'first_name' => $this->first_name,
                 'last_name' => $this->last_name,
                 'email' => $this->email,
                 'organization_id' => Organization::getDefaultOrganization()->id,
             ]);
-
-            $this->author()->save($author);
         }
 
+        $author->first_name = $this->first_name;
+        $author->last_name = $this->last_name;
+        $author->save();
+        $this->author()->save($author);
         $this->save();
 
         return $author;
