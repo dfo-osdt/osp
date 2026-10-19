@@ -1021,8 +1021,8 @@
     "publication-identifiers": "Publication Identifiers",
     "publication-identifiers-hint": "A Catalogue Number is required. ISBN and Issue Number are optional unless provided with the Catalogue Number.",
     "file-label": "Submitted Manuscript Document",
-    "file-hint": "Upload your manuscript document (.doc, .docx, or .pdf, max {max}MB)",
-    "file-preference": "Word format (.doc, .docx) is preferred. Please only submit a PDF if the Word version is unavailable."
+    "file-hint": "Upload your manuscript document (.doc or .docx, max {max}MB)",
+    "file-preference": "Word format (.doc, .docx) is required. Please submit a .doc or .docx file only."
   },
   "azure-user-select": {
     "search-hint": "Start typing an email to search for a DFO user"
