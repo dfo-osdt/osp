@@ -58,3 +58,23 @@ test('the excel export lists the sector, region and emeritus status recorded on 
             'Yes / Oui',
         ]);
 });
+
+test('the excel export writes yes and no values in both languages', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->published()->create(['user_id' => $user->id, 'is_open_access' => true]);
+    $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
+        'author_id' => Author::factory()->create()->id,
+        'is_corresponding_author' => false,
+    ])->assertCreated();
+
+    $response = $this->actingAs($user)->get('/api/publications/export?format=excel')->assertOk();
+
+    $spreadsheet = IOFactory::load($response->baseResponse->getFile()->getPathname());
+    $firstRowValue = function (int $sheet, string $heading) use ($spreadsheet): mixed {
+        $rows = $spreadsheet->getSheet($sheet)->toArray();
+
+        return $rows[1][array_search($heading, $rows[0], true)];
+    };
+    expect($firstRowValue(0, 'Open Access / Libre accès'))->toBe('Yes / Oui')
+        ->and($firstRowValue(1, 'Corresponding Author / Auteur correspondant'))->toBe('No / Non');
+});
