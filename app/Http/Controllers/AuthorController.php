@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Enums\Permissions\UserPermission;
 use App\Http\Resources\AuthorResource;
 use App\Models\Author;
+use App\Models\ManuscriptAuthor;
 use App\Models\Organization;
+use App\Models\PublicationAuthor;
 use App\Queries\AuthorListQuery;
 use App\Rules\Ocrid;
 use App\Rules\ValidListItems;
 use App\Traits\PaginationLimitTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
@@ -68,6 +71,8 @@ class AuthorController extends Controller
         $includes = collect(
             [
                 'organization',
+                'sector',
+                'region',
                 'expertises' => function ($query): void {
                     $query->orderBy('name_en');
                 },
@@ -96,6 +101,9 @@ class AuthorController extends Controller
     {
         Gate::authorize('update', $author);
 
+        $willBeInternal = ! $request->boolean('is_independent')
+            && (int) $request->input('organization_id', $author->organization_id) === Organization::getDefaultOrganization()->id;
+
         $validated = $request->validate([
             'first_name' => ['string'],
             'last_name' => ['string'],
@@ -109,8 +117,25 @@ class AuthorController extends Controller
                 new Ocrid,
                 Rule::unique('authors', 'orcid')->ignore($author->id),
             ],
+            'sector_id' => [
+                Rule::requiredIf(fn (): bool => $this->requiresProfileField($request, $author, 'sector_id', $willBeInternal)),
+                'nullable',
+                'integer',
+                'exists:sectors,id',
+            ],
+            'region_id' => [
+                Rule::requiredIf(fn (): bool => $this->requiresProfileField($request, $author, 'region_id', $willBeInternal)),
+                'nullable',
+                'integer',
+                'exists:regions,id',
+            ],
+            'is_emeritus' => ['boolean'],
             'sync_all_pivots' => ['boolean'],
         ]);
+
+        if (! $willBeInternal) {
+            unset($validated['sector_id'], $validated['region_id'], $validated['is_emeritus']);
+        }
 
         $syncAllPivots = $validated['sync_all_pivots'] ?? false;
         unset($validated['sync_all_pivots']);
@@ -132,13 +157,9 @@ class AuthorController extends Controller
         if ($syncAllPivots && isset($validated['organization_id'])) {
             Gate::authorize(UserPermission::SYNCHRONIZE_AUTHOR_AFFILIATIONS);
 
-            $author->manuscriptAuthors()->update([
-                'organization_id' => $validated['organization_id'],
-            ]);
-
-            $author->publicationAuthors()->update([
-                'organization_id' => $validated['organization_id'],
-            ]);
+            foreach ([$author->manuscriptAuthors(), $author->publicationAuthors()] as $authorships) {
+                $this->syncAuthorshipAffiliation($authorships, $author, $validated['organization_id'], $willBeInternal);
+            }
 
             activity()
                 ->performedOn($author)
@@ -150,9 +171,56 @@ class AuthorController extends Controller
         }
 
         $author->refresh();
-        $author->load('organization');
+        $author->load(['organization', 'sector', 'region']);
 
         return new AuthorResource($author);
+    }
+
+    /**
+     * Move every authorship row to the new affiliation. Rows leaving DFO
+     * lose their sector, region and emeritus snapshot; DFO rows only
+     * gain the author's values where the snapshot is still empty.
+     *
+     * @param  HasMany<ManuscriptAuthor, Author>|HasMany<PublicationAuthor, Author>  $authorships
+     */
+    private function syncAuthorshipAffiliation(HasMany $authorships, Author $author, int $organizationId, bool $willBeInternal): void
+    {
+        if (! $willBeInternal) {
+            $authorships->update([
+                'organization_id' => $organizationId,
+                'sector_id' => null,
+                'region_id' => null,
+                'is_emeritus' => null,
+            ]);
+
+            return;
+        }
+
+        $authorships->update(['organization_id' => $organizationId]);
+
+        foreach (['sector_id', 'region_id', 'is_emeritus'] as $attribute) {
+            if ($author->{$attribute} === null) {
+                continue;
+            }
+
+            $authorships->clone()->whereNull($attribute)->update([$attribute => $author->{$attribute}]);
+        }
+    }
+
+    /**
+     * DFO authors must fill their sector and region when they edit
+     * their own profile. Others editing the record (editors, or users
+     * editing an author without an account) may leave them empty.
+     */
+    private function requiresProfileField(Request $request, Author $author, string $attribute, bool $willBeInternal): bool
+    {
+        $isOwnRecord = $author->user_id !== null && $author->user_id === $request->user()->id;
+
+        if (! $isOwnRecord || ! $willBeInternal) {
+            return false;
+        }
+
+        return $request->has($attribute) || $author->{$attribute} === null;
     }
 
     /**

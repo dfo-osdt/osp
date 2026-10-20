@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums\PublicationStatus;
+use App\Observers\AuthorObserver;
 use App\Traits\HasExpertises;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -87,6 +89,7 @@ use Spatie\Activitylog\Support\LogOptions;
  *
  * @mixin \Eloquent
  */
+#[ObservedBy(AuthorObserver::class)]
 class Author extends Model
 {
     use HasExpertises;

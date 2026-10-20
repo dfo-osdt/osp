@@ -68,9 +68,11 @@ it('hides the delete action for a sector in use', function (string $table): void
     $sector = Sector::factory()->create();
     $author = Author::factory()->internal()->create(['sector_id' => $table === 'authors' ? $sector->id : null]);
 
+    $snapshot = ['organization_id' => $author->organization_id, 'sector_id' => $sector->id];
+
     match ($table) {
-        'manuscript_authors' => ManuscriptAuthor::factory()->for($author)->create(['sector_id' => $sector->id]),
-        'publication_authors' => PublicationAuthor::factory()->for($author)->create(['sector_id' => $sector->id]),
+        'manuscript_authors' => ManuscriptAuthor::factory()->for($author)->create($snapshot),
+        'publication_authors' => PublicationAuthor::factory()->for($author)->create($snapshot),
         default => null,
     };
 
