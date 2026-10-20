@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Sectors\Pages;
 
 use App\Filament\Resources\Sectors\SectorResource;
+use App\Models\Sector;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
@@ -16,7 +17,8 @@ class EditSector extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->hidden(fn (Sector $record): bool => $record->isInUse()),
         ];
     }
 }

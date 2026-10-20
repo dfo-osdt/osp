@@ -5,6 +5,8 @@ namespace Database\Factories;
 use App\Models\Author;
 use App\Models\Expertise;
 use App\Models\Organization;
+use App\Models\Region;
+use App\Models\Sector;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -55,6 +57,27 @@ class AuthorFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'organization_id' => Organization::getIndependentOrganization()->id,
+        ]);
+    }
+
+    /**
+     * A DFO (default organization) author
+     */
+    public function internal(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'organization_id' => Organization::getDefaultOrganization()->id,
+        ]);
+    }
+
+    /**
+     * A DFO author who has filled their sector and region
+     */
+    public function withCompleteProfile(): static
+    {
+        return $this->internal()->state(fn (array $attributes) => [
+            'sector_id' => Sector::factory(),
+            'region_id' => Region::query()->inRandomOrder()->value('id'),
         ]);
     }
 
