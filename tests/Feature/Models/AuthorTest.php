@@ -8,6 +8,8 @@ use App\Models\ManuscriptRecord;
 use App\Models\Organization;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
+use App\Models\Region;
+use App\Models\Sector;
 use App\Models\User;
 
 test('a user can get list of authors', function (): void {
@@ -464,4 +466,154 @@ test('a regular user cannot sync pivots even if they try', function (): void {
 
     // Should be forbidden because user doesn't have SYNC Author affiliations permission
     $response = $this->actingAs($regularUser)->putJson('api/authors/'.$author->id, $data)->assertForbidden();
+});
+
+describe('DFO profile fields', function (): void {
+
+    test('a DFO user must fill their sector and region when updating their own profile', function (): void {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->putJson('api/authors/'.$user->author->id, ['first_name' => 'Jane'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors([
+                'sector_id' => 'The sector id field is required.',
+                'region_id' => 'The region id field is required.',
+            ]);
+    });
+
+    test('a DFO user can fill their sector, region and emeritus status', function (): void {
+        $user = User::factory()->create();
+        $sector = Sector::factory()->create();
+        $region = Region::query()->first();
+
+        $response = $this->actingAs($user)->putJson('api/authors/'.$user->author->id, [
+            'sector_id' => $sector->id,
+            'region_id' => $region->id,
+            'is_emeritus' => true,
+        ])->assertOk();
+
+        $response->assertJsonPath('data.sector.data.name_en', $sector->name_en)
+            ->assertJsonPath('data.region.data.id', $region->id)
+            ->assertJsonPath('data.is_emeritus', true);
+        expect($user->author->refresh())
+            ->sector_id->toBe($sector->id)
+            ->region_id->toBe($region->id)
+            ->is_emeritus->toBeTrue();
+    });
+
+    test('a DFO user with a complete profile can update other fields without resending it', function (): void {
+        $user = User::factory()->create();
+        $user->author->update(['sector_id' => Sector::factory()->create()->id, 'region_id' => Region::query()->value('id')]);
+
+        $this->actingAs($user)->putJson('api/authors/'.$user->author->id, ['orcid' => null])->assertOk();
+    });
+
+    test('a DFO user cannot clear their sector', function (): void {
+        $user = User::factory()->create();
+        $user->author->update(['sector_id' => Sector::factory()->create()->id, 'region_id' => Region::query()->value('id')]);
+
+        $this->actingAs($user)->putJson('api/authors/'.$user->author->id, ['sector_id' => null])
+            ->assertJsonValidationErrors(['sector_id' => 'The sector id field is required.']);
+    });
+
+    test('someone else editing a DFO author may leave the sector and region empty', function (string $editorKind): void {
+        $editor = $editorKind === 'editor'
+            ? User::factory()->withRoles([UserRole::EDITOR])->create()
+            : User::factory()->create();
+        $author = $editorKind === 'editor'
+            ? User::factory()->create()->author
+            : Author::factory()->internal()->create();
+
+        $this->actingAs($editor)->putJson('api/authors/'.$author->id, ['orcid' => null])->assertOk();
+    })->with([
+        'an editor on an author with an account' => 'editor',
+        'a user on an author without an account' => 'user',
+    ]);
+
+    test('the sector must exist', function (): void {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->putJson('api/authors/'.$user->author->id, [
+            'sector_id' => 999999,
+            'region_id' => Region::query()->value('id'),
+        ])->assertJsonValidationErrors(['sector_id' => 'The selected sector id is invalid.']);
+    });
+
+    test('profile fields are ignored for a non-DFO author', function (): void {
+        $user = User::factory()->create();
+        $author = Author::factory()->create();
+
+        $this->actingAs($user)->putJson('api/authors/'.$author->id, [
+            'sector_id' => Sector::factory()->create()->id,
+            'region_id' => Region::query()->value('id'),
+            'is_emeritus' => true,
+        ])->assertOk();
+
+        expect($author->refresh())
+            ->sector_id->toBeNull()
+            ->region_id->toBeNull()
+            ->is_emeritus->toBeFalse();
+    });
+
+    test('syncing affiliations away from DFO clears the authorship snapshots', function (): void {
+        $editor = User::factory()->withRoles([UserRole::EDITOR])->create();
+        $author = Author::factory()->withCompleteProfile()->create();
+        $manuscriptAuthor = ManuscriptAuthor::factory()->for($author)->create([
+            'organization_id' => Organization::getDefaultOrganization()->id,
+        ]);
+
+        $this->actingAs($editor)->putJson('api/authors/'.$author->id, [
+            'organization_id' => Organization::factory()->create()->id,
+            'sync_all_pivots' => true,
+        ])->assertOk();
+
+        expect($manuscriptAuthor->refresh())
+            ->sector_id->toBeNull()
+            ->region_id->toBeNull()
+            ->is_emeritus->toBeNull();
+    });
+
+    test('authors can be filtered by sector, region and emeritus status', function (string $filter, Closure $matching): void {
+        $user = User::factory()->create();
+        $sector = Sector::factory()->create();
+        $region = Region::query()->first();
+        $expected = Author::factory()->internal()->create($matching($sector, $region));
+        Author::factory()->withCompleteProfile()->create();
+
+        $value = match ($filter) {
+            'sector_id' => $sector->id,
+            'region_id' => $region->id,
+            'is_emeritus' => 'true',
+        };
+
+        $response = $this->actingAs($user)->getJson("api/authors?filter[{$filter}]={$value}")->assertOk();
+
+        expect($response->json('data.*.data.id'))->toContain($expected->id)
+            ->and(collect($response->json('data.*.data'))->every(fn (array $author): bool => match ($filter) {
+                'sector_id' => $author['sector_id'] === $sector->id,
+                'region_id' => $author['region_id'] === $region->id,
+                'is_emeritus' => $author['is_emeritus'] === true,
+            }))->toBeTrue();
+    })->with([
+        'sector' => ['sector_id', fn (Sector $sector, Region $region): array => ['sector_id' => $sector->id]],
+        'region' => ['region_id', fn (Sector $sector, Region $region): array => ['region_id' => $region->id]],
+        'emeritus' => ['is_emeritus', fn (Sector $sector, Region $region): array => ['is_emeritus' => true]],
+    ]);
+
+    test('the authenticated user resource flags a DFO profile that needs an update', function (string $profile, bool $expected): void {
+        $user = User::factory()->create();
+        match ($profile) {
+            'complete' => $user->author->update(['sector_id' => Sector::factory()->create()->id, 'region_id' => Region::query()->value('id')]),
+            'external' => $user->author->update(['organization_id' => Organization::factory()->create()->id]),
+            default => null,
+        };
+
+        $this->actingAs($user)->getJson('api/user')
+            ->assertOk()
+            ->assertJsonPath('data.needs_profile_update', $expected);
+    })->with([
+        'DFO with an empty profile' => ['empty', true],
+        'DFO with a complete profile' => ['complete', false],
+        'non-DFO' => ['external', false],
+    ]);
 });

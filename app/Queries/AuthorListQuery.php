@@ -27,6 +27,9 @@ class AuthorListQuery extends QueryBuilder
                 AllowedFilter::partial('last_name'),
                 AllowedFilter::partial('email'),
                 AllowedFilter::exact('organization_id'),
+                AllowedFilter::exact('sector_id'),
+                AllowedFilter::exact('region_id'),
+                AllowedFilter::exact('is_emeritus'),
                 AllowedFilter::exact('orcid'),
                 AllowedFilter::callback('expertise_id', function (Builder $query, $value): void {
                     $query->whereHas('expertises', function (Builder $query) use ($value): void {
