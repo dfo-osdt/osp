@@ -36,6 +36,7 @@ use App\Http\Controllers\PublicationFundingSourceController;
 use App\Http\Controllers\PublicationSupplementaryFileController;
 use App\Http\Controllers\PublicStatsController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\SectorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserManagementReviewStepsController;
 use App\Http\Controllers\UserManuscriptRecordController;
@@ -270,6 +271,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/regions', [RegionController::class, 'index']);
     Route::get('/functional-areas', [FunctionalAreaController::class, 'index']);
+    Route::get('/sectors', [SectorController::class, 'index']);
 
     Route::prefix('utils')->group(function () {
         Route::post('/generate-pls', [GeneratePLSController::class, 'generate']);
