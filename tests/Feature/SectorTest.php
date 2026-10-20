@@ -16,9 +16,15 @@ test('an authenticated user can list the seeded DFO sectors', function (): void 
     $response->assertOk();
     expect($response->json('data.*.data.name_en'))->toBe([
         'Aquatic Ecosystems',
-        'Conservation and Protection',
+        'Chief Digital Officer',
+        'Chief Financial Officer',
         'Ecosystems and Oceans Science',
+        'Executive Secretariat',
         'Fisheries and Harbour Management',
+        'Internal Audit Directorate',
+        'Legal Services Unit',
+        'Office of the Ombuds',
+        'People and Culture',
         'Strategic Policy',
     ]);
 });
@@ -26,5 +32,5 @@ test('an authenticated user can list the seeded DFO sectors', function (): void 
 test('the sector seeder does not duplicate existing sectors', function (): void {
     $this->seed(SectorSeeder::class);
 
-    expect(Sector::query()->count())->toBe(5);
+    expect(Sector::query()->count())->toBe(11);
 });
