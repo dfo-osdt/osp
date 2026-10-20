@@ -2,6 +2,7 @@
 import type { ManuscriptAuthorResource } from '../ManuscriptAuthor'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId'
+import AuthorshipDfoProfileItems from '@/models/Author/components/AuthorshipDfoProfileItems.vue'
 import RORLinkSpan from '@/models/Organization/components/RORLinkSpan.vue'
 
 const props = withDefaults(
@@ -124,6 +125,11 @@ const removable = computed(() => {
             </q-item-label>
           </q-item-section>
         </q-item>
+        <AuthorshipDfoProfileItems
+          :sector="manuscriptAuthor.data.sector"
+          :region="manuscriptAuthor.data.region"
+          :is-emeritus="manuscriptAuthor.data.is_emeritus"
+        />
         <q-item>
           <q-item-section avatar>
             <q-avatar icon="mdi-email" text-color="primary" />
