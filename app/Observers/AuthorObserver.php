@@ -31,29 +31,35 @@ class AuthorObserver
      */
     public function updated(Author $author): void
     {
-        $firstFilled = collect(['sector_id', 'region_id'])
-            ->filter(fn (string $attribute): bool => $author->wasChanged($attribute)
-                && $author->getOriginal($attribute) === null
-                && $author->{$attribute} !== null);
-
-        if ($firstFilled->isEmpty()) {
-            return;
-        }
-
         $defaultOrganizationId = Organization::getDefaultOrganization()->id;
+        $backfilled = [];
 
-        $firstFilled->each(function (string $attribute) use ($author, $defaultOrganizationId): void {
+        foreach (['sector_id', 'region_id'] as $attribute) {
+            $isFirstFill = $author->wasChanged($attribute)
+                && $author->getOriginal($attribute) === null
+                && $author->{$attribute} !== null;
+
+            if (! $isFirstFill) {
+                continue;
+            }
+
             foreach ([$author->manuscriptAuthors(), $author->publicationAuthors()] as $authorships) {
                 $authorships
                     ->where('organization_id', $defaultOrganizationId)
                     ->whereNull($attribute)
                     ->update([$attribute => $author->{$attribute}]);
             }
-        });
+
+            $backfilled[$attribute] = $author->{$attribute};
+        }
+
+        if ($backfilled === []) {
+            return;
+        }
 
         activity()
             ->performedOn($author)
-            ->withProperties($firstFilled->mapWithKeys(fn (string $attribute): array => [$attribute => $author->{$attribute}])->all())
+            ->withProperties($backfilled)
             ->log('Author profile first filled and backfilled to existing manuscripts and publications');
     }
 }
