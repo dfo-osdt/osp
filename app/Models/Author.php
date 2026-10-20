@@ -33,6 +33,11 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property Carbon|null $orcid_expires_at
  * @property string $email
  * @property int $organization_id
+ * @property int|null $sector_id
+ * @property int|null $region_id
+ * @property bool $is_emeritus
+ * @property-read Sector|null $sector
+ * @property-read Region|null $region
  * @property int|null $user_id
  * @property-read Collection<int, Activity> $activitiesAsSubject
  * @property-read int|null $activities_as_subject_count
@@ -183,6 +188,26 @@ class Author extends Model
         return $this->organization_id === Organization::getIndependentOrganization()->id;
     }
 
+    /**
+     * Is this author affiliated with the default (DFO) organization?
+     */
+    public function isInternal(): bool
+    {
+        return $this->organization_id === Organization::getDefaultOrganization()->id;
+    }
+
+    /**
+     * Does this DFO author still need to fill their sector or region?
+     */
+    public function needsProfileUpdate(): bool
+    {
+        if (! $this->isInternal()) {
+            return false;
+        }
+
+        return $this->sector_id === null || $this->region_id === null;
+    }
+
     // Relationships
     /** ManuscriptAuthors
      * @return HasMany<ManuscriptAuthor, $this> */
@@ -218,6 +243,20 @@ class Author extends Model
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    /** Sector
+     * @return BelongsTo<Sector, $this> */
+    public function sector(): BelongsTo
+    {
+        return $this->belongsTo(Sector::class);
+    }
+
+    /** Region
+     * @return BelongsTo<Region, $this> */
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
     }
 
     /**
@@ -289,6 +328,7 @@ class Author extends Model
             'orcid_access_token' => 'encrypted',
             'orcid_refresh_token' => 'encrypted',
             'orcid_expires_at' => 'datetime',
+            'is_emeritus' => 'boolean',
         ];
     }
 }

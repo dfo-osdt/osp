@@ -20,6 +20,11 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property int $publication_id
  * @property int $author_id
  * @property int $organization_id
+ * @property int|null $sector_id
+ * @property int|null $region_id
+ * @property bool|null $is_emeritus
+ * @property-read Sector|null $sector
+ * @property-read Region|null $region
  * @property bool $is_corresponding_author
  * @property bool $is_group_author
  * @property-read Collection<int, Activity> $activitiesAsSubject
@@ -68,6 +73,7 @@ class PublicationAuthor extends Model
     public $casts = [
         'is_corresponding_author' => 'boolean',
         'is_group_author' => 'boolean',
+        'is_emeritus' => 'boolean',
     ];
 
     // logging options
@@ -94,6 +100,20 @@ class PublicationAuthor extends Model
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    /** Sector
+     * @return BelongsTo<Sector, $this> */
+    public function sector(): BelongsTo
+    {
+        return $this->belongsTo(Sector::class);
+    }
+
+    /** Region
+     * @return BelongsTo<Region, $this> */
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
     }
 
     /** Author

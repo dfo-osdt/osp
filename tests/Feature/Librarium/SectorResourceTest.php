@@ -5,6 +5,9 @@ namespace Tests\Feature\Librarium;
 use App\Filament\Resources\Sectors\Pages\CreateSector;
 use App\Filament\Resources\Sectors\Pages\EditSector;
 use App\Filament\Resources\Sectors\Pages\ListSectors;
+use App\Models\Author;
+use App\Models\ManuscriptAuthor;
+use App\Models\PublicationAuthor;
 use App\Models\Sector;
 use App\Models\User;
 
@@ -51,3 +54,30 @@ it('lets an admin rename a sector', function (): void {
 
     expect($sector->refresh()->name_en)->toBe('Renamed');
 });
+
+it('lets an admin delete a sector that is not in use', function (): void {
+    $sector = Sector::factory()->create();
+
+    $this->actingAs(sectorAdmin())->livewire(EditSector::class, ['record' => $sector->getRouteKey()])
+        ->callAction('delete');
+
+    $this->assertModelMissing($sector);
+});
+
+it('hides the delete action for a sector in use', function (string $table): void {
+    $sector = Sector::factory()->create();
+    $author = Author::factory()->internal()->create(['sector_id' => $table === 'authors' ? $sector->id : null]);
+
+    match ($table) {
+        'manuscript_authors' => ManuscriptAuthor::factory()->for($author)->create(['sector_id' => $sector->id]),
+        'publication_authors' => PublicationAuthor::factory()->for($author)->create(['sector_id' => $sector->id]),
+        default => null,
+    };
+
+    $this->actingAs(sectorAdmin())->livewire(EditSector::class, ['record' => $sector->getRouteKey()])
+        ->assertActionHidden('delete');
+})->with([
+    'referenced by an author' => 'authors',
+    'referenced by a manuscript author' => 'manuscript_authors',
+    'referenced by a publication author' => 'publication_authors',
+]);
