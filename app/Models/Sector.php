@@ -38,7 +38,7 @@ class Sector extends Model
     }
 
     /**
-     * Is this sector referenced by an author or an authorship snapshot?
+     * Is this sector referenced by an author, or a manuscript or publication author?
      * Used to prevent deleting a sector that holds historical data.
      */
     public function isInUse(): bool

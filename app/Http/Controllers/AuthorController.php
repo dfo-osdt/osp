@@ -178,8 +178,8 @@ class AuthorController extends Controller
 
     /**
      * Move every authorship row to the new affiliation. Rows leaving DFO
-     * lose their sector, region and emeritus snapshot; DFO rows only
-     * gain the author's values where the snapshot is still empty.
+     * lose their sector, region and emeritus status; DFO rows only
+     * gain the author's values where they are still empty.
      *
      * @param  HasMany<ManuscriptAuthor, Author>|HasMany<PublicationAuthor, Author>  $authorships
      */

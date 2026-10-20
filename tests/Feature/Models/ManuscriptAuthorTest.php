@@ -4,6 +4,7 @@ use App\Models\Author;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
 use App\Models\Organization;
+use App\Models\Sector;
 use App\Models\User;
 
 test('a user can get the manuscript authors associated with a manuscript record', function (): void {
@@ -143,4 +144,88 @@ test('adding an independent author to a manuscript record keeps them independent
             'is_independent' => true,
         ],
     ]);
+});
+
+test('adding a DFO author to a manuscript records their sector, region and emeritus status', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create(['is_emeritus' => true]);
+
+    $response = $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated();
+
+    expect(ManuscriptAuthor::query()->find($response->json('data.id')))
+        ->sector_id->toBe($author->sector_id)
+        ->region_id->toBe($author->region_id)
+        ->is_emeritus->toBeTrue();
+});
+
+test('adding a DFO author with a non-DFO affiliation to a manuscript records no sector, region or emeritus status', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+        'organization_id' => Organization::factory()->create()->id,
+    ])->assertCreated();
+
+    expect(ManuscriptAuthor::query()->find($response->json('data.id')))
+        ->sector_id->toBeNull()
+        ->region_id->toBeNull()
+        ->is_emeritus->toBeNull();
+});
+
+test('moving a manuscript author into DFO records their sector, region and emeritus status', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create();
+    $manuscriptAuthor = ManuscriptAuthor::factory()->for($manuscript)->for($author)->create();
+
+    $this->actingAs($user)->putJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors/'.$manuscriptAuthor->id, [
+        'organization_id' => $author->organization_id,
+    ])->assertOk();
+
+    expect($manuscriptAuthor->refresh())
+        ->sector_id->toBe($author->sector_id)
+        ->region_id->toBe($author->region_id)
+        ->is_emeritus->toBeFalse();
+});
+
+test('moving a manuscript author out of DFO clears their sector, region and emeritus status', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create();
+    $added = $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated();
+
+    $this->actingAs($user)->putJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors/'.$added->json('data.id'), [
+        'organization_id' => Organization::factory()->create()->id,
+    ])->assertOk();
+
+    expect(ManuscriptAuthor::query()->find($added->json('data.id')))
+        ->sector_id->toBeNull()
+        ->region_id->toBeNull()
+        ->is_emeritus->toBeNull();
+});
+
+test('updating a manuscript author without changing the affiliation keeps their recorded sector', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create();
+    $added = $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated();
+    $manuscriptAuthor = ManuscriptAuthor::query()->find($added->json('data.id'));
+    $recordedSectorId = $author->sector_id;
+    $author->update(['sector_id' => Sector::factory()->create()->id]);
+
+    $this->actingAs($user)->putJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors/'.$manuscriptAuthor->id, [
+        'organization_id' => $author->organization_id,
+        'is_corresponding_author' => true,
+    ])->assertOk();
+
+    expect($manuscriptAuthor->refresh()->sector_id)->toBe($recordedSectorId);
 });
