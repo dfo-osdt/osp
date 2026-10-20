@@ -30,7 +30,7 @@ const authStore = useAuthStore()
               <q-item-section avatar>
                 <q-icon name="mdi-badge-account-outline">
                   <q-badge
-                    v-if="authStore.user?.needs_profile_update"
+                    v-if="authStore.user?.needsProfileUpdateOn('settings.author')"
                     rounded
                     floating
                     color="red"

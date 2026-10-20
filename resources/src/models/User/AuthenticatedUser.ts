@@ -64,7 +64,21 @@ export interface IAuthenticatedUser {
   last_login_at: null | string
   permissions: AuthenticatedUserPermissions[]
   is_acting_as_delegate: boolean
-  needs_profile_update: boolean
+  profile_updates: ProfileUpdate[]
+}
+
+/**
+ * Parts of the user's profile the app can ask them to update.
+ */
+export type ProfileUpdateKey = 'dfo-author-profile'
+
+/**
+ * A part of the user's profile they should update, and the settings
+ * route where they can do it.
+ */
+export interface ProfileUpdate {
+  key: ProfileUpdateKey
+  route: string
 }
 
 /**
@@ -146,7 +160,7 @@ export class AuthenticatedUser implements IAuthenticatedUser {
   public sensitivity_label!: SensitivityLabel
   public last_login_at!: string | null
   public is_acting_as_delegate!: boolean
-  public needs_profile_update!: boolean
+  public profile_updates!: ProfileUpdate[]
 
   constructor(user: IAuthenticatedUser) {
     Object.assign(this, user)
@@ -171,6 +185,22 @@ export class AuthenticatedUser implements IAuthenticatedUser {
    */
   get authorId(): number {
     return this.author.data.id
+  }
+
+  /**
+   * Does this user have any part of their profile to update?
+   */
+  get needsProfileUpdate(): boolean {
+    return this.profile_updates.length > 0
+  }
+
+  /**
+   * Does this user have something to update on the given settings route?
+   *
+   * @param route
+   */
+  needsProfileUpdateOn(route: string): boolean {
+    return this.profile_updates.some(update => update.route === route)
   }
 
   /**

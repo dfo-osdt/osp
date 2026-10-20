@@ -613,7 +613,7 @@ describe('DFO profile fields', function (): void {
 
         $this->actingAs($user)->getJson('api/user')
             ->assertOk()
-            ->assertJsonPath('data.needs_profile_update', $expected);
+            ->assertJsonPath('data.profile_updates', $expected ? [['key' => 'dfo-author-profile', 'route' => 'settings.author']] : []);
     })->with([
         'DFO with an empty profile' => ['empty', true],
         'DFO with a complete profile' => ['complete', false],

@@ -188,6 +188,23 @@ class User extends Authenticatable implements FilamentUser, HasLocalePreference,
     }
 
     /**
+     * The parts of the user's profile they should update, each with the
+     * key used to word the reminder and the settings route to fix it.
+     *
+     * @return list<array{key: string, route: string}>
+     */
+    public function pendingProfileUpdates(): array
+    {
+        $updates = [];
+
+        if ($this->author?->needsProfileUpdate()) {
+            $updates[] = ['key' => 'dfo-author-profile', 'route' => 'settings.author'];
+        }
+
+        return $updates;
+    }
+
+    /**
      * Associate or create an author profile for the user. This function
      * checks if an author profile with the same email already exists
      * in the database. If it does, it will associate the user with that

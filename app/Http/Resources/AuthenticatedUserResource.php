@@ -32,7 +32,7 @@ class AuthenticatedUserResource extends JsonResource
             'sensitivity_label' => SensitivityLabel::ProtectedA,
             'new_password_required' => $this->new_password_required,
             'author' => AuthorResource::make($this->author),
-            'needs_profile_update' => $this->author?->needsProfileUpdate() ?? false,
+            'profile_updates' => $this->pendingProfileUpdates(),
             'roles' => $this->getRoleNames(),
             'last_login_at' => $this->previousSuccessfulLoginAt(),
             'permissions' => $this->getAllPermissions()->pluck('name'),
