@@ -74,7 +74,7 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
             $publication->published_on?->format('Y-m-d'),
             $publication->accepted_on?->format('Y-m-d'),
             $publication->embargoed_until?->format('Y-m-d'),
-            $publication->is_open_access ? 'Yes' : 'No',
+            $publication->is_open_access ? 'Yes / Oui' : 'No / Non',
             $publication->status->value,
             $publication->doi,
             $publication->isbn,
