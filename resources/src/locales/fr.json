@@ -58,8 +58,8 @@
   "author": {
     "edit-author-details": "Modifier les détails de l'auteur",
     "view-profile": "Voir le profil de l'auteur",
-    "emeritus": "Émérite",
-    "emeritus-hint": "Activez si vous détenez le statut d'émérite au MPO."
+    "emeritus": "Scientifique émérite",
+    "emeritus-hint": "Activez si vous êtes scientifique émérite au MPO."
   },
   "edit-author-dialog": {
     "title": "Modifier l'auteur",
@@ -1017,8 +1017,8 @@
     "with-orcid": "Avec ORCID",
     "with-orcid-caption": "Auteurs avec un ORCID associé",
     "emeritus-any": "Tout statut d'émérite",
-    "emeritus-only": "Émérites seulement",
-    "emeritus-excluded": "Sans les émérites",
+    "emeritus-only": "Scientifiques émérites seulement",
+    "emeritus-excluded": "Sans les scientifiques émérites",
     "in-sector": "du secteur",
     "in-region": "de la région"
   },
