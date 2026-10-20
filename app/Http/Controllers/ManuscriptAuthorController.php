@@ -133,6 +133,8 @@ class ManuscriptAuthorController extends Controller
         return [
             'author',
             'organization',
+            'sector',
+            'region',
             'manuscriptRecord' => [
                 'user',
                 'shareables',

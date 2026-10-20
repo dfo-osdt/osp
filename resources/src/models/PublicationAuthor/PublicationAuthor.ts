@@ -1,6 +1,8 @@
 import type { AuthorResource } from '../Author/Author'
 import type { OrganizationResource } from '../Organization/Organization'
+import type { RegionResource } from '../Region/Region'
 import type { Resource, ResourceList } from '../Resource'
+import type { SectorResource } from '../Sector/Sector'
 import { http } from '@/api/http'
 
 export interface PublicationAuthor {
@@ -10,7 +12,13 @@ export interface PublicationAuthor {
   organization_id: number
   is_corresponding_author: boolean
   is_group_author: boolean
+  /** recorded from the author when the affiliation is DFO, read-only */
+  readonly sector_id: number | null
+  readonly region_id: number | null
+  readonly is_emeritus: boolean | null
   organization?: OrganizationResource
+  sector?: SectorResource
+  region?: RegionResource
   author?: AuthorResource
 }
 

@@ -26,7 +26,7 @@ class PublicationAuthorController extends Controller
         }
 
         $publicationAuthor->setRelation('publication', $publication);
-        $publicationAuthor->load('author.organization', 'organization');
+        $publicationAuthor->load('author.organization', 'organization', 'sector', 'region');
 
         return $publicationAuthor;
     }
@@ -39,7 +39,7 @@ class PublicationAuthorController extends Controller
         $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('view', $publication);
         $publicationAuthors = $publication->publicationAuthors()
-            ->with('author.organization', 'organization')
+            ->with('author.organization', 'organization', 'sector', 'region')
             ->chaperone('publication')
             ->orderBy('id')
             ->get();

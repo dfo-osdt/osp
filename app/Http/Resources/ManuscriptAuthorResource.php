@@ -30,7 +30,12 @@ class ManuscriptAuthorResource extends JsonResource
                 'is_corresponding_author' => $this->is_corresponding_author,
                 'is_group_author' => $this->is_group_author,
                 'is_independent' => $this->isIndependent(),
+                'sector_id' => $this->sector_id,
+                'region_id' => $this->region_id,
+                'is_emeritus' => $this->is_emeritus,
                 'organization' => OrganizationResource::make($this->whenLoaded('organization')),
+                'sector' => SectorResource::make($this->whenLoaded('sector')),
+                'region' => RegionResource::make($this->whenLoaded('region')),
                 'author' => AuthorResource::make($this->whenLoaded('author')),
             ],
             'can' => [
