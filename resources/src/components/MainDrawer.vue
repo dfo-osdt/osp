@@ -86,6 +86,7 @@ const bottomMenuItems = computed<MenuItem[]>(() => {
       label: t('SettingsPage.author-profile'),
       to: '/settings/author',
       visible: true,
+      dot: authStore.user?.needsProfileUpdateOn('settings.author'),
       tooltipVisible: authStore.isDrawerMini,
     },
     {
