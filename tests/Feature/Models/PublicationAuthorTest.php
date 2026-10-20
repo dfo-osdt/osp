@@ -271,3 +271,20 @@ test('a publication created from a manuscript keeps the sector and region record
         ->region_id->toBe($recorded['region_id'])
         ->is_emeritus->toBeFalse();
 });
+
+test('the publication authors list shows the sector, region and emeritus status recorded on each authorship', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->published()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create(['is_emeritus' => true]);
+    $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', ['author_id' => $author->id])->assertCreated();
+    $recordedSectorId = $author->sector_id;
+    $author->update(['sector_id' => Sector::factory()->create()->id]);
+
+    $this->actingAs($user)->getJson('/api/publications/'.$publication->id.'/publication-authors')
+        ->assertOk()
+        ->assertJsonPath('data.0.data.sector_id', $recordedSectorId)
+        ->assertJsonPath('data.0.data.sector.data.id', $recordedSectorId)
+        ->assertJsonPath('data.0.data.region.data.id', $author->region_id)
+        ->assertJsonPath('data.0.data.region_id', $author->region_id)
+        ->assertJsonPath('data.0.data.is_emeritus', true);
+});

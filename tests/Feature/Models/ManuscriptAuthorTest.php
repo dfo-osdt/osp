@@ -229,3 +229,20 @@ test('updating a manuscript author without changing the affiliation keeps their 
 
     expect($manuscriptAuthor->refresh()->sector_id)->toBe($recordedSectorId);
 });
+
+test('the manuscript authors list shows the sector, region and emeritus status recorded on each authorship', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create(['is_emeritus' => true]);
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', ['author_id' => $author->id])->assertCreated();
+    $recordedSectorId = $author->sector_id;
+    $author->update(['sector_id' => Sector::factory()->create()->id]);
+
+    $this->actingAs($user)->getJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors')
+        ->assertOk()
+        ->assertJsonPath('data.0.data.sector_id', $recordedSectorId)
+        ->assertJsonPath('data.0.data.sector.data.id', $recordedSectorId)
+        ->assertJsonPath('data.0.data.region.data.id', $author->region_id)
+        ->assertJsonPath('data.0.data.region_id', $author->region_id)
+        ->assertJsonPath('data.0.data.is_emeritus', true);
+});
