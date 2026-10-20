@@ -5,7 +5,9 @@ import type {
 import type { OrganizationResource } from '../Organization/Organization'
 import type { PreprintResourceList } from '../Preprint/Preprint'
 import type { PublicationQuery, PublicationResourceList } from '../Publication/Publication'
+import type { RegionResource } from '../Region/Region'
 import type { Resource, ResourceList, SensitivityLabel } from '../Resource'
+import type { SectorResource } from '../Sector/Sector'
 import { http } from '@/api/http'
 import { SpatieQuery } from '@/api/SpatieQuery'
 import { PreprintQuery } from '../Preprint/Preprint'
@@ -21,9 +23,14 @@ export interface Author {
   user_id: number | null
   organization_id: number
   is_independent?: boolean
+  sector_id: number | null
+  region_id: number | null
+  is_emeritus: boolean
   sentivity_label: SensitivityLabel
   // relationships
   organization?: OrganizationResource
+  sector?: SectorResource
+  region?: RegionResource
   expertises?: ExpertiseResource[]
 }
 
@@ -176,6 +183,22 @@ export class AuthorQuery extends SpatieQuery {
 
   public filterExpertiseId(expertiseId: string) {
     this.filter('expertise_id', expertiseId)
+    return this
+  }
+
+  public filterSectorId(sectorId: string) {
+    this.filter('sector_id', sectorId)
+    return this
+  }
+
+  public filterRegionId(regionId: string) {
+    this.filter('region_id', regionId)
+    return this
+  }
+
+  public filterIsEmeritus(isEmeritus: boolean) {
+    // pass a string so `false` is not turned into the default '1' value
+    this.filter('is_emeritus', isEmeritus ? 'true' : 'false')
     return this
   }
 

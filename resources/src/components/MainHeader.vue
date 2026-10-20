@@ -50,6 +50,14 @@ function toggleLeftDrawer() {
         :label="authStore.user?.initials"
         data-test="user-menu-button"
       >
+        <q-badge
+          v-if="authStore.user?.needs_profile_update"
+          rounded
+          floating
+          color="red"
+          data-test="profile-update-dot"
+          :aria-label="t('author-profile-update.dot-label')"
+        />
         <q-menu :offset="[0, 10]">
           <q-list>
             <q-item-label header>
@@ -63,7 +71,14 @@ function toggleLeftDrawer() {
                 </q-item-label>
               </q-item-section>
               <q-item-section avatar>
-                <q-icon name="mdi-account-cog-outline" />
+                <q-icon name="mdi-account-cog-outline">
+                  <q-badge
+                    v-if="authStore.user?.needs_profile_update"
+                    rounded
+                    floating
+                    color="red"
+                  />
+                </q-icon>
               </q-item-section>
             </q-item>
             <q-item v-ripple to="/dashboard" data-test="dashboard-item" clickable>

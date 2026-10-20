@@ -64,6 +64,7 @@ export interface IAuthenticatedUser {
   last_login_at: null | string
   permissions: AuthenticatedUserPermissions[]
   is_acting_as_delegate: boolean
+  needs_profile_update: boolean
 }
 
 /**
@@ -145,6 +146,7 @@ export class AuthenticatedUser implements IAuthenticatedUser {
   public sensitivity_label!: SensitivityLabel
   public last_login_at!: string | null
   public is_acting_as_delegate!: boolean
+  public needs_profile_update!: boolean
 
   constructor(user: IAuthenticatedUser) {
     Object.assign(this, user)

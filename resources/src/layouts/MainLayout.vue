@@ -54,6 +54,37 @@ watch(
     }
   },
 )
+
+// remind DFO authors to fill their sector and region, once per app load
+let profileUpdateReminderShown = false
+watch(
+  () => authStore.user?.needs_profile_update,
+  (needsProfileUpdate) => {
+    if (!needsProfileUpdate || profileUpdateReminderShown)
+      return
+
+    profileUpdateReminderShown = true
+    $q.notify({
+      message: t('author-profile-update.banner'),
+      color: 'primary',
+      icon: 'mdi-badge-account-outline',
+      position: 'top',
+      timeout: 30000,
+      progress: true,
+      actions: [
+        {
+          label: t('author-profile-update.go-to-profile'),
+          color: 'white',
+          handler: () => {
+            router.push({ name: 'settings.author' })
+          },
+        },
+        { 'icon': 'mdi-close', 'color': 'white', 'round': true, 'aria-label': t('common.close') },
+      ],
+    })
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

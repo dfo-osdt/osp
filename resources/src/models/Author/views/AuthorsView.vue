@@ -13,6 +13,9 @@ import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import ExpertiseSelect from '@/models/Expertise/components/ExpertiseSelect.vue'
 import { ExpertiseService } from '@/models/Expertise/Expertise'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
+import RegionSelect from '@/models/Region/components/RegionSelect.vue'
+import SectorSelect from '@/models/Sector/components/SectorSelect.vue'
+import { useSectorStore } from '@/stores/SectorStore'
 import { AuthorQuery, AuthorService } from '../Author'
 import AuthorList from '../components/AuthorList.vue'
 
@@ -24,6 +27,13 @@ const organizationId = useRouteQuery<number | null>('org', null, {
   transform: v => v ? Number(v) : null,
 })
 const expertiseId = useRouteQuery<string | null>('expertise', null)
+const sectorId = useRouteQuery<number | null>('sector', null, {
+  transform: v => v ? Number(v) : null,
+})
+const regionId = useRouteQuery<number | null>('region', null, {
+  transform: v => v ? Number(v) : null,
+})
+const emeritus = useRouteQuery<'yes' | 'no' | null>('emeritus', null)
 
 // State variables
 const authors = ref<AuthorResourceList>()
@@ -48,6 +58,14 @@ onMounted(async () => {
 // i18n
 const { t } = useI18n()
 const localeStore = useLocaleStore()
+const sectorStore = useSectorStore()
+const regionStore = useRegionStore()
+
+const emeritusOptions = computed(() => [
+  { label: t('authors-view.emeritus-any'), value: null },
+  { label: t('authors-view.emeritus-only'), value: 'yes' },
+  { label: t('authors-view.emeritus-excluded'), value: 'no' },
+])
 
 // Main filter options
 const mainFilterOptions = computed<MainFilterOption[]>(() => {
@@ -114,6 +132,20 @@ const filterCaption = computed(() => {
     caption += ` ${t('common.with-expertise-in')} ${name || name_en || 'NA'}`
   }
 
+  if (sectorId.value) {
+    const sector = sectorStore.sectors?.find(s => s.data.id === sectorId.value)?.data
+    caption += ` ${t('authors-view.in-sector')} ${(localeStore.isFr() ? sector?.name_fr : sector?.name_en) || 'NA'}`
+  }
+
+  if (regionId.value) {
+    const region = regionStore.regions?.find(r => r.id === regionId.value)
+    caption += ` ${t('authors-view.in-region')} ${(localeStore.isFr() ? region?.name_fr : region?.name_en) || 'NA'}`
+  }
+
+  if (emeritus.value) {
+    caption += ` (${emeritus.value === 'yes' ? t('authors-view.emeritus-only') : t('authors-view.emeritus-excluded')})`
+  }
+
   if (caption.length > 0) {
     caption = `${t('common.authors')} ${caption.trim()}`
   }
@@ -149,6 +181,18 @@ async function getAuthors() {
   if (expertiseId.value) {
     query = query.filterExpertiseId(expertiseId.value)
   }
+  if (sectorId.value) {
+    query = query.filterSectorId(String(sectorId.value))
+  }
+
+  if (regionId.value) {
+    query = query.filterRegionId(String(regionId.value))
+  }
+
+  if (emeritus.value) {
+    query = query.filterIsEmeritus(emeritus.value === 'yes')
+  }
+
   query.sort('last_name', 'asc')
   query.include('organization')
   query.include('expertises')
@@ -165,6 +209,9 @@ function mainFilterClick(filterId: number) {
   organizationId.value = null
   expertiseId.value = null
   selectedExpertises.value = []
+  sectorId.value = null
+  regionId.value = null
+  emeritus.value = null
   currentPage.value = 1
   getAuthors()
 }
@@ -175,6 +222,11 @@ watch(currentPage, () => {
 })
 
 watch(organizationId, () => {
+  currentPage.value = 1
+  getAuthors()
+})
+
+watch([sectorId, regionId, emeritus], () => {
   currentPage.value = 1
   getAuthors()
 })
@@ -280,6 +332,25 @@ interface MainFilterOption {
                   v-model="selectedExpertises"
                   show-label
                   only-used-expertises
+                />
+                <SectorSelect
+                  v-model="sectorId"
+                  clearable
+                  :disable="mainFilter?.id === 3"
+                />
+                <RegionSelect
+                  v-model="regionId"
+                  clearable
+                  :disable="mainFilter?.id === 3"
+                />
+                <q-select
+                  v-model="emeritus"
+                  :options="emeritusOptions"
+                  :label="$t('author.emeritus')"
+                  :disable="mainFilter?.id === 3"
+                  emit-value
+                  map-options
+                  outlined
                 />
               </q-card-section>
             </q-expansion-item>
