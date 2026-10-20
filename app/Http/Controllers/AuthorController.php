@@ -133,8 +133,9 @@ class AuthorController extends Controller
             'sync_all_pivots' => ['boolean'],
         ]);
 
+        // sector, region and emeritus only apply to DFO authors
         if (! $willBeInternal) {
-            unset($validated['sector_id'], $validated['region_id'], $validated['is_emeritus']);
+            $validated = [...$validated, 'sector_id' => null, 'region_id' => null, 'is_emeritus' => false];
         }
 
         $syncAllPivots = $validated['sync_all_pivots'] ?? false;
@@ -150,7 +151,14 @@ class AuthorController extends Controller
             unset($validated['email']);
         }
 
+        $firstFilled = array_filter(
+            ['sector_id', 'region_id'],
+            fn (string $attribute): bool => $author->{$attribute} === null && ($validated[$attribute] ?? null) !== null,
+        );
+
         $author->update($validated);
+
+        $this->backfillAuthorships($author, $firstFilled);
 
         // If sync_all_pivots is true and organization_id was updated,
         // update all manuscript_authors and publication_authors
@@ -174,6 +182,39 @@ class AuthorController extends Controller
         $author->load(['organization', 'sector', 'region']);
 
         return new AuthorResource($author);
+    }
+
+    /**
+     * When a DFO author fills their sector or region for the first
+     * time, copy it onto their DFO authorship rows that are still empty.
+     * Rows that already hold a value are history and never change.
+     *
+     * @param  array<int, 'sector_id'|'region_id'>  $attributes
+     */
+    private function backfillAuthorships(Author $author, array $attributes): void
+    {
+        if ($attributes === []) {
+            return;
+        }
+
+        $defaultOrganizationId = Organization::getDefaultOrganization()->id;
+        $backfilled = [];
+
+        foreach ($attributes as $attribute) {
+            foreach ([$author->manuscriptAuthors(), $author->publicationAuthors()] as $authorships) {
+                $authorships
+                    ->where('organization_id', $defaultOrganizationId)
+                    ->whereNull($attribute)
+                    ->update([$attribute => $author->{$attribute}]);
+            }
+
+            $backfilled[$attribute] = $author->{$attribute};
+        }
+
+        activity()
+            ->performedOn($author)
+            ->withProperties($backfilled)
+            ->log('Author profile first filled and backfilled to existing manuscripts and publications');
     }
 
     /**
