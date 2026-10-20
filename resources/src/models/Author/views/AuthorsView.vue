@@ -9,6 +9,7 @@ import ContentCard from '@/components/ContentCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
 import SearchInput from '@/components/SearchInput.vue'
+import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import ExpertiseSelect from '@/models/Expertise/components/ExpertiseSelect.vue'
 import { ExpertiseService } from '@/models/Expertise/Expertise'
@@ -118,6 +119,13 @@ const mainFilter = computed(() => {
   return mainFilterOptions.value.find(f => f.active)
 })
 
+// sector, region and emeritus only exist on DFO authors
+const defaultOrganizationId = useDefaultOrganizationId()
+const showDfoFilters = computed(() => {
+  return mainFilter.value?.id !== 3
+    && (organizationId.value === null || organizationId.value === defaultOrganizationId)
+})
+
 const filterCaption = computed(() => {
   let caption = ''
   if (organizationId.value) {
@@ -132,17 +140,17 @@ const filterCaption = computed(() => {
     caption += ` ${t('common.with-expertise-in')} ${name || name_en || 'NA'}`
   }
 
-  if (sectorId.value) {
+  if (showDfoFilters.value && sectorId.value) {
     const sector = sectorStore.sectors?.find(s => s.data.id === sectorId.value)?.data
     caption += ` ${t('authors-view.in-sector')} ${(localeStore.isFr() ? sector?.name_fr : sector?.name_en) || 'NA'}`
   }
 
-  if (regionId.value) {
+  if (showDfoFilters.value && regionId.value) {
     const region = regionStore.regions?.find(r => r.id === regionId.value)
     caption += ` ${t('authors-view.in-region')} ${(localeStore.isFr() ? region?.name_fr : region?.name_en) || 'NA'}`
   }
 
-  if (emeritus.value) {
+  if (showDfoFilters.value && emeritus.value) {
     caption += ` (${emeritus.value === 'yes' ? t('authors-view.emeritus-only') : t('authors-view.emeritus-excluded')})`
   }
 
@@ -181,16 +189,19 @@ async function getAuthors() {
   if (expertiseId.value) {
     query = query.filterExpertiseId(expertiseId.value)
   }
-  if (sectorId.value) {
-    query = query.filterSectorId(String(sectorId.value))
-  }
+  // a link may still carry DFO-only filters for another organization
+  if (showDfoFilters.value) {
+    if (sectorId.value) {
+      query = query.filterSectorId(String(sectorId.value))
+    }
 
-  if (regionId.value) {
-    query = query.filterRegionId(String(regionId.value))
-  }
+    if (regionId.value) {
+      query = query.filterRegionId(String(regionId.value))
+    }
 
-  if (emeritus.value) {
-    query = query.filterIsEmeritus(emeritus.value === 'yes')
+    if (emeritus.value) {
+      query = query.filterIsEmeritus(emeritus.value === 'yes')
+    }
   }
 
   query.sort('last_name', 'asc')
@@ -222,6 +233,11 @@ watch(currentPage, () => {
 })
 
 watch(organizationId, () => {
+  if (!showDfoFilters.value) {
+    sectorId.value = null
+    regionId.value = null
+    emeritus.value = null
+  }
   currentPage.value = 1
   getAuthors()
 })
@@ -327,31 +343,34 @@ interface MainFilterOption {
                   v-model="organizationId"
                   :label="$t('common.organization')"
                   :disable="mainFilter?.id === 2"
+                  data-test="organization-filter"
                 />
                 <ExpertiseSelect
                   v-model="selectedExpertises"
                   show-label
                   only-used-expertises
                 />
-                <SectorSelect
-                  v-model="sectorId"
-                  clearable
-                  :disable="mainFilter?.id === 3"
-                />
-                <RegionSelect
-                  v-model="regionId"
-                  clearable
-                  :disable="mainFilter?.id === 3"
-                />
-                <q-select
-                  v-model="emeritus"
-                  :options="emeritusOptions"
-                  :label="$t('author.emeritus')"
-                  :disable="mainFilter?.id === 3"
-                  emit-value
-                  map-options
-                  outlined
-                />
+                <template v-if="showDfoFilters">
+                  <SectorSelect
+                    v-model="sectorId"
+                    clearable
+                    data-test="sector-filter"
+                  />
+                  <RegionSelect
+                    v-model="regionId"
+                    clearable
+                    data-test="region-filter"
+                  />
+                  <q-select
+                    v-model="emeritus"
+                    :options="emeritusOptions"
+                    :label="$t('author.emeritus')"
+                    emit-value
+                    map-options
+                    outlined
+                    data-test="emeritus-filter"
+                  />
+                </template>
               </q-card-section>
             </q-expansion-item>
             <q-separator />
