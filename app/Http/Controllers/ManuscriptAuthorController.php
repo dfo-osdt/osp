@@ -58,6 +58,7 @@ class ManuscriptAuthorController extends Controller
         $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $manuscriptAuthor->is_group_author = $validated['is_group_author'] ?? false;
         $manuscriptAuthor->organization_id = $validated['organization_id'] ?? $author->organization_id;
+        $manuscriptAuthor->fill($author->authorshipProfileFor($manuscriptAuthor->organization_id));
         $manuscriptAuthor->save();
         $manuscriptAuthor->load($this->getPolicyRelationships());
 
@@ -92,8 +93,9 @@ class ManuscriptAuthorController extends Controller
             'organization_id' => ['integer', 'exists:organizations,id'],
         ]);
 
-        if (isset($validated['organization_id'])) {
+        if (isset($validated['organization_id']) && (int) $validated['organization_id'] !== $manuscriptAuthor->organization_id) {
             $manuscriptAuthor->organization_id = $validated['organization_id'];
+            $manuscriptAuthor->fill($manuscriptAuthor->author->authorshipProfileFor($manuscriptAuthor->organization_id));
         }
         if (isset($validated['is_corresponding_author'])) {
             $manuscriptAuthor->is_corresponding_author = $validated['is_corresponding_author'];

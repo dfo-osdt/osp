@@ -53,6 +53,9 @@ class CloneManuscriptRecord
             $clone->manuscriptAuthors()->create([
                 'author_id' => $author->author_id,
                 'organization_id' => $author->organization_id,
+                'sector_id' => $author->sector_id,
+                'region_id' => $author->region_id,
+                'is_emeritus' => $author->is_emeritus,
                 'is_corresponding_author' => $author->is_corresponding_author,
             ]); // Clone authors
         }

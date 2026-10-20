@@ -1,9 +1,14 @@
 <?php
 
+use App\Actions\CreatePublicationFromManuscript;
 use App\Models\Author;
+use App\Models\Journal;
+use App\Models\ManuscriptRecord;
 use App\Models\Organization;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
+use App\Models\Region;
+use App\Models\Sector;
 use App\Models\User;
 
 test('a user can get the publication authors associated with a publication', function (): void {
@@ -195,4 +200,74 @@ test('a user can update a publication author to be an organizational author', fu
     ])->assertOk();
 
     expect($response->json('data.is_group_author'))->toBeTrue();
+});
+
+test('adding a DFO author to a publication records their sector, region and emeritus status', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create(['is_emeritus' => true]);
+
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated();
+
+    expect(PublicationAuthor::query()->find($response->json('data.id')))
+        ->sector_id->toBe($author->sector_id)
+        ->region_id->toBe($author->region_id)
+        ->is_emeritus->toBeTrue();
+});
+
+test('adding a DFO author with a non-DFO affiliation to a publication records no sector, region or emeritus status', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
+        'author_id' => $author->id,
+        'organization_id' => Organization::factory()->create()->id,
+    ])->assertCreated();
+
+    expect(PublicationAuthor::query()->find($response->json('data.id')))
+        ->sector_id->toBeNull()
+        ->region_id->toBeNull()
+        ->is_emeritus->toBeNull();
+});
+
+test('moving a publication author out of DFO clears their sector, region and emeritus status', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create();
+    $added = $this->actingAs($user)->postJson('/api/publications/'.$publication->id.'/publication-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated();
+
+    $this->actingAs($user)->putJson('/api/publications/'.$publication->id.'/publication-authors/'.$added->json('data.id'), [
+        'organization_id' => Organization::factory()->create()->id,
+    ])->assertOk();
+
+    expect(PublicationAuthor::query()->find($added->json('data.id')))
+        ->sector_id->toBeNull()
+        ->region_id->toBeNull()
+        ->is_emeritus->toBeNull();
+});
+
+test('a publication created from a manuscript keeps the sector and region recorded on the manuscript', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create();
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated();
+    $recorded = ['sector_id' => $author->sector_id, 'region_id' => $author->region_id];
+    $author->update([
+        'sector_id' => Sector::factory()->create()->id,
+        'region_id' => Region::query()->whereKeyNot($author->region_id)->value('id'),
+    ]);
+
+    $publication = CreatePublicationFromManuscript::handle($manuscript, Journal::factory()->create());
+
+    expect($publication->publicationAuthors()->where('author_id', $author->id)->sole())
+        ->sector_id->toBe($recorded['sector_id'])
+        ->region_id->toBe($recorded['region_id'])
+        ->is_emeritus->toBeFalse();
 });

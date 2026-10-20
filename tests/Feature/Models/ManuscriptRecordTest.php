@@ -7,9 +7,11 @@ use App\Enums\ManuscriptRecordType;
 use App\Enums\MediaCollection;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptRecordToReviewMail;
+use App\Models\Author;
 use App\Models\Journal;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
+use App\Models\Sector;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
@@ -646,6 +648,26 @@ test('a user can clone a manuscript record', function (): void {
     expect($clonedManuscript->manuscriptAuthors->count())->toBe($manuscript->manuscriptAuthors->count());
     expect($clonedManuscript->fundingSources->count())->toBe($manuscript->fundingSources->count());
 
+});
+
+test('cloning a manuscript keeps the sector and region recorded on its authors', function (): void {
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->create(['user_id' => $user->id]);
+    $author = Author::factory()->withCompleteProfile()->create();
+    $this->actingAs($user)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+        'author_id' => $author->id,
+    ])->assertCreated();
+    $recorded = ['sector_id' => $author->sector_id, 'region_id' => $author->region_id];
+    $author->update(['sector_id' => Sector::factory()->create()->id]);
+
+    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/clone", [
+        'type' => ManuscriptRecordType::PRIMARY->value,
+    ])->assertCreated();
+
+    expect(ManuscriptAuthor::query()->where('manuscript_record_id', $response->json('data.id'))->sole())
+        ->sector_id->toBe($recorded['sector_id'])
+        ->region_id->toBe($recorded['region_id'])
+        ->is_emeritus->toBeFalse();
 });
 
 // ISBN and Catalogue Number Tests for Manuscript Acceptance

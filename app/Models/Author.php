@@ -211,6 +211,26 @@ class Author extends Model
         return $this->sector_id === null || $this->region_id === null;
     }
 
+    /**
+     * The sector, region and emeritus status to record on a manuscript or
+     * publication authorship with the given affiliation. They only apply
+     * to DFO affiliations, so other affiliations get null values.
+     *
+     * @return array{sector_id: int|null, region_id: int|null, is_emeritus: bool|null}
+     */
+    public function authorshipProfileFor(int $organizationId): array
+    {
+        if ($organizationId !== Organization::getDefaultOrganization()->id) {
+            return ['sector_id' => null, 'region_id' => null, 'is_emeritus' => null];
+        }
+
+        return [
+            'sector_id' => $this->sector_id,
+            'region_id' => $this->region_id,
+            'is_emeritus' => $this->is_emeritus,
+        ];
+    }
+
     // Relationships
     /** ManuscriptAuthors
      * @return HasMany<ManuscriptAuthor, $this> */

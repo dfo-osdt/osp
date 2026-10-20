@@ -71,6 +71,7 @@ class PublicationAuthorController extends Controller
         $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $publicationAuthor->is_group_author = $validated['is_group_author'] ?? false;
         $publicationAuthor->organization_id = $validated['organization_id'] ?? $author->organization_id;
+        $publicationAuthor->fill($author->authorshipProfileFor($publicationAuthor->organization_id));
         $publicationAuthor->save();
 
         $this->loadResourceRelationships($publicationAuthor, $publication);
@@ -107,8 +108,9 @@ class PublicationAuthorController extends Controller
             'organization_id' => ['integer', 'exists:organizations,id'],
         ]);
 
-        if (isset($validated['organization_id'])) {
+        if (isset($validated['organization_id']) && (int) $validated['organization_id'] !== $publicationAuthor->organization_id) {
             $publicationAuthor->organization_id = $validated['organization_id'];
+            $publicationAuthor->fill($publicationAuthor->author->authorshipProfileFor($publicationAuthor->organization_id));
         }
         if (isset($validated['is_corresponding_author'])) {
             $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'];

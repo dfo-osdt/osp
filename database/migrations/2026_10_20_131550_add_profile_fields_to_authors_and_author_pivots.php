@@ -9,8 +9,8 @@ return new class extends Migration
 {
     /**
      * Add the DFO sector, region and emeritus status to authors, and
-     * snapshot columns on manuscript and publication authors so the
-     * values at the time of authorship are kept.
+     * copy them on manuscript and publication authors so the values
+     * at the time of authorship are kept.
      *
      * Existing DFO rows get emeritus = false; sector and region stay
      * null until the author first fills them in their profile.

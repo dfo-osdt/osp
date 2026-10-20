@@ -555,12 +555,15 @@ describe('DFO profile fields', function (): void {
             ->is_emeritus->toBeFalse();
     });
 
-    test('syncing affiliations away from DFO clears the authorship snapshots', function (): void {
+    test('syncing affiliations away from DFO clears the sector, region and emeritus status on manuscripts', function (): void {
         $editor = User::factory()->withRoles([UserRole::EDITOR])->create();
         $author = Author::factory()->withCompleteProfile()->create();
-        $manuscriptAuthor = ManuscriptAuthor::factory()->for($author)->create([
-            'organization_id' => Organization::getDefaultOrganization()->id,
-        ]);
+        $manuscript = ManuscriptRecord::factory()->create(['user_id' => $editor->id]);
+        $manuscriptAuthorId = $this->actingAs($editor)->postJson('/api/manuscript-records/'.$manuscript->id.'/manuscript-authors', [
+            'author_id' => $author->id,
+        ])->assertCreated()->json('data.id');
+        $manuscriptAuthor = ManuscriptAuthor::query()->find($manuscriptAuthorId);
+        expect($manuscriptAuthor->sector_id)->toBe($author->sector_id);
 
         $this->actingAs($editor)->putJson('api/authors/'.$author->id, [
             'organization_id' => Organization::factory()->create()->id,
