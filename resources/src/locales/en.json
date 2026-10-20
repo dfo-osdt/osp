@@ -57,7 +57,9 @@
   },
   "author": {
     "edit-author-details": "Edit Author Details",
-    "view-profile": "View Author Profile"
+    "view-profile": "View Author Profile",
+    "emeritus": "Emeritus",
+    "emeritus-hint": "Turn on if you hold emeritus status at DFO."
   },
   "edit-author-dialog": {
     "title": "Edit Author",
@@ -331,7 +333,8 @@
     "clone": "Duplicate",
     "type": "of type",
     "documentation": "Documentation",
-    "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/"
+    "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/",
+    "dfo-sector": "DFO Sector"
   },
   "create-author-dialog": {
     "title": "Create a new author",
@@ -1012,7 +1015,12 @@
     "external-authors": "External Authors",
     "external-authors-caption": "Authors with an external affiliation",
     "with-orcid": "With ORCID",
-    "with-orcid-caption": "Authors with an associated ORCID"
+    "with-orcid-caption": "Authors with an associated ORCID",
+    "emeritus-any": "Any emeritus status",
+    "emeritus-only": "Emeritus only",
+    "emeritus-excluded": "Excluding emeritus",
+    "in-sector": "in sector",
+    "in-region": "in region"
   },
   "publication-supplementary": {
     "upload-hint": "Only PDF or Word files are accepted. Maximum file size is {max}MB."
@@ -1153,5 +1161,10 @@
     "self-remove-message": "Are you sure you want to leave this notification group? The group owner will be notified.",
     "self-removed": "You have been removed from the notification group.",
     "self-remove-error": "Failed to leave notification group."
+  },
+  "author-profile-update": {
+    "banner": "Please complete your author profile by selecting your DFO sector and region.",
+    "go-to-profile": "Go to profile",
+    "dot-label": "Your author profile needs an update"
   }
 }

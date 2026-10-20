@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import ContentCard from '@/components/ContentCard.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
+
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -26,7 +28,14 @@ import MainPageLayout from '@/layouts/MainPageLayout.vue'
             </q-item>
             <q-item clickable to="/settings/author">
               <q-item-section avatar>
-                <q-icon name="mdi-badge-account-outline" />
+                <q-icon name="mdi-badge-account-outline">
+                  <q-badge
+                    v-if="authStore.user?.needs_profile_update"
+                    rounded
+                    floating
+                    color="red"
+                  />
+                </q-icon>
               </q-item-section>
               <q-item-section>
                 <q-item-label>

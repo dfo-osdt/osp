@@ -7,12 +7,15 @@ import OrcidInput from '@/components/OrcidInput.vue'
 import SensitivityLabelChip from '@/components/SensitivityLabelChip.vue'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
 import { AuthorService } from '../Author'
+import AuthorDfoProfileFields from './AuthorDfoProfileFields.vue'
 
 const props = defineProps<{
   authorId: number
 }>()
 const $q = useQuasar()
 const { t } = useI18n()
+const authStore = useAuthStore()
+const defaultOrganizationId = useDefaultOrganizationId()
 const form = ref<QForm | null>(null)
 const loading = ref(true)
 const author: Ref<AuthorResource | null> = ref(null)
@@ -20,6 +23,11 @@ const author: Ref<AuthorResource | null> = ref(null)
 const hasOwner = computed(() => {
   return author.value?.data.user_id !== null
 })
+
+const isOwnAuthor = computed(() => hasOwner.value && author.value?.data.user_id === authStore.user?.id)
+
+// Sector, region and emeritus status only apply to DFO authors
+const isInternal = computed(() => !author.value?.data.is_independent && author.value?.data.organization_id === defaultOrganizationId)
 
 async function getAuthor() {
   loading.value = true
@@ -56,6 +64,9 @@ async function save() {
         message: t('common.saved'),
       })
       author.value = resp
+      if (isOwnAuthor.value) {
+        authStore.refreshUser(true)
+      }
     })
     .catch((err) => {
       console.error(err)
@@ -150,6 +161,14 @@ async function save() {
               (val: number | null) =>
                 val !== null || t('common.required'),
             ]"
+          />
+          <AuthorDfoProfileFields
+            v-if="isInternal"
+            v-model:sector-id="author.data.sector_id"
+            v-model:region-id="author.data.region_id"
+            v-model:is-emeritus="author.data.is_emeritus"
+            :required="isOwnAuthor"
+            class="col-12"
           />
           <OrcidInput
             v-model.stripBaseUrl="author.data.orcid"

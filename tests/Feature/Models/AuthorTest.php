@@ -617,3 +617,12 @@ describe('DFO profile fields', function (): void {
         'non-DFO' => ['external', false],
     ]);
 });
+
+test('authors can be filtered to exclude emeritus authors', function (): void {
+    $user = User::factory()->create();
+    $emeritus = Author::factory()->internal()->create(['is_emeritus' => true]);
+
+    $response = $this->actingAs($user)->getJson('api/authors?limit=100&filter[is_emeritus]=false')->assertOk();
+
+    expect($response->json('data.*.data.id'))->not->toContain($emeritus->id)->not->toBeEmpty();
+});

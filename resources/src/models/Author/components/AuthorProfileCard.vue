@@ -27,6 +27,18 @@ const organizationName = computed(() => {
     : props.author.data.organization.data.name_fr
 })
 
+const defaultOrganizationId = useDefaultOrganizationId()
+const isInternal = computed(() => props.author.data.organization_id === defaultOrganizationId)
+
+function localizedName(item?: { data: { name_en: string, name_fr: string } }): string | null {
+  if (!item)
+    return null
+  return localeStore.locale === 'en' ? item.data.name_en : item.data.name_fr
+}
+
+const sectorName = computed(() => localizedName(props.author.data.sector))
+const regionName = computed(() => localizedName(props.author.data.region))
+
 const fullName = computed(() => {
   return `${props.author.data.first_name} ${props.author.data.last_name}`
 })
@@ -50,6 +62,13 @@ function handleAuthorUpdated() {
         {{ initials }}
       </q-avatar>
       {{ fullName }}
+      <q-badge
+        v-if="isInternal && author.data.is_emeritus"
+        color="secondary"
+        outline
+        class="q-ml-sm"
+        :label="$t('author.emeritus')"
+      />
     </template>
     <template #title-right>
       <q-btn
@@ -112,6 +131,22 @@ function handleAuthorUpdated() {
           />
         </div>
       </div>
+
+      <template v-if="isInternal">
+        <!-- Sector -->
+        <div v-if="sectorName" class="flex items-center">
+          <q-icon name="mdi-sitemap-outline" size="sm" color="grey-6" class="q-mr-sm" />
+          <span class="text-body1">{{ sectorName }}</span>
+          <q-tooltip>{{ $t('common.dfo-sector') }}</q-tooltip>
+        </div>
+
+        <!-- Region -->
+        <div v-if="regionName" class="flex items-center">
+          <q-icon name="mdi-map-marker-outline" size="sm" color="grey-6" class="q-mr-sm" />
+          <span class="text-body1">{{ regionName }}</span>
+          <q-tooltip>{{ $t('common.dfo-region') }}</q-tooltip>
+        </div>
+      </template>
     </div>
 
     <EditAuthorDialog

@@ -6,6 +6,7 @@ import BaseDialog from '@/components/BaseDialog.vue'
 import OrcidInput from '@/components/OrcidInput.vue'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
 import { AuthorService } from '../Author'
+import AuthorDfoProfileFields from './AuthorDfoProfileFields.vue'
 
 const props = defineProps<{
   author: AuthorResource
@@ -23,6 +24,23 @@ const lastName = ref(props.author.data.last_name)
 const email = ref(props.author.data.email)
 const organizationId = ref<number | null>(props.author.data.organization_id)
 const isIndependent = ref(props.author.data.is_independent ?? false)
+const sectorId = ref<number | null>(props.author.data.sector_id)
+const regionId = ref<number | null>(props.author.data.region_id)
+const isEmeritus = ref(props.author.data.is_emeritus)
+
+const defaultOrganizationId = useDefaultOrganizationId()
+
+// Sector, region and emeritus status only apply to DFO authors
+const isInternal = computed(() => !isIndependent.value && organizationId.value === defaultOrganizationId)
+const isOwnAuthor = computed(() => props.author.data.user_id !== null && props.author.data.user_id === authStore.user?.id)
+
+watch(isInternal, (internal) => {
+  if (!internal) {
+    sectorId.value = null
+    regionId.value = null
+    isEmeritus.value = false
+  }
+})
 
 // Leaving independent status requires picking a real affiliation
 watch(isIndependent, (independent) => {
@@ -83,11 +101,19 @@ async function updateAuthor() {
       ? { is_independent: true }
       : { organization_id: organizationId.value as number }),
     orcid: orcId.value,
+    ...(isInternal.value && {
+      sector_id: sectorId.value,
+      region_id: regionId.value,
+      is_emeritus: isEmeritus.value,
+    }),
     sync_all_pivots: syncAllPivots.value,
   }
 
   try {
     const updatedAuthor = await AuthorService.update(data as Author)
+    if (isOwnAuthor.value) {
+      await authStore.refreshUser(true)
+    }
     emit('updated', updatedAuthor)
   }
   catch (error) {
@@ -192,6 +218,15 @@ async function updateAuthor() {
             :rules="[
               (val: number | null) => val !== null || t('common.required'),
             ]"
+          />
+
+          <AuthorDfoProfileFields
+            v-if="isInternal"
+            v-model:sector-id="sectorId"
+            v-model:region-id="regionId"
+            v-model:is-emeritus="isEmeritus"
+            :required="isOwnAuthor"
+            class="q-mb-md"
           />
 
           <OrcidInput

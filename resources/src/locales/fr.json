@@ -57,7 +57,9 @@
   },
   "author": {
     "edit-author-details": "Modifier les détails de l'auteur",
-    "view-profile": "Voir le profil de l'auteur"
+    "view-profile": "Voir le profil de l'auteur",
+    "emeritus": "Émérite",
+    "emeritus-hint": "Activez si vous détenez le statut d'émérite au MPO."
   },
   "edit-author-dialog": {
     "title": "Modifier l'auteur",
@@ -331,7 +333,8 @@
     "clone": "Dupliquer",
     "type": "de type",
     "documentation": "Documentation",
-    "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/fr/"
+    "documentation-url": "https://osp-pso-docs.ent.dfo-mpo.ca/fr/",
+    "dfo-sector": "Secteur MPO"
   },
   "create-author-dialog": {
     "title": "Créer un nouvel auteur",
@@ -1012,7 +1015,12 @@
     "external-authors": "Auteurs externes",
     "external-authors-caption": "Auteurs avec une affiliation externe",
     "with-orcid": "Avec ORCID",
-    "with-orcid-caption": "Auteurs avec un ORCID associé"
+    "with-orcid-caption": "Auteurs avec un ORCID associé",
+    "emeritus-any": "Tout statut d'émérite",
+    "emeritus-only": "Émérites seulement",
+    "emeritus-excluded": "Sans les émérites",
+    "in-sector": "du secteur",
+    "in-region": "de la région"
   },
   "publication-supplementary": {
     "upload-hint": "Seuls les fichiers PDF ou Word sont acceptés. \nLa taille maximale du fichier est de {max} Mo."
@@ -1153,5 +1161,10 @@
     "self-remove-message": "Êtes-vous sûr de vouloir quitter ce groupe de notification? Le propriétaire du groupe sera notifié.",
     "self-removed": "Vous avez été retiré du groupe de notification.",
     "self-remove-error": "Échec de la sortie du groupe de notification."
+  },
+  "author-profile-update": {
+    "banner": "Veuillez compléter votre profil d'auteur en sélectionnant votre secteur et votre région au MPO.",
+    "go-to-profile": "Aller au profil",
+    "dot-label": "Votre profil d'auteur doit être mis à jour"
   }
 }
