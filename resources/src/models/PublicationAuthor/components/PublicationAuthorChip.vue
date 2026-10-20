@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PublicationAuthorResource } from '../PublicationAuthor'
 import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId'
+import AuthorshipDfoProfileItems from '@/models/Author/components/AuthorshipDfoProfileItems.vue'
 import RORLinkSpan from '@/models/Organization/components/RORLinkSpan.vue'
 import OrcidAvatar from '../../../components/OrcidAvatar.vue'
 
@@ -129,6 +130,11 @@ const removable = computed(() => {
             </q-item-label>
           </q-item-section>
         </q-item>
+        <AuthorshipDfoProfileItems
+          :sector="publicationAuthor.data.sector"
+          :region="publicationAuthor.data.region"
+          :is-emeritus="publicationAuthor.data.is_emeritus"
+        />
         <q-item>
           <q-item-section avatar>
             <q-avatar icon="mdi-email" text-color="primary" />
