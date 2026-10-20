@@ -7,6 +7,8 @@ export interface MenuItem {
   tooltipVisible: boolean
   external?: boolean
   href?: string
+  /** show a red dot on the icon to draw attention to the item */
+  dot?: boolean
 }
 
 defineProps<{
@@ -26,7 +28,14 @@ defineProps<{
     :aria-label="item.label"
   >
     <q-item-section avatar>
-      <q-icon :name="item.icon" />
+      <q-icon :name="item.icon">
+        <q-badge
+          v-if="item.dot"
+          rounded
+          floating
+          color="red"
+        />
+      </q-icon>
       <q-tooltip
         v-if="item.tooltipVisible"
         anchor="center left"

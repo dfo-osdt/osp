@@ -11,6 +11,7 @@ test('a DFO author with an incomplete profile is reminded and can open their aut
 
     $page->waitForText('Please complete your author profile')
         ->assertPresent('[data-test="profile-update-dot"]')
+        ->assertPresent('.q-drawer [aria-label="Author Profile"] .q-badge')
         ->click('Go to profile')
         ->waitForText('DFO Sector')
         ->assertSee('DFO Region');
@@ -29,7 +30,8 @@ test('a DFO author with a complete profile is not reminded', function (): void {
     $page->click('[data-test="user-menu-button"]')
         ->waitForText('Dashboard')
         ->assertDontSee('Please complete your author profile')
-        ->assertMissing('[data-test="profile-update-dot"]');
+        ->assertMissing('[data-test="profile-update-dot"]')
+        ->assertMissing('.q-drawer [aria-label="Author Profile"] .q-badge');
 
     assertNoRealJavascriptErrors($page);
 });
