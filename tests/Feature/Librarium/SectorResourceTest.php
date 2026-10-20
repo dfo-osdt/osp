@@ -21,7 +21,7 @@ function sectorAdmin(): User
 
 it('lists the sectors for an admin', function (): void {
     $this->actingAs(sectorAdmin())->livewire(ListSectors::class)
-        ->assertCanSeeTableRecords(Sector::all());
+        ->assertCanSeeTableRecords(Sector::query()->orderBy('name_en')->limit(10)->get(), inOrder: true);
 });
 
 it('forbids a non-admin from listing the sectors', function (): void {
