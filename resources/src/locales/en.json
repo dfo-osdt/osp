@@ -58,8 +58,8 @@
   "author": {
     "edit-author-details": "Edit Author Details",
     "view-profile": "View Author Profile",
-    "emeritus": "Emeritus",
-    "emeritus-hint": "Turn on if you hold emeritus status at DFO."
+    "emeritus": "Emeritus Scientist",
+    "emeritus-hint": "Turn on if you are an emeritus scientist at DFO."
   },
   "edit-author-dialog": {
     "title": "Edit Author",
@@ -1017,8 +1017,8 @@
     "with-orcid": "With ORCID",
     "with-orcid-caption": "Authors with an associated ORCID",
     "emeritus-any": "Any emeritus status",
-    "emeritus-only": "Emeritus only",
-    "emeritus-excluded": "Excluding emeritus",
+    "emeritus-only": "Emeritus scientists only",
+    "emeritus-excluded": "Excluding emeritus scientists",
     "in-sector": "in sector",
     "in-region": "in region"
   },
