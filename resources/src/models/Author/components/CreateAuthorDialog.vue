@@ -4,8 +4,10 @@ import type { Author, AuthorResource } from '../Author'
 import { extractErrorMessages } from '@/api/errors'
 import BaseDialog from '@/components/BaseDialog.vue'
 import OrcidInput from '@/components/OrcidInput.vue'
+import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
 import { AuthorService } from '../Author'
+import AuthorDfoProfileFields from './AuthorDfoProfileFields.vue'
 
 const emit = defineEmits<{
   (event: 'created', payload: AuthorResource): void
@@ -19,9 +21,25 @@ const email = ref('')
 const organizationId = ref<number | null>(null)
 const isIndependent = ref(false)
 const orcId = ref('')
+const sectorId = ref<number | null>(null)
+const regionId = ref<number | null>(null)
+const isEmeritus = ref(false)
 const errorMessage = ref('')
 const showPersonalEmailWarning = ref(false)
 const loading = ref(false)
+
+const defaultOrganizationId = useDefaultOrganizationId()
+
+// Sector, region and emeritus status only apply to DFO authors
+const isInternal = computed(() => !isIndependent.value && organizationId.value === defaultOrganizationId)
+
+watch(isInternal, (internal) => {
+  if (!internal) {
+    sectorId.value = null
+    regionId.value = null
+    isEmeritus.value = false
+  }
+})
 
 const personalEmailDomains = [
   'gmail.com',
@@ -59,6 +77,11 @@ async function createAuthor() {
       ? { is_independent: true }
       : { organization_id: organizationId.value as number }),
     orcid: orcId.value,
+    ...(isInternal.value && {
+      sector_id: sectorId.value,
+      region_id: regionId.value,
+      is_emeritus: isEmeritus.value,
+    }),
   }
 
   try {
@@ -155,6 +178,15 @@ async function createAuthor() {
             :rules="[
               (val: number | null) => val !== null || t('common.required'),
             ]"
+          />
+
+          <AuthorDfoProfileFields
+            v-if="isInternal"
+            v-model:sector-id="sectorId"
+            v-model:region-id="regionId"
+            v-model:is-emeritus="isEmeritus"
+            :required="false"
+            class="q-mb-md"
           />
 
           <OrcidInput

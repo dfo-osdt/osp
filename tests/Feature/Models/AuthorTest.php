@@ -61,6 +61,46 @@ test('a user can create an author', function (): void {
     ]);
 });
 
+test('a user can create a DFO author with a sector, region and emeritus status', function (): void {
+    $user = User::factory()->create();
+    $sector = Sector::factory()->create();
+    $regionId = Region::query()->value('id');
+
+    $response = $this->actingAs($user)->postJson('api/authors', [
+        'first_name' => 'Jane',
+        'last_name' => 'Doe',
+        'email' => 'jane.doe@dfo-mpo.gc.ca',
+        'organization_id' => Organization::getDefaultOrganization()->id,
+        'sector_id' => $sector->id,
+        'region_id' => $regionId,
+        'is_emeritus' => true,
+    ])->assertCreated();
+
+    expect(Author::query()->find($response->json('data.id')))
+        ->sector_id->toBe($sector->id)
+        ->region_id->toBe($regionId)
+        ->is_emeritus->toBeTrue();
+});
+
+test('creating a non-DFO author ignores the sector, region and emeritus status', function (): void {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('api/authors', [
+        'first_name' => 'Jane',
+        'last_name' => 'Doe',
+        'email' => 'jane.doe@example.org',
+        'organization_id' => Organization::factory()->create()->id,
+        'sector_id' => Sector::factory()->create()->id,
+        'region_id' => Region::query()->value('id'),
+        'is_emeritus' => true,
+    ])->assertCreated();
+
+    expect(Author::query()->find($response->json('data.id')))
+        ->sector_id->toBeNull()
+        ->region_id->toBeNull()
+        ->is_emeritus->toBeFalse();
+});
+
 test('a user can create an independent author without an affiliation', function (): void {
     $user = User::factory()->create();
 

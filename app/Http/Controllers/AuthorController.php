@@ -45,9 +45,17 @@ class AuthorController extends Controller
             'is_independent' => ['boolean'],
             'organization_id' => ['required_unless:is_independent,true', 'exists:organizations,id'],
             'orcid' => ['nullable', 'string', new Ocrid, 'unique:authors,orcid'],
+            'sector_id' => ['nullable', 'integer', 'exists:sectors,id'],
+            'region_id' => ['nullable', 'integer', 'exists:regions,id'],
+            'is_emeritus' => ['boolean'],
         ]);
 
         $validated = $this->resolveIndependentOrganization($validated);
+
+        // sector, region and emeritus only apply to DFO authors
+        if ((int) $validated['organization_id'] !== Organization::getDefaultOrganization()->id) {
+            unset($validated['sector_id'], $validated['region_id'], $validated['is_emeritus']);
+        }
 
         $author = (new Author)->create($validated);
 
