@@ -65,8 +65,8 @@ class PublicationAuthorsSheet implements FromQuery, ShouldAutoSize, WithHeadings
                 $pa->sector ? $pa->sector->name_en.' / '.$pa->sector->name_fr : null,
                 $pa->region ? $pa->region->name_en.' / '.$pa->region->name_fr : null,
                 match ($pa->is_emeritus) {
-                    true => 'Yes',
-                    false => 'No',
+                    true => 'Yes / Oui',
+                    false => 'No / Non',
                     null => null,
                 },
             ])
