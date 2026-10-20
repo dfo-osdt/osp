@@ -1162,9 +1162,11 @@
     "self-removed": "You have been removed from the notification group.",
     "self-remove-error": "Failed to leave notification group."
   },
-  "author-profile-update": {
-    "banner": "Please complete your author profile by selecting your DFO sector and region.",
+  "profile-update": {
     "go-to-profile": "Go to profile",
-    "dot-label": "Your author profile needs an update"
+    "dot-label": "Your profile needs an update",
+    "dfo-author-profile": {
+      "banner": "Please complete your author profile by selecting your DFO sector and region."
+    }
   }
 }

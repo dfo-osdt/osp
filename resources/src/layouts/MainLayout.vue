@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ProfileUpdate, ProfileUpdateKey } from '@/models/User/AuthenticatedUser'
 import { useQuasar } from 'quasar'
 import MainDrawer from '@/components/MainDrawer.vue'
 import MainFooter from '@/components/MainFooter.vue'
@@ -55,36 +56,42 @@ watch(
   },
 )
 
-// remind DFO authors to fill their sector and region, once per app load
-let profileUpdateReminderShown = false
+// remind users of each part of their profile to update, once per app load
+const profileUpdateBanners: Record<ProfileUpdateKey, () => string> = {
+  'dfo-author-profile': () => t('profile-update.dfo-author-profile.banner'),
+}
+const shownProfileUpdateReminders = new Set<ProfileUpdateKey>()
 watch(
-  () => authStore.user?.needs_profile_update,
-  (needsProfileUpdate) => {
-    if (!needsProfileUpdate || profileUpdateReminderShown)
-      return
-
-    profileUpdateReminderShown = true
-    $q.notify({
-      message: t('author-profile-update.banner'),
-      color: 'primary',
-      icon: 'mdi-badge-account-outline',
-      position: 'top',
-      timeout: 30000,
-      progress: true,
-      actions: [
-        {
-          label: t('author-profile-update.go-to-profile'),
-          color: 'white',
-          handler: () => {
-            router.push({ name: 'settings.author' })
-          },
-        },
-        { 'icon': 'mdi-close', 'color': 'white', 'round': true, 'aria-label': t('common.close') },
-      ],
-    })
+  () => authStore.user?.profile_updates,
+  (profileUpdates = []) => {
+    profileUpdates
+      .filter(update => !shownProfileUpdateReminders.has(update.key))
+      .forEach(update => showProfileUpdateReminder(update))
   },
   { immediate: true },
 )
+
+function showProfileUpdateReminder(update: ProfileUpdate) {
+  shownProfileUpdateReminders.add(update.key)
+  $q.notify({
+    message: profileUpdateBanners[update.key](),
+    color: 'primary',
+    icon: 'mdi-account-edit-outline',
+    position: 'top',
+    timeout: 30000,
+    progress: true,
+    actions: [
+      {
+        label: t('profile-update.go-to-profile'),
+        color: 'white',
+        handler: () => {
+          router.push({ name: update.route })
+        },
+      },
+      { 'icon': 'mdi-close', 'color': 'white', 'round': true, 'aria-label': t('common.close') },
+    ],
+  })
+}
 </script>
 
 <template>
