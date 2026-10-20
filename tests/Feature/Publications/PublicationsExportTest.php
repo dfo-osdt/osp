@@ -55,6 +55,6 @@ test('the excel export lists the sector, region and emeritus status recorded on 
         ->and(array_slice($rows[1], -3))->toBe([
             $author->sector->name_en.' / '.$author->sector->name_fr,
             $author->region->name_en.' / '.$author->region->name_fr,
-            'Yes',
+            'Yes / Oui',
         ]);
 });
