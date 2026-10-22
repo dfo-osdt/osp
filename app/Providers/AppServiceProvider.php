@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Enums\Permissions\UserPermission;
 use App\Models\Publication;
 use App\Observers\PublicationObserver;
+use App\Orcid\OrcidClientFactory;
 use App\Policies\MediaPolicy;
 use App\Services\MicrosoftGraphService;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(OrcidClientFactory::class, fn (): OrcidClientFactory => OrcidClientFactory::fromConfig());
     }
 
     /**

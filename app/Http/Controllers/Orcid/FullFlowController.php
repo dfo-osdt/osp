@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Orcid;
 
-use App\Http\Integrations\Orcid\Enums\ORCIDAuthScope;
+use App\Jobs\SyncAuthorEmploymentWithOrcid;
 use App\Models\User;
+use App\Orcid\OrcidClientFactory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Spatie\Activitylog\Facades\Activity as ActivityLog;
+use VincentAuger\OrcidSdk\Enums\Scope;
+use VincentAuger\OrcidSdk\Exceptions\OrcidException;
 
 /**
  * Implements the 3-legged OAuth flow for ORCID. More information can be found at
@@ -20,10 +22,11 @@ use Spatie\Activitylog\Facades\Activity as ActivityLog;
  */
 class FullFlowController
 {
+    public function __construct(private readonly OrcidClientFactory $orcid) {}
+
     public function callback(Request $request): RedirectResponse
     {
         Log::debug('Callback from ORCID');
-        Log::debug($request->all());
 
         $frontendUrl = config('app.frontend_url');
 
@@ -59,47 +62,39 @@ class FullFlowController
             return redirect($frontendUrl.'#/auth/orcid-callback?status=error&error_type='.$validated['error'].'&error_description='.$validated['error_description']);
         }
 
-        Log::info('User found for ORCID callback');
-        Log::debug($user);
+        if (! isset($validated['code'])) {
+            Log::error('No authorization code in ORCID callback');
 
-        $baseUrl = $this->getBaseUrl();
-
-        $payload = [
-            'client_id' => config('osp.orcid.client_id'),
-            'client_secret' => config('osp.orcid.client_secret'),
-            'grant_type' => 'authorization_code',
-            'code' => $validated['code'],
-            'redirect_uri' => config('osp.orcid.redirect_uri').'?key='.$validated['key'],
-        ];
+            return redirect($frontendUrl.'#/auth/orcid-callback?status=failed');
+        }
 
         Log::info('Requesting access token from ORCID');
-        $response = Http::asForm()->accept('application/json')->post("https://$baseUrl/oauth/token", $payload);
 
-        if ($response->failed()) {
-            Log::error('Failed to get access token from ORCID');
-            Log::debug($response->body());
+        try {
+            $token = $this->orcid->oauth()->exchangeCode($validated['code'], $this->redirectUri($validated['key']));
+        } catch (OrcidException $exception) {
+            Log::error('Failed to get access token from ORCID', ['error' => $exception->getMessage()]);
 
             return redirect($frontendUrl.'#/auth/orcid-callback?status=failed');
         }
 
         Log::info('Access token received from ORCID');
-        $accessToken = $response->json('access_token');
-        $expiresIn = $response->json('expires_in');
-        $refreshToken = $response->json('refresh_token');
-        $scope = $response->json('scope');
-        $orcid = $response->json('orcid');
 
         ActivityLog::defaultCauser($user);
 
         $author = $user->author;
 
-        $author->orcid = 'https://'.$baseUrl.'/'.$orcid;
-        $author->orcid_access_token = $accessToken;
-        $author->orcid_token_scope = $scope;
-        $author->orcid_refresh_token = $refreshToken;
+        $author->orcid = $this->orcid->environment->oauthUrl().'/'.$token->orcid;
+        $author->orcid_access_token = $token->accessToken;
+        $author->orcid_token_scope = Scope::encode($token->scopes);
+        $author->orcid_refresh_token = $token->refreshToken;
         $author->orcid_verified = true;
-        $author->orcid_expires_at = now()->addSeconds($expiresIn);
+        $author->orcid_expires_at = now()->addSeconds($token->expiresIn);
         $author->save();
+
+        // sync what changed while the author was not connected
+        $pending = SyncAuthorEmploymentWithOrcid::dispatchPendingFor($author);
+        Log::info('ORCID connected', ['author_id' => $author->id, 'pending_employments' => $pending]);
 
         return redirect($frontendUrl.'#/auth/orcid-callback?status=success');
     }
@@ -109,13 +104,7 @@ class FullFlowController
      */
     public function redirect(Request $request): RedirectResponse
     {
-        // get current locale
-        $locale = app()->getLocale();
-
-        $clientID = config('osp.orcid.client_id');
-        $redirectURI = config('osp.orcid.redirect_uri');
-
-        if (! $clientID || ! $redirectURI) {
+        if (! $this->orcid->isConfigured()) {
             throw ValidationException::withMessages(['orcid' => __('Server side ORCID configuration is missing - please contact the administrator.')]);
         }
 
@@ -123,27 +112,23 @@ class FullFlowController
         $key = Str::random(16);
         Cache::add($key, Auth::id(), now()->addMinutes(15));
 
-        // add key to redirect URI
-        $redirectURI .= '?key='.$key;
-
-        // encode URI - if it's not encoded, ORCID will returns to base URL
-        $encoded = urlencode($redirectURI);
-        $scope = ORCIDAuthScope::completeAccess();
-
-        $base_url = $this->getBaseUrl();
-
-        // build the link
-        $link = "https://$base_url/oauth/authorize?client_id=$clientID&response_type=code&scope=$scope&redirect_uri=$encoded&lang=$locale";
+        $link = $this->orcid->oauth()->authorizationUrl(
+            scopes: $this->orcid->scopes(),
+            redirectUri: $this->redirectUri($key),
+            lang: app()->getLocale(),
+        );
 
         Log::info('Redirecting to ORCID for authorization');
-        Log::debug($link);
 
-        // redirect to ORCID
         return redirect($link);
     }
 
-    protected function getBaseUrl(): string
+    /**
+     * The key identifying the user is added to the redirect URI; ORCID requires the
+     * exact same URI when exchanging the code.
+     */
+    private function redirectUri(string $key): string
     {
-        return config('osp.orcid.use_sandbox') ? 'sandbox.orcid.org' : 'orcid.org';
+        return $this->orcid->redirectUri.'?key='.$key;
     }
 }

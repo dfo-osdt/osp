@@ -40,7 +40,8 @@
     "spatie/laravel-query-builder": "^7.0",
     "spatie/laravel-ray": "^1.36.2",
     "spatie/simple-excel": "^3.0",
-    "symfony/http-client": "^8.0.0"
+    "symfony/http-client": "^8.0.0",
+    "vincentauger/orcid-php-sdk": "^0.1"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^3.0.0",

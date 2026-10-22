@@ -55,7 +55,7 @@ class AuthorEmploymentController extends Controller
 
         $authorEmployment->load('organization');
 
-        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_CREATE));
+        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment));
 
         $authorEmployment->setRelation('author', $author);
 
@@ -97,7 +97,7 @@ class AuthorEmploymentController extends Controller
         $authorEmployment->load('organization');
         $authorEmployment->refresh();
 
-        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_UPDATE));
+        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment));
 
         return AuthorEmploymentResource::make($authorEmployment);
     }
@@ -109,9 +109,10 @@ class AuthorEmploymentController extends Controller
     {
         $this->authorize('delete', $authorEmployment);
 
-        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment, SyncAuthorEmploymentWithOrcid::SYNC_TYPE_DELETE));
-
+        // soft delete first: the sync job removes the ORCID item, then the employment
         $authorEmployment->delete();
+
+        dispatch(new SyncAuthorEmploymentWithOrcid($authorEmployment));
 
         return response()->noContent();
     }
