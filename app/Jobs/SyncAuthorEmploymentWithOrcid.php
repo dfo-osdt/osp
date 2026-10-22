@@ -2,177 +2,185 @@
 
 namespace App\Jobs;
 
-use App\Http\Integrations\Orcid\Data\EmploymentData;
-use App\Http\Integrations\Orcid\OrcidMemberAPIConnector;
-use App\Http\Integrations\Orcid\Requests\DeleteEmploymentRequest;
-use App\Http\Integrations\Orcid\Requests\PostEmploymentRequest;
-use App\Http\Integrations\Orcid\Requests\PutEmploymentRequest;
+use App\Models\Author;
 use App\Models\AuthorEmployment;
+use App\Orcid\Exceptions\AuthorNotConnectedToOrcid;
+use App\Orcid\Exceptions\EmploymentNotSyncable;
+use App\Orcid\Mappers\EmploymentMapper;
+use App\Orcid\OrcidClientFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use Spatie\LaravelData\Optional;
+use VincentAuger\OrcidSdk\Enums\AffiliationType;
+use VincentAuger\OrcidSdk\Exceptions\OrcidAuthException;
+use VincentAuger\OrcidSdk\Exceptions\OrcidException;
+use VincentAuger\OrcidSdk\Exceptions\OrcidForbiddenException;
+use VincentAuger\OrcidSdk\Exceptions\OrcidNotFoundException;
+use VincentAuger\OrcidSdk\Exceptions\OrcidRequestException;
+use VincentAuger\OrcidSdk\Resources\AffiliationsResource;
 
+/**
+ * Brings an author employment and its ORCID employment item in line, based on
+ * the state of the employment when the job runs:
+ *
+ * - deleted: delete it on ORCID (if it was ever synced), then remove it from OSP
+ * - synced before: update it on ORCID (recreate it if the author deleted it there)
+ * - never synced: create it on ORCID and store the put-code
+ *
+ * When the author is not connected to ORCID, or the organization lacks data ORCID
+ * requires, the employment stays pending. Pending employments are synced again
+ * when the author reconnects (see dispatchPendingFor()).
+ */
 class SyncAuthorEmploymentWithOrcid implements ShouldQueue
 {
     use Queueable;
 
-    const SYNC_TYPE_CREATE = 'create';
+    /**
+     * Retries only happen for temporary ORCID failures (outages, rate limits,
+     * connection errors); other errors fail the job immediately.
+     */
+    public int $tries = 5;
 
-    const SYNC_TYPE_UPDATE = 'update';
-
-    const SYNC_TYPE_DELETE = 'delete';
-
-    public $tries = 3;
+    public function __construct(public AuthorEmployment $authorEmployment) {}
 
     /**
-     * Create a new job instance.
+     * @return int[]
      */
-    public function __construct(protected AuthorEmployment $authorEmployment, protected string $syncType)
+    public function backoff(): array
     {
-        Log::debug('Job Created: Syncing author employment with ORCID', [
-            'author_employment_id' => $authorEmployment->id,
-            'syncType' => $syncType,
-        ]);
-
+        return [60, 300, 900, 3600];
     }
 
     /**
-     * Execute the job.
+     * Never sync the same employment twice at the same time (e.g. created then
+     * quickly updated), which could create duplicate items on ORCID.
+     *
+     * @return object[]
      */
-    public function handle(): void
+    public function middleware(): array
     {
-        Log::debug('Job Starting: Syncing author employment with ORCID');
+        return [new WithoutOverlapping((string) $this->authorEmployment->id)->releaseAfter(30)->expireAfter(300)];
+    }
 
-        // Does the author have a valid ORCID connection?
-        $author = $this->authorEmployment->author;
-        if (! $author->hasValidOrcidCredentials()) {
-            Log::error('SyncAuthor: Author does not have valid ORCID credentials');
+    /**
+     * Dispatch a sync for every employment of the author that is out of sync,
+     * e.g. after the author (re)connects their ORCID record.
+     *
+     * @return int The number of jobs dispatched
+     */
+    public static function dispatchPendingFor(Author $author): int
+    {
+        $pending = $author->employments()->withTrashed()->get()->filter(
+            fn (AuthorEmployment $employment): bool => $employment->trashed()
+                ? $employment->isSyncedWithOrcid()
+                : $employment->needsSyncWithOrcid(),
+        );
+
+        $pending->each(fn (AuthorEmployment $employment): PendingDispatch => dispatch(new self($employment)));
+
+        return $pending->count();
+    }
+
+    public function handle(OrcidClientFactory $orcid): void
+    {
+        $employment = $this->authorEmployment;
+
+        // never synced and now deleted: nothing to remove on ORCID
+        if ($employment->trashed() && ! $employment->isSyncedWithOrcid()) {
+            $employment->forceDelete();
 
             return;
         }
 
-        $connector = new OrcidMemberAPIConnector($author->orcid_access_token, $author->orcid_number);
-
-        switch ($this->syncType) {
-            case self::SYNC_TYPE_CREATE:
-                $this->createEmploymentRecordInOrcid($connector);
-                break;
-            case self::SYNC_TYPE_UPDATE:
-                $this->updateEmploymentRecordInOrcid($connector);
-                break;
-            case self::SYNC_TYPE_DELETE:
-                $this->deleteEmploymentRecordInOrcid($connector);
-                break;
-            default:
-                Log::error('SyncAuthor: Invalid sync type');
-                $this->fail('Invalid sync type');
-                break;
-        }
-    }
-
-    private function createEmploymentRecordInOrcid(OrcidMemberAPIConnector $connector): void
-    {
-        $employmentData = EmploymentData::fromModel($this->authorEmployment);
-
-        // there should be no putcode here; the only scneario where this
-        // is usefull is when the record is being updated after being
-        // mistakenly deleted in ORCID profile by user.
-        $employmentData->putCode = Optional::create();
-
-        $request = new PostEmploymentRequest($employmentData);
-        $response = $connector->send($request);
-
-        if ($response->failed() || $response->status() !== 201) {
-            Log::error('SyncAuthor: Error creating employment record in ORCID', [
-                'status' => $response->status(),
-                'headers' => $response->headers()->all(),
-            ]);
-            $response->throw();
+        if (! $employment->trashed() && ! $employment->needsSyncWithOrcid()) {
+            return;
         }
 
-        if (! $response->header('location')) {
-            throw new \Exception('No location header in response - cannot get putcode');
-        }
+        try {
+            $affiliations = $orcid->forAuthor($employment->author)->affiliations();
 
-        $location = $response->header('location');
-        $putcode = (int) Str::afterLast($location, '/');
-
-        $this->authorEmployment->orcid_putcode = $putcode;
-        $this->authorEmployment->orcid_updated_at = now();
-        $this->authorEmployment->save();
-
-        Log::info('SyncAuthor: Employment record created in ORCID', [
-            'author_employment_id' => $this->authorEmployment->id,
-        ]);
-
-    }
-
-    private function updateEmploymentRecordInOrcid(OrcidMemberAPIConnector $connector): void
-    {
-        $employmentData = EmploymentData::fromModel($this->authorEmployment);
-        $request = new PutEmploymentRequest($employmentData);
-        $response = $connector->send($request);
-
-        if ($response->failed() || $response->status() !== 200) {
-
-            if ($response->status() === 404) {
-                Log::error('SyncAuthor: Employment record not found in ORCID - Likely Deleted', [
-                    'author_employment_id' => $this->authorEmployment->id,
-                ]);
-                $this->createEmploymentRecordInOrcid($connector);
-
-                return;
+            if ($employment->trashed()) {
+                $this->delete($affiliations, $employment);
+            } else {
+                $this->createOrUpdate($affiliations, $employment);
             }
-
-            Log::error('SyncAuthor: Error updating employment record in ORCID', [
-                'status' => $response->status(),
-                'headers' => $response->headers()->all(),
-            ]);
-            $response->throw();
+        } catch (AuthorNotConnectedToOrcid|EmploymentNotSyncable $exception) {
+            Log::info('ORCID sync pending: '.$exception->getMessage());
+        } catch (OrcidException $exception) {
+            $this->handleOrcidFailure($exception);
         }
-
-        $this->authorEmployment->orcid_updated_at = now();
-        $this->authorEmployment->save();
-
-        Log::info('SyncAuthor: Employment record updated in ORCID', [
-            'author_employment_id' => $this->authorEmployment->id,
-        ]);
-
     }
 
-    private function deleteEmploymentRecordInOrcid(OrcidMemberAPIConnector $connector): void
+    private function createOrUpdate(AffiliationsResource $affiliations, AuthorEmployment $employment): void
     {
-        $putcode = $this->authorEmployment->orcid_putcode;
+        $input = EmploymentMapper::toAffiliationInput($employment);
 
-        // It's possible that the record was never created in ORCID, in this case
-        // we can just delete the record from the database.
-        if (! $putcode) {
-            Log::info('SyncAuthor: Deleting Employment record without a putcode', [
-                'author_employment_id' => $this->authorEmployment->id,
-            ]);
-            $this->authorEmployment->forceDelete();
-
-            return;
+        if ($employment->isSyncedWithOrcid()) {
+            try {
+                $affiliations->update(AffiliationType::Employment, $employment->orcid_putcode, $input);
+            } catch (OrcidNotFoundException) {
+                // the author deleted it on ORCID: add it again
+                Log::info("ORCID employment {$employment->orcid_putcode} not found, creating it again", ['author_employment_id' => $employment->id]);
+                $employment->orcid_putcode = $affiliations->create(AffiliationType::Employment, $input);
+            }
+        } else {
+            $employment->orcid_putcode = $affiliations->create(AffiliationType::Employment, $input);
         }
 
-        $request = new DeleteEmploymentRequest($putcode);
-        $response = $connector->send($request);
+        $employment->orcid_updated_at = now();
 
-        if ($response->failed()) {
-            Log::error('SyncAuthor: Error deleting employment record in ORCID', [
-                'status' => $response->status(),
-                'headers' => $response->headers()->all(),
-            ]);
-            $response->throw();
+        // syncing is not a change to the employment: keep its updated_at
+        AuthorEmployment::withoutTimestamps(fn () => $employment->save());
+
+        Log::info('ORCID employment synced', ['author_employment_id' => $employment->id, 'put_code' => $employment->orcid_putcode]);
+    }
+
+    private function delete(AffiliationsResource $affiliations, AuthorEmployment $employment): void
+    {
+        try {
+            $affiliations->delete(AffiliationType::Employment, $employment->orcid_putcode);
+        } catch (OrcidNotFoundException) {
+            // already deleted on ORCID
         }
 
-        Log::info('SyncAuthor: Employment record deleted in ORCID', [
+        $employment->forceDelete();
+
+        Log::info('ORCID employment deleted', ['author_employment_id' => $employment->id]);
+    }
+
+    /**
+     * Retry temporary failures; fail everything else without retrying.
+     */
+    private function handleOrcidFailure(OrcidException $exception): void
+    {
+        $context = [
             'author_employment_id' => $this->authorEmployment->id,
-        ]);
+            'error' => $exception->getMessage(),
+        ];
 
-        $this->authorEmployment->forceDelete();
+        if ($exception->isRetryable()) {
+            Log::warning('ORCID sync failed, will retry', $context);
 
+            throw $exception;
+        }
+
+        // the token was revoked, expired or lacks the write scope: the author must reconnect
+        if ($exception instanceof OrcidAuthException || ($exception instanceof OrcidForbiddenException && $exception->isMissingScope())) {
+            Log::warning('ORCID token no longer valid, disconnecting the author', $context);
+            $this->authorEmployment->author->clearOrcidToken();
+        } elseif ($exception instanceof OrcidForbiddenException && $exception->isNotSource()) {
+            // OSP only stores put-codes it created: this points to a misconfiguration,
+            // e.g. a put-code created with another environment's ORCID client
+            Log::error('ORCID refused the change: this client is not the source of the item', $context);
+        } else {
+            Log::error('ORCID rejected the employment', [
+                ...$context,
+                'developer_message' => $exception instanceof OrcidRequestException ? $exception->developerMessage : null,
+            ]);
+        }
+
+        $this->fail($exception);
     }
 }

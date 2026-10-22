@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Orcid;
 
-use App\Models\Author;
+use App\Orcid\OrcidClientFactory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use VincentAuger\OrcidSdk\Exceptions\OrcidException;
 
 class RevokeTokenController
 {
-    public function __invoke()
+    public function __invoke(OrcidClientFactory $orcid): JsonResponse
     {
         $author = Auth::user()->author;
         Log::info('Revoking ORCID token for author '.$author->id);
@@ -24,19 +25,10 @@ class RevokeTokenController
             ]);
         }
 
-        $payload = [
-            'client_id' => config('osp.orcid.client_id'),
-            'client_secret' => config('osp.orcid.client_secret'),
-            'token' => $author->orcid_access_token,
-        ];
-
-        // Revoke the token
-        $baseUrl = $this->getBaseUrl();
-        $response = Http::asForm()->accept('application/json')->post("https://$baseUrl/oauth/revoke", $payload);
-
-        if ($response->status() !== 200) {
-            Log::error('Failed to revoke ORCID token for author '.$author->id);
-            Log::error($response->json());
+        try {
+            $orcid->oauth()->revoke($author->orcid_access_token);
+        } catch (OrcidException $exception) {
+            Log::error('Failed to revoke ORCID token for author '.$author->id, ['error' => $exception->getMessage()]);
 
             throw ValidationException::withMessages([
                 'author' => 'Failed to revoke token with ORCID, try again later',
@@ -50,10 +42,5 @@ class RevokeTokenController
         return response()->json([
             'message' => 'ORCID token revoked',
         ]);
-    }
-
-    private function getBaseUrl(): string
-    {
-        return config('osp.orcid.use_sandbox') ? 'sandbox.orcid.org' : 'orcid.org';
     }
 }

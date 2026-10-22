@@ -18,6 +18,7 @@ use Illuminate\Support\Carbon;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
+use VincentAuger\OrcidSdk\Enums\Scope as OrcidScope;
 
 /**
  * @property int $id
@@ -165,8 +166,9 @@ class Author extends Model
     }
 
     /**
-     * Does this author have a valid ORCID connection
-     * according to the token and the verified flag?
+     * Does this author have a valid ORCID connection that lets OSP write
+     * to their record: verified, with an unexpired token that has the
+     * /activities/update scope?
      */
     public function hasValidOrcidCredentials(): bool
     {
@@ -176,8 +178,21 @@ class Author extends Model
         if (! $this->orcid_access_token) {
             return false;
         }
+        if (! in_array(OrcidScope::ActivitiesUpdate, $this->orcidScopes(), true)) {
+            return false;
+        }
 
         return $this->orcid_expires_at >= now();
+    }
+
+    /**
+     * The scopes granted with the stored ORCID token
+     *
+     * @return OrcidScope[]
+     */
+    public function orcidScopes(): array
+    {
+        return OrcidScope::decode((string) $this->orcid_token_scope);
     }
 
     /**

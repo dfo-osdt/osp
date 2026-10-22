@@ -82,6 +82,22 @@ class AuthorFactory extends Factory
     }
 
     /**
+     * Connected to ORCID with a token OSP can write with (a valid iD,
+     * the scopes OSP asks for and a long-lived token)
+     */
+    public function withOrcidConnection(string $scope = '/read-limited /activities/update /person/update'): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'orcid' => 'https://orcid.org/0000-0002-1825-0097',
+            'orcid_verified' => true,
+            'orcid_access_token' => 'orcid-test-access-token',
+            'orcid_refresh_token' => 'orcid-test-refresh-token',
+            'orcid_token_scope' => $scope,
+            'orcid_expires_at' => now()->addYears(20),
+        ]);
+    }
+
+    /**
      * Has expertise
      */
     public function hasExpertises(int $qty = 1)

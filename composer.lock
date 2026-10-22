@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7df58d7d74cc8ae5b1af04b20f08a61",
+    "content-hash": "d272eacebdad707643dd19f874c29185",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -14432,6 +14432,64 @@
                 }
             ],
             "time": "2026-10-19T10:48:00+00:00"
+        },
+        {
+            "name": "vincentauger/orcid-php-sdk",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vincentauger/orcid-php-sdk.git",
+                "reference": "93966d18960952b57e4f98cefd4758c6c1f7a48e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vincentauger/orcid-php-sdk/zipball/93966d18960952b57e4f98cefd4758c6c1f7a48e",
+                "reference": "93966d18960952b57e4f98cefd4758c6c1f7a48e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.4.0",
+                "saloonphp/saloon": "^4.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.22.1",
+                "pestphp/pest": "^4.0.0",
+                "phpstan/phpstan": "^2.1.16",
+                "rector/rector": "^2.0.16",
+                "symfony/var-dumper": "^7.2.6",
+                "vlucas/phpdotenv": "^5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "VincentAuger\\OrcidSdk\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vincent Auger",
+                    "email": "vincent.auger@gmail.com"
+                }
+            ],
+            "description": "A modern, framework-agnostic PHP SDK for the ORCID API",
+            "homepage": "https://github.com/vincentauger/orcid-php-sdk",
+            "keywords": [
+                "api",
+                "open science",
+                "orcid",
+                "package",
+                "php",
+                "sdk"
+            ],
+            "support": {
+                "issues": "https://github.com/vincentauger/orcid-php-sdk/issues",
+                "source": "https://github.com/vincentauger/orcid-php-sdk"
+            },
+            "time": "2026-10-22T20:39:59+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

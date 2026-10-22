@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Http\Integrations\Orcid\Enums\PeerReviewRole;
-use App\Http\Integrations\Orcid\Enums\PeerReviewType;
 use Database\Factories\ManuscriptPeerReviewerFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use VincentAuger\OrcidSdk\Enums\PeerReviewRole;
+use VincentAuger\OrcidSdk\Enums\PeerReviewType;
 
 /**
  * @property PeerReviewType $type
@@ -52,8 +52,8 @@ class ManuscriptPeerReviewer extends Model
 
     #[\Override]
     protected $attributes = [
-        'role' => PeerReviewRole::REVIEWER,
-        'type' => PeerReviewType::REVIEW,
+        'role' => PeerReviewRole::Reviewer,
+        'type' => PeerReviewType::Review,
     ];
 
     public function casts(): array

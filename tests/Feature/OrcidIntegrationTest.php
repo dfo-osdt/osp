@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Integrations\Orcid\Enums\ORCIDAuthScope;
 use App\Models\User;
 
 test('check OpenID redirect works', function (): void {
@@ -15,8 +14,8 @@ test('check OpenID redirect works', function (): void {
     expect(env('ORCID_CLIENT_ID'))->toBe($client_id);
     expect(env('ORCID_REDIRECT_URI'))->toBe($redirect_uri);
 
-    $encoded = urlencode($redirect_uri);
-    $scopes = ORCIDAuthScope::completeAccess();
+    $encoded = rawurlencode($redirect_uri);
+    $scopes = rawurlencode('/read-limited /activities/update /person/update');
 
     $response = $this->actingAs($user)->get('api/user/orcid/verify?locale=fr');
 
