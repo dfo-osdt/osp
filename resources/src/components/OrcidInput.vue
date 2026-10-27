@@ -2,6 +2,7 @@
 import { QInput } from 'quasar'
 
 const ORCID_REGEX = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/
+const PASTED_ORCID_REGEX = /(\d{4})-?(\d{4})-?(\d{4})-?(\d{3}[\dX])/i
 
 const { t } = useI18n()
 
@@ -25,6 +26,17 @@ const [modelValue, modelModifiers] = defineModel<string, 'stripBaseUrl'>({
     return val
   },
 })
+
+// the ORCID copy button copies the full URL, which the mask would mangle,
+// so pull the iD out of whatever was pasted
+function onPaste(event: ClipboardEvent) {
+  const match = event.clipboardData?.getData('text').match(PASTED_ORCID_REGEX)
+  if (!match) {
+    return
+  }
+  event.preventDefault()
+  modelValue.value = match.slice(1).join('-').toUpperCase()
+}
 
 const rules = [
   (val: string) =>
@@ -62,9 +74,11 @@ const rules = [
     v-model="modelValue"
     outlined
     label="ORCID"
+    data-test="orcid-input"
     mask="####-####-####-###X"
     prefix="https://orcid.org/"
     :rules="rules"
+    @paste="onPaste"
   />
 </template>
 
