@@ -100,6 +100,45 @@ test('an employment the author deleted on ORCID is created again', function (): 
     expect($employment->refresh()->orcid_putcode)->toBe(999);
 });
 
+test('an employment changed while ORCID is being updated stays pending', function (string $request, array $attributes, Closure $change): void {
+    $employment = orcidEmployment(['role_title' => 'Biologist', ...$attributes]);
+    Saloon::fake([
+        // the author edits the employment while ORCID is handling the request
+        $request => function () use ($request, $employment, $change): MockResponse {
+            $change(AuthorEmployment::query()->find($employment->id));
+
+            return $request === CreateAffiliation::class
+                ? MockResponse::make('', 201, ['Location' => 'https://api.orcid.org/v3.0/0000-0002-1825-0097/employment/12345'])
+                : MockResponse::make(['put-code' => 12345]);
+        },
+    ]);
+
+    runOrcidSync($employment)->assertNotFailed();
+
+    $employment = AuthorEmployment::withTrashed()->find($employment->id);
+    expect($employment->orcid_putcode)->toBe(12345) // kept, so the next sync does not create a duplicate
+        ->and($employment->orcid_updated_at)->toBeNull();
+})->with([
+    'edited during a create' => [CreateAffiliation::class, [], fn (AuthorEmployment $employment) => $employment->update(['role_title' => 'Senior Biologist'])],
+    'edited during an update' => [UpdateAffiliation::class, ['orcid_putcode' => 12345, 'orcid_updated_at' => null], fn (AuthorEmployment $employment) => $employment->update(['role_title' => 'Senior Biologist'])],
+    'deleted during a create' => [CreateAffiliation::class, [], fn (AuthorEmployment $employment) => $employment->delete()],
+]);
+
+test('saving an employment without changes while ORCID is being updated still marks it synced', function (): void {
+    $employment = orcidEmployment(['role_title' => 'Biologist']);
+    Saloon::fake([
+        CreateAffiliation::class => function () use ($employment): MockResponse {
+            AuthorEmployment::query()->find($employment->id)->forceFill(['orcid_updated_at' => null])->save();
+
+            return MockResponse::make('', 201, ['Location' => 'https://api.orcid.org/v3.0/0000-0002-1825-0097/employment/12345']);
+        },
+    ]);
+
+    runOrcidSync($employment)->assertNotFailed();
+
+    expect($employment->refresh()->needsSyncWithOrcid())->toBeFalse();
+});
+
 test('a deleted employment is removed from ORCID, then from OSP', function (): void {
     $mockClient = Saloon::fake([DeleteAffiliation::class => MockResponse::make('', 204)]);
     $employment = orcidEmployment(['orcid_putcode' => 12345, 'orcid_updated_at' => now()]);

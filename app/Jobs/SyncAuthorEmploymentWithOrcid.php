@@ -13,7 +13,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use VincentAuger\OrcidSdk\Data\Affiliations\AffiliationInput;
 use VincentAuger\OrcidSdk\Enums\AffiliationType;
 use VincentAuger\OrcidSdk\Exceptions\OrcidException;
 use VincentAuger\OrcidSdk\Exceptions\OrcidForbiddenException;
@@ -129,12 +131,50 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
             $employment->orcid_putcode = $affiliations->create(AffiliationType::Employment, $input);
         }
 
-        $employment->orcid_updated_at = now();
+        $this->markSynced($employment, $input);
+    }
 
-        // syncing is not a change to the employment: keep its updated_at
-        AuthorEmployment::withoutTimestamps(fn () => $employment->save());
+    /**
+     * Store the put-code and mark the employment as synced, unless it changed
+     * while ORCID was being updated (edited or deleted): what ORCID has is then
+     * out of date, so the employment stays pending for the job dispatched with
+     * that change. The put-code is always stored, so that job updates or deletes
+     * the item instead of creating a duplicate.
+     */
+    private function markSynced(AuthorEmployment $sent, AffiliationInput $input): void
+    {
+        $changed = DB::transaction(function () use ($sent, $input): bool {
+            $current = AuthorEmployment::withTrashed()->lockForUpdate()->findOrFail($sent->id);
+            $changed = $current->trashed() || ! $this->wouldSend($current, $input);
 
-        Log::info('ORCID employment synced', ['author_employment_id' => $employment->id, 'put_code' => $employment->orcid_putcode]);
+            $current->orcid_putcode = $sent->orcid_putcode;
+
+            if (! $changed) {
+                $current->orcid_updated_at = now();
+            }
+
+            // syncing is not a change to the employment: keep its updated_at
+            AuthorEmployment::withoutTimestamps(fn () => $current->save());
+
+            return $changed;
+        });
+
+        Log::info($changed ? 'ORCID employment changed while syncing, left pending' : 'ORCID employment synced', [
+            'author_employment_id' => $sent->id,
+            'put_code' => $sent->orcid_putcode,
+        ]);
+    }
+
+    /**
+     * Whether the employment, as it is now, maps to what was sent to ORCID
+     */
+    private function wouldSend(AuthorEmployment $employment, AffiliationInput $input): bool
+    {
+        try {
+            return EmploymentMapper::toAffiliationInput($employment) == $input;
+        } catch (EmploymentNotSyncable) {
+            return false;
+        }
     }
 
     private function delete(AffiliationsResource $affiliations, AuthorEmployment $employment): void
