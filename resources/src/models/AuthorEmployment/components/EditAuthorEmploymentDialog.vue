@@ -21,6 +21,15 @@ const startDate = ref(props.authorEmployment.data.start_date)
 const endDate = ref(props.authorEmployment.data.end_date)
 const today = new Date().toISOString().split('T')[0]
 
+// an employment ends at the earliest the day after it starts
+const minEndDate = computed(() => {
+  if (!startDate.value)
+    return null
+  const date = new Date(startDate.value)
+  date.setUTCDate(date.getUTCDate() + 1)
+  return date.toISOString().split('T')[0]
+})
+
 const { t } = useI18n()
 const q = useQuasar()
 
@@ -41,7 +50,6 @@ async function udpateAuthorEmployment() {
     await authorEmploymentService.update({
       id: props.authorEmployment.data.id,
       author_id: props.authorEmployment.data.author_id,
-      organization_id: props.authorEmployment.data.organization_id,
       role_title: roleTitle.value,
       department_name: departmentName.value,
       start_date: startDate.value,
@@ -109,7 +117,7 @@ function deleteAuthorEmployment() {
         <DateInput
           v-model="endDate"
           :label="t('orcid-employment-edit.end-date')"
-          :min-date="startDate"
+          :min-date="minEndDate"
           outlined
           clearable
           class="q-mb-md"

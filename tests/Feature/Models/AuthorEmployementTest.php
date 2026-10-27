@@ -142,3 +142,13 @@ test('adding a 75 char role title is valid', function (): void {
     expect($response->json('data.role_title'))->toBe(str_repeat('a', 75));
 
 });
+
+test('an employment must end after it starts', function (string $endDate): void {
+    $user = User::factory()->create();
+    $data = ['start_date' => '2021-01-05', 'end_date' => $endDate];
+
+    $this->actingAs($user)->postJson("api/authors/{$user->author->id}/employments", $data)->assertJsonValidationErrors('end_date');
+
+    $employment = AuthorEmployment::factory()->create(['author_id' => $user->author->id, 'organization_id' => Organization::getDefaultOrganization()->id]);
+    $this->actingAs($user)->putJson("api/authors/{$user->author->id}/employments/{$employment->id}", $data)->assertJsonValidationErrors('end_date');
+})->with(['same day' => '2021-01-05', 'before' => '2020-06-01']);
