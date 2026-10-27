@@ -67,6 +67,11 @@ export interface IAuthenticatedUser {
   profile_updates: ProfileUpdate[]
 }
 
+/** what refreshing from ORCID changed in OSP */
+export type OrcidRefreshResult
+  = | { refreshed: false }
+    | { refreshed: true, employments: { imported: number, deleted: number }, pending: number }
+
 /**
  * Parts of the user's profile the app can ask them to update.
  */
@@ -356,5 +361,11 @@ export class AuthenticatedUserService {
   public static async revokeOrcid(): Promise<boolean> {
     const response = await http.post('/api/user/orcid/revoke')
     return response.status === 200
+  }
+
+  /** pick up what the author changed directly on their ORCID record */
+  public static async refreshFromOrcid(): Promise<OrcidRefreshResult> {
+    const response = await http.post<never, OrcidRefreshResult>('/api/user/orcid/refresh')
+    return response.data
   }
 }

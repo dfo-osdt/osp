@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\SyncAuthorEmploymentWithOrcid;
+use App\Jobs\SyncAuthorFromOrcid;
 use App\Models\AuthorEmployment;
 use App\Models\Organization;
 use App\Models\User;
@@ -51,6 +52,7 @@ test('the callback stores the token and syncs pending employments', function ():
         && $request->body()->get('redirect_uri') === config('osp.orcid.redirect_uri').'?key=abcKEY123');
 
     Queue::assertPushed(SyncAuthorEmploymentWithOrcid::class, fn (SyncAuthorEmploymentWithOrcid $job): bool => $job->authorEmployment->is($pending));
+    Queue::assertPushed(SyncAuthorFromOrcid::class, fn (SyncAuthorFromOrcid $job): bool => $job->author->is($author));
 });
 
 test('the callback accepts codes with URL-safe characters', function (): void {

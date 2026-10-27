@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AuthorEmploymentResource } from '../AuthorEmployement'
+import { AuthenticatedUserService } from '@/models/User/AuthenticatedUser'
 import { AuthorEmploymentService } from '../AuthorEmployement'
 import AddAuthorEmploymentDialog from './AddAuthorEmploymentDialog.vue'
 import AuthorEmploymentList from './AuthorEmploymentList.vue'
@@ -16,7 +17,18 @@ const showCreateDialog = ref(false)
 
 onMounted(async () => {
   await loadAuthorEmployments()
+  await refreshFromOrcid()
 })
+
+// the author may have changed their employments directly on ORCID
+async function refreshFromOrcid() {
+  if (props.disabled)
+    return
+
+  const result = await AuthenticatedUserService.refreshFromOrcid()
+  if (result.refreshed && (result.employments.imported > 0 || result.employments.deleted > 0 || result.pending > 0))
+    await loadAuthorEmployments()
+}
 
 let timeoutId: NodeJS.Timeout | null = null
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Orcid;
 
 use App\Jobs\SyncAuthorEmploymentWithOrcid;
+use App\Jobs\SyncAuthorFromOrcid;
 use App\Models\User;
 use App\Orcid\OrcidClientFactory;
 use Illuminate\Http\RedirectResponse;
@@ -93,7 +94,9 @@ class FullFlowController
         $author->orcid_expires_at = now()->addSeconds($token->expiresIn);
         $author->save();
 
-        // sync what changed while the author was not connected
+        // pick up what changed on ORCID, then push what changed in OSP while the
+        // author was not connected
+        dispatch(new SyncAuthorFromOrcid($author));
         $pending = SyncAuthorEmploymentWithOrcid::dispatchPendingFor($author);
         Log::info('ORCID connected', ['author_id' => $author->id, 'pending_employments' => $pending]);
 
