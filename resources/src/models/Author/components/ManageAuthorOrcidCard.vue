@@ -8,7 +8,10 @@ const authStore = useAuthStore()
 const { t } = useI18n()
 const q = useQuasar()
 
-const url = '/api/user/orcid/verify'
+const localeStore = useLocaleStore()
+
+// a plain link, not an API call: pass the locale so ORCID shows the same language
+const url = computed(() => `/api/user/orcid/verify?locale=${localeStore.locale}`)
 
 const isVerified = computed(() => {
   return authStore.user?.author.data.orcid_verified

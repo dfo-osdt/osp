@@ -110,3 +110,15 @@ test('a failed revocation keeps the connection', function (): void {
 
     expect($user->author->refresh()->orcid_access_token)->toBe('token-to-revoke');
 });
+
+test('the authorization link uses the locale of the page', function (string $locale): void {
+    config(['osp.orcid.client_id' => 'APP-0000000000000001', 'osp.orcid.redirect_uri' => 'http://localhost/api/orcid/callback']);
+
+    $response = $this->actingAs(User::factory()->create())
+        ->withHeader('Accept-Language', 'fr-CA,fr;q=0.9,en;q=0.8') // what a browser sends on a plain link
+        ->get("api/user/orcid/verify?locale={$locale}")
+        ->assertRedirect();
+
+    parse_str((string) parse_url((string) $response->headers->get('Location'), PHP_URL_QUERY), $query);
+    expect($query['lang'])->toBe($locale);
+})->with(['en', 'fr']);
