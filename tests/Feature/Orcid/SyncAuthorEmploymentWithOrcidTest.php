@@ -22,7 +22,7 @@ function orcidEmployment(array $attributes = [], ?Author $author = null): Author
 {
     return AuthorEmployment::factory()->create([
         'author_id' => ($author ?? Author::factory()->withOrcidConnection()->create())->id,
-        'organization_id' => Organization::factory()->create(['country_code' => 'CA', 'ror_identifier' => 'https://ror.org/02qa1x782'])->id,
+        'organization_id' => Organization::getDefaultOrganization()->id,
         'start_date' => '2021-01-05',
         ...$attributes,
     ]);
@@ -146,8 +146,19 @@ test('employments stay pending when ORCID cannot be written to', function (Closu
     'token without the write scope' => [fn (): AuthorEmployment => orcidEmployment(author: Author::factory()->withOrcidConnection('/read-limited')->create())],
     'expired token' => [fn (): AuthorEmployment => orcidEmployment(author: Author::factory()->withOrcidConnection()->create(['orcid_expires_at' => now()->subDay()]))],
     'invalid ORCID iD' => [fn (): AuthorEmployment => orcidEmployment(author: Author::factory()->withOrcidConnection()->create(['orcid' => 'https://orcid.org/0000-0002-1825-0098']))],
-    'organization without ROR' => [fn (): AuthorEmployment => orcidEmployment(['organization_id' => Organization::factory()->create(['ror_identifier' => null])->id])],
-    'organization without country' => [fn (): AuthorEmployment => orcidEmployment(['organization_id' => Organization::factory()->create(['country_code' => null])->id])],
+    'end date before the start date' => [fn (): AuthorEmployment => orcidEmployment(['start_date' => '2021-01-05', 'end_date' => '2020-06-01'])],
+    'year ORCID cannot store' => [fn (): AuthorEmployment => orcidEmployment(['start_date' => '0202-01-05'])],
+    'organization other than DFO' => [fn (): AuthorEmployment => orcidEmployment(['organization_id' => Organization::factory()->create(['country_code' => 'CA', 'ror_identifier' => 'https://ror.org/03c4mmv16'])->id])],
+    'DFO without ROR' => [function (): AuthorEmployment {
+        Organization::getDefaultOrganization()->update(['ror_identifier' => null]);
+
+        return orcidEmployment();
+    }],
+    'DFO without country' => [function (): AuthorEmployment {
+        Organization::getDefaultOrganization()->update(['country_code' => null]);
+
+        return orcidEmployment();
+    }],
 ]);
 
 test('a revoked token disconnects the author and fails the job', function (): void {

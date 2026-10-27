@@ -18,7 +18,7 @@ export interface AuthorEmployment {
   readonly author?: AuthorResource
 }
 
-type AuthorEmploymentUpdate = Pick<AuthorEmployment, 'id' | 'author_id' | 'department_name' | 'role_title' | 'start_date' | 'end_date' | 'organization_id'>
+type AuthorEmploymentUpdate = Pick<AuthorEmployment, 'id' | 'author_id' | 'department_name' | 'role_title' | 'start_date' | 'end_date'>
 type AuthorEmploymentCreate = Omit<AuthorEmploymentUpdate, 'id'>
 
 export type AuthorEmploymentResource = Resource<AuthorEmployment>

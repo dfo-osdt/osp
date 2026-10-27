@@ -36,11 +36,11 @@ class AuthorEmploymentController extends Controller
             'role_title' => ['nullable', 'string', 'max:75'],
             'department_name' => ['nullable', 'string', 'max:75'],
             'start_date' => ['required', 'date'],
-            'end_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after:start_date'],
         ]);
 
-        // if orgnaiztion isn't the default, it is forbidden
-        if ($validated['organization_id'] && $validated['organization_id'] !== $defaultOrganization->id) {
+        // employments are only allowed with the default organization (DFO)
+        if (isset($validated['organization_id']) && $validated['organization_id'] !== $defaultOrganization->id) {
             abort(403, 'You are not allowed to create employments for other organizations');
         }
 
@@ -87,7 +87,7 @@ class AuthorEmploymentController extends Controller
             'role_title' => ['nullable', 'string', 'max:75'],
             'department_name' => ['nullable', 'string', 'max:75'],
             'start_date' => ['required', 'date'],
-            'end_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after:start_date'],
         ]);
 
         $authorEmployment->update($validated);

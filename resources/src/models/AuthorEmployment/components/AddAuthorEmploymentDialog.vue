@@ -28,6 +28,15 @@ const q = useQuasar()
 const authorEmploymentService = new AuthorEmploymentService(props.authorId)
 
 const today = new Date().toISOString().split('T')[0]
+
+// an employment ends at the earliest the day after it starts
+const minEndDate = computed(() => {
+  if (!startDate.value)
+    return null
+  const date = new Date(startDate.value)
+  date.setUTCDate(date.getUTCDate() + 1)
+  return date.toISOString().split('T')[0]
+})
 const loading = ref(false)
 
 async function createAuthorEmployment() {
@@ -43,7 +52,6 @@ async function createAuthorEmployment() {
   }).onOk(async () => {
     await authorEmploymentService.create({
       author_id: props.authorId,
-      organization_id: organizationId,
       role_title: roleTitle.value,
       department_name: departmentName.value,
       start_date: startDate.value as string,
@@ -95,7 +103,7 @@ async function createAuthorEmployment() {
         <DateInput
           v-model="endDate"
           :label="t('orcid-employment-edit.end-date')"
-          :min-date="startDate"
+          :min-date="minEndDate"
           outlined
           clearable
           class="q-mb-md"
