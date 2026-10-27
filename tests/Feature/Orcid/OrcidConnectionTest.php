@@ -53,6 +53,19 @@ test('the callback stores the token and syncs pending employments', function ():
     Queue::assertPushed(SyncAuthorEmploymentWithOrcid::class, fn (SyncAuthorEmploymentWithOrcid $job): bool => $job->authorEmployment->is($pending));
 });
 
+test('the callback accepts codes with URL-safe characters', function (): void {
+    Queue::fake();
+    $mockClient = Saloon::fake([ExchangeAuthorizationCode::class => orcidTokenResponse()]);
+
+    $user = User::factory()->create();
+    Cache::put('abcKEY123', $user->id, now()->addMinutes(15));
+
+    $this->get('api/orcid/callback?code=C4_qA-L&key=abcKEY123')
+        ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=success');
+
+    $mockClient->assertSent(fn (ExchangeAuthorizationCode $request): bool => $request->body()->get('code') === 'C4_qA-L');
+});
+
 test('the callback reports a failed token exchange', function (): void {
     Queue::fake();
     Saloon::fake([ExchangeAuthorizationCode::class => MockResponse::make(['error' => 'invalid_grant', 'error_description' => 'Invalid authorization code'], 400)]);

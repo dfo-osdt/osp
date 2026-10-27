@@ -31,10 +31,11 @@ class FullFlowController
         $frontendUrl = config('app.frontend_url');
 
         $validated = $request->validate([
-            'code' => ['string', 'alpha_num'],
+            // authorization codes are URL-safe: letters, digits, "-" and "_"
+            'code' => ['string', 'regex:/^[A-Za-z0-9_-]+$/'],
             'key' => ['required', 'string', 'alpha_num'],
             'error' => ['string'],
-            'error_description' => ['required_with:error, string'],
+            'error_description' => ['required_with:error', 'string'],
         ]);
 
         if (! Cache::has($validated['key'])) {
