@@ -26,6 +26,7 @@ use App\Http\Controllers\NotificationGroupMemberController;
 use App\Http\Controllers\NotificationGroupMembershipController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\FullFlowController;
+use App\Http\Controllers\Orcid\RefreshFromOrcidController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PreprintController;
@@ -69,6 +70,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes for 3-legged OAuth flow
     Route::get('/user/orcid/verify', [FullFlowController::class, 'redirect']);
     Route::post('/user/orcid/revoke', RevokeTokenController::class);
+    Route::post('/user/orcid/refresh', RefreshFromOrcidController::class);
 
     // Look for AAD users to invite
     Route::post('/azure-directory/users', [AzureDirectorySearchController::class, '__invoke']);

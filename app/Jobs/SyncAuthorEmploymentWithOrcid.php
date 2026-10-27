@@ -8,13 +8,13 @@ use App\Orcid\Exceptions\AuthorNotConnectedToOrcid;
 use App\Orcid\Exceptions\EmploymentNotSyncable;
 use App\Orcid\Mappers\EmploymentMapper;
 use App\Orcid\OrcidClientFactory;
+use App\Orcid\OrcidErrors;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\Log;
 use VincentAuger\OrcidSdk\Enums\AffiliationType;
-use VincentAuger\OrcidSdk\Exceptions\OrcidAuthException;
 use VincentAuger\OrcidSdk\Exceptions\OrcidException;
 use VincentAuger\OrcidSdk\Exceptions\OrcidForbiddenException;
 use VincentAuger\OrcidSdk\Exceptions\OrcidNotFoundException;
@@ -167,7 +167,7 @@ class SyncAuthorEmploymentWithOrcid implements ShouldQueue
         }
 
         // the token was revoked, expired or lacks the write scope: the author must reconnect
-        if ($exception instanceof OrcidAuthException || ($exception instanceof OrcidForbiddenException && $exception->isMissingScope())) {
+        if (OrcidErrors::revokesAccess($exception)) {
             Log::warning('ORCID token no longer valid, disconnecting the author', $context);
             $this->authorEmployment->author->clearOrcidToken();
         } elseif ($exception instanceof OrcidForbiddenException && $exception->isNotSource()) {
