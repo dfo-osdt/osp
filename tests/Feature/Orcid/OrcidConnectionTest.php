@@ -77,7 +77,7 @@ test('a callback finished in another browser does not link to the initiator', fu
     $mockClient->assertNothingSent();
 
     // logged against the attacker, and the planted link cannot be replayed
-    $activity = Activity::causedBy($attacker)->where('event', 'suspicious')->sole();
+    $activity = Activity::query()->causedBy($attacker)->where('event', 'suspicious')->sole();
     expect($activity->subject->is($attacker->author))->toBeTrue()
         ->and($activity->getProperty('reason'))->toBe('completed_by_another_user')
         ->and($activity->getProperty('completed_by_user_id'))->toBe($colleague->id)
@@ -98,7 +98,7 @@ test('a callback finished by the initiator in another browser is rejected but no
     $this->get($callback->value())
         ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=invalid_state');
 
-    $activity = Activity::causedBy($user)->sole();
+    $activity = Activity::query()->causedBy($user)->sole();
     expect($activity->event)->toBe('rejected')
         ->and($activity->getProperty('reason'))->toBe('no_state_in_session');
 });
