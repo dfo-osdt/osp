@@ -2,6 +2,7 @@
 
 use App\Actions\ROR\SyncRORData;
 use App\Models\Organization;
+use Illuminate\Support\Facades\File;
 use Spatie\Activitylog\Models\Activity;
 
 /**
@@ -33,5 +34,5 @@ test('the ROR sync skips records using the reserved independent researcher name'
         ->and(Organization::query()->where('ror_identifier', 'https://ror.org/00000good')->exists())->toBeTrue()
         ->and(Activity::query()->where('description', 'ROR record skipped: name reserved for independent researchers')->exists())->toBeTrue();
 
-    \Illuminate\Support\Facades\File::delete($path);
+    File::delete($path);
 });
