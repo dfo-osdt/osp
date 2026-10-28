@@ -480,24 +480,24 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
 
         $fields = [
             'author' => $this->publicationAuthors
-                ->map(self::bibtexAuthor(...))
+                ->map($this->bibtexAuthor(...))
                 ->implode(' and '),
-            'title' => self::bibtexTitle($this->title),
+            'title' => $this->bibtexTitle($this->title),
         ];
 
         if ($isDfo) {
-            $fields['type'] = self::escapeBibtex($this->journal->title);
-            $fields['institution'] = self::escapeBibtex($this->journal->publisher);
-            $fields['number'] = self::escapeBibtex($this->issue_number);
+            $fields['type'] = $this->escapeBibtex($this->journal->title);
+            $fields['institution'] = $this->escapeBibtex($this->journal->publisher);
+            $fields['number'] = $this->escapeBibtex($this->issue_number);
         } else {
-            $fields['journal'] = self::escapeBibtex($this->journal->title);
-            $fields['publisher'] = self::escapeBibtex($this->journal->publisher);
+            $fields['journal'] = $this->escapeBibtex($this->journal->title);
+            $fields['publisher'] = $this->escapeBibtex($this->journal->publisher);
         }
 
         $fields['year'] = $this->published_on?->format('Y');
         $fields['month'] = $this->published_on ? strtolower($this->published_on->format('M')) : null;
-        $fields['issn'] = self::escapeBibtex(trim((string) $this->journal->issn));
-        $fields['isbn'] = self::escapeBibtex($this->isbn);
+        $fields['issn'] = $this->escapeBibtex(trim((string) $this->journal->issn));
+        $fields['isbn'] = $this->escapeBibtex($this->isbn);
         // DOI is a verbatim field in biblatex, so it is never escaped
         $fields['doi'] = $this->doi ? str_replace('https://doi.org/', '', $this->doi) : null;
 
@@ -524,29 +524,29 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
         return ($name ?: 'publication').$this->published_on?->format('Y').'_'.$this->id;
     }
 
-    private static function bibtexAuthor(PublicationAuthor $publicationAuthor): string
+    private function bibtexAuthor(PublicationAuthor $publicationAuthor): string
     {
         if ($publicationAuthor->is_group_author) {
-            return '{'.self::escapeBibtex($publicationAuthor->organization->name_en).'}';
+            return '{'.$this->escapeBibtex($publicationAuthor->organization->name_en).'}';
         }
 
-        return self::escapeBibtex($publicationAuthor->author->last_name.', '.$publicationAuthor->author->first_name);
+        return $this->escapeBibtex($publicationAuthor->author->last_name.', '.$publicationAuthor->author->first_name);
     }
 
     /**
      * Escape the title and brace-protect words with an inner capital (acronyms like DFO or eDNA)
      * so citation styles that change case leave them intact.
      */
-    private static function bibtexTitle(string $title): string
+    private function bibtexTitle(string $title): string
     {
         return preg_replace_callback('/\S+/u', function (array $match): string {
-            $word = self::escapeBibtex($match[0]);
+            $word = $this->escapeBibtex($match[0]);
 
             return preg_match('/\p{L}.*\p{Lu}/u', $match[0]) ? '{'.$word.'}' : $word;
         }, $title);
     }
 
-    private static function escapeBibtex(?string $value): string
+    private function escapeBibtex(?string $value): string
     {
         return strtr((string) $value, [
             '\\' => '\textbackslash{}',

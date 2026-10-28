@@ -52,7 +52,7 @@ function fakeRorZipBytes(string $innerJsonName): string
     $zip->close();
 
     $bytes = file_get_contents($zipPath);
-    unlink($zipPath);
+    \Illuminate\Support\Facades\File::delete($zipPath);
 
     return $bytes;
 }

@@ -33,5 +33,5 @@ test('the ROR sync skips records using the reserved independent researcher name'
         ->and(Organization::query()->where('ror_identifier', 'https://ror.org/00000good')->exists())->toBeTrue()
         ->and(Activity::query()->where('description', 'ROR record skipped: name reserved for independent researchers')->exists())->toBeTrue();
 
-    unlink($path);
+    \Illuminate\Support\Facades\File::delete($path);
 });
