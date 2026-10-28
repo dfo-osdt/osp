@@ -111,7 +111,10 @@
       "pest --parallel --ci"
     ],
     "test:refactor": "rector --dry-run",
-    "refactor": "rector",
+    "refactor": [
+      "rector",
+      "@lint"
+    ],
     "test": [
       "@test:lint",
       "@test:types",
