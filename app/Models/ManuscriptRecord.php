@@ -257,7 +257,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function sharedWithUsers(): MorphToMany
     {
-        return $this->morphToMany(User::class, 'shareable', 'shareables')
+        return $this->morphToMany(User::class, 'shareable', \App\Models\Shareable::class)
             ->whereHas('sharedWith', function (\Illuminate\Contracts\Database\Query\Builder $query): void {
                 $query->whereNull('expires_at')
                     ->orWhere('expires_at', '>', now());
@@ -412,10 +412,10 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         ]);
 
         $validator->after(function ($validator): void {
-            if ($this->manuscriptAuthors->where('is_corresponding_author', true)->count() < 1) {
+            if ($this->manuscriptAuthors->where('is_corresponding_author', true)->isEmpty()) {
                 $validator->errors()->add('manuscript_authors', 'At least one corresponding author is required.');
             }
-            if ($this->getMedia('manuscript')->count() < 1) {
+            if ($this->getMedia('manuscript')->isEmpty()) {
                 $validator->errors()->add('manuscript_pdf', 'A manuscript file is required.');
             }
         });

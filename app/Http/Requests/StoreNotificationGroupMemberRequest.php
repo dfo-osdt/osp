@@ -9,11 +9,6 @@ use Illuminate\Validation\Rule;
 
 class StoreNotificationGroupMemberRequest extends FormRequest
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     public function rules(): array
     {
         return [
