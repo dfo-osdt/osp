@@ -7,6 +7,7 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Uri;
 use Saloon\Http\Faking\MockResponse;
 use Saloon\Laravel\Facades\Saloon;
 use VincentAuger\OrcidSdk\Requests\OAuth\ExchangeAuthorizationCode;
@@ -36,7 +37,7 @@ test('the callback stores the token and syncs pending employments', function ():
     $pending = AuthorEmployment::factory()->create(['author_id' => $user->author->id, 'organization_id' => Organization::factory()]);
     Cache::put('abcKEY123', $user->id, now()->addMinutes(15));
 
-    $this->get('api/orcid/callback?code=Q70Y3A&key=abcKEY123')
+    $this->actingAs($user)->withSession(['orcid_state' => 'abcKEY123'])->get('api/orcid/callback?code=Q70Y3A&state=abcKEY123')
         ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=success');
 
     $author = $user->author->refresh();
@@ -47,12 +48,52 @@ test('the callback stores the token and syncs pending employments', function ():
         ->and($author->orcid_verified)->toBeTrue()
         ->and($author->hasValidOrcidCredentials())->toBeTrue();
 
-    // the code is exchanged with the exact redirect URI used to authorize
+    // the code is exchanged with the exact (static) redirect URI used to authorize
     $mockClient->assertSent(fn (ExchangeAuthorizationCode $request): bool => $request->body()->get('code') === 'Q70Y3A'
-        && $request->body()->get('redirect_uri') === config('osp.orcid.redirect_uri').'?key=abcKEY123');
+        && $request->body()->get('redirect_uri') === config('osp.orcid.redirect_uri'));
 
     Queue::assertPushed(SyncAuthorEmploymentWithOrcid::class, fn (SyncAuthorEmploymentWithOrcid $job): bool => $job->authorEmployment->is($pending));
     Queue::assertPushed(SyncAuthorFromOrcid::class, fn (SyncAuthorFromOrcid $job): bool => $job->author->is($author));
+});
+
+test('a callback finished in another browser does not link to the initiator', function (): void {
+    Queue::fake();
+    config(['osp.orcid.client_id' => 'APP-0000000000000001', 'osp.orcid.redirect_uri' => 'http://localhost/api/orcid/callback']);
+    $mockClient = Saloon::fake([ExchangeAuthorizationCode::class => orcidTokenResponse()]);
+    $attacker = User::factory()->create();
+    $colleague = User::factory()->create();
+
+    $location = $this->actingAs($attacker)->get('api/user/orcid/verify')->headers->get('Location');
+    $authorize = Uri::of($location)->query();
+    $callback = Uri::of($authorize->get('redirect_uri'))->withQuery(['state' => $authorize->get('state')]);
+
+    // the colleague's browser has its own session
+    $this->flushSession();
+    $this->actingAs($colleague)->get($callback->withQuery(['code' => 'Q70Y3A'])->value())
+        ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=invalid_state');
+
+    expect($attacker->author->refresh()->orcid_access_token)->toBeNull();
+    $mockClient->assertNothingSent();
+
+});
+
+test('a callback finished in the same browser links to the initiator', function (): void {
+    Queue::fake();
+    config(['osp.orcid.client_id' => 'APP-0000000000000001', 'osp.orcid.redirect_uri' => 'http://localhost/api/orcid/callback']);
+    Saloon::fake([ExchangeAuthorizationCode::class => orcidTokenResponse()]);
+    $user = User::factory()->create();
+
+    $location = $this->actingAs($user)->get('api/user/orcid/verify')->headers->get('Location');
+    $authorize = Uri::of($location)->query();
+    $callback = Uri::of($authorize->get('redirect_uri'))->withQuery(['state' => $authorize->get('state')]);
+
+    // the redirect URI is static so ORCID can match it exactly against the registered one
+    expect($authorize->get('redirect_uri'))->toBe(config('osp.orcid.redirect_uri'));
+
+    $this->get($callback->withQuery(['code' => 'Q70Y3A'])->value())
+        ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=success');
+
+    expect($user->author->refresh()->orcid_access_token)->toBe('new-access-token');
 });
 
 test('the callback accepts codes with URL-safe characters', function (): void {
@@ -62,7 +103,7 @@ test('the callback accepts codes with URL-safe characters', function (): void {
     $user = User::factory()->create();
     Cache::put('abcKEY123', $user->id, now()->addMinutes(15));
 
-    $this->get('api/orcid/callback?code=C4_qA-L&key=abcKEY123')
+    $this->withSession(['orcid_state' => 'abcKEY123'])->get('api/orcid/callback?code=C4_qA-L&state=abcKEY123')
         ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=success');
 
     $mockClient->assertSent(fn (ExchangeAuthorizationCode $request): bool => $request->body()->get('code') === 'C4_qA-L');
@@ -75,17 +116,17 @@ test('the callback reports a failed token exchange', function (): void {
     $user = User::factory()->create();
     Cache::put('abcKEY123', $user->id, now()->addMinutes(15));
 
-    $this->get('api/orcid/callback?code=Q70Y3A&key=abcKEY123')
+    $this->withSession(['orcid_state' => 'abcKEY123'])->get('api/orcid/callback?code=Q70Y3A&state=abcKEY123')
         ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=failed');
 
     expect($user->author->refresh()->orcid_verified)->not->toBeTrue();
     Queue::assertNothingPushed();
 });
 
-test('the callback rejects an unknown key without calling ORCID', function (): void {
+test('the callback rejects an unknown state without calling ORCID', function (): void {
     $mockClient = Saloon::fake([]);
 
-    $this->get('api/orcid/callback?code=Q70Y3A&key=unknownKEY')
+    $this->get('api/orcid/callback?code=Q70Y3A&state=unknownKEY')
         ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=invalid_key');
 
     $mockClient->assertNothingSent();

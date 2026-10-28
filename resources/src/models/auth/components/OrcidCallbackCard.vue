@@ -9,6 +9,7 @@ const { t } = useI18n()
 type Statuses
   = | 'success'
     | 'invalid_key'
+    | 'invalid_state'
     | 'invalid_user'
     | 'failed'
     | 'error'
@@ -31,6 +32,8 @@ const errorMessage = computed(() => {
   switch (status.value) {
     case 'invalid_key':
       return t('orcid.invalid-key')
+    case 'invalid_state':
+      return t('orcid.invalid-state')
     case 'invalid_user':
       return t('orcid.invalid-user')
     case 'error':

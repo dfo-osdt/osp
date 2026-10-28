@@ -34,21 +34,30 @@ class FullFlowController
         $validated = $request->validate([
             // authorization codes are URL-safe: letters, digits, "-" and "_"
             'code' => ['string', 'regex:/^[A-Za-z0-9_-]+$/'],
-            'key' => ['required', 'string', 'alpha_num'],
+            'state' => ['required', 'string', 'alpha_num'],
             'error' => ['string'],
             'error_description' => ['required_with:error', 'string'],
         ]);
 
-        if (! Cache::has($validated['key'])) {
-            Log::error('Invalid key for ORCID callback');
+        if (! Cache::has($validated['state'])) {
+            Log::error('Invalid state for ORCID callback');
             $url = $frontendUrl.'#/auth/orcid-callback?status=invalid_key';
 
             return redirect($url);
         }
 
-        Log::info('Key found for ORCID callback');
+        Log::info('State found for ORCID callback');
 
-        $user = User::query()->find(Cache::pull($validated['key']));
+        // the state must belong to this browser's session, otherwise the flow was started elsewhere (CSRF)
+        $expected = $request->session()->pull('orcid_state');
+
+        if (! is_string($expected) || ! hash_equals($expected, $validated['state'])) {
+            Log::error('ORCID callback state does not match the session');
+
+            return redirect($frontendUrl.'#/auth/orcid-callback?status=invalid_state');
+        }
+
+        $user = User::query()->find(Cache::pull($validated['state']));
 
         if (! $user) {
             Log::error('Invalid user for ORCID callback');
@@ -73,7 +82,7 @@ class FullFlowController
         Log::info('Requesting access token from ORCID');
 
         try {
-            $token = $this->orcid->oauth()->exchangeCode($validated['code'], $this->redirectUri($validated['key']));
+            $token = $this->orcid->oauth()->exchangeCode($validated['code'], (string) $this->orcid->redirectUri);
         } catch (OrcidException $exception) {
             Log::error('Failed to get access token from ORCID', ['error' => $exception->getMessage()]);
 
@@ -112,27 +121,20 @@ class FullFlowController
             throw ValidationException::withMessages(['orcid' => __('Server side ORCID configuration is missing - please contact the administrator.')]);
         }
 
-        // cache the user id with a random string for 15 mintues
-        $key = Str::random(16);
-        Cache::add($key, Auth::id(), now()->addMinutes(15));
+        // the state binds the flow to this browser's session and maps to the user id for 15 minutes
+        $state = Str::random(16);
+        $request->session()->put('orcid_state', $state);
+        Cache::add($state, Auth::id(), now()->addMinutes(15));
 
         $link = $this->orcid->oauth()->authorizationUrl(
             scopes: $this->orcid->scopes(),
-            redirectUri: $this->redirectUri($key),
+            redirectUri: (string) $this->orcid->redirectUri,
+            state: $state,
             lang: app()->getLocale(),
         );
 
         Log::info('Redirecting to ORCID for authorization');
 
         return redirect($link);
-    }
-
-    /**
-     * The key identifying the user is added to the redirect URI; ORCID requires the
-     * exact same URI when exchanging the code.
-     */
-    private function redirectUri(string $key): string
-    {
-        return $this->orcid->redirectUri.'?key='.$key;
     }
 }

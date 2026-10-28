@@ -25,7 +25,6 @@ use App\Http\Controllers\ManuscriptRecordSharingController;
 use App\Http\Controllers\NotificationGroupMemberController;
 use App\Http\Controllers\NotificationGroupMembershipController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
-use App\Http\Controllers\Orcid\FullFlowController;
 use App\Http\Controllers\Orcid\RefreshFromOrcidController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
@@ -57,7 +56,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/announcements', CheckAnnouncementController::class);
 Route::get('/stats', PublicStatsController::class);
-Route::get('/orcid/callback', [FullFlowController::class, 'callback']);
 
 // Need to be authenticated to access these routes
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -67,8 +65,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/user/invitations', 'invitations');
     });
 
-    // Routes for 3-legged OAuth flow
-    Route::get('/user/orcid/verify', [FullFlowController::class, 'redirect']);
+    // Routes for 3-legged OAuth flow, see routes/web.php for the authorization redirect and callback
     Route::post('/user/orcid/revoke', RevokeTokenController::class);
     Route::post('/user/orcid/refresh', RefreshFromOrcidController::class);
 
