@@ -166,7 +166,7 @@ class FullFlowController
             ]);
 
         // without an explicit causer the logged-in user (here the possible victim) is used
-        if ($initiator) {
+        if ($initiator instanceof \App\Models\User) {
             $logger->causedBy($initiator)->performedOn($initiator->author);
         } else {
             $logger->causedByAnonymous();
