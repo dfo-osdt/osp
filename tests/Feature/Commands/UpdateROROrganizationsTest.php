@@ -4,6 +4,7 @@ use App\Console\Commands\UpdateROROrganizations;
 use App\Models\Organization;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
@@ -52,7 +53,7 @@ function fakeRorZipBytes(string $innerJsonName): string
     $zip->close();
 
     $bytes = file_get_contents($zipPath);
-    \Illuminate\Support\Facades\File::delete($zipPath);
+    File::delete($zipPath);
 
     return $bytes;
 }

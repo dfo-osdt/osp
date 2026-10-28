@@ -257,7 +257,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function sharedWithUsers(): MorphToMany
     {
-        return $this->morphToMany(User::class, 'shareable', \App\Models\Shareable::class)
+        return $this->morphToMany(User::class, 'shareable', Shareable::class)
             ->whereHas('sharedWith', function (\Illuminate\Contracts\Database\Query\Builder $query): void {
                 $query->whereNull('expires_at')
                     ->orWhere('expires_at', '>', now());
