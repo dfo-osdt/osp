@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Str;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
@@ -464,5 +465,84 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
         $lines[] = 'ER  - ';
 
         return implode("\r\n", $lines)."\r\n";
+    }
+
+    /**
+     * Generate a BibTeX entry for this publication.
+     * Requires journal and publicationAuthors.author to be loaded.
+     */
+    public function toBibtex(): string
+    {
+        $isDfo = $this->journal->isDfoSeries();
+
+        $fields = [
+            'author' => $this->publicationAuthors
+                ->map(fn (PublicationAuthor $pubAuthor): string => self::escapeBibtex($pubAuthor->author->last_name.', '.$pubAuthor->author->first_name))
+                ->implode(' and '),
+            'title' => self::bibtexTitle($this->title),
+        ];
+
+        if ($isDfo) {
+            $fields['type'] = self::escapeBibtex($this->journal->title);
+            $fields['institution'] = self::escapeBibtex($this->journal->publisher);
+            $fields['number'] = self::escapeBibtex($this->issue_number);
+        } else {
+            $fields['journal'] = self::escapeBibtex($this->journal->title);
+            $fields['publisher'] = self::escapeBibtex($this->journal->publisher);
+        }
+
+        $fields['year'] = $this->published_on?->format('Y');
+        $fields['month'] = $this->published_on ? strtolower($this->published_on->format('M')) : null;
+        $fields['issn'] = self::escapeBibtex(trim((string) $this->journal->issn));
+        $fields['isbn'] = self::escapeBibtex($this->isbn);
+        // DOI is a verbatim field in biblatex, so it is never escaped
+        $fields['doi'] = $this->doi ? str_replace('https://doi.org/', '', $this->doi) : null;
+
+        $lines = collect($fields)
+            ->filter(fn (?string $value): bool => filled($value))
+            ->map(fn (string $value, string $name): string => "  {$name} = ".($name === 'month' ? $value : '{'.$value.'}'))
+            ->implode(",\n");
+
+        return '@'.($isDfo ? 'techreport' : 'article').'{'.$this->bibtexKey().",\n".$lines."\n}\n";
+    }
+
+    /**
+     * Citation key: first author's ASCII last name, year and id (e.g. Cote2024_123).
+     */
+    private function bibtexKey(): string
+    {
+        $lastName = $this->publicationAuthors->first()?->author->last_name;
+        $name = preg_replace('/[^A-Za-z0-9]/', '', Str::ascii((string) $lastName));
+
+        return ($name ?: 'publication').$this->published_on?->format('Y').'_'.$this->id;
+    }
+
+    /**
+     * Escape the title and brace-protect words with an inner capital (acronyms like DFO or eDNA)
+     * so citation styles that change case leave them intact.
+     */
+    private static function bibtexTitle(string $title): string
+    {
+        return preg_replace_callback('/\S+/u', function (array $match): string {
+            $word = self::escapeBibtex($match[0]);
+
+            return preg_match('/\p{L}.*\p{Lu}/u', $match[0]) ? '{'.$word.'}' : $word;
+        }, $title);
+    }
+
+    private static function escapeBibtex(?string $value): string
+    {
+        return strtr((string) $value, [
+            '\\' => '\textbackslash{}',
+            '{' => '\{',
+            '}' => '\}',
+            '&' => '\&',
+            '%' => '\%',
+            '$' => '\$',
+            '#' => '\#',
+            '_' => '\_',
+            '~' => '\textasciitilde{}',
+            '^' => '\textasciicircum{}',
+        ]);
     }
 }

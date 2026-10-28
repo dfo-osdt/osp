@@ -184,6 +184,14 @@ class PublicationController extends Controller
             return Excel::download(new PublicationsExport($query), 'publications.xlsx');
         }
 
+        if ($request->input('format') === 'bibtex') {
+            return response()->streamDownload(function () use ($query): void {
+                $query->lazy()->each(function (Publication $publication): void {
+                    echo $publication->toBibtex()."\n";
+                });
+            }, 'publications.bib', ['Content-Type' => 'application/x-bibtex']);
+        }
+
         return response()->streamDownload(function () use ($query): void {
             $query->lazy()->each(function (Publication $publication): void {
                 echo $publication->toRis()."\r\n";
