@@ -54,6 +54,9 @@ class FullFlowController
         if (! is_string($expected) || ! hash_equals($expected, $validated['state'])) {
             Log::error('ORCID callback state does not match the session');
 
+            // burn the state so a planted link cannot be replayed in other browsers
+            $this->logRejectedCallback($request, is_string($expected), User::query()->find(Cache::pull($validated['state'])));
+
             return redirect($frontendUrl.'#/auth/orcid-callback?status=invalid_state');
         }
 
@@ -136,5 +139,41 @@ class FullFlowController
         Log::info('Redirecting to ORCID for authorization');
 
         return redirect($link);
+    }
+
+    /**
+     * Records a callback rejected because its state is not in this browser's session. It is
+     * attributed to the user who started the flow; when another user's browser completed it,
+     * someone tried to link that user's ORCID iD to the initiator's account (CSRF).
+     */
+    private function logRejectedCallback(Request $request, bool $sessionHadState, ?User $initiator): void
+    {
+        $completedBy = Auth::user();
+        $byAnotherUser = $completedBy !== null && ! $completedBy->is($initiator);
+
+        $logger = activity()
+            ->event($byAnotherUser ? 'suspicious' : 'rejected')
+            ->withProperties([
+                'source' => 'orcid',
+                'reason' => match (true) {
+                    $byAnotherUser => 'completed_by_another_user',
+                    ! $sessionHadState => 'no_state_in_session',
+                    default => 'state_mismatch',
+                },
+                'completed_by_user_id' => $completedBy?->id,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
+        // without an explicit causer the logged-in user (here the possible victim) is used
+        if ($initiator) {
+            $logger->causedBy($initiator)->performedOn($initiator->author);
+        } else {
+            $logger->causedByAnonymous();
+        }
+
+        $logger->log($byAnotherUser
+            ? 'ORCID connection started by this user was completed in another user\'s browser'
+            : 'ORCID connection rejected: it was not completed in the browser that started it');
     }
 }

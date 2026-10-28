@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Uri;
 use Saloon\Http\Faking\MockResponse;
 use Saloon\Laravel\Facades\Saloon;
+use Spatie\Activitylog\Models\Activity;
 use VincentAuger\OrcidSdk\Requests\OAuth\ExchangeAuthorizationCode;
 use VincentAuger\OrcidSdk\Requests\OAuth\RevokeToken;
 
@@ -75,6 +76,31 @@ test('a callback finished in another browser does not link to the initiator', fu
     expect($attacker->author->refresh()->orcid_access_token)->toBeNull();
     $mockClient->assertNothingSent();
 
+    // logged against the attacker, and the planted link cannot be replayed
+    $activity = Activity::causedBy($attacker)->where('event', 'suspicious')->sole();
+    expect($activity->subject->is($attacker->author))->toBeTrue()
+        ->and($activity->getProperty('reason'))->toBe('completed_by_another_user')
+        ->and($activity->getProperty('completed_by_user_id'))->toBe($colleague->id)
+        ->and(Cache::has($authorize->get('state')))->toBeFalse();
+});
+
+test('a callback finished by the initiator in another browser is rejected but not suspicious', function (): void {
+    Queue::fake();
+    config(['osp.orcid.client_id' => 'APP-0000000000000001', 'osp.orcid.redirect_uri' => 'http://localhost/api/orcid/callback']);
+    Saloon::fake([ExchangeAuthorizationCode::class => orcidTokenResponse()]);
+    $user = User::factory()->create();
+
+    $location = $this->actingAs($user)->get('api/user/orcid/verify')->headers->get('Location');
+    $authorize = Uri::of($location)->query();
+    $callback = Uri::of($authorize->get('redirect_uri'))->withQuery(['state' => $authorize->get('state'), 'code' => 'Q70Y3A']);
+
+    $this->flushSession();
+    $this->get($callback->value())
+        ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=invalid_state');
+
+    $activity = Activity::causedBy($user)->sole();
+    expect($activity->event)->toBe('rejected')
+        ->and($activity->getProperty('reason'))->toBe('no_state_in_session');
 });
 
 test('a callback finished in the same browser links to the initiator', function (): void {
