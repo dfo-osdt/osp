@@ -848,6 +848,8 @@
     "export-excel-caption": "Tableur avec tous les champs",
     "export-ris": "Bibliographie (RIS)",
     "export-ris-caption": "Pour Zotero, Mendeley, EndNote",
+    "export-bibtex": "BibTeX (.bib)",
+    "export-bibtex-caption": "Pour LaTeX, Overleaf, JabRef",
     "under-embargo": "Sous embargo",
     "under-embargo-caption": "Publications sous embargo"
   },

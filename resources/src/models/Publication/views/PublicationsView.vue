@@ -225,6 +225,7 @@ const exportUrls = computed(() => {
   query.sort('title', 'asc')
   return {
     ris: PublicationService.exportUrl('ris', query),
+    bibtex: PublicationService.exportUrl('bibtex', query),
     excel: PublicationService.exportUrl('excel', query),
   }
 })
@@ -357,6 +358,17 @@ interface MainFilterOption {
                         <q-item-label>{{ $t('publications-view.export-ris') }}</q-item-label>
                         <q-item-label caption>
                           {{ $t('publications-view.export-ris-caption') }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                    <q-item clickable tag="a" :href="exportUrls.bibtex" download="publications.bib">
+                      <q-item-section avatar>
+                        <q-icon name="mdi-format-quote-close" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ $t('publications-view.export-bibtex') }}</q-item-label>
+                        <q-item-label caption>
+                          {{ $t('publications-view.export-bibtex-caption') }}
                         </q-item-label>
                       </q-item-section>
                     </q-item>

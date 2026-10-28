@@ -75,7 +75,7 @@ export class PublicationService {
   }
 
   /** Build a download URL for the given export format with the current filters applied */
-  public static exportUrl(format: 'ris' | 'excel', query?: PublicationQuery): string {
+  public static exportUrl(format: 'ris' | 'bibtex' | 'excel', query?: PublicationQuery): string {
     let url = `api/publications/export?format=${format}`
     if (query) {
       url += `&${query.toQueryString()}`
