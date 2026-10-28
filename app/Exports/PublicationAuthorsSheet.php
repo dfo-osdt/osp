@@ -57,7 +57,7 @@ class PublicationAuthorsSheet implements FromQuery, ShouldAutoSize, WithHeadings
             ->map(fn ($pa): array => [
                 $publication->title,
                 $publication->published_on?->format('Y-m-d'),
-                $pa->author->apa_name,
+                $pa->is_group_author ? $pa->organization->name_en : $pa->author->apa_name,
                 $pa->author->orcid,
                 $pa->organization->name_en.' / '.$pa->organization->name_fr,
                 $pa->organization->ror_identifier,

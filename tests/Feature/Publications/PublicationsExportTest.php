@@ -4,6 +4,7 @@ use App\Enums\PublicationStatus;
 use App\Models\Author;
 use App\Models\FunctionalArea;
 use App\Models\Journal;
+use App\Models\Organization;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
 use App\Models\User;
@@ -82,6 +83,53 @@ test('the excel export writes yes and no values in both languages', function ():
         ->and($firstRowValue(1, 'Corresponding Author / Auteur correspondant'))->toBe('No / Non');
 });
 
+test('the excel export uses the organization name for group authors', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->published()->create();
+    $organization = Organization::factory()->create([
+        'name_en' => 'Canadian Salmon Research Group',
+    ]);
+    $contact = Author::factory()->create([
+        'first_name' => 'Contact',
+        'last_name' => 'Person',
+    ]);
+    PublicationAuthor::factory()
+        ->for($publication)
+        ->for($contact)
+        ->groupAuthor()
+        ->create(['organization_id' => $organization->id]);
+
+    $response = $this->actingAs($user)->get('/api/publications/export?format=excel')->assertOk();
+
+    $spreadsheet = IOFactory::load($response->baseResponse->getFile()->getPathname());
+    $rows = $spreadsheet->getSheet(1)->toArray();
+    $authorColumn = array_search('Author / Auteur', $rows[0], true);
+    expect($rows[1][$authorColumn])->toBe('Canadian Salmon Research Group');
+});
+
+test('the ris export uses the organization name for group authors', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->published()->create();
+    $organization = Organization::factory()->create([
+        'name_en' => 'Canadian Salmon Research Group',
+    ]);
+    $contact = Author::factory()->create([
+        'first_name' => 'Contact',
+        'last_name' => 'Person',
+    ]);
+    PublicationAuthor::factory()
+        ->for($publication)
+        ->for($contact)
+        ->groupAuthor()
+        ->create(['organization_id' => $organization->id]);
+
+    $response = $this->actingAs($user)->get('/api/publications/export?format=ris');
+
+    expect($response->streamedContent())
+        ->toContain('AU  - Canadian Salmon Research Group')
+        ->not->toContain('AU  - Person, Contact');
+});
+
 test('a user can export publications to bibtex', function (): void {
     $user = User::factory()->create();
     $journal = Journal::factory()->create([
@@ -152,6 +200,33 @@ test('the bibtex export writes dfo series as technical reports', function (): vo
 
 
         BIB);
+});
+
+test('the bibtex export uses the organization name for group authors', function (): void {
+    $user = User::factory()->create();
+    $publication = Publication::factory()->published()->create([
+        'title' => 'Salmon conservation update',
+        'published_on' => '2024-06-10',
+    ]);
+    $organization = Organization::factory()->create([
+        'name_en' => 'Canadian Salmon Research Group',
+    ]);
+    $contact = Author::factory()->create([
+        'first_name' => 'Contact',
+        'last_name' => 'Person',
+    ]);
+    PublicationAuthor::factory()
+        ->for($publication)
+        ->for($contact)
+        ->groupAuthor()
+        ->create(['organization_id' => $organization->id]);
+
+    $response = $this->actingAs($user)->get('/api/publications/export?format=bibtex');
+
+    expect($response->streamedContent())
+        ->toContain("@article{CanadianSalmonResearchGroup2024_{$publication->id},")
+        ->toContain('  author = {{Canadian Salmon Research Group}},')
+        ->not->toContain('Person, Contact');
 });
 
 test('the bibtex export escapes special characters and protects acronyms in titles', function (): void {

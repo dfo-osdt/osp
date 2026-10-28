@@ -434,7 +434,10 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
         $lines[] = 'TI  - '.$this->title;
 
         foreach ($this->publicationAuthors ?? [] as $pubAuthor) {
-            $lines[] = 'AU  - '.$pubAuthor->author->last_name.', '.$pubAuthor->author->first_name;
+            $authorName = $pubAuthor->is_group_author
+                ? $pubAuthor->organization->name_en
+                : $pubAuthor->author->last_name.', '.$pubAuthor->author->first_name;
+            $lines[] = 'AU  - '.$authorName;
             $affiliation = $pubAuthor->organization->name_en;
             if ($pubAuthor->organization->ror_identifier) {
                 $affiliation .= ' ('.$pubAuthor->organization->ror_identifier.')';
@@ -469,7 +472,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
 
     /**
      * Generate a BibTeX entry for this publication.
-     * Requires journal and publicationAuthors.author to be loaded.
+     * Requires journal and publicationAuthors.author/organization to be loaded.
      */
     public function toBibtex(): string
     {
@@ -477,7 +480,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
 
         $fields = [
             'author' => $this->publicationAuthors
-                ->map(fn (PublicationAuthor $pubAuthor): string => self::escapeBibtex($pubAuthor->author->last_name.', '.$pubAuthor->author->first_name))
+                ->map(self::bibtexAuthor(...))
                 ->implode(' and '),
             'title' => self::bibtexTitle($this->title),
         ];
@@ -507,14 +510,27 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     }
 
     /**
-     * Citation key: first author's ASCII last name, year and id (e.g. Cote2024_123).
+     * Citation key: first author's name, year and id (e.g. Cote2024_123).
+     * Group authors use their organization's name.
      */
     private function bibtexKey(): string
     {
-        $lastName = $this->publicationAuthors->first()?->author->last_name;
-        $name = preg_replace('/[^A-Za-z0-9]/', '', Str::ascii((string) $lastName));
+        $firstAuthor = $this->publicationAuthors->first();
+        $authorName = $firstAuthor?->is_group_author
+            ? $firstAuthor->organization->name_en
+            : $firstAuthor?->author->last_name;
+        $name = preg_replace('/[^A-Za-z0-9]/', '', Str::ascii((string) $authorName));
 
         return ($name ?: 'publication').$this->published_on?->format('Y').'_'.$this->id;
+    }
+
+    private static function bibtexAuthor(PublicationAuthor $publicationAuthor): string
+    {
+        if ($publicationAuthor->is_group_author) {
+            return '{'.self::escapeBibtex($publicationAuthor->organization->name_en).'}';
+        }
+
+        return self::escapeBibtex($publicationAuthor->author->last_name.', '.$publicationAuthor->author->first_name);
     }
 
     /**
