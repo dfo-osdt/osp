@@ -343,3 +343,24 @@ test('mismatched manuscript and management review step route parameters return n
         ])
         ->assertNotFound();
 });
+
+test('the manuscript review steps list includes each previous step for a secondary manuscript reassigned by a director', function (): void {
+    $director = User::factory()->create();
+    $director->assignRole(UserRole::DIRECTOR);
+    $reviewer = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->secondary()->in_review(withAreviewstep: false)->create();
+    $reassignedStep = ManagementReviewStep::factory()->for($manuscript)->for($director)->create([
+        'status' => ManagementReviewStepStatus::REASSIGN,
+    ]);
+    $pendingStep = ManagementReviewStep::factory()->for($manuscript)->for($reviewer)->create([
+        'status' => ManagementReviewStepStatus::PENDING,
+        'previous_step_id' => $reassignedStep->id,
+    ]);
+
+    $response = $this->actingAs($reviewer)->getJson('/api/manuscript-records/'.$manuscript->id.'/management-review-steps')
+        ->assertOk();
+
+    expect($response->json('data.1.data.id'))->toBe($pendingStep->id);
+    expect($response->json('data.1.data.can_complete'))->toBeTrue();
+    expect($response->json('data.1.data.previous_step.data.user.data.id'))->toBe($director->id);
+});

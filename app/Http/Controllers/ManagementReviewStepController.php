@@ -48,7 +48,7 @@ class ManagementReviewStepController extends Controller
         Gate::authorize('view', $manuscriptRecord);
 
         $managementReviewSteps = $manuscriptRecord->managementReviewSteps()
-            ->with('user')
+            ->with('user', 'previousStep.user')
             ->chaperone('manuscriptRecord')
             ->orderBy('id')
             ->get();
