@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d272eacebdad707643dd19f874c29185",
+    "content-hash": "f17fb780392f02d393d60f531da52ac6",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -11423,16 +11423,16 @@
         },
         {
             "name": "symfony/html-sanitizer",
-            "version": "v8.1.8",
+            "version": "v8.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/html-sanitizer.git",
-                "reference": "c67061a71d3f8b55f899faee3167422efa4db027"
+                "reference": "04db2207946727a8793a9bcb8dcfaea6391b5c2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/html-sanitizer/zipball/c67061a71d3f8b55f899faee3167422efa4db027",
-                "reference": "c67061a71d3f8b55f899faee3167422efa4db027",
+                "url": "https://api.github.com/repos/symfony/html-sanitizer/zipball/04db2207946727a8793a9bcb8dcfaea6391b5c2a",
+                "reference": "04db2207946727a8793a9bcb8dcfaea6391b5c2a",
                 "shasum": ""
             },
             "require": {
@@ -11471,7 +11471,7 @@
                 "sanitizer"
             ],
             "support": {
-                "source": "https://github.com/symfony/html-sanitizer/tree/v8.1.8"
+                "source": "https://github.com/symfony/html-sanitizer/tree/v8.1.10"
             },
             "funding": [
                 {
@@ -11491,7 +11491,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-28T08:00:04+00:00"
+            "time": "2026-10-20T19:26:02+00:00",
+            "published-time": "2026-10-28T18:25:29+00:00"
         },
         {
             "name": "symfony/http-client",
@@ -20808,5 +20809,5 @@
     "platform-overrides": {
         "php": "8.5"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }

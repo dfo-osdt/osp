@@ -19,7 +19,7 @@ Review Manuscript
 
 **Author(s):**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
-**Abstract:** <br />{!! $manuscriptRecord->abstract !!}
+**Abstract:** <br />{!! \App\Services\RichTextSanitizer::sanitize($manuscriptRecord->abstract) !!}
 </x-mail::panel>
 
 <x-email.regards locale="en" />
@@ -45,7 +45,7 @@ Réviser le manuscrit
 
 **Auteur(s):**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
-**Résumé:** <br />{!! $manuscriptRecord->abstract !!}
+**Résumé:** <br />{!! \App\Services\RichTextSanitizer::sanitize($manuscriptRecord->abstract) !!}
 </x-mail::panel>
 
 <x-email.regards locale="fr" />

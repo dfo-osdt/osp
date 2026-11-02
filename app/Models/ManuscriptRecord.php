@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\SanitizedRichText;
 use App\Casts\SanitizedTitle;
 use App\Contracts\Fundable;
 use App\Contracts\Plannable;
@@ -475,6 +476,12 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
             'pls_approved_by_author' => 'boolean',
             'pls_translation_approved' => 'boolean',
             'title' => SanitizedTitle::class,
+            'abstract' => SanitizedRichText::class,
+            'pls_en' => SanitizedRichText::class,
+            'pls_fr' => SanitizedRichText::class,
+            'relevant_to' => SanitizedRichText::class,
+            'public_interest_information' => SanitizedRichText::class,
+            'no_ogl_explanation' => SanitizedRichText::class,
         ];
     }
 }

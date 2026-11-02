@@ -15,7 +15,7 @@ A Manuscript Management Review is no longer expected for this manuscript record.
 
 **Author(s):**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
-**Abstract:** <br />{!! $manuscriptRecord->abstract !!}
+**Abstract:** <br />{!! \App\Services\RichTextSanitizer::sanitize($manuscriptRecord->abstract) !!}
 </x-mail::panel>
 
 <x-email.regards locale="en" />
@@ -38,7 +38,7 @@ Une révision par la gestion du manuscrit n'est plus requise pour ce dossier de 
 
 **Auteur(s) :**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
-**Résumé :**<br />{!! $manuscriptRecord->abstract !!}
+**Résumé :**<br />{!! \App\Services\RichTextSanitizer::sanitize($manuscriptRecord->abstract) !!}
 </x-mail::panel>
 
 <x-email.regards locale="fr" />
