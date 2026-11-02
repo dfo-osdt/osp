@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Integrations\Ollama\Data\CompletionRequestData;
 use App\Http\Integrations\Ollama\OllamaConnector;
 use App\Http\Integrations\Ollama\Requests\CompletionRequest;
+use App\Services\RichTextSanitizer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -42,7 +43,7 @@ class GeneratePLSController extends Controller
         };
 
         // clean up the abstract - it could have html tags we don't want
-        $validated['abstract'] = strip_tags((string) $validated['abstract']);
+        $validated['abstract'] = RichTextSanitizer::toPlain($validated['abstract']);
 
         return $this->generateWithOllama($validated['abstract'], $locale);
     }
@@ -60,7 +61,7 @@ class GeneratePLSController extends Controller
         };
 
         // clean up the PLS - it could have html tags we don't want
-        $validated['abstract'] = strip_tags((string) $validated['abstract']);
+        $validated['abstract'] = RichTextSanitizer::toPlain($validated['abstract']);
 
         if ($this->useOllama) {
             return $this->translateWithOllama($validated['abstract'], $locale);

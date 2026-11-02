@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\SanitizedRichText;
 use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Observers\ManagementReviewStepObserver;
@@ -79,6 +80,7 @@ class ManagementReviewStep extends Model
             'decision_expected_by' => 'datetime',
             'status' => ManagementReviewStepStatus::class,
             'decision' => ManagementReviewStepDecision::class,
+            'comments' => SanitizedRichText::class,
         ];
     }
 

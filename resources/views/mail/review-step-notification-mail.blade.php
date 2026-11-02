@@ -19,7 +19,7 @@
 {{ $previousStep->decision->translate('en') }}
 
 **Comments:** <br />
-{!! $previousStep->comments !!}
+{!! \App\Services\RichTextSanitizer::sanitize($previousStep->comments) !!}
 </x-mail::panel>
 
 Please click on the button below or login to your [Open Science Portal]({{config('app.frontend_url')}}#/auth/login?email={{$managementReviewStep->user->email}}) account to review this manuscript record.
@@ -34,7 +34,7 @@ Review Manuscript
 
 **Author(s):**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
-**Abstract:** <br />{!! $manuscriptRecord->abstract !!}
+**Abstract:** <br />{!! \App\Services\RichTextSanitizer::sanitize($manuscriptRecord->abstract) !!}
 </x-mail::panel>
 
 <x-email.regards locale="en" />
@@ -59,7 +59,7 @@ Review Manuscript
 {{ $previousStep->decision->translate('fr') }}
 
 **Commentaires:** <br />
-{!! $previousStep->comments !!}
+{!! \App\Services\RichTextSanitizer::sanitize($previousStep->comments) !!}
 </x-mail::panel>
 
 Veuillez cliquer sur le bouton ci-dessous ou vous connecter à votre compte sur le [Portail Science Ouverte]({{config('app.frontend_url')}}#/auth/login?email={{$managementReviewStep->user->email}}) pour réviser ce registre de manuscrit.
@@ -74,7 +74,7 @@ Réviser le manuscrit
 
 **Auteur(s):**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
-**Résumé:** <br />{!! $manuscriptRecord->abstract !!}
+**Résumé:** <br />{!! \App\Services\RichTextSanitizer::sanitize($manuscriptRecord->abstract) !!}
 </x-mail::panel>
 
 <x-email.regards locale="fr" />
