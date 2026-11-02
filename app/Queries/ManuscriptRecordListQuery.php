@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /** @extends QueryBuilder<ManuscriptRecord> */
@@ -19,7 +20,7 @@ class ManuscriptRecordListQuery extends QueryBuilder
 
         $this->
          defaultSort('-created_at')->
-         allowedSorts('title', 'created_at', 'updated_at', 'sent_for_review_at', 'accepted_on', 'submitted_to_journal_on')->
+         allowedSorts(AllowedSort::field('title', 'title_plain'), 'created_at', 'updated_at', 'sent_for_review_at', 'accepted_on', 'submitted_to_journal_on')->
          allowedFilters(
              AllowedFilter::exact('id'),
              AllowedFilter::exact('status'),
@@ -28,9 +29,9 @@ class ManuscriptRecordListQuery extends QueryBuilder
              AllowedFilter::exact('region_id'),
              AllowedFilter::exact('functional_area_id'),
              AllowedFilter::exact('manuscriptAuthors.author_id'),
-             AllowedFilter::partial('title'),
+             AllowedFilter::partial('title', 'title_plain'),
              AllowedFilter::partial('abstract'),
-             AllowedFilter::custom('search', new MultiColumnFilter('title', 'ulid')),
+             AllowedFilter::custom('search', new MultiColumnFilter('title_plain', 'ulid')),
              AllowedFilter::exact('potential_public_interest'),
              AllowedFilter::scope('reviewedBetween'),
              AllowedFilter::scope('overdueReview'),

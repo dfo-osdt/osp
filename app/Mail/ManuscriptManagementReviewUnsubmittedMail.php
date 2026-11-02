@@ -6,6 +6,7 @@ namespace App\Mail;
 
 use App\Models\ManuscriptRecord;
 use App\Models\User;
+use App\Services\TitleMarkup;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -30,7 +31,7 @@ class ManuscriptManagementReviewUnsubmittedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Manuscript Unsubmitted from Manuscript Management Review - Manuscrit retiré de l\'examen de gestion du manuscrit : '.$this->manuscriptRecord->title,
+            subject: 'Manuscript Unsubmitted from Manuscript Management Review - Manuscrit retiré de l\'examen de gestion du manuscrit : '.TitleMarkup::toPlain($this->manuscriptRecord->title),
         );
     }
 

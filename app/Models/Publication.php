@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\SanitizedTitle;
 use App\Contracts\Fundable;
 use App\Contracts\Plannable;
 use App\Enums\ManuscriptRecordType;
@@ -10,6 +11,7 @@ use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
 use App\Enums\SensitivityLabel;
 use App\Enums\SupplementaryFileType;
+use App\Services\TitleMarkup;
 use App\Traits\FundableTrait;
 use App\Traits\PlannableTrait;
 use App\Traits\TrimsMediaFileName;
@@ -41,6 +43,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property Carbon|null $deleted_at
  * @property PublicationStatus $status accepted, published, etc.
  * @property string $title
+ * @property-read string $title_plain
  * @property string|null $doi
  * @property Carbon|null $accepted_on
  * @property Carbon|null $published_on
@@ -121,6 +124,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
         'id',
         'created_at',
         'updated_at',
+        'title_plain',
     ];
 
     #[\Override]
@@ -130,6 +134,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
         'published_on' => 'date',
         'embargoed_until' => 'date',
         'status' => PublicationStatus::class,
+        'title' => SanitizedTitle::class,
     ];
 
     #[\Override]
@@ -431,7 +436,7 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
 
         $lines = [];
         $lines[] = 'TY  - '.($isDfo ? 'RPRT' : 'JOUR');
-        $lines[] = 'TI  - '.$this->title;
+        $lines[] = 'TI  - '.TitleMarkup::toPlain($this->title);
 
         foreach ($this->publicationAuthors ?? [] as $pubAuthor) {
             $authorName = $pubAuthor->is_group_author
@@ -534,16 +539,40 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     }
 
     /**
-     * Escape the title and brace-protect words with an inner capital (acronyms like DFO or eDNA)
+     * Convert the formatted title to LaTeX: <i> becomes \emph{{...}} (\emph sets names upright in
+     * italic styles, the inner braces stop case changes), <sup>/<sub> become \textsuperscript/\textsubscript,
+     * and outside italics, words with an inner capital (acronyms like DFO or eDNA) are brace-protected
      * so citation styles that change case leave them intact.
      */
     private function bibtexTitle(string $title): string
     {
-        return preg_replace_callback('/\S+/u', function (array $match): string {
-            $word = $this->escapeBibtex($match[0]);
+        $commands = [
+            'i' => ['\emph{{', '}}'],
+            'sup' => ['\textsuperscript{', '}'],
+            'sub' => ['\textsubscript{', '}'],
+        ];
 
-            return preg_match('/\p{L}.*\p{Lu}/u', $match[0]) ? '{'.$word.'}' : $word;
-        }, $title);
+        $latex = '';
+        $italicDepth = 0;
+        foreach (TitleMarkup::tokens($title) as $token) {
+            if ($token['type'] === 'open') {
+                $latex .= $commands[$token['tag']][0];
+                $italicDepth += $token['tag'] === 'i' ? 1 : 0;
+            } elseif ($token['type'] === 'close') {
+                $latex .= $commands[$token['tag']][1];
+                $italicDepth -= $token['tag'] === 'i' ? 1 : 0;
+            } elseif ($italicDepth > 0) {
+                $latex .= $this->escapeBibtex($token['text']);
+            } else {
+                $latex .= preg_replace_callback('/\S+/u', function (array $match): string {
+                    $word = $this->escapeBibtex($match[0]);
+
+                    return preg_match('/\p{L}.*\p{Lu}/u', $match[0]) ? '{'.$word.'}' : $word;
+                }, $token['text']);
+            }
+        }
+
+        return $latex;
     }
 
     private function escapeBibtex(?string $value): string

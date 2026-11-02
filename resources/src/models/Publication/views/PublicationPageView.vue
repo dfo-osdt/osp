@@ -9,6 +9,8 @@ import DoiInput from '@/components/DoiInput.vue'
 import IsbnInput from '@/components/IsbnInput.vue'
 import IssueNumberInput from '@/components/IssueNumberInput.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
+import TitleEditor from '@/components/TitleEditor.vue'
+import TitleText from '@/components/TitleText.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import MainPageLayout from '@/layouts/MainPageLayout.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
@@ -214,7 +216,7 @@ function scrollToSupplementaryFiles() {
           <div
             class="text-body2 text-weight-medium text-grey-7 ellipsis-2-lines"
           >
-            {{ publication.data.title }}
+            <TitleText :title="publication.data.title" />
           </div>
           <div
             class="text-caption text-weight-medium text-grey-7 ellipsis flex"
@@ -321,13 +323,12 @@ function scrollToSupplementaryFiles() {
           <div>{{ t('pub.general-information') }}</div>
         </template>
         <QForm ref="generalInformationForm">
-          <q-input
+          <TitleEditor
             v-model="publication.data.title"
             :label="t('common.title')"
             bg-color="white"
             :disable="loading"
             :readonly="!canEdit"
-            outlined
             :rules="[(val) => !!val || t('common.required')]"
             class="q-mb-md"
           />

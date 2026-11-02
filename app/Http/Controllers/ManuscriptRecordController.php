@@ -25,6 +25,7 @@ use App\Models\User;
 use App\Queries\ManuscriptRecordListQuery;
 use App\Rules\Isbn;
 use App\Rules\UserNotAManuscriptAuthor;
+use App\Rules\ValidTitleMarkup;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -109,7 +110,7 @@ class ManuscriptRecordController extends Controller
 
         // validate that we have a type, title, and region_id
         $validated = $request->validate([
-            'title' => ['required', 'max:255'],
+            'title' => ['required', 'string', new ValidTitleMarkup],
             'region_id' => ['required', 'exists:regions,id'],
             'type' => ['required', new Enum(ManuscriptRecordType::class)],
         ]);
@@ -143,7 +144,7 @@ class ManuscriptRecordController extends Controller
         Gate::authorize('update', $manuscriptRecord);
 
         $validated = $request->validate([
-            'title' => ['string', 'max:255'],
+            'title' => ['string', new ValidTitleMarkup],
             'region_id' => ['numeric', 'exists:regions,id'],
             'functional_area_id' => ['nullable', 'numeric', 'exists:functional_areas,id'],
             'type' => [new Enum(ManuscriptRecordType::class)],

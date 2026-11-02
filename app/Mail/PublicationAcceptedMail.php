@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Publication;
+use App\Services\TitleMarkup;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -39,7 +40,7 @@ class PublicationAcceptedMail extends Mailable implements ShouldQueue
     {
         return new Envelope(
             to: $this->recipientEmails()->all(),
-            subject: 'Publication Accepted - Publication acceptée : '.$this->publication->title,
+            subject: 'Publication Accepted - Publication acceptée : '.TitleMarkup::toPlain($this->publication->title),
         );
     }
 

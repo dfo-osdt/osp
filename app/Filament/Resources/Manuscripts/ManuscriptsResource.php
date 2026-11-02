@@ -7,6 +7,7 @@ use App\Enums\ManuscriptRecordStatus;
 use App\Filament\Resources\Manuscripts\Pages\ListManuscripts;
 use App\Filament\Resources\Manuscripts\Tables\ManuscriptsTable;
 use App\Models\ManuscriptRecord;
+use App\Services\TitleMarkup;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\KeyValue;
@@ -21,6 +22,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class ManuscriptsResource extends Resource
 {
@@ -52,10 +54,11 @@ class ManuscriptsResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('title')
-                    ->sortable()
+                    ->html()
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy('title_plain', $direction))
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->where(function (Builder $query) use ($search): void {
                         $query
-                            ->where('title', 'like', "%{$search}%")
+                            ->where('title_plain', 'like', "%{$search}%")
                             ->orWhereHas('user', function (Builder $query) use ($search): void {
                                 $query->where('email', 'like', "%{$search}%");
                             });
@@ -115,7 +118,7 @@ class ManuscriptsResource extends Resource
                     ->form([
                         Placeholder::make('title')
                             ->label('Title')
-                            ->content(fn ($record) => $record->title),
+                            ->content(fn ($record): HtmlString => new HtmlString(TitleMarkup::sanitize($record->title))),
 
                         KeyValue::make('quick_view_data')
                             ->label('')

@@ -6,6 +6,7 @@ use App\Enums\ManagementReviewStepDecision;
 use App\Enums\ManagementReviewStepStatus;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
+use App\Services\TitleMarkup;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -34,7 +35,7 @@ class ReviewStepNotificationMail extends Mailable
      */
     public function build()
     {
-        $this->subject('Manuscript Management Review [action required] / Révision par la gestion [action requise]: '.$this->managementReviewStep->manuscriptRecord->title);
+        $this->subject('Manuscript Management Review [action required] / Révision par la gestion [action requise]: '.TitleMarkup::toPlain($this->managementReviewStep->manuscriptRecord->title));
         $this->to($this->managementReviewStep->user->email, $this->managementReviewStep->user->full_name);
 
         $ccEmails = collect();

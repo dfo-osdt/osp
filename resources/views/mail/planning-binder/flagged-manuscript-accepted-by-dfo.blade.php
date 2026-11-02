@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-The manuscript titled "**{{ $publication->title }}**" has been approved for publication in the series: {{ $publication->journal->title }}.
+The manuscript titled "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**" has been approved for publication in the series: {{ $publication->journal->title }}.
 You are receiving this email because {{ $referrer->full_name }} has flagged this manuscript for addition to the planning binder.
 
 It is the region's responsibility to include the publication in the planning binder.
@@ -12,7 +12,7 @@ The Science Publications team will hold off on publishing this manuscript until 
 
 
 <x-mail::panel>
-**Title**: {{ $publication->title}}<br/>
+**Title**: {!! \App\Services\TitleMarkup::sanitize($publication->title) !!}<br/>
 **Type**: {{ $state->manuscript_record_type->label('en') }}<br/>
 **Region**: {{ $publication->region->name_en }}<br />
 **Potential Public Interest**: {{ $publication->manuscriptRecord->potential_public_interest ? 'Yes' : 'No' }}<br/>
@@ -32,7 +32,7 @@ View Publication
 
 # Bonjour {{ $referrer->first_name }},
 
-Le manuscrit intitulé "**{{ $publication->title }}**" a été accepté pour publication dans la série: {{ $publication->journal->title }}.
+Le manuscrit intitulé "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**" a été accepté pour publication dans la série: {{ $publication->journal->title }}.
 Vous recevez ce courriel parce que {{ $referrer->full_name }} a signalé ce manuscrit pour ajout au classeur de planification.
 
 Il est de la responsabilité de la région d'inclure la publication dans le classeur de planification.
@@ -41,7 +41,7 @@ L'équipe des publications scientifiques retardera la publication de ce manuscri
 
 
 <x-mail::panel>
-**Titre**: {{ $publication->title}}<br/>
+**Titre**: {!! \App\Services\TitleMarkup::sanitize($publication->title) !!}<br/>
 **Type**: {{ $state->manuscript_record_type->label('fr') }}<br/>
 **Région**: {{ $publication->region->name_fr }}<br/>
 **Intérêt public potentiel**: {{ $publication->manuscriptRecord->potential_public_interest ? 'Oui' : 'Non' }}<br/>

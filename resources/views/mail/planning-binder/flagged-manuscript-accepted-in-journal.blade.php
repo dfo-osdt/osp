@@ -3,13 +3,13 @@
 
 *(le français suit)*
 
-The manuscript titled "**{{ $publication->title }}**" has been accepted for publication in the following journal: {{ $publication->journal->title }}.
+The manuscript titled "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**" has been accepted for publication in the following journal: {{ $publication->journal->title }}.
 You are receiving this email because {{ $referrer->full_name }} has flagged this manuscript for addition to the planning binder.
 
 It is the region's responsibility to include the publication in the planning binder.
 
 <x-mail::panel>
-**Title**: {{ $publication->title}}<br/>
+**Title**: {!! \App\Services\TitleMarkup::sanitize($publication->title) !!}<br/>
 **Journal**: {{ $publication->journal->title }}<br/>
 **Type**: {{ $state->manuscript_record_type->label('en') }}<br/>
 **Region**: {{ $publication->region->name_en }}<br />
@@ -30,13 +30,13 @@ View Publication
 
 # Bonjour {{ $referrer->first_name }},
 
-Le manuscrit intitulé "**{{ $publication->title }}**" a été accepté pour publication dans la revue suivante : {{ $publication->journal->title }}.
+Le manuscrit intitulé "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**" a été accepté pour publication dans la revue suivante : {{ $publication->journal->title }}.
 Vous recevez ce courriel parce que {{ $referrer->full_name }} a signalé ce manuscrit pour ajout au classeur de planification.
 
 Il est de la responsabilité de la région d'inclure la publication dans le classeur de planification.
 
 <x-mail::panel>
-**Titre**: {{ $publication->title}}<br/>
+**Titre**: {!! \App\Services\TitleMarkup::sanitize($publication->title) !!}<br/>
 **Revue**: {{ $publication->journal->title }}<br/>
 **Type**: {{ $state->manuscript_record_type->label('fr') }}<br/>
 **Région**: {{ $publication->region->name_fr }}<br/>

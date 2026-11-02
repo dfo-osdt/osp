@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-The manuscript titled "**{{ $publication->title }}**" has been submitted for
+The manuscript titled "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**" has been submitted for
 publishing in "**{{ $publication->journal->title }}**." A new publication record
 has been created in the Open Science Portal and can be found at the link
 below.
@@ -20,7 +20,7 @@ Please note that only a Chief Editor can mark the publication as published.
 
 # Bonjour Équipe des publications scientifiques,
 
-Le manuscrit intitulé "**{{ $publication->title }}**" a été soumis pour
+Le manuscrit intitulé "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**" a été soumis pour
 publication dans "**{{$publication->journal->title}}**." Un nouveau registre de
 publication a été créé dans le Portail de la science ouverte et peut être
 consulté au lien ci-dessous.

@@ -11,7 +11,7 @@ A Manuscript Management Review is no longer expected for this manuscript record.
 
 <x-mail::panel>
 # Manuscript Summary
-**Working Title:**<br /> {{ $manuscriptRecord->title }}
+**Working Title:**<br /> {!! \App\Services\TitleMarkup::sanitize($manuscriptRecord->title) !!}
 
 **Author(s):**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
@@ -34,7 +34,7 @@ Une révision par la gestion du manuscrit n'est plus requise pour ce dossier de 
 <x-mail::panel>
 # Résumé du manuscrit
 
-**Titre de travail :**<br /> {{ $manuscriptRecord->title }}
+**Titre de travail :**<br /> {!! \App\Services\TitleMarkup::sanitize($manuscriptRecord->title) !!}
 
 **Auteur(s) :**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 

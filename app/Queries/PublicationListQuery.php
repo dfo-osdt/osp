@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /** @extends QueryBuilder<Publication> */
@@ -17,8 +18,8 @@ class PublicationListQuery extends QueryBuilder
         parent::__construct($subject ?? Publication::query(), $request);
 
         $this->
-         defaultSort('title')->
-         allowedSorts('title', 'created_at', 'updated_at', 'published_on')->
+         defaultSort(AllowedSort::field('title', 'title_plain'))->
+         allowedSorts(AllowedSort::field('title', 'title_plain'), 'created_at', 'updated_at', 'published_on')->
          allowedFilters(
              AllowedFilter::exact('id'),
              AllowedFilter::exact('status'),
@@ -27,7 +28,7 @@ class PublicationListQuery extends QueryBuilder
              AllowedFilter::exact('region_id'),
              AllowedFilter::exact('functional_area_id', 'manuscriptRecord.functional_area_id'),
              AllowedFilter::exact('publicationAuthors.author_id'),
-             AllowedFilter::partial('title'),
+             AllowedFilter::partial('title', 'title_plain'),
              AllowedFilter::scope('open_access'),
              AllowedFilter::scope('not_under_embargo'),
              AllowedFilter::scope('under_embargo'),

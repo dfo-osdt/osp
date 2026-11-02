@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ManagementReviewStepResource } from '../ManagementReviewStep'
+import TitleText from '@/components/TitleText.vue'
 import { useLocaleDate } from '@/composables/useLocaleDate'
 import ManagementReviewStepDecisionSpan from './ManagementReviewStepDecisionSpan.vue'
 import ManagementReviewStepStatusBadge from './ManagementReviewStepStatusBadge.vue'
@@ -50,10 +51,13 @@ function userName(step: ManagementReviewStepResource) {
         <q-item-label
           class="text-body1 text-weight-medium text-primary"
         >
-          {{
-            step.data.manuscript_record?.data.title
-              ?? $t('common.no-title')
-          }}
+          <TitleText
+            v-if="step.data.manuscript_record?.data.title"
+            :title="step.data.manuscript_record.data.title"
+          />
+          <template v-else>
+            {{ $t('common.no-title') }}
+          </template>
         </q-item-label>
         <q-item-label caption>
           {{

@@ -8,7 +8,9 @@ import CopyToClipboardButton from '@/components/CopyToClipboardButton.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import NoResultFoundDiv from '@/components/NoResultsFoundDiv.vue'
 import PaginationDiv from '@/components/PaginationDiv.vue'
+import TitleText from '@/components/TitleText.vue'
 import { useLocaleTimeAgo } from '@/composables/useLocaleTimeAgo'
+import { titleToPlainText } from '@/utils/title'
 import { EditorDashboardService } from '../EditorDashboard'
 
 const { t } = useI18n()
@@ -142,8 +144,8 @@ onMounted(() => {
               @click="$router.push(`/publication/${pub.id}`)"
             >
               <td class="text-left">
-                <div class="queue-title" :title="pub.title">
-                  {{ pub.title }}
+                <div class="queue-title" :title="titleToPlainText(pub.title)">
+                  <TitleText :title="pub.title" />
                 </div>
                 <div
                   v-if="pub.catalogue_number"

@@ -9,6 +9,8 @@ import FormSectionStatusIcon from '@/components/FormSectionStatusIcon.vue'
 import QuestionEditor from '@/components/QuestionEditor.vue'
 import RequiredSpan from '@/components/RequiredSpan.vue'
 import SavePageSticky from '@/components/SavePageSticky.vue'
+import TitleEditor from '@/components/TitleEditor.vue'
+import TitleText from '@/components/TitleText.vue'
 import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
 import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue'
@@ -232,9 +234,10 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
           <div class="text-caption">
             <span class="text-primary text-uppercase">{{ $t('common.title') }}:
             </span>
-            <span class="text-weight-medium text-uppercase">{{
-              manuscriptResource.data.title
-            }}</span>
+            <TitleText
+              class="text-weight-medium text-uppercase"
+              :title="manuscriptResource.data.title"
+            />
           </div>
         </div>
       </div>
@@ -375,10 +378,9 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
                 </p>
               </div>
             </div>
-            <q-input
+            <TitleEditor
               id="workingTitle"
               v-model="manuscriptResource.data.title"
-              outlined
               bg-color="white"
               :label="$t('mrf.manuscripts-working-title')"
               :disable="loading"

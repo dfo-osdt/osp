@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PublicationResource } from '../Publication'
 import OrcidIcon from '@/components/OrcidIcon.vue'
+import TitleText from '@/components/TitleText.vue'
 import JournalNameSpan from '@/models/Journal/components/JournalNameSpan.vue'
 import DOILink from './DoiLink.vue'
 import PublicationStatusBadge from './PublicationStatusBadge.vue'
@@ -32,7 +33,7 @@ function publishedYear(publication: PublicationResource) {
     >
       <q-item-section>
         <q-item-label class="text-body1 text-weight-medium text-primary">
-          {{ publication.data.title }}
+          <TitleText :title="publication.data.title" />
         </q-item-label>
         <q-item-label caption lines="2">
           <template v-if="publication.data.publication_authors">

@@ -10,6 +10,7 @@ import type {
 } from '../ManuscriptRecord'
 import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
+import { titleToPlainText } from '@/utils/title'
 import { ManuscriptRecordService } from '../ManuscriptRecord'
 
 const props = defineProps<
@@ -27,7 +28,7 @@ function confirmDeletion(): void {
   $q.dialog({
     title: t('dialog.delete-manuscript.title'),
     message: t('dialog.delete-manuscript.message', {
-      title: props.manuscript.data.title,
+      title: titleToPlainText(props.manuscript.data.title),
     }),
     cancel: true,
     persistent: false,

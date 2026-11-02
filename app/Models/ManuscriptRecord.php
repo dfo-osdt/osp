@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\SanitizedTitle;
 use App\Contracts\Fundable;
 use App\Contracts\Plannable;
 use App\Enums\ManagementReviewStepStatus;
@@ -50,6 +51,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property ManuscriptRecordType $type primary, secondary, etc.
  * @property ManuscriptRecordStatus $status draft, submitted, etc.
  * @property string $title
+ * @property-read string $title_plain
  * @property int $region_id
  * @property int $user_id
  * @property string|null $abstract
@@ -165,6 +167,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
         'status',
         'sent_for_review_at',
         'reviewed_at',
+        'title_plain',
     ];
 
     // default values for optional fields
@@ -471,6 +474,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
             'intends_open_access' => 'boolean',
             'pls_approved_by_author' => 'boolean',
             'pls_translation_approved' => 'boolean',
+            'title' => SanitizedTitle::class,
         ];
     }
 }

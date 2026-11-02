@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Models\ManuscriptRecord;
 use App\Models\Publication;
+use App\Services\TitleMarkup;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -50,7 +51,7 @@ class ManuscriptRecordSubmittedToDFO extends Mailable implements ShouldQueue
         return new Envelope(
             to: [$to],
             cc: $cc,
-            subject: 'Manuscript Submitted - Manuscrit soumis: '.$this->manuscriptRecord->title,
+            subject: 'Manuscript Submitted - Manuscrit soumis: '.TitleMarkup::toPlain($this->manuscriptRecord->title),
         );
     }
 

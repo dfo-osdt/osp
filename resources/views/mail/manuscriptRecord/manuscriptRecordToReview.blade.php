@@ -15,7 +15,7 @@ Review Manuscript
 
 <x-mail::panel>
 # Manuscript Summary
-**Working Title:**<br /> {{ $manuscriptRecord->title }}
+**Working Title:**<br /> {!! \App\Services\TitleMarkup::sanitize($manuscriptRecord->title) !!}
 
 **Author(s):**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 
@@ -41,7 +41,7 @@ Réviser le manuscrit
 
 <x-mail::panel>
 # Sommaire du manuscrit
-**Titre provisoire du manuscrit:**<br /> {{ $manuscriptRecord->title }}
+**Titre provisoire du manuscrit:**<br /> {!! \App\Services\TitleMarkup::sanitize($manuscriptRecord->title) !!}
 
 **Auteur(s):**<br /> {{ $manuscriptRecord->manuscriptAuthors->implode('author.apaName', '; ') }}
 

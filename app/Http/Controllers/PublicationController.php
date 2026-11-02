@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Queries\PublicationListQuery;
 use App\Rules\Doi;
 use App\Rules\Isbn;
+use App\Rules\ValidTitleMarkup;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
@@ -58,7 +59,7 @@ class PublicationController extends Controller
         // validate the request
         $validated = $request->validate([
             'status' => new Enum(PublicationStatus::class),
-            'title' => ['required'],
+            'title' => ['required', 'string', new ValidTitleMarkup],
             'journal_id' => ['required', 'exists:journals,id'],
             'doi' => ['nullable', 'string', new Doi],
             'isbn' => ['nullable', 'string', new Isbn],
@@ -130,7 +131,7 @@ class PublicationController extends Controller
 
         // validate the rest of the request
         $validated = $request->validate([
-            'title' => ['sometimes', 'required', 'string'],
+            'title' => ['sometimes', 'required', 'string', new ValidTitleMarkup],
             'journal_id' => ['sometimes', 'required', 'exists:journals,id'],
             'doi' => ['string', 'nullable', new Doi],
             'isbn' => ['nullable', 'string', new Isbn],

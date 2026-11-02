@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /** @extends QueryBuilder<ManuscriptRecord> */
@@ -33,12 +34,12 @@ class PreprintListQuery extends QueryBuilder
         $this
             ->defaultSort('accepted_on')
             ->allowedSorts(
-                'title',
+                AllowedSort::field('title', 'title_plain'),
             )
             ->allowedFilters(
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('user_id'),
-                AllowedFilter::partial('title'),
+                AllowedFilter::partial('title', 'title_plain'),
                 AllowedFilter::exact('manuscriptAuthors.author_id'),
             );
     }
