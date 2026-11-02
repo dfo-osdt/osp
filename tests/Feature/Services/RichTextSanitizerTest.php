@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Services\RichTextSanitizer;
 
 test('sanitizing rich text keeps the editor formatting', function (): void {
