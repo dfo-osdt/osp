@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /** @extends QueryBuilder<ManuscriptRecord> */
@@ -24,14 +25,14 @@ class MyManuscriptsRecordQuery extends QueryBuilder
              AllowedFilter::exact('region_id'),
              AllowedFilter::exact('status'),
              AllowedFilter::exact('type'),
-             AllowedFilter::partial('title'),
-             AllowedFilter::custom('search', new MultiColumnFilter('title', 'ulid')),
+             AllowedFilter::partial('title', 'title_plain'),
+             AllowedFilter::custom('search', new MultiColumnFilter('title_plain', 'ulid')),
              AllowedFilter::exact('functional_area_id'),
              AllowedFilter::scope('reviewedBetween'),
          )->allowedSorts(
              'updated_at',
              'created_at',
-             'title',
+             AllowedSort::field('title', 'title_plain'),
              'type',
              'status',
          );

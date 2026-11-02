@@ -7,6 +7,7 @@ import { QForm, QStepper } from 'quasar'
 import BaseDialog from '@/components/BaseDialog.vue'
 import DateInput from '@/components/DateInput.vue'
 import DoiInput from '@/components/DoiInput.vue'
+import TitleEditor from '@/components/TitleEditor.vue'
 import JournalSelect from '@/models/Journal/components/JournalSelect.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import {
@@ -141,8 +142,8 @@ async function create() {
             }}
           </div>
           <q-separator class="q-mb-md" />
-          <q-input
-            v-model="title" :label="$t('common.title')" class="q-mb-md" outlined :rules="[
+          <TitleEditor
+            v-model="title" :label="$t('common.title')" class="q-mb-md" :rules="[
               (val) => val.length > 0 || $t('common.required'),
             ]"
           />

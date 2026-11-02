@@ -272,3 +272,38 @@ test('the bibtex export only includes filtered publications the user can see', f
         ->not->toContain("_{$filteredOut->id},")
         ->not->toContain("_{$unpublished->id},");
 });
+
+test('the bibtex export converts formatted titles to latex', function (): void {
+    $user = User::factory()->create();
+    Publication::factory()->published()->create([
+        'title' => 'eDNA of <i>Salmo salar</i> &amp; <i>x<sub>2</sub></i> at 10<sup>-3</sup> M',
+    ]);
+
+    $response = $this->actingAs($user)->get('/api/publications/export?format=bibtex');
+
+    expect($response->streamedContent())
+        ->toContain('  title = {{eDNA} of \emph{{Salmo salar}} \& \emph{{x\textsubscript{2}}} at 10\textsuperscript{-3} M},');
+});
+
+test('the ris export writes formatted titles as plain text', function (): void {
+    $user = User::factory()->create();
+    Publication::factory()->published()->create([
+        'title' => '<i>Salmo salar</i> &amp; CO<sub>2</sub>',
+    ]);
+
+    $response = $this->actingAs($user)->get('/api/publications/export?format=ris');
+
+    expect($response->streamedContent())->toContain("TI  - Salmo salar & CO2\r\n");
+});
+
+test('the excel export keeps italics in formatted titles', function (): void {
+    $user = User::factory()->create();
+    Publication::factory()->published()->create(['title' => 'Growth of <i>Salmo salar</i>']);
+
+    $response = $this->actingAs($user)->get('/api/publications/export?format=excel')->assertOk();
+
+    $spreadsheet = IOFactory::load($response->baseResponse->getFile()->getPathname());
+    $title = $spreadsheet->getSheet(0)->getCell('A2')->getValue();
+    expect($title->getPlainText())->toBe('Growth of Salmo salar')
+        ->and(array_map(fn ($run): bool => (bool) $run->getFont()?->getItalic(), $title->getRichTextElements()))->toBe([false, true]);
+});

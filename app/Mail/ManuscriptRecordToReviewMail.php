@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Models\ManuscriptRecord;
 use App\Models\User;
+use App\Services\TitleMarkup;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -31,7 +32,7 @@ class ManuscriptRecordToReviewMail extends Mailable
      */
     public function build()
     {
-        $this->subject('Manuscript Record Submitted - Registre du manuscrit Soumis : '.$this->manuscriptRecord->title);
+        $this->subject('Manuscript Record Submitted - Registre du manuscrit Soumis : '.TitleMarkup::toPlain($this->manuscriptRecord->title));
         $this->to($this->user->email, $this->user->full_name);
         $this->cc($this->manuscriptRecord->user->email, $this->manuscriptRecord->user->full_name);
 

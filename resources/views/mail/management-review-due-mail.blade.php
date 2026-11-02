@@ -9,7 +9,7 @@ You have {{ $reviews->count() }} management {{ $reviews->count() === 1 ? 'review
 | Manuscript Title | Due Date | Status |
 | :------------- | :------------- | :------------- |
 @foreach($reviews as $review)
-| [{{ Str::limit($review->manuscriptRecord->title, 60) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $review->manuscript_record_id }}/reviews) | {{ $review->decision_expected_by->locale('en_CA')->isoFormat('LL') }} | @if($review->decision_expected_by < now())**Overdue** ({{ $review->decision_expected_by->diffForHumans() }})@else {{ $review->decision_expected_by->diffForHumans() }}@endif |
+| [{{ Str::limit(\App\Services\TitleMarkup::toPlain($review->manuscriptRecord->title), 60) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $review->manuscript_record_id }}/reviews) | {{ $review->decision_expected_by->locale('en_CA')->isoFormat('LL') }} | @if($review->decision_expected_by < now())**Overdue** ({{ $review->decision_expected_by->diffForHumans() }})@else {{ $review->decision_expected_by->diffForHumans() }}@endif |
 @endforeach
 </x-mail::table>
 
@@ -31,7 +31,7 @@ Vous avez {{ $reviews->count() }} {{ $reviews->count() === 1 ? 'révision de ges
 | Titre du manuscrit | Date d'échéance | Statut |
 | :------------- | :------------- | :------------- |
 @foreach($reviews as $review)
-| [{{ Str::limit($review->manuscriptRecord->title, 60) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $review->manuscript_record_id }}/reviews) | {{ $review->decision_expected_by->locale('fr_CA')->isoFormat('LL') }} | @if($review->decision_expected_by < now())**En retard** ({{ $review->decision_expected_by->locale('fr_CA')->diffForHumans() }})@else {{ $review->decision_expected_by->locale('fr_CA')->diffForHumans() }}@endif |
+| [{{ Str::limit(\App\Services\TitleMarkup::toPlain($review->manuscriptRecord->title), 60) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $review->manuscript_record_id }}/reviews) | {{ $review->decision_expected_by->locale('fr_CA')->isoFormat('LL') }} | @if($review->decision_expected_by < now())**En retard** ({{ $review->decision_expected_by->locale('fr_CA')->diffForHumans() }})@else {{ $review->decision_expected_by->locale('fr_CA')->diffForHumans() }}@endif |
 @endforeach
 </x-mail::table>
 

@@ -3,7 +3,7 @@
 
 *(le français suit)*
 
-The publication titled "**{{ $publication->title }}**" has been marked as accepted for
+The publication titled "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**" has been marked as accepted for
 publishing in "**{{ $publication->journal->title }}**." A new publication
 record has been created in the Open Science Portal.
 
@@ -17,7 +17,7 @@ record has been created in the Open Science Portal.
 
 # Bonjour,
 
-La publication intitulée "**{{ $publication->title }}**" a été marquée comme acceptée pour
+La publication intitulée "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**" a été marquée comme acceptée pour
 publication dans "**{{ $publication->journal->title }}**." Un nouveau registre
 de publication a été créé dans le Portail de la science ouverte.
 

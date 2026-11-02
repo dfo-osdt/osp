@@ -5,6 +5,7 @@ import type {
   ManuscriptRecordType,
 } from '../ManuscriptRecord'
 import { QForm, QStepper } from 'quasar'
+import TitleEditor from '@/components/TitleEditor.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import { ManuscriptRecordService } from '../ManuscriptRecord'
 import ManuscriptTypeRadioSelection from './ManuscriptTypeRadioSelection.vue'
@@ -110,9 +111,8 @@ async function create() {
                   )
                 }}
               </div>
-              <q-input
+              <TitleEditor
                 v-model="title"
-                outlined
                 :label="$t('common.title')"
                 :placeholder="
                   $t(

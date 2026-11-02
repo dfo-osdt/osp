@@ -39,6 +39,7 @@ class CloneManuscriptRecord
             'published_on',
             'created_at',
             'updated_at',
+            'title_plain',
         ];
 
         $clone = $manuscriptRecord->replicate($exceptedAttributes);

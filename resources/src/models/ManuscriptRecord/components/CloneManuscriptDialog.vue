@@ -6,6 +6,7 @@ import type {
   ManuscriptRecordType,
 } from '../ManuscriptRecord'
 import { QStepper } from 'quasar'
+import { titleToPlainText } from '@/utils/title'
 import {
   ManuscriptRecordService,
 } from '../ManuscriptRecord'
@@ -90,7 +91,7 @@ async function clone() {
               {{
                 $t(
                   'clone-manuscript-record-dialog.clone-text',
-                  { title: props.sourceManuscript.title },
+                  { title: titleToPlainText(props.sourceManuscript.title) },
                 )
               }}
             </div>

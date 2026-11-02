@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PreprintResource } from '../Preprint'
 import OrcidIcon from '@/components/OrcidIcon.vue'
+import TitleText from '@/components/TitleText.vue'
 import DoiLink from '@/models/Publication/components/DoiLink.vue'
 
 defineProps<{
@@ -25,7 +26,7 @@ function publishedDate(preprint: PreprintResource) {
     >
       <q-item-section>
         <q-item-label class="text-body1 text-weight-medium text-primary">
-          {{ preprint.data.title }}
+          <TitleText :title="preprint.data.title" />
         </q-item-label>
         <q-item-label caption lines="2">
           <template v-if="preprint.data.authors">

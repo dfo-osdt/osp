@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
+use App\Services\TitleMarkup;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -66,7 +67,7 @@ class PublicationsSheet implements FromQuery, ShouldAutoSize, WithHeadings, With
         }
 
         return [
-            $publication->title,
+            TitleMarkup::toRichText($publication->title),
             $publication->journal->title,
             $publication->journal->publisher,
             $publication->journal->issn ? trim((string) $publication->journal->issn) : null,

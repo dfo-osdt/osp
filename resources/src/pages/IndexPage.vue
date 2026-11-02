@@ -7,6 +7,8 @@ import HelpfulLinkCard from '@/components/HelpfulLinkCard.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import OrcidIcon from '@/components/OrcidIcon.vue'
 import RorIcon from '@/components/RorIcon.vue'
+import TitleText from '@/components/TitleText.vue'
+import { titleToPlainText } from '@/utils/title'
 
 const $q = useQuasar()
 const { t } = useI18n()
@@ -206,7 +208,7 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
             >
               <q-item-section>
                 <q-item-label class="text-body1 text-weight-medium text-primary">
-                  {{ pub.title }}
+                  <TitleText :title="pub.title" />
                 </q-item-label>
                 <q-item-label v-if="pub.authors?.length" caption lines="2">
                   <span
@@ -245,7 +247,7 @@ function authorFullName(author: PublicStats['recent_publications'][number]['auth
                         :href="`https://doi.org/${pub.doi}`"
                         target="_blank"
                         rel="noopener noreferrer"
-                        :aria-label="$t('osp.a11y.doi-external-link', { doi: pub.doi, title: pub.title })"
+                        :aria-label="$t('osp.a11y.doi-external-link', { doi: pub.doi, title: titleToPlainText(pub.title) })"
                       >{{ pub.doi }}</a>
                     </div>
                   </div>

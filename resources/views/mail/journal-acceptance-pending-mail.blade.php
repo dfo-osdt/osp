@@ -14,7 +14,7 @@ You have {{ $manuscripts->count() }} {{ $manuscripts->count() === 1 ? 'manuscrip
 | Manuscript Title | Status | Submitted to Journal | Reviewed |
 | :------------- | :------------- | :------------- | :------------- |
 @foreach($manuscripts as $manuscript)
-| [{{ Str::limit($manuscript->title, 50) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $manuscript->id }}) | {{ ucfirst(str_replace('_', ' ', $manuscript->status->value)) }} | {{ $manuscript->submitted_to_journal_on ? \Carbon\Carbon::parse($manuscript->submitted_to_journal_on)->locale('en_CA')->isoFormat('LL') : 'N/A' }} | {{ $manuscript->reviewed_at ? \Carbon\Carbon::parse($manuscript->reviewed_at)->locale('en_CA')->diffForHumans() : 'N/A' }} |
+| [{{ Str::limit(\App\Services\TitleMarkup::toPlain($manuscript->title), 50) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $manuscript->id }}) | {{ ucfirst(str_replace('_', ' ', $manuscript->status->value)) }} | {{ $manuscript->submitted_to_journal_on ? \Carbon\Carbon::parse($manuscript->submitted_to_journal_on)->locale('en_CA')->isoFormat('LL') : 'N/A' }} | {{ $manuscript->reviewed_at ? \Carbon\Carbon::parse($manuscript->reviewed_at)->locale('en_CA')->diffForHumans() : 'N/A' }} |
 @endforeach
 </x-mail::table>
 
@@ -34,7 +34,7 @@ You have {{ $publications->count() }} {{ $publications->count() === 1 ? 'publica
 | Publication Title | Journal | Accepted On |
 | :------------- | :------------- | :------------- |
 @foreach($publications as $publication)
-| [{{ Str::limit($publication->title, 50) }}]({{ config('app.frontend_url') }}#/publication/{{ $publication->id }}) | {{ $publication->journal->title }} | {{ $publication->accepted_on ? $publication->accepted_on->locale('en_CA')->isoFormat('LL') : 'N/A' }} |
+| [{{ Str::limit(\App\Services\TitleMarkup::toPlain($publication->title), 50) }}]({{ config('app.frontend_url') }}#/publication/{{ $publication->id }}) | {{ $publication->journal->title }} | {{ $publication->accepted_on ? $publication->accepted_on->locale('en_CA')->isoFormat('LL') : 'N/A' }} |
 @endforeach
 </x-mail::table>
 
@@ -62,7 +62,7 @@ Vous avez {{ $manuscripts->count() }} {{ $manuscripts->count() === 1 ? 'manuscri
 | Titre du manuscrit | Statut | Soumis à la revue | Révisé |
 | :------------- | :------------- | :------------- | :------------- |
 @foreach($manuscripts as $manuscript)
-| [{{ Str::limit($manuscript->title, 50) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $manuscript->id }}) | {{ ucfirst(str_replace('_', ' ', $manuscript->status->value)) }} | {{ $manuscript->submitted_to_journal_on ? \Carbon\Carbon::parse($manuscript->submitted_to_journal_on)->locale('fr_CA')->isoFormat('LL') : 'N/A' }} | {{ $manuscript->reviewed_at ? \Carbon\Carbon::parse($manuscript->reviewed_at)->locale('fr_CA')->diffForHumans() : 'N/A' }} |
+| [{{ Str::limit(\App\Services\TitleMarkup::toPlain($manuscript->title), 50) }}]({{ config('app.frontend_url') }}#/manuscript/{{ $manuscript->id }}) | {{ ucfirst(str_replace('_', ' ', $manuscript->status->value)) }} | {{ $manuscript->submitted_to_journal_on ? \Carbon\Carbon::parse($manuscript->submitted_to_journal_on)->locale('fr_CA')->isoFormat('LL') : 'N/A' }} | {{ $manuscript->reviewed_at ? \Carbon\Carbon::parse($manuscript->reviewed_at)->locale('fr_CA')->diffForHumans() : 'N/A' }} |
 @endforeach
 </x-mail::table>
 
@@ -82,7 +82,7 @@ Vous avez {{ $publications->count() }} {{ $publications->count() === 1 ? 'public
 | Titre de la publication | Revue | Acceptée le |
 | :------------- | :------------- | :------------- |
 @foreach($publications as $publication)
-| [{{ Str::limit($publication->title, 50) }}]({{ config('app.frontend_url') }}#/publication/{{ $publication->id }}) | {{ $publication->journal->title }} | {{ $publication->accepted_on ? $publication->accepted_on->locale('fr_CA')->isoFormat('LL') : 'N/A' }} |
+| [{{ Str::limit(\App\Services\TitleMarkup::toPlain($publication->title), 50) }}]({{ config('app.frontend_url') }}#/publication/{{ $publication->id }}) | {{ $publication->journal->title }} | {{ $publication->accepted_on ? $publication->accepted_on->locale('fr_CA')->isoFormat('LL') : 'N/A' }} |
 @endforeach
 </x-mail::table>
 

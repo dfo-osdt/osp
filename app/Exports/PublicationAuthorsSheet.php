@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Publication;
 use App\Queries\PublicationListQuery;
+use App\Services\TitleMarkup;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -55,7 +56,7 @@ class PublicationAuthorsSheet implements FromQuery, ShouldAutoSize, WithHeadings
     {
         return $publication->publicationAuthors
             ->map(fn ($pa): array => [
-                $publication->title,
+                TitleMarkup::toRichText($publication->title),
                 $publication->published_on?->format('Y-m-d'),
                 $pa->is_group_author ? $pa->organization->name_en : $pa->author->apa_name,
                 $pa->author->orcid,

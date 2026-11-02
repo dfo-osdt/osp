@@ -13,7 +13,7 @@ View Manuscript
 
 <x-mail::panel>
 # Manuscript Summary
-**Working Title:**<br /> {{ $manuscriptRecord->title }} <br/>
+**Working Title:**<br /> {!! \App\Services\TitleMarkup::sanitize($manuscriptRecord->title) !!} <br/>
 **Share Type:**<br /> {{ $can_edit ? 'Edit' : 'Read only' }} <br/>
 **Expiration Date:**<br /> {{ $expires_at ?? 'Never' }} <br/>
 </x-mail::panel>
@@ -35,7 +35,7 @@ Voir le manuscrit
 
 <x-mail::panel>
 # Sommaire du manuscrit
-**Titre provisoire du manuscrit:**<br /> {{ $manuscriptRecord->title }} <br/>
+**Titre provisoire du manuscrit:**<br /> {!! \App\Services\TitleMarkup::sanitize($manuscriptRecord->title) !!} <br/>
 **Type de partage:**<br /> {{ $can_edit ? 'Modifier' : 'Lecture seule' }} <br/>
 **Date d'expiration:**<br /> {{ $expires_at ?? 'Jamais' }} <br/>
 </x-mail::panel>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ManuscriptRecordSummaryResource } from '../ManuscriptRecord'
 import OrcidIcon from '@/components/OrcidIcon.vue'
+import TitleText from '@/components/TitleText.vue'
 import CloneManuscriptButton from './CloneManuscriptButton.vue'
 import DeleteManuscriptButton from './DeleteManuscriptButton.vue'
 import ManuscriptStatusBadge from './ManuscriptStatusBadge.vue'
@@ -36,7 +37,7 @@ function goToManuscript(manuscript: ManuscriptRecordSummaryResource) {
         <q-item-label
           class="text-body1 text-weight-medium text-primary"
         >
-          {{ manuscript.data.title }}
+          <TitleText :title="manuscript.data.title" />
         </q-item-label>
         <q-item-label caption lines="2">
           <template v-if="manuscript.data.manuscript_authors">
