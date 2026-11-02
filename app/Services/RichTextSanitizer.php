@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
@@ -50,7 +52,7 @@ class RichTextSanitizer
 
     private static function sanitizer(): HtmlSanitizer
     {
-        if (self::$sanitizer === null) {
+        if (! self::$sanitizer instanceof HtmlSanitizer) {
             $config = (new HtmlSanitizerConfig)
                 ->allowLinkSchemes(['http', 'https', 'mailto'])
                 ->allowRelativeLinks(false)
