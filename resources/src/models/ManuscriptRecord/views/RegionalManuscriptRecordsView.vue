@@ -34,9 +34,21 @@ const regionStore = useRegionStore()
 const functionalAreaStore = useFunctionalAreaStore()
 
 const sortOptions = computed<SortOption[]>(() => [
-  { label: t('common.sort-recently-updated'), field: 'updated_at', direction: 'desc' },
-  { label: t('common.sort-longest-in-review'), field: 'sent_for_review_at', direction: 'asc' },
-  { label: t('common.sort-newest-in-review'), field: 'sent_for_review_at', direction: 'desc' },
+  {
+    label: t('common.sort-recently-updated'),
+    field: 'updated_at',
+    direction: 'desc',
+  },
+  {
+    label: t('common.sort-longest-in-review'),
+    field: 'sent_for_review_at',
+    direction: 'asc',
+  },
+  {
+    label: t('common.sort-newest-in-review'),
+    field: 'sent_for_review_at',
+    direction: 'desc',
+  },
 ])
 
 // URL query params for filter persistence
@@ -45,13 +57,19 @@ const currentPage = useRouteQuery('page', '1', { transform: Number, mode: 'push'
 const sortIndex = useRouteQuery('sort', '0', { transform: Number })
 const search = useRouteQuery<string | null>('search', null)
 const regionId = useRouteQuery<number | null>('region', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 const functionalAreaId = useRouteQuery<number | null>('area', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 const authorId = useRouteQuery<number | null>('author', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 const manuscriptType = useRouteQuery<ManuscriptRecordType | null>('type', null)
 const reviewedFrom = useRouteQuery<string | null>('reviewedFrom', null)
@@ -142,12 +160,20 @@ const filterCaption = computed(() => {
   const locale = localeStore.locale
   if (regionId.value) {
     const region = regionStore.regions?.find(r => r.id === regionId.value)
-    const regionName = region ? (locale === 'fr' ? region.name_fr : region.name_en) : ''
+    const regionName = region
+      ? (locale === 'fr'
+          ? region.name_fr
+          : region.name_en)
+      : ''
     caption += `${t('common.in')} ${regionName} `
   }
   if (functionalAreaId.value) {
     const fa = functionalAreaStore.functionalAreas?.find(fa => fa.data.id === functionalAreaId.value)
-    const faName = fa ? (locale === 'fr' ? fa.data.name_fr : fa.data.name_en) : ''
+    const faName = fa
+      ? (locale === 'fr'
+          ? fa.data.name_fr
+          : fa.data.name_en)
+      : ''
     caption += `${t('common.for')} ${faName} `
   }
   if (authorId.value) {

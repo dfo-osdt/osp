@@ -29,7 +29,9 @@ async function next() {
   }
   if (step.value === 2) {
     const valid = await manuscriptDetailForm.value?.validate()
-    manuscriptDetailFormValid.value = valid === undefined ? true : valid
+    manuscriptDetailFormValid.value = valid === undefined
+      ? true
+      : valid
     if (!manuscriptDetailFormValid.value)
       return
   }

@@ -186,7 +186,9 @@ const filterCaption = computed(() => {
       if (!fa) {
         return 'NA'
       }
-      return localeStore.locale === 'fr' ? fa.data.name_fr : fa.data.name_en
+      return localeStore.locale === 'fr'
+        ? fa.data.name_fr
+        : fa.data.name_en
     })
     caption += `${t('common.functional-area')}: ${names.join(', ')} `
   }

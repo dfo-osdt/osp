@@ -73,7 +73,10 @@ const authors = computed<AuthorResource[]>(() => {
   const authors = manuscriptAuthors
     .filter(item => item.data.author !== undefined)
     .map(item => item.data.author as AuthorResource)
-  return [...authors, ...reviewers]
+  return [
+    ...authors,
+    ...reviewers,
+  ]
 })
 </script>
 

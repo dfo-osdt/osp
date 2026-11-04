@@ -8,8 +8,12 @@ export function useLocaleTimeAgo(date: Date) {
 
   const I18N_MESSAGES: UseTimeAgoMessages<UseTimeAgoUnitNamesDefault> = {
     justNow: t('common.timeAgo.just-now'),
-    past: n => (DIGIT_REGEX.test(n) ? t('common.timeAgo.ago', [n]) : n),
-    future: n => (DIGIT_REGEX.test(n) ? t('common.timeAgo.in', [n]) : n),
+    past: n => (DIGIT_REGEX.test(n)
+      ? t('common.timeAgo.ago', [n])
+      : n),
+    future: n => (DIGIT_REGEX.test(n)
+      ? t('common.timeAgo.in', [n])
+      : n),
     month: (n, past) =>
       n === 1
         ? past

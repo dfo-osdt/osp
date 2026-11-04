@@ -45,7 +45,9 @@ function regionName(pub: EditorQueuePublication): string {
   if (!region) {
     return ''
   }
-  return localeStore.locale === 'fr' ? region.name_fr : region.name_en
+  return localeStore.locale === 'fr'
+    ? region.name_fr
+    : region.name_en
 }
 
 function ageInDays(acceptedOn: string | null): number | null {

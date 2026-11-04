@@ -58,11 +58,31 @@ const stats = ref<PublicStats | null>(null)
 type MetricKey = 'authors_count' | 'external_authors_count' | 'orcid_connected_count' | 'manuscripts_reviewed_count' | 'publications_count'
 
 const metrics = computed(() => [
-  { key: 'authors_count' as MetricKey, title: t('osp.stats.authors'), subtitle: t('osp.stats.contributing') },
-  { key: 'external_authors_count' as MetricKey, title: t('osp.stats.external-authors'), subtitle: t('osp.stats.external-contributing') },
-  { key: 'orcid_connected_count' as MetricKey, title: t('osp.stats.orcid-connected'), subtitle: t('osp.stats.linked-profiles') },
-  { key: 'manuscripts_reviewed_count' as MetricKey, title: t('osp.stats.manuscripts-reviewed'), subtitle: t('osp.stats.completed-review') },
-  { key: 'publications_count' as MetricKey, title: t('osp.stats.publications'), subtitle: t('osp.stats.published') },
+  {
+    key: 'authors_count' as MetricKey,
+    title: t('osp.stats.authors'),
+    subtitle: t('osp.stats.contributing'),
+  },
+  {
+    key: 'external_authors_count' as MetricKey,
+    title: t('osp.stats.external-authors'),
+    subtitle: t('osp.stats.external-contributing'),
+  },
+  {
+    key: 'orcid_connected_count' as MetricKey,
+    title: t('osp.stats.orcid-connected'),
+    subtitle: t('osp.stats.linked-profiles'),
+  },
+  {
+    key: 'manuscripts_reviewed_count' as MetricKey,
+    title: t('osp.stats.manuscripts-reviewed'),
+    subtitle: t('osp.stats.completed-review'),
+  },
+  {
+    key: 'publications_count' as MetricKey,
+    title: t('osp.stats.publications'),
+    subtitle: t('osp.stats.published'),
+  },
 ])
 
 onMounted(async () => {
@@ -80,7 +100,9 @@ function journalTitle(journal: PublicStats['recent_publications'][number]['journ
 }
 
 function orgName(org: PublicStats['external_organizations'][number]): string {
-  return localeStore.locale === 'fr' ? org.name_fr : org.name_en
+  return localeStore.locale === 'fr'
+    ? org.name_fr
+    : org.name_en
 }
 
 function authorFullName(author: PublicStats['recent_publications'][number]['authors'][number]): string {

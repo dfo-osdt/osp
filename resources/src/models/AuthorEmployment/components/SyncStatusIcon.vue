@@ -14,7 +14,9 @@ const color = computed(() => {
 })
 
 const tooltip = computed(() => {
-  return props.authorEmployment.data.orcid_needs_sync ? t('orcid.needs_sync') : t('orcid.synced')
+  return props.authorEmployment.data.orcid_needs_sync
+    ? t('orcid.needs_sync')
+    : t('orcid.synced')
 })
 </script>
 

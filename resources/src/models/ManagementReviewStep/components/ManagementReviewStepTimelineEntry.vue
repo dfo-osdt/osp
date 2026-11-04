@@ -174,7 +174,10 @@ async function forwardToDelegate() {
       const updated = await ManagementReviewStepService.forward(managementStep.value.data)
       managementStep.value = updated
       emit('decision', updated)
-      $q.notify({ message: t('review-step.forwarded'), type: 'positive' })
+      $q.notify({
+        message: t('review-step.forwarded'),
+        type: 'positive',
+      })
     }
     finally {
       isForwarding.value = false

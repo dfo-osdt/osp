@@ -269,34 +269,54 @@ export class AuthenticatedUser implements IAuthenticatedUser {
   ): string {
     switch (role) {
       case 'author':
-        return locale === 'en' ? 'Author' : 'Auteur'
+        return locale === 'en'
+          ? 'Author'
+          : 'Auteur'
       case 'director':
-        return locale === 'en' ? 'Director' : 'Directeur'
+        return locale === 'en'
+          ? 'Director'
+          : 'Directeur'
       case 'admin':
-        return locale === 'en' ? 'Admin' : 'Administrateur'
+        return locale === 'en'
+          ? 'Admin'
+          : 'Administrateur'
       case 'chief_editor':
-        return locale === 'en' ? 'Chief Editor' : 'Rédacteur en chef'
+        return locale === 'en'
+          ? 'Chief Editor'
+          : 'Rédacteur en chef'
       case 'editor':
-        return locale === 'en' ? 'Editor' : 'Éditeur'
+        return locale === 'en'
+          ? 'Editor'
+          : 'Éditeur'
       // Regional editor roles
       case 'nfl_editor':
         return locale === 'en'
           ? 'Newfoundland and Labrador Editor'
           : 'Éditeur Terre-Neuve-et-Labrador'
       case 'mar_editor':
-        return locale === 'en' ? 'Maritimes Editor' : 'Éditeur des Maritimes'
+        return locale === 'en'
+          ? 'Maritimes Editor'
+          : 'Éditeur des Maritimes'
       case 'glf_editor':
-        return locale === 'en' ? 'Gulf Editor' : 'Éditeur du Golfe'
+        return locale === 'en'
+          ? 'Gulf Editor'
+          : 'Éditeur du Golfe'
       case 'que_editor':
-        return locale === 'en' ? 'Quebec Editor' : 'Éditeur du Québec'
+        return locale === 'en'
+          ? 'Quebec Editor'
+          : 'Éditeur du Québec'
       case 'onp_editor':
         return locale === 'en'
           ? 'Ontario and Prairie Editor'
           : 'Éditeur de l\'Ontario et des Prairies'
       case 'arc_editor':
-        return locale === 'en' ? 'Arctic Editor' : 'Éditeur de l\'Arctique'
+        return locale === 'en'
+          ? 'Arctic Editor'
+          : 'Éditeur de l\'Arctique'
       case 'pac_editor':
-        return locale === 'en' ? 'Pacific Editor' : 'Éditeur du Pacifique'
+        return locale === 'en'
+          ? 'Pacific Editor'
+          : 'Éditeur du Pacifique'
       case 'ncr_editor':
         return locale === 'en'
           ? 'National Capital Region Editor'
@@ -311,9 +331,13 @@ export class AuthenticatedUser implements IAuthenticatedUser {
           ? 'Maritimes Observer'
           : 'Observateur des Maritimes'
       case 'glf_observer':
-        return locale === 'en' ? 'Gulf Observer' : 'Observateur du Golfe'
+        return locale === 'en'
+          ? 'Gulf Observer'
+          : 'Observateur du Golfe'
       case 'que_observer':
-        return locale === 'en' ? 'Quebec Observer' : 'Observateur du Québec'
+        return locale === 'en'
+          ? 'Quebec Observer'
+          : 'Observateur du Québec'
       case 'onp_observer':
         return locale === 'en'
           ? 'Ontario and Prairie Observer'

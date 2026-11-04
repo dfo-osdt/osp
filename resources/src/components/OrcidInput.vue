@@ -60,7 +60,9 @@ const rules = [
     }, 0)
     const remainder = total % 11
     const result = (12 - remainder) % 11
-    const checksum = result === 10 ? 'X' : result.toString()
+    const checksum = result === 10
+      ? 'X'
+      : result.toString()
     return (
       givenCheckSum === checksum
       || t('common.validation.orcid-is-invalid-checksum')

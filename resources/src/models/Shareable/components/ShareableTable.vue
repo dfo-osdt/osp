@@ -41,14 +41,18 @@ const columns = computed<QTableColumnProps>(() => {
       label: t('shareable.can-edit'),
       align: 'left',
       field: (row: ShareableResource) =>
-        row.data.can_edit ? t('common.yes') : t('common.no'),
+        row.data.can_edit
+          ? t('common.yes')
+          : t('common.no'),
     },
     {
       name: 'canDelete',
       label: t('shareable.can-delete'),
       align: 'left',
       field: (row: ShareableResource) =>
-        row.data.can_delete ? t('common.yes') : t('common.no'),
+        row.data.can_delete
+          ? t('common.yes')
+          : t('common.no'),
     },
     {
       name: 'expiresAt',

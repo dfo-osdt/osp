@@ -44,7 +44,9 @@ export class EditorDashboardService {
   public static async get(page = 1): Promise<EditorDashboardResponse> {
     const response = await http.get<EditorDashboardResponse>(
       '/api/editor-dashboard',
-      { params: { page } },
+      {
+        params: { page },
+      },
     )
     return response.data
   }

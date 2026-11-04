@@ -41,7 +41,10 @@ async function reset() {
       statusMessage.value = resp.data.status
       hideForm.value = true
       setTimeout(() => {
-        router.push({ name: 'login', query: { email: email.value } })
+        router.push({
+          name: 'login',
+          query: { email: email.value },
+        })
       }, 2000)
     })
     .catch((err) => {

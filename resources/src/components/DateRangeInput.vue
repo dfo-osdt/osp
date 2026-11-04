@@ -50,7 +50,9 @@ const displayText = computed(() => {
 
 function setThisFiscalYear(): void {
   const now = new Date()
-  const year = now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1
+  const year = now.getMonth() >= 3
+    ? now.getFullYear()
+    : now.getFullYear() - 1
   model.value = {
     from: `${year}-04-01`,
     to: `${year + 1}-03-31`,
@@ -59,7 +61,9 @@ function setThisFiscalYear(): void {
 
 function setLastFiscalYear(): void {
   const now = new Date()
-  const year = now.getMonth() >= 3 ? now.getFullYear() - 1 : now.getFullYear() - 2
+  const year = now.getMonth() >= 3
+    ? now.getFullYear() - 1
+    : now.getFullYear() - 2
   model.value = {
     from: `${year}-04-01`,
     to: `${year + 1}-03-31`,

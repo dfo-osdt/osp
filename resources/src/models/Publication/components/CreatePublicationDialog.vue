@@ -84,7 +84,9 @@ const loading = ref(false)
 async function create() {
   loading.value = true
   const publication: PublicationCreate = {
-    status: publishedOn.value === '' ? 'accepted' : 'published',
+    status: publishedOn.value === ''
+      ? 'accepted'
+      : 'published',
     title: title.value,
     doi: doi.value,
     is_open_access: isOpenAccess.value,

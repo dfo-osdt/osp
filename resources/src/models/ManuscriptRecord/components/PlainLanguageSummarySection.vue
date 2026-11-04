@@ -42,7 +42,9 @@ const enableTranslatePLS = computed(() => {
   }
 
   const sourceLanguage = manuscript.value.pls_source_language
-  const targetLanguage = sourceLanguage === 'en' ? 'fr' : 'en'
+  const targetLanguage = sourceLanguage === 'en'
+    ? 'fr'
+    : 'en'
 
   return (
     !props.readonly
@@ -59,7 +61,9 @@ const translateDisabledTooltip = computed(() => {
   }
 
   const sourceLanguage = manuscript.value.pls_source_language
-  const targetLanguage = sourceLanguage === 'en' ? 'fr' : 'en'
+  const targetLanguage = sourceLanguage === 'en'
+    ? 'fr'
+    : 'en'
 
   if (manuscript.value[`pls_${sourceLanguage}`] === '') {
     return t('mrf.source-pls-required-for-translation')
@@ -145,7 +149,9 @@ async function translatePLS() {
     return
 
   const sourceLanguage = manuscript.value.pls_source_language
-  const targetLanguage = sourceLanguage === 'en' ? 'fr' : 'en'
+  const targetLanguage = sourceLanguage === 'en'
+    ? 'fr'
+    : 'en'
   const sourcePLS = manuscript.value[`pls_${sourceLanguage}`]
 
   if (!sourcePLS || sourcePLS === '')

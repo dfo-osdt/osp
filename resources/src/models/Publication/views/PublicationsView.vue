@@ -24,13 +24,19 @@ const activeFilter = useRouteQuery('filter', '1', { transform: Number })
 const currentPage = useRouteQuery('page', '1', { transform: Number, mode: 'push' })
 const search = useRouteQuery<string | null>('search', null)
 const journalId = useRouteQuery<number | null>('journal', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 const authorId = useRouteQuery<number | null>('author', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 const regionId = useRouteQuery<number | null>('region', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 
 const functionalAreaIdsRaw = useRouteQuery<string | string[] | null>('functionalAreaIds', null)
@@ -40,7 +46,9 @@ const functionalAreaIds = computed<number[] | null>({
     const v = functionalAreaIdsRaw.value
     if (!v)
       return null
-    const arr = Array.isArray(v) ? v : String(v).split(',')
+    const arr = Array.isArray(v)
+      ? v
+      : String(v).split(',')
     const ids = arr.map(Number).filter(n => !Number.isNaN(n))
     return ids.length ? ids : null
   },
@@ -160,7 +168,9 @@ const filterCaption = computed(() => {
     const localeStore = useLocaleStore()
     const region = regionStore.regions?.find(r => r.id === regionId.value)
     const regionName
-      = localeStore.locale === 'fr' ? region?.name_fr : region?.name_en
+      = localeStore.locale === 'fr'
+        ? region?.name_fr
+        : region?.name_en
     caption += `${t('common.in')} ${regionName || 'NA'} `
   }
   if (functionalAreaIds.value?.length) {
@@ -170,7 +180,9 @@ const filterCaption = computed(() => {
       if (!fa) {
         return 'NA'
       }
-      return localeStore.locale === 'fr' ? fa.data.name_fr : fa.data.name_en
+      return localeStore.locale === 'fr'
+        ? fa.data.name_fr
+        : fa.data.name_en
     })
     caption += `${t('common.functional-area')}: ${names.join(', ')} `
   }

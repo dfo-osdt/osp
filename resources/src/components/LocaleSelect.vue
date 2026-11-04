@@ -17,8 +17,14 @@ const locale = useVModel(props, 'modelValue', emit)
 const label = computed(() => props.label || t('LocaleSelect.label'))
 
 const options = computed(() => [
-  { label: t('common.english'), value: 'en' },
-  { label: t('common.french'), value: 'fr' },
+  {
+    label: t('common.english'),
+    value: 'en',
+  },
+  {
+    label: t('common.french'),
+    value: 'fr',
+  },
 ])
 </script>
 

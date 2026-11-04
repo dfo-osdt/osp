@@ -12,12 +12,18 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('@/layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('@/pages/IndexPage.vue') },
+      {
+        path: '',
+        component: () => import('@/pages/IndexPage.vue'),
+      },
       {
         path: 'auth',
         component: () => import('@/layouts/AuthPageLayout.vue'),
         children: [
-          { path: '', redirect: { name: 'login' } },
+          {
+            path: '',
+            redirect: { name: 'login' },
+          },
           {
             path: 'login',
             component: () => import('@/models/auth/components/LoginCard.vue'),
@@ -71,7 +77,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/SettingsPage.vue'),
         meta: { requiresAuth: true },
         children: [
-          { path: '', redirect: { name: 'settings.profile' } },
+          {
+            path: '',
+            redirect: { name: 'settings.profile' },
+          },
           {
             path: 'profile',
             component: () => import('@/models/User/views/UserProfileView.vue'),
@@ -147,7 +156,9 @@ const routes: RouteRecordRaw[] = [
         path: '/author/:id',
         component: () => import('@/models/Author/views/AuthorProfileView.vue'),
         meta: { requiresAuth: true },
-        props: route => ({ id: Number(route.params.id) }),
+        props: route => ({
+          id: Number(route.params.id),
+        }),
         name: 'author.profile',
       },
       {
@@ -165,7 +176,9 @@ const routes: RouteRecordRaw[] = [
         component: () =>
           import('@/models/ManuscriptRecord/views/ManuscriptRecordPage.vue'),
         meta: { requiresAuth: true },
-        props: route => ({ id: Number(route.params.id) }),
+        props: route => ({
+          id: Number(route.params.id),
+        }),
         children: [
           {
             path: '',
@@ -178,7 +191,9 @@ const routes: RouteRecordRaw[] = [
               import(
                 '@/models/ManuscriptRecord/views/ManuscriptRecordFormView.vue',
               ),
-            props: route => ({ id: Number(route.params.id) }),
+            props: route => ({
+              id: Number(route.params.id),
+            }),
             name: 'manuscript.form',
           },
           {
@@ -187,7 +202,9 @@ const routes: RouteRecordRaw[] = [
               import(
                 '@/models/ManagementReviewStep/views/ManagementReviewStepsView.vue',
               ),
-            props: route => ({ id: Number(route.params.id) }),
+            props: route => ({
+              id: Number(route.params.id),
+            }),
             name: 'manuscript.reviews',
           },
           {
@@ -196,7 +213,9 @@ const routes: RouteRecordRaw[] = [
               import(
                 '@/models/ManuscriptRecord/views/ManuscriptRecordProgressView.vue',
               ),
-            props: route => ({ id: Number(route.params.id) }),
+            props: route => ({
+              id: Number(route.params.id),
+            }),
             name: 'manuscript.progress',
           },
           {
@@ -205,7 +224,9 @@ const routes: RouteRecordRaw[] = [
               import(
                 '@/models/ManuscriptRecord/views/ManuscriptRecordSharingView.vue',
               ),
-            props: route => ({ id: Number(route.params.id) }),
+            props: route => ({
+              id: Number(route.params.id),
+            }),
             name: 'manuscript.sharing',
           },
         ],
@@ -215,7 +236,9 @@ const routes: RouteRecordRaw[] = [
         component: () =>
           import('@/models/Publication/views/PublicationPageView.vue'),
         meta: { requiresAuth: true },
-        props: route => ({ id: Number(route.params.id) }),
+        props: route => ({
+          id: Number(route.params.id),
+        }),
         name: 'publication',
       },
     ],
