@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import type { OrganizationResource } from '../Organization'
 
-defineProps<{
-  organization: OrganizationResource | undefined
+const props = defineProps<{
+  organization?: OrganizationResource
+  // a ROR from elsewhere, e.g. an affiliation on an ORCID record
+  ror?: string | null
 }>()
+
+const rorIdentifier = computed(() => props.ror ?? props.organization?.data?.ror_identifier)
 </script>
 
 <template>
-  <span v-if="organization?.data?.ror_identifier">
+  <span v-if="rorIdentifier">
     {{ $t('RORLinkSpan.ror-id-label') }}
     <a
-      :href="organization.data.ror_identifier"
+      :href="rorIdentifier"
       target="_blank"
       rel="noopener noreferrer"
     >
-      {{ organization.data.ror_identifier }}
+      {{ rorIdentifier }}
     </a>
   </span>
 </template>

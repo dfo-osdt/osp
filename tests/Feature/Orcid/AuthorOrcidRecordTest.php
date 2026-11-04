@@ -30,16 +30,64 @@ function readPublicTokenResponse(string $token = 'read-public-token'): MockRespo
 
 /**
  * The whole record as returned by the public API
+ *
+ * @param  array<string, mixed>  $activities
  */
-function publicRecordResponse(?string $biography = 'Marine biologist studying salmon.'): MockResponse
+function publicRecordResponse(?string $biography = 'Marine biologist studying salmon.', array $activities = []): MockResponse
 {
     return MockResponse::make([
         'orcid-identifier' => ['path' => '0000-0002-1825-0097'],
         'person' => [
             'biography' => $biography === null ? null : ['content' => $biography, 'visibility' => 'public'],
         ],
-        'activities-summary' => [],
+        'activities-summary' => $activities,
     ]);
+}
+
+/**
+ * An employment or education summary in the activities section of the record
+ *
+ * @param  array{0: int, 1?: int}|null  $start  Year and month
+ * @param  array{0: int, 1?: int}|null  $end  Year and month
+ * @param  array{0: string, 1: string}|null  $disambiguatedOrganization  Identifier and source, e.g. ['https://ror.org/02qa1x782', 'ROR']
+ * @return array<string, mixed>
+ */
+function recordAffiliation(string $organization, ?string $department, ?string $role, ?array $start, ?array $end = null, string $sourceClientId = 'APP-SOMEONE-ELSE', ?array $disambiguatedOrganization = null): array
+{
+    $date = fn (?array $date): ?array => $date === null ? null : array_filter([
+        'year' => ['value' => (string) $date[0]],
+        'month' => isset($date[1]) ? ['value' => sprintf('%02d', $date[1])] : null,
+    ]);
+
+    return [
+        'put-code' => fake()->unique()->numberBetween(1000, 999999),
+        'organization' => [
+            'name' => $organization,
+            'address' => ['city' => 'Ottawa', 'country' => 'CA'],
+            'disambiguated-organization' => $disambiguatedOrganization === null ? null : [
+                'disambiguated-organization-identifier' => $disambiguatedOrganization[0],
+                'disambiguation-source' => $disambiguatedOrganization[1],
+            ],
+        ],
+        'department-name' => $department,
+        'role-title' => $role,
+        'start-date' => $date($start),
+        'end-date' => $date($end),
+        'source' => ['source-client-id' => ['path' => $sourceClientId]],
+        'visibility' => 'public',
+    ];
+}
+
+/**
+ * @param  list<array<string, mixed>>  $summaries
+ * @return array<string, mixed>
+ */
+function recordAffiliationGroups(string $summaryKey, array $summaries): array
+{
+    return ['affiliation-group' => array_map(
+        fn (array $summary): array => ['summaries' => [[$summaryKey => $summary]]],
+        $summaries,
+    )];
 }
 
 test('a signed-in user sees the biography of a connected author', function (): void {
@@ -53,12 +101,75 @@ test('a signed-in user sees the biography of a connected author', function (): v
         ->assertOk()
         ->assertExactJson(['data' => [
             'status' => 'available',
-            'record' => ['biography' => "Marine biologist.\nStudies <b>salmon</b>."],
+            'record' => [
+                'biography' => "Marine biologist.\nStudies <b>salmon</b>.",
+                'employments' => [],
+                'educations' => [],
+                'peer_review_count' => 0,
+            ],
         ]]);
 
     // read on the public API with the read-public token, never with the author's own token
     $mockClient->assertSent(fn (GetRecord $request, $response): bool => str_starts_with((string) $response->getPendingRequest()->getUrl(), 'https://pub.orcid.org/v3.0/0000-0002-1825-0097/record')
         && $response->getPendingRequest()->headers()->get('Authorization') === 'Bearer read-public-token');
+});
+
+test('the public employments and educations are shown as on ORCID, current first then newest first', function (): void {
+    config(['osp.orcid.client_id' => 'APP-OSP']);
+    Saloon::fake([
+        RequestClientCredentialsToken::class => readPublicTokenResponse(),
+        GetRecord::class => publicRecordResponse(activities: [
+            'employments' => recordAffiliationGroups('employment-summary', [
+                recordAffiliation('University of Ottawa', 'Biology', 'Postdoctoral fellow', [2015, 9], [2018, 6]),
+                // pushed by OSP: shown like any other employment
+                recordAffiliation('Fisheries and Oceans Canada', 'Ecosystems and Oceans Science', 'Research scientist', [2018, 7], sourceClientId: 'APP-OSP', disambiguatedOrganization: ['https://ror.org/02qa1x782', 'ROR']),
+                // only a ROR is linked
+                recordAffiliation('Ocean Tracking Network', null, 'Associate', [2020], disambiguatedOrganization: ['5682', 'RINGGOLD']),
+                recordAffiliation('Dalhousie University', null, null, [2019, 1], [2019, 12]),
+            ]),
+            'educations' => recordAffiliationGroups('education-summary', [
+                recordAffiliation('McGill University', 'Biology', 'BSc', [2006], [2009]),
+                recordAffiliation('Dalhousie University', 'Oceanography', 'PhD', [2010, 9], [2015, 5]),
+            ]),
+        ]),
+    ]);
+    $author = Author::factory()->withOrcidConnection()->create();
+
+    $this->actingAs(User::factory()->create())->getJson("api/authors/{$author->id}/orcid-record")
+        ->assertOk()
+        ->assertJsonPath('data.record.employments', [
+            ['organization' => 'Ocean Tracking Network', 'ror' => null, 'department' => null, 'role' => 'Associate', 'start_date' => '2020', 'end_date' => null],
+            ['organization' => 'Fisheries and Oceans Canada', 'ror' => 'https://ror.org/02qa1x782', 'department' => 'Ecosystems and Oceans Science', 'role' => 'Research scientist', 'start_date' => '2018-07', 'end_date' => null],
+            ['organization' => 'Dalhousie University', 'ror' => null, 'department' => null, 'role' => null, 'start_date' => '2019-01', 'end_date' => '2019-12'],
+            ['organization' => 'University of Ottawa', 'ror' => null, 'department' => 'Biology', 'role' => 'Postdoctoral fellow', 'start_date' => '2015-09', 'end_date' => '2018-06'],
+        ])
+        ->assertJsonPath('data.record.educations', [
+            ['organization' => 'Dalhousie University', 'ror' => null, 'department' => 'Oceanography', 'role' => 'PhD', 'start_date' => '2010-09', 'end_date' => '2015-05'],
+            ['organization' => 'McGill University', 'ror' => null, 'department' => 'Biology', 'role' => 'BSc', 'start_date' => '2006', 'end_date' => '2009'],
+        ]);
+});
+
+test('the number of public peer reviews is shown, counting a review added by several sources once', function (): void {
+    $review = fn (string $journal): array => ['put-code' => fake()->unique()->numberBetween(1000, 999999), 'review-group-id' => $journal, 'visibility' => 'public'];
+    Saloon::fake([
+        RequestClientCredentialsToken::class => readPublicTokenResponse(),
+        GetRecord::class => publicRecordResponse(activities: [
+            'peer-reviews' => ['group' => [
+                ['external-ids' => ['external-id' => [['external-id-type' => 'issn', 'external-id-value' => '0706-652X']]], 'peer-review-group' => [
+                    ['peer-review-summary' => [$review('issn:0706-652X'), $review('issn:0706-652X')]],
+                    ['peer-review-summary' => [$review('issn:0706-652X')]],
+                ]],
+                ['external-ids' => ['external-id' => [['external-id-type' => 'issn', 'external-id-value' => '1054-3139']]], 'peer-review-group' => [
+                    ['peer-review-summary' => [$review('issn:1054-3139')]],
+                ]],
+            ]],
+        ]),
+    ]);
+    $author = Author::factory()->withOrcidConnection()->create();
+
+    $this->actingAs(User::factory()->create())->getJson("api/authors/{$author->id}/orcid-record")
+        ->assertOk()
+        ->assertJsonPath('data.record.peer_review_count', 3);
 });
 
 test('nothing is read from ORCID for an author who is not connected or hides their record', function (Author $author): void {
