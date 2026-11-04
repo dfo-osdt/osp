@@ -62,6 +62,14 @@ class OrcidClientFactory
     }
 
     /**
+     * The link to an ORCID record, on orcid.org or the sandbox
+     */
+    public function recordUrl(string $orcid): string
+    {
+        return $this->environment->oauthUrl().'/'.OrcidId::normalize($orcid);
+    }
+
+    /**
      * Public API client: only reads what researchers made public, whatever the token
      */
     public function publicApi(string $readPublicToken): Orcid

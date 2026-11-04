@@ -125,6 +125,16 @@ export interface AuthorOrcidWork {
   journal: string | null
   doi: string | null
   url: string | null
+  contributors: AuthorOrcidWorkContributor[]
+}
+
+/**
+ * A contributor to a work on ORCID, in ORCID's order: a credit name and, when
+ * they authenticated it, the link to their ORCID record. At least one is set.
+ */
+export interface AuthorOrcidWorkContributor {
+  name: string | null
+  orcid: string | null
 }
 
 /**

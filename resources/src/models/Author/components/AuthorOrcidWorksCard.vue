@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { QTableProps } from 'quasar'
-import type { AuthorOrcidRecord, AuthorOrcidWork, OrcidWorkType } from '../Author'
+import type { AuthorOrcidRecord, AuthorOrcidWork, AuthorOrcidWorkContributor, OrcidWorkType } from '../Author'
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidIcon from '@/components/OrcidIcon.vue'
 import SearchInput from '@/components/SearchInput.vue'
+import DOILink from '@/models/Publication/components/DoiLink.vue'
 
 const props = defineProps<{
   orcidRecord: AuthorOrcidRecord | null
@@ -107,34 +108,59 @@ const filteredWorks = computed(() => {
     && (needle === '' || (work.title ?? '').toLocaleLowerCase().includes(needle)))
 })
 
+// the rows are shown like the publication list, so the table header is hidden and sorted from a select
 type QTableColumnProps = QTableProps['columns']
 const columns = computed<QTableColumnProps>(() => [
   {
     name: 'title',
     label: t('common.title'),
     field: 'title',
-    align: 'left',
     sortable: true,
   },
   {
     name: 'type',
     label: t('author-profile.orcid-work-type'),
     field: 'type',
-    format: (type: OrcidWorkType) => typeLabel(type),
-    align: 'left',
     sortable: true,
   },
   {
     name: 'date',
     label: t('author-profile.orcid-work-date'),
     field: 'date',
-    format: (date: string | null) => date
-      ? formatFuzzyDate(date)
-      : '-',
-    align: 'left',
     sortable: true,
   },
 ])
+
+const sortOptions = computed(() => [
+  {
+    label: t('author-profile.orcid-works-sort-newest'),
+    value: { sortBy: 'date', descending: true },
+  },
+  {
+    label: t('author-profile.orcid-works-sort-oldest'),
+    value: { sortBy: 'date', descending: false },
+  },
+  {
+    label: t('author-profile.orcid-works-sort-title'),
+    value: { sortBy: 'title', descending: false },
+  },
+  {
+    label: t('author-profile.orcid-works-sort-type'),
+    value: { sortBy: 'type', descending: false },
+  },
+])
+
+const sort = computed({
+  get: () => sortOptions.value.find(option => option.value.sortBy === pagination.value.sortBy
+    && option.value.descending === pagination.value.descending) ?? sortOptions.value[0],
+  set: (option) => {
+    pagination.value = {
+      ...pagination.value,
+      ...option.value,
+      page: 1,
+    }
+  },
+})
 
 // a partial date sorts as the first of its month or year
 function dateSortKey(date: string | null) {
@@ -172,10 +198,24 @@ function sortWorks(rows: readonly AuthorOrcidWork[], sortBy: string, descending:
   })
 }
 
-function workLink(work: AuthorOrcidWork) {
+function doiUrl(work: AuthorOrcidWork) {
   return work.doi
     ? `https://doi.org/${work.doi}`
-    : work.url
+    : null
+}
+
+// the table's row slot is untyped
+function contributorsOf(work: AuthorOrcidWork) {
+  return work.contributors
+}
+
+// a contributor known only by their ORCID iD shows the iD
+function contributorName(contributor: AuthorOrcidWorkContributor) {
+  return contributor.name ?? contributor.orcid?.split('/').pop() ?? ''
+}
+
+function workLink(work: AuthorOrcidWork) {
+  return doiUrl(work) ?? work.url
 }
 
 // back to the first page when the works or the filters change
@@ -204,6 +244,14 @@ watch(() => props.orcidRecord, () => {
     <template #title-right>
       <div class="row q-gutter-sm items-center">
         <q-select
+          v-model="sort"
+          :options="sortOptions"
+          :label="t('common.sort-by')"
+          dense
+          outlined
+          style="min-width: 160px"
+        />
+        <q-select
           v-model="typeFilter"
           :options="typeOptions"
           :label="t('author-profile.orcid-work-type')"
@@ -224,7 +272,7 @@ watch(() => props.orcidRecord, () => {
     <q-table
       v-model:pagination="pagination"
       flat
-      wrap-cells
+      hide-header
       row-key="key"
       :columns="columns"
       :rows="filteredWorks"
@@ -232,25 +280,71 @@ watch(() => props.orcidRecord, () => {
       :rows-per-page-options="[10, 25, 50, 0]"
       :no-results-label="t('common.no-results-found')"
     >
-      <template #body-cell-title="cell">
-        <q-td :props="cell">
-          <!-- plain text from ORCID: interpolated (escaped), never rendered as HTML -->
-          <div class="orcid-text">
-            <a
-              v-if="workLink(cell.row)"
-              :href="workLink(cell.row) ?? undefined"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-primary"
-            >{{ cell.row.title ?? t('common.no-title') }}<q-icon name="mdi-open-in-new" class="q-ml-xs" /></a>
-            <template v-else>
-              {{ cell.row.title ?? t('common.no-title') }}
-            </template>
-          </div>
-          <div v-if="cell.row.journal" class="text-caption text-grey-7 orcid-text">
-            {{ cell.row.journal }}
-          </div>
-        </q-td>
+      <!-- one item per work, as in the publication list -->
+      <template #body="{ row }">
+        <q-tr>
+          <q-td colspan="100%" class="q-pa-none">
+            <q-item>
+              <q-item-section>
+                <!-- plain text from ORCID: interpolated (escaped), never rendered as HTML -->
+                <q-item-label class="text-body1 text-weight-medium text-primary orcid-text">
+                  <a
+                    v-if="workLink(row)"
+                    :href="workLink(row) ?? undefined"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-primary"
+                  >{{ row.title ?? t('common.no-title') }}<q-icon name="mdi-open-in-new" size="xs" class="q-ml-xs" /></a>
+                  <template v-else>
+                    {{ row.title ?? t('common.no-title') }}
+                  </template>
+                </q-item-label>
+                <!-- as the authors of a publication: an ORCID icon linking to their record when they have one -->
+                <q-item-label v-if="row.contributors.length > 0" caption lines="2" class="orcid-text">
+                  <span v-for="(contributor, index) in contributorsOf(row)" :key="index">
+                    <a
+                      v-if="contributor.orcid"
+                      :href="contributor.orcid"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      :aria-label="$t('osp.a11y.orcid-external-link', { name: contributorName(contributor) })"
+                      class="q-ml-xs"
+                    ><OrcidIcon /></a>
+                    {{ contributorName(contributor) }}<span v-if="index < row.contributors.length - 1">;&#32;</span>
+                  </span>
+                </q-item-label>
+                <q-item-label caption>
+                  <div class="q-pt-sm flex">
+                    <div>
+                      {{ row.date ? formatFuzzyDate(row.date) : '-' }}
+                    </div>
+                    <div class="q-mx-sm">
+                      |
+                    </div>
+                    <div class="orcid-text">
+                      {{ row.journal ?? '-' }}
+                    </div>
+                    <div class="q-mx-sm">
+                      |
+                    </div>
+                    <div v-if="doiUrl(row)" class="orcid-text">
+                      {{ $t('PublicationList.doi-label') }}<DOILink :doi="doiUrl(row)" />
+                    </div>
+                    <div v-else-if="row.url" class="orcid-text">
+                      {{ t('author-profile.orcid-work-url-label') }}<a :href="row.url" target="_blank" rel="noopener noreferrer">{{ row.url }}</a>
+                    </div>
+                    <div v-else>
+                      {{ $t('PublicationList.doi-label') }}-
+                    </div>
+                  </div>
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side top>
+                <q-badge outline color="primary" :label="typeLabel(row.type)" />
+              </q-item-section>
+            </q-item>
+          </q-td>
+        </q-tr>
       </template>
     </q-table>
 

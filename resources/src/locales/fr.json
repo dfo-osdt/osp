@@ -1111,7 +1111,12 @@
     "orcid-works-already-listed": "{count} travail sur ORCID figure aussi ci-dessus | {count} travaux sur ORCID figurent aussi ci-dessus",
     "orcid-works-search": "Rechercher dans les titres",
     "orcid-work-type": "Type",
-    "orcid-work-date": "Date"
+    "orcid-work-date": "Date",
+    "orcid-work-url-label": "URL : ",
+    "orcid-works-sort-newest": "Plus récents d'abord",
+    "orcid-works-sort-oldest": "Plus anciens d'abord",
+    "orcid-works-sort-title": "Titre",
+    "orcid-works-sort-type": "Type"
   },
   "orcid-work-types": {
     "annotation": "Annotation",

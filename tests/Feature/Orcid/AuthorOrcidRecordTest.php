@@ -8,7 +8,9 @@ use App\Models\PublicationAuthor;
 use App\Models\User;
 use App\Orcid\EmploymentReconciler;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
+use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use Saloon\Http\PendingRequest;
 use Saloon\Laravel\Facades\Saloon;
@@ -17,6 +19,7 @@ use VincentAuger\OrcidSdk\Requests\Affiliations\ListAffiliations;
 use VincentAuger\OrcidSdk\Requests\OAuth\RequestClientCredentialsToken;
 use VincentAuger\OrcidSdk\Requests\OAuth\RevokeToken;
 use VincentAuger\OrcidSdk\Requests\Record\GetRecord;
+use VincentAuger\OrcidSdk\Requests\Works\GetWorks;
 
 /**
  * A /read-public client credentials token response
@@ -98,10 +101,12 @@ function recordAffiliationGroups(string $summaryKey, array $summaries): array
  * A work summary in the activities section of the record
  *
  * @param  array{0: int, 1?: int, 2?: int}|null  $date  Year, month and day
+ *                                                      The contributors are only in the full work, read in bulk: the summary in the record leaves them out.
  * @param  list<string>  $dois
+ * @param  list<array{0: string|null, 1?: string}>  $contributors  Credit name and ORCID iD
  * @return array<string, mixed>
  */
-function recordWork(string $title, ?string $type = 'journal-article', ?array $date = null, ?string $journal = null, array $dois = [], ?string $url = null, ?int $displayIndex = null): array
+function recordWork(string $title, ?string $type = 'journal-article', ?array $date = null, ?string $journal = null, array $dois = [], ?string $url = null, ?int $displayIndex = null, array $contributors = []): array
 {
     return array_filter([
         'put-code' => fake()->unique()->numberBetween(1000, 999999),
@@ -121,7 +126,32 @@ function recordWork(string $title, ?string $type = 'journal-article', ?array $da
         'url' => $url === null ? null : ['value' => $url],
         'display-index' => $displayIndex === null ? null : (string) $displayIndex,
         'visibility' => 'public',
+        'contributors' => ['contributor' => array_map(fn (array $contributor): array => array_filter([
+            'credit-name' => $contributor[0] === null ? null : ['value' => $contributor[0]],
+            'contributor-orcid' => isset($contributor[1]) ? ['path' => $contributor[1], 'host' => 'orcid.org'] : null,
+            'contributor-attributes' => ['contributor-role' => 'author'],
+        ]), $contributors)],
     ], fn (mixed $value): bool => $value !== null);
+}
+
+/**
+ * Fake ORCID for a record with these works: the record lists their summaries, and the full works are read in bulk
+ * by put-code
+ *
+ * @param  list<list<array<string, mixed>>>  $groups  The summaries of each group
+ */
+function fakeOrcidWorks(array $groups): MockClient
+{
+    $works = collect($groups)->flatten(1)->keyBy('put-code');
+
+    return Saloon::fake([
+        RequestClientCredentialsToken::class => readPublicTokenResponse(),
+        GetRecord::class => publicRecordResponse(activities: recordWorkGroups($groups)),
+        GetWorks::class => fn (PendingRequest $request): MockResponse => MockResponse::make(['bulk' => array_map(
+            fn (string $putCode): array => ['work' => $works[(int) $putCode]],
+            explode(',', Str::afterLast($request->getUrl(), '/works/')),
+        )]),
+    ]);
 }
 
 /**
@@ -242,35 +272,72 @@ test('the number of public peer reviews is shown, counting a review added by sev
 });
 
 test('the public works are shown one per group, as the version ORCID displays', function (): void {
-    Saloon::fake([
-        RequestClientCredentialsToken::class => readPublicTokenResponse(),
-        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([
-            [
-                recordWork('Salmon in the wild (Crossref)', dois: ['10.1139/CJFAS-2020-0001'], displayIndex: 0),
-                recordWork('Salmon in the wild', 'journal-article', [2021, 5, 14], 'Canadian Journal of Fisheries and Aquatic Sciences', ['10.1139/cjfas-2020-0001'], 'https://cdnsciencepub.com/doi/10.1139/cjfas-2020-0001', displayIndex: 1),
-            ],
-            [recordWork('Herring dataset', 'data-set', [2019], url: 'https://example.org/herring')],
-            [recordWork('Ocean notes', type: 'a-type-the-sdk-does-not-know')],
-        ])),
+    fakeOrcidWorks([
+        [
+            recordWork('Salmon in the wild (Crossref)', dois: ['10.1139/CJFAS-2020-0001'], displayIndex: 0, contributors: [['Someone Else']]),
+            recordWork('Salmon in the wild', 'journal-article', [2021, 5, 14], 'Canadian Journal of Fisheries and Aquatic Sciences', ['10.1139/cjfas-2020-0001'], 'https://cdnsciencepub.com/doi/10.1139/cjfas-2020-0001', displayIndex: 1, contributors: [
+                ['Josiah Carberry', '0000-0002-1825-0097'],
+                ['Jane Doe'],
+                // an ORCID iD without a credit name
+                [null, '0000-0001-5109-3700'],
+                // neither: nothing to show
+                [null],
+            ]),
+        ],
+        [recordWork('Herring dataset', 'data-set', [2019], url: 'https://example.org/herring')],
+        [recordWork('Ocean notes', type: 'a-type-the-sdk-does-not-know')],
     ]);
     $author = Author::factory()->withOrcidConnection()->create();
 
     readOrcidRecord($author)
         ->assertJsonPath('data.record.works', [
-            ['title' => 'Salmon in the wild', 'type' => 'journal-article', 'date' => '2021-05-14', 'journal' => 'Canadian Journal of Fisheries and Aquatic Sciences', 'doi' => '10.1139/cjfas-2020-0001', 'url' => 'https://cdnsciencepub.com/doi/10.1139/cjfas-2020-0001'],
-            ['title' => 'Herring dataset', 'type' => 'data-set', 'date' => '2019', 'journal' => null, 'doi' => null, 'url' => 'https://example.org/herring'],
-            ['title' => 'Ocean notes', 'type' => 'other', 'date' => null, 'journal' => null, 'doi' => null, 'url' => null],
+            ['title' => 'Salmon in the wild', 'type' => 'journal-article', 'date' => '2021-05-14', 'journal' => 'Canadian Journal of Fisheries and Aquatic Sciences', 'doi' => '10.1139/cjfas-2020-0001', 'url' => 'https://cdnsciencepub.com/doi/10.1139/cjfas-2020-0001', 'contributors' => [
+                ['name' => 'Josiah Carberry', 'orcid' => 'https://orcid.org/0000-0002-1825-0097'],
+                ['name' => 'Jane Doe', 'orcid' => null],
+                ['name' => null, 'orcid' => 'https://orcid.org/0000-0001-5109-3700'],
+            ]],
+            ['title' => 'Herring dataset', 'type' => 'data-set', 'date' => '2019', 'journal' => null, 'doi' => null, 'url' => 'https://example.org/herring', 'contributors' => []],
+            ['title' => 'Ocean notes', 'type' => 'other', 'date' => null, 'journal' => null, 'doi' => null, 'url' => null, 'contributors' => []],
         ])
         ->assertJsonPath('data.record.works_already_listed', 0);
 });
 
+test('the works are read in full by batches of 100, only for the versions ORCID displays', function (): void {
+    $groups = array_map(fn (int $index): array => [recordWork("Work {$index}")], range(1, 150));
+    $groups[] = [recordWork('Hidden version', displayIndex: 0), recordWork('Shown version', displayIndex: 1)];
+    $mockClient = fakeOrcidWorks($groups);
+    $author = Author::factory()->withOrcidConnection()->create();
+
+    readOrcidRecord($author)->assertJsonCount(151, 'data.record.works');
+
+    $mockClient->assertSentCount(2, GetWorks::class);
+    $mockClient->assertNotSent(fn (GetWorks $request, $response): bool => str_contains((string) $response->getPendingRequest()->getUrl(), (string) $groups[150][0]['put-code']));
+});
+
+test('the works are still shown, without contributors, when ORCID cannot read them in full', function (): void {
+    $mockClient = fakeOrcidWorks([[recordWork('Salmon in the wild', contributors: [['Josiah Carberry']])]]);
+    $mockClient->addResponses([GetWorks::class => MockResponse::make(['error' => 'down'], 503)]);
+    $author = Author::factory()->withOrcidConnection()->create();
+
+    readOrcidRecord($author)
+        ->assertJsonPath('data.status', 'available')
+        ->assertJsonPath('data.record.works.0.title', 'Salmon in the wild')
+        ->assertJsonPath('data.record.works.0.contributors', []);
+});
+
+test('no works are read in full when the record has none', function (): void {
+    $mockClient = fakeOrcidWorks([]);
+    $author = Author::factory()->withOrcidConnection()->create();
+
+    readOrcidRecord($author)->assertJsonPath('data.record.works', []);
+
+    $mockClient->assertNotSent(GetWorks::class);
+});
+
 test('a work whose DOI is one of the author\'s publications is left out and counted', function (string $orcidDoi, string $ospDoi): void {
-    Saloon::fake([
-        RequestClientCredentialsToken::class => readPublicTokenResponse(),
-        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([
-            [recordWork('Salmon in the wild', dois: [$orcidDoi])],
-            [recordWork('Herring dataset', 'data-set', dois: ['10.5281/zenodo.123'])],
-        ])),
+    fakeOrcidWorks([
+        [recordWork('Salmon in the wild', dois: [$orcidDoi])],
+        [recordWork('Herring dataset', 'data-set', dois: ['10.5281/zenodo.123'])],
     ]);
     $author = Author::factory()->withOrcidConnection()->create();
     authorPublication($author, $ospDoi);
@@ -290,12 +357,7 @@ test('a work whose DOI is one of the author\'s publications is left out and coun
 ]);
 
 test('a work stays listed when the viewer cannot see the author\'s publication with its DOI', function (): void {
-    Saloon::fake([
-        RequestClientCredentialsToken::class => readPublicTokenResponse(),
-        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([
-            [recordWork('Salmon in the wild', dois: ['10.1139/cjfas-2020-0001'])],
-        ])),
-    ]);
+    fakeOrcidWorks([[recordWork('Salmon in the wild', dois: ['10.1139/cjfas-2020-0001'])]]);
     $author = Author::factory()->withOrcidConnection()->create();
     $publication = authorPublication($author, 'https://doi.org/10.1139/cjfas-2020-0001');
     $publication->update(['status' => PublicationStatus::ACCEPTED]);
@@ -310,13 +372,10 @@ test('a work stays listed when the viewer cannot see the author\'s publication w
 });
 
 test('a work is left out when any version in its group has the DOI of one of the author\'s publications', function (): void {
-    Saloon::fake([
-        RequestClientCredentialsToken::class => readPublicTokenResponse(),
-        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([[
-            recordWork('Salmon in the wild', displayIndex: 1),
-            recordWork('Salmon in the wild (Crossref)', dois: ['10.1139/cjfas-2020-0001'], displayIndex: 0),
-        ]])),
-    ]);
+    fakeOrcidWorks([[
+        recordWork('Salmon in the wild', displayIndex: 1),
+        recordWork('Salmon in the wild (Crossref)', dois: ['10.1139/cjfas-2020-0001'], displayIndex: 0),
+    ]]);
     $author = Author::factory()->withOrcidConnection()->create();
     authorPublication($author, 'https://doi.org/10.1139/cjfas-2020-0001');
 
@@ -326,13 +385,10 @@ test('a work is left out when any version in its group has the DOI of one of the
 });
 
 test('works without a DOI, or with the DOI of another author\'s publication, are always shown', function (): void {
-    Saloon::fake([
-        RequestClientCredentialsToken::class => readPublicTokenResponse(),
-        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([
-            // same title as an OSP publication, but no DOI: never matched by title
-            [recordWork('Salmon in the wild')],
-            [recordWork('Herring dataset', 'data-set', dois: ['10.5281/zenodo.123'])],
-        ])),
+    fakeOrcidWorks([
+        // same title as an OSP publication, but no DOI: never matched by title
+        [recordWork('Salmon in the wild')],
+        [recordWork('Herring dataset', 'data-set', dois: ['10.5281/zenodo.123'])],
     ]);
     $author = Author::factory()->withOrcidConnection()->create();
     $publication = authorPublication($author, 'https://doi.org/10.1139/cjfas-2020-0001');
