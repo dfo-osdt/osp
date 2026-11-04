@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AuthorResource } from '../Author'
+import type { AuthorOrcidRecord, AuthorResource } from '../Author'
 import type { PreprintResourceList } from '@/models/Preprint/Preprint'
 import type { PublicationResourceList } from '@/models/Publication/Publication'
 import { watchThrottled } from '@vueuse/core'
@@ -17,6 +17,7 @@ import { PublicationQuery } from '@/models/Publication/Publication'
 import { AuthorService } from '../Author'
 import AuthorExpertiseDisplay from '../components/AuthorExpertiseDisplay.vue'
 import AuthorOrcidRecordCard from '../components/AuthorOrcidRecordCard.vue'
+import AuthorOrcidWorksCard from '../components/AuthorOrcidWorksCard.vue'
 import AuthorProfileCard from '../components/AuthorProfileCard.vue'
 
 const props = defineProps<{
@@ -27,7 +28,13 @@ const props = defineProps<{
 const author = ref<AuthorResource | null>(null)
 const publications = ref<PublicationResourceList>()
 const preprints = ref<PreprintResourceList>()
-const loading = ref({ author: false, publications: false, preprints: false })
+const orcidRecord = ref<AuthorOrcidRecord | null>(null)
+const loading = ref({
+  author: false,
+  publications: false,
+  preprints: false,
+  orcidRecord: false,
+})
 const currentPage = ref(1)
 const preprintCurrentPage = ref(1)
 const search = ref<string | null>(null)
@@ -58,6 +65,10 @@ const preprintCount = computed(() => {
 
 const hasPreprints = computed(() => {
   return preprints.value?.data && preprints.value.data.length > 0
+})
+
+const shouldLoadOrcidRecord = computed(() => {
+  return !!author.value?.data.orcid_connected && !!author.value?.data.show_orcid_record
 })
 
 // Methods
@@ -132,7 +143,29 @@ async function loadPreprints() {
   }
 }
 
+// loaded once for the ORCID record card and the ORCID works section
+async function loadOrcidRecord() {
+  orcidRecord.value = null
+  if (!author.value || !shouldLoadOrcidRecord.value)
+    return
+
+  loading.value.orcidRecord = true
+  try {
+    orcidRecord.value = await AuthorService.getOrcidRecord(author.value.data.id)
+  }
+  catch {
+    orcidRecord.value = { status: 'unavailable', record: null }
+  }
+  finally {
+    loading.value.orcidRecord = false
+  }
+}
+
 // Watchers
+watch(() => [author.value?.data.id, shouldLoadOrcidRecord.value], () => {
+  loadOrcidRecord()
+})
+
 watch(currentPage, () => {
   loadPublications()
 })
@@ -182,7 +215,12 @@ onMounted(async () => {
           <div class="row q-gutter-sm flex justify-between">
             <AuthorProfileCard :author="author" class="col-sm-12 col-md col-lg-12" @updated="handleAuthorUpdated" />
             <AuthorExpertiseDisplay :author="author" class="col-sm-12 col-md col-lg-12" />
-            <AuthorOrcidRecordCard :author="author" class="col-12" />
+            <AuthorOrcidRecordCard
+              :author="author"
+              :orcid-record="orcidRecord"
+              :loading="loading.orcidRecord"
+              class="col-12"
+            />
           </div>
         </template>
 
@@ -311,6 +349,9 @@ onMounted(async () => {
             </q-card-section>
           </template>
         </ContentCard>
+
+        <!-- Other works (from ORCID) -->
+        <AuthorOrcidWorksCard :orcid-record="orcidRecord" class="q-mt-lg" />
       </div>
     </div>
   </MainPageLayout>

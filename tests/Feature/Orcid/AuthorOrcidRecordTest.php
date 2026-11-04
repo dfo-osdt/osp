@@ -1,10 +1,14 @@
 <?php
 
+use App\Enums\PublicationStatus;
 use App\Jobs\SyncAuthorFromOrcid;
 use App\Models\Author;
+use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\User;
 use App\Orcid\EmploymentReconciler;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Testing\TestResponse;
 use Saloon\Http\Faking\MockResponse;
 use Saloon\Http\PendingRequest;
 use Saloon\Laravel\Facades\Saloon;
@@ -90,6 +94,69 @@ function recordAffiliationGroups(string $summaryKey, array $summaries): array
     )];
 }
 
+/**
+ * A work summary in the activities section of the record
+ *
+ * @param  array{0: int, 1?: int, 2?: int}|null  $date  Year, month and day
+ * @param  list<string>  $dois
+ * @return array<string, mixed>
+ */
+function recordWork(string $title, ?string $type = 'journal-article', ?array $date = null, ?string $journal = null, array $dois = [], ?string $url = null, ?int $displayIndex = null): array
+{
+    return array_filter([
+        'put-code' => fake()->unique()->numberBetween(1000, 999999),
+        'title' => ['title' => ['value' => $title]],
+        'type' => $type,
+        'external-ids' => ['external-id' => array_map(fn (string $doi): array => [
+            'external-id-type' => 'doi',
+            'external-id-value' => $doi,
+            'external-id-relationship' => 'self',
+        ], $dois)],
+        'journal-title' => $journal === null ? null : ['value' => $journal],
+        'publication-date' => $date === null ? null : array_filter([
+            'year' => ['value' => (string) $date[0]],
+            'month' => isset($date[1]) ? ['value' => sprintf('%02d', $date[1])] : null,
+            'day' => isset($date[2]) ? ['value' => sprintf('%02d', $date[2])] : null,
+        ]),
+        'url' => $url === null ? null : ['value' => $url],
+        'display-index' => $displayIndex === null ? null : (string) $displayIndex,
+        'visibility' => 'public',
+    ], fn (mixed $value): bool => $value !== null);
+}
+
+/**
+ * The works section of the record: each group is the same work from one or more sources
+ *
+ * @param  list<list<array<string, mixed>>>  $groups  The summaries of each group
+ * @return array<string, mixed>
+ */
+function recordWorkGroups(array $groups): array
+{
+    return ['works' => ['group' => array_map(fn (array $summaries): array => [
+        'external-ids' => ['external-id' => array_merge(...array_map(fn (array $summary): array => $summary['external-ids']['external-id'], $summaries))],
+        'work-summary' => $summaries,
+    ], $groups)]];
+}
+
+/**
+ * Read the author's ORCID record as a signed-in user
+ */
+function readOrcidRecord(Author $author, ?User $user = null): TestResponse
+{
+    return test()->actingAs($user ?? User::factory()->create())->getJson("api/authors/{$author->id}/orcid-record")->assertOk();
+}
+
+/**
+ * A publication the viewer sees in the author's profile
+ */
+function authorPublication(Author $author, ?string $doi): Publication
+{
+    $publication = Publication::factory()->create(['doi' => $doi, 'status' => PublicationStatus::PUBLISHED]);
+    PublicationAuthor::factory()->for($publication)->for($author)->create();
+
+    return $publication;
+}
+
 test('a signed-in user sees the biography of a connected author', function (): void {
     $mockClient = Saloon::fake([
         RequestClientCredentialsToken::class => readPublicTokenResponse(),
@@ -106,6 +173,8 @@ test('a signed-in user sees the biography of a connected author', function (): v
                 'employments' => [],
                 'educations' => [],
                 'peer_review_count' => 0,
+                'works' => [],
+                'works_already_listed' => 0,
             ],
         ]]);
 
@@ -170,6 +239,109 @@ test('the number of public peer reviews is shown, counting a review added by sev
     $this->actingAs(User::factory()->create())->getJson("api/authors/{$author->id}/orcid-record")
         ->assertOk()
         ->assertJsonPath('data.record.peer_review_count', 3);
+});
+
+test('the public works are shown one per group, as the version ORCID displays', function (): void {
+    Saloon::fake([
+        RequestClientCredentialsToken::class => readPublicTokenResponse(),
+        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([
+            [
+                recordWork('Salmon in the wild (Crossref)', dois: ['10.1139/CJFAS-2020-0001'], displayIndex: 0),
+                recordWork('Salmon in the wild', 'journal-article', [2021, 5, 14], 'Canadian Journal of Fisheries and Aquatic Sciences', ['10.1139/cjfas-2020-0001'], 'https://cdnsciencepub.com/doi/10.1139/cjfas-2020-0001', displayIndex: 1),
+            ],
+            [recordWork('Herring dataset', 'data-set', [2019], url: 'https://example.org/herring')],
+            [recordWork('Ocean notes', type: 'a-type-the-sdk-does-not-know')],
+        ])),
+    ]);
+    $author = Author::factory()->withOrcidConnection()->create();
+
+    readOrcidRecord($author)
+        ->assertJsonPath('data.record.works', [
+            ['title' => 'Salmon in the wild', 'type' => 'journal-article', 'date' => '2021-05-14', 'journal' => 'Canadian Journal of Fisheries and Aquatic Sciences', 'doi' => '10.1139/cjfas-2020-0001', 'url' => 'https://cdnsciencepub.com/doi/10.1139/cjfas-2020-0001'],
+            ['title' => 'Herring dataset', 'type' => 'data-set', 'date' => '2019', 'journal' => null, 'doi' => null, 'url' => 'https://example.org/herring'],
+            ['title' => 'Ocean notes', 'type' => 'other', 'date' => null, 'journal' => null, 'doi' => null, 'url' => null],
+        ])
+        ->assertJsonPath('data.record.works_already_listed', 0);
+});
+
+test('a work whose DOI is one of the author\'s publications is left out and counted', function (string $orcidDoi, string $ospDoi): void {
+    Saloon::fake([
+        RequestClientCredentialsToken::class => readPublicTokenResponse(),
+        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([
+            [recordWork('Salmon in the wild', dois: [$orcidDoi])],
+            [recordWork('Herring dataset', 'data-set', dois: ['10.5281/zenodo.123'])],
+        ])),
+    ]);
+    $author = Author::factory()->withOrcidConnection()->create();
+    authorPublication($author, $ospDoi);
+
+    $response = readOrcidRecord($author)->assertJsonPath('data.record.works_already_listed', 1);
+    expect($response->json('data.record.works'))->sequence(
+        fn ($work) => $work->title->toBe('Herring dataset'),
+    );
+})->with([
+    'same bare DOI' => ['10.1139/cjfas-2020-0001', '10.1139/cjfas-2020-0001'],
+    'different case' => ['10.1139/CJFAS-2020-0001', 'https://doi.org/10.1139/cjfas-2020-0001'],
+    'resolver URL on ORCID' => ['https://doi.org/10.1139/cjfas-2020-0001', 'https://doi.org/10.1139/CJFAS-2020-0001'],
+    'old resolver on ORCID' => ['http://dx.doi.org/10.1139/cjfas-2020-0001', '10.1139/cjfas-2020-0001'],
+    'doi: URI on ORCID' => ['doi:10.1139/cjfas-2020-0001', 'https://doi.org/10.1139/cjfas-2020-0001'],
+    'www resolver on ORCID' => ['https://www.doi.org/10.1139/cjfas-2020-0001', '10.1139/cjfas-2020-0001'],
+    'resolver without scheme, with spaces' => [' doi.org/10.1139/cjfas-2020-0001 ', 'https://doi.org/10.1139/cjfas-2020-0001'],
+]);
+
+test('a work stays listed when the viewer cannot see the author\'s publication with its DOI', function (): void {
+    Saloon::fake([
+        RequestClientCredentialsToken::class => readPublicTokenResponse(),
+        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([
+            [recordWork('Salmon in the wild', dois: ['10.1139/cjfas-2020-0001'])],
+        ])),
+    ]);
+    $author = Author::factory()->withOrcidConnection()->create();
+    $publication = authorPublication($author, 'https://doi.org/10.1139/cjfas-2020-0001');
+    $publication->update(['status' => PublicationStatus::ACCEPTED]);
+
+    readOrcidRecord($author)
+        ->assertJsonPath('data.record.works.0.title', 'Salmon in the wild')
+        ->assertJsonPath('data.record.works_already_listed', 0);
+
+    readOrcidRecord($author, User::factory()->editor()->create())
+        ->assertJsonPath('data.record.works', [])
+        ->assertJsonPath('data.record.works_already_listed', 1);
+});
+
+test('a work is left out when any version in its group has the DOI of one of the author\'s publications', function (): void {
+    Saloon::fake([
+        RequestClientCredentialsToken::class => readPublicTokenResponse(),
+        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([[
+            recordWork('Salmon in the wild', displayIndex: 1),
+            recordWork('Salmon in the wild (Crossref)', dois: ['10.1139/cjfas-2020-0001'], displayIndex: 0),
+        ]])),
+    ]);
+    $author = Author::factory()->withOrcidConnection()->create();
+    authorPublication($author, 'https://doi.org/10.1139/cjfas-2020-0001');
+
+    readOrcidRecord($author)
+        ->assertJsonPath('data.record.works', [])
+        ->assertJsonPath('data.record.works_already_listed', 1);
+});
+
+test('works without a DOI, or with the DOI of another author\'s publication, are always shown', function (): void {
+    Saloon::fake([
+        RequestClientCredentialsToken::class => readPublicTokenResponse(),
+        GetRecord::class => publicRecordResponse(activities: recordWorkGroups([
+            // same title as an OSP publication, but no DOI: never matched by title
+            [recordWork('Salmon in the wild')],
+            [recordWork('Herring dataset', 'data-set', dois: ['10.5281/zenodo.123'])],
+        ])),
+    ]);
+    $author = Author::factory()->withOrcidConnection()->create();
+    $publication = authorPublication($author, 'https://doi.org/10.1139/cjfas-2020-0001');
+    $publication->update(['title' => 'Salmon in the wild']);
+    authorPublication($author, null);
+    authorPublication(Author::factory()->create(), 'https://doi.org/10.5281/zenodo.123');
+
+    $response = readOrcidRecord($author)->assertJsonPath('data.record.works_already_listed', 0);
+    expect($response->json('data.record.works.*.title'))->toBe(['Salmon in the wild', 'Herring dataset']);
 });
 
 test('nothing is read from ORCID for an author who is not connected or hides their record', function (Author $author): void {

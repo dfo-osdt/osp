@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Orcid;
 
 use App\Models\Author;
+use App\Models\User;
 use App\Orcid\AuthorOrcidRecord;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use VincentAuger\OrcidSdk\Exceptions\OrcidException;
@@ -19,14 +21,14 @@ use VincentAuger\OrcidSdk\Support\OrcidId;
  */
 class AuthorOrcidRecordController
 {
-    public function __invoke(Author $author, AuthorOrcidRecord $records): JsonResponse
+    public function __invoke(#[CurrentUser] User $user, Author $author, AuthorOrcidRecord $records): JsonResponse
     {
         if (! $author->show_orcid_record || ! $author->hasValidOrcidCredentials() || ! OrcidId::isValid((string) $author->orcid)) {
             return $this->respond('empty');
         }
 
         try {
-            return $this->respond('available', $records->read($author));
+            return $this->respond('available', $records->read($author, $user));
         } catch (OrcidException $exception) {
             Log::warning('ORCID record could not be read for the author profile', ['author_id' => $author->id, 'error' => $exception->getMessage()]);
 

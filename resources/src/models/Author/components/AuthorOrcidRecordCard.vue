@@ -3,29 +3,30 @@ import type { AuthorOrcidAffiliation, AuthorOrcidRecord, AuthorResource } from '
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidIcon from '@/components/OrcidIcon.vue'
 import RORLinkSpan from '@/models/Organization/components/RORLinkSpan.vue'
-import { AuthorService } from '../Author'
 
 const props = defineProps<{
   author: AuthorResource
+  // loaded by the profile, which also shows the record's works
+  orcidRecord: AuthorOrcidRecord | null
+  loading: boolean
 }>()
 
 const { t } = useI18n()
 const authStore = useAuthStore()
-const localeStore = useLocaleStore()
+const { formatFuzzyDate } = useOrcidFuzzyDate()
 
-const orcidRecord = ref<AuthorOrcidRecord | null>(null)
-const loading = ref(false)
 const expanded = ref(false)
 const isClamped = ref(false)
 const biographyElement = ref<HTMLElement | null>(null)
 
 const isOwnProfile = computed(() => authStore.user?.author.data.id === props.author.data.id)
-const shouldLoad = computed(() => props.author.data.orcid_connected && props.author.data.show_orcid_record)
-const biography = computed(() => orcidRecord.value?.record?.biography ?? null)
-const employments = computed(() => orcidRecord.value?.record?.employments ?? [])
-const educations = computed(() => orcidRecord.value?.record?.educations ?? [])
-const peerReviewCount = computed(() => orcidRecord.value?.record?.peer_review_count ?? 0)
-const isUnavailable = computed(() => orcidRecord.value?.status === 'unavailable')
+const biography = computed(() => props.orcidRecord?.record?.biography ?? null)
+const employments = computed(() => props.orcidRecord?.record?.employments ?? [])
+const educations = computed(() => props.orcidRecord?.record?.educations ?? [])
+const peerReviewCount = computed(() => props.orcidRecord?.record?.peer_review_count ?? 0)
+const hasWorks = computed(() => (props.orcidRecord?.record?.works.length ?? 0) > 0
+  || (props.orcidRecord?.record?.works_already_listed ?? 0) > 0)
+const isUnavailable = computed(() => props.orcidRecord?.status === 'unavailable')
 
 const hasPublicContent = computed(() => biography.value !== null
   || employments.value.length > 0
@@ -50,51 +51,20 @@ const affiliationSections = computed(() => [
 // the author chose to show their record but is not (or no longer) connected to ORCID
 const showConnectPrompt = computed(() => isOwnProfile.value
   && props.author.data.show_orcid_record
-  && !loading.value
-  && (!props.author.data.orcid_connected || orcidRecord.value?.status === 'empty'))
+  && !props.loading
+  && (!props.author.data.orcid_connected || props.orcidRecord?.status === 'empty'))
 
+// public works alone are shown in their own section
 const showNothingPublicHint = computed(() => isOwnProfile.value
-  && orcidRecord.value?.status === 'available'
-  && !hasPublicContent.value)
+  && props.orcidRecord?.status === 'available'
+  && !hasPublicContent.value
+  && !hasWorks.value)
 
-const isVisible = computed(() => loading.value
+const isVisible = computed(() => props.loading
   || isUnavailable.value
   || hasPublicContent.value
   || showConnectPrompt.value
   || showNothingPublicHint.value)
-
-async function loadOrcidRecord() {
-  orcidRecord.value = null
-  expanded.value = false
-  if (!shouldLoad.value)
-    return
-
-  loading.value = true
-  try {
-    orcidRecord.value = await AuthorService.getOrcidRecord(props.author.data.id)
-  }
-  catch {
-    orcidRecord.value = { status: 'unavailable', record: null }
-  }
-  finally {
-    loading.value = false
-  }
-}
-
-/**
- * An ORCID fuzzy date ("2021", "2021-05" or "2021-05-14") as a year, or a month and year
- */
-function formatFuzzyDate(date: string) {
-  const [year, month] = date.split('-').map(Number)
-  if (!month)
-    return String(year)
-
-  return new Date(Date.UTC(year, month - 1)).toLocaleDateString(`${localeStore.locale}-CA`, {
-    year: 'numeric',
-    month: 'short',
-    timeZone: 'UTC',
-  })
-}
 
 // as on the author's employments: "start - end", "present" when there is no end date
 function dateRange(affiliation: AuthorOrcidAffiliation) {
@@ -126,8 +96,9 @@ useResizeObserver(biographyElement, () => {
     checkClamped()
 })
 
-onMounted(loadOrcidRecord)
-watch(() => [props.author.data.id, shouldLoad.value], loadOrcidRecord)
+watch(() => props.orcidRecord, () => {
+  expanded.value = false
+})
 </script>
 
 <template>
