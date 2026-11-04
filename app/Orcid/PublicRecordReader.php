@@ -6,8 +6,10 @@ namespace App\Orcid;
 
 use Illuminate\Support\Facades\Cache;
 use VincentAuger\OrcidSdk\Data\Record\Record;
+use VincentAuger\OrcidSdk\Data\Works\Work;
 use VincentAuger\OrcidSdk\Exceptions\OrcidAuthException;
 use VincentAuger\OrcidSdk\Exceptions\OrcidException;
+use VincentAuger\OrcidSdk\Orcid;
 
 /**
  * Reads ORCID records through the public API with OSP's /read-public client
@@ -29,24 +31,51 @@ class PublicRecordReader
      */
     public function wholeRecord(string $orcid): Record
     {
-        $token = $this->token();
-
-        try {
-            return $this->read($token, $orcid);
-        } catch (OrcidAuthException) {
-            // the token was revoked or expired early: get a new one, once
-            Cache::forget(self::TOKEN_CACHE_KEY);
-
-            return $this->read($this->token(), $orcid);
-        }
+        return $this->withToken(fn (string $token): Record => $this->orcid->publicApi($token)->record($orcid)->wholeRecord());
     }
 
     /**
+     * Works in full (the record only has their summaries, without contributors), by put-code, read by batches of
+     * Orcid::BULK_LIMIT. A put-code ORCID no longer knows is left out.
+     *
+     * @param  list<int>  $putCodes
+     * @return array<int, Work>
+     *
      * @throws OrcidException
      */
-    private function read(string $token, string $orcid): Record
+    public function works(string $orcid, array $putCodes): array
     {
-        return $this->orcid->publicApi($token)->record($orcid)->wholeRecord();
+        $works = [];
+
+        foreach (array_chunk($putCodes, Orcid::BULK_LIMIT) as $batch) {
+            $works += $this->withToken(fn (string $token): array => $this->orcid->publicApi($token)->record($orcid)->works()->getMany($batch)->works);
+        }
+
+        return $works;
+    }
+
+    /**
+     * Read with the read-public token, and get a new one once if ORCID rejects it (revoked or expired early)
+     *
+     * @template T
+     *
+     * @param  \Closure(string): T  $read
+     * @return T
+     *
+     * @throws OrcidException
+     */
+    private function withToken(\Closure $read): mixed
+    {
+        // a refused token request is not retried, only a rejected token
+        $token = $this->token();
+
+        try {
+            return $read($token);
+        } catch (OrcidAuthException) {
+            Cache::forget(self::TOKEN_CACHE_KEY);
+
+            return $read($this->token());
+        }
     }
 
     /**

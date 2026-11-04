@@ -11,10 +11,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use VincentAuger\OrcidSdk\Data\Affiliations\Affiliation;
+use VincentAuger\OrcidSdk\Data\Common\Contributor;
 use VincentAuger\OrcidSdk\Data\Common\ExternalId;
 use VincentAuger\OrcidSdk\Data\Organization\DisambiguatedOrganization;
 use VincentAuger\OrcidSdk\Data\Record\Record;
+use VincentAuger\OrcidSdk\Data\Works\Work;
 use VincentAuger\OrcidSdk\Data\Works\WorkGroup;
+use VincentAuger\OrcidSdk\Data\Works\WorkSummary;
 use VincentAuger\OrcidSdk\Enums\AffiliationType;
 use VincentAuger\OrcidSdk\Enums\ExternalIdRelationship;
 use VincentAuger\OrcidSdk\Enums\WorkType;
@@ -34,7 +37,8 @@ use VincentAuger\OrcidSdk\Exceptions\OrcidException;
  * the record is read, not when it is cached, so they follow the publications.
  *
  * @phpstan-type ShownAffiliation array{organization: string|null, ror: string|null, department: string|null, role: string|null, start_date: string|null, end_date: string|null}
- * @phpstan-type ShownWork array{title: string|null, type: string, date: string|null, journal: string|null, doi: string|null, url: string|null}
+ * @phpstan-type ShownContributor array{name: string|null, orcid: string|null}
+ * @phpstan-type ShownWork array{title: string|null, type: string, date: string|null, journal: string|null, doi: string|null, url: string|null, contributors: list<ShownContributor>}
  * @phpstan-type CachedWork array{work: ShownWork, dois: list<string>}
  * @phpstan-type Cached array{biography: string|null, employments: list<ShownAffiliation>, educations: list<ShownAffiliation>, peer_review_count: int, works: list<CachedWork>}
  * @phpstan-type Shown array{biography: string|null, employments: list<ShownAffiliation>, educations: list<ShownAffiliation>, peer_review_count: int, works: list<ShownWork>, works_already_listed: int}
@@ -45,7 +49,10 @@ class AuthorOrcidRecord
 
     private const int STALE_SECONDS = 7 * 86400;
 
-    public function __construct(private readonly PublicRecordReader $reader) {}
+    public function __construct(
+        private readonly PublicRecordReader $reader,
+        private readonly OrcidClientFactory $orcid,
+    ) {}
 
     /**
      * @return Shown
@@ -116,7 +123,8 @@ class AuthorOrcidRecord
     private function fetch(Author $author): array
     {
         $orcid = (string) $author->orcid;
-        $record = $this->toArray($this->reader->wholeRecord($orcid));
+        $wholeRecord = $this->reader->wholeRecord($orcid);
+        $record = $this->toArray($wholeRecord, $this->fullWorks($author, $orcid, $wholeRecord));
 
         Cache::put(self::cacheKey($author), ['orcid' => $orcid, 'record' => $record, 'read_at' => now()->getTimestamp()], self::STALE_SECONDS);
         Cache::forget(self::refreshKey($author));
@@ -134,16 +142,40 @@ class AuthorOrcidRecord
     }
 
     /**
+     * The versions ORCID displays read in full, for their contributors. When
+     * ORCID cannot read them the works are still shown, without contributors.
+     *
+     * @return array<int, Work> By put-code
+     */
+    private function fullWorks(Author $author, string $orcid, Record $record): array
+    {
+        $putCodes = array_map(fn (WorkSummary $summary): int => $summary->putCode, $record->activities->works->preferred());
+
+        if ($putCodes === []) {
+            return [];
+        }
+
+        try {
+            return $this->reader->works($orcid, $putCodes);
+        } catch (OrcidException $exception) {
+            Log::warning('ORCID works could not be read in full, they are shown without contributors', ['author_id' => $author->id, 'error' => $exception->getMessage()]);
+
+            return [];
+        }
+    }
+
+    /**
+     * @param  array<int, Work>  $fullWorks  By put-code
      * @return Cached
      */
-    private function toArray(Record $record): array
+    private function toArray(Record $record, array $fullWorks): array
     {
         return [
             'biography' => $record->person->biography?->content,
             'employments' => $this->affiliations($record, AffiliationType::Employment),
             'educations' => $this->affiliations($record, AffiliationType::Education),
             'peer_review_count' => count($record->activities->peerReviews->groups),
-            'works' => array_map($this->work(...), $record->activities->works->groups),
+            'works' => array_map(fn (WorkGroup $group): array => $this->work($group, $fullWorks), $record->activities->works->groups),
         ];
     }
 
@@ -152,9 +184,10 @@ class AuthorOrcidRecord
      * from every version to tell whether it is already listed in OSP (not e.g.
      * the DOI of the book a chapter is part of)
      *
+     * @param  array<int, Work>  $fullWorks  By put-code
      * @return CachedWork
      */
-    private function work(WorkGroup $group): array
+    private function work(WorkGroup $group, array $fullWorks): array
     {
         $preferred = $group->preferred();
         $dois = array_values(array_unique(array_filter(array_map(
@@ -173,9 +206,26 @@ class AuthorOrcidRecord
                 'journal' => $preferred->journalTitle,
                 'doi' => $dois[0] ?? null,
                 'url' => $preferred->url?->value,
+                'contributors' => $this->contributors($fullWorks[$preferred->putCode] ?? null),
             ],
             'dois' => $dois,
         ];
+    }
+
+    /**
+     * The contributors in ORCID's order, with a link to their ORCID record when
+     * they authenticated their iD; those with neither a name nor an iD are left out
+     *
+     * @return list<ShownContributor>
+     */
+    private function contributors(?Work $work): array
+    {
+        $contributors = array_map(fn (Contributor $contributor): array => [
+            'name' => $contributor->creditName,
+            'orcid' => $contributor->orcid === null ? null : $this->orcid->recordUrl($contributor->orcid),
+        ], $work->contributors ?? []);
+
+        return array_values(array_filter($contributors, fn (array $contributor): bool => $contributor['name'] !== null || $contributor['orcid'] !== null));
     }
 
     /**
