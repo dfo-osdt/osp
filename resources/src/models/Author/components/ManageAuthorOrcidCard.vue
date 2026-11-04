@@ -3,6 +3,7 @@ import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import ManageAuthorEmploymentsCard from '@/models/AuthorEmployment/components/ManageAuthorEmploymentsCard.vue'
+import { AuthorService } from '../Author'
 
 const authStore = useAuthStore()
 const { t } = useI18n()
@@ -16,6 +17,42 @@ const url = computed(() => `/api/user/orcid/verify?locale=${localeStore.locale}`
 const isVerified = computed(() => {
   return authStore.user?.author.data.orcid_verified
 })
+
+const showOrcidRecord = ref(authStore.user?.author.data.show_orcid_record ?? true)
+const savingShowOrcidRecord = ref(false)
+
+// follow the stored value when the user is (re)loaded
+watch(() => authStore.user?.author.data.show_orcid_record, (show) => {
+  if (show !== undefined)
+    showOrcidRecord.value = show
+})
+
+async function updateShowOrcidRecord(show: boolean) {
+  if (!authStore.user)
+    return
+
+  savingShowOrcidRecord.value = true
+  try {
+    await AuthorService.updateShowOrcidRecord(authStore.user.author.data.id, show)
+    await authStore.refreshUser(true)
+    q.notify({
+      type: 'positive',
+      message: show
+        ? t('orcid.show-record-on-profile-shown')
+        : t('orcid.show-record-on-profile-hidden'),
+    })
+  }
+  catch {
+    showOrcidRecord.value = !show
+    q.notify({
+      type: 'negative',
+      message: t('orcid.show-record-on-profile-error'),
+    })
+  }
+  finally {
+    savingShowOrcidRecord.value = false
+  }
+}
 
 async function revokeToken() {
   q.dialog({
@@ -83,6 +120,36 @@ async function revokeToken() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <q-separator class="q-my-md" />
+      <div class="row q-gutter-xl">
+        <div class="col-12 col-md-1">
+          <span class="text-primary text-subtitle1">{{
+            t('orcid.settings-title')
+          }}</span>
+        </div>
+        <div class="col text-body2 q-pt-xs">
+          <p>{{ t('orcid.settings-section-intro') }}</p>
+          <q-toggle
+            v-model="showOrcidRecord"
+            :label="t('orcid.show-record-on-profile')"
+            :disable="!isVerified || savingShowOrcidRecord"
+            @update:model-value="updateShowOrcidRecord"
+          />
+          <div class="text-caption text-grey-7">
+            {{ isVerified ? t('orcid.show-record-on-profile-hint') : t('orcid.show-record-on-profile-connect-hint') }}
+          </div>
+          <q-btn
+            v-if="authStore.user"
+            flat
+            no-caps
+            color="primary"
+            icon="mdi-account-outline"
+            class="q-mt-sm"
+            :label="t('orcid.view-author-page')"
+            :to="{ name: 'author.profile', params: { id: authStore.user.author.data.id } }"
+          />
         </div>
       </div>
       <q-separator class="q-my-md" />

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Orcid;
 
 use App\Jobs\SyncAuthorEmploymentWithOrcid;
+use App\Orcid\AuthorOrcidRecord;
 use App\Orcid\EmploymentReconciler;
 use App\Orcid\OrcidErrors;
 use Illuminate\Http\JsonResponse;
@@ -34,6 +35,9 @@ class RefreshFromOrcidController
         if (! Cache::add("orcid-refresh:{$author->id}", true, self::THROTTLE_SECONDS)) {
             return response()->json(['refreshed' => false]);
         }
+
+        // the author may have just changed their record on ORCID: read it again on their next profile view
+        AuthorOrcidRecord::forget($author);
 
         try {
             $result = $employments->reconcile($author);

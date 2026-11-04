@@ -744,7 +744,16 @@
     "employment-title": "Employment",
     "needs_sync": "ORCID synchronization pending",
     "synced": "Synchronized with your ORCID profile",
-    "error": "ORCID.org returned an error"
+    "error": "ORCID.org returned an error",
+    "show-record-on-profile": "Share my ORCID biography and public information on my author page",
+    "show-record-on-profile-hint": "Your biography from ORCID appears on your author page, where anyone signed in to the portal can see it. Only items set to \"Everyone\" on orcid.org are shown, and changes made there can take up to an hour to appear.",
+    "show-record-on-profile-connect-hint": "Connect your ORCID iD above to use this setting.",
+    "show-record-on-profile-shown": "Saved: your ORCID biography now appears on your author page",
+    "show-record-on-profile-hidden": "Saved: your ORCID biography is now hidden from your author page",
+    "show-record-on-profile-error": "Your ORCID setting couldn't be saved. Please try again.",
+    "settings-title": "Integration Settings",
+    "settings-section-intro": "Choose how the Open Science Portal uses your connected ORCID record.",
+    "view-author-page": "View my author page"
   },
   "organization-select": {
     "add-a-new-organization": "Add a new organization",
@@ -1083,7 +1092,15 @@
     "expertise": "Areas of Expertise",
     "no-expertise": "No expertise areas listed",
     "expertise-description": "Areas of expertise help users understand and trust the content, and make it easier to find information they need.",
-    "author-not-found": "Author not found"
+    "author-not-found": "Author not found",
+    "orcid-biography": "Biography",
+    "orcid-source": "Source: ORCID record",
+    "orcid-unavailable": "ORCID record unavailable right now",
+    "orcid-connect-prompt": "Connect your ORCID iD to show your ORCID biography on your author page.",
+    "orcid-connect-action": "Connect your ORCID iD",
+    "orcid-nothing-public": "Your ORCID record has no public biography. On orcid.org, add a biography and set its visibility to \"Everyone\" to show it here.",
+    "read-more": "Read more",
+    "read-less": "Show less"
   },
   "ContentCard": {
     "title-here": "Title here"
