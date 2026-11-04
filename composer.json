@@ -42,7 +42,7 @@
     "spatie/simple-excel": "^3.0",
     "symfony/html-sanitizer": "^8.0",
     "symfony/http-client": "^8.0.0",
-    "vincentauger/orcid-php-sdk": "^0.1"
+    "vincentauger/orcid-php-sdk": "^0.2"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^3.0.0",

@@ -10,7 +10,6 @@ use VincentAuger\OrcidSdk\Enums\Environment;
 use VincentAuger\OrcidSdk\Enums\Scope;
 use VincentAuger\OrcidSdk\Orcid;
 use VincentAuger\OrcidSdk\OrcidOAuth;
-use VincentAuger\OrcidSdk\Resources\RecordResource;
 use VincentAuger\OrcidSdk\Support\OrcidId;
 
 /**
@@ -63,11 +62,11 @@ class OrcidClientFactory
     }
 
     /**
-     * The ORCID record of an author, through the Member API with the author's token
+     * Member API client bound to the author's ORCID record, using the author's token and scopes
      *
      * @throws AuthorNotConnectedToOrcid
      */
-    public function forAuthor(Author $author): RecordResource
+    public function forAuthor(Author $author): Orcid
     {
         if (! $author->hasValidOrcidCredentials()) {
             throw new AuthorNotConnectedToOrcid($author, 'no valid ORCID credentials with the /activities/update scope');
@@ -77,7 +76,6 @@ class OrcidClientFactory
             throw new AuthorNotConnectedToOrcid($author, 'invalid ORCID iD');
         }
 
-        return Orcid::member((string) $author->orcid_access_token, $this->environment, $author->orcidScopes())
-            ->record((string) $author->orcid);
+        return Orcid::member((string) $author->orcid_access_token, (string) $author->orcid, $author->orcidScopes(), $this->environment);
     }
 }

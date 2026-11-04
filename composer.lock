@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f17fb780392f02d393d60f531da52ac6",
+    "content-hash": "c45615296da82b248fbaf6a152e3f0d8",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -9760,16 +9760,16 @@
         },
         {
             "name": "spatie/laravel-health",
-            "version": "1.40.4",
+            "version": "1.40.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-health.git",
-                "reference": "59488c9731b921798e518f667413c40dec5e6f17"
+                "reference": "12241c916eb00856a522a344826e90496ff970ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-health/zipball/59488c9731b921798e518f667413c40dec5e6f17",
-                "reference": "59488c9731b921798e518f667413c40dec5e6f17",
+                "url": "https://api.github.com/repos/spatie/laravel-health/zipball/12241c916eb00856a522a344826e90496ff970ca",
+                "reference": "12241c916eb00856a522a344826e90496ff970ca",
                 "shasum": ""
             },
             "require": {
@@ -9842,7 +9842,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-health/issues",
-                "source": "https://github.com/spatie/laravel-health/tree/1.40.4"
+                "source": "https://github.com/spatie/laravel-health/tree/1.40.5"
             },
             "funding": [
                 {
@@ -9850,8 +9850,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-26T15:18:32+00:00",
-            "published-time": "2026-10-26T15:25:42+00:00"
+            "time": "2026-11-04T14:40:54+00:00",
+            "published-time": "2026-11-04T14:43:01+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
@@ -14639,21 +14639,21 @@
         },
         {
             "name": "vincentauger/orcid-php-sdk",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vincentauger/orcid-php-sdk.git",
-                "reference": "93966d18960952b57e4f98cefd4758c6c1f7a48e"
+                "reference": "f03c7a9a4262db04e3ebffa94ad07ce2911884a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vincentauger/orcid-php-sdk/zipball/93966d18960952b57e4f98cefd4758c6c1f7a48e",
-                "reference": "93966d18960952b57e4f98cefd4758c6c1f7a48e",
+                "url": "https://api.github.com/repos/vincentauger/orcid-php-sdk/zipball/f03c7a9a4262db04e3ebffa94ad07ce2911884a6",
+                "reference": "f03c7a9a4262db04e3ebffa94ad07ce2911884a6",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.4.0",
-                "saloonphp/saloon": "^4.0"
+                "saloonphp/saloon": "^4.5"
             },
             "require-dev": {
                 "laravel/pint": "^1.22.1",
@@ -14693,8 +14693,8 @@
                 "issues": "https://github.com/vincentauger/orcid-php-sdk/issues",
                 "source": "https://github.com/vincentauger/orcid-php-sdk"
             },
-            "time": "2026-10-22T20:39:59+00:00",
-            "published-time": "2026-10-22T20:40:05+00:00"
+            "time": "2026-11-03T20:03:03+00:00",
+            "published-time": "2026-11-03T20:06:26+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
