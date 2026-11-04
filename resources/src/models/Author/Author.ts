@@ -39,6 +39,19 @@ export type AuthorResource = Resource<Author>
 export type AuthorResourceList = ResourceList<Author>
 
 /**
+ * An employment or education on the author's ORCID record. Dates are ORCID
+ * "fuzzy" dates: "2021", "2021-05" or "2021-05-14"; no end date means current.
+ */
+export interface AuthorOrcidAffiliation {
+  organization: string | null
+  ror: string | null
+  department: string | null
+  role: string | null
+  start_date: string | null
+  end_date: string | null
+}
+
+/**
  * The public part of an author's ORCID record, shown on their profile.
  * 'empty': not connected to ORCID, or the author hides their record;
  * 'unavailable': ORCID could not be read right now.
@@ -47,6 +60,9 @@ export interface AuthorOrcidRecord {
   status: 'empty' | 'available' | 'unavailable'
   record: {
     biography: string | null
+    employments: AuthorOrcidAffiliation[]
+    educations: AuthorOrcidAffiliation[]
+    peer_review_count: number
   } | null
 }
 

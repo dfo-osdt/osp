@@ -7,7 +7,10 @@ namespace App\Orcid;
 use App\Models\Author;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use VincentAuger\OrcidSdk\Data\Affiliations\Affiliation;
+use VincentAuger\OrcidSdk\Data\Organization\DisambiguatedOrganization;
 use VincentAuger\OrcidSdk\Data\Record\Record;
+use VincentAuger\OrcidSdk\Enums\AffiliationType;
 use VincentAuger\OrcidSdk\Exceptions\OrcidException;
 
 /**
@@ -19,6 +22,9 @@ use VincentAuger\OrcidSdk\Exceptions\OrcidException;
  *
  * Each entry remembers the ORCID iD it was read for, so a refresh that lands
  * after the author reconnected with another iD is never shown.
+ *
+ * @phpstan-type ShownAffiliation array{organization: string|null, ror: string|null, department: string|null, role: string|null, start_date: string|null, end_date: string|null}
+ * @phpstan-type Shown array{biography: string|null, employments: list<ShownAffiliation>, educations: list<ShownAffiliation>, peer_review_count: int}
  */
 class AuthorOrcidRecord
 {
@@ -29,13 +35,13 @@ class AuthorOrcidRecord
     public function __construct(private readonly PublicRecordReader $reader) {}
 
     /**
-     * @return array{biography: string|null}
+     * @return Shown
      *
      * @throws OrcidException when ORCID cannot be read and nothing is cached
      */
     public function read(Author $author): array
     {
-        /** @var array{orcid: string, record: array{biography: string|null}, read_at: int}|null $cached */
+        /** @var array{orcid: string, record: Shown, read_at: int}|null $cached */
         $cached = Cache::get(self::cacheKey($author));
 
         if ($cached === null || $cached['orcid'] !== $author->orcid) {
@@ -60,7 +66,7 @@ class AuthorOrcidRecord
     }
 
     /**
-     * @return array{biography: string|null}
+     * @return Shown
      *
      * @throws OrcidException
      */
@@ -85,13 +91,50 @@ class AuthorOrcidRecord
     }
 
     /**
-     * @return array{biography: string|null}
+     * @return Shown
      */
     private function toArray(Record $record): array
     {
         return [
             'biography' => $record->person->biography?->content,
+            'employments' => $this->affiliations($record, AffiliationType::Employment),
+            'educations' => $this->affiliations($record, AffiliationType::Education),
+            'peer_review_count' => count($record->activities->peerReviews->groups),
         ];
+    }
+
+    /**
+     * Every public affiliation of the type, whoever added it (OSP included):
+     * current ones first, then the newest first
+     *
+     * @return list<ShownAffiliation>
+     */
+    private function affiliations(Record $record, AffiliationType $type): array
+    {
+        $affiliations = array_map(fn (Affiliation $affiliation): array => [
+            'organization' => $affiliation->organization?->name,
+            'ror' => $this->ror($affiliation),
+            'department' => $affiliation->departmentName,
+            'role' => $affiliation->roleTitle,
+            'start_date' => $affiliation->startDate?->__toString(),
+            'end_date' => $affiliation->endDate?->__toString(),
+        ], $record->activities->affiliations($type));
+
+        // "2019" < "2019-05" < "2020": the dates compare as strings
+        usort($affiliations, fn (array $a, array $b): int => [$b['end_date'] === null, $b['end_date'], $b['start_date']]
+            <=> [$a['end_date'] === null, $a['end_date'], $a['start_date']]);
+
+        return $affiliations;
+    }
+
+    /**
+     * The organization's ROR, when ORCID identifies it by one (not by e.g. Ringgold or GRID)
+     */
+    private function ror(Affiliation $affiliation): ?string
+    {
+        $organization = $affiliation->organization?->disambiguatedOrganization;
+
+        return $organization?->source === DisambiguatedOrganization::ROR ? $organization->identifier : null;
     }
 
     private static function cacheKey(Author $author): string
