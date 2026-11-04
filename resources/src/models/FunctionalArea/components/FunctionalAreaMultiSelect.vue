@@ -39,12 +39,16 @@ const selected = computed<FunctionalArea[]>({
     return options.value.filter(o => model.value!.includes(o.id))
   },
   set(val) {
-    model.value = val?.length ? val.map(o => o.id) : null
+    model.value = val?.length
+      ? val.map(o => o.id)
+      : null
   },
 })
 
 function optionLabel(option: FunctionalArea): string {
-  return localeStore.locale === 'fr' ? option.name_fr : option.name_en
+  return localeStore.locale === 'fr'
+    ? option.name_fr
+    : option.name_en
 }
 </script>
 

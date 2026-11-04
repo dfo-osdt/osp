@@ -25,7 +25,9 @@ const animatedValue = useTransition(source, {
 })
 
 const displayValue = computed(() => {
-  const val = props.animate ? Math.round(animatedValue.value) : props.value
+  const val = props.animate
+    ? Math.round(animatedValue.value)
+    : props.value
   if (val === 0) {
     return '0'
   }

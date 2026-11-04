@@ -20,13 +20,41 @@ export function useSupplementaryFileOptions(hideMrf = false) {
   const { t } = useI18n()
 
   const options = computed<SupplementaryFileOption[]>(() => [
-    { label: () => t('supplementaryFileType.authorsAcceptedManuscript'), value: 'authors_accepted_manuscript', description: t('supplementaryFileType.authorsAcceptedManuscriptDescription') },
-    { label: () => t('supplementaryFileType.authorAgreement'), value: 'author_agreement', description: t('supplementaryFileType.authorAgreementDescription') },
-    { label: () => t('supplementaryFileType.errata'), value: 'errata', description: t('supplementaryFileType.errataDescription') },
-    { label: () => t('supplementaryFileType.jointCopyrightAgreement'), value: 'joint_copyright_agreement', description: t('supplementaryFileType.jointCopyrightAgreementDescription') },
-    { label: () => t('supplementaryFileType.manuscriptRecordForm'), value: 'manuscript_record_form', description: t('supplementaryFileType.manuscriptRecordFormDescription') },
-    { label: () => t('supplementaryFileType.preprint'), value: 'preprint', description: t('supplementaryFileType.preprintDescription') },
-    { label: () => t('supplementaryFileType.other'), value: 'other', description: t('supplementaryFileType.otherDescription') },
+    {
+      label: () => t('supplementaryFileType.authorsAcceptedManuscript'),
+      value: 'authors_accepted_manuscript',
+      description: t('supplementaryFileType.authorsAcceptedManuscriptDescription'),
+    },
+    {
+      label: () => t('supplementaryFileType.authorAgreement'),
+      value: 'author_agreement',
+      description: t('supplementaryFileType.authorAgreementDescription'),
+    },
+    {
+      label: () => t('supplementaryFileType.errata'),
+      value: 'errata',
+      description: t('supplementaryFileType.errataDescription'),
+    },
+    {
+      label: () => t('supplementaryFileType.jointCopyrightAgreement'),
+      value: 'joint_copyright_agreement',
+      description: t('supplementaryFileType.jointCopyrightAgreementDescription'),
+    },
+    {
+      label: () => t('supplementaryFileType.manuscriptRecordForm'),
+      value: 'manuscript_record_form',
+      description: t('supplementaryFileType.manuscriptRecordFormDescription'),
+    },
+    {
+      label: () => t('supplementaryFileType.preprint'),
+      value: 'preprint',
+      description: t('supplementaryFileType.preprintDescription'),
+    },
+    {
+      label: () => t('supplementaryFileType.other'),
+      value: 'other',
+      description: t('supplementaryFileType.otherDescription'),
+    },
   ])
 
   if (hideMrf) {

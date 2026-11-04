@@ -25,14 +25,20 @@ const activeFilter = useRouteQuery('filter', '1', { transform: Number })
 const currentPage = useRouteQuery('page', '1', { transform: Number, mode: 'push' })
 const search = useRouteQuery<string | null>('search', null)
 const organizationId = useRouteQuery<number | null>('org', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 const expertiseId = useRouteQuery<string | null>('expertise', null)
 const sectorId = useRouteQuery<number | null>('sector', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 const regionId = useRouteQuery<number | null>('region', null, {
-  transform: v => v ? Number(v) : null,
+  transform: v => v
+    ? Number(v)
+    : null,
 })
 const emeritus = useRouteQuery<'yes' | 'no' | null>('emeritus', null)
 
@@ -63,9 +69,18 @@ const sectorStore = useSectorStore()
 const regionStore = useRegionStore()
 
 const emeritusOptions = computed(() => [
-  { label: t('authors-view.emeritus-any'), value: null },
-  { label: t('authors-view.emeritus-only'), value: 'yes' },
-  { label: t('authors-view.emeritus-excluded'), value: 'no' },
+  {
+    label: t('authors-view.emeritus-any'),
+    value: null,
+  },
+  {
+    label: t('authors-view.emeritus-only'),
+    value: 'yes',
+  },
+  {
+    label: t('authors-view.emeritus-excluded'),
+    value: 'no',
+  },
 ])
 
 // Main filter options
@@ -130,28 +145,38 @@ const filterCaption = computed(() => {
   let caption = ''
   if (organizationId.value) {
     const { name_en, name_fr } = organizationSelect?.value?.selectedOrganization?.data || {}
-    const name = localeStore.isFr() ? name_fr : name_en
+    const name = localeStore.isFr()
+      ? name_fr
+      : name_en
     caption += `${t('common.from')} ${name || name_en || 'NA'}`
   }
 
   if (expertiseId.value) {
     const { name_en, name_fr } = selectedExpertises.value[0]?.data || {}
-    const name = localeStore.isFr() ? name_fr : name_en
+    const name = localeStore.isFr()
+      ? name_fr
+      : name_en
     caption += ` ${t('common.with-expertise-in')} ${name || name_en || 'NA'}`
   }
 
   if (showDfoFilters.value && sectorId.value) {
     const sector = sectorStore.sectors?.find(s => s.data.id === sectorId.value)?.data
-    caption += ` ${t('authors-view.in-sector')} ${(localeStore.isFr() ? sector?.name_fr : sector?.name_en) || 'NA'}`
+    caption += ` ${t('authors-view.in-sector')} ${(localeStore.isFr()
+      ? sector?.name_fr
+      : sector?.name_en) || 'NA'}`
   }
 
   if (showDfoFilters.value && regionId.value) {
     const region = regionStore.regions?.find(r => r.id === regionId.value)
-    caption += ` ${t('authors-view.in-region')} ${(localeStore.isFr() ? region?.name_fr : region?.name_en) || 'NA'}`
+    caption += ` ${t('authors-view.in-region')} ${(localeStore.isFr()
+      ? region?.name_fr
+      : region?.name_en) || 'NA'}`
   }
 
   if (showDfoFilters.value && emeritus.value) {
-    caption += ` (${emeritus.value === 'yes' ? t('authors-view.emeritus-only') : t('authors-view.emeritus-excluded')})`
+    caption += ` (${emeritus.value === 'yes'
+      ? t('authors-view.emeritus-only')
+      : t('authors-view.emeritus-excluded')})`
   }
 
   if (caption.length > 0) {

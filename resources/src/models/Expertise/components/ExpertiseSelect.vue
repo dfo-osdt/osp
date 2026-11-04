@@ -35,7 +35,9 @@ const internalModel = computed({
       modelValue.value = (val as ExpertiseResource[]) ?? []
     }
     else {
-      modelValue.value = val ? [val as ExpertiseResource] : []
+      modelValue.value = val
+        ? [val as ExpertiseResource]
+        : []
     }
   },
 })

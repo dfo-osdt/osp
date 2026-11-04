@@ -27,7 +27,9 @@ const options = computed(() => {
 })
 
 function optionLabel(option: FunctionalArea): string {
-  return localeStore.locale === 'fr' ? option.name_fr : option.name_en
+  return localeStore.locale === 'fr'
+    ? option.name_fr
+    : option.name_en
 }
 </script>
 

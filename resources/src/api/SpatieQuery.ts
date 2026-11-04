@@ -34,7 +34,9 @@ export class SpatieQuery {
 
     // uses boolean value to filter
     if (typeof values === 'boolean') {
-      val = values ? ['1'] : ['0']
+      val = values
+        ? ['1']
+        : ['0']
     }
 
     if (typeof values === 'string') {
@@ -42,7 +44,9 @@ export class SpatieQuery {
     }
 
     if (typeof values === 'number') {
-      val = [values.toString()]
+      val = [
+        values.toString(),
+      ]
     }
 
     if (Array.isArray(values)) {
@@ -113,7 +117,9 @@ export class SpatieQuery {
       params.append(
         'sort',
         this.sorts
-          .map(s => (s.direction === 'asc' ? s.name : `-${s.name}`))
+          .map(s => (s.direction === 'asc'
+            ? s.name
+            : `-${s.name}`))
           .join(','),
       )
     }

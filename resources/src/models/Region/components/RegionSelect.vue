@@ -16,7 +16,9 @@ regionStore.getRegions()
 const model = defineModel<number | null>()
 
 const label = computed(() =>
-  localeStore.locale === 'fr' ? 'name_fr' : 'name_en',
+  localeStore.locale === 'fr'
+    ? 'name_fr'
+    : 'name_en',
 )
 const options = computed(
   () =>

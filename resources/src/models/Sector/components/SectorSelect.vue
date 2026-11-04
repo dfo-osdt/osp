@@ -28,7 +28,9 @@ const options = computed(() => {
 })
 
 function optionLabel(option: Sector): string {
-  return localeStore.locale === 'fr' ? option.name_fr : option.name_en
+  return localeStore.locale === 'fr'
+    ? option.name_fr
+    : option.name_en
 }
 </script>
 

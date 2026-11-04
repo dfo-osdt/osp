@@ -18,7 +18,9 @@ const localeStore = useLocaleStore()
 function localizedName(item?: { data: { name_en: string, name_fr: string } }): string | null {
   if (!item)
     return null
-  return localeStore.locale === 'en' ? item.data.name_en : item.data.name_fr
+  return localeStore.locale === 'en'
+    ? item.data.name_en
+    : item.data.name_fr
 }
 
 const sectorName = computed(() => localizedName(props.sector))

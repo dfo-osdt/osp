@@ -14,7 +14,9 @@ const { t } = useI18n()
 
 const rules = computed(() =>
   props.required
-    ? [(val: number | null) => val !== null || t('common.required')]
+    ? [
+        (val: number | null) => val !== null || t('common.required'),
+      ]
     : [],
 )
 </script>

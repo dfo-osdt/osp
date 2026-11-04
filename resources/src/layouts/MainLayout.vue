@@ -33,8 +33,12 @@ watch(
       )
 
       const logoutTimeout = setTimeout(() => {
-        if (idle.value)
-          router.push({ name: 'logout', query: { inactive: '1' } })
+        if (idle.value) {
+          router.push({
+            name: 'logout',
+            query: { inactive: '1' },
+          })
+        }
       }, 2 * 60 * 1000)
 
       $q.notify({
@@ -88,7 +92,12 @@ function showProfileUpdateReminder(update: ProfileUpdate) {
           router.push({ name: update.route })
         },
       },
-      { 'icon': 'mdi-close', 'color': 'white', 'round': true, 'aria-label': t('common.close') },
+      {
+        'icon': 'mdi-close',
+        'color': 'white',
+        'round': true,
+        'aria-label': t('common.close'),
+      },
     ],
   })
 }

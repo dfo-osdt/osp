@@ -19,7 +19,9 @@ export const useLocaleStore = defineStore('LocaleStore', () => {
 
   // what is the other locale?
   const otherLocale = computed(() => {
-    return locale.value === 'en' ? 'fr' : 'en'
+    return locale.value === 'en'
+      ? 'fr'
+      : 'en'
   })
 
   function toggleLocale() {
@@ -29,7 +31,9 @@ export const useLocaleStore = defineStore('LocaleStore', () => {
   }
 
   function setQuasarLocale() {
-    const l = locale.value === 'fr' ? 'fr' : 'en-US'
+    const l = locale.value === 'fr'
+      ? 'fr'
+      : 'en-US'
     langs[`../../../node_modules/quasar/lang/${l}.js`]().then((lang: any) => {
       $q.lang.set(lang.default)
     })

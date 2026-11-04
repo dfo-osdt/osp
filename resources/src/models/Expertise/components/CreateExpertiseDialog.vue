@@ -22,8 +22,12 @@ const emit = defineEmits<{
 const localeStore = useLocaleStore()
 const { t } = useI18n()
 
-const name_en = ref(localeStore.locale === 'en' ? props.initialSearch : '')
-const name_fr = ref(localeStore.locale === 'fr' ? props.initialSearch : '')
+const name_en = ref(localeStore.locale === 'en'
+  ? props.initialSearch
+  : '')
+const name_fr = ref(localeStore.locale === 'fr'
+  ? props.initialSearch
+  : '')
 const loading = ref(false)
 const errorMessage = ref<ErrorResponse | null>(null)
 const similarLoading = ref(false)

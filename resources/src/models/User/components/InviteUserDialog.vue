@@ -65,7 +65,9 @@ function onSubmit() {
 }
 
 // rules
-const nameRules = [(val: string) => !!val || t('common.required')]
+const nameRules = [
+  (val: string) => !!val || t('common.required'),
+]
 
 const emailRules = [
   (val: string) => !!val || t('common.required'),

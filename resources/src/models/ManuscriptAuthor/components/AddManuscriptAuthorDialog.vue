@@ -39,8 +39,14 @@ watch(authorId, () => {
   organizationId.value = authorSelect.value?.selectedAuthor?.data.organization_id ?? null
 })
 const yesNoOptions = [
-  { label: t('common.yes'), value: true },
-  { label: t('common.no'), value: false },
+  {
+    label: t('common.yes'),
+    value: true,
+  },
+  {
+    label: t('common.no'),
+    value: false,
+  },
 ]
 const loading = ref(false)
 
