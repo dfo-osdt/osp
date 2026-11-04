@@ -233,7 +233,7 @@ watch(() => props.orcidRecord, () => {
 </script>
 
 <template>
-  <ContentCard v-if="works.length > 0" secondary>
+  <ContentCard v-if="works.length > 0 || alreadyListedCount > 0" secondary>
     <template #title>
       <OrcidIcon size="sm" class="q-mr-sm" />
       {{ t('author-profile.orcid-other-works') }}
@@ -241,7 +241,7 @@ watch(() => props.orcidRecord, () => {
     <template #subtitle>
       {{ t('author-profile.orcid-works-count', { count: works.length }) }}
     </template>
-    <template #title-right>
+    <template v-if="works.length > 0" #title-right>
       <div class="row q-gutter-sm items-center">
         <q-select
           v-model="sort"
@@ -270,6 +270,7 @@ watch(() => props.orcidRecord, () => {
     </template>
 
     <q-table
+      v-if="works.length > 0"
       v-model:pagination="pagination"
       flat
       wrap-cells
