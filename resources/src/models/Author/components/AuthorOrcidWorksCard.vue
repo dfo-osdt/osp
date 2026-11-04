@@ -272,6 +272,7 @@ watch(() => props.orcidRecord, () => {
     <q-table
       v-model:pagination="pagination"
       flat
+      wrap-cells
       hide-header
       row-key="key"
       :columns="columns"
@@ -314,7 +315,7 @@ watch(() => props.orcidRecord, () => {
                   </span>
                 </q-item-label>
                 <q-item-label caption>
-                  <div class="q-pt-sm flex">
+                  <div class="q-pt-sm flex flex-wrap">
                     <div>
                       {{ row.date ? formatFuzzyDate(row.date) : '-' }}
                     </div>
