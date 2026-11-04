@@ -62,6 +62,14 @@ class OrcidClientFactory
     }
 
     /**
+     * Public API client: only reads what researchers made public, whatever the token
+     */
+    public function publicApi(string $readPublicToken): Orcid
+    {
+        return Orcid::public($readPublicToken, $this->environment);
+    }
+
+    /**
      * Member API client bound to the author's ORCID record, using the author's token and scopes
      *
      * @throws AuthorNotConnectedToOrcid

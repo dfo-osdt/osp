@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PublicationStatus;
+use App\Orcid\AuthorOrcidRecord;
 use App\Traits\HasExpertises;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,6 +38,7 @@ use VincentAuger\OrcidSdk\Enums\Scope as OrcidScope;
  * @property int|null $sector_id
  * @property int|null $region_id
  * @property bool $is_emeritus
+ * @property bool $show_orcid_record
  * @property-read Sector|null $sector
  * @property-read Region|null $region
  * @property int|null $user_id
@@ -105,6 +107,14 @@ class Author extends Model
         'orcid_refresh_token',
     ];
 
+    /**
+     * @var array<string, mixed>
+     */
+    #[\Override]
+    protected $attributes = [
+        'show_orcid_record' => true,
+    ];
+
     // logging options
     public function getActivitylogOptions(): LogOptions
     {
@@ -152,8 +162,8 @@ class Author extends Model
     }
 
     /**
-     * Clear the ORCID token and related fields.
-     * This is used when the user revokes the ORCID token.
+     * Clear the ORCID token and related fields, and the cached ORCID record.
+     * This is used when the user revokes the ORCID token, or ORCID reports it revoked.
      */
     public function clearOrcidToken(): void
     {
@@ -163,6 +173,8 @@ class Author extends Model
         $this->orcid_expires_at = null;
         $this->orcid_verified = false;
         $this->save();
+
+        AuthorOrcidRecord::forget($this);
     }
 
     /**
@@ -364,6 +376,7 @@ class Author extends Model
             'orcid_refresh_token' => 'encrypted',
             'orcid_expires_at' => 'datetime',
             'is_emeritus' => 'boolean',
+            'show_orcid_record' => 'boolean',
         ];
     }
 }

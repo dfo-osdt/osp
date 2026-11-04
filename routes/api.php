@@ -25,6 +25,7 @@ use App\Http\Controllers\ManuscriptRecordSharingController;
 use App\Http\Controllers\NotificationGroupMemberController;
 use App\Http\Controllers\NotificationGroupMembershipController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
+use App\Http\Controllers\Orcid\AuthorOrcidRecordController;
 use App\Http\Controllers\Orcid\RefreshFromOrcidController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
@@ -78,6 +79,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/authors', 'store');
         Route::put('/authors/{author}', 'update');
     });
+
+    Route::get('/authors/{author}/orcid-record', AuthorOrcidRecordController::class);
 
     Route::controller(AuthorEmploymentController::class)->group(function () {
         Route::get('/authors/{author}/employments', 'index');

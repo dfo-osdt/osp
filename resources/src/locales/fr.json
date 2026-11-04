@@ -744,7 +744,16 @@
     "employment-title": "Emploi",
     "needs_sync": "Synchronisation ORCID en attente",
     "synced": "Synchronisé avec votre profil ORCID",
-    "error": "ORCID.org a renvoyé cette erreur"
+    "error": "ORCID.org a renvoyé cette erreur",
+    "show-record-on-profile": "Partager ma biographie et mes informations ORCID publiques sur ma page d'auteur",
+    "show-record-on-profile-hint": "Votre biographie ORCID apparaît sur votre page d'auteur, où toute personne connectée au portail peut la voir. Seuls les éléments réglés sur « Tout le monde » sur orcid.org sont affichés, et les modifications faites sur orcid.org peuvent prendre jusqu'à une heure à apparaître.",
+    "show-record-on-profile-connect-hint": "Connectez votre ORCID iD ci-dessus pour utiliser ce paramètre.",
+    "show-record-on-profile-shown": "Enregistré : votre biographie ORCID apparaît maintenant sur votre page d'auteur",
+    "show-record-on-profile-hidden": "Enregistré : votre biographie ORCID est maintenant masquée de votre page d'auteur",
+    "show-record-on-profile-error": "Votre paramètre ORCID n'a pas pu être enregistré. Veuillez réessayer.",
+    "settings-title": "Paramètres d'intégration",
+    "settings-section-intro": "Choisissez comment le Portail de la science ouverte utilise votre dossier ORCID connecté.",
+    "view-author-page": "Voir ma page d'auteur"
   },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",
@@ -1083,7 +1092,15 @@
     "expertise": "Domaines d'expertise",
     "no-expertise": "Aucun domaine d'expertise répertorié",
     "expertise-description": "Les domaines d'expertise aident les utilisateurs à comprendre et à faire confiance au contenu, et facilitent la recherche d'informations.",
-    "author-not-found": "Auteur non trouvé"
+    "author-not-found": "Auteur non trouvé",
+    "orcid-biography": "Biographie",
+    "orcid-source": "Source : dossier ORCID",
+    "orcid-unavailable": "Dossier ORCID indisponible pour le moment",
+    "orcid-connect-prompt": "Connectez votre ORCID iD pour afficher votre biographie ORCID sur votre page d'auteur.",
+    "orcid-connect-action": "Connectez votre ORCID iD",
+    "orcid-nothing-public": "Votre dossier ORCID n'a pas de biographie publique. Sur orcid.org, ajoutez une biographie et réglez sa visibilité sur « Tout le monde » pour l'afficher ici.",
+    "read-more": "Lire la suite",
+    "read-less": "Afficher moins"
   },
   "ContentCard": {
     "title-here": "Titre ici"

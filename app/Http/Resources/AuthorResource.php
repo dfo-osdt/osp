@@ -27,6 +27,7 @@ class AuthorResource extends JsonResource
                 'orcid' => $this->orcid ?? '',
                 'orcid_verified' => $this->orcid_verified ?? false,
                 'orcid_connected' => (bool) $this->orcid_access_token,
+                'show_orcid_record' => $this->show_orcid_record,
                 'email' => $this->email,
                 'user_id' => $this->user_id,
                 'organization_id' => $this->organization_id,

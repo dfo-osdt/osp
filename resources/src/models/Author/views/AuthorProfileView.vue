@@ -16,6 +16,7 @@ import PublicationList from '@/models/Publication/components/PublicationList.vue
 import { PublicationQuery } from '@/models/Publication/Publication'
 import { AuthorService } from '../Author'
 import AuthorExpertiseDisplay from '../components/AuthorExpertiseDisplay.vue'
+import AuthorOrcidRecordCard from '../components/AuthorOrcidRecordCard.vue'
 import AuthorProfileCard from '../components/AuthorProfileCard.vue'
 
 const props = defineProps<{
@@ -181,6 +182,7 @@ onMounted(async () => {
           <div class="row q-gutter-sm flex justify-between">
             <AuthorProfileCard :author="author" class="col-sm-12 col-md col-lg-12" @updated="handleAuthorUpdated" />
             <AuthorExpertiseDisplay :author="author" class="col-sm-12 col-md col-lg-12" />
+            <AuthorOrcidRecordCard :author="author" class="col-12" />
           </div>
         </template>
 

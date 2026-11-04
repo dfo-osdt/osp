@@ -19,6 +19,7 @@ export interface Author {
   orcid: string
   orcid_verified: boolean
   orcid_connected: boolean
+  show_orcid_record: boolean
   email: string
   user_id: number | null
   organization_id: number
@@ -36,6 +37,18 @@ export interface Author {
 
 export type AuthorResource = Resource<Author>
 export type AuthorResourceList = ResourceList<Author>
+
+/**
+ * The public part of an author's ORCID record, shown on their profile.
+ * 'empty': not connected to ORCID, or the author hides their record;
+ * 'unavailable': ORCID could not be read right now.
+ */
+export interface AuthorOrcidRecord {
+  status: 'empty' | 'available' | 'unavailable'
+  record: {
+    biography: string | null
+  } | null
+}
 
 // Author Service
 export class AuthorService {
@@ -67,11 +80,32 @@ export class AuthorService {
    * @param author
    */
   public static async update(author: Author) {
-    const response = await http.put<Author, AuthorResource>(
+    // the ORCID display toggle saves on its own: a form holding an older copy of the author must not overwrite it
+    const { show_orcid_record: _showOrcidRecord, ...details } = author
+    const response = await http.put<Omit<Author, 'show_orcid_record'>, AuthorResource>(
       `api/authors/${author.id}`,
-      author,
+      details,
     )
     return response.data
+  }
+
+  /**
+   * Show or hide the author's ORCID record on their author page
+   */
+  public static async updateShowOrcidRecord(id: number, show: boolean) {
+    const response = await http.put<Pick<Author, 'show_orcid_record'>, AuthorResource>(
+      `api/authors/${id}`,
+      { show_orcid_record: show },
+    )
+    return response.data
+  }
+
+  /**
+   * The public part of the author's ORCID record
+   */
+  public static async getOrcidRecord(id: number) {
+    const response = await http.get<{ data: AuthorOrcidRecord }>(`api/authors/${id}/orcid-record`)
+    return response.data.data
   }
 
   /**

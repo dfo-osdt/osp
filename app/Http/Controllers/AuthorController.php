@@ -138,6 +138,7 @@ class AuthorController extends Controller
                 'exists:regions,id',
             ],
             'is_emeritus' => ['boolean'],
+            'show_orcid_record' => ['boolean'],
             'sync_all_pivots' => ['boolean'],
         ]);
 
@@ -260,12 +261,15 @@ class AuthorController extends Controller
      * DFO authors must fill their sector and region when they edit
      * their own profile. Others editing the record (editors, or users
      * editing an author without an account) may leave them empty.
+     * Changing only the ORCID integration settings is not a profile edit.
      */
     private function requiresProfileField(Request $request, Author $author, string $attribute, bool $willBeInternal): bool
     {
         $isOwnRecord = $author->user_id !== null && $author->user_id === $request->user()->id;
 
-        if (! $isOwnRecord || ! $willBeInternal) {
+        $changesOnlyOrcidSettings = $request->except('show_orcid_record') === [];
+
+        if (! $isOwnRecord || ! $willBeInternal || $changesOnlyOrcidSettings) {
             return false;
         }
 
