@@ -5,12 +5,19 @@ declare(strict_types=1);
 namespace App\Orcid;
 
 use App\Models\Author;
+use App\Models\Publication;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use VincentAuger\OrcidSdk\Data\Affiliations\Affiliation;
+use VincentAuger\OrcidSdk\Data\Common\ExternalId;
 use VincentAuger\OrcidSdk\Data\Organization\DisambiguatedOrganization;
 use VincentAuger\OrcidSdk\Data\Record\Record;
+use VincentAuger\OrcidSdk\Data\Works\WorkGroup;
 use VincentAuger\OrcidSdk\Enums\AffiliationType;
+use VincentAuger\OrcidSdk\Enums\ExternalIdRelationship;
+use VincentAuger\OrcidSdk\Enums\WorkType;
 use VincentAuger\OrcidSdk\Exceptions\OrcidException;
 
 /**
@@ -23,8 +30,14 @@ use VincentAuger\OrcidSdk\Exceptions\OrcidException;
  * Each entry remembers the ORCID iD it was read for, so a refresh that lands
  * after the author reconnected with another iD is never shown.
  *
+ * The works already listed in the author's OSP publications are left out when
+ * the record is read, not when it is cached, so they follow the publications.
+ *
  * @phpstan-type ShownAffiliation array{organization: string|null, ror: string|null, department: string|null, role: string|null, start_date: string|null, end_date: string|null}
- * @phpstan-type Shown array{biography: string|null, employments: list<ShownAffiliation>, educations: list<ShownAffiliation>, peer_review_count: int}
+ * @phpstan-type ShownWork array{title: string|null, type: string, date: string|null, journal: string|null, doi: string|null, url: string|null}
+ * @phpstan-type CachedWork array{work: ShownWork, dois: list<string>}
+ * @phpstan-type Cached array{biography: string|null, employments: list<ShownAffiliation>, educations: list<ShownAffiliation>, peer_review_count: int, works: list<CachedWork>}
+ * @phpstan-type Shown array{biography: string|null, employments: list<ShownAffiliation>, educations: list<ShownAffiliation>, peer_review_count: int, works: list<ShownWork>, works_already_listed: int}
  */
 class AuthorOrcidRecord
 {
@@ -39,9 +52,39 @@ class AuthorOrcidRecord
      *
      * @throws OrcidException when ORCID cannot be read and nothing is cached
      */
-    public function read(Author $author): array
+    public function read(Author $author, User $viewer): array
     {
-        /** @var array{orcid: string, record: Shown, read_at: int}|null $cached */
+        $record = $this->cached($author);
+        $listed = $this->listedDois($author, $viewer);
+        $works = array_values(array_filter($record['works'], fn (array $work): bool => ! $listed->matchesAny($work['dois'])));
+
+        return [
+            ...$record,
+            'works' => array_map(fn (array $work): array => $work['work'], $works),
+            'works_already_listed' => count($record['works']) - count($works),
+        ];
+    }
+
+    /**
+     * The DOIs of the publications the viewer sees in the author's profile
+     */
+    private function listedDois(Author $author, User $viewer): DoiMatcher
+    {
+        return new DoiMatcher(Publication::query()
+            ->forUser($viewer)
+            ->whereHas('publicationAuthors', fn (Builder $query) => $query->where('author_id', $author->id))
+            ->whereNotNull('doi')
+            ->pluck('doi'));
+    }
+
+    /**
+     * @return Cached
+     *
+     * @throws OrcidException
+     */
+    private function cached(Author $author): array
+    {
+        /** @var array{orcid: string, record: Cached, read_at: int}|null $cached */
         $cached = Cache::get(self::cacheKey($author));
 
         if ($cached === null || $cached['orcid'] !== $author->orcid) {
@@ -66,7 +109,7 @@ class AuthorOrcidRecord
     }
 
     /**
-     * @return Shown
+     * @return Cached
      *
      * @throws OrcidException
      */
@@ -91,7 +134,7 @@ class AuthorOrcidRecord
     }
 
     /**
-     * @return Shown
+     * @return Cached
      */
     private function toArray(Record $record): array
     {
@@ -100,6 +143,38 @@ class AuthorOrcidRecord
             'employments' => $this->affiliations($record, AffiliationType::Employment),
             'educations' => $this->affiliations($record, AffiliationType::Education),
             'peer_review_count' => count($record->activities->peerReviews->groups),
+            'works' => array_map($this->work(...), $record->activities->works->groups),
+        ];
+    }
+
+    /**
+     * A group of works as the version ORCID displays, with the work's own DOIs
+     * from every version to tell whether it is already listed in OSP (not e.g.
+     * the DOI of the book a chapter is part of)
+     *
+     * @return CachedWork
+     */
+    private function work(WorkGroup $group): array
+    {
+        $preferred = $group->preferred();
+        $dois = array_values(array_unique(array_filter(array_map(
+            fn (ExternalId $id): ?string => $id->type === 'doi' && $id->relationship === ExternalIdRelationship::Self
+                ? DoiMatcher::normalize($id->normalizedValue ?? $id->value)
+                : null,
+            [...$preferred->externalIds, ...$group->externalIds],
+        ))));
+
+        return [
+            'work' => [
+                'title' => $preferred->title?->__toString(),
+                // a type the SDK does not know is shown as "other"
+                'type' => $preferred->type->value ?? WorkType::Other->value,
+                'date' => $preferred->publicationDate?->__toString(),
+                'journal' => $preferred->journalTitle,
+                'doi' => $dois[0] ?? null,
+                'url' => $preferred->url?->value,
+            ],
+            'dois' => $dois,
         ];
     }
 

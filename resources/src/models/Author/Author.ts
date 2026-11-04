@@ -52,9 +52,87 @@ export interface AuthorOrcidAffiliation {
 }
 
 /**
+ * ORCID work types (the SDK's WorkType enum); a type it does not know is 'other'
+ */
+export type OrcidWorkType
+  = | 'annotation'
+    | 'artistic-performance'
+    | 'blog-post'
+    | 'book-chapter'
+    | 'book-review'
+    | 'book'
+    | 'cartographic-material'
+    | 'clinical-study'
+    | 'conference-abstract'
+    | 'conference-output'
+    | 'conference-paper'
+    | 'conference-poster'
+    | 'conference-presentation'
+    | 'conference-proceedings'
+    | 'data-management-plan'
+    | 'data-set'
+    | 'design'
+    | 'dictionary-entry'
+    | 'disclosure'
+    | 'dissertation-thesis'
+    | 'edited-book'
+    | 'encyclopedia-entry'
+    | 'image'
+    | 'invention'
+    | 'journal-article'
+    | 'journal-issue'
+    | 'learning-object'
+    | 'lecture-speech'
+    | 'license'
+    | 'magazine-article'
+    | 'manual'
+    | 'moving-image'
+    | 'musical-composition'
+    | 'newsletter-article'
+    | 'newspaper-article'
+    | 'online-resource'
+    | 'other'
+    | 'patent'
+    | 'physical-object'
+    | 'preprint'
+    | 'registered-copyright'
+    | 'report'
+    | 'research-technique'
+    | 'research-tool'
+    | 'review'
+    | 'software'
+    | 'sound'
+    | 'spin-off-company'
+    | 'standards-and-policy'
+    | 'supervised-student-publication'
+    | 'technical-standard'
+    | 'test'
+    | 'trademark'
+    | 'transcription'
+    | 'translation'
+    | 'website'
+    | 'working-paper'
+
+/**
+ * A work on the author's ORCID record, as the version ORCID displays. The date
+ * is an ORCID "fuzzy" date: "2021", "2021-05" or "2021-05-14"; the DOI is bare
+ * and lowercase ("10.1139/abc").
+ */
+export interface AuthorOrcidWork {
+  title: string | null
+  type: OrcidWorkType
+  date: string | null
+  journal: string | null
+  doi: string | null
+  url: string | null
+}
+
+/**
  * The public part of an author's ORCID record, shown on their profile.
  * 'empty': not connected to ORCID, or the author hides their record;
  * 'unavailable': ORCID could not be read right now.
+ * The works leave out those listed in the author's OSP publications, counted
+ * in works_already_listed.
  */
 export interface AuthorOrcidRecord {
   status: 'empty' | 'available' | 'unavailable'
@@ -63,6 +141,8 @@ export interface AuthorOrcidRecord {
     employments: AuthorOrcidAffiliation[]
     educations: AuthorOrcidAffiliation[]
     peer_review_count: number
+    works: AuthorOrcidWork[]
+    works_already_listed: number
   } | null
 }
 
