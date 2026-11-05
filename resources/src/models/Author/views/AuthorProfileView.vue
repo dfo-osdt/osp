@@ -245,7 +245,7 @@ onMounted(async () => {
       </div>
 
       <!-- Right Column: Publications & Preprints -->
-      <div class="col-lg-grow col-md-12">
+      <div class="col-lg col-md-12">
         <!-- Publications -->
         <ContentCard secondary class="q-mb-lg">
           <template #title>
