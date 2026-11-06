@@ -52,6 +52,12 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
      */
     public int $tries = 5;
 
+    /**
+     * Another job for the same contributor (e.g. dispatched on reconnect) may
+     * already have removed it for good: nothing is left to sync.
+     */
+    public bool $deleteWhenMissingModels = true;
+
     public function __construct(public ManuscriptReviewContributor $contributor) {}
 
     /**
