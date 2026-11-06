@@ -139,6 +139,29 @@ test('a declined contribution on ORCID is deleted there and its put-code cleared
     'already gone' => [orcidPeerReviewError(404, 9016)],
 ]);
 
+test('a removal waits for an ORCID connection with the write scope', function (): void {
+    $mockClient = Saloon::fake([]);
+    $contributor = wantedReviewContribution(
+        ['orcid_sync' => OrcidSyncIntent::DECLINED, 'orcid_putcode' => 4567],
+        Author::factory()->withOrcidConnection('/read-limited')->create(),
+    );
+
+    runReviewSync($contributor)->assertNotFailed();
+
+    $mockClient->assertNothingSent();
+    expect($contributor->refresh()->orcid_putcode)->toBe(4567);
+});
+
+test('a removal refused for a missing scope disconnects the author and keeps the put-code', function (): void {
+    Saloon::fake([DeletePeerReview::class => orcidPeerReviewError(403, 9038)]);
+    $contributor = wantedReviewContribution(['orcid_sync' => OrcidSyncIntent::DECLINED, 'orcid_putcode' => 4567]);
+
+    runReviewSync($contributor)->assertFailed();
+
+    expect($contributor->author->refresh()->orcid_access_token)->toBeNull()
+        ->and($contributor->refresh()->orcid_putcode)->toBe(4567);
+});
+
 test('a peer review already created by an earlier attempt is adopted', function (): void {
     $mockClient = Saloon::fake([
         CreatePeerReview::class => orcidPeerReviewError(409, 9021, '409 Conflict: You have already added this activity (matched by external identifiers), please see element with put-code 4567. If you are trying to edit the item, please use PUT instead of POST.'),

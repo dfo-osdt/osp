@@ -35,8 +35,8 @@ use VincentAuger\OrcidSdk\Resources\PeerReviewsResource;
  *
  * When the author is not connected to ORCID, or the default organization lacks
  * data ORCID requires, the contribution stays pending (a removal only needs the
- * connection). Pending contributions are
- * synced again when the author reconnects (see dispatchPendingFor()).
+ * connection). Pending contributions are synced again when the author
+ * reconnects (see dispatchPendingFor()).
  */
 class SyncReviewContributionWithOrcid implements ShouldQueue
 {
