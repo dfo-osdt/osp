@@ -35,6 +35,38 @@ function statusLabel(status: OrcidReviewStatus): string {
   return labels[status]
 }
 
+// contributions being added are synced in the background: reload until ORCID has them,
+// for a minute at most (e.g. it stays pending while DFO has no ROR identifier)
+const pollIntervalMs = 2000
+const maxPolls = 30
+let pollCount = 0
+let pollTimeoutId: ReturnType<typeof setTimeout> | null = null
+
+function stopPolling() {
+  if (pollTimeoutId)
+    clearTimeout(pollTimeoutId)
+  pollTimeoutId = null
+}
+
+function pollWhileAdding() {
+  stopPolling()
+  const hasPending = contributions.value?.meta.can_write_to_orcid
+    && contributions.value.data.some(contribution => contribution.data.orcid_status === 'pending')
+  if (!hasPending || pollCount >= maxPolls)
+    return
+
+  pollTimeoutId = setTimeout(async () => {
+    pollCount++
+    try {
+      contributions.value = await OrcidReviewContributionService.list()
+      pollWhileAdding()
+    }
+    catch {
+      // a failed background reload is not worth an error: the page still shows the last list
+    }
+  }, pollIntervalMs)
+}
+
 async function addToOrcid(id: number) {
   adding.value = id
   try {
@@ -44,6 +76,8 @@ async function addToOrcid(id: number) {
     const index = contributions.value.data.findIndex(contribution => contribution.data.id === id)
     if (index !== -1)
       contributions.value.data[index] = added
+    pollCount = 0
+    pollWhileAdding()
   }
   catch {
     q.notify({
@@ -60,6 +94,7 @@ async function loadContributions() {
   loading.value = true
   try {
     contributions.value = await OrcidReviewContributionService.list()
+    pollWhileAdding()
   }
   catch {
     q.notify({
@@ -76,6 +111,8 @@ onMounted(() => {
   if (hasAuthor.value)
     loadContributions()
 })
+
+onBeforeUnmount(stopPolling)
 </script>
 
 <template>
