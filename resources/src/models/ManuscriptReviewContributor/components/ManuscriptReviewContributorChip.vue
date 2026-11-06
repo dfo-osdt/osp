@@ -31,11 +31,6 @@ const label = computed(() => t('manage-review-contributors.chip-label', {
   name: name.value,
 }))
 
-// icons inside the chip are aria-hidden, so the ORCID status has to be part of the chip's own name
-const ariaLabel = computed(() => props.manuscriptReviewContributor.data.orcid_synced
-  ? `${label.value}. ${t('manage-review-contributors.on-orcid')}`
-  : label.value)
-
 const role = computed({
   get() {
     return props.manuscriptReviewContributor.data.role
@@ -47,6 +42,21 @@ const role = computed({
 
 const defaultOrganizationId = useDefaultOrganizationId()
 const isInternal = computed(() => props.manuscriptReviewContributor.data.author?.data.organization_id === defaultOrganizationId)
+const authorTypeLabel = computed(() => {
+  if (isInternal.value) {
+    return t('common.internal-author')
+  }
+  return t('common.external-author')
+})
+
+// icons inside the chip are aria-hidden, so what they show has to be part of the chip's own name
+const ariaLabel = computed(() => {
+  const parts = [label.value, authorTypeLabel.value]
+  if (props.manuscriptReviewContributor.data.orcid_synced) {
+    parts.push(t('manage-review-contributors.on-orcid'))
+  }
+  return parts.join('. ')
+})
 
 const removable = computed(() => {
   if (props.readonly) {
@@ -70,12 +80,11 @@ const canChangeRole = computed(() => !props.readonly && props.manuscriptReviewCo
     <q-icon
       :name="isInternal ? 'mdi-fish' : 'mdi-earth'"
       :color="isInternal ? 'primary' : 'grey-7'"
-      :aria-label="isInternal ? t('common.internal-author') : t('common.external-author')"
       size="18px"
       class="q-ml-xs"
     >
       <q-tooltip>
-        {{ isInternal ? t('common.internal-author') : t('common.external-author') }}
+        {{ authorTypeLabel }}
       </q-tooltip>
     </q-icon>
     <q-icon
