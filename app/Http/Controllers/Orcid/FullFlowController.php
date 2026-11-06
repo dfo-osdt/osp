@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Orcid;
 
 use App\Jobs\SyncAuthorEmploymentWithOrcid;
 use App\Jobs\SyncAuthorFromOrcid;
+use App\Jobs\SyncReviewContributionWithOrcid;
 use App\Models\User;
 use App\Orcid\OrcidClientFactory;
 use Illuminate\Http\RedirectResponse;
@@ -109,8 +110,9 @@ class FullFlowController
         // pick up what changed on ORCID, then push what changed in OSP while the
         // author was not connected
         dispatch(new SyncAuthorFromOrcid($author));
-        $pending = SyncAuthorEmploymentWithOrcid::dispatchPendingFor($author);
-        Log::info('ORCID connected', ['author_id' => $author->id, 'pending_employments' => $pending]);
+        $pendingEmployments = SyncAuthorEmploymentWithOrcid::dispatchPendingFor($author);
+        $pendingReviews = SyncReviewContributionWithOrcid::dispatchPendingFor($author);
+        Log::info('ORCID connected', ['author_id' => $author->id, 'pending_employments' => $pendingEmployments, 'pending_review_contributions' => $pendingReviews]);
 
         return redirect($frontendUrl.'#/auth/orcid-callback?status=success');
     }

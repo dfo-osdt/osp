@@ -18,15 +18,43 @@ const connectUrl = computed(() => `/api/user/orcid/verify?locale=${localeStore.l
 
 const hasAuthor = computed(() => !!authStore.user?.author?.data)
 
+const contributions = ref<OrcidReviewContributionResourceList | null>(null)
+const loading = ref(false)
+const adding = ref<number | null>(null)
+
 function statusLabel(status: OrcidReviewStatus): string {
+  // pending contributions wait for the author to connect ORCID with the write scope
+  if (status === 'pending' && !contributions.value?.meta.can_write_to_orcid)
+    return t('orcid-review-credit.status.waiting_for_connection')
+
   const labels: Record<OrcidReviewStatus, string> = {
     not_on_orcid: t('orcid-review-credit.status.not_on_orcid'),
+    pending: t('orcid-review-credit.status.pending'),
+    on_orcid: t('orcid-review-credit.status.on_orcid'),
   }
   return labels[status]
 }
 
-const contributions = ref<OrcidReviewContributionResourceList | null>(null)
-const loading = ref(false)
+async function addToOrcid(id: number) {
+  adding.value = id
+  try {
+    const added = await OrcidReviewContributionService.add(id)
+    if (!contributions.value)
+      return
+    const index = contributions.value.data.findIndex(contribution => contribution.data.id === id)
+    if (index !== -1)
+      contributions.value.data[index] = added
+  }
+  catch {
+    q.notify({
+      type: 'negative',
+      message: t('orcid-review-credit.add-error'),
+    })
+  }
+  finally {
+    adding.value = null
+  }
+}
 
 async function loadContributions() {
   loading.value = true
@@ -104,7 +132,23 @@ onMounted(() => {
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-badge outline color="grey-8" :label="statusLabel(contribution.data.orcid_status)" />
+          <q-btn
+            v-if="contribution.data.orcid_status === 'not_on_orcid'"
+            outline
+            no-caps
+            color="primary"
+            icon="mdi-plus"
+            :label="t('orcid-review-credit.add')"
+            :loading="adding === contribution.data.id"
+            data-test="orcid-review-add"
+            @click="addToOrcid(contribution.data.id)"
+          />
+          <q-badge
+            v-else
+            outline
+            :color="contribution.data.orcid_status === 'on_orcid' ? 'positive' : 'grey-8'"
+            :label="statusLabel(contribution.data.orcid_status)"
+          />
         </q-item-section>
       </q-item>
       <q-item v-if="contributions.data.length === 0">

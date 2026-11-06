@@ -760,8 +760,13 @@
     "intro": "Your work as a reviewer or editor of reports published in participating DFO series can be added to your ORCID record as peer reviews.",
     "connect-banner": "Connect your ORCID iD and allow the portal to update your record to get credit for these contributions.",
     "empty": "None of your review contributions can be added to ORCID yet. They appear here once the report is published with a DOI in a participating series.",
+    "add": "Add",
+    "add-error": "The contribution couldn't be added to ORCID. Please try again.",
     "status": {
-      "not_on_orcid": "Not on ORCID"
+      "not_on_orcid": "Not on ORCID",
+      "pending": "Adding to ORCID",
+      "waiting_for_connection": "Waiting for ORCID connection",
+      "on_orcid": "On ORCID"
     }
   },
   "organization-select": {
