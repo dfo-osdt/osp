@@ -11,6 +11,8 @@ use App\Orcid\Mappers\PeerReviewMapper;
 use App\Orcid\OrcidClientFactory;
 use App\Orcid\OrcidErrors;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
@@ -26,9 +28,11 @@ use VincentAuger\OrcidSdk\Resources\PeerReviewsResource;
 
 /**
  * Brings a review contribution and its ORCID peer review in line with what the
- * author wants, based on the state of the contribution when the job runs:
+ * author wants and with OSP, based on the state of the contribution when the job runs:
  *
- * - declined but on ORCID: delete it there and clear the put-code
+ * - removed from the manuscript: delete it on ORCID (if it was ever synced),
+ *   then remove the contributor from OSP
+ * - declined or no longer eligible but on ORCID: delete it there and clear the put-code
  * - synced before: update it on ORCID; if the author deleted it there, they
  *   no longer want it: mark it declined instead of creating it again
  * - never synced: create it on ORCID and store the put-code
@@ -78,19 +82,51 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
     public static function dispatchPendingFor(Author $author): int
     {
         $pending = $author->reviewContributions()
-            ->whereNotNull('orcid_sync')
+            ->withTrashed()
+            ->where(fn (Builder $query): Builder => $query->whereNotNull('orcid_sync')->orWhereNotNull('deleted_at'))
             ->with('manuscriptRecord.publication.journal')
             ->get()
-            ->filter(fn (ManuscriptReviewContributor $contributor): bool => $contributor->needsRemovalFromOrcid() || $contributor->needsSyncWithOrcid());
+            ->filter(fn (ManuscriptReviewContributor $contributor): bool => $contributor->trashed()
+                || $contributor->needsRemovalFromOrcid()
+                || $contributor->needsSyncWithOrcid());
 
         $pending->each(fn (ManuscriptReviewContributor $contributor): PendingDispatch => dispatch(new self($contributor)));
 
         return $pending->count();
     }
 
+    /**
+     * Bring the ORCID items of these contributions in line after something they
+     * are built from changed (the role, the publication or its journal): they are
+     * updated, created if they became eligible, or deleted if no longer eligible.
+     *
+     * @param  Collection<int, ManuscriptReviewContributor>  $contributors
+     * @return int The number of jobs dispatched
+     */
+    public static function dispatchForChanged(Collection $contributors): int
+    {
+        $affected = $contributors->filter(fn (ManuscriptReviewContributor $contributor): bool => $contributor->isWantedOnOrcid() || $contributor->isSyncedWithOrcid());
+
+        $affected->each(function (ManuscriptReviewContributor $contributor): void {
+            $contributor->orcid_updated_at = null;
+            ManuscriptReviewContributor::withoutTimestamps(fn () => $contributor->save());
+
+            dispatch(new self($contributor));
+        });
+
+        return $affected->count();
+    }
+
     public function handle(OrcidClientFactory $orcid): void
     {
         $contributor = $this->contributor;
+
+        // never synced and now removed: nothing to delete on ORCID
+        if ($contributor->trashed() && ! $contributor->isSyncedWithOrcid()) {
+            $contributor->forceDelete();
+
+            return;
+        }
 
         if (! $contributor->needsRemovalFromOrcid() && ! $contributor->needsSyncWithOrcid()) {
             return;
@@ -146,16 +182,16 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
 
     /**
      * Store the put-code and mark the contribution as synced, unless it changed
-     * while ORCID was being updated: what ORCID has is then out of date, so the
-     * contribution stays pending for the job dispatched with that change. The
-     * put-code is always stored, so that job updates the item instead of
-     * creating a duplicate.
+     * while ORCID was being updated (edited, declined or removed): what ORCID has
+     * is then out of date, so the contribution stays pending for the job
+     * dispatched with that change. The put-code is always stored, so that job
+     * updates or deletes the item instead of creating a duplicate or leaving it.
      */
     private function markSynced(ManuscriptReviewContributor $sent, PeerReviewInput $input, bool $created): void
     {
         $changed = DB::transaction(function () use ($sent, $input): bool {
-            $current = ManuscriptReviewContributor::query()->lockForUpdate()->findOrFail($sent->id);
-            $changed = ! $current->isWantedOnOrcid() || ! $this->wouldSend($current, $input);
+            $current = ManuscriptReviewContributor::withTrashed()->lockForUpdate()->findOrFail($sent->id);
+            $changed = $current->trashed() || ! $current->isWantedOnOrcid() || ! $this->wouldSend($current, $input);
 
             $current->orcid_putcode = $sent->orcid_putcode;
 
@@ -170,10 +206,7 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
         });
 
         if ($created) {
-            activity()
-                ->performedOn($sent->manuscriptRecord)
-                ->withProperties(['author_id' => $sent->author_id, 'put_code' => $sent->orcid_putcode])
-                ->log('manuscript.review-contributor.orcid-created');
+            $this->logOnManuscript($sent, 'manuscript.review-contributor.orcid-created', ['put_code' => $sent->orcid_putcode]);
         }
 
         Log::info($changed ? 'ORCID peer review changed while syncing, left pending' : 'ORCID peer review synced', [
@@ -195,8 +228,10 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
     }
 
     /**
-     * Only the put-code is cleared: if the author wanted the contribution again
-     * while it was being deleted, the job dispatched with that change creates it.
+     * A removed contributor is then removed from OSP. Otherwise only the put-code
+     * is cleared: if the author wanted the contribution again, or it became
+     * eligible again, while it was being deleted, the job dispatched with that
+     * change creates it.
      */
     private function delete(PeerReviewsResource $peerReviews, ManuscriptReviewContributor $contributor): void
     {
@@ -209,7 +244,14 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
         $putCode = $contributor->orcid_putcode;
 
         DB::transaction(function () use ($contributor): void {
-            $current = ManuscriptReviewContributor::query()->lockForUpdate()->findOrFail($contributor->id);
+            $current = ManuscriptReviewContributor::withTrashed()->lockForUpdate()->findOrFail($contributor->id);
+
+            if ($current->trashed()) {
+                $current->forceDelete();
+
+                return;
+            }
+
             $current->orcid_putcode = null;
             $current->orcid_updated_at = null;
 
@@ -217,31 +259,49 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
             ManuscriptReviewContributor::withoutTimestamps(fn () => $current->save());
         });
 
-        activity()
-            ->performedOn($contributor->manuscriptRecord)
-            ->withProperties(['author_id' => $contributor->author_id, 'put_code' => $putCode])
-            ->log('manuscript.review-contributor.orcid-deleted');
+        $this->logOnManuscript($contributor, 'manuscript.review-contributor.orcid-deleted', ['put_code' => $putCode]);
 
         Log::info('ORCID peer review deleted', ['manuscript_review_contributor_id' => $contributor->id, 'put_code' => $putCode]);
     }
 
     /**
      * Only the author can delete a peer review on ORCID: they no longer want it
-     * there, so it is never added again.
+     * there, so it is never added again. Unless the contribution changed since
+     * the job loaded it, e.g. the author added it again in OSP: the job
+     * dispatched with that change then creates it.
      */
     private function markDeletedOnOrcid(ManuscriptReviewContributor $contributor): void
     {
-        $contributor->orcid_sync = OrcidSyncIntent::DECLINED;
-        $contributor->orcid_putcode = null;
-        $contributor->orcid_updated_at = null;
-        $contributor->save();
+        DB::transaction(function () use ($contributor): void {
+            $current = ManuscriptReviewContributor::withTrashed()->lockForUpdate()->findOrFail($contributor->id);
 
-        activity()
-            ->performedOn($contributor->manuscriptRecord)
-            ->withProperties(['author_id' => $contributor->author_id])
-            ->log('manuscript.review-contributor.orcid-deleted-by-author');
+            if ($current->updated_at->equalTo($contributor->updated_at)) {
+                $current->orcid_sync = OrcidSyncIntent::DECLINED;
+            }
+
+            $current->orcid_putcode = null;
+            $current->orcid_updated_at = null;
+
+            // syncing is not a change to the contribution: keep its updated_at
+            ManuscriptReviewContributor::withoutTimestamps(fn () => $current->save());
+        });
+
+        $this->logOnManuscript($contributor, 'manuscript.review-contributor.orcid-deleted-by-author');
 
         Log::info('ORCID peer review deleted by the author, marked declined', ['manuscript_review_contributor_id' => $contributor->id]);
+    }
+
+    /**
+     * Log an ORCID change on the contribution's manuscript, even a deleted one
+     *
+     * @param  array<string, mixed>  $properties
+     */
+    private function logOnManuscript(ManuscriptReviewContributor $contributor, string $description, array $properties = []): void
+    {
+        activity()
+            ->performedOn($contributor->manuscriptRecord()->withTrashed()->sole())
+            ->withProperties(['author_id' => $contributor->author_id, ...$properties])
+            ->log($description);
     }
 
     /**

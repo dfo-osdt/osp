@@ -22,7 +22,8 @@ class DeleteSubmittedManuscriptRecord
             $manuscriptRecord->managementReviewSteps()->update(['previous_step_id' => null]);
             $manuscriptRecord->managementReviewSteps()->delete();
             $manuscriptRecord->manuscriptAuthors()->delete();
-            $manuscriptRecord->reviewContributors()->delete();
+            // never on ORCID: the manuscript is not published yet
+            $manuscriptRecord->reviewContributors()->forceDelete();
             $manuscriptRecord->fundingSources()->forceDelete();
             $manuscriptRecord->shareables()->delete();
 

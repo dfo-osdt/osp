@@ -30,6 +30,8 @@ class OrcidReviewContributionResource extends JsonResource
                 'role' => $this->role,
                 'review_date' => $this->review_date?->toDateString(),
                 'orcid_status' => match (true) {
+                    // still on ORCID until the delete runs, e.g. once the author reconnects
+                    $this->needsRemovalFromOrcid() => 'removing',
                     $this->orcid_sync === OrcidSyncIntent::DECLINED => 'declined',
                     ! $this->isWantedOnOrcid() => 'not_on_orcid',
                     $this->isSyncedWithOrcid() => 'on_orcid',

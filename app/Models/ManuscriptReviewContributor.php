@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use VincentAuger\OrcidSdk\Enums\PeerReviewRole;
 use VincentAuger\OrcidSdk\Enums\PeerReviewType;
@@ -23,6 +24,7 @@ use VincentAuger\OrcidSdk\Enums\PeerReviewType;
  * @property OrcidSyncIntent|null $orcid_sync
  * @property int|null $orcid_putcode
  * @property Carbon|null $orcid_updated_at
+ * @property Carbon|null $deleted_at
  * @property-read Author|null $author
  * @property-read ManuscriptRecord|null $manuscriptRecord
  *
@@ -60,6 +62,8 @@ class ManuscriptReviewContributor extends Model
     /** @use HasFactory<ManuscriptReviewContributorFactory> */
     use HasFactory;
 
+    use SoftDeletes;
+
     #[\Override]
     protected $attributes = [
         'role' => PeerReviewRole::Reviewer,
@@ -92,17 +96,20 @@ class ManuscriptReviewContributor extends Model
      */
     public function needsSyncWithOrcid(): bool
     {
-        return $this->isWantedOnOrcid()
+        return ! $this->trashed()
+            && $this->isWantedOnOrcid()
             && $this->isEligibleForOrcid()
             && ($this->orcid_updated_at === null || $this->updated_at->gt($this->orcid_updated_at));
     }
 
     /**
-     * Whether the author declined the contribution while it is still on their ORCID record
+     * Whether the contribution is on the author's ORCID record but should no longer
+     * be: removed from the manuscript, declined by the author or no longer eligible.
      */
     public function needsRemovalFromOrcid(): bool
     {
-        return $this->orcid_sync === OrcidSyncIntent::DECLINED && $this->isSyncedWithOrcid();
+        return $this->isSyncedWithOrcid()
+            && ($this->trashed() || ! $this->isWantedOnOrcid() || ! $this->isEligibleForOrcid());
     }
 
     /**

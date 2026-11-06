@@ -25,15 +25,25 @@ const addingAll = ref(false)
 
 const hasUndecided = computed(() => contributions.value?.data.some(contribution => contribution.data.orcid_status === 'not_on_orcid') ?? false)
 
+// additions and removals in progress run in the background
+function isInProgress(status: OrcidReviewStatus): boolean {
+  return status === 'pending' || status === 'removing'
+}
+
+// contributions in progress wait for the author to connect ORCID with the write scope
+function isWaitingForConnection(status: OrcidReviewStatus): boolean {
+  return isInProgress(status) && !contributions.value?.meta.can_write_to_orcid
+}
+
 function statusLabel(status: OrcidReviewStatus): string {
-  // pending contributions wait for the author to connect ORCID with the write scope
-  if (status === 'pending' && !contributions.value?.meta.can_write_to_orcid)
+  if (isWaitingForConnection(status))
     return t('orcid-review-credit.status.waiting_for_connection')
 
   const labels: Record<OrcidReviewStatus, string> = {
     not_on_orcid: t('orcid-review-credit.status.not_on_orcid'),
     pending: t('orcid-review-credit.status.pending'),
     on_orcid: t('orcid-review-credit.status.on_orcid'),
+    removing: t('orcid-review-credit.status.removing'),
     declined: t('orcid-review-credit.status.declined'),
   }
   return labels[status]
@@ -45,8 +55,8 @@ function statusColor(status: OrcidReviewStatus): string {
     : 'grey-8'
 }
 
-// contributions being added are synced in the background: reload until ORCID has them,
-// for a minute at most (e.g. it stays pending while DFO has no ROR identifier)
+// contributions being added or removed are synced in the background: reload until ORCID
+// is up to date, for a minute at most (e.g. it stays pending while DFO has no ROR identifier)
 const pollIntervalMs = 2000
 const maxPolls = 30
 let pollCount = 0
@@ -58,18 +68,18 @@ function stopPolling() {
   pollTimeoutId = null
 }
 
-function pollWhileAdding() {
+function pollWhileInProgress() {
   stopPolling()
-  const hasPending = contributions.value?.meta.can_write_to_orcid
-    && contributions.value.data.some(contribution => contribution.data.orcid_status === 'pending')
-  if (!hasPending || pollCount >= maxPolls)
+  const hasInProgress = contributions.value?.meta.can_write_to_orcid
+    && contributions.value.data.some(contribution => isInProgress(contribution.data.orcid_status))
+  if (!hasInProgress || pollCount >= maxPolls)
     return
 
   pollTimeoutId = setTimeout(async () => {
     pollCount++
     try {
       contributions.value = await OrcidReviewContributionService.list()
-      pollWhileAdding()
+      pollWhileInProgress()
     }
     catch {
       // a failed background reload is not worth an error: the page still shows the last list
@@ -87,7 +97,7 @@ async function updateContribution(id: number, action: 'add' | 'remove') {
     if (index !== -1)
       contributions.value.data[index] = updated
     pollCount = 0
-    pollWhileAdding()
+    pollWhileInProgress()
   }
   catch {
     q.notify({
@@ -107,7 +117,7 @@ async function addAllToOrcid() {
   try {
     contributions.value = await OrcidReviewContributionService.addAll()
     pollCount = 0
-    pollWhileAdding()
+    pollWhileInProgress()
   }
   catch {
     q.notify({
@@ -124,7 +134,7 @@ async function loadContributions() {
   loading.value = true
   try {
     contributions.value = await OrcidReviewContributionService.list()
-    pollWhileAdding()
+    pollWhileInProgress()
   }
   catch {
     q.notify({
@@ -218,9 +228,13 @@ onBeforeUnmount(stopPolling)
               outline
               :color="statusColor(contribution.data.orcid_status)"
               :label="statusLabel(contribution.data.orcid_status)"
-            />
+            >
+              <q-tooltip v-if="contribution.data.orcid_status === 'removing' && isWaitingForConnection(contribution.data.orcid_status)">
+                {{ t('orcid-review-credit.removing-hint') }}
+              </q-tooltip>
+            </q-badge>
             <q-btn
-              v-if="contribution.data.orcid_status === 'not_on_orcid' || contribution.data.orcid_status === 'declined'"
+              v-if="['not_on_orcid', 'removing', 'declined'].includes(contribution.data.orcid_status)"
               outline
               no-caps
               color="primary"
@@ -232,7 +246,7 @@ onBeforeUnmount(stopPolling)
               @click="updateContribution(contribution.data.id, 'add')"
             />
             <q-btn
-              v-if="contribution.data.orcid_status === 'on_orcid'"
+              v-if="contribution.data.orcid_status === 'on_orcid' || contribution.data.orcid_status === 'pending'"
               flat
               no-caps
               color="negative"

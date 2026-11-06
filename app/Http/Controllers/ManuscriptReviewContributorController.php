@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\ManuscriptRecordType;
 use App\Http\Resources\ManuscriptReviewContributorResource;
+use App\Jobs\SyncReviewContributionWithOrcid;
 use App\Models\ManuscriptRecord;
 use App\Models\ManuscriptReviewContributor;
 use App\Traits\LoadsManuscriptRecordPolicyRelationships;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
@@ -129,6 +131,10 @@ class ManuscriptReviewContributorController extends Controller
         $oldRole = $manuscriptReviewContributor->role;
         $manuscriptReviewContributor->update($validated);
 
+        if ($manuscriptReviewContributor->wasChanged('role')) {
+            SyncReviewContributionWithOrcid::dispatchForChanged(new Collection([$manuscriptReviewContributor]));
+        }
+
         activity()
             ->performedOn($manuscriptRecord)
             ->withProperties([
@@ -153,7 +159,10 @@ class ManuscriptReviewContributorController extends Controller
         $manuscriptRecord->load($this->getManuscriptRecordPolicyRelationships());
         Gate::authorize('delete', $manuscriptReviewContributor);
 
+        // soft delete first: the sync job removes the ORCID item, then the contributor
         $manuscriptReviewContributor->delete();
+
+        dispatch(new SyncReviewContributionWithOrcid($manuscriptReviewContributor));
 
         activity()
             ->performedOn($manuscriptRecord)
