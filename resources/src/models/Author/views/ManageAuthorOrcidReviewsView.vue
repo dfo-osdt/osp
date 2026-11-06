@@ -43,6 +43,17 @@ onMounted(() => {
 </script>
 
 <template>
+  <q-btn
+    v-if="hasAuthor"
+    flat
+    no-caps
+    dense
+    color="primary"
+    icon="mdi-arrow-left"
+    class="q-mb-sm"
+    :label="t('orcid-review-credit.back')"
+    :to="{ name: 'settings.author' }"
+  />
   <ContentCard v-if="hasAuthor" secondary class="q-mb-xl" data-test="orcid-review-credit">
     <template #title>
       <q-icon name="mdi-account-check-outline" size="md" />
@@ -53,17 +64,19 @@ onMounted(() => {
     </template>
     <q-banner
       v-if="contributions && !contributions.meta.can_write_to_orcid"
-      class="bg-secondary text-white q-mb-md"
+      class="bg-blue-grey-1 text-grey-9 q-mb-md"
       rounded
+      dense
+      inline-actions
       data-test="orcid-connect-banner"
     >
       <template #avatar>
-        <q-icon name="mdi-information-outline" />
+        <q-icon name="mdi-information-outline" color="primary" />
       </template>
       {{ t('orcid-review-credit.connect-banner') }}
       <template #action>
-        <q-btn color="white" text-color="primary" :href="connectUrl">
-          <OrcidAvatar size="md" />
+        <q-btn outline no-caps color="primary" :href="connectUrl">
+          <OrcidAvatar size="sm" />
           <span class="q-ml-sm">{{ t('ocrid.verify-btn-text') }}</span>
         </q-btn>
       </template>
