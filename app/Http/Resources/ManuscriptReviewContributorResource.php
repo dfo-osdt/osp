@@ -25,6 +25,7 @@ class ManuscriptReviewContributorResource extends JsonResource
                 'manuscript_record_id' => $this->manuscript_record_id,
                 'author_id' => $this->author_id,
                 'role' => $this->role,
+                'orcid_synced' => $this->isSyncedWithOrcid(),
                 'author' => AuthorResource::make($this->whenLoaded('author')),
             ],
             'can' => [

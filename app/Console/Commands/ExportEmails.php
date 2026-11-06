@@ -21,13 +21,16 @@ use App\Mail\NotificationGroupMemberRemovedMail;
 use App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail;
 use App\Mail\PlanningBinder\FlaggedManuscriptOnPrepintServerMail;
 use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail;
+use App\Mail\ReviewContributionPublishedMail;
 use App\Mail\ReviewStepNotificationMail;
 use App\Mail\UserInvitedMail;
 use App\Mail\UserInvitedWelomeMail;
+use App\Models\Author;
 use App\Models\Invitation;
 use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptRecord;
+use App\Models\ManuscriptReviewContributor;
 use App\Models\NotificationGroupMember;
 use App\Models\Publication;
 use App\Models\Shareable;
@@ -430,6 +433,24 @@ class ExportEmails extends Command
         $notificationGroupMemberRemoved = new NotificationGroupMemberRemovedMail($notificationGroupMember->user, $notificationGroupMember->member);
         $markdownContent = $notificationGroupMemberRemoved->render();
         $this->exportFile('notification-group-member-removed.html', $markdownContent);
+
+        // Review contribution published: author connected to ORCID, and not connected
+        $publication = Publication::factory()->withManuscript(['type' => ManuscriptRecordType::SECONDARY])->create([
+            'status' => PublicationStatus::PUBLISHED,
+            'published_on' => now(),
+            'doi' => 'https://doi.org/10.60825/abc-123',
+        ]);
+        foreach (['connected' => Author::factory()->withOrcidConnection(), 'not-connected' => Author::factory()] as $variant => $authorFactory) {
+            $author = $authorFactory->create();
+            User::factory()->create(['email' => $author->email]);
+            $contributor = ManuscriptReviewContributor::factory()->create([
+                'manuscript_record_id' => $publication->manuscript_record_id,
+                'author_id' => $author->id,
+            ]);
+            $reviewContributionPublished = new ReviewContributionPublishedMail($contributor);
+            $markdownContent = $reviewContributionPublished->render();
+            $this->exportFile("review-contribution-published-{$variant}.html", $markdownContent);
+        }
 
         DB::rollBack();
 

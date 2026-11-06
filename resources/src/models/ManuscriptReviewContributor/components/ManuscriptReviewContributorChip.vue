@@ -42,6 +42,21 @@ const role = computed({
 
 const defaultOrganizationId = useDefaultOrganizationId()
 const isInternal = computed(() => props.manuscriptReviewContributor.data.author?.data.organization_id === defaultOrganizationId)
+const authorTypeLabel = computed(() => {
+  if (isInternal.value) {
+    return t('common.internal-author')
+  }
+  return t('common.external-author')
+})
+
+// icons inside the chip are aria-hidden, so what they show has to be part of the chip's own name
+const ariaLabel = computed(() => {
+  const parts = [label.value, authorTypeLabel.value]
+  if (props.manuscriptReviewContributor.data.orcid_synced) {
+    parts.push(t('manage-review-contributors.on-orcid'))
+  }
+  return parts.join('. ')
+})
 
 const removable = computed(() => {
   if (props.readonly) {
@@ -58,18 +73,28 @@ const canChangeRole = computed(() => !props.readonly && props.manuscriptReviewCo
     clickable
     :removable="removable"
     color="teal-2"
+    :aria-label="ariaLabel"
     @remove="emit('delete', props.manuscriptReviewContributor)"
   >
     {{ label }}
     <q-icon
       :name="isInternal ? 'mdi-fish' : 'mdi-earth'"
       :color="isInternal ? 'primary' : 'grey-7'"
-      :aria-label="isInternal ? t('common.internal-author') : t('common.external-author')"
       size="18px"
       class="q-ml-xs"
     >
       <q-tooltip>
-        {{ isInternal ? t('common.internal-author') : t('common.external-author') }}
+        {{ authorTypeLabel }}
+      </q-tooltip>
+    </q-icon>
+    <q-icon
+      v-if="manuscriptReviewContributor.data.orcid_synced"
+      name="img:/assets/orcid/orcid.logo.icon.svg"
+      size="18px"
+      class="q-ml-xs"
+    >
+      <q-tooltip>
+        {{ t('manage-review-contributors.on-orcid') }}
       </q-tooltip>
     </q-icon>
     <q-menu>
@@ -150,16 +175,21 @@ const canChangeRole = computed(() => !props.readonly && props.manuscriptReviewCo
             </div>
           </q-item-section>
         </q-item>
-        <q-item v-if="manuscriptReviewContributor.data.author?.data.orcid">
+        <q-item v-if="manuscriptReviewContributor.data.author?.data.orcid || manuscriptReviewContributor.data.orcid_synced">
           <q-item-section avatar>
             <OrcidAvatar />
           </q-item-section>
           <q-item-section>
-            <a
-              class="text-primary"
-              :href="manuscriptReviewContributor.data.author?.data.orcid"
-              target="_blank"
-            >{{ manuscriptReviewContributor.data.author?.data.orcid }}</a>
+            <q-item-label v-if="manuscriptReviewContributor.data.author?.data.orcid">
+              <a
+                class="text-primary"
+                :href="manuscriptReviewContributor.data.author?.data.orcid"
+                target="_blank"
+              >{{ manuscriptReviewContributor.data.author?.data.orcid }}</a>
+            </q-item-label>
+            <q-item-label v-if="manuscriptReviewContributor.data.orcid_synced" caption>
+              {{ t('manage-review-contributors.on-orcid') }}
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

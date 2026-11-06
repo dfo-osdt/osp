@@ -111,6 +111,20 @@ describe('Create Journal', function (): void {
         ]);
     });
 
+    it('ORCID sync is not offered and not saved when creating a non-DFO journal', function (): void {
+        $this->actingAs($this->admin)->livewire(CreateJournal::class)
+            ->fillForm([
+                'title' => 'Canadian Journal of Fisheries',
+                'publisher' => 'NRC Press',
+            ])
+            ->assertFormFieldHidden('orcid_sync_enabled')
+            ->fillForm(['orcid_sync_enabled' => true])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        expect(Journal::query()->where('title', 'Canadian Journal of Fisheries')->sole()->orcid_sync_enabled)->toBeFalse();
+    });
+
     it('title is required', function (): void {
         $this->actingAs($this->admin)->livewire(CreateJournal::class)
             ->fillForm([
@@ -180,6 +194,39 @@ describe('Edit Journal', function (): void {
             ->fillForm(['publisher' => ''])
             ->call('save')
             ->assertHasFormErrors(['publisher' => 'required']);
+    });
+
+    it('an admin can turn on ORCID sync for a DFO series', function (): void {
+        $journal = Journal::factory()->dfoSeries()->create();
+
+        $this->actingAs($this->admin)->livewire(EditJournal::class, ['record' => $journal->getRouteKey()])
+            ->assertFormFieldVisible('orcid_sync_enabled')
+            ->fillForm(['orcid_sync_enabled' => true])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        expect($journal->fresh()->orcid_sync_enabled)->toBeTrue();
+    });
+
+    it('ORCID sync is not offered and not saved for a non-DFO journal', function (): void {
+        $this->actingAs($this->admin)->livewire(EditJournal::class, ['record' => $this->record->getRouteKey()])
+            ->assertFormFieldHidden('orcid_sync_enabled')
+            ->fillForm(['orcid_sync_enabled' => true])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        expect($this->record->fresh()->orcid_sync_enabled)->toBeFalse();
+    });
+
+    it('ORCID sync is turned off when a journal stops being a DFO series', function (): void {
+        $journal = Journal::factory()->dfoSeries()->create(['orcid_sync_enabled' => true]);
+
+        $this->actingAs($this->admin)->livewire(EditJournal::class, ['record' => $journal->getRouteKey()])
+            ->fillForm(['publisher' => 'NRC Press'])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        expect($journal->fresh()->orcid_sync_enabled)->toBeFalse();
     });
 
     it('an admin can delete a journal from the edit page', function (): void {

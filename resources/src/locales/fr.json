@@ -721,11 +721,9 @@
   "no-publication-exist-div": {
     "p1": "Les manuscrits qui ont été révisés apparaîtront ici. \nUne fois publié, vous pouvez mettre à jour les détails de la publication. \nVous pouvez également ajouter ici toutes publications passées afin qu'elles fassent partie de notre base de données et soient accessibles à tous."
   },
-  "ocrid": {
-    "verify-btn-text": "Créez ou connectez votre ORCID iD",
-    "revoke-btn-text": "Déconnectez votre ORCID ID"
-  },
   "orcid": {
+    "verify-btn-text": "Créez ou connectez votre ORCID iD",
+    "revoke-btn-text": "Déconnectez votre ORCID ID",
     "error-verifying": "Erreur d'authentification avec ORCID.org",
     "verified-with": "Authentifié avec succès avec ORCID.org",
     "verify-header-text": "Connectez votre ORCID iD (ou inscrivez-vous pour un iD)",
@@ -753,6 +751,36 @@
     "settings-title": "Paramètres d'intégration",
     "settings-section-intro": "Choisissez comment le Portail de la science ouverte utilise votre dossier ORCID connecté.",
     "view-author-page": "Voir ma page d'auteur"
+  },
+  "orcid-review-credit": {
+    "title": "Reconnaissance ORCID des évaluations",
+    "back": "Retour au profil d'auteur",
+    "available-count": "{count} disponible | {count} disponibles",
+    "load-error": "Vos contributions d'évaluation n'ont pas pu être chargées. Veuillez réessayer.",
+    "intro": "Vos contributions comme réviseur ou éditeur à des rapports publiés dans les séries du MPO participantes peuvent être ajoutées à votre dossier ORCID comme évaluations par les pairs.",
+    "connect-banner": "Connectez votre ORCID iD et autorisez le portail à mettre à jour votre dossier pour obtenir la reconnaissance de ces contributions.",
+    "empty": "Aucune de vos contributions d'évaluation ne peut encore être ajoutée à ORCID. Elles apparaîtront ici une fois le rapport publié avec un DOI dans une série participante.",
+    "add": "Ajouter",
+    "add-error": "La contribution n'a pas pu être ajoutée à ORCID. Veuillez réessayer.",
+    "add-all": "Tout ajouter",
+    "add-all-error": "Vos contributions n'ont pas pu être ajoutées à ORCID. Veuillez réessayer.",
+    "auto-sync": "Ajouter automatiquement les nouvelles contributions",
+    "auto-sync-badge": "Ajout auto activé",
+    "auto-sync-hint": "Dorénavant, vos contributions sont ajoutées à ORCID dès la publication du rapport. Les contributions listées ici restent telles quelles : utilisez Ajouter ou Tout ajouter pour celles-ci. Désactiver cette option ne retire rien d'ORCID.",
+    "auto-sync-on": "Les nouvelles contributions seront ajoutées automatiquement à ORCID.",
+    "auto-sync-off": "Les nouvelles contributions ne seront plus ajoutées automatiquement à ORCID.",
+    "auto-sync-error": "Le paramètre n'a pas pu être enregistré. Veuillez réessayer.",
+    "remove": "Retirer",
+    "remove-error": "La contribution n'a pas pu être retirée d'ORCID. Veuillez réessayer.",
+    "removing-hint": "Elle sera retirée dès que vous connecterez ORCID. Vous pouvez aussi la supprimer vous-même de votre dossier ORCID.",
+    "status": {
+      "not_on_orcid": "Pas dans ORCID",
+      "pending": "Ajout à ORCID en cours",
+      "waiting_for_connection": "En attente de la connexion ORCID",
+      "on_orcid": "Dans ORCID",
+      "removing": "Retrait d'ORCID en cours",
+      "declined": "Refusée"
+    }
   },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",
@@ -995,7 +1023,8 @@
     "no-contributors": "Aucun contributeur. \nVeuillez ajouter au moins deux évaluateurs, si applicable pour votre rapport.",
     "add-contributor": "Ajouter un contributeur",
     "delete-contributor": "Supprimer le contributeur",
-    "delete-contributor-confirm": "Êtes-vous sûr de vouloir supprimer ce contributeur?"
+    "delete-contributor-confirm": "Êtes-vous sûr de vouloir supprimer ce contributeur?",
+    "on-orcid": "Cette contribution a été ajoutée au dossier ORCID de cette personne en tant qu'évaluation par les pairs."
   },
   "review-contributor-role": {
     "reviewer": "Évaluateur",

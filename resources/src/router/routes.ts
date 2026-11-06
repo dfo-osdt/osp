@@ -93,6 +93,12 @@ const routes: RouteRecordRaw[] = [
             name: 'settings.author',
           },
           {
+            path: 'author/orcid-reviews',
+            component: () =>
+              import('@/models/Author/views/ManageAuthorOrcidReviewsView.vue'),
+            name: 'settings.author.orcid_reviews',
+          },
+          {
             path: 'security',
             component: () =>
               import('@/models/User/views/UserAccountSecurityView.vue'),

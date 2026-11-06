@@ -26,6 +26,7 @@ use App\Http\Controllers\NotificationGroupMemberController;
 use App\Http\Controllers\NotificationGroupMembershipController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\AuthorOrcidRecordController;
+use App\Http\Controllers\Orcid\OrcidReviewContributionController;
 use App\Http\Controllers\Orcid\RefreshFromOrcidController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
@@ -69,6 +70,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes for 3-legged OAuth flow, see routes/web.php for the authorization redirect and callback
     Route::post('/user/orcid/revoke', RevokeTokenController::class);
     Route::post('/user/orcid/refresh', RefreshFromOrcidController::class);
+    Route::get('/user/orcid/review-contributions', [OrcidReviewContributionController::class, 'index']);
+    Route::post('/user/orcid/review-contributions/add-all', [OrcidReviewContributionController::class, 'addAll']);
+    Route::put('/user/orcid/review-contributions/auto-sync', [OrcidReviewContributionController::class, 'updateAutoSync']);
+    Route::post('/user/orcid/review-contributions/{manuscriptReviewContributor}/add', [OrcidReviewContributionController::class, 'add']);
+    Route::post('/user/orcid/review-contributions/{manuscriptReviewContributor}/remove', [OrcidReviewContributionController::class, 'remove']);
 
     // Look for AAD users to invite
     Route::post('/azure-directory/users', [AzureDirectorySearchController::class, '__invoke']);

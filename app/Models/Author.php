@@ -39,6 +39,7 @@ use VincentAuger\OrcidSdk\Enums\Scope as OrcidScope;
  * @property int|null $region_id
  * @property bool $is_emeritus
  * @property bool $show_orcid_record
+ * @property bool $orcid_auto_sync_reviews
  * @property-read Sector|null $sector
  * @property-read Region|null $region
  * @property int|null $user_id
@@ -113,6 +114,7 @@ class Author extends Model
     #[\Override]
     protected $attributes = [
         'show_orcid_record' => true,
+        'orcid_auto_sync_reviews' => false,
     ];
 
     // logging options
@@ -377,6 +379,7 @@ class Author extends Model
             'orcid_expires_at' => 'datetime',
             'is_emeritus' => 'boolean',
             'show_orcid_record' => 'boolean',
+            'orcid_auto_sync_reviews' => 'boolean',
         ];
     }
 }

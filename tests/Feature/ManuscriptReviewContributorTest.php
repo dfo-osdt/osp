@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrcidSyncIntent;
 use App\Models\Author;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
@@ -21,6 +22,23 @@ test('an user can list the review contributors to their secondary manuscript', f
 
     $response->assertStatus(200);
     expect($response->json('data'))->toHaveCount(2);
+});
+
+test('the review contributor list says which contributions are on ORCID', function (): void {
+
+    $user = User::factory()->create();
+    $manuscript = ManuscriptRecord::factory()->secondary()->create(['user_id' => $user->id]);
+    $onOrcid = ManuscriptReviewContributor::factory()->create(['manuscript_record_id' => $manuscript->id]);
+    $onOrcid->forceFill(['orcid_sync' => OrcidSyncIntent::WANTED, 'orcid_putcode' => 4567, 'orcid_updated_at' => now()])->save();
+    $notOnOrcid = ManuscriptReviewContributor::factory()->create(['manuscript_record_id' => $manuscript->id]);
+
+    $response = $this->actingAs($user)->getJson('api/manuscript-records/'.$manuscript->id.'/review-contributors');
+
+    $response->assertOk();
+    $synced = collect($response->json('data'))->mapWithKeys(fn (array $contributor): array => [
+        $contributor['data']['id'] => $contributor['data']['orcid_synced'],
+    ]);
+    expect($synced->all())->toBe([$onOrcid->id => true, $notOnOrcid->id => false]);
 });
 
 test('a user can add a review contributor with a role to their secondary manuscript', function (string $role): void {

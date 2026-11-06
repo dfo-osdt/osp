@@ -8,6 +8,7 @@ export interface ManuscriptReviewContributor {
   manuscript_record_id: number
   author_id: number
   role: ReviewContributorRole
+  readonly orcid_synced: boolean
   author?: AuthorResource
 }
 

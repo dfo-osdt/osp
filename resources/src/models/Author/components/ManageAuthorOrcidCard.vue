@@ -3,6 +3,7 @@ import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import ManageAuthorEmploymentsCard from '@/models/AuthorEmployment/components/ManageAuthorEmploymentsCard.vue'
+import { OrcidReviewContributionService } from '@/models/ManuscriptReviewContributor/OrcidReviewContribution'
 import { AuthorService } from '../Author'
 
 const authStore = useAuthStore()
@@ -54,6 +55,23 @@ async function updateShowOrcidRecord(show: boolean) {
   }
 }
 
+const availableReviewCount = ref(0)
+const reviewAutoSync = ref(false)
+
+onMounted(async () => {
+  if (!authStore.user?.author?.data)
+    return
+
+  try {
+    const contributions = await OrcidReviewContributionService.list()
+    availableReviewCount.value = contributions.data.length
+    reviewAutoSync.value = contributions.meta.auto_sync
+  }
+  catch {
+    // the count and auto sync are only hints; leave the badges hidden
+  }
+})
+
 async function revokeToken() {
   q.dialog({
     title: t('orcid.revoke-dialog-title'),
@@ -100,8 +118,8 @@ async function revokeToken() {
               :href="authStore.user?.author.data.orcid"
             >{{ authStore.user?.author.data.orcid }}</a>
             <div class="flex justify-end">
-              <q-btn outline color="primary" @click="revokeToken()">
-                <OrcidAvatar size="md" /><span class="q-ml-md text-primary">{{ t('ocrid.revoke-btn-text') }}
+              <q-btn outline no-caps color="negative" @click="revokeToken()">
+                <OrcidAvatar size="md" /><span class="q-ml-md">{{ t('orcid.revoke-btn-text') }}
                 </span>
               </q-btn>
             </div>
@@ -114,7 +132,7 @@ async function revokeToken() {
               <div>
                 <q-btn outline color="primary" :href="url">
                   <OrcidAvatar size="lg" />
-                  <span class="q-ml-md q-my-sm text-primary">{{ t('ocrid.verify-btn-text') }}
+                  <span class="q-ml-md q-my-sm text-primary">{{ t('orcid.verify-btn-text') }}
                   </span>
                 </q-btn>
               </div>
@@ -131,25 +149,72 @@ async function revokeToken() {
         </div>
         <div class="col text-body2 q-pt-xs">
           <p>{{ t('orcid.settings-section-intro') }}</p>
-          <q-toggle
-            v-model="showOrcidRecord"
-            :label="t('orcid.show-record-on-profile')"
-            :disable="!isVerified || savingShowOrcidRecord"
-            @update:model-value="updateShowOrcidRecord"
-          />
-          <div class="text-caption text-grey-7">
-            {{ isVerified ? t('orcid.show-record-on-profile-hint') : t('orcid.show-record-on-profile-connect-hint') }}
-          </div>
-          <q-btn
-            v-if="authStore.user"
-            flat
-            no-caps
-            color="primary"
-            icon="mdi-account-outline"
-            class="q-mt-sm"
-            :label="t('orcid.view-author-page')"
-            :to="{ name: 'author.profile', params: { id: authStore.user.author.data.id } }"
-          />
+          <q-list bordered separator class="rounded-borders">
+            <q-item>
+              <q-item-section avatar top>
+                <q-icon name="mdi-account-outline" color="primary" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ t('orcid.show-record-on-profile') }}</q-item-label>
+                <q-item-label caption>
+                  {{ isVerified ? t('orcid.show-record-on-profile-hint') : t('orcid.show-record-on-profile-connect-hint') }}
+                </q-item-label>
+                <q-item-label v-if="authStore.user">
+                  <router-link
+                    class="text-primary text-caption"
+                    :to="{ name: 'author.profile', params: { id: authStore.user.author.data.id } }"
+                  >
+                    {{ t('orcid.view-author-page') }}
+                  </router-link>
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side top>
+                <q-toggle
+                  v-model="showOrcidRecord"
+                  :aria-label="t('orcid.show-record-on-profile')"
+                  :disable="!isVerified || savingShowOrcidRecord"
+                  @update:model-value="updateShowOrcidRecord"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="authStore.user?.author?.data"
+              clickable
+              :to="{ name: 'settings.author.orcid_reviews' }"
+              data-test="orcid-review-credit-link"
+            >
+              <q-item-section avatar top>
+                <q-icon name="mdi-account-check-outline" color="primary" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ t('orcid-review-credit.title') }}</q-item-label>
+                <q-item-label caption>
+                  {{ t('orcid-review-credit.intro') }}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <div class="row items-center no-wrap q-gutter-sm">
+                  <q-badge
+                    v-if="reviewAutoSync"
+                    outline
+                    color="positive"
+                    data-test="orcid-review-credit-auto-sync"
+                  >
+                    <q-icon name="mdi-autorenew" class="q-mr-xs" />
+                    {{ t('orcid-review-credit.auto-sync-badge') }}
+                  </q-badge>
+                  <q-badge
+                    v-if="availableReviewCount"
+                    outline
+                    color="primary"
+                    :label="t('orcid-review-credit.available-count', { count: availableReviewCount })"
+                    data-test="orcid-review-credit-count"
+                  />
+                  <q-icon name="mdi-chevron-right" />
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
       </div>
       <q-separator class="q-my-md" />

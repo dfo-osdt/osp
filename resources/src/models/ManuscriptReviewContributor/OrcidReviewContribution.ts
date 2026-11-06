@@ -1,0 +1,90 @@
+import type { JournalResource } from '../Journal/Journal'
+import type { Resource } from '../Resource'
+import type { ReviewContributorRole } from './reviewContributorRoleOptions'
+import { http } from '@/api/http'
+
+/**
+ * Where a review contribution stands with the author's ORCID record: 'removing'
+ * is on ORCID but should no longer be (declined, or no longer eligible) until the delete runs
+ */
+export type OrcidReviewStatus = 'not_on_orcid' | 'pending' | 'on_orcid' | 'removing' | 'declined'
+
+/**
+ * A review contribution, as listed to its author for ORCID review credit
+ */
+export interface OrcidReviewContribution {
+  readonly id: number
+  manuscript_record_id: number
+  role: ReviewContributorRole
+  review_date: string | null
+  orcid_status: OrcidReviewStatus
+  publication: {
+    id: number
+    title: string
+    doi: string
+    journal: JournalResource
+  }
+}
+
+export type OrcidReviewContributionResource = Resource<OrcidReviewContribution>
+
+export interface OrcidReviewContributionResourceList {
+  data: OrcidReviewContributionResource[]
+  meta: {
+    can_write_to_orcid: boolean
+    auto_sync: boolean
+  }
+}
+
+/**
+ * The authenticated user's review contributions that can be credited on ORCID
+ */
+export class OrcidReviewContributionService {
+  public static async list() {
+    const response = await http.get<OrcidReviewContributionResourceList>(
+      'api/user/orcid/review-contributions',
+    )
+    return response.data
+  }
+
+  /**
+   * Add the contribution to the author's ORCID record, now or once they connect ORCID
+   */
+  public static async add(id: number) {
+    const response = await http.post<null, OrcidReviewContributionResource>(
+      `api/user/orcid/review-contributions/${id}/add`,
+    )
+    return response.data
+  }
+
+  /**
+   * Remove the contribution from the author's ORCID record and never add it again unless they ask
+   */
+  public static async remove(id: number) {
+    const response = await http.post<null, OrcidReviewContributionResource>(
+      `api/user/orcid/review-contributions/${id}/remove`,
+    )
+    return response.data
+  }
+
+  /**
+   * Add every contribution the author has not decided on yet, leaving declined ones off
+   */
+  public static async addAll() {
+    const response = await http.post<null, OrcidReviewContributionResourceList>(
+      'api/user/orcid/review-contributions/add-all',
+    )
+    return response.data
+  }
+
+  /**
+   * Add contributions to ORCID as soon as their report is published, from now on
+   */
+  public static async updateAutoSync(autoSync: boolean) {
+    const response = await http.put<{ auto_sync: boolean }, { auto_sync: boolean }>(
+      'api/user/orcid/review-contributions/auto-sync',
+      { auto_sync: autoSync },
+    )
+    return response.data
+  }
+}
