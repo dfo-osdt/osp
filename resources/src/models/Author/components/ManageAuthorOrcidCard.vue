@@ -172,7 +172,7 @@ async function revokeToken() {
       <div v-if="authStore.user?.author?.data" class="row q-gutter-xl">
         <div class="col-12 col-md-1">
           <span class="text-primary text-subtitle1">{{
-            t('orcid-review-credit.title')
+            t('orcid-review-credit.section-title')
           }}</span>
         </div>
         <div class="col text-body2 q-pt-xs">
