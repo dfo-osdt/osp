@@ -766,11 +766,13 @@
     "add-all-error": "Vos contributions n'ont pas pu être ajoutées à ORCID. Veuillez réessayer.",
     "remove": "Retirer",
     "remove-error": "La contribution n'a pas pu être retirée d'ORCID. Veuillez réessayer.",
+    "removing-hint": "Elle sera retirée dès que vous connecterez ORCID. Vous pouvez aussi la supprimer vous-même de votre dossier ORCID.",
     "status": {
       "not_on_orcid": "Pas dans ORCID",
       "pending": "Ajout à ORCID en cours",
       "waiting_for_connection": "En attente de la connexion ORCID",
       "on_orcid": "Dans ORCID",
+      "removing": "Retrait d'ORCID en cours",
       "declined": "Refusée"
     }
   },

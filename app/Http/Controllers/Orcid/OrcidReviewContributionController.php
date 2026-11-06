@@ -96,8 +96,9 @@ class OrcidReviewContributionController extends Controller
         $author = $request->user()->author;
         abort_if($author === null || $contribution->author_id !== $author->id, 403);
 
+        // removing never depends on eligibility: what is on ORCID can always be taken off
         $contribution->load('manuscriptRecord.publication.journal');
-        abort_unless($contribution->isEligibleForOrcid(), 422, 'This contribution cannot be credited on ORCID.');
+        abort_if($intent === OrcidSyncIntent::WANTED && ! $contribution->isEligibleForOrcid(), 422, 'This contribution cannot be credited on ORCID.');
 
         if ($contribution->orcid_sync !== $intent) {
             $this->recordIntent($request, $contribution, $intent);

@@ -139,6 +139,87 @@ test('a declined contribution on ORCID is deleted there and its put-code cleared
     'already gone' => [orcidPeerReviewError(404, 9016)],
 ]);
 
+test('a contribution on ORCID that is no longer eligible is deleted there', function (Closure $makeIneligible): void {
+    $mockClient = Saloon::fake([DeletePeerReview::class => MockResponse::make('', 204)]);
+    $contributor = wantedReviewContribution(['orcid_putcode' => 4567, 'orcid_updated_at' => now()]);
+    $makeIneligible($contributor);
+
+    runReviewSync($contributor->fresh())->assertNotFailed();
+
+    $mockClient->assertSent(DeletePeerReview::class);
+    expect(ManuscriptReviewContributor::withTrashed()->find($contributor->id)->orcid_putcode)->toBeNull();
+})->with([
+    'publication deleted' => [fn (ManuscriptReviewContributor $contributor) => $contributor->manuscriptRecord->publication->delete()],
+    'manuscript deleted' => [fn (ManuscriptReviewContributor $contributor) => $contributor->manuscriptRecord->delete()],
+]);
+
+test('a removed contributor is deleted on ORCID, then removed for good', function (MockResponse $deleteResponse): void {
+    $mockClient = Saloon::fake([DeletePeerReview::class => $deleteResponse]);
+    $contributor = wantedReviewContribution(['orcid_putcode' => 4567, 'orcid_updated_at' => now()]);
+    $contributor->delete();
+
+    runReviewSync($contributor)->assertNotFailed();
+
+    $mockClient->assertSent(DeletePeerReview::class);
+    expect(ManuscriptReviewContributor::withTrashed()->find($contributor->id))->toBeNull();
+})->with([
+    'deleted' => [MockResponse::make('', 204)],
+    'already gone' => [orcidPeerReviewError(404, 9016)],
+]);
+
+test('a contributor removed while ORCID creates its item keeps the put-code, so the item is deleted', function (): void {
+    $contributor = wantedReviewContribution();
+    $mockClient = Saloon::fake([
+        CreatePeerReview::class => function () use ($contributor): MockResponse {
+            ManuscriptReviewContributor::query()->find($contributor->id)->delete();
+
+            return createdPeerReview();
+        },
+        DeletePeerReview::class => MockResponse::make('', 204),
+    ]);
+
+    runReviewSync($contributor)->assertNotFailed();
+    expect(ManuscriptReviewContributor::withTrashed()->find($contributor->id)->orcid_putcode)->toBe(4567);
+
+    runReviewSync(ManuscriptReviewContributor::withTrashed()->find($contributor->id))->assertNotFailed();
+
+    $mockClient->assertSent(DeletePeerReview::class);
+    expect(ManuscriptReviewContributor::withTrashed()->find($contributor->id))->toBeNull();
+});
+
+test('a removed contributor stays until its ORCID item can be deleted', function (): void {
+    $mockClient = Saloon::fake([]);
+    $contributor = wantedReviewContribution(
+        ['orcid_putcode' => 4567],
+        Author::factory()->withOrcidConnection('/read-limited')->create(),
+    );
+    $contributor->delete();
+
+    runReviewSync($contributor)->assertNotFailed();
+
+    $mockClient->assertNothingSent();
+    expect(ManuscriptReviewContributor::withTrashed()->find($contributor->id)->orcid_putcode)->toBe(4567);
+});
+
+test('a peer review deleted on ORCID while the author re-added it keeps the new intent', function (): void {
+    $contributor = wantedReviewContribution(['orcid_putcode' => 4567, 'orcid_updated_at' => null]);
+    Saloon::fake([
+        UpdatePeerReview::class => function () use ($contributor): MockResponse {
+            $this->travel(1)->seconds();
+            ManuscriptReviewContributor::query()->find($contributor->id)->forceFill(['orcid_sync' => OrcidSyncIntent::WANTED])->touch();
+
+            return orcidPeerReviewError(404, 9016);
+        },
+    ]);
+
+    runReviewSync($contributor)->assertNotFailed();
+
+    $contributor->refresh();
+    expect($contributor->orcid_sync)->toBe(OrcidSyncIntent::WANTED)
+        ->and($contributor->orcid_putcode)->toBeNull()
+        ->and($contributor->needsSyncWithOrcid())->toBeTrue();
+});
+
 test('a removal waits for an ORCID connection with the write scope', function (): void {
     $mockClient = Saloon::fake([]);
     $contributor = wantedReviewContribution(
@@ -278,12 +359,14 @@ test('pending additions and removals are dispatched when an author reconnects', 
     wantedReviewContribution(['orcid_sync' => null], $author);
     wantedReviewContribution(['orcid_sync' => OrcidSyncIntent::DECLINED], $author);
     $toRemove = wantedReviewContribution(['orcid_sync' => OrcidSyncIntent::DECLINED, 'orcid_putcode' => 3, 'orcid_updated_at' => now()->addMinute()], $author);
+    $removedFromManuscript = wantedReviewContribution(['orcid_putcode' => 4, 'orcid_updated_at' => now()->addMinute()], $author);
+    $removedFromManuscript->delete();
 
-    expect(SyncReviewContributionWithOrcid::dispatchPendingFor($author))->toBe(3);
+    expect(SyncReviewContributionWithOrcid::dispatchPendingFor($author))->toBe(4);
 
     $dispatched = Queue::pushed(SyncReviewContributionWithOrcid::class)
         ->map(fn (SyncReviewContributionWithOrcid $job): int => $job->contributor->id)
         ->sort()->values()->all();
 
-    expect($dispatched)->toBe(collect([$new->id, $outOfDate->id, $toRemove->id])->sort()->values()->all());
+    expect($dispatched)->toBe(collect([$new->id, $outOfDate->id, $toRemove->id, $removedFromManuscript->id])->sort()->values()->all());
 });

@@ -4,9 +4,10 @@ import type { ReviewContributorRole } from './reviewContributorRoleOptions'
 import { http } from '@/api/http'
 
 /**
- * Where a review contribution stands with the author's ORCID record
+ * Where a review contribution stands with the author's ORCID record: 'removing'
+ * is on ORCID but should no longer be (declined, or no longer eligible) until the delete runs
  */
-export type OrcidReviewStatus = 'not_on_orcid' | 'pending' | 'on_orcid' | 'declined'
+export type OrcidReviewStatus = 'not_on_orcid' | 'pending' | 'on_orcid' | 'removing' | 'declined'
 
 /**
  * A review contribution, as listed to its author for ORCID review credit

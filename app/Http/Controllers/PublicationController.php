@@ -6,6 +6,7 @@ use App\Actions\DeletePublication;
 use App\Enums\PublicationStatus;
 use App\Exports\PublicationsExport;
 use App\Http\Resources\PublicationResource;
+use App\Jobs\SyncReviewContributionWithOrcid;
 use App\Models\Publication;
 use App\Models\User;
 use App\Queries\PublicationListQuery;
@@ -150,6 +151,11 @@ class PublicationController extends Controller
 
         // update the publication
         $publication->update($validated);
+
+        // the review contributions' ORCID peer reviews are built from these
+        if ($publication->manuscriptRecord !== null && $publication->wasChanged(['title', 'doi', 'journal_id'])) {
+            SyncReviewContributionWithOrcid::dispatchForChanged($publication->manuscriptRecord->reviewContributors);
+        }
 
         return $this->defaultResource($publication);
     }

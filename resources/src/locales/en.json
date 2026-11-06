@@ -766,11 +766,13 @@
     "add-all-error": "Your contributions couldn't be added to ORCID. Please try again.",
     "remove": "Remove",
     "remove-error": "The contribution couldn't be removed from ORCID. Please try again.",
+    "removing-hint": "It is removed once you connect ORCID. You can also delete it from your ORCID record yourself.",
     "status": {
       "not_on_orcid": "Not on ORCID",
       "pending": "Adding to ORCID",
       "waiting_for_connection": "Waiting for ORCID connection",
       "on_orcid": "On ORCID",
+      "removing": "Removing from ORCID",
       "declined": "Declined"
     }
   },

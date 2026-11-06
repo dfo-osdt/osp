@@ -258,6 +258,33 @@ test('an author can remove a review contribution from ORCID', function (): void 
         ->and($activity['manuscript.review-contributor.orcid-declined'])->toBe($user->id);
 });
 
+test('a contribution removed without a working ORCID connection shows as being removed', function (): void {
+    $mockClient = Saloon::fake([]);
+    $user = User::factory()->create();
+    $contribution = contributionOnOrcid($user);
+
+    $this->actingAs($user)->postJson("api/user/orcid/review-contributions/{$contribution->id}/remove")
+        ->assertOk()
+        ->assertJsonPath('data.orcid_status', 'removing');
+
+    $mockClient->assertNothingSent();
+    expect($contribution->refresh()->orcid_putcode)->toBe(4567);
+});
+
+test('a contribution that is no longer eligible can still be removed from ORCID', function (): void {
+    $mockClient = Saloon::fake([DeletePeerReview::class => MockResponse::make('', 204)]);
+    $user = connectedToOrcid(User::factory()->create());
+    $contribution = contributionOnOrcid($user);
+    $contribution->manuscriptRecord->publication->journal->update(['orcid_sync_enabled' => false]);
+
+    $this->actingAs($user)->postJson("api/user/orcid/review-contributions/{$contribution->id}/remove")
+        ->assertOk()
+        ->assertJsonPath('data.orcid_status', 'declined');
+
+    $mockClient->assertSent(DeletePeerReview::class);
+    expect($contribution->refresh()->orcid_putcode)->toBeNull();
+});
+
 test('removing a contribution that was never on ORCID only declines it', function (): void {
     $mockClient = Saloon::fake([]);
     $user = connectedToOrcid(User::factory()->create());
