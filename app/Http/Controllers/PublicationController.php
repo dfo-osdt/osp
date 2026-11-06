@@ -8,6 +8,7 @@ use App\Enums\PublicationStatus;
 use App\Exports\PublicationsExport;
 use App\Http\Resources\PublicationResource;
 use App\Jobs\SyncReviewContributionWithOrcid;
+use App\Mail\ReviewContributionPublishedMail;
 use App\Models\ManuscriptReviewContributor;
 use App\Models\Publication;
 use App\Models\User;
@@ -22,6 +23,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
@@ -160,7 +162,7 @@ class PublicationController extends Controller
         }
 
         if ($publication->manuscriptRecord !== null && $publication->wasChanged('status') && $publication->status === PublicationStatus::PUBLISHED) {
-            $this->autoSyncReviewContributions($publication, $request->user());
+            $this->offerReviewContributionsForOrcid($publication, $request->user());
         }
 
         return $this->defaultResource($publication);
@@ -213,21 +215,25 @@ class PublicationController extends Controller
     }
 
     /**
-     * Add to ORCID the review contributions of authors with auto sync on, now that
-     * the publication is published. Only those eligible right now that the author
-     * has not decided on: contributions becoming eligible later are left to "Add all".
+     * Now that the publication is published, add to ORCID the review contributions
+     * of authors with auto sync on, and email the other authors with a user account
+     * that they can add theirs. Only those eligible right now that the author has
+     * not decided on: contributions becoming eligible later are left to "Add all".
      */
-    private function autoSyncReviewContributions(Publication $publication, User $publisher): void
+    private function offerReviewContributionsForOrcid(Publication $publication, User $publisher): void
     {
         $publication->manuscriptRecord->reviewContributors()
             ->whereNull('orcid_sync')
-            ->whereRelation('author', 'orcid_auto_sync_reviews', true)
-            ->with('manuscriptRecord.publication.journal')
+            ->with('author.user', 'manuscriptRecord.publication.journal')
             ->get()
             ->filter(fn (ManuscriptReviewContributor $contributor): bool => $contributor->isEligibleForOrcid())
             ->each(function (ManuscriptReviewContributor $contributor) use ($publisher): void {
-                $contributor->recordOrcidIntent(OrcidSyncIntent::WANTED, $publisher, byAutoSync: true);
-                dispatch(new SyncReviewContributionWithOrcid($contributor));
+                if ($contributor->author->orcid_auto_sync_reviews) {
+                    $contributor->recordOrcidIntent(OrcidSyncIntent::WANTED, $publisher, byAutoSync: true);
+                    dispatch(new SyncReviewContributionWithOrcid($contributor));
+                } elseif ($contributor->author->user !== null) {
+                    Mail::queue(new ReviewContributionPublishedMail($contributor));
+                }
             });
     }
 
