@@ -721,11 +721,9 @@
   "no-publication-exist-div": {
     "p1": "Manuscripts that have been reviewed will appear here. Once published, you can update the publication details. You can also add any past publications here so that it is part of our database and available for all to see."
   },
-  "ocrid": {
-    "verify-btn-text": "Create or connect your ORCID iD",
-    "revoke-btn-text": "Disconnect your ORCID ID"
-  },
   "orcid": {
+    "verify-btn-text": "Create or connect your ORCID iD",
+    "revoke-btn-text": "Disconnect your ORCID ID",
     "error-verifying": "Error authenticating with ORCID.org",
     "verified-with": "Successfully authenticated with ORCID.org",
     "verify-header-text": "Connect your ORCID iD (or register for an iD)",

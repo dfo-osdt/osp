@@ -85,7 +85,7 @@ onMounted(() => {
       <template #action>
         <q-btn outline no-caps color="primary" :href="connectUrl">
           <OrcidAvatar size="sm" />
-          <span class="q-ml-sm">{{ t('ocrid.verify-btn-text') }}</span>
+          <span class="q-ml-sm">{{ t('orcid.verify-btn-text') }}</span>
         </q-btn>
       </template>
     </q-banner>
