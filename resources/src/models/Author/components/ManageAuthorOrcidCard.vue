@@ -116,8 +116,8 @@ async function revokeToken() {
               :href="authStore.user?.author.data.orcid"
             >{{ authStore.user?.author.data.orcid }}</a>
             <div class="flex justify-end">
-              <q-btn outline color="primary" @click="revokeToken()">
-                <OrcidAvatar size="md" /><span class="q-ml-md text-primary">{{ t('orcid.revoke-btn-text') }}
+              <q-btn outline no-caps color="negative" @click="revokeToken()">
+                <OrcidAvatar size="md" /><span class="q-ml-md">{{ t('orcid.revoke-btn-text') }}
                 </span>
               </q-btn>
             </div>

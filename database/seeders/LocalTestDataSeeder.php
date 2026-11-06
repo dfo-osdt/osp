@@ -297,6 +297,31 @@ class LocalTestDataSeeder extends Seeder
             ]);
         }
 
+        // An accepted report John Doe reviewed, without a DOI yet: with his auto
+        // sync on, it goes to ORCID once the chief editor publishes it with a DOI.
+        $awaitingPublication = ManuscriptRecord::factory()->secondary()->accepted()->create([
+            'title' => 'Technical Report on Atlantic Mackerel Egg Surveys',
+            'user_id' => $dmUser->id,
+        ]);
+
+        Publication::factory()->create([
+            'title' => $awaitingPublication->title,
+            'status' => PublicationStatus::ACCEPTED,
+            'manuscript_record_id' => $awaitingPublication->id,
+            'user_id' => $dmUser->id,
+            'journal_id' => $techReports->id,
+            'doi' => null,
+            'accepted_on' => now()->subWeeks(2),
+            'published_on' => null,
+        ]);
+
+        ManuscriptReviewContributor::factory()->create([
+            'manuscript_record_id' => $awaitingPublication->id,
+            'author_id' => $user->author->id,
+            'role' => PeerReviewRole::Reviewer,
+            'review_date' => now()->subMonth(),
+        ]);
+
         // ── Management review steps ───────────────────────────────────────────
 
         ManagementReviewStep::factory()->create([
