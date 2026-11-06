@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $scopus_source_record_id Scopus source record ID
  * @property string $publisher
  * @property string|null $issn
+ * @property bool $orcid_sync_enabled Whether this DFO series takes part in ORCID sync
  * @property-read Collection<int, Publication> $publications
  * @property-read int|null $publications_count
  *
@@ -76,5 +77,42 @@ class Journal extends Model
     public function isDfoSeries(): bool
     {
         return $this->publisher === Journal::$dfoPublisher;
+    }
+
+    /**
+     * Only DFO series can take part in ORCID sync.
+     */
+    public function isOrcidSyncEnabled(): bool
+    {
+        return $this->orcid_sync_enabled && $this->isDfoSeries();
+    }
+
+    /**
+     * Whether the trimmed ISSN is well formed and passes its check digit,
+     * which excludes placeholders such as `1488-XXXE`.
+     */
+    public function hasValidIssn(): bool
+    {
+        $issn = trim((string) $this->issn);
+
+        if (! preg_match('/^(\d{4})-(\d{3})([\dX])$/', $issn, $matches)) {
+            return false;
+        }
+
+        $digits = $matches[1].$matches[2];
+        $sum = 0;
+        for ($i = 0; $i < 7; $i++) {
+            $sum += (int) $digits[$i] * (8 - $i);
+        }
+        $checkDigit = (11 - ($sum % 11)) % 11;
+
+        return $matches[3] === ($checkDigit === 10 ? 'X' : (string) $checkDigit);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'orcid_sync_enabled' => 'boolean',
+        ];
     }
 }

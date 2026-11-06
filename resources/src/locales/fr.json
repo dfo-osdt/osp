@@ -754,6 +754,16 @@
     "settings-section-intro": "Choisissez comment le Portail de la science ouverte utilise votre dossier ORCID connecté.",
     "view-author-page": "Voir ma page d'auteur"
   },
+  "orcid-review-credit": {
+    "title": "Reconnaissance ORCID des évaluations",
+    "intro": "Vos contributions comme réviseur ou éditeur à des rapports publiés dans les séries du MPO participantes peuvent être ajoutées à votre dossier ORCID comme évaluations par les pairs.",
+    "manage": "Gérer la reconnaissance ORCID des évaluations",
+    "connect-banner": "Connectez votre ORCID iD et autorisez le portail à mettre à jour votre dossier pour obtenir la reconnaissance de ces contributions.",
+    "empty": "Aucune de vos contributions d'évaluation ne peut encore être ajoutée à ORCID. Elles apparaîtront ici une fois le rapport publié avec un DOI dans une série participante.",
+    "status": {
+      "not_on_orcid": "Pas dans ORCID"
+    }
+  },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",
     "cant-find": "Vous ne trouvez pas l'organisation que vous recherchez ?",

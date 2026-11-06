@@ -168,6 +168,26 @@ async function revokeToken() {
           />
         </div>
       </div>
+      <q-separator v-if="authStore.user?.author?.data" class="q-my-md" />
+      <div v-if="authStore.user?.author?.data" class="row q-gutter-xl">
+        <div class="col-12 col-md-1">
+          <span class="text-primary text-subtitle1">{{
+            t('orcid-review-credit.title')
+          }}</span>
+        </div>
+        <div class="col text-body2 q-pt-xs">
+          <p>{{ t('orcid-review-credit.intro') }}</p>
+          <q-btn
+            outline
+            no-caps
+            color="primary"
+            icon="mdi-account-check-outline"
+            :label="t('orcid-review-credit.manage')"
+            :to="{ name: 'settings.author.orcid_reviews' }"
+            data-test="orcid-review-credit-link"
+          />
+        </div>
+      </div>
     </q-card-section>
   </ContentCard>
 </template>

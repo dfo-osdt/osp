@@ -17,6 +17,7 @@ use App\Models\ManagementReviewDelegation;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
+use App\Models\ManuscriptReviewContributor;
 use App\Models\PlanningBinderItem;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
@@ -24,6 +25,7 @@ use App\Models\Region;
 use App\Models\Shareable;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use VincentAuger\OrcidSdk\Enums\PeerReviewRole;
 
 class LocalTestDataSeeder extends Seeder
 {
@@ -253,6 +255,46 @@ class LocalTestDataSeeder extends Seeder
                     'region_id' => $row['region_id'],
                 ]);
             }
+        }
+
+        // ── ORCID review credit ───────────────────────────────────────────────
+        // The technical reports series takes part in ORCID sync, and John Doe
+        // reviewed or edited a few published reports, ready to add to ORCID.
+
+        $techReports = Journal::query()->dfoSeries()
+            ->where('title', 'Canadian technical reports of fisheries and aquatic sciences')
+            ->first();
+        $techReports->orcid_sync_enabled = true;
+        $techReports->save();
+
+        $reviewedReports = [
+            ['title' => 'Technical Report on Arctic Char Habitat Use', 'role' => PeerReviewRole::Reviewer, 'months_ago' => 3],
+            ['title' => 'Technical Report on Gulf of St. Lawrence Water Temperatures', 'role' => PeerReviewRole::Reviewer, 'months_ago' => 7],
+            ['title' => 'Technical Report on Pacific Herring Spawn Surveys', 'role' => PeerReviewRole::Editor, 'months_ago' => 12],
+        ];
+
+        foreach ($reviewedReports as $row) {
+            $manuscript = ManuscriptRecord::factory()->secondary()->accepted()->create([
+                'title' => $row['title'],
+                'user_id' => $dmUser->id,
+            ]);
+
+            Publication::factory()->create([
+                'title' => $row['title'],
+                'status' => PublicationStatus::PUBLISHED,
+                'manuscript_record_id' => $manuscript->id,
+                'user_id' => $dmUser->id,
+                'journal_id' => $techReports->id,
+                'accepted_on' => now()->subMonths($row['months_ago'] + 1),
+                'published_on' => now()->subMonths($row['months_ago']),
+            ]);
+
+            ManuscriptReviewContributor::factory()->create([
+                'manuscript_record_id' => $manuscript->id,
+                'author_id' => $user->author->id,
+                'role' => $row['role'],
+                'review_date' => now()->subMonths($row['months_ago'] + 2),
+            ]);
         }
 
         // ── Management review steps ───────────────────────────────────────────

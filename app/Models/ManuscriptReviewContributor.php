@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ManuscriptRecordType;
+use App\Enums\PublicationStatus;
 use Database\Factories\ManuscriptReviewContributorFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -81,6 +83,29 @@ class ManuscriptReviewContributor extends Model
             PeerReviewRole::Reviewer,
             PeerReviewRole::Editor,
         ];
+    }
+
+    /**
+     * Whether this contribution can be on the author's ORCID record right now:
+     * a secondary manuscript whose publication is published with a DOI, in a
+     * DFO series flagged for ORCID sync with a valid ISSN (the review group id).
+     *
+     * Eager load `manuscriptRecord.publication.journal` when checking many.
+     */
+    public function isEligibleForOrcid(): bool
+    {
+        $manuscriptRecord = $this->manuscriptRecord;
+        $publication = $manuscriptRecord?->publication;
+        $journal = $publication?->journal;
+
+        if ($manuscriptRecord?->type !== ManuscriptRecordType::SECONDARY || $journal === null) {
+            return false;
+        }
+
+        return $publication->status === PublicationStatus::PUBLISHED
+            && filled($publication->doi)
+            && $journal->isOrcidSyncEnabled()
+            && $journal->hasValidIssn();
     }
 
     /**
