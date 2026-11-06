@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Str;
 
-class Ocrid implements ValidationRule
+class Orcid implements ValidationRule
 {
     /**
      * Run the validation rule for an ORCID ID.
