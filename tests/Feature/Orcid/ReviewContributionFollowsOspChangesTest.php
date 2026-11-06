@@ -4,6 +4,7 @@ use App\Enums\ManuscriptRecordType;
 use App\Enums\OrcidSyncIntent;
 use App\Enums\Permissions\UserRole;
 use App\Filament\Resources\Journals\Pages\EditJournal;
+use App\Jobs\SyncReviewContributionWithOrcid;
 use App\Models\Author;
 use App\Models\Journal;
 use App\Models\ManuscriptRecord;
@@ -177,6 +178,17 @@ test('removing a contributor that was never on ORCID does not call ORCID', funct
 
     $mockClient->assertNothingSent();
     expect(ManuscriptReviewContributor::withTrashed()->find($contributor->id))->toBeNull();
+});
+
+test('a sync still queued for a contributor removed for good is dropped', function (): void {
+    $mockClient = Saloon::fake([]);
+    $contributor = syncedReviewContribution(['orcid_putcode' => null, 'orcid_updated_at' => null]);
+    $queuedJob = new SyncReviewContributionWithOrcid($contributor);
+    $contributor->forceDelete();
+
+    dispatch($queuedJob);
+
+    $mockClient->assertNothingSent();
 });
 
 test('a removed contributor waiting for its ORCID removal can be added again', function (): void {
