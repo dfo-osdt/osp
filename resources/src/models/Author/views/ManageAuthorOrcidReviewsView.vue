@@ -274,7 +274,6 @@ onBeforeUnmount(stopPolling)
         <q-item-section side>
           <div class="row items-center no-wrap q-gutter-sm">
             <q-badge
-              v-if="contribution.data.orcid_status !== 'not_on_orcid'"
               outline
               :color="statusColor(contribution.data.orcid_status)"
               :label="statusLabel(contribution.data.orcid_status)"

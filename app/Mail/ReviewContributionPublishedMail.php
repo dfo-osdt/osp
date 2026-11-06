@@ -37,7 +37,7 @@ class ReviewContributionPublishedMail extends Mailable implements ShouldQueue
      */
     public function __construct(public ManuscriptReviewContributor $contributor)
     {
-        $contributor->load('author.user', 'manuscriptRecord.publication.journal');
+        $contributor->loadMissing('author.user', 'manuscriptRecord.publication.journal');
 
         $this->user = $contributor->author->user;
         $this->publication = $contributor->manuscriptRecord->publication;
@@ -67,7 +67,10 @@ class ReviewContributionPublishedMail extends Mailable implements ShouldQueue
         return new Content(
             markdown: 'mail.publication.review-contribution-published',
             with: [
-                'url' => config('app.frontend_url').'#/auth/login?email='.$this->user->email.'&redirect=/settings/author/orcid-reviews',
+                'url' => config('app.frontend_url').'#/auth/login?'.http_build_query([
+                    'email' => $this->user->email,
+                    'redirect' => '/settings/author/orcid-reviews',
+                ], encoding_type: PHP_QUERY_RFC3986),
             ],
         );
     }

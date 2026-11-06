@@ -272,16 +272,17 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
 
     /**
      * Only the author can delete a peer review on ORCID: they no longer want it
-     * there, so it is never added again. Unless the contribution changed since
-     * the job loaded it, e.g. the author added it again in OSP: the job
-     * dispatched with that change then creates it.
+     * there, so it is never added again, even if the contribution was edited
+     * meanwhile (e.g. its role). Unless the author decided again in OSP since
+     * the job loaded it, e.g. added it again: the job dispatched with that
+     * decision then creates it.
      */
     private function markDeletedOnOrcid(ManuscriptReviewContributor $contributor): void
     {
         DB::transaction(function () use ($contributor): void {
             $current = ManuscriptReviewContributor::withTrashed()->lockForUpdate()->findOrFail($contributor->id);
 
-            if ($current->updated_at->equalTo($contributor->updated_at)) {
+            if ($current->orcid_sync_at?->toDateTimeString() === $contributor->orcid_sync_at?->toDateTimeString()) {
                 $current->orcid_sync = OrcidSyncIntent::DECLINED;
             }
 

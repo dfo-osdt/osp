@@ -125,6 +125,23 @@ test('the ORCID item is deleted when its publication moves to a journal that doe
     'DOI removed' => [fn (): array => ['doi' => null]],
 ]);
 
+test('the ORCID item is deleted when its manuscript is no longer secondary', function (ManuscriptRecordType $type): void {
+    $mockClient = Saloon::fake([DeletePeerReview::class => MockResponse::make('', 204)]);
+    $contributor = syncedReviewContribution();
+
+    $this->actingAs(User::factory()->withRoles([UserRole::ADMIN])->create())
+        ->putJson("api/manuscript-records/{$contributor->manuscript_record_id}", ['type' => $type->value])
+        ->assertOk();
+
+    $mockClient->assertSent(DeletePeerReview::class);
+    $contributor->refresh();
+    expect($contributor->orcid_putcode)->toBeNull()
+        ->and($contributor->orcid_sync)->toBe(OrcidSyncIntent::WANTED);
+})->with([
+    'primary' => [ManuscriptRecordType::PRIMARY],
+    'preprint' => [ManuscriptRecordType::PREPRINT],
+]);
+
 test('turning off ORCID sync for a journal deletes the ORCID items of its publications once confirmed', function (array $changes): void {
     $mockClient = Saloon::fake([DeletePeerReview::class => MockResponse::make('', 204)]);
     $contributor = syncedReviewContribution();
