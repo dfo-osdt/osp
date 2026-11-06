@@ -48,7 +48,7 @@ class PeerReviewMapper
             return new PeerReviewInput(
                 role: $contributor->role,
                 type: $contributor->type,
-                reviewIdentifiers: [ExternalId::sourceWorkId((string) $contributor->id)],
+                reviewIdentifiers: [ExternalId::sourceWorkId(self::sourceWorkId($contributor))],
                 completionDate: FuzzyDate::fromDateTime($contributor->review_date ?? $contributor->created_at),
                 reviewGroupId: 'issn:'.trim((string) $publication->journal->issn),
                 conveningOrganization: new OrcidOrganization(
@@ -66,5 +66,14 @@ class PeerReviewMapper
             // data ORCID would reject, e.g. a DOI URL on another resolver or a title longer than ORCID allows
             throw new ReviewContributionNotSyncable($contributor, $exception->getMessage());
         }
+    }
+
+    /**
+     * The review's own identifier: the manuscript record's ULID and the contributor id,
+     * e.g. "01JC3Z8Q4M5N6P7R8S9T0V1W2X-42". It stays unique across OSP environments.
+     */
+    private static function sourceWorkId(ManuscriptReviewContributor $contributor): string
+    {
+        return "{$contributor->manuscriptRecord->ulid}-{$contributor->id}";
     }
 }
