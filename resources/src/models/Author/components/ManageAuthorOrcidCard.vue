@@ -131,42 +131,54 @@ async function revokeToken() {
         </div>
         <div class="col text-body2 q-pt-xs">
           <p>{{ t('orcid.settings-section-intro') }}</p>
-          <q-toggle
-            v-model="showOrcidRecord"
-            :label="t('orcid.show-record-on-profile')"
-            :disable="!isVerified || savingShowOrcidRecord"
-            @update:model-value="updateShowOrcidRecord"
-          />
-          <div class="text-caption text-grey-7">
-            {{ isVerified ? t('orcid.show-record-on-profile-hint') : t('orcid.show-record-on-profile-connect-hint') }}
-          </div>
-          <q-btn
-            v-if="authStore.user"
-            flat
-            no-caps
-            color="primary"
-            icon="mdi-account-outline"
-            class="q-mt-sm"
-            :label="t('orcid.view-author-page')"
-            :to="{ name: 'author.profile', params: { id: authStore.user.author.data.id } }"
-          />
-          <div v-if="authStore.user?.author?.data" class="q-mt-md">
-            <div class="text-subtitle2">
-              {{ t('orcid-review-credit.title') }}
-            </div>
-            <p class="q-mb-sm">
-              {{ t('orcid-review-credit.intro') }}
-            </p>
-            <q-btn
-              outline
-              no-caps
-              color="primary"
-              icon="mdi-account-check-outline"
-              :label="t('orcid-review-credit.manage')"
+          <q-list bordered separator class="rounded-borders">
+            <q-item>
+              <q-item-section avatar top>
+                <q-icon name="mdi-account-outline" color="primary" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ t('orcid.show-record-on-profile') }}</q-item-label>
+                <q-item-label caption>
+                  {{ isVerified ? t('orcid.show-record-on-profile-hint') : t('orcid.show-record-on-profile-connect-hint') }}
+                </q-item-label>
+                <q-item-label v-if="authStore.user">
+                  <router-link
+                    class="text-primary text-caption"
+                    :to="{ name: 'author.profile', params: { id: authStore.user.author.data.id } }"
+                  >
+                    {{ t('orcid.view-author-page') }}
+                  </router-link>
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side top>
+                <q-toggle
+                  v-model="showOrcidRecord"
+                  :aria-label="t('orcid.show-record-on-profile')"
+                  :disable="!isVerified || savingShowOrcidRecord"
+                  @update:model-value="updateShowOrcidRecord"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="authStore.user?.author?.data"
+              clickable
               :to="{ name: 'settings.author.orcid_reviews' }"
               data-test="orcid-review-credit-link"
-            />
-          </div>
+            >
+              <q-item-section avatar top>
+                <q-icon name="mdi-account-check-outline" color="primary" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ t('orcid-review-credit.title') }}</q-item-label>
+                <q-item-label caption>
+                  {{ t('orcid-review-credit.intro') }}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-icon name="mdi-chevron-right" />
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
       </div>
       <q-separator class="q-my-md" />
