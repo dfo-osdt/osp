@@ -61,8 +61,13 @@ onMounted(async () => {
   if (!authStore.user?.author?.data)
     return
 
-  const contributions = await OrcidReviewContributionService.list()
-  availableReviewCount.value = contributions.data.length
+  try {
+    const contributions = await OrcidReviewContributionService.list()
+    availableReviewCount.value = contributions.data.length
+  }
+  catch {
+    // the count is only a hint; leave the badge hidden
+  }
 })
 
 async function revokeToken() {

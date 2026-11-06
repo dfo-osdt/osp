@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { OrcidReviewContributionResourceList, OrcidReviewStatus } from '@/models/ManuscriptReviewContributor/OrcidReviewContribution'
+import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import TitleText from '@/components/TitleText.vue'
@@ -7,6 +8,7 @@ import { OrcidReviewContributionService } from '@/models/ManuscriptReviewContrib
 import { useReviewContributorRoleOptions } from '@/models/ManuscriptReviewContributor/reviewContributorRoleOptions'
 
 const { t } = useI18n()
+const q = useQuasar()
 const authStore = useAuthStore()
 const localeStore = useLocaleStore()
 const { roleLabel } = useReviewContributorRoleOptions()
@@ -30,6 +32,12 @@ async function loadContributions() {
   loading.value = true
   try {
     contributions.value = await OrcidReviewContributionService.list()
+  }
+  catch {
+    q.notify({
+      type: 'negative',
+      message: t('orcid-review-credit.load-error'),
+    })
   }
   finally {
     loading.value = false
