@@ -9,7 +9,7 @@ use App\Models\ManuscriptAuthor;
 use App\Models\Organization;
 use App\Models\PublicationAuthor;
 use App\Queries\AuthorListQuery;
-use App\Rules\Ocrid;
+use App\Rules\Orcid;
 use App\Rules\ValidListItems;
 use App\Traits\PaginationLimitTrait;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -44,7 +44,7 @@ class AuthorController extends Controller
             'email' => ['required', 'email', 'unique:authors,email'],
             'is_independent' => ['boolean'],
             'organization_id' => ['required_unless:is_independent,true', 'exists:organizations,id'],
-            'orcid' => ['nullable', 'string', new Ocrid, 'unique:authors,orcid'],
+            'orcid' => ['nullable', 'string', new Orcid, 'unique:authors,orcid'],
             'sector_id' => ['nullable', 'integer', 'exists:sectors,id'],
             'region_id' => ['nullable', 'integer', 'exists:regions,id'],
             'is_emeritus' => ['boolean'],
@@ -122,7 +122,7 @@ class AuthorController extends Controller
                 Rule::excludeIf(fn () => $author->orcid_verified),
                 'nullable',
                 'string',
-                new Ocrid,
+                new Orcid,
                 Rule::unique('authors', 'orcid')->ignore($author->id),
             ],
             'sector_id' => [
