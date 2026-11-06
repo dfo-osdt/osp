@@ -72,6 +72,17 @@ const canChangeRole = computed(() => !props.readonly && props.manuscriptReviewCo
         {{ isInternal ? t('common.internal-author') : t('common.external-author') }}
       </q-tooltip>
     </q-icon>
+    <q-icon
+      v-if="manuscriptReviewContributor.data.orcid_synced"
+      name="img:/assets/orcid/orcid.logo.icon.svg"
+      :aria-label="t('manage-review-contributors.on-orcid')"
+      size="18px"
+      class="q-ml-xs"
+    >
+      <q-tooltip>
+        {{ t('manage-review-contributors.on-orcid') }}
+      </q-tooltip>
+    </q-icon>
     <q-menu>
       <q-list dense separator>
         <q-item class="q-mt-sm">
