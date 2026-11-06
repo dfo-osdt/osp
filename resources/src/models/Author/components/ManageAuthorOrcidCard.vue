@@ -56,6 +56,7 @@ async function updateShowOrcidRecord(show: boolean) {
 }
 
 const availableReviewCount = ref(0)
+const reviewAutoSync = ref(false)
 
 onMounted(async () => {
   if (!authStore.user?.author?.data)
@@ -64,9 +65,10 @@ onMounted(async () => {
   try {
     const contributions = await OrcidReviewContributionService.list()
     availableReviewCount.value = contributions.data.length
+    reviewAutoSync.value = contributions.meta.auto_sync
   }
   catch {
-    // the count is only a hint; leave the badge hidden
+    // the count and auto sync are only hints; leave the badges hidden
   }
 })
 
@@ -192,6 +194,15 @@ async function revokeToken() {
               </q-item-section>
               <q-item-section side>
                 <div class="row items-center no-wrap q-gutter-sm">
+                  <q-badge
+                    v-if="reviewAutoSync"
+                    outline
+                    color="positive"
+                    data-test="orcid-review-credit-auto-sync"
+                  >
+                    <q-icon name="mdi-autorenew" class="q-mr-xs" />
+                    {{ t('orcid-review-credit.auto-sync-badge') }}
+                  </q-badge>
                   <q-badge
                     v-if="availableReviewCount"
                     outline
