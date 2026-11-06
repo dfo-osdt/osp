@@ -765,6 +765,7 @@
     "add-all": "Add all",
     "add-all-error": "Your contributions couldn't be added to ORCID. Please try again.",
     "auto-sync": "Add new contributions automatically",
+    "auto-sync-badge": "Auto add on",
     "auto-sync-hint": "From now on, your contributions are added to ORCID as soon as the report is published. Contributions listed here stay as they are: use Add or Add all for them. Turning this off doesn't remove anything from ORCID.",
     "auto-sync-on": "New contributions will be added to ORCID automatically.",
     "auto-sync-off": "New contributions will no longer be added to ORCID automatically.",
