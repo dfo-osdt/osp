@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
       "@/*": [
-        "resources/src/*"
+        "./resources/src/*"
       ]
     },
     "resolveJsonModule": true,
