@@ -146,9 +146,9 @@ test('publishing does not email authors whose contribution is not to be offered'
 
     Mail::assertNothingQueued();
 })->with([
-    'no user account' => [fn (Publication $publication) => contributionByAuthor($publication, Author::factory()->withOrcidConnection()->create()), ['doi' => 'https://doi.org/10.60825/abc-123']],
-    'auto sync on' => [fn (Publication $publication) => contributionByAuthor($publication, authorWithUser(Author::factory()->withOrcidConnection()->state(['orcid_auto_sync_reviews' => true]))), ['doi' => 'https://doi.org/10.60825/abc-123']],
-    'no DOI' => [fn (Publication $publication) => contributionByAuthor($publication, authorWithUser(Author::factory()->withOrcidConnection())), []],
+    'no user account' => [fn (Publication $publication): ManuscriptReviewContributor => contributionByAuthor($publication, Author::factory()->withOrcidConnection()->create()), ['doi' => 'https://doi.org/10.60825/abc-123']],
+    'auto sync on' => [fn (Publication $publication): ManuscriptReviewContributor => contributionByAuthor($publication, authorWithUser(Author::factory()->withOrcidConnection()->state(['orcid_auto_sync_reviews' => true]))), ['doi' => 'https://doi.org/10.60825/abc-123']],
+    'no DOI' => [fn (Publication $publication): ManuscriptReviewContributor => contributionByAuthor($publication, authorWithUser(Author::factory()->withOrcidConnection())), []],
     'journal not flagged' => [function (Publication $publication): void {
         $publication->journal->update(['orcid_sync_enabled' => false]);
         contributionByAuthor($publication, authorWithUser(Author::factory()->withOrcidConnection()));
