@@ -762,11 +762,16 @@
     "empty": "None of your review contributions can be added to ORCID yet. They appear here once the report is published with a DOI in a participating series.",
     "add": "Add",
     "add-error": "The contribution couldn't be added to ORCID. Please try again.",
+    "add-all": "Add all",
+    "add-all-error": "Your contributions couldn't be added to ORCID. Please try again.",
+    "remove": "Remove",
+    "remove-error": "The contribution couldn't be removed from ORCID. Please try again.",
     "status": {
       "not_on_orcid": "Not on ORCID",
       "pending": "Adding to ORCID",
       "waiting_for_connection": "Waiting for ORCID connection",
-      "on_orcid": "On ORCID"
+      "on_orcid": "On ORCID",
+      "declined": "Declined"
     }
   },
   "organization-select": {

@@ -20,7 +20,10 @@ const hasAuthor = computed(() => !!authStore.user?.author?.data)
 
 const contributions = ref<OrcidReviewContributionResourceList | null>(null)
 const loading = ref(false)
-const adding = ref<number | null>(null)
+const updating = ref<number | null>(null)
+const addingAll = ref(false)
+
+const hasUndecided = computed(() => contributions.value?.data.some(contribution => contribution.data.orcid_status === 'not_on_orcid') ?? false)
 
 function statusLabel(status: OrcidReviewStatus): string {
   // pending contributions wait for the author to connect ORCID with the write scope
@@ -31,8 +34,15 @@ function statusLabel(status: OrcidReviewStatus): string {
     not_on_orcid: t('orcid-review-credit.status.not_on_orcid'),
     pending: t('orcid-review-credit.status.pending'),
     on_orcid: t('orcid-review-credit.status.on_orcid'),
+    declined: t('orcid-review-credit.status.declined'),
   }
   return labels[status]
+}
+
+function statusColor(status: OrcidReviewStatus): string {
+  return status === 'on_orcid'
+    ? 'positive'
+    : 'grey-8'
 }
 
 // contributions being added are synced in the background: reload until ORCID has them,
@@ -67,26 +77,46 @@ function pollWhileAdding() {
   }, pollIntervalMs)
 }
 
-async function addToOrcid(id: number) {
-  adding.value = id
+async function updateContribution(id: number, action: 'add' | 'remove') {
+  updating.value = id
   try {
-    const added = await OrcidReviewContributionService.add(id)
+    const updated = await OrcidReviewContributionService[action](id)
     if (!contributions.value)
       return
     const index = contributions.value.data.findIndex(contribution => contribution.data.id === id)
     if (index !== -1)
-      contributions.value.data[index] = added
+      contributions.value.data[index] = updated
     pollCount = 0
     pollWhileAdding()
   }
   catch {
     q.notify({
       type: 'negative',
-      message: t('orcid-review-credit.add-error'),
+      message: action === 'add'
+        ? t('orcid-review-credit.add-error')
+        : t('orcid-review-credit.remove-error'),
     })
   }
   finally {
-    adding.value = null
+    updating.value = null
+  }
+}
+
+async function addAllToOrcid() {
+  addingAll.value = true
+  try {
+    contributions.value = await OrcidReviewContributionService.addAll()
+    pollCount = 0
+    pollWhileAdding()
+  }
+  catch {
+    q.notify({
+      type: 'negative',
+      message: t('orcid-review-credit.add-all-error'),
+    })
+  }
+  finally {
+    addingAll.value = false
   }
 }
 
@@ -155,6 +185,19 @@ onBeforeUnmount(stopPolling)
       </template>
     </q-banner>
     <q-inner-loading :showing="loading" />
+    <div v-if="hasUndecided" class="row justify-end q-mb-sm">
+      <q-btn
+        unelevated
+        no-caps
+        color="primary"
+        icon="mdi-playlist-plus"
+        :label="t('orcid-review-credit.add-all')"
+        :loading="addingAll"
+        :disable="updating !== null"
+        data-test="orcid-review-add-all"
+        @click="addAllToOrcid"
+      />
+    </div>
     <q-list v-if="contributions" bordered separator class="rounded-borders">
       <q-item v-for="contribution in contributions.data" :key="contribution.data.id">
         <q-item-section>
@@ -169,23 +212,38 @@ onBeforeUnmount(stopPolling)
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-btn
-            v-if="contribution.data.orcid_status === 'not_on_orcid'"
-            outline
-            no-caps
-            color="primary"
-            icon="mdi-plus"
-            :label="t('orcid-review-credit.add')"
-            :loading="adding === contribution.data.id"
-            data-test="orcid-review-add"
-            @click="addToOrcid(contribution.data.id)"
-          />
-          <q-badge
-            v-else
-            outline
-            :color="contribution.data.orcid_status === 'on_orcid' ? 'positive' : 'grey-8'"
-            :label="statusLabel(contribution.data.orcid_status)"
-          />
+          <div class="row items-center no-wrap q-gutter-sm">
+            <q-badge
+              v-if="contribution.data.orcid_status !== 'not_on_orcid'"
+              outline
+              :color="statusColor(contribution.data.orcid_status)"
+              :label="statusLabel(contribution.data.orcid_status)"
+            />
+            <q-btn
+              v-if="contribution.data.orcid_status === 'not_on_orcid' || contribution.data.orcid_status === 'declined'"
+              outline
+              no-caps
+              color="primary"
+              icon="mdi-plus"
+              :label="t('orcid-review-credit.add')"
+              :loading="updating === contribution.data.id"
+              :disable="addingAll"
+              data-test="orcid-review-add"
+              @click="updateContribution(contribution.data.id, 'add')"
+            />
+            <q-btn
+              v-if="contribution.data.orcid_status === 'on_orcid'"
+              flat
+              no-caps
+              color="negative"
+              icon="mdi-minus"
+              :label="t('orcid-review-credit.remove')"
+              :loading="updating === contribution.data.id"
+              :disable="addingAll"
+              data-test="orcid-review-remove"
+              @click="updateContribution(contribution.data.id, 'remove')"
+            />
+          </div>
         </q-item-section>
       </q-item>
       <q-item v-if="contributions.data.length === 0">

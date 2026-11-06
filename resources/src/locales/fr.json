@@ -762,11 +762,16 @@
     "empty": "Aucune de vos contributions d'évaluation ne peut encore être ajoutée à ORCID. Elles apparaîtront ici une fois le rapport publié avec un DOI dans une série participante.",
     "add": "Ajouter",
     "add-error": "La contribution n'a pas pu être ajoutée à ORCID. Veuillez réessayer.",
+    "add-all": "Tout ajouter",
+    "add-all-error": "Vos contributions n'ont pas pu être ajoutées à ORCID. Veuillez réessayer.",
+    "remove": "Retirer",
+    "remove-error": "La contribution n'a pas pu être retirée d'ORCID. Veuillez réessayer.",
     "status": {
       "not_on_orcid": "Pas dans ORCID",
       "pending": "Ajout à ORCID en cours",
       "waiting_for_connection": "En attente de la connexion ORCID",
-      "on_orcid": "Dans ORCID"
+      "on_orcid": "Dans ORCID",
+      "declined": "Refusée"
     }
   },
   "organization-select": {

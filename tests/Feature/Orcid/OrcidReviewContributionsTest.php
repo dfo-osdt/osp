@@ -16,6 +16,7 @@ use Saloon\Laravel\Facades\Saloon;
 use Spatie\Activitylog\Models\Activity;
 use VincentAuger\OrcidSdk\Enums\PeerReviewRole;
 use VincentAuger\OrcidSdk\Requests\PeerReviews\CreatePeerReview;
+use VincentAuger\OrcidSdk\Requests\PeerReviews\DeletePeerReview;
 
 /**
  * A review contribution by the given user's author to a published report in a flagged DFO series.
@@ -225,6 +226,116 @@ test('a contribution that cannot go on ORCID cannot be added', function (): void
         ->assertUnprocessable();
 
     expect($contribution->refresh()->orcid_sync)->toBeNull();
+});
+
+/**
+ * A contribution of the user that is on their ORCID record with put-code 4567
+ */
+function contributionOnOrcid(User $user): ManuscriptReviewContributor
+{
+    $contribution = reviewContribution($user);
+    $contribution->forceFill(['orcid_sync' => OrcidSyncIntent::WANTED, 'orcid_putcode' => 4567, 'orcid_updated_at' => now()->addMinute()])->save();
+
+    return $contribution;
+}
+
+test('an author can remove a review contribution from ORCID', function (): void {
+    $mockClient = Saloon::fake([DeletePeerReview::class => MockResponse::make('', 204)]);
+    $user = connectedToOrcid(User::factory()->create());
+    $contribution = contributionOnOrcid($user);
+
+    $this->actingAs($user)->postJson("api/user/orcid/review-contributions/{$contribution->id}/remove")
+        ->assertOk()
+        ->assertJsonPath('data.orcid_status', 'declined');
+
+    $mockClient->assertSent(fn (DeletePeerReview $request, $response): bool => str_ends_with($response->getPendingRequest()->getUrl(), '/v3.0/0000-0002-1825-0097/peer-review/4567'));
+    $contribution->refresh();
+    expect($contribution->orcid_sync)->toBe(OrcidSyncIntent::DECLINED)
+        ->and($contribution->orcid_putcode)->toBeNull();
+
+    $activity = Activity::query()->where('subject_id', $contribution->manuscript_record_id)->pluck('causer_id', 'description');
+    expect($activity->keys()->all())->toContain('manuscript.review-contributor.orcid-declined', 'manuscript.review-contributor.orcid-deleted')
+        ->and($activity['manuscript.review-contributor.orcid-declined'])->toBe($user->id);
+});
+
+test('removing a contribution that was never on ORCID only declines it', function (): void {
+    $mockClient = Saloon::fake([]);
+    $user = connectedToOrcid(User::factory()->create());
+    $contribution = reviewContribution($user);
+
+    $this->actingAs($user)->postJson("api/user/orcid/review-contributions/{$contribution->id}/remove")
+        ->assertOk()
+        ->assertJsonPath('data.orcid_status', 'declined');
+
+    $mockClient->assertNothingSent();
+    expect($contribution->refresh()->orcid_sync)->toBe(OrcidSyncIntent::DECLINED);
+});
+
+test('a removed contribution can be added to ORCID again', function (): void {
+    $mockClient = Saloon::fake([
+        DeletePeerReview::class => MockResponse::make('', 204),
+        CreatePeerReview::class => MockResponse::make('', 201, ['Location' => 'https://api.orcid.org/v3.0/0000-0002-1825-0097/peer-review/7890']),
+    ]);
+    $user = connectedToOrcid(User::factory()->create());
+    $contribution = contributionOnOrcid($user);
+    $this->actingAs($user)->postJson("api/user/orcid/review-contributions/{$contribution->id}/remove")->assertOk();
+
+    $this->actingAs($user)->postJson("api/user/orcid/review-contributions/{$contribution->id}/add")
+        ->assertOk()
+        ->assertJsonPath('data.orcid_status', 'on_orcid');
+
+    $mockClient->assertSent(CreatePeerReview::class);
+    expect($contribution->refresh()->orcid_sync)->toBe(OrcidSyncIntent::WANTED)
+        ->and($contribution->orcid_putcode)->toBe(7890);
+});
+
+test('nobody can remove someone else\'s contribution from ORCID', function (Closure $makeUser): void {
+    $mockClient = Saloon::fake([]);
+    $contribution = contributionOnOrcid(connectedToOrcid(User::factory()->create()));
+
+    $this->actingAs($makeUser())->postJson("api/user/orcid/review-contributions/{$contribution->id}/remove")
+        ->assertForbidden();
+
+    $mockClient->assertNothingSent();
+    expect($contribution->refresh()->orcid_sync)->toBe(OrcidSyncIntent::WANTED);
+})->with([
+    'another author' => [fn (): User => User::factory()->create()],
+    'an editor' => [fn (): User => User::factory()->withRoles([UserRole::EDITOR])->create()],
+    'an admin' => [fn (): User => User::factory()->withRoles([UserRole::ADMIN])->create()],
+]);
+
+test('an author can add all their undecided contributions to ORCID at once', function (): void {
+    $mockClient = Saloon::fake([
+        CreatePeerReview::class => MockResponse::make('', 201, ['Location' => 'https://api.orcid.org/v3.0/0000-0002-1825-0097/peer-review/4567']),
+    ]);
+    $user = connectedToOrcid(User::factory()->create());
+    $undecided = collect([reviewContribution($user), reviewContribution($user)]);
+    $declined = reviewContribution($user);
+    $declined->forceFill(['orcid_sync' => OrcidSyncIntent::DECLINED])->save();
+    $ineligible = reviewContribution($user, publication: ['doi' => null]);
+    $someoneElses = reviewContribution(User::factory()->create());
+
+    $this->actingAs($user)->postJson('api/user/orcid/review-contributions/add-all')
+        ->assertOk()
+        ->assertJsonCount(3, 'data');
+
+    $mockClient->assertSentCount(2);
+    $undecided->each(fn (ManuscriptReviewContributor $contribution) => expect($contribution->refresh())
+        ->orcid_sync->toBe(OrcidSyncIntent::WANTED)
+        ->orcid_putcode->toBe(4567));
+    expect($declined->refresh()->orcid_sync)->toBe(OrcidSyncIntent::DECLINED)
+        ->and($ineligible->refresh()->orcid_sync)->toBeNull()
+        ->and($someoneElses->refresh()->orcid_sync)->toBeNull();
+    expect(Activity::query()->where('description', 'manuscript.review-contributor.orcid-wanted')->where('causer_id', $user->id)->count())->toBe(2);
+});
+
+test('a user without a linked author cannot add all', function (): void {
+    $user = User::factory()->create();
+    $user->author->forceFill(['user_id' => null])->save();
+    $user->unsetRelation('author');
+
+    $this->actingAs($user)->postJson('api/user/orcid/review-contributions/add-all')
+        ->assertNotFound();
 });
 
 test('the list tells whether the author can write to ORCID', function (?string $scope, int $expiresInDays, bool $canWrite): void {
