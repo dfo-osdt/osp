@@ -80,8 +80,9 @@ test('publishing emails an author connected to ORCID that they can add their con
 
     Mail::assertQueuedCount(1);
     Mail::assertQueued(ReviewContributionPublishedMail::class, function (ReviewContributionPublishedMail $mail) use ($author, $contributor): bool {
-        $mail->assertSeeInHtml('Add to ORCID')
-            ->assertSeeInHtml('Ajouter à ORCID')
+        $mail->assertSeeInHtml('You can now get credit for it by adding it to your ORCID record')
+            ->assertSeeInHtml('Vous pouvez maintenant en obtenir la reconnaissance')
+            ->assertDontSeeInHtml('connect your ORCID iD')
             ->assertSeeInHtml('redirect=/settings/author/orcid-reviews');
 
         return $mail->hasTo($author->user->email) && $mail->contributor->is($contributor);
@@ -97,9 +98,9 @@ test('publishing emails an author who cannot add to ORCID that they can connect 
 
     Mail::assertQueuedCount(1);
     Mail::assertQueued(ReviewContributionPublishedMail::class, function (ReviewContributionPublishedMail $mail) use ($author, $contributor): bool {
-        $mail->assertSeeInHtml('Connect ORCID')
-            ->assertSeeInHtml('Connecter ORCID')
-            ->assertDontSeeInHtml('Add to ORCID')
+        $mail->assertSeeInHtml('connect your ORCID iD and allow the portal to update your record')
+            ->assertSeeInHtml('connectez votre ORCID iD et autorisez le portail')
+            ->assertDontSeeInHtml('You can now get credit')
             ->assertSeeInHtml('redirect=/settings/author/orcid-reviews');
 
         return $mail->hasTo($author->user->email) && $mail->contributor->is($contributor);

@@ -4,19 +4,33 @@
 
 *(le français suit)*
 
-The report "**{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}**", which you contributed to as {{ $isEditor ? 'an editor' : 'a reviewer' }}, has been published in "**{{ $publication->journal->title }}**."
+@if ($canAddToOrcid)
+A report you contributed to has been published. You can now get credit for it by adding it to your ORCID record as a peer review.
+@else
+A report you contributed to has been published. You can get credit for it on your ORCID record as a peer review.
+@endif
+
+<x-mail::panel>
+**Report:**<br /> {!! \App\Services\TitleMarkup::sanitize($publication->title) !!} <br/>
+**Series:**<br /> {{ $publication->journal->title }} <br/>
+**Your role:**<br /> {{ $isEditor ? 'Editor' : 'Reviewer' }} <br/>
+</x-mail::panel>
 
 @if ($canAddToOrcid)
-You can now add this contribution to your ORCID record as a peer review.
+Open your ORCID review credit page and select **Add** next to this contribution.
 @else
-You can get credit for this contribution on your ORCID record as a peer review. Connect your ORCID iD and allow the portal to update your record, then add the contribution.
+To add it, open your ORCID review credit page, connect your ORCID iD and allow the portal to update your record, then select **Add** next to this contribution.
 @endif
 
 <x-mail::button :url="$url">
-{{ $canAddToOrcid ? 'Add to ORCID' : 'Connect ORCID' }}
+Open ORCID review credit
 </x-mail::button>
 
-To add future contributions automatically, turn on automatic adding on the same page.
+@if ($canAddToOrcid)
+To have future contributions added for you, turn on **Add new contributions automatically** on that page.
+@else
+Once connected, you can also turn on **Add new contributions automatically** so future contributions are added for you.
+@endif
 
 <x-email.regards locale="en" />
 
@@ -25,19 +39,33 @@ To add future contributions automatically, turn on automatic adding on the same 
 
 # Bonjour {{ $user->first_name }},
 
-Le rapport « **{!! \App\Services\TitleMarkup::sanitize($publication->title) !!}** », auquel vous avez contribué comme {{ $isEditor ? 'rédacteur' : 'évaluateur' }}, a été publié dans « **{{ $publication->journal->title }}** ».
+@if ($canAddToOrcid)
+Un rapport auquel vous avez contribué a été publié. Vous pouvez maintenant en obtenir la reconnaissance en l'ajoutant à votre dossier ORCID comme évaluation par les pairs.
+@else
+Un rapport auquel vous avez contribué a été publié. Vous pouvez en obtenir la reconnaissance dans votre dossier ORCID comme évaluation par les pairs.
+@endif
+
+<x-mail::panel>
+**Rapport :**<br /> {!! \App\Services\TitleMarkup::sanitize($publication->title) !!} <br/>
+**Série :**<br /> {{ $publication->journal->title }} <br/>
+**Votre rôle :**<br /> {{ $isEditor ? 'Rédacteur' : 'Évaluateur' }} <br/>
+</x-mail::panel>
 
 @if ($canAddToOrcid)
-Vous pouvez maintenant ajouter cette contribution à votre dossier ORCID comme évaluation par les pairs.
+Ouvrez votre page Reconnaissance ORCID des évaluations et sélectionnez **Ajouter** à côté de cette contribution.
 @else
-Vous pouvez obtenir la reconnaissance de cette contribution dans votre dossier ORCID comme évaluation par les pairs. Connectez votre ORCID iD et autorisez le portail à mettre à jour votre dossier, puis ajoutez la contribution.
+Pour l'ajouter, ouvrez votre page Reconnaissance ORCID des évaluations, connectez votre ORCID iD et autorisez le portail à mettre à jour votre dossier, puis sélectionnez **Ajouter** à côté de cette contribution.
 @endif
 
 <x-mail::button :url="$url">
-{{ $canAddToOrcid ? 'Ajouter à ORCID' : 'Connecter ORCID' }}
+Ouvrir la reconnaissance ORCID des évaluations
 </x-mail::button>
 
-Pour ajouter automatiquement vos prochaines contributions, activez l'ajout automatique sur la même page.
+@if ($canAddToOrcid)
+Pour que vos prochaines contributions soient ajoutées pour vous, activez **Ajouter automatiquement les nouvelles contributions** sur cette page.
+@else
+Une fois votre ORCID connecté, vous pourrez aussi activer **Ajouter automatiquement les nouvelles contributions** pour que vos prochaines contributions soient ajoutées pour vous.
+@endif
 
 <x-email.regards locale="fr" />
 
