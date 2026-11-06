@@ -3,6 +3,7 @@ import { useQuasar } from 'quasar'
 import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import ManageAuthorEmploymentsCard from '@/models/AuthorEmployment/components/ManageAuthorEmploymentsCard.vue'
+import { OrcidReviewContributionService } from '@/models/ManuscriptReviewContributor/OrcidReviewContribution'
 import { AuthorService } from '../Author'
 
 const authStore = useAuthStore()
@@ -53,6 +54,16 @@ async function updateShowOrcidRecord(show: boolean) {
     savingShowOrcidRecord.value = false
   }
 }
+
+const availableReviewCount = ref(0)
+
+onMounted(async () => {
+  if (!authStore.user?.author?.data)
+    return
+
+  const contributions = await OrcidReviewContributionService.list()
+  availableReviewCount.value = contributions.data.length
+})
 
 async function revokeToken() {
   q.dialog({
@@ -175,7 +186,16 @@ async function revokeToken() {
                 </q-item-label>
               </q-item-section>
               <q-item-section side>
-                <q-icon name="mdi-chevron-right" />
+                <div class="row items-center no-wrap q-gutter-sm">
+                  <q-badge
+                    v-if="availableReviewCount"
+                    outline
+                    color="primary"
+                    :label="t('orcid-review-credit.available-count', { count: availableReviewCount })"
+                    data-test="orcid-review-credit-count"
+                  />
+                  <q-icon name="mdi-chevron-right" />
+                </div>
               </q-item-section>
             </q-item>
           </q-list>
