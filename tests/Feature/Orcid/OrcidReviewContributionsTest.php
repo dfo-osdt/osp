@@ -145,7 +145,7 @@ test('an author can add a review contribution to ORCID', function (): void {
             && $body['review-group-id'] === 'issn:1919-5079'
             && $body['review-identifiers'] === ['external-id' => [[
                 'external-id-type' => 'source-work-id',
-                'external-id-value' => (string) $contribution->id,
+                'external-id-value' => "{$contribution->manuscriptRecord->ulid}-{$contribution->id}",
                 'external-id-relationship' => 'self',
             ]]]
             && ! array_key_exists('review-url', $body)
