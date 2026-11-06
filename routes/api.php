@@ -72,6 +72,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/user/orcid/refresh', RefreshFromOrcidController::class);
     Route::get('/user/orcid/review-contributions', [OrcidReviewContributionController::class, 'index']);
     Route::post('/user/orcid/review-contributions/add-all', [OrcidReviewContributionController::class, 'addAll']);
+    Route::put('/user/orcid/review-contributions/auto-sync', [OrcidReviewContributionController::class, 'updateAutoSync']);
     Route::post('/user/orcid/review-contributions/{manuscriptReviewContributor}/add', [OrcidReviewContributionController::class, 'add']);
     Route::post('/user/orcid/review-contributions/{manuscriptReviewContributor}/remove', [OrcidReviewContributionController::class, 'remove']);
 

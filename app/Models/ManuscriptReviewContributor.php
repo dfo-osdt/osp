@@ -86,6 +86,30 @@ class ManuscriptReviewContributor extends Model
         return $this->orcid_sync === OrcidSyncIntent::WANTED;
     }
 
+    /**
+     * Record whether the author wants the contribution on ORCID, logged on the
+     * manuscript. The causer is the user whose action decided it: the author,
+     * or whoever published it when the author's auto sync decided.
+     */
+    public function recordOrcidIntent(OrcidSyncIntent $intent, User $causer, bool $byAutoSync = false): void
+    {
+        $this->orcid_sync = $intent;
+        $this->save();
+
+        activity()
+            ->performedOn($this->manuscriptRecord)
+            ->withProperties([
+                'author_id' => $this->author_id,
+                'orcid_sync' => $intent->value,
+                ...($byAutoSync ? ['auto_sync' => true] : []),
+            ])
+            ->causedBy($causer)
+            ->log(match ($intent) {
+                OrcidSyncIntent::WANTED => 'manuscript.review-contributor.orcid-wanted',
+                OrcidSyncIntent::DECLINED => 'manuscript.review-contributor.orcid-declined',
+            });
+    }
+
     public function isSyncedWithOrcid(): bool
     {
         return $this->orcid_putcode !== null;
