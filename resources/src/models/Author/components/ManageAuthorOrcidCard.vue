@@ -150,6 +150,23 @@ async function revokeToken() {
             :label="t('orcid.view-author-page')"
             :to="{ name: 'author.profile', params: { id: authStore.user.author.data.id } }"
           />
+          <div v-if="authStore.user?.author?.data" class="q-mt-md">
+            <div class="text-subtitle2">
+              {{ t('orcid-review-credit.title') }}
+            </div>
+            <p class="q-mb-sm">
+              {{ t('orcid-review-credit.intro') }}
+            </p>
+            <q-btn
+              outline
+              no-caps
+              color="primary"
+              icon="mdi-account-check-outline"
+              :label="t('orcid-review-credit.manage')"
+              :to="{ name: 'settings.author.orcid_reviews' }"
+              data-test="orcid-review-credit-link"
+            />
+          </div>
         </div>
       </div>
       <q-separator class="q-my-md" />
@@ -165,26 +182,6 @@ async function revokeToken() {
             v-if="authStore.user"
             :author-id="authStore.user?.author.data.id"
             :disabled="!isVerified"
-          />
-        </div>
-      </div>
-      <q-separator v-if="authStore.user?.author?.data" class="q-my-md" />
-      <div v-if="authStore.user?.author?.data" class="row q-gutter-xl">
-        <div class="col-12 col-md-1">
-          <span class="text-primary text-subtitle1">{{
-            t('orcid-review-credit.section-title')
-          }}</span>
-        </div>
-        <div class="col text-body2 q-pt-xs">
-          <p>{{ t('orcid-review-credit.intro') }}</p>
-          <q-btn
-            outline
-            no-caps
-            color="primary"
-            icon="mdi-account-check-outline"
-            :label="t('orcid-review-credit.manage')"
-            :to="{ name: 'settings.author.orcid_reviews' }"
-            data-test="orcid-review-credit-link"
           />
         </div>
       </div>
