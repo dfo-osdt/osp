@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ManuscriptRecordType;
+use App\Enums\OrcidSyncIntent;
 use App\Enums\PublicationStatus;
 use Database\Factories\ManuscriptReviewContributorFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -19,6 +20,9 @@ use VincentAuger\OrcidSdk\Enums\PeerReviewType;
  *
  * @property PeerReviewType $type
  * @property PeerReviewRole $role
+ * @property OrcidSyncIntent|null $orcid_sync
+ * @property int|null $orcid_putcode
+ * @property Carbon|null $orcid_updated_at
  * @property-read Author|null $author
  * @property-read ManuscriptRecord|null $manuscriptRecord
  *
@@ -68,7 +72,29 @@ class ManuscriptReviewContributor extends Model
             'review_date' => 'date',
             'type' => PeerReviewType::class,
             'role' => PeerReviewRole::class,
+            'orcid_sync' => OrcidSyncIntent::class,
+            'orcid_updated_at' => 'datetime',
         ];
+    }
+
+    public function isWantedOnOrcid(): bool
+    {
+        return $this->orcid_sync === OrcidSyncIntent::WANTED;
+    }
+
+    public function isSyncedWithOrcid(): bool
+    {
+        return $this->orcid_putcode !== null;
+    }
+
+    /**
+     * Whether ORCID should be (re)written: wanted, eligible and changed since it was last synced
+     */
+    public function needsSyncWithOrcid(): bool
+    {
+        return $this->isWantedOnOrcid()
+            && $this->isEligibleForOrcid()
+            && ($this->orcid_updated_at === null || $this->updated_at->gt($this->orcid_updated_at));
     }
 
     /**

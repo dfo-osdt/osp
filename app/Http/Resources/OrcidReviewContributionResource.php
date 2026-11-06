@@ -28,7 +28,11 @@ class OrcidReviewContributionResource extends JsonResource
                 'manuscript_record_id' => $this->manuscript_record_id,
                 'role' => $this->role,
                 'review_date' => $this->review_date?->toDateString(),
-                'orcid_status' => 'not_on_orcid',
+                'orcid_status' => match (true) {
+                    ! $this->isWantedOnOrcid() => 'not_on_orcid',
+                    $this->isSyncedWithOrcid() => 'on_orcid',
+                    default => 'pending',
+                },
                 'publication' => [
                     'id' => $publication->id,
                     'title' => $publication->title,

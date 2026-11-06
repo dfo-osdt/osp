@@ -760,8 +760,13 @@
     "intro": "Vos contributions comme réviseur ou éditeur à des rapports publiés dans les séries du MPO participantes peuvent être ajoutées à votre dossier ORCID comme évaluations par les pairs.",
     "connect-banner": "Connectez votre ORCID iD et autorisez le portail à mettre à jour votre dossier pour obtenir la reconnaissance de ces contributions.",
     "empty": "Aucune de vos contributions d'évaluation ne peut encore être ajoutée à ORCID. Elles apparaîtront ici une fois le rapport publié avec un DOI dans une série participante.",
+    "add": "Ajouter",
+    "add-error": "La contribution n'a pas pu être ajoutée à ORCID. Veuillez réessayer.",
     "status": {
-      "not_on_orcid": "Pas dans ORCID"
+      "not_on_orcid": "Pas dans ORCID",
+      "pending": "Ajout à ORCID en cours",
+      "waiting_for_connection": "En attente de la connexion ORCID",
+      "on_orcid": "Dans ORCID"
     }
   },
   "organization-select": {
