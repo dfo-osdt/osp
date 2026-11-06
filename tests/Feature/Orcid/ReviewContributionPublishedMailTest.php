@@ -83,7 +83,7 @@ test('publishing emails an author connected to ORCID that they can add their con
         $mail->assertSeeInHtml('You can now get credit for it by adding it to your ORCID record')
             ->assertSeeInHtml('Vous pouvez maintenant en obtenir la reconnaissance')
             ->assertDontSeeInHtml('connect your ORCID iD')
-            ->assertSeeInHtml('redirect=/settings/author/orcid-reviews');
+            ->assertSeeInHtml('redirect=%2Fsettings%2Fauthor%2Forcid-reviews');
 
         return $mail->hasTo($author->user->email) && $mail->contributor->is($contributor);
     });
@@ -101,7 +101,7 @@ test('publishing emails an author who cannot add to ORCID that they can connect 
         $mail->assertSeeInHtml('connect your ORCID iD and allow the portal to update your record')
             ->assertSeeInHtml('connectez votre ORCID iD et autorisez le portail')
             ->assertDontSeeInHtml('You can now get credit')
-            ->assertSeeInHtml('redirect=/settings/author/orcid-reviews');
+            ->assertSeeInHtml('redirect=%2Fsettings%2Fauthor%2Forcid-reviews');
 
         return $mail->hasTo($author->user->email) && $mail->contributor->is($contributor);
     });
@@ -110,6 +110,19 @@ test('publishing emails an author who cannot add to ORCID that they can connect 
     'token expired' => fn (): AuthorFactory => Author::factory()->withOrcidConnection()->state(['orcid_expires_at' => now()->subDay()]),
     'no write scope' => fn (): AuthorFactory => Author::factory()->withOrcidConnection('/read-limited'),
 ]);
+
+test('the login link keeps a plus address intact', function (): void {
+    $publication = acceptedReportForMail();
+    contributionByAuthor($publication, authorWithUser(Author::factory()->withOrcidConnection()->state(['email' => 'jane+orcid@dfo-mpo.gc.ca'])));
+
+    publishReportForMail($publication);
+
+    Mail::assertQueued(ReviewContributionPublishedMail::class, function (ReviewContributionPublishedMail $mail): bool {
+        $mail->assertSeeInHtml('email=jane%2Borcid%40dfo-mpo.gc.ca');
+
+        return true;
+    });
+});
 
 test('publishing emails each contributor without auto sync once, alongside those added automatically', function (): void {
     $publication = acceptedReportForMail();

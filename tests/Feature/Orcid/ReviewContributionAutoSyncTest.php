@@ -33,15 +33,22 @@ function acceptedReport(array $journal = []): Publication
 }
 
 /**
- * A review contribution to the publication by an author connected to ORCID
+ * A review contribution to the publication by an author with a user account,
+ * connected to ORCID
  *
  * @param  array<string, mixed>  $author
  */
-function contributionTo(Publication $publication, array $author = ['orcid_auto_sync_reviews' => true], ?OrcidSyncIntent $intent = null): ManuscriptReviewContributor
+function contributionTo(Publication $publication, array $author = ['orcid_auto_sync_reviews' => true], ?OrcidSyncIntent $intent = null, bool $withUser = true): ManuscriptReviewContributor
 {
+    $author = Author::factory()->withOrcidConnection()->create($author);
+
+    if ($withUser) {
+        User::factory()->create(['email' => $author->email]);
+    }
+
     $contributor = ManuscriptReviewContributor::factory()->create([
         'manuscript_record_id' => $publication->manuscript_record_id,
-        'author_id' => Author::factory()->withOrcidConnection()->create($author)->id,
+        'author_id' => $author->id,
     ]);
     $contributor->forceFill(['orcid_sync' => $intent])->save();
 
@@ -102,6 +109,7 @@ test('publishing leaves alone contributions that are not to be added automatical
 })->with([
     'auto sync off' => [fn (Publication $publication): array => [contributionTo($publication, ['orcid_auto_sync_reviews' => false]), null], ['doi' => 'https://doi.org/10.60825/abc-123']],
     'declined' => [fn (Publication $publication): array => [contributionTo($publication, intent: OrcidSyncIntent::DECLINED), OrcidSyncIntent::DECLINED], ['doi' => 'https://doi.org/10.60825/abc-123']],
+    'no user account' => [fn (Publication $publication): array => [contributionTo($publication, withUser: false), null], ['doi' => 'https://doi.org/10.60825/abc-123']],
     'no DOI' => [fn (Publication $publication): array => [contributionTo($publication), null], []],
     'journal not flagged' => [function (Publication $publication): array {
         $publication->journal->update(['orcid_sync_enabled' => false]);
@@ -129,10 +137,8 @@ test('turning auto sync on does not add contributions already published', functi
     $publication = acceptedReport();
     $contributor = contributionTo($publication, ['orcid_auto_sync_reviews' => false]);
     publishReport($publication);
-    $user = User::factory()->create();
-    $contributor->author->update(['user_id' => $user->id]);
 
-    $this->actingAs($user)->putJson('api/user/orcid/review-contributions/auto-sync', ['auto_sync' => true])->assertOk();
+    $this->actingAs($contributor->author->user)->putJson('api/user/orcid/review-contributions/auto-sync', ['auto_sync' => true])->assertOk();
 
     $mockClient->assertNothingSent();
     expect($contributor->refresh()->orcid_sync)->toBeNull();
@@ -143,10 +149,8 @@ test('turning auto sync off leaves contributions on ORCID', function (): void {
     $publication = acceptedReport();
     $contributor = contributionTo($publication);
     publishReport($publication);
-    $user = User::factory()->create();
-    $contributor->author->update(['user_id' => $user->id]);
 
-    $this->actingAs($user)->putJson('api/user/orcid/review-contributions/auto-sync', ['auto_sync' => false])->assertOk();
+    $this->actingAs($contributor->author->user)->putJson('api/user/orcid/review-contributions/auto-sync', ['auto_sync' => false])->assertOk();
 
     $mockClient->assertNotSent(DeletePeerReview::class);
     $contributor->refresh();

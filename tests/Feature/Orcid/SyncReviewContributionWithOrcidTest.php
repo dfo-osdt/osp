@@ -9,11 +9,13 @@ use App\Models\ManuscriptRecord;
 use App\Models\ManuscriptReviewContributor;
 use App\Models\Organization;
 use App\Models\Publication;
+use App\Models\User;
 use App\Orcid\OrcidClientFactory;
 use Illuminate\Support\Facades\Queue;
 use Saloon\Http\Faking\MockResponse;
 use Saloon\Laravel\Facades\Saloon;
 use Spatie\Activitylog\Models\Activity;
+use VincentAuger\OrcidSdk\Enums\PeerReviewRole;
 use VincentAuger\OrcidSdk\Exceptions\OrcidServerException;
 use VincentAuger\OrcidSdk\Requests\PeerReviews\CreatePeerReview;
 use VincentAuger\OrcidSdk\Requests\PeerReviews\DeletePeerReview;
@@ -206,7 +208,10 @@ test('a peer review deleted on ORCID while the author re-added it keeps the new 
     Saloon::fake([
         UpdatePeerReview::class => function () use ($contributor): MockResponse {
             $this->travel(1)->seconds();
-            ManuscriptReviewContributor::query()->find($contributor->id)->forceFill(['orcid_sync' => OrcidSyncIntent::WANTED])->touch();
+            $current = ManuscriptReviewContributor::query()->find($contributor->id);
+            $author = User::factory()->create();
+            $current->recordOrcidIntent(OrcidSyncIntent::DECLINED, $author);
+            $current->recordOrcidIntent(OrcidSyncIntent::WANTED, $author);
 
             return orcidPeerReviewError(404, 9016);
         },
@@ -218,6 +223,25 @@ test('a peer review deleted on ORCID while the author re-added it keeps the new 
     expect($contributor->orcid_sync)->toBe(OrcidSyncIntent::WANTED)
         ->and($contributor->orcid_putcode)->toBeNull()
         ->and($contributor->needsSyncWithOrcid())->toBeTrue();
+});
+
+test('a peer review deleted on ORCID while its role was edited is still declined', function (): void {
+    $contributor = wantedReviewContribution(['orcid_putcode' => 4567, 'orcid_updated_at' => null]);
+    Saloon::fake([
+        UpdatePeerReview::class => function () use ($contributor): MockResponse {
+            $this->travel(1)->seconds();
+            ManuscriptReviewContributor::query()->find($contributor->id)->update(['role' => PeerReviewRole::Editor]);
+
+            return orcidPeerReviewError(404, 9016);
+        },
+    ]);
+
+    runReviewSync($contributor)->assertNotFailed();
+
+    $contributor->refresh();
+    expect($contributor->orcid_sync)->toBe(OrcidSyncIntent::DECLINED)
+        ->and($contributor->orcid_putcode)->toBeNull()
+        ->and($contributor->needsSyncWithOrcid())->toBeFalse();
 });
 
 test('a removal waits for an ORCID connection with the write scope', function (): void {
@@ -282,7 +306,8 @@ test('a contribution already in sync, or not wanted, is left alone', function (a
 
     $mockClient->assertNothingSent();
 })->with([
-    'in sync' => [['orcid_putcode' => 4567, 'orcid_updated_at' => now()->addMinute()]],
+    // built when the test runs, not when the dataset is loaded
+    'in sync' => [fn (): array => ['orcid_putcode' => 4567, 'orcid_updated_at' => now()->addMinute()]],
     'undecided' => [['orcid_sync' => null]],
     'declined' => [['orcid_sync' => OrcidSyncIntent::DECLINED]],
 ]);

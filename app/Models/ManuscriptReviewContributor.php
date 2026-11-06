@@ -22,6 +22,7 @@ use VincentAuger\OrcidSdk\Enums\PeerReviewType;
  * @property PeerReviewType $type
  * @property PeerReviewRole $role
  * @property OrcidSyncIntent|null $orcid_sync
+ * @property Carbon|null $orcid_sync_at When the author last decided on orcid_sync
  * @property int|null $orcid_putcode
  * @property Carbon|null $orcid_updated_at
  * @property Carbon|null $deleted_at
@@ -77,6 +78,7 @@ class ManuscriptReviewContributor extends Model
             'type' => PeerReviewType::class,
             'role' => PeerReviewRole::class,
             'orcid_sync' => OrcidSyncIntent::class,
+            'orcid_sync_at' => 'datetime',
             'orcid_updated_at' => 'datetime',
         ];
     }
@@ -94,6 +96,7 @@ class ManuscriptReviewContributor extends Model
     public function recordOrcidIntent(OrcidSyncIntent $intent, User $causer, bool $byAutoSync = false): void
     {
         $this->orcid_sync = $intent;
+        $this->orcid_sync_at = now();
         $this->save();
 
         activity()

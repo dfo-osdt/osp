@@ -16,6 +16,7 @@ use App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint;
 use App\Http\Resources\ManuscriptRecordMetadataResource;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Http\Resources\ManuscriptRecordSummaryResource;
+use App\Jobs\SyncReviewContributionWithOrcid;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
@@ -163,6 +164,11 @@ class ManuscriptRecordController extends Controller
         ]);
 
         $manuscriptRecord->update($validated);
+
+        // only secondary manuscripts can be credited on ORCID
+        if ($manuscriptRecord->wasChanged('type')) {
+            SyncReviewContributionWithOrcid::dispatchForChanged($manuscriptRecord->reviewContributors);
+        }
 
         return $this->defaultResource($manuscriptRecord);
     }
