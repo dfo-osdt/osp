@@ -1017,7 +1017,8 @@
     "no-contributors": "Aucun contributeur. \nVeuillez ajouter au moins deux évaluateurs, si applicable pour votre rapport.",
     "add-contributor": "Ajouter un contributeur",
     "delete-contributor": "Supprimer le contributeur",
-    "delete-contributor-confirm": "Êtes-vous sûr de vouloir supprimer ce contributeur?"
+    "delete-contributor-confirm": "Êtes-vous sûr de vouloir supprimer ce contributeur?",
+    "on-orcid": "Cette contribution a été ajoutée au dossier ORCID de cette personne en tant qu'évaluation par les pairs."
   },
   "review-contributor-role": {
     "reviewer": "Évaluateur",

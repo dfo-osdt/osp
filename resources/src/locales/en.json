@@ -1017,7 +1017,8 @@
     "no-contributors": "No contributors. Please add at least two peer reviewers if applicable for your report.",
     "add-contributor": "Add a contributor",
     "delete-contributor": "Delete Contributor",
-    "delete-contributor-confirm": "Are you sure you want to delete this contributor?"
+    "delete-contributor-confirm": "Are you sure you want to delete this contributor?",
+    "on-orcid": "This contribution has been added to this person's ORCID record as a peer review."
   },
   "review-contributor-role": {
     "reviewer": "Reviewer",
