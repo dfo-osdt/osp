@@ -9,6 +9,7 @@ use App\Jobs\SyncReviewContributionWithOrcid;
 use App\Models\Author;
 use App\Models\ManuscriptReviewContributor;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -40,12 +41,31 @@ class OrcidReviewContributionController extends Controller
         $this->eligibleContributions($author)
             ->filter(fn (ManuscriptReviewContributor $contribution): bool => $contribution->orcid_sync === null)
             ->each(function (ManuscriptReviewContributor $contribution) use ($request): void {
-                $this->recordIntent($request, $contribution, OrcidSyncIntent::WANTED);
+                $contribution->recordOrcidIntent(OrcidSyncIntent::WANTED, $request->user());
                 dispatch(new SyncReviewContributionWithOrcid($contribution));
             });
 
         // reloaded: the syncs may already have run
         return $this->list($author, $this->eligibleContributions($author));
+    }
+
+    /**
+     * Whether the author's contributions are added to ORCID as soon as their
+     * publication is published. Only future publications: turning it on leaves
+     * the backlog to "Add all", turning it off leaves ORCID as it is.
+     */
+    public function updateAutoSync(Request $request): JsonResponse
+    {
+        $author = $request->user()->author;
+        abort_if($author === null, 404);
+
+        $validated = $request->validate([
+            'auto_sync' => ['required', 'boolean'],
+        ]);
+
+        $author->update(['orcid_auto_sync_reviews' => $validated['auto_sync']]);
+
+        return response()->json(['auto_sync' => $author->orcid_auto_sync_reviews]);
     }
 
     /**
@@ -87,6 +107,7 @@ class OrcidReviewContributionController extends Controller
         return OrcidReviewContributionResource::collection($contributions)->additional([
             'meta' => [
                 'can_write_to_orcid' => $author->hasValidOrcidCredentials(),
+                'auto_sync' => $author->orcid_auto_sync_reviews,
             ],
         ]);
     }
@@ -101,26 +122,11 @@ class OrcidReviewContributionController extends Controller
         abort_if($intent === OrcidSyncIntent::WANTED && ! $contribution->isEligibleForOrcid(), 422, 'This contribution cannot be credited on ORCID.');
 
         if ($contribution->orcid_sync !== $intent) {
-            $this->recordIntent($request, $contribution, $intent);
+            $contribution->recordOrcidIntent($intent, $request->user());
         }
 
         dispatch(new SyncReviewContributionWithOrcid($contribution));
 
         return OrcidReviewContributionResource::make($contribution->refresh());
-    }
-
-    private function recordIntent(Request $request, ManuscriptReviewContributor $contribution, OrcidSyncIntent $intent): void
-    {
-        $contribution->orcid_sync = $intent;
-        $contribution->save();
-
-        activity()
-            ->performedOn($contribution->manuscriptRecord)
-            ->withProperties(['author_id' => $contribution->author_id, 'orcid_sync' => $intent->value])
-            ->causedBy($request->user())
-            ->log(match ($intent) {
-                OrcidSyncIntent::WANTED => 'manuscript.review-contributor.orcid-wanted',
-                OrcidSyncIntent::DECLINED => 'manuscript.review-contributor.orcid-declined',
-            });
     }
 }

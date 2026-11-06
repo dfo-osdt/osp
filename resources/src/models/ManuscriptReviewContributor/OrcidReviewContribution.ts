@@ -32,6 +32,7 @@ export interface OrcidReviewContributionResourceList {
   data: OrcidReviewContributionResource[]
   meta: {
     can_write_to_orcid: boolean
+    auto_sync: boolean
   }
 }
 
@@ -72,6 +73,17 @@ export class OrcidReviewContributionService {
   public static async addAll() {
     const response = await http.post<null, OrcidReviewContributionResourceList>(
       'api/user/orcid/review-contributions/add-all',
+    )
+    return response.data
+  }
+
+  /**
+   * Add contributions to ORCID as soon as their report is published, from now on
+   */
+  public static async updateAutoSync(autoSync: boolean) {
+    const response = await http.put<{ auto_sync: boolean }, { auto_sync: boolean }>(
+      'api/user/orcid/review-contributions/auto-sync',
+      { auto_sync: autoSync },
     )
     return response.data
   }

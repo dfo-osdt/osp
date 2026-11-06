@@ -130,6 +130,34 @@ async function addAllToOrcid() {
   }
 }
 
+const savingAutoSync = ref(false)
+
+async function updateAutoSync(autoSync: boolean) {
+  if (!contributions.value)
+    return
+
+  savingAutoSync.value = true
+  try {
+    const response = await OrcidReviewContributionService.updateAutoSync(autoSync)
+    contributions.value.meta.auto_sync = response.auto_sync
+    q.notify({
+      type: 'positive',
+      message: autoSync
+        ? t('orcid-review-credit.auto-sync-on')
+        : t('orcid-review-credit.auto-sync-off'),
+    })
+  }
+  catch {
+    q.notify({
+      type: 'negative',
+      message: t('orcid-review-credit.auto-sync-error'),
+    })
+  }
+  finally {
+    savingAutoSync.value = false
+  }
+}
+
 async function loadContributions() {
   loading.value = true
   try {
@@ -195,6 +223,28 @@ onBeforeUnmount(stopPolling)
       </template>
     </q-banner>
     <q-inner-loading :showing="loading" />
+    <q-list v-if="contributions" bordered class="rounded-borders q-mb-md">
+      <q-item>
+        <q-item-section avatar top>
+          <q-icon name="mdi-autorenew" color="primary" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ t('orcid-review-credit.auto-sync') }}</q-item-label>
+          <q-item-label caption>
+            {{ t('orcid-review-credit.auto-sync-hint') }}
+          </q-item-label>
+        </q-item-section>
+        <q-item-section side top>
+          <q-toggle
+            :model-value="contributions.meta.auto_sync"
+            :aria-label="t('orcid-review-credit.auto-sync')"
+            :disable="savingAutoSync"
+            data-test="orcid-review-auto-sync"
+            @update:model-value="updateAutoSync"
+          />
+        </q-item-section>
+      </q-item>
+    </q-list>
     <div v-if="hasUndecided" class="row justify-end q-mb-sm">
       <q-btn
         unelevated
