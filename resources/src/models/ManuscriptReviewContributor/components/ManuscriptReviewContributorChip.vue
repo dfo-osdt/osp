@@ -31,6 +31,11 @@ const label = computed(() => t('manage-review-contributors.chip-label', {
   name: name.value,
 }))
 
+// icons inside the chip are aria-hidden, so the ORCID status has to be part of the chip's own name
+const ariaLabel = computed(() => props.manuscriptReviewContributor.data.orcid_synced
+  ? `${label.value}. ${t('manage-review-contributors.on-orcid')}`
+  : label.value)
+
 const role = computed({
   get() {
     return props.manuscriptReviewContributor.data.role
@@ -58,6 +63,7 @@ const canChangeRole = computed(() => !props.readonly && props.manuscriptReviewCo
     clickable
     :removable="removable"
     color="teal-2"
+    :aria-label="ariaLabel"
     @remove="emit('delete', props.manuscriptReviewContributor)"
   >
     {{ label }}
@@ -75,7 +81,6 @@ const canChangeRole = computed(() => !props.readonly && props.manuscriptReviewCo
     <q-icon
       v-if="manuscriptReviewContributor.data.orcid_synced"
       name="img:/assets/orcid/orcid.logo.icon.svg"
-      :aria-label="t('manage-review-contributors.on-orcid')"
       size="18px"
       class="q-ml-xs"
     >
@@ -161,16 +166,21 @@ const canChangeRole = computed(() => !props.readonly && props.manuscriptReviewCo
             </div>
           </q-item-section>
         </q-item>
-        <q-item v-if="manuscriptReviewContributor.data.author?.data.orcid">
+        <q-item v-if="manuscriptReviewContributor.data.author?.data.orcid || manuscriptReviewContributor.data.orcid_synced">
           <q-item-section avatar>
             <OrcidAvatar />
           </q-item-section>
           <q-item-section>
-            <a
-              class="text-primary"
-              :href="manuscriptReviewContributor.data.author?.data.orcid"
-              target="_blank"
-            >{{ manuscriptReviewContributor.data.author?.data.orcid }}</a>
+            <q-item-label v-if="manuscriptReviewContributor.data.author?.data.orcid">
+              <a
+                class="text-primary"
+                :href="manuscriptReviewContributor.data.author?.data.orcid"
+                target="_blank"
+              >{{ manuscriptReviewContributor.data.author?.data.orcid }}</a>
+            </q-item-label>
+            <q-item-label v-if="manuscriptReviewContributor.data.orcid_synced" caption>
+              {{ t('manage-review-contributors.on-orcid') }}
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
