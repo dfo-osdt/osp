@@ -71,7 +71,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/user/orcid/revoke', RevokeTokenController::class);
     Route::post('/user/orcid/refresh', RefreshFromOrcidController::class);
     Route::get('/user/orcid/review-contributions', [OrcidReviewContributionController::class, 'index']);
+    Route::post('/user/orcid/review-contributions/add-all', [OrcidReviewContributionController::class, 'addAll']);
     Route::post('/user/orcid/review-contributions/{manuscriptReviewContributor}/add', [OrcidReviewContributionController::class, 'add']);
+    Route::post('/user/orcid/review-contributions/{manuscriptReviewContributor}/remove', [OrcidReviewContributionController::class, 'remove']);
 
     // Look for AAD users to invite
     Route::post('/azure-directory/users', [AzureDirectorySearchController::class, '__invoke']);

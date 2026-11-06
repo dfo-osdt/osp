@@ -25,15 +25,17 @@ use VincentAuger\OrcidSdk\Exceptions\OrcidRequestException;
 use VincentAuger\OrcidSdk\Resources\PeerReviewsResource;
 
 /**
- * Brings a review contribution the author wants on ORCID and its ORCID peer
- * review in line, based on the state of the contribution when the job runs:
+ * Brings a review contribution and its ORCID peer review in line with what the
+ * author wants, based on the state of the contribution when the job runs:
  *
+ * - declined but on ORCID: delete it there and clear the put-code
  * - synced before: update it on ORCID; if the author deleted it there, they
  *   no longer want it: mark it declined instead of creating it again
  * - never synced: create it on ORCID and store the put-code
  *
  * When the author is not connected to ORCID, or the default organization lacks
- * data ORCID requires, the contribution stays pending. Pending contributions are
+ * data ORCID requires, the contribution stays pending (a removal only needs the
+ * connection). Pending contributions are
  * synced again when the author reconnects (see dispatchPendingFor()).
  */
 class SyncReviewContributionWithOrcid implements ShouldQueue
@@ -76,10 +78,10 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
     public static function dispatchPendingFor(Author $author): int
     {
         $pending = $author->reviewContributions()
-            ->where('orcid_sync', OrcidSyncIntent::WANTED)
+            ->whereNotNull('orcid_sync')
             ->with('manuscriptRecord.publication.journal')
             ->get()
-            ->filter(fn (ManuscriptReviewContributor $contributor): bool => $contributor->needsSyncWithOrcid());
+            ->filter(fn (ManuscriptReviewContributor $contributor): bool => $contributor->needsRemovalFromOrcid() || $contributor->needsSyncWithOrcid());
 
         $pending->each(fn (ManuscriptReviewContributor $contributor): PendingDispatch => dispatch(new self($contributor)));
 
@@ -90,12 +92,18 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
     {
         $contributor = $this->contributor;
 
-        if (! $contributor->needsSyncWithOrcid()) {
+        if (! $contributor->needsRemovalFromOrcid() && ! $contributor->needsSyncWithOrcid()) {
             return;
         }
 
         try {
-            $this->createOrUpdate($orcid->forAuthor($contributor->author)->peerReviews(), $contributor);
+            $peerReviews = $orcid->forAuthor($contributor->author)->peerReviews();
+
+            if ($contributor->needsRemovalFromOrcid()) {
+                $this->delete($peerReviews, $contributor);
+            } else {
+                $this->createOrUpdate($peerReviews, $contributor);
+            }
         } catch (AuthorNotConnectedToOrcid|ReviewContributionNotSyncable $exception) {
             Log::info('ORCID sync pending: '.$exception->getMessage());
         } catch (OrcidException $exception) {
@@ -184,6 +192,37 @@ class SyncReviewContributionWithOrcid implements ShouldQueue
         } catch (ReviewContributionNotSyncable) {
             return false;
         }
+    }
+
+    /**
+     * Only the put-code is cleared: if the author wanted the contribution again
+     * while it was being deleted, the job dispatched with that change creates it.
+     */
+    private function delete(PeerReviewsResource $peerReviews, ManuscriptReviewContributor $contributor): void
+    {
+        try {
+            $peerReviews->delete($contributor->orcid_putcode);
+        } catch (OrcidNotFoundException) {
+            // already deleted on ORCID
+        }
+
+        $putCode = $contributor->orcid_putcode;
+
+        DB::transaction(function () use ($contributor): void {
+            $current = ManuscriptReviewContributor::query()->lockForUpdate()->findOrFail($contributor->id);
+            $current->orcid_putcode = null;
+            $current->orcid_updated_at = null;
+
+            // syncing is not a change to the contribution: keep its updated_at
+            ManuscriptReviewContributor::withoutTimestamps(fn () => $current->save());
+        });
+
+        activity()
+            ->performedOn($contributor->manuscriptRecord)
+            ->withProperties(['author_id' => $contributor->author_id, 'put_code' => $putCode])
+            ->log('manuscript.review-contributor.orcid-deleted');
+
+        Log::info('ORCID peer review deleted', ['manuscript_review_contributor_id' => $contributor->id, 'put_code' => $putCode]);
     }
 
     /**

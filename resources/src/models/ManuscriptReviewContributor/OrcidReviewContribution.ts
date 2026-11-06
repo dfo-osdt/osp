@@ -6,7 +6,7 @@ import { http } from '@/api/http'
 /**
  * Where a review contribution stands with the author's ORCID record
  */
-export type OrcidReviewStatus = 'not_on_orcid' | 'pending' | 'on_orcid'
+export type OrcidReviewStatus = 'not_on_orcid' | 'pending' | 'on_orcid' | 'declined'
 
 /**
  * A review contribution, as listed to its author for ORCID review credit
@@ -51,6 +51,26 @@ export class OrcidReviewContributionService {
   public static async add(id: number) {
     const response = await http.post<null, OrcidReviewContributionResource>(
       `api/user/orcid/review-contributions/${id}/add`,
+    )
+    return response.data
+  }
+
+  /**
+   * Remove the contribution from the author's ORCID record and never add it again unless they ask
+   */
+  public static async remove(id: number) {
+    const response = await http.post<null, OrcidReviewContributionResource>(
+      `api/user/orcid/review-contributions/${id}/remove`,
+    )
+    return response.data
+  }
+
+  /**
+   * Add every contribution the author has not decided on yet, leaving declined ones off
+   */
+  public static async addAll() {
+    const response = await http.post<null, OrcidReviewContributionResourceList>(
+      'api/user/orcid/review-contributions/add-all',
     )
     return response.data
   }

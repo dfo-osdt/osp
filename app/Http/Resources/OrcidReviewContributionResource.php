@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\OrcidSyncIntent;
 use App\Models\ManuscriptReviewContributor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,6 +30,7 @@ class OrcidReviewContributionResource extends JsonResource
                 'role' => $this->role,
                 'review_date' => $this->review_date?->toDateString(),
                 'orcid_status' => match (true) {
+                    $this->orcid_sync === OrcidSyncIntent::DECLINED => 'declined',
                     ! $this->isWantedOnOrcid() => 'not_on_orcid',
                     $this->isSyncedWithOrcid() => 'on_orcid',
                     default => 'pending',

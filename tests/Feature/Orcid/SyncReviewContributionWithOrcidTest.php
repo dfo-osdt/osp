@@ -16,6 +16,7 @@ use Saloon\Laravel\Facades\Saloon;
 use Spatie\Activitylog\Models\Activity;
 use VincentAuger\OrcidSdk\Exceptions\OrcidServerException;
 use VincentAuger\OrcidSdk\Requests\PeerReviews\CreatePeerReview;
+use VincentAuger\OrcidSdk\Requests\PeerReviews\DeletePeerReview;
 use VincentAuger\OrcidSdk\Requests\PeerReviews\UpdatePeerReview;
 
 /**
@@ -120,6 +121,23 @@ test('a peer review the author deleted on ORCID is declined, not created again',
     expect($contributor->refresh()->orcid_sync)->toBe(OrcidSyncIntent::DECLINED)
         ->and($contributor->orcid_putcode)->toBeNull();
 });
+
+test('a declined contribution on ORCID is deleted there and its put-code cleared', function (MockResponse $deleteResponse): void {
+    $mockClient = Saloon::fake([DeletePeerReview::class => $deleteResponse]);
+    $contributor = wantedReviewContribution(['orcid_sync' => OrcidSyncIntent::DECLINED, 'orcid_putcode' => 4567, 'orcid_updated_at' => now()]);
+
+    runReviewSync($contributor)->assertNotFailed();
+
+    $mockClient->assertSent(fn (DeletePeerReview $request, $response): bool => str_ends_with($response->getPendingRequest()->getUrl(), '/peer-review/4567'));
+    $contributor->refresh();
+    expect($contributor->orcid_putcode)->toBeNull()
+        ->and($contributor->orcid_updated_at)->toBeNull()
+        ->and($contributor->orcid_sync)->toBe(OrcidSyncIntent::DECLINED);
+    expect(Activity::query()->where('description', 'manuscript.review-contributor.orcid-deleted')->where('subject_id', $contributor->manuscript_record_id)->exists())->toBeTrue();
+})->with([
+    'deleted' => [MockResponse::make('', 204)],
+    'already gone' => [orcidPeerReviewError(404, 9016)],
+]);
 
 test('a peer review already created by an earlier attempt is adopted', function (): void {
     $mockClient = Saloon::fake([
@@ -229,19 +247,20 @@ test('ORCID outages are retried', function (): void {
         ->and($contributor->refresh()->orcid_putcode)->toBeNull();
 });
 
-test('pending wanted contributions are dispatched when an author reconnects', function (): void {
+test('pending additions and removals are dispatched when an author reconnects', function (): void {
     $author = Author::factory()->withOrcidConnection()->create();
     $new = wantedReviewContribution(author: $author);
     $outOfDate = wantedReviewContribution(['orcid_putcode' => 1, 'orcid_updated_at' => null], $author);
     wantedReviewContribution(['orcid_putcode' => 2, 'orcid_updated_at' => now()->addMinute()], $author);
     wantedReviewContribution(['orcid_sync' => null], $author);
     wantedReviewContribution(['orcid_sync' => OrcidSyncIntent::DECLINED], $author);
+    $toRemove = wantedReviewContribution(['orcid_sync' => OrcidSyncIntent::DECLINED, 'orcid_putcode' => 3, 'orcid_updated_at' => now()->addMinute()], $author);
 
-    expect(SyncReviewContributionWithOrcid::dispatchPendingFor($author))->toBe(2);
+    expect(SyncReviewContributionWithOrcid::dispatchPendingFor($author))->toBe(3);
 
     $dispatched = Queue::pushed(SyncReviewContributionWithOrcid::class)
         ->map(fn (SyncReviewContributionWithOrcid $job): int => $job->contributor->id)
         ->sort()->values()->all();
 
-    expect($dispatched)->toBe(collect([$new->id, $outOfDate->id])->sort()->values()->all());
+    expect($dispatched)->toBe(collect([$new->id, $outOfDate->id, $toRemove->id])->sort()->values()->all());
 });

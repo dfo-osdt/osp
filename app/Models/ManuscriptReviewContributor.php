@@ -98,6 +98,14 @@ class ManuscriptReviewContributor extends Model
     }
 
     /**
+     * Whether the author declined the contribution while it is still on their ORCID record
+     */
+    public function needsRemovalFromOrcid(): bool
+    {
+        return $this->orcid_sync === OrcidSyncIntent::DECLINED && $this->isSyncedWithOrcid();
+    }
+
+    /**
      * The ORCID peer review roles that apply to our reports. Chair,
      * member and organizer are for conferences and committees.
      *
