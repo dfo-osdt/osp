@@ -22,7 +22,7 @@ class DeleteSubmittedManuscriptRecord
             $manuscriptRecord->managementReviewSteps()->update(['previous_step_id' => null]);
             $manuscriptRecord->managementReviewSteps()->delete();
             $manuscriptRecord->manuscriptAuthors()->delete();
-            $manuscriptRecord->peerReviewers()->delete();
+            $manuscriptRecord->reviewContributors()->delete();
             $manuscriptRecord->fundingSources()->forceDelete();
             $manuscriptRecord->shareables()->delete();
 
