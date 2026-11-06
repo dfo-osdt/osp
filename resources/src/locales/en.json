@@ -756,6 +756,7 @@
   },
   "orcid-review-credit": {
     "title": "ORCID review credit",
+    "section-title": "Peer reviews",
     "intro": "Your work as a reviewer or editor of reports published in participating DFO series can be added to your ORCID record as peer reviews.",
     "manage": "Manage ORCID review credit",
     "connect-banner": "Connect your ORCID iD and allow the portal to update your record to get credit for these contributions.",
