@@ -81,7 +81,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property-read int|null $manuscript_authors_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
- * @property-read Collection<int, ManuscriptPeerReviewer> $peerReviewers
+ * @property-read Collection<int, ManuscriptReviewContributor> $reviewContributors
  * @property-read int|null $peer_reviewers_count
  * @property-read Publication|null $publication
  * @property-read Region $region
@@ -280,14 +280,14 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
     }
 
     /**
-     * A manuscript has no to many peer reviewers. Only
-     * internal publications have peer reviewers.
+     * A manuscript has no to many review contributors (reviewers
+     * and editors). Only internal publications have them.
      *
-     * @return HasMany<ManuscriptPeerReviewer, $this>
+     * @return HasMany<ManuscriptReviewContributor, $this>
      */
-    public function peerReviewers(): HasMany
+    public function reviewContributors(): HasMany
     {
-        return $this->hasMany(ManuscriptPeerReviewer::class);
+        return $this->hasMany(ManuscriptReviewContributor::class);
     }
 
     /**

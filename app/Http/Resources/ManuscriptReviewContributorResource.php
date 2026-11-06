@@ -2,15 +2,15 @@
 
 namespace App\Http\Resources;
 
-use App\Models\ManuscriptPeerReviewer;
+use App\Models\ManuscriptReviewContributor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @mixin ManuscriptPeerReviewer
+ * @mixin ManuscriptReviewContributor
  */
-class ManuscriptPeerReviewerResource extends JsonResource
+class ManuscriptReviewContributorResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,6 +24,7 @@ class ManuscriptPeerReviewerResource extends JsonResource
                 'id' => $this->id,
                 'manuscript_record_id' => $this->manuscript_record_id,
                 'author_id' => $this->author_id,
+                'role' => $this->role,
                 'author' => AuthorResource::make($this->whenLoaded('author')),
             ],
             'can' => [

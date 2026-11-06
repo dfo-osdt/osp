@@ -17,11 +17,11 @@ use App\Http\Controllers\JournalController;
 use App\Http\Controllers\ManagementReviewDelegationController;
 use App\Http\Controllers\ManagementReviewStepController;
 use App\Http\Controllers\ManuscriptAuthorController;
-use App\Http\Controllers\ManuscriptPeerReviewerController;
 use App\Http\Controllers\ManuscriptRecordController;
 use App\Http\Controllers\ManuscriptRecordFileController;
 use App\Http\Controllers\ManuscriptRecordFundingSourceController;
 use App\Http\Controllers\ManuscriptRecordSharingController;
+use App\Http\Controllers\ManuscriptReviewContributorController;
 use App\Http\Controllers\NotificationGroupMemberController;
 use App\Http\Controllers\NotificationGroupMembershipController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
@@ -108,11 +108,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/manuscript-records/{manuscriptRecord}/manuscript-authors', 'store');
     });
 
-    Route::controller(ManuscriptPeerReviewerController::class)->group(function () {
-        Route::get('/manuscript-records/{manuscriptRecord}/peer-reviewers', 'index');
-        Route::post('/manuscript-records/{manuscriptRecord}/peer-reviewers', 'store');
-        Route::get('/manuscript-records/{manuscriptRecord}/peer-reviewers/{manuscriptPeerReviewer}', 'show');
-        Route::delete('/manuscript-records/{manuscriptRecord}/peer-reviewers/{manuscriptPeerReviewer}', 'destroy');
+    Route::controller(ManuscriptReviewContributorController::class)->group(function () {
+        Route::get('/manuscript-records/{manuscriptRecord}/review-contributors', 'index');
+        Route::post('/manuscript-records/{manuscriptRecord}/review-contributors', 'store');
+        Route::get('/manuscript-records/{manuscriptRecord}/review-contributors/{manuscriptReviewContributor}', 'show');
+        Route::put('/manuscript-records/{manuscriptRecord}/review-contributors/{manuscriptReviewContributor}', 'update');
+        Route::delete('/manuscript-records/{manuscriptRecord}/review-contributors/{manuscriptReviewContributor}', 'destroy');
     });
 
     Route::controller(ManagementReviewStepController::class)->group(function () {

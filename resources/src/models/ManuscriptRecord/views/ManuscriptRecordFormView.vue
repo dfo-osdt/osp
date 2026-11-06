@@ -15,7 +15,7 @@ import WarnOnUnsavedChanges from '@/components/WarnOnUnsavedChanges.vue'
 import FunctionalAreaSelect from '@/models/FunctionalArea/components/FunctionalAreaSelect.vue'
 import ManageFundingSourcesCard from '@/models/FundingSource/components/ManageFundingSourcesCard.vue'
 import ManageManuscriptAuthorsCard from '@/models/ManuscriptAuthor/components/ManageManuscriptAuthorsCard.vue'
-import ManageManuscriptPeerReviewersCard from '@/models/ManuscriptPeerReviewer/components/ManageManuscriptPeerReviewersCard.vue'
+import ManageManuscriptReviewContributorsCard from '@/models/ManuscriptReviewContributor/components/ManageManuscriptReviewContributorsCard.vue'
 import RegionSelect from '@/models/Region/components/RegionSelect.vue'
 import CloneManuscriptButton from '../components/CloneManuscriptButton.vue'
 import DeleteManuscriptButton from '../components/DeleteManuscriptButton.vue'
@@ -51,8 +51,8 @@ const manuscriptAuthorsCard = ref<InstanceType<
 const manuscriptFileManagementCard = ref<InstanceType<
     typeof ManuscriptFileManagementCard
 > | null>(null)
-const manuscriptPeerReviewersCard = ref<InstanceType<
-    typeof ManageManuscriptPeerReviewersCard
+const manuscriptReviewContributorsCard = ref<InstanceType<
+    typeof ManageManuscriptReviewContributorsCard
 > | null>(null)
 
 // watch if there is a change
@@ -340,9 +340,9 @@ function onSubmitted(manuscript: ManuscriptRecordResource) {
       class="q-mb-lg"
       secondary
     />
-    <ManageManuscriptPeerReviewersCard
+    <ManageManuscriptReviewContributorsCard
       v-if="manuscriptResource?.data.type === 'secondary'"
-      ref="manuscriptPeerReviewersCard"
+      ref="manuscriptReviewContributorsCard"
       :manuscript-record-id="id"
       :manuscript-authors="manuscriptAuthorsCard?.manuscriptAuthors.data"
       :readonly="isManuscriptReadOnly"

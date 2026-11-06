@@ -10,8 +10,8 @@ use App\Models\FunctionalArea;
 use App\Models\FundingSource;
 use App\Models\ManagementReviewStep;
 use App\Models\ManuscriptAuthor;
-use App\Models\ManuscriptPeerReviewer;
 use App\Models\ManuscriptRecord;
+use App\Models\ManuscriptReviewContributor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -68,7 +68,8 @@ class ManuscriptRecordFactory extends Factory
             $manuscript->fundingSources()->saveMany(FundingSource::factory()->count(3)->make()); // create 3 funding sources
             $manuscript->addManuscriptFile(getcwd().'/database/factories/files/BieberFever.pdf', true); // add a manuscript file
             if ($manuscript->type == ManuscriptRecordType::SECONDARY) {
-                $manuscript->peerReviewers()->saveMany(ManuscriptPeerReviewer::factory()->count(2)->make()); // add 2 peer reviewers for secondary manuscripts
+                $manuscript->reviewContributors()->saveMany(ManuscriptReviewContributor::factory()->count(2)->make()); // add 2 reviewers for secondary manuscripts
+                $manuscript->reviewContributors()->save(ManuscriptReviewContributor::factory()->editor()->make()); // and the editor who handled the report
             }
         });
     }

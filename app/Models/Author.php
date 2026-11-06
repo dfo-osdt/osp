@@ -54,7 +54,7 @@ use VincentAuger\OrcidSdk\Enums\Scope as OrcidScope;
  * @property-read Collection<int, ManuscriptAuthor> $manuscriptAuthors
  * @property-read int|null $manuscript_authors_count
  * @property-read Organization $organization
- * @property-read Collection<int, ManuscriptPeerReviewer> $peerReviews
+ * @property-read Collection<int, ManuscriptReviewContributor> $reviewContributions
  * @property-read int|null $peer_reviews_count
  * @property-read Collection<int, Publication> $publications
  * @property-read int|null $publications_count
@@ -323,11 +323,11 @@ class Author extends Model
     }
 
     /**
-     * @return HasMany<ManuscriptPeerReviewer, $this>
+     * @return HasMany<ManuscriptReviewContributor, $this>
      */
-    public function peerReviews(): HasMany
+    public function reviewContributions(): HasMany
     {
-        return $this->hasMany(ManuscriptPeerReviewer::class);
+        return $this->hasMany(ManuscriptReviewContributor::class);
     }
 
     /**
