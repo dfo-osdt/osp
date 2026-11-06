@@ -756,6 +756,7 @@
   },
   "orcid-review-credit": {
     "title": "Reconnaissance ORCID des évaluations",
+    "back": "Retour au profil d'auteur",
     "intro": "Vos contributions comme réviseur ou éditeur à des rapports publiés dans les séries du MPO participantes peuvent être ajoutées à votre dossier ORCID comme évaluations par les pairs.",
     "connect-banner": "Connectez votre ORCID iD et autorisez le portail à mettre à jour votre dossier pour obtenir la reconnaissance de ces contributions.",
     "empty": "Aucune de vos contributions d'évaluation ne peut encore être ajoutée à ORCID. Elles apparaîtront ici une fois le rapport publié avec un DOI dans une série participante.",
