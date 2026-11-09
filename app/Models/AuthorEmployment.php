@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Contracts\HasOrcidSyncStatus;
+use App\Enums\OrcidSyncStatus;
 use Carbon\Carbon;
 use Database\Factories\AuthorEmploymentFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -59,7 +61,7 @@ use Spatie\Activitylog\Support\LogOptions;
  *
  * @mixin \Eloquent
  */
-class AuthorEmployment extends Model
+class AuthorEmployment extends Model implements HasOrcidSyncStatus
 {
     /** @use HasFactory<AuthorEmploymentFactory> */
     use HasFactory;
@@ -110,6 +112,23 @@ class AuthorEmployment extends Model
     public function needsSyncWithOrcid(): bool
     {
         return $this->orcid_updated_at === null || $this->updated_at->gt($this->orcid_updated_at);
+    }
+
+    /**
+     * Where the employment stands with ORCID, for auditing. A deleted employment
+     * still on ORCID is waiting for the delete. What is on ORCID and up to date
+     * shows as such even if the author has since disconnected.
+     *
+     * Eager load `author` when checking many.
+     */
+    public function orcidSyncStatus(): OrcidSyncStatus
+    {
+        return match (true) {
+            $this->trashed() => OrcidSyncStatus::REMOVING,
+            $this->isSyncedWithOrcid() && ! $this->needsSyncWithOrcid() => OrcidSyncStatus::ON_ORCID,
+            ! $this->author->hasValidOrcidCredentials() => OrcidSyncStatus::NOT_CONNECTED,
+            default => OrcidSyncStatus::PENDING,
+        };
     }
 
     public function author()
