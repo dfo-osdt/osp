@@ -123,6 +123,18 @@ test('nobody can add a DFO series publication by hand', function (array $roles):
     'chief editor' => [[UserRole::CHIEF_EDITOR]],
 ]);
 
+test('a malformed journal is refused as a validation error', function (Closure $journalId): void {
+    $this->actingAs(User::factory()->create())->postJson('/api/publications', [
+        'status' => PublicationStatus::ACCEPTED,
+        'title' => 'Stock assessment of Atlantic cod',
+        'journal_id' => $journalId(),
+        'region_id' => 1,
+    ])->assertJsonValidationErrors('journal_id');
+})->with([
+    'unknown journal in an array' => [fn (): array => [999999999]],
+    'existing journal in an array' => [fn (): array => [Journal::factory()->create()->id]],
+]);
+
 /** Test a user can't create a publication with an invalid DOI */
 test('a user cannot create a publication with an invalid DOI', function (): void {
     $user = User::factory()->create();

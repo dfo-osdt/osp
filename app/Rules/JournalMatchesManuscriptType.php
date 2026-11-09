@@ -25,7 +25,8 @@ class JournalMatchesManuscriptType implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $journal = Journal::query()->find($value);
+        /** A missing or malformed journal is reported by the field's other rules */
+        $journal = is_scalar($value) ? Journal::query()->find($value) : null;
         if ($journal === null) {
             return;
         }
@@ -35,9 +36,9 @@ class JournalMatchesManuscriptType implements ValidationRule
         if ($mustBeDfoSeries && ! $journal->isDfoSeries()) {
             $fail('validation.journal_must_be_dfo_series')->translate();
         } elseif (! $mustBeDfoSeries && $journal->isDfoSeries()) {
-            $fail($this->manuscriptRecord === null
-                ? 'validation.journal_dfo_series_needs_manuscript_record'
-                : 'validation.journal_cannot_be_dfo_series')->translate();
+            $fail($this->manuscriptRecord instanceof ManuscriptRecord
+                ? 'validation.journal_cannot_be_dfo_series'
+                : 'validation.journal_dfo_series_needs_manuscript_record')->translate();
         }
     }
 }
