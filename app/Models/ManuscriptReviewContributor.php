@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Contracts\HasOrcidSyncStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\OrcidSyncIntent;
+use App\Enums\OrcidSyncStatus;
 use App\Enums\PublicationStatus;
 use Database\Factories\ManuscriptReviewContributorFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -58,7 +60,7 @@ use VincentAuger\OrcidSdk\Enums\PeerReviewType;
     'role',
     'review_date',
 ])]
-class ManuscriptReviewContributor extends Model
+class ManuscriptReviewContributor extends Model implements HasOrcidSyncStatus
 {
     /** @use HasFactory<ManuscriptReviewContributorFactory> */
     use HasFactory;
@@ -140,6 +142,25 @@ class ManuscriptReviewContributor extends Model
     }
 
     /**
+     * Where the contribution stands with ORCID, for auditing. What is on ORCID
+     * and up to date shows as such even if the author has since disconnected.
+     *
+     * Eager load `author` and `manuscriptRecord.publication.journal` when checking many.
+     */
+    public function orcidSyncStatus(): OrcidSyncStatus
+    {
+        return match (true) {
+            $this->needsRemovalFromOrcid() => OrcidSyncStatus::REMOVING,
+            ! $this->isEligibleForOrcid() || $this->author?->user_id === null => OrcidSyncStatus::NOT_ELIGIBLE,
+            $this->orcid_sync === OrcidSyncIntent::DECLINED => OrcidSyncStatus::DECLINED,
+            $this->isSyncedWithOrcid() && ! $this->needsSyncWithOrcid() => OrcidSyncStatus::ON_ORCID,
+            ! $this->author->hasValidOrcidCredentials() => OrcidSyncStatus::NOT_CONNECTED,
+            $this->orcid_sync === null => OrcidSyncStatus::NOT_DECIDED,
+            default => OrcidSyncStatus::PENDING,
+        };
+    }
+
+    /**
      * The ORCID peer review roles that apply to our reports. Chair,
      * member and organizer are for conferences and committees.
      *
@@ -162,18 +183,45 @@ class ManuscriptReviewContributor extends Model
      */
     public function isEligibleForOrcid(): bool
     {
-        $manuscriptRecord = $this->manuscriptRecord;
-        $publication = $manuscriptRecord?->publication;
-        $journal = $publication?->journal;
+        return $this->orcidIneligibilityReason() === null;
+    }
 
-        if ($manuscriptRecord?->type !== ManuscriptRecordType::SECONDARY || $journal === null) {
-            return false;
+    /**
+     * Why this contribution cannot be on the author's ORCID record right now,
+     * as a key of `orcid.ineligible`, or null when it is eligible.
+     *
+     * Eager load `manuscriptRecord.publication.journal` when checking many.
+     */
+    public function orcidIneligibilityReason(): ?string
+    {
+        $manuscriptRecord = $this->manuscriptRecord;
+
+        if ($manuscriptRecord === null) {
+            return 'manuscript_deleted';
+        }
+        if ($manuscriptRecord->type !== ManuscriptRecordType::SECONDARY) {
+            return 'not_secondary';
         }
 
-        return $publication->status === PublicationStatus::PUBLISHED
-            && filled($publication->doi)
-            && $journal->isOrcidSyncEnabled()
-            && $journal->hasValidIssn();
+        $publication = $manuscriptRecord->publication;
+
+        if ($publication === null) {
+            return 'no_publication';
+        }
+        if ($publication->status !== PublicationStatus::PUBLISHED) {
+            return 'not_published';
+        }
+        if (blank($publication->doi)) {
+            return 'no_doi';
+        }
+        if (! $publication->journal->isOrcidSyncEnabled()) {
+            return 'journal_not_synced';
+        }
+        if (! $publication->journal->hasValidIssn()) {
+            return 'invalid_issn';
+        }
+
+        return null;
     }
 
     /**
