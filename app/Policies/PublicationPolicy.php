@@ -6,7 +6,6 @@ use App\Enums\MediaCollection;
 use App\Enums\Permissions\UserPermission;
 use App\Enums\PublicationStatus;
 use App\Enums\SupplementaryFileType;
-use App\Models\Journal;
 use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -149,7 +148,7 @@ class PublicationPolicy
     /** Can the user publish this publication */
     public function publish(User $user, Publication $publication): bool
     {
-        $isDfoSeries = $publication->journal->publisher == Journal::$dfoPublisher;
+        $isDfoSeries = $publication->journal->isDfoSeries();
 
         if ($user->hasPermissionTo(UserPermission::PUBLISH_INTERNAL_REPORTS)) {
             return true;

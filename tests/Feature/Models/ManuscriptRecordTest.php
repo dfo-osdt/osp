@@ -717,10 +717,10 @@ test('a manuscript cannot be accepted into a journal that does not match its typ
     'preprint in a DFO series' => [ManuscriptRecordType::PREPRINT, fn () => Journal::factory()->dfoSeries()->create()],
 ]);
 
-test('a manuscript\'s type can only change before it has a publication', function (bool $hasPublication, ManuscriptRecordType $newType, bool $accepted): void {
+test('a manuscript\'s type can only change before it has a publication', function (?Closure $publication, ManuscriptRecordType $newType, bool $accepted): void {
     $manuscript = ManuscriptRecord::factory()->secondary()->create();
-    if ($hasPublication) {
-        Publication::factory()->dfoSeries()->create(['manuscript_record_id' => $manuscript->id]);
+    if ($publication) {
+        $publication(Publication::factory()->dfoSeries()->create(['manuscript_record_id' => $manuscript->id]));
     }
 
     $response = $this->actingAs(User::factory()->withRoles([UserRole::ADMIN])->create())
@@ -734,10 +734,26 @@ test('a manuscript\'s type can only change before it has a publication', functio
         expect($manuscript->fresh())->type->toBe(ManuscriptRecordType::SECONDARY)->title->not->toBe('Updated title');
     }
 })->with([
-    'changed before publication' => [false, ManuscriptRecordType::PRIMARY, true],
-    'changed after publication' => [true, ManuscriptRecordType::PRIMARY, false],
-    'same type sent back after publication' => [true, ManuscriptRecordType::SECONDARY, true],
+    'changed before publication' => [null, ManuscriptRecordType::PRIMARY, true],
+    'changed after publication' => [fn (Publication $publication) => null, ManuscriptRecordType::PRIMARY, false],
+    'changed while its publication is soft-deleted' => [fn (Publication $publication) => $publication->delete(), ManuscriptRecordType::PRIMARY, false],
+    'same type sent back after publication' => [fn (Publication $publication) => null, ManuscriptRecordType::SECONDARY, true],
 ]);
+
+test('a manuscript already submitted to a journal can be accepted without sending the submission date again', function (): void {
+    $manuscript = ManuscriptRecord::factory()->reviewed()->create([
+        'type' => ManuscriptRecordType::PRIMARY,
+        'submitted_to_journal_on' => now()->subMonth(),
+    ]);
+
+    $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", [
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => Journal::factory()->create()->id,
+    ])->assertOk();
+
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::ACCEPTED)
+        ->and($manuscript->publication)->not->toBeNull();
+});
 
 test('a user cannot mark a secondary manuscript as accepted with an invalid ISBN', function (): void {
     $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();

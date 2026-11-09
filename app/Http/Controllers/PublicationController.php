@@ -67,7 +67,7 @@ class PublicationController extends Controller
         $validated = $request->validate([
             'status' => new Enum(PublicationStatus::class),
             'title' => ['required', 'string', new ValidTitleMarkup],
-            'journal_id' => ['required', 'integer', 'exists:journals,id', new JournalMatchesManuscriptType(manuscriptRecord: null)],
+            'journal_id' => ['bail', 'required', 'integer', 'exists:journals,id', new JournalMatchesManuscriptType(manuscriptRecord: null)],
             'doi' => ['nullable', 'string', new Doi],
             'isbn' => ['nullable', 'string', new Isbn],
             'catalogue_number' => ['nullable', 'string'],
@@ -139,7 +139,7 @@ class PublicationController extends Controller
         // validate the rest of the request
         $validated = $request->validate([
             'title' => ['sometimes', 'required', 'string', new ValidTitleMarkup],
-            'journal_id' => ['sometimes', 'required', 'integer', 'exists:journals,id', Rule::when(
+            'journal_id' => ['bail', 'sometimes', 'required', 'integer', 'exists:journals,id', Rule::when(
                 $request->integer('journal_id') !== $publication->journal_id,
                 [new JournalMatchesManuscriptType($publication->manuscriptRecord)]
             )],
