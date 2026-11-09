@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Models\Activity;
@@ -197,6 +198,47 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
     public function publicationAuthors(): HasMany
     {
         return $this->hasMany(PublicationAuthor::class);
+    }
+
+    /**
+     * Who to tell about a change in the publication's status: the owner, the
+     * manuscript's managers and the author users, with their notification groups,
+     * the region's notification group, and authors without a user account.
+     *
+     * @return SupportCollection<int, string>
+     */
+    public function notificationRecipientEmails(): SupportCollection
+    {
+        $this->load(
+            'user.notificationGroupMembers.member',
+            'region',
+            'publicationAuthors.author.user.notificationGroupMembers.member',
+            'manuscriptRecord.managementReviewSteps.user.notificationGroupMembers.member',
+        );
+
+        $managerUsers = $this->manuscriptRecord?->managementReviewSteps->pluck('user') ?? collect();
+
+        $authorUsers = $this->publicationAuthors->pluck('author.user')->filter();
+
+        $users = collect([$this->user])
+            ->merge($managerUsers)
+            ->merge($authorUsers)
+            ->filter();
+
+        $userEmails = $users->pluck('email')
+            ->merge($users->flatMap(fn (User $user): SupportCollection => $user->getNotificationGroupEmails()));
+
+        $nonUserAuthorEmails = $this->publicationAuthors
+            ->filter(fn (PublicationAuthor $publicationAuthor): bool => $publicationAuthor->author->user === null)
+            ->pluck('author.email');
+
+        return $userEmails
+            ->merge($this->region->getNotificationGroupEmails())
+            ->merge($nonUserAuthorEmails)
+            ->filter()
+            ->unique()
+            ->filter(fn ($email): bool => Str::of($email)->endsWith(config('osp.allowed_registration_email_domains')))
+            ->values();
     }
 
     // media

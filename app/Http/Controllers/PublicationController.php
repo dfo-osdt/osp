@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\DeletePublication;
 use App\Enums\OrcidSyncIntent;
 use App\Enums\PublicationStatus;
+use App\Events\PublicationPublished;
 use App\Exports\PublicationsExport;
 use App\Http\Resources\PublicationResource;
 use App\Jobs\SyncReviewContributionWithOrcid;
@@ -163,6 +164,7 @@ class PublicationController extends Controller
 
         if ($publication->manuscriptRecord !== null && $publication->wasChanged('status') && $publication->status === PublicationStatus::PUBLISHED) {
             $this->offerReviewContributionsForOrcid($publication, $request->user());
+            event(new PublicationPublished($publication, $request->user()));
         }
 
         return $this->defaultResource($publication);

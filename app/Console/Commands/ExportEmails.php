@@ -21,6 +21,7 @@ use App\Mail\NotificationGroupMemberRemovedMail;
 use App\Mail\PlanningBinder\FlaggedManuscriptAcceptedInJournalMail;
 use App\Mail\PlanningBinder\FlaggedManuscriptOnPrepintServerMail;
 use App\Mail\PlanningBinder\ManuscriptFlaggedForPlanningBinderMail;
+use App\Mail\PublicationPublishedMail;
 use App\Mail\ReviewContributionPublishedMail;
 use App\Mail\ReviewStepNotificationMail;
 use App\Mail\UserInvitedMail;
@@ -450,6 +451,18 @@ class ExportEmails extends Command
             $reviewContributionPublished = new ReviewContributionPublishedMail($contributor);
             $markdownContent = $reviewContributionPublished->render();
             $this->exportFile("review-contribution-published-{$variant}.html", $markdownContent);
+        }
+
+        // Publication published: primary names who published it, secondary names Science Publications
+        $primaryPublication = Publication::factory()->withManuscript()->create([
+            'status' => PublicationStatus::PUBLISHED,
+            'published_on' => now(),
+            'doi' => 'https://doi.org/10.60825/abc-123',
+        ]);
+        foreach (['primary' => $primaryPublication, 'secondary' => $publication] as $variant => $publishedPublication) {
+            $publicationPublished = new PublicationPublishedMail($publishedPublication, User::factory()->create());
+            $markdownContent = $publicationPublished->render();
+            $this->exportFile("publication-published-{$variant}.html", $markdownContent);
         }
 
         DB::rollBack();
