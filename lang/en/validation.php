@@ -58,6 +58,9 @@ return [
     "ipv4" => "The :attribute must be a valid IPv4 address.",
     "ipv6" => "The :attribute must be a valid IPv6 address.",
     "isbn" => "The :attribute must be a valid ISBN-13.",
+    "journal_cannot_be_dfo_series" => "Only secondary manuscripts can be published in a DFO series.",
+    "journal_dfo_series_needs_manuscript_record" => "DFO series publications go through a manuscript record and cannot be added by hand.",
+    "journal_must_be_dfo_series" => "Secondary manuscripts must be published in a DFO series.",
     "json" => "The :attribute must be a valid JSON string.",
     "lt" => [
         "array" => "The :attribute must have less than :value items.",
@@ -72,6 +75,7 @@ return [
         "string" => "The :attribute must be less than or equal to :value characters."
     ],
     "mac_address" => "The :attribute must be a valid MAC address.",
+    "manuscript_type_locked" => "The manuscript type cannot be changed once it has a publication.",
     "max" => [
         "array" => "The :attribute must not have more than :max items.",
         "file" => "The :attribute must not be greater than :max kilobytes.",

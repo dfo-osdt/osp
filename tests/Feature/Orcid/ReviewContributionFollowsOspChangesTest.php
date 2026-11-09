@@ -106,7 +106,7 @@ test('a publication change that does not affect ORCID items leaves them alone', 
     $mockClient->assertNothingSent();
 });
 
-test('the ORCID item is deleted when its publication moves to a journal that does not count, or loses its DOI', function (Closure $changes): void {
+test('the ORCID item is deleted when its publication moves to a series that does not count, or loses its DOI', function (Closure $changes): void {
     $mockClient = Saloon::fake([DeletePeerReview::class => MockResponse::make('', 204)]);
     $contributor = syncedReviewContribution();
     $publication = $contributor->manuscriptRecord->publication;
@@ -121,25 +121,7 @@ test('the ORCID item is deleted when its publication moves to a journal that doe
         ->and($contributor->orcid_sync)->toBe(OrcidSyncIntent::WANTED);
 })->with([
     'journal not flagged' => [fn (): array => ['journal_id' => Journal::factory()->dfoSeries()->create(['issn' => '1919-5079'])->id]],
-    'external journal' => [fn (): array => ['journal_id' => Journal::factory()->create()->id]],
     'DOI removed' => [fn (): array => ['doi' => null]],
-]);
-
-test('the ORCID item is deleted when its manuscript is no longer secondary', function (ManuscriptRecordType $type): void {
-    $mockClient = Saloon::fake([DeletePeerReview::class => MockResponse::make('', 204)]);
-    $contributor = syncedReviewContribution();
-
-    $this->actingAs(User::factory()->withRoles([UserRole::ADMIN])->create())
-        ->putJson("api/manuscript-records/{$contributor->manuscript_record_id}", ['type' => $type->value])
-        ->assertOk();
-
-    $mockClient->assertSent(DeletePeerReview::class);
-    $contributor->refresh();
-    expect($contributor->orcid_putcode)->toBeNull()
-        ->and($contributor->orcid_sync)->toBe(OrcidSyncIntent::WANTED);
-})->with([
-    'primary' => [ManuscriptRecordType::PRIMARY],
-    'preprint' => [ManuscriptRecordType::PREPRINT],
 ]);
 
 test('turning off ORCID sync for a journal deletes the ORCID items of its publications once confirmed', function (array $changes): void {

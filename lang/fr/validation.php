@@ -58,6 +58,9 @@ return [
     "ipv4" => " :attribute doit être une adresse IPv4 valide.",
     "ipv6" => " :attribute doit être une adresse IPv6 valide.",
     "isbn" => "Le :attribute doit être un ISBN-13 valide.",
+    "journal_cannot_be_dfo_series" => "Seuls les manuscrits secondaires peuvent être publiés dans une série du MPO.",
+    "journal_dfo_series_needs_manuscript_record" => "Les publications des séries du MPO passent par un registre de manuscrit et ne peuvent pas être ajoutées manuellement.",
+    "journal_must_be_dfo_series" => "Les manuscrits secondaires doivent être publiés dans une série du MPO.",
     "json" => "Le :attribute doit être une chaîne JSON valide.",
     "lt" => [
         "array" => "Le :attribute doit contenir moins de :value éléments.",
@@ -72,6 +75,7 @@ return [
         "string" => "Le :attribute doit être inférieur ou égal à :value caractères."
     ],
     "mac_address" => "Le :attribute doit être une adresse MAC valide.",
+    "manuscript_type_locked" => "Le type de manuscrit ne peut plus être modifié une fois qu'il a une publication.",
     "max" => [
         "array" => "Le :attribute ne doit pas contenir plus de :max éléments.",
         "file" => "Le :attribute ne doit pas être supérieur à :max kilo-octets.",

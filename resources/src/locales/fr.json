@@ -380,7 +380,7 @@
     "publication-details": "Détails de publication",
     "published-on": "Publié le",
     "step1": {
-      "p1": "Cet assistant vous permet d'ajouter au portail des manuscrits publiés ; \nvous permettant de partager des publications passées ou d'ajouter des publications où le Formulaire du Registre des Manuscrits (FRM) a été fait par d'autres moyens.",
+      "p1": "Cet assistant vous permet d'ajouter au portail des manuscrits publiés ; \nvous permettant de partager des publications passées ou d'ajouter des publications où le Formulaire du Registre des Manuscrits (FRM) a été fait par d'autres moyens. Les publications des séries du MPO ne peuvent pas être ajoutées ici : elles passent par un registre de manuscrit.",
       "warning": "Si vous êtes ici pour faire réviser votre manuscrit par la gestion avant de le soumettre à une revue, ne continuez pas, créez plutôt un nouveau registre de manuscrit."
     },
     "title": "Créer une publication",

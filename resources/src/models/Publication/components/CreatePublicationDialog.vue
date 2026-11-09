@@ -150,7 +150,7 @@ async function create() {
             ]"
           />
           <JournalSelect
-            v-model="journalId" class="q-mb-md" :rules="[
+            v-model="journalId" class="q-mb-md" hide-dfo-series :rules="[
               (val: number) =>
                 val !== null || $t('common.required'),
             ]"

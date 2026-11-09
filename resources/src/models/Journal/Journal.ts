@@ -7,6 +7,7 @@ export interface Journal {
   title: string
   publisher: string
   issn: string | null
+  readonly is_dfo_series: boolean
 }
 
 export type JournalResource = Resource<Journal>

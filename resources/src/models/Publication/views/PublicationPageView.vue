@@ -80,6 +80,16 @@ onMounted(async () => {
   }
 })
 
+/**
+ * Only secondary manuscripts are published in a DFO series; publications
+ * entered by hand in one before this rule keep it on offer.
+ */
+const hideDfoSeries = computed(() => {
+  if (publication.value?.data.manuscript_record_id === null)
+    return !publication.value.data.journal?.data.is_dfo_series
+  return manuscriptMetadata.value?.data?.type !== 'secondary'
+})
+
 // permissions
 const canEdit = computed(() => {
   return publication.value?.can?.update ?? false
@@ -345,7 +355,7 @@ function scrollToSupplementaryFiles() {
           <JournalSelect
             v-model="publication.data.journal_id"
             :disable="loading"
-            :hide-dfo-series="manuscriptMetadata?.data?.type === 'primary'"
+            :hide-dfo-series="hideDfoSeries"
             :dfo-series-only="manuscriptMetadata?.data?.type === 'secondary'"
             :readonly="!canEdit"
             :rules="[(val: number | null) => !!val || t('common.required')]"
