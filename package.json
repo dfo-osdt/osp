@@ -16,9 +16,9 @@
     "@vueuse/router": "^15.0.0",
     "dompurify": "^3.4.17",
     "pinia": "^4.1.0",
-    "playwright": "^1.64.1",
+    "playwright": "^1.65.0",
     "quasar": "^2.35.2",
-    "sass-embedded": "^1.107.1",
+    "sass-embedded": "^1.108.1",
     "vite-plugin-manifest-sri": "^0.2.0",
     "vue": "^3.5.45",
     "vue-i18n": "^11.4.18",
@@ -43,6 +43,6 @@
   },
   "packageManager": "pnpm@12.18.0+sha512.9d7882d5dc82147ecfc4e062aa34834e0ad0296710a1837a1115ae012127d36b7109e321ac1598a1dd0a65597681b1e99917e12ed0d749eae91187943363beb3",
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.67.5"
+    "@rollup/rollup-linux-x64-gnu": "^4.68.0"
   }
 }
