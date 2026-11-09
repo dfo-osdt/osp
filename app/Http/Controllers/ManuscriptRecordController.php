@@ -149,7 +149,7 @@ class ManuscriptRecordController extends Controller
             'region_id' => ['numeric', 'exists:regions,id'],
             'functional_area_id' => ['nullable', 'numeric', 'exists:functional_areas,id'],
             'type' => [new Enum(ManuscriptRecordType::class), Rule::when(
-                $manuscriptRecord->publication()->exists(),
+                $request->has('type') && $manuscriptRecord->publication()->withTrashed()->exists(),
                 [Rule::in([$manuscriptRecord->type->value])]
             )],
             'abstract' => ['nullable', 'string'],
@@ -302,7 +302,7 @@ class ManuscriptRecordController extends Controller
         $validated = $request->validate([
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => ['required', 'date', 'after_or_equal:submitted_to_journal_on'],
-            'journal_id' => ['required', 'integer', 'exists:journals,id', new JournalMatchesManuscriptType($manuscriptRecord)],
+            'journal_id' => ['bail', 'required', 'integer', 'exists:journals,id', new JournalMatchesManuscriptType($manuscriptRecord)],
             'isbn' => ['nullable', 'string', 'max:25', new Isbn],
             'catalogue_number' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'nullable', 'string', 'max:25'],
             'issue_number' => ['nullable', 'string', 'max:25'],
@@ -318,14 +318,17 @@ class ManuscriptRecordController extends Controller
 
         $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
         // if the submitted to journal date is given, set it.
-        if ($validated['submitted_to_journal_on']) {
+        if (isset($validated['submitted_to_journal_on'])) {
             $manuscriptRecord->submitted_to_journal_on = $validated['submitted_to_journal_on'];
         }
         $manuscriptRecord->accepted_on = $validated['accepted_on'];
-        $manuscriptRecord->save();
 
         try {
-            $publication = CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null, $validated['isbn'] ?? null, $validated['catalogue_number'] ?? null, $validated['issue_number'] ?? null);
+            /** The manuscript only becomes accepted along with its publication, which locks its type */
+            DB::transaction(function () use ($manuscriptRecord, $journal, $validated): void {
+                $manuscriptRecord->save();
+                CreatePublicationFromManuscript::handle($manuscriptRecord, $journal, $validated['submission_file'] ?? null, $validated['isbn'] ?? null, $validated['catalogue_number'] ?? null, $validated['issue_number'] ?? null);
+            });
         } catch (\Exception $e) {
             Log::error('Failed to create publication from manuscript record ID '.$manuscriptRecord->id, [
                 'exception' => $e,

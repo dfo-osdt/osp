@@ -81,14 +81,10 @@ onMounted(async () => {
 })
 
 /**
- * Only secondary manuscripts are published in a DFO series; publications
- * entered by hand in one before this rule keep it on offer.
+ * Only secondary manuscripts are published in a DFO series; a publication
+ * entered by hand in one before this rule keeps it as its current journal.
  */
-const hideDfoSeries = computed(() => {
-  if (publication.value?.data.manuscript_record_id === null)
-    return !publication.value.data.journal?.data.is_dfo_series
-  return manuscriptMetadata.value?.data?.type !== 'secondary'
-})
+const hideDfoSeries = computed(() => manuscriptMetadata.value?.data?.type !== 'secondary')
 
 // permissions
 const canEdit = computed(() => {
