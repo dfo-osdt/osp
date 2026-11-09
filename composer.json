@@ -27,7 +27,7 @@
     "maatwebsite/excel": "^4.0",
     "microsoft/microsoft-graph": "^3.00",
     "predis/predis": "^3.0",
-    "saloonphp/laravel-plugin": "^4.0",
+    "saloonphp/laravel-plugin": "^5.0",
     "saloonphp/saloon": "^4.0",
     "socialiteproviders/microsoft-azure": "^5.2",
     "spatie/laravel-activitylog": "^5.0",
