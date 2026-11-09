@@ -6,11 +6,9 @@ test('an author without ORCID write access can open the review credit page and s
     $this->actingAs(User::factory()->create());
 
     $page = visit('/');
+    $page->waitForText('Author Profile')->script("window.location.hash = '#/settings/author'");
 
-    $page->click('[data-test="user-menu-button"]')
-        ->click('[data-test="settings-item"]')
-        ->click('Author Profile')
-        ->click('[data-test="orcid-review-credit-link"]')
+    $page->click('[data-test="orcid-review-credit-link"]')
         ->waitForText('None of your review contributions can be added to ORCID yet')
         ->assertPresent('[data-test="orcid-connect-banner"]');
 

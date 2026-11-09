@@ -573,6 +573,7 @@ test('authors show their ORCID record by default', function (): void {
 });
 
 test('the author or an editor can hide the ORCID record, and the change is logged', function (bool $byEditor): void {
+    $this->freezeTime();
     $mockClient = Saloon::fake([]);
     $user = User::factory()->create();
     $user->author->forceFill(Author::factory()->withOrcidConnection()->raw(['email' => $user->email]))->save();
