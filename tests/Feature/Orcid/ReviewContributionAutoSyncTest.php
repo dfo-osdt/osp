@@ -167,6 +167,8 @@ test('auto sync is off by default', function (): void {
 });
 
 test('an author can turn auto sync on and off, and the change is logged on their author', function (): void {
+    /** Keeps updated_at out of the logged changes when the requests cross a second */
+    $this->freezeTime();
     $user = User::factory()->create();
 
     $this->actingAs($user)->putJson('api/user/orcid/review-contributions/auto-sync', ['auto_sync' => true])
