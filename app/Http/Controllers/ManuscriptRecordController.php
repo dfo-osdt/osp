@@ -302,7 +302,7 @@ class ManuscriptRecordController extends Controller
         $validated = $request->validate([
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => ['required', 'date', 'after_or_equal:submitted_to_journal_on'],
-            'journal_id' => ['required', 'exists:journals,id', new JournalMatchesManuscriptType($manuscriptRecord)],
+            'journal_id' => ['required', 'integer', 'exists:journals,id', new JournalMatchesManuscriptType($manuscriptRecord)],
             'isbn' => ['nullable', 'string', 'max:25', new Isbn],
             'catalogue_number' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'nullable', 'string', 'max:25'],
             'issue_number' => ['nullable', 'string', 'max:25'],
