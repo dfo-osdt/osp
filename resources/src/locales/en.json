@@ -380,7 +380,7 @@
     "publication-details": "Publication Details",
     "published-on": "Published On",
     "step1": {
-      "p1": "This wizard lets you add published manuscripts to the portal; allowing you to share past publications or to add publications where the manuscript record form (MRF) was done through other means.",
+      "p1": "This wizard lets you add published manuscripts to the portal; allowing you to share past publications or to add publications where the manuscript record form (MRF) was done through other means. DFO series publications cannot be added here: they go through a manuscript record.",
       "warning": "If you are here to get your manuscript reviewed by management prior to submission to a journal, do not continue, create a new manuscript record instead."
     },
     "title": "Create a Publication",

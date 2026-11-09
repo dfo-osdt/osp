@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ManuscriptRecordType;
+use App\Enums\Permissions\UserRole;
 use App\Enums\PublicationStatus;
 use App\Enums\SupplementaryFileType;
 use App\Models\Funder;
@@ -102,6 +104,24 @@ test('a user can create an accepted publication without a published date', funct
     $response->assertJsonPath('data.is_open_access', true);
     $response->assertJsonPath('data.manuscript_id', null);
 });
+
+test('nobody can add a DFO series publication by hand', function (array $roles): void {
+    $user = User::factory()->withRoles($roles)->create();
+
+    $this->actingAs($user)->postJson('/api/publications', [
+        'status' => PublicationStatus::PUBLISHED,
+        'title' => 'Stock assessment of Atlantic cod',
+        'journal_id' => Journal::factory()->dfoSeries()->create()->id,
+        'accepted_on' => '2021-01-01',
+        'published_on' => '2021-03-01',
+        'region_id' => 1,
+    ])->assertJsonValidationErrors('journal_id');
+
+    expect(Publication::query()->count())->toBe(0);
+})->with([
+    'regular user' => [[]],
+    'chief editor' => [[UserRole::CHIEF_EDITOR]],
+]);
 
 /** Test a user can't create a publication with an invalid DOI */
 test('a user cannot create a publication with an invalid DOI', function (): void {
@@ -483,6 +503,43 @@ test('only a chief editor can publish a secondary publication', function (): voi
 
     $response->assertOk();
     expect($publication->fresh()->status)->toBe(PublicationStatus::PUBLISHED);
+});
+
+test('a publication can only change journal when its new journal still matches its manuscript type', function (Closure $publication, Closure $journal, bool $accepted): void {
+    $publication = $publication();
+    $journalId = $journal()->id;
+
+    $response = $this->actingAs(User::factory()->chiefEditor()->create())
+        ->putJson('/api/publications/'.$publication->id, [
+            'journal_id' => $journalId,
+            'accepted_on' => $publication->accepted_on->format('Y-m-d'),
+        ]);
+
+    if ($accepted) {
+        $response->assertOk();
+        expect($publication->fresh()->journal_id)->toBe($journalId);
+    } else {
+        $response->assertJsonValidationErrors('journal_id');
+        expect($publication->fresh()->journal_id)->toBe($publication->journal_id);
+    }
+})->with([
+    'manual into a DFO series' => [fn () => Publication::factory()->create(), fn () => Journal::factory()->dfoSeries()->create(), false],
+    'manual to another journal' => [fn () => Publication::factory()->create(), fn () => Journal::factory()->create(), true],
+    'secondary to another DFO series' => [fn () => Publication::factory()->dfoSeries()->withManuscript(['type' => ManuscriptRecordType::SECONDARY])->create(), fn () => Journal::factory()->dfoSeries()->create(), true],
+    'secondary to a third-party journal' => [fn () => Publication::factory()->dfoSeries()->withManuscript(['type' => ManuscriptRecordType::SECONDARY])->create(), fn () => Journal::factory()->create(), false],
+    'primary into a DFO series' => [fn () => Publication::factory()->withManuscript(['type' => ManuscriptRecordType::PRIMARY])->create(), fn () => Journal::factory()->dfoSeries()->create(), false],
+]);
+
+test('a DFO series publication entered by hand stays editable while its journal does not change', function (): void {
+    $publication = Publication::factory()->dfoSeries()->create();
+
+    $this->actingAs($publication->user)->putJson('/api/publications/'.$publication->id, [
+        'title' => 'Updated title',
+        'journal_id' => $publication->journal_id,
+        'accepted_on' => $publication->accepted_on->format('Y-m-d'),
+    ])->assertOk();
+
+    expect($publication->fresh()->title)->toBe('Updated title');
 });
 
 /** Test publication deletion */

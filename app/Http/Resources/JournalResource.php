@@ -28,6 +28,7 @@ class JournalResource extends JsonResource
                 'title' => $this->title,
                 'publisher' => $this->publisher,
                 'issn' => $this->issn,
+                'is_dfo_series' => $this->isDfoSeries(),
             ],
             'can' => [
                 'update' => false,

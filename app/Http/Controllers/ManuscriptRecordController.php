@@ -16,7 +16,6 @@ use App\Events\PlanningBinder\FlaggedManuscriptSubmittedToPrepint;
 use App\Http\Resources\ManuscriptRecordMetadataResource;
 use App\Http\Resources\ManuscriptRecordResource;
 use App\Http\Resources\ManuscriptRecordSummaryResource;
-use App\Jobs\SyncReviewContributionWithOrcid;
 use App\Mail\ManuscriptRecordSubmittedToDFO;
 use App\Models\Journal;
 use App\Models\ManagementReviewStep;
@@ -25,6 +24,7 @@ use App\Models\Region;
 use App\Models\User;
 use App\Queries\ManuscriptRecordListQuery;
 use App\Rules\Isbn;
+use App\Rules\JournalMatchesManuscriptType;
 use App\Rules\UserNotAManuscriptAuthor;
 use App\Rules\ValidTitleMarkup;
 use App\Traits\PaginationLimitTrait;
@@ -148,7 +148,10 @@ class ManuscriptRecordController extends Controller
             'title' => ['string', new ValidTitleMarkup],
             'region_id' => ['numeric', 'exists:regions,id'],
             'functional_area_id' => ['nullable', 'numeric', 'exists:functional_areas,id'],
-            'type' => [new Enum(ManuscriptRecordType::class)],
+            'type' => [new Enum(ManuscriptRecordType::class), Rule::when(
+                $manuscriptRecord->publication()->exists(),
+                [Rule::in([$manuscriptRecord->type->value])]
+            )],
             'abstract' => ['nullable', 'string'],
             'pls_en' => ['nullable', 'string'],
             'pls_fr' => ['nullable', 'string'],
@@ -161,14 +164,11 @@ class ManuscriptRecordController extends Controller
             'no_ogl_explanation' => ['nullable', 'string'],
             'intends_open_access' => ['boolean'],
             'open_access_rationale' => ['nullable', 'string'],
+        ], [
+            'type.in' => __('validation.manuscript_type_locked'),
         ]);
 
         $manuscriptRecord->update($validated);
-
-        // only secondary manuscripts can be credited on ORCID
-        if ($manuscriptRecord->wasChanged('type')) {
-            SyncReviewContributionWithOrcid::dispatchForChanged($manuscriptRecord->reviewContributors);
-        }
 
         return $this->defaultResource($manuscriptRecord);
     }
@@ -302,7 +302,7 @@ class ManuscriptRecordController extends Controller
         $validated = $request->validate([
             'submitted_to_journal_on' => ['date', 'before_or_equal:accepted_on', Rule::requiredIf($manuscriptRecord->submitted_to_journal_on == null)],
             'accepted_on' => ['required', 'date', 'after_or_equal:submitted_to_journal_on'],
-            'journal_id' => ['required', 'exists:journals,id'],
+            'journal_id' => ['required', 'exists:journals,id', new JournalMatchesManuscriptType($manuscriptRecord)],
             'isbn' => ['nullable', 'string', 'max:25', new Isbn],
             'catalogue_number' => [Rule::requiredIf($manuscriptRecord->type === ManuscriptRecordType::SECONDARY), 'nullable', 'string', 'max:25'],
             'issue_number' => ['nullable', 'string', 'max:25'],
@@ -314,13 +314,7 @@ class ManuscriptRecordController extends Controller
             ],
         ]);
 
-        // Ensure the journal selected matches the manuscript record type.
         $journal = Journal::query()->find($validated['journal_id']);
-        if ($manuscriptRecord->type === ManuscriptRecordType::SECONDARY && ! $journal->isDfoSeries()) {
-            abort(422, 'Secondary MRFs must be published in a DFO series journal.');
-        } elseif ($manuscriptRecord->type === ManuscriptRecordType::PRIMARY && $journal->isDfoSeries()) {
-            abort(422, 'Primary MRFs cannot be published in a DFO series journal.');
-        }
 
         $manuscriptRecord->status = ManuscriptRecordStatus::ACCEPTED;
         // if the submitted to journal date is given, set it.

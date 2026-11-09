@@ -5,12 +5,14 @@ use App\Enums\ManagementReviewStepStatus;
 use App\Enums\ManuscriptRecordStatus;
 use App\Enums\ManuscriptRecordType;
 use App\Enums\MediaCollection;
+use App\Enums\Permissions\UserRole;
 use App\Events\ManuscriptRecordWithdrawnByAuthor;
 use App\Mail\ManuscriptRecordToReviewMail;
 use App\Models\Author;
 use App\Models\Journal;
 use App\Models\ManuscriptAuthor;
 use App\Models\ManuscriptRecord;
+use App\Models\Publication;
 use App\Models\Sector;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -695,6 +697,47 @@ test('a user can mark a secondary manuscript as accepted with valid ISBN, catalo
     expect($manuscript->publication->catalogue_number)->toBe('Fs97-18/409E-PDF');
     expect($manuscript->publication->issue_number)->toBe('409');
 });
+
+test('a manuscript cannot be accepted into a journal that does not match its type', function (ManuscriptRecordType $type, Closure $journal): void {
+    $manuscript = ManuscriptRecord::factory()->reviewed()->create(['type' => $type]);
+
+    $this->actingAs($manuscript->user)->postJson("/api/manuscript-records/{$manuscript->id}/accepted", [
+        'submitted_to_journal_on' => now()->subMonth()->toDateTimeString(),
+        'accepted_on' => now()->toDateTimeString(),
+        'journal_id' => $journal()->id,
+        'catalogue_number' => 'Fs97-18/409E-PDF',
+        'submission_file' => UploadedFile::fake()->createWithContent('test.docx', file_get_contents(__DIR__.'/support_files/test_doc.docx'))->size(1000),
+    ])->assertJsonValidationErrors('journal_id');
+
+    expect($manuscript->fresh()->status)->toBe(ManuscriptRecordStatus::REVIEWED)
+        ->and($manuscript->publication)->toBeNull();
+})->with([
+    'secondary in a third-party journal' => [ManuscriptRecordType::SECONDARY, fn () => Journal::factory()->create()],
+    'primary in a DFO series' => [ManuscriptRecordType::PRIMARY, fn () => Journal::factory()->dfoSeries()->create()],
+    'preprint in a DFO series' => [ManuscriptRecordType::PREPRINT, fn () => Journal::factory()->dfoSeries()->create()],
+]);
+
+test('a manuscript\'s type can only change before it has a publication', function (bool $hasPublication, ManuscriptRecordType $newType, bool $accepted): void {
+    $manuscript = ManuscriptRecord::factory()->secondary()->create();
+    if ($hasPublication) {
+        Publication::factory()->dfoSeries()->create(['manuscript_record_id' => $manuscript->id]);
+    }
+
+    $response = $this->actingAs(User::factory()->withRoles([UserRole::ADMIN])->create())
+        ->putJson("/api/manuscript-records/{$manuscript->id}", ['type' => $newType->value, 'title' => 'Updated title']);
+
+    if ($accepted) {
+        $response->assertOk();
+        expect($manuscript->fresh())->type->toBe($newType)->title->toBe('Updated title');
+    } else {
+        $response->assertJsonValidationErrors('type');
+        expect($manuscript->fresh())->type->toBe(ManuscriptRecordType::SECONDARY)->title->not->toBe('Updated title');
+    }
+})->with([
+    'changed before publication' => [false, ManuscriptRecordType::PRIMARY, true],
+    'changed after publication' => [true, ManuscriptRecordType::PRIMARY, false],
+    'same type sent back after publication' => [true, ManuscriptRecordType::SECONDARY, true],
+]);
 
 test('a user cannot mark a secondary manuscript as accepted with an invalid ISBN', function (): void {
     $manuscript = ManuscriptRecord::factory()->secondary()->reviewed()->create();
