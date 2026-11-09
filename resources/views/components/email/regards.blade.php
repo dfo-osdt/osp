@@ -1,8 +1,8 @@
 @props(['locale' => 'en'])
 @if($locale == 'fr')
 Cordialement,<br>
-L'équipe de la science ouverte
+L'équipe des publications scientifiques 
 @else
 Regards,<br>
-The Open Science Team
+The Science Publications Team
 @endif
