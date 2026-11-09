@@ -772,6 +772,14 @@
     "auto-sync-error": "Le paramètre n'a pas pu être enregistré. Veuillez réessayer.",
     "remove": "Retirer",
     "remove-error": "La contribution n'a pas pu être retirée d'ORCID. Veuillez réessayer.",
+    "decline": "Ne pas ajouter",
+    "decline-error": "Votre choix n'a pas pu être enregistré. Veuillez réessayer.",
+    "journal-and-role": "{journal} · {role}",
+    "sections": {
+      "undecided": "À décider ({count})",
+      "added": "Ajoutées à ORCID ({count})",
+      "declined": "Non ajoutées ({count})"
+    },
     "removing-hint": "Elle sera retirée dès que vous connecterez ORCID. Vous pouvez aussi la supprimer vous-même de votre dossier ORCID.",
     "status": {
       "not_on_orcid": "Pas dans ORCID",

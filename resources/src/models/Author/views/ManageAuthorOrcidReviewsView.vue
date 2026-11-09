@@ -21,9 +21,41 @@ const hasAuthor = computed(() => !!authStore.user?.author?.data)
 const contributions = ref<OrcidReviewContributionResourceList | null>(null)
 const loading = ref(false)
 const updating = ref<number | null>(null)
+const updatingAction = ref<'add' | 'remove' | null>(null)
 const addingAll = ref(false)
 
-const hasUndecided = computed(() => contributions.value?.data.some(contribution => contribution.data.orcid_status === 'not_on_orcid') ?? false)
+type SectionKey = 'undecided' | 'added' | 'declined'
+
+// grouped by the author's decision, so each row only needs the actions that change it
+const sectionStatuses: Record<SectionKey, OrcidReviewStatus[]> = {
+  undecided: ['not_on_orcid'],
+  added: ['pending', 'on_orcid'],
+  declined: ['removing', 'declined'],
+}
+
+const sections = computed(() => {
+  const data = contributions.value?.data ?? []
+  return (Object.keys(sectionStatuses) as SectionKey[])
+    .map(key => ({
+      key,
+      contributions: data.filter(contribution => sectionStatuses[key].includes(contribution.data.orcid_status)),
+    }))
+    .filter(section => section.contributions.length > 0)
+})
+
+function sectionTitle(key: SectionKey, count: number): string {
+  const titles: Record<SectionKey, string> = {
+    undecided: t('orcid-review-credit.sections.undecided', { count }),
+    added: t('orcid-review-credit.sections.added', { count }),
+    declined: t('orcid-review-credit.sections.declined', { count }),
+  }
+  return titles[key]
+}
+
+// the section already says what was decided: only an outcome worth confirming gets a badge
+function hasStatusBadge(status: OrcidReviewStatus): boolean {
+  return status !== 'not_on_orcid' && status !== 'declined'
+}
 
 // additions and removals in progress run in the background
 function isInProgress(status: OrcidReviewStatus): boolean {
@@ -87,8 +119,10 @@ function pollWhileInProgress() {
   }, pollIntervalMs)
 }
 
-async function updateContribution(id: number, action: 'add' | 'remove') {
+// declining an undecided contribution uses remove: it is never added unless the author asks
+async function updateContribution(id: number, action: 'add' | 'remove', errorMessage: string) {
   updating.value = id
+  updatingAction.value = action
   try {
     const updated = await OrcidReviewContributionService[action](id)
     if (!contributions.value)
@@ -102,13 +136,12 @@ async function updateContribution(id: number, action: 'add' | 'remove') {
   catch {
     q.notify({
       type: 'negative',
-      message: action === 'add'
-        ? t('orcid-review-credit.add-error')
-        : t('orcid-review-credit.remove-error'),
+      message: errorMessage,
     })
   }
   finally {
     updating.value = null
+    updatingAction.value = null
   }
 }
 
@@ -245,70 +278,102 @@ onBeforeUnmount(stopPolling)
         </q-item-section>
       </q-item>
     </q-list>
-    <div v-if="hasUndecided" class="row justify-end q-mb-sm">
-      <q-btn
-        unelevated
-        no-caps
-        color="primary"
-        icon="mdi-playlist-plus"
-        :label="t('orcid-review-credit.add-all')"
-        :loading="addingAll"
-        :disable="updating !== null"
-        data-test="orcid-review-add-all"
-        @click="addAllToOrcid"
-      />
-    </div>
-    <q-list v-if="contributions" bordered separator class="rounded-borders">
-      <q-item v-for="contribution in contributions.data" :key="contribution.data.id">
-        <q-item-section>
-          <q-item-label class="text-weight-medium">
-            <TitleText :title="contribution.data.publication.title" />
-          </q-item-label>
-          <q-item-label caption>
-            {{ contribution.data.publication.journal.data.title }}
-          </q-item-label>
-          <q-item-label caption>
-            {{ roleLabel(contribution.data.role) }}
-          </q-item-label>
-        </q-item-section>
-        <q-item-section side>
-          <div class="row items-center no-wrap q-gutter-sm">
-            <q-badge
-              outline
-              :color="statusColor(contribution.data.orcid_status)"
-              :label="statusLabel(contribution.data.orcid_status)"
-            >
-              <q-tooltip v-if="contribution.data.orcid_status === 'removing' && isWaitingForConnection(contribution.data.orcid_status)">
-                {{ t('orcid-review-credit.removing-hint') }}
-              </q-tooltip>
-            </q-badge>
+    <q-list v-if="contributions" bordered class="rounded-borders">
+      <template v-for="(section, sectionIndex) in sections" :key="section.key">
+        <q-separator v-if="sectionIndex > 0" />
+        <q-item class="bg-grey-1" :data-test="`orcid-review-section-${section.key}`">
+          <q-item-section>
+            <q-item-label class="text-subtitle2 text-grey-9">
+              {{ sectionTitle(section.key, section.contributions.length) }}
+            </q-item-label>
+          </q-item-section>
+          <q-item-section v-if="section.key === 'undecided' && section.contributions.length > 1" side>
             <q-btn
-              v-if="['not_on_orcid', 'removing', 'declined'].includes(contribution.data.orcid_status)"
-              outline
+              unelevated
               no-caps
+              dense
               color="primary"
-              icon="mdi-plus"
-              :label="t('orcid-review-credit.add')"
-              :loading="updating === contribution.data.id"
-              :disable="addingAll"
-              data-test="orcid-review-add"
-              @click="updateContribution(contribution.data.id, 'add')"
+              icon="mdi-playlist-plus"
+              class="q-px-sm"
+              :label="t('orcid-review-credit.add-all')"
+              :loading="addingAll"
+              :disable="updating !== null"
+              data-test="orcid-review-add-all"
+              @click="addAllToOrcid"
             />
-            <q-btn
-              v-if="contribution.data.orcid_status === 'on_orcid' || contribution.data.orcid_status === 'pending'"
-              flat
-              no-caps
-              color="negative"
-              icon="mdi-minus"
-              :label="t('orcid-review-credit.remove')"
-              :loading="updating === contribution.data.id"
-              :disable="addingAll"
-              data-test="orcid-review-remove"
-              @click="updateContribution(contribution.data.id, 'remove')"
-            />
-          </div>
-        </q-item-section>
-      </q-item>
+          </q-item-section>
+        </q-item>
+        <template v-for="contribution in section.contributions" :key="contribution.data.id">
+          <q-separator inset />
+          <q-item>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">
+                <TitleText :title="contribution.data.publication.title" />
+              </q-item-label>
+              <q-item-label caption>
+                {{ t('orcid-review-credit.journal-and-role', { journal: contribution.data.publication.journal.data.title, role: roleLabel(contribution.data.role) }) }}
+              </q-item-label>
+              <q-item-label v-if="hasStatusBadge(contribution.data.orcid_status)">
+                <q-badge
+                  outline
+                  :color="statusColor(contribution.data.orcid_status)"
+                  :label="statusLabel(contribution.data.orcid_status)"
+                >
+                  <q-icon v-if="contribution.data.orcid_status === 'on_orcid'" name="mdi-check" class="q-ml-xs" />
+                  <q-tooltip v-if="contribution.data.orcid_status === 'removing' && isWaitingForConnection(contribution.data.orcid_status)">
+                    {{ t('orcid-review-credit.removing-hint') }}
+                  </q-tooltip>
+                </q-badge>
+              </q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <div class="row items-center no-wrap q-gutter-xs">
+                <q-btn
+                  v-if="section.key === 'undecided'"
+                  flat
+                  no-caps
+                  dense
+                  color="grey-8"
+                  class="q-px-sm"
+                  :label="t('orcid-review-credit.decline')"
+                  :loading="updating === contribution.data.id && updatingAction === 'remove'"
+                  :disable="addingAll || updating === contribution.data.id"
+                  data-test="orcid-review-decline"
+                  @click="updateContribution(contribution.data.id, 'remove', t('orcid-review-credit.decline-error'))"
+                />
+                <q-btn
+                  v-if="section.key !== 'added'"
+                  :outline="section.key === 'undecided'"
+                  :flat="section.key === 'declined'"
+                  no-caps
+                  dense
+                  color="primary"
+                  icon="mdi-plus"
+                  class="q-px-sm"
+                  :label="t('orcid-review-credit.add')"
+                  :loading="updating === contribution.data.id && updatingAction === 'add'"
+                  :disable="addingAll || updating === contribution.data.id"
+                  data-test="orcid-review-add"
+                  @click="updateContribution(contribution.data.id, 'add', t('orcid-review-credit.add-error'))"
+                />
+                <q-btn
+                  v-if="section.key === 'added'"
+                  flat
+                  no-caps
+                  dense
+                  color="negative"
+                  class="q-px-sm"
+                  :label="t('orcid-review-credit.remove')"
+                  :loading="updating === contribution.data.id"
+                  :disable="addingAll"
+                  data-test="orcid-review-remove"
+                  @click="updateContribution(contribution.data.id, 'remove', t('orcid-review-credit.remove-error'))"
+                />
+              </div>
+            </q-item-section>
+          </q-item>
+        </template>
+      </template>
       <q-item v-if="contributions.data.length === 0">
         <q-item-section class="text-grey-7">
           {{ t('orcid-review-credit.empty') }}

@@ -64,7 +64,10 @@ onMounted(async () => {
 
   try {
     const contributions = await OrcidReviewContributionService.list()
-    availableReviewCount.value = contributions.data.length
+    // only the contributions not decided on yet: those on ORCID or declined are not available
+    availableReviewCount.value = contributions.data
+      .filter(contribution => contribution.data.orcid_status === 'not_on_orcid')
+      .length
     reviewAutoSync.value = contributions.meta.auto_sync
   }
   catch {
