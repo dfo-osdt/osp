@@ -6,24 +6,11 @@ const PASTED_ORCID_REGEX = /(\d{4})-?(\d{4})-?(\d{4})-?(\d{3}[\dX])/i
 
 const { t } = useI18n()
 
-const [modelValue, modelModifiers] = defineModel<string, 'stripBaseUrl'>({
+// the backend stores a link to the record and turns a bare iD back into one,
+// so only the iD is shown and edited here
+const modelValue = defineModel<string>({
   get(val) {
-    if (modelModifiers.stripBaseUrl) {
-      // return only the orcid number and save base url fo
-      // set method
-      return val.split('/').pop() || ''
-    }
-    return val
-  },
-  set(val) {
-    if (modelModifiers.stripBaseUrl) {
-      // add base url to orcid number
-      if (val.length === 0) {
-        return ''
-      }
-      return `https://orcid.org/${val}`
-    }
-    return val
+    return val?.split('/').pop() || ''
   },
 })
 
@@ -78,7 +65,6 @@ const rules = [
     label="ORCID"
     data-test="orcid-input"
     mask="####-####-####-###X"
-    prefix="https://orcid.org/"
     :rules="rules"
     @paste="onPaste"
   />

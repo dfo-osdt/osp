@@ -171,7 +171,7 @@ async function save() {
             class="col-12"
           />
           <OrcidInput
-            v-model.stripBaseUrl="author.data.orcid"
+            v-model="author.data.orcid"
             :disable="author.data.orcid_verified"
             :hint="orcidInputHint"
             class="col-12 col-md-6"

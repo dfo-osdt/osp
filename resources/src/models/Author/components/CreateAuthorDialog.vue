@@ -190,7 +190,7 @@ async function createAuthor() {
           />
 
           <OrcidInput
-            v-model.stripBaseUrl="orcId"
+            v-model="orcId"
             :hint="$t('common.validation.orcid-hint')"
           />
         </q-card-section>

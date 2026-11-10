@@ -11,6 +11,7 @@ use App\Models\PublicationAuthor;
 use App\Models\Region;
 use App\Models\Sector;
 use App\Models\User;
+use App\Orcid\OrcidClientFactory;
 
 test('a user can get list of authors', function (): void {
     Author::factory()->count(15)->create();
@@ -166,20 +167,76 @@ test('a user can create an author with an ORCID', function (): void {
     $minimumData['orcid'] = $badUrlPrefix;
     $response = $this->actingAs($user)->postJson('api/authors', $minimumData);
     $response->assertStatus(422)->assertJsonValidationErrors('orcid');
-    expect($response->json('errors.orcid.0'))->toContain('prefix');
-
-    $minimumData['orcid'] = $sandboxUrlPrefix;
-    $response = $this->actingAs($user)->postJson('api/authors', $minimumData);
-    $response->assertCreated()->assertJson([
-        'data' => $minimumData,
-    ]);
+    expect($response->json('errors.orcid.0'))->toContain('link to orcid.org');
 
     $minimumData['orcid'] = $validOrcid;
-    $minimumData['email'] = 'john.doe2@test.local';
     $response = $this->actingAs($user)->postJson('api/authors', $minimumData);
     $response->assertCreated()->assertJson([
         'data' => $minimumData,
     ]);
+
+    // the sandbox iD is the same iD: the configured ORCID decides the stored link
+    $minimumData['orcid'] = $sandboxUrlPrefix;
+    $minimumData['email'] = 'john.doe2@test.local';
+    $this->actingAs($user)->postJson('api/authors', $minimumData)->assertUnprocessable()->assertJsonValidationErrors('orcid');
+});
+
+test('the ORCID iD is stored as a link to the configured ORCID, whatever form it was given in', function (bool $useSandbox, string $given, string $stored): void {
+    config(['osp.orcid.use_sandbox' => $useSandbox]);
+    app()->forgetInstance(OrcidClientFactory::class);
+
+    $this->actingAs(User::factory()->create())->postJson('api/authors', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'john.doe@dfo-mpo.gc.ca',
+        'orcid' => $given,
+    ])->assertCreated()->assertJsonPath('data.orcid', $stored);
+})->with([
+    'bare iD' => [false, '0000-0002-0868-2726', 'https://orcid.org/0000-0002-0868-2726'],
+    'lowercase check digit' => [false, '0000-0002-1694-233x', 'https://orcid.org/0000-0002-1694-233X'],
+    'sandbox link on production' => [false, 'https://sandbox.orcid.org/0000-0002-0868-2726', 'https://orcid.org/0000-0002-0868-2726'],
+    'bare iD on the sandbox' => [true, '0000-0002-0868-2726', 'https://sandbox.orcid.org/0000-0002-0868-2726'],
+    'production link on the sandbox' => [true, 'https://orcid.org/0000-0002-0868-2726', 'https://sandbox.orcid.org/0000-0002-0868-2726'],
+]);
+
+test('a bare ORCID iD is refused with the reason it is invalid', function (string $given, string $reason): void {
+    $response = $this->actingAs(User::factory()->create())->postJson('api/authors', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'john.doe@dfo-mpo.gc.ca',
+        'orcid' => $given,
+    ]);
+
+    $response->assertUnprocessable()->assertJsonValidationErrors('orcid');
+    expect($response->json('errors.orcid.0'))->toContain($reason);
+})->with([
+    'bad checksum' => ['0000-0002-0868-2725', 'checksum'],
+    'bad format' => ['0000-0002-X868-2722', 'format'],
+]);
+
+test('a bare ORCID iD already used by another author is refused', function (): void {
+    $author = Author::factory()->create(['orcid' => 'https://orcid.org/0000-0002-0868-2726']);
+
+    $this->actingAs(User::factory()->create())->postJson('api/authors', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'john.doe@dfo-mpo.gc.ca',
+        'orcid' => '0000-0002-0868-2726',
+    ])->assertUnprocessable()->assertJsonValidationErrors('orcid');
+
+    $editor = User::factory()->withRoles([UserRole::EDITOR])->create();
+    $other = Author::factory()->create();
+    $this->actingAs($editor)
+        ->putJson('api/authors/'.$other->id, ['orcid' => '0000-0002-0868-2726'])
+        ->assertUnprocessable()->assertJsonValidationErrors('orcid');
+
+    // an author keeps their own iD when saved again
+    $this->actingAs($editor)
+        ->putJson('api/authors/'.$author->id, ['orcid' => '0000-0002-0868-2726'])
+        ->assertOk()->assertJsonPath('data.orcid', 'https://orcid.org/0000-0002-0868-2726');
 });
 
 test('a user cannot create an author if email already exist', function (): void {
