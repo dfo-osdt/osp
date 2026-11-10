@@ -12,9 +12,9 @@ use VincentAuger\OrcidSdk\Exceptions\OrcidException;
 use VincentAuger\OrcidSdk\Orcid;
 
 /**
- * Reads ORCID records through the public API with OSP's /read-public client
- * credentials token, so only what researchers made public is returned (never
- * limited-visibility items, whatever the author granted OSP).
+ * Reads ORCID records through the member API (for its higher limits) with OSP's
+ * /read-public client credentials token, so only what researchers made public is
+ * returned (never limited-visibility items, whatever the author granted OSP).
  *
  * The token is requested on first use and reused until it expires.
  */
@@ -31,7 +31,7 @@ class PublicRecordReader
      */
     public function wholeRecord(string $orcid): Record
     {
-        return $this->withToken(fn (string $token): Record => $this->orcid->publicApi($token)->record($orcid)->wholeRecord());
+        return $this->withToken(fn (string $token): Record => $this->orcid->memberReadApi($token)->record($orcid)->wholeRecord());
     }
 
     /**
@@ -48,7 +48,7 @@ class PublicRecordReader
         $works = [];
 
         foreach (array_chunk($putCodes, Orcid::BULK_LIMIT) as $batch) {
-            $works += $this->withToken(fn (string $token): array => $this->orcid->publicApi($token)->record($orcid)->works()->getMany($batch)->works);
+            $works += $this->withToken(fn (string $token): array => $this->orcid->memberReadApi($token)->record($orcid)->works()->getMany($batch)->works);
         }
 
         return $works;

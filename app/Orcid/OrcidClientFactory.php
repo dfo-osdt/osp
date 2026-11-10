@@ -70,11 +70,12 @@ class OrcidClientFactory
     }
 
     /**
-     * Public API client: only reads what researchers made public, whatever the token
+     * Member API client for reading any record with OSP's /read-public client credentials token: only what
+     * researchers made public, with the Member API's higher limits
      */
-    public function publicApi(string $readPublicToken): Orcid
+    public function memberReadApi(string $readPublicToken): Orcid
     {
-        return Orcid::public($readPublicToken, $this->environment);
+        return Orcid::member($readPublicToken, environment: $this->environment);
     }
 
     /**

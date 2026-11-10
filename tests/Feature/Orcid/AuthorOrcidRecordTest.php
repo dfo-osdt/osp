@@ -208,8 +208,8 @@ test('a signed-in user sees the biography of a connected author', function (): v
             ],
         ]]);
 
-    // read on the public API with the read-public token, never with the author's own token
-    $mockClient->assertSent(fn (GetRecord $request, $response): bool => str_starts_with((string) $response->getPendingRequest()->getUrl(), 'https://pub.orcid.org/v3.0/0000-0002-1825-0097/record')
+    // read on the member API (higher limits) with the read-public token, never with the author's own token
+    $mockClient->assertSent(fn (GetRecord $request, $response): bool => str_starts_with((string) $response->getPendingRequest()->getUrl(), 'https://api.orcid.org/v3.0/0000-0002-1825-0097/record')
         && $response->getPendingRequest()->headers()->get('Authorization') === 'Bearer read-public-token');
 });
 
