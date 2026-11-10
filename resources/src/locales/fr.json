@@ -340,7 +340,11 @@
     "personal-information": "Informations personnelles",
     "affiliation-research": "Affiliation et informations de recherche",
     "ror-guidance": "Lors de la sélection de l'affiliation de votre co-auteur, choisissez l'institution principale qui apparaît dans ses publications de recherche (par exemple, 'Université McGill' et non 'Département des sciences de McGill'). Ne créez une nouvelle organisation que si vous ne trouvez pas leur affiliation institutionnelle principale.",
-    "personal-email-warning": "Envisagez de demander à votre co-auteur son adresse courriel institutionnelle. Les adresses courriels personnelles peuvent ne pas être idéales pour les communications de recherche professionnelles."
+    "personal-email-warning": "Envisagez de demander à votre co-auteur son adresse courriel institutionnelle. Les adresses courriels personnelles peuvent ne pas être idéales pour les communications de recherche professionnelles.",
+    "fill-from-orcid": "Remplir à partir d'ORCID",
+    "filled-from-orcid": "Rempli à partir d'ORCID",
+    "clear-orcid-import": "Retirer pour remettre ce que le formulaire contenait avant",
+    "orcid-lists-affiliation": "ORCID indique {name}, qui n'est pas encore dans le portail : recherchez-la ci-dessous ou créez-la."
   },
   "create-manuscript-record-dialog": {
     "create-text": "Une fois créé, vous serez redirigé vers le formulaire du registre des manuscrits. \nLe formulaire du registre des manuscrits sera marqué comme brouillon et ne sera visible que pour vous et les personnes que vous invitez en tant qu'observateurs. \nUne fois le formulaire rempli, vous pourrez le soumettre pour révision.",
@@ -751,6 +755,30 @@
     "settings-title": "Paramètres d'intégration",
     "settings-section-intro": "Choisissez comment le Portail de la science ouverte utilise votre dossier ORCID connecté.",
     "view-author-page": "Voir ma page d'auteur"
+  },
+  "orcid-author-search-dialog": {
+    "already-in-osp": "Cette personne est déjà un auteur dans le portail.",
+    "also-known-as": "Aussi connu sous le nom de {names}",
+    "import": "Remplir le formulaire",
+    "more-results": "Les {shown} premiers de {found} dossiers sont affichés : ajoutez un prénom ou un identifiant ORCID pour préciser la recherche.",
+    "no-current-employment": "Aucun emploi actuel n'est public : choisissez l'affiliation dans le formulaire.",
+    "no-public-email": "Aucun courriel public : vous devrez le saisir.",
+    "no-results": "Aucun dossier ORCID ne correspond à cette recherche.",
+    "not-here": "Ce n'est pas la bonne personne?",
+    "not-public": "Non public : vous devrez le saisir.",
+    "organization-found": "Trouvée dans le portail",
+    "organization-to-pick": "Introuvable dans le portail : vous la choisirez dans le formulaire",
+    "preview": "Aperçu",
+    "published-name": "Nom publié sur ORCID : {name}",
+    "review-before-saving": "Vous pourrez vérifier et compléter chaque champ avant de créer l'auteur. L'identifiant ORCID reste non vérifié jusqu'à ce que l'auteur connecte son propre compte ORCID.",
+    "search-hint": "Un nom (p. ex. Josiah Carberry) ou un identifiant ORCID",
+    "search-label": "Rechercher dans ORCID",
+    "search-on-orcid": "Rechercher sur orcid.org",
+    "title": "Remplir à partir d'ORCID",
+    "unavailable": "ORCID est inaccessible pour le moment. Vous pouvez tout de même remplir l'auteur à la main.",
+    "unnamed-organization": "Organisation sans nom",
+    "use-existing-author": "Utiliser cet auteur",
+    "will-be-filled": "Ceci sera rempli à partir d'ORCID :"
   },
   "orcid-review-credit": {
     "title": "Reconnaissance ORCID des évaluations",

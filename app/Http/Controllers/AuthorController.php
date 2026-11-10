@@ -52,7 +52,11 @@ class AuthorController extends Controller
             'sector_id' => ['nullable', 'integer', 'exists:sectors,id'],
             'region_id' => ['nullable', 'integer', 'exists:regions,id'],
             'is_emeritus' => ['boolean'],
+            'source' => ['nullable', Rule::in(['orcid_search'])],
         ]);
+
+        $source = $validated['source'] ?? null;
+        unset($validated['source']);
 
         $validated = $this->resolveIndependentOrganization($validated);
 
@@ -62,6 +66,14 @@ class AuthorController extends Controller
         }
 
         $author = (new Author)->create($validated);
+
+        // the iD came from a search, not from the person signing in to ORCID: it stays unverified
+        if ($source === 'orcid_search') {
+            activity()
+                ->performedOn($author)
+                ->withProperties(['source' => $source, 'orcid' => $author->orcid])
+                ->log('Author created from an ORCID search');
+        }
 
         return new AuthorResource($author);
     }
