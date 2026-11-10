@@ -96,7 +96,8 @@ return [
     "numeric" => "The :attribute must be a number.",
     "orcid" => [
         "checksum" => "The :attribute does not have a valid ORCID ID checksum.",
-        "format" => "The :attribute must be a valid ORCID ID format."
+        "format" => "The :attribute must be a valid ORCID ID format.",
+        "prefix" => "The :attribute must be an ORCID iD or a link to orcid.org."
     ],
     "reserved_organization_name" => "This name is reserved. Use the independent researcher option instead.",
     "password" => [

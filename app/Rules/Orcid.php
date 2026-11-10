@@ -9,13 +9,17 @@ use Illuminate\Support\Str;
 class Orcid implements ValidationRule
 {
     /**
-     * Run the validation rule for an ORCID ID.
+     * The links to an ORCID record we support: orcid.org and the sandbox
+     */
+    public const string URL_PREFIX = '/^https:\/\/(sandbox\.)?orcid\.org\//';
+
+    /**
+     * Run the validation rule for an ORCID ID, given bare or as a link to the record.
      * https://support.orcid.org/hc/en-us/articles/360006897674-Structure-of-the-ORCID-Identifier
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // check that values contains full uri prefix we support (https://orcid.org/) and the sandbox prefix (https://sandbox.orcid.org/)
-        if (! preg_match('/^https:\/\/(sandbox\.)?orcid\.org\//', (string) $value)) {
+        if (str_contains((string) $value, '/') && ! preg_match(self::URL_PREFIX, (string) $value)) {
             $fail(__('validation.orcid.prefix', ['attribute' => $attribute]));
         }
 

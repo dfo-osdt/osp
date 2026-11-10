@@ -230,7 +230,7 @@ async function updateAuthor() {
           />
 
           <OrcidInput
-            v-model.stripBaseUrl="orcId"
+            v-model="orcId"
             :hint="$t('common.validation.orcid-hint')"
             :disable="author.data.orcid_verified"
           />

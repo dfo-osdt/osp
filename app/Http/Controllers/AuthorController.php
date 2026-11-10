@@ -8,6 +8,7 @@ use App\Models\Author;
 use App\Models\ManuscriptAuthor;
 use App\Models\Organization;
 use App\Models\PublicationAuthor;
+use App\Orcid\OrcidClientFactory;
 use App\Queries\AuthorListQuery;
 use App\Rules\Orcid;
 use App\Rules\ValidListItems;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use VincentAuger\OrcidSdk\Support\OrcidId;
 
 class AuthorController extends Controller
 {
@@ -36,8 +38,10 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResource
+    public function store(Request $request, OrcidClientFactory $orcid): JsonResource
     {
+        $this->normalizeOrcid($request, $orcid);
+
         $validated = $request->validate([
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
@@ -105,9 +109,11 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Author $author): JsonResource
+    public function update(Request $request, Author $author, OrcidClientFactory $orcid): JsonResource
     {
         Gate::authorize('update', $author);
+
+        $this->normalizeOrcid($request, $orcid);
 
         $willBeInternal = ! $request->boolean('is_independent')
             && (int) $request->input('organization_id', $author->organization_id) === Organization::getDefaultOrganization()->id;
@@ -274,6 +280,26 @@ class AuthorController extends Controller
         }
 
         return $request->has($attribute) || $author->{$attribute} === null;
+    }
+
+    /**
+     * Turn a valid ORCID iD, given bare or as a link to orcid.org or the sandbox, into a link to the configured
+     * ORCID, so the SPA never needs to know which one OSP talks to and uniqueness compares like with like.
+     * Anything else is left as given for the Orcid rule to explain.
+     */
+    private function normalizeOrcid(Request $request, OrcidClientFactory $orcid): void
+    {
+        $given = $request->input('orcid');
+
+        if (! is_string($given) || ! OrcidId::isValid($given)) {
+            return;
+        }
+
+        if (str_contains($given, '/') && ! preg_match(Orcid::URL_PREFIX, $given)) {
+            return;
+        }
+
+        $request->merge(['orcid' => $orcid->recordUrl($given)]);
     }
 
     /**
