@@ -70,6 +70,15 @@ class OrcidClientFactory
     }
 
     /**
+     * The link to search for people on orcid.org or the sandbox, in the given language
+     */
+    public function searchUrl(string $query, string $locale): string
+    {
+        return $this->environment->oauthUrl().'/orcid-search/search?'
+            .http_build_query(['searchQuery' => $query, 'lang' => $locale], encoding_type: PHP_QUERY_RFC3986);
+    }
+
+    /**
      * Member API client for reading any record with OSP's /read-public client credentials token: only what
      * researchers made public, with the Member API's higher limits
      */

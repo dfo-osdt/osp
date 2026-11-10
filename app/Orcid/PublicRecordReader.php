@@ -6,6 +6,7 @@ namespace App\Orcid;
 
 use Illuminate\Support\Facades\Cache;
 use VincentAuger\OrcidSdk\Data\Record\Record;
+use VincentAuger\OrcidSdk\Data\Search\ExpandedSearchResults;
 use VincentAuger\OrcidSdk\Data\Works\Work;
 use VincentAuger\OrcidSdk\Exceptions\OrcidAuthException;
 use VincentAuger\OrcidSdk\Exceptions\OrcidException;
@@ -52,6 +53,16 @@ class PublicRecordReader
         }
 
         return $works;
+    }
+
+    /**
+     * The first page of records matching a Solr query, with their public names, emails and institutions
+     *
+     * @throws OrcidException
+     */
+    public function search(string $solrQuery, int $rows): ExpandedSearchResults
+    {
+        return $this->withToken(fn (string $token): ExpandedSearchResults => $this->orcid->memberReadApi($token)->expandedSearch($solrQuery, rows: $rows));
     }
 
     /**

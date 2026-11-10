@@ -26,6 +26,7 @@ use App\Http\Controllers\NotificationGroupMemberController;
 use App\Http\Controllers\NotificationGroupMembershipController;
 use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\AuthorOrcidRecordController;
+use App\Http\Controllers\Orcid\OrcidAuthorLookupController;
 use App\Http\Controllers\Orcid\OrcidReviewContributionController;
 use App\Http\Controllers\Orcid\RefreshFromOrcidController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
@@ -87,6 +88,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('/authors/{author}/orcid-record', AuthorOrcidRecordController::class);
+
+    // Find someone on ORCID to add as an author
+    Route::get('/orcid/author-search', [OrcidAuthorLookupController::class, 'search']);
+    Route::get('/orcid/author-preview/{orcid}', [OrcidAuthorLookupController::class, 'preview']);
 
     Route::controller(AuthorEmploymentController::class)->group(function () {
         Route::get('/authors/{author}/employments', 'index');
