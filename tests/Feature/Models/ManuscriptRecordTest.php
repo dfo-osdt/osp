@@ -719,7 +719,7 @@ test('a manuscript cannot be accepted into a journal that does not match its typ
 
 test('a manuscript\'s type can only change before it has a publication', function (?Closure $publication, ManuscriptRecordType $newType, bool $accepted): void {
     $manuscript = ManuscriptRecord::factory()->secondary()->create();
-    if ($publication) {
+    if ($publication instanceof Closure) {
         $publication(Publication::factory()->dfoSeries()->create(['manuscript_record_id' => $manuscript->id]));
     }
 
@@ -735,9 +735,9 @@ test('a manuscript\'s type can only change before it has a publication', functio
     }
 })->with([
     'changed before publication' => [null, ManuscriptRecordType::PRIMARY, true],
-    'changed after publication' => [fn (Publication $publication) => null, ManuscriptRecordType::PRIMARY, false],
+    'changed after publication' => [fn (Publication $publication): null => null, ManuscriptRecordType::PRIMARY, false],
     'changed while its publication is soft-deleted' => [fn (Publication $publication) => $publication->delete(), ManuscriptRecordType::PRIMARY, false],
-    'same type sent back after publication' => [fn (Publication $publication) => null, ManuscriptRecordType::SECONDARY, true],
+    'same type sent back after publication' => [fn (Publication $publication): null => null, ManuscriptRecordType::SECONDARY, true],
 ]);
 
 test('a manuscript already submitted to a journal can be accepted without sending the submission date again', function (): void {
