@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AxiosResponse } from 'axios'
-import type { Author, AuthorResource } from '../Author'
+import type { AuthorCreate, AuthorResource, OrcidAuthorImport } from '../Author'
 import { extractErrorMessages } from '@/api/errors'
 import BaseDialog from '@/components/BaseDialog.vue'
 import OrcidInput from '@/components/OrcidInput.vue'
@@ -8,7 +8,9 @@ import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
 import { AuthorService } from '../Author'
 import AuthorDfoProfileFields from './AuthorDfoProfileFields.vue'
+import OrcidAuthorSearchDialog from './OrcidAuthorSearchDialog.vue'
 
+// "created" also carries an existing author picked from an ORCID search instead of creating a duplicate
 const emit = defineEmits<{
   (event: 'created', payload: AuthorResource): void
 }>()
@@ -63,13 +65,64 @@ watchEffect(() => {
   }
 })
 
+const showOrcidSearch = ref(false)
+// what the form held before an ORCID import, to put back on clear
+const beforeOrcidImport = ref<{ firstName: string, lastName: string, email: string, organizationId: number | null, orcId: string } | null>(null)
+const orcidAffiliationName = ref<string | null>(null)
+// remounts the organization select so it loads an imported organization
+const organizationSelectKey = ref(0)
+
+const orcidSearchQuery = computed(() => `${firstName.value} ${lastName.value}`.trim())
+
+function importFromOrcid(imported: OrcidAuthorImport) {
+  beforeOrcidImport.value ??= {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    organizationId: organizationId.value,
+    orcId: orcId.value,
+  }
+  firstName.value = imported.first_name ?? firstName.value
+  lastName.value = imported.last_name ?? lastName.value
+  email.value = imported.email ?? email.value
+  orcId.value = imported.orcid
+  if (imported.organization_id !== null) {
+    organizationId.value = imported.organization_id
+    isIndependent.value = false
+  }
+  orcidAffiliationName.value = imported.organization_id === null
+    ? imported.affiliation_name
+    : null
+  organizationSelectKey.value++
+  showOrcidSearch.value = false
+}
+
+function clearOrcidImport() {
+  if (!beforeOrcidImport.value) {
+    return
+  }
+  firstName.value = beforeOrcidImport.value.firstName
+  lastName.value = beforeOrcidImport.value.lastName
+  email.value = beforeOrcidImport.value.email
+  organizationId.value = beforeOrcidImport.value.organizationId
+  orcId.value = beforeOrcidImport.value.orcId
+  beforeOrcidImport.value = null
+  orcidAffiliationName.value = null
+  organizationSelectKey.value++
+}
+
+async function useExistingAuthor(authorId: number) {
+  showOrcidSearch.value = false
+  emit('created', await AuthorService.find(authorId))
+}
+
 async function createAuthor() {
   if (!isIndependent.value && organizationId.value === null) {
     return
   }
 
   loading.value = true
-  const data: Partial<Author> = {
+  const data: AuthorCreate = {
     first_name: firstName.value,
     last_name: lastName.value,
     email: email.value,
@@ -82,6 +135,7 @@ async function createAuthor() {
       region_id: regionId.value,
       is_emeritus: isEmeritus.value,
     }),
+    ...(beforeOrcidImport.value && { source: 'orcid_search' as const }),
   }
 
   try {
@@ -105,6 +159,39 @@ async function createAuthor() {
       {{ errorMessage }}
     </q-banner>
     <q-form @submit="createAuthor">
+      <!-- Fill from ORCID -->
+      <div class="q-mx-md q-mt-md flex items-center q-gutter-sm">
+        <q-btn
+          outline
+          color="primary"
+          icon="mdi-account-search"
+          :label="$t('create-author-dialog.fill-from-orcid')"
+          @click="showOrcidSearch = true"
+        />
+        <q-chip
+          v-if="beforeOrcidImport"
+          removable
+          color="green-1"
+          text-color="green-10"
+          icon="mdi-check"
+          @remove="clearOrcidImport"
+        >
+          {{ $t('create-author-dialog.filled-from-orcid') }}
+          <a
+            :href="orcId"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="q-ml-xs"
+          >
+            {{ orcId.split('/').pop() }}
+            <q-icon name="mdi-open-in-new" />
+          </a>
+          <q-tooltip class="text-body2">
+            {{ $t('create-author-dialog.clear-orcid-import') }}
+          </q-tooltip>
+        </q-chip>
+      </div>
+
       <!-- Personal Information Group -->
       <q-card flat bordered class="q-ma-md">
         <q-card-section>
@@ -169,10 +256,15 @@ async function createAuthor() {
             {{ $t('common.independent-researcher-hint') }}
           </div>
 
+          <div v-if="!isIndependent && orcidAffiliationName" class="text-caption text-orange-9 q-mb-sm">
+            {{ $t('create-author-dialog.orcid-lists-affiliation', { name: orcidAffiliationName }) }}
+          </div>
           <OrganizationSelect
             v-if="!isIndependent"
+            :key="organizationSelectKey"
             v-model="organizationId"
-            show-default-organization
+            :show-default-organization="!beforeOrcidImport"
+            :initial-search-term="orcidAffiliationName ?? undefined"
             :label="$t('common.affiliation')"
             class="q-mb-md"
             :rules="[
@@ -205,6 +297,13 @@ async function createAuthor() {
         />
       </div>
     </q-form>
+    <OrcidAuthorSearchDialog
+      v-if="showOrcidSearch"
+      v-model="showOrcidSearch"
+      :initial-query="orcidSearchQuery"
+      @import="importFromOrcid"
+      @use-existing="useExistingAuthor"
+    />
   </BaseDialog>
 </template>
 

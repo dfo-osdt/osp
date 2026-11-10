@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\Sector;
 use App\Models\User;
 use App\Orcid\OrcidClientFactory;
+use Spatie\Activitylog\Models\Activity;
 
 test('a user can get list of authors', function (): void {
     Author::factory()->count(15)->create();
@@ -237,6 +238,46 @@ test('a bare ORCID iD already used by another author is refused', function (): v
     $this->actingAs($editor)
         ->putJson('api/authors/'.$author->id, ['orcid' => '0000-0002-0868-2726'])
         ->assertOk()->assertJsonPath('data.orcid', 'https://orcid.org/0000-0002-0868-2726');
+});
+
+test('an author filled in from an ORCID search is logged as such, with an unverified iD', function (): void {
+    $user = User::factory()->create();
+
+    $id = $this->actingAs($user)->postJson('api/authors', [
+        'first_name' => 'Josiah',
+        'last_name' => 'Carberry',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'josiah@brown.edu',
+        'orcid' => 'https://orcid.org/0000-0002-1825-0097',
+        'source' => 'orcid_search',
+    ])->assertCreated()->json('data.id');
+
+    $author = Author::query()->findOrFail($id);
+    expect($author->orcid_verified)->not->toBeTrue();
+
+    $activity = Activity::query()->forSubject($author)->causedBy($user)->where('description', 'Author created from an ORCID search')->sole();
+    expect($activity->properties->all())->toBe(['source' => 'orcid_search', 'orcid' => 'https://orcid.org/0000-0002-1825-0097']);
+});
+
+test('an author created by hand is not logged as from an ORCID search', function (): void {
+    $this->actingAs(User::factory()->create())->postJson('api/authors', [
+        'first_name' => 'Josiah',
+        'last_name' => 'Carberry',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'josiah@brown.edu',
+    ])->assertCreated();
+
+    expect(Activity::query()->where('description', 'Author created from an ORCID search')->exists())->toBeFalse();
+});
+
+test('an author can only come from a known source', function (): void {
+    $this->actingAs(User::factory()->create())->postJson('api/authors', [
+        'first_name' => 'Josiah',
+        'last_name' => 'Carberry',
+        'organization_id' => Organization::factory()->create()->id,
+        'email' => 'josiah@brown.edu',
+        'source' => 'somewhere',
+    ])->assertUnprocessable()->assertJsonValidationErrors('source');
 });
 
 test('a user cannot create an author if email already exist', function (): void {

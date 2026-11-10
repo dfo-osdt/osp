@@ -156,6 +156,77 @@ export interface AuthorOrcidRecord {
   } | null
 }
 
+/**
+ * Someone found on ORCID to add as an author. orcid is the link to their
+ * record; existing_author_id is set when they are already an author in OSP.
+ */
+export interface OrcidAuthorSearchResult {
+  orcid: string
+  name: string | null
+  given_names: string | null
+  family_name: string | null
+  other_names: string[]
+  emails: string[]
+  institutions: string[]
+  existing_author_id: number | null
+}
+
+/**
+ * A search of ORCID for an author ('unavailable': ORCID could not be searched
+ * right now). orcid_search_url searches for the same text on orcid.org.
+ */
+export interface OrcidAuthorSearch {
+  status: 'available' | 'unavailable'
+  num_found: number
+  results: OrcidAuthorSearchResult[]
+  orcid_search_url: string
+}
+
+/**
+ * A current employment on ORCID, with the OSP organization it matches by ROR
+ * (if any). The suggested one is the affiliation to pre-select.
+ */
+export interface OrcidAuthorPreviewAffiliation {
+  name: string | null
+  organization_id: number | null
+  start_date: string | null
+  suggested: boolean
+}
+
+/**
+ * What a public ORCID record fills in on the new author form
+ */
+export interface OrcidAuthorPreview {
+  status: 'available' | 'unavailable'
+  author: {
+    orcid: string
+    first_name: string | null
+    last_name: string | null
+    credit_name: string | null
+    emails: string[]
+    affiliations: OrcidAuthorPreviewAffiliation[]
+    existing_author_id: number | null
+  } | null
+}
+
+/**
+ * What an ORCID record fills in on the new author form; a field ORCID does
+ * not have is null
+ */
+export interface OrcidAuthorImport {
+  orcid: string
+  first_name: string | null
+  last_name: string | null
+  email: string | null
+  organization_id: number | null
+  affiliation_name: string | null
+}
+
+/**
+ * A new author; source tells it was filled in from an ORCID search
+ */
+export type AuthorCreate = Partial<Author> & { source?: 'orcid_search' }
+
 // Author Service
 export class AuthorService {
   /**
@@ -217,12 +288,32 @@ export class AuthorService {
   /**
    * Create an author
    */
-  public static async create(author: Partial<Author>) {
-    const response = await http.post<Partial<Author>, AuthorResource>(
+  public static async create(author: AuthorCreate) {
+    const response = await http.post<AuthorCreate, AuthorResource>(
       'api/authors',
       author,
     )
     return response.data
+  }
+
+  /**
+   * Search ORCID for someone to add as an author, by name or ORCID iD
+   */
+  public static async searchOrcid(query: string) {
+    const response = await http.get<{ data: OrcidAuthorSearch }>(
+      `api/orcid/author-search?${new URLSearchParams({ q: query })}`,
+    )
+    return response.data.data
+  }
+
+  /**
+   * What someone's public ORCID record fills in on the new author form
+   */
+  public static async previewOrcid(orcid: string) {
+    const response = await http.get<{ data: OrcidAuthorPreview }>(
+      `api/orcid/author-preview/${encodeURIComponent(orcid)}`,
+    )
+    return response.data.data
   }
 
   /** verify a user orcid */

@@ -340,7 +340,11 @@
     "personal-information": "Personal Information",
     "affiliation-research": "Affiliation & Research Information",
     "ror-guidance": "When selecting your co-author's affiliation, choose the main institution that appears in their research publications (e.g., 'McGill University' not 'Department of Science at McGill'). Only create a new organization if you cannot find their main institutional affiliation.",
-    "personal-email-warning": "Consider asking your co-author for their institutional email address. Personal email addresses may not be ideal for professional research communications."
+    "personal-email-warning": "Consider asking your co-author for their institutional email address. Personal email addresses may not be ideal for professional research communications.",
+    "fill-from-orcid": "Fill from ORCID",
+    "filled-from-orcid": "Filled from ORCID",
+    "clear-orcid-import": "Remove to put back what the form held before",
+    "orcid-lists-affiliation": "ORCID lists {name}, which is not in the portal yet: search for it below or create it."
   },
   "create-manuscript-record-dialog": {
     "create-text": "Once created, you will be taken to the manuscript record form. The manuscript record form will be marked as a draft and only be visible to you and the people you invite as observers. Once the form is complete you will be able to submit it for review.",
@@ -751,6 +755,30 @@
     "settings-title": "Integration Settings",
     "settings-section-intro": "Choose how the Open Science Portal uses your connected ORCID record.",
     "view-author-page": "View my author page"
+  },
+  "orcid-author-search-dialog": {
+    "already-in-osp": "This person is already an author in the portal.",
+    "also-known-as": "Also known as {names}",
+    "import": "Fill in the form",
+    "more-results": "Showing the first {shown} of {found} records: add a first name or an ORCID iD to narrow the search.",
+    "no-current-employment": "No current employment is public: choose the affiliation in the form.",
+    "no-public-email": "No public email: you will need to enter it.",
+    "no-results": "No ORCID record matches this search.",
+    "not-here": "Not the right person?",
+    "not-public": "Not public: you will need to enter it.",
+    "organization-found": "Found in the portal",
+    "organization-to-pick": "Not found in the portal: you will choose it in the form",
+    "preview": "Preview",
+    "published-name": "Published name on ORCID: {name}",
+    "review-before-saving": "You can review and complete every field before creating the author. The ORCID iD stays unverified until the author connects their own ORCID account.",
+    "search-hint": "A name (e.g. Josiah Carberry) or an ORCID iD",
+    "search-label": "Search ORCID",
+    "search-on-orcid": "Search on orcid.org",
+    "title": "Fill from ORCID",
+    "unavailable": "ORCID cannot be reached right now. You can still fill in the author by hand.",
+    "unnamed-organization": "Unnamed organization",
+    "use-existing-author": "Use this author",
+    "will-be-filled": "This will be filled in from ORCID:"
   },
   "orcid-review-credit": {
     "title": "ORCID review credit",
