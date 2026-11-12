@@ -30,7 +30,7 @@ function wantedWork(array $attributes = [], ?Author $author = null): Publication
         'title' => 'Stock assessment of <i>Gadus morhua</i>',
         'doi' => '10.60825/abc-123',
         'published_on' => '2025-03-14',
-        'journal_id' => Journal::factory()->dfoSeries()->create(['title' => 'Canadian Science Advisory Secretariat Research Document', 'orcid_sync_enabled' => true])->id,
+        'journal_id' => Journal::factory()->dfoSeries()->create(['title' => 'Canadian Science Advisory Secretariat Research Document', 'issn' => '1919-5079', 'orcid_sync_enabled' => true])->id,
     ]);
 
     $publicationAuthor = PublicationAuthor::factory()->create([
@@ -97,12 +97,20 @@ test('a wanted work is created on ORCID and its put-code stored', function (): v
         'journal-title' => ['value' => 'Canadian Science Advisory Secretariat Research Document'],
         'type' => 'report',
         'publication-date' => ['year' => ['value' => '2025'], 'month' => ['value' => '03'], 'day' => ['value' => '14']],
-        'external-ids' => ['external-id' => [[
-            'external-id-type' => 'doi',
-            'external-id-value' => '10.60825/abc-123',
-            'external-id-url' => ['value' => 'https://doi.org/10.60825/abc-123'],
-            'external-id-relationship' => 'self',
-        ]]],
+        'external-ids' => ['external-id' => [
+            [
+                'external-id-type' => 'doi',
+                'external-id-value' => '10.60825/abc-123',
+                'external-id-url' => ['value' => 'https://doi.org/10.60825/abc-123'],
+                'external-id-relationship' => 'self',
+            ],
+            [
+                'external-id-type' => 'issn',
+                'external-id-value' => '1919-5079',
+                'external-id-url' => ['value' => 'https://portal.issn.org/resource/ISSN/1919-5079'],
+                'external-id-relationship' => 'part-of',
+            ],
+        ]],
         'url' => ['value' => 'https://doi.org/10.60825/abc-123'],
         'contributors' => ['contributor' => [
             [
@@ -123,6 +131,19 @@ test('a wanted work is created on ORCID and its put-code stored', function (): v
     ]);
     expect(Activity::query()->where('description', 'publication.author.orcid-created')->where('subject_type', Publication::class)->where('subject_id', $publication->id)->exists())->toBeTrue();
 });
+
+test('a series without a valid ISSN is synced without it', function (?string $issn): void {
+    $mockClient = Saloon::fake([CreateWork::class => createdWork()]);
+    $publicationAuthor = wantedWork();
+    $publicationAuthor->publication->journal->update(['issn' => $issn]);
+
+    runWorkSync($publicationAuthor->fresh())->assertNotFailed();
+
+    $mockClient->assertSent(fn (CreateWork $request): bool => array_column($request->body()->get('external-ids')['external-id'], 'external-id-type') === ['doi']);
+})->with([
+    'no ISSN' => [null],
+    'bad check digit' => ['1488-XXXE'],
+]);
 
 test('syncing is logged on the publication, not as a change to the author', function (): void {
     Saloon::fake([CreateWork::class => createdWork()]);
