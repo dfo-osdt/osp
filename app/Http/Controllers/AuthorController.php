@@ -18,7 +18,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
-use VincentAuger\OrcidSdk\Support\OrcidId;
 
 class AuthorController extends Controller
 {
@@ -301,17 +300,11 @@ class AuthorController extends Controller
      */
     private function normalizeOrcid(Request $request, OrcidClientFactory $orcid): void
     {
-        $given = $request->input('orcid');
+        $bareId = Orcid::bareId($request->input('orcid'));
 
-        if (! is_string($given) || ! OrcidId::isValid($given)) {
-            return;
+        if ($bareId !== null) {
+            $request->merge(['orcid' => $orcid->recordUrl($bareId)]);
         }
-
-        if (str_contains($given, '/') && ! preg_match(Orcid::URL_PREFIX, $given)) {
-            return;
-        }
-
-        $request->merge(['orcid' => $orcid->recordUrl($given)]);
     }
 
     /**

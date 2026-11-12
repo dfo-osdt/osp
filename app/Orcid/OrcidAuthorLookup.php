@@ -147,8 +147,10 @@ class OrcidAuthorLookup
     {
         $query = trim($query);
 
-        if (OrcidId::isValid($query) && (! str_contains($query, '/') || preg_match(Orcid::URL_PREFIX, $query))) {
-            return 'orcid:'.OrcidId::normalize($query);
+        $bareId = Orcid::bareId($query);
+
+        if ($bareId !== null) {
+            return 'orcid:'.$bareId;
         }
 
         $words = preg_split('/[\s,]+/', $query, flags: PREG_SPLIT_NO_EMPTY) ?: [];

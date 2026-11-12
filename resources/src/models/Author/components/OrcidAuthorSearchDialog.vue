@@ -31,17 +31,29 @@ const preview = ref<OrcidAuthorPreview | null>(null)
 const previewing = ref<string | null>(null)
 const selectedAffiliation = ref<number | null>(null)
 
+// ORCID can answer slower than people type, so only the latest search may show its results
+let latestSearch = 0
+
 async function runSearch() {
   const text = query.value.trim()
   if (text.length < MIN_QUERY_LENGTH) {
     return
   }
+  const thisSearch = ++latestSearch
   searching.value = true
   try {
-    search.value = await AuthorService.searchOrcid(text)
+    const found = await AuthorService.searchOrcid(text)
+    if (thisSearch === latestSearch) {
+      search.value = found
+    }
+  }
+  catch {
+    // the http client already tells the user what went wrong
   }
   finally {
-    searching.value = false
+    if (thisSearch === latestSearch) {
+      searching.value = false
+    }
   }
 }
 
@@ -58,6 +70,9 @@ async function showPreview(result: OrcidAuthorSearchResult) {
     selectedAffiliation.value = suggested === -1
       ? null
       : suggested
+  }
+  catch {
+    // the http client already tells the user what went wrong
   }
   finally {
     previewing.value = null
