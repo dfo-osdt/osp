@@ -127,7 +127,7 @@ return [
             'url' => env('OLLAMA_URL', 'http://localhost:11434'),
             'models' => [
                 'text' => [
-                    'default' => env('OLLAMA_MODEL', 'llama3.2'),
+                    'default' => env('OLLAMA_MODEL', 'qwen3.5:9b'),
                 ],
             ],
         ],

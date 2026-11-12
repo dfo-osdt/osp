@@ -78,6 +78,12 @@ class GeneratePLSController extends Controller
             return $this->error();
         }
 
+        if (blank($response->text)) {
+            Log::error('AI request returned an empty answer');
+
+            return $this->error();
+        }
+
         return $this->respond($response->text);
     }
 
