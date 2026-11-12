@@ -159,7 +159,8 @@ async function createAuthor() {
     <q-banner v-if="errorMessage" class="q-pa-md bg-red text-white">
       {{ errorMessage }}
     </q-banner>
-    <q-form @submit="createAuthor">
+    <!-- these are a co-author's details, not the user's own, so the browser should not offer to save them -->
+    <q-form autocomplete="off" @submit="createAuthor">
       <!-- Fill from ORCID -->
       <q-banner rounded dense class="bg-grey-2 q-mx-md q-mt-md">
         <template #avatar>
@@ -210,6 +211,7 @@ async function createAuthor() {
           <q-input
             v-model="firstName"
             outlined
+            autocomplete="off"
             :label="$t('common.first-name')"
             class="q-mb-md"
             :rules="[(val: string) => val !== '' || t('common.required')]"
@@ -217,6 +219,7 @@ async function createAuthor() {
           <q-input
             v-model="lastName"
             outlined
+            autocomplete="off"
             :label="$t('common.last-name')"
             class="q-mb-md"
             :rules="[(val: string) => val !== '' || t('common.required')]"
@@ -232,6 +235,7 @@ async function createAuthor() {
           <q-input
             v-model="email"
             outlined
+            autocomplete="off"
             :label="$t('common.email')"
             :rules="[
               (val: string) => val !== '' || t('common.required'),
