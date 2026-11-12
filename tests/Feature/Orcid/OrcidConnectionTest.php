@@ -5,11 +5,13 @@ use App\Enums\OrcidSyncIntent;
 use App\Jobs\SyncAuthorEmploymentWithOrcid;
 use App\Jobs\SyncAuthorFromOrcid;
 use App\Jobs\SyncReviewContributionWithOrcid;
+use App\Jobs\SyncWorkWithOrcid;
 use App\Models\AuthorEmployment;
 use App\Models\Journal;
 use App\Models\ManuscriptReviewContributor;
 use App\Models\Organization;
 use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
@@ -82,6 +84,27 @@ test('the callback syncs review contributions waiting for ORCID', function (): v
         ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=success');
 
     Queue::assertPushed(SyncReviewContributionWithOrcid::class, fn (SyncReviewContributionWithOrcid $job): bool => $job->contributor->is($pending));
+});
+
+test('the callback syncs works waiting for ORCID', function (): void {
+    Queue::fake();
+    Saloon::fake([ExchangeAuthorizationCode::class => orcidTokenResponse()]);
+
+    $user = User::factory()->create();
+    $pending = PublicationAuthor::factory()->create([
+        'author_id' => $user->author->id,
+        'publication_id' => Publication::factory()->published()->create([
+            'doi' => '10.60825/abc-123',
+            'journal_id' => Journal::factory()->dfoSeries()->create(['orcid_sync_enabled' => true])->id,
+        ])->id,
+    ]);
+    $pending->forceFill(['orcid_sync' => OrcidSyncIntent::WANTED])->save();
+    Cache::put('abcKEY123', $user->id, now()->addMinutes(15));
+
+    $this->actingAs($user)->withSession(['orcid_state' => 'abcKEY123'])->get('api/orcid/callback?code=Q70Y3A&state=abcKEY123')
+        ->assertRedirect(config('app.frontend_url').'#/auth/orcid-callback?status=success');
+
+    Queue::assertPushed(SyncWorkWithOrcid::class, fn (SyncWorkWithOrcid $job): bool => $job->publicationAuthor->is($pending));
 });
 
 test('a callback finished in another browser does not link to the initiator', function (): void {

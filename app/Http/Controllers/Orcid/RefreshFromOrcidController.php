@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Orcid;
 
 use App\Jobs\SyncAuthorEmploymentWithOrcid;
 use App\Jobs\SyncReviewContributionWithOrcid;
+use App\Jobs\SyncWorkWithOrcid;
 use App\Orcid\AuthorOrcidRecord;
 use App\Orcid\EmploymentReconciler;
 use App\Orcid\OrcidErrors;
@@ -54,6 +55,7 @@ class RefreshFromOrcidController
 
         $pending = SyncAuthorEmploymentWithOrcid::dispatchPendingFor($author);
         SyncReviewContributionWithOrcid::dispatchPendingFor($author);
+        SyncWorkWithOrcid::dispatchPendingFor($author);
 
         return response()->json(['refreshed' => true, 'employments' => $result, 'pending' => $pending]);
     }

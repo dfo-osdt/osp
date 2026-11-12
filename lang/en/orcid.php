@@ -12,6 +12,7 @@ return [
     ],
     'ineligible' => [
         'manuscript_deleted' => 'Manuscript deleted',
+        'publication_deleted' => 'Publication deleted',
         'not_secondary' => 'Not a DFO publication',
         'no_publication' => 'No publication',
         'not_published' => 'Not published',
