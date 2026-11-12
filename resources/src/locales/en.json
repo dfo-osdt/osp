@@ -821,6 +821,44 @@
       "declined": "Declined"
     }
   },
+  "orcid-works": {
+    "title": "ORCID works",
+    "back": "Back to author profile",
+    "available-count": "{count} available | {count} available",
+    "load-error": "Your publications couldn't be loaded. Please try again.",
+    "intro": "Your reports published in participating DFO series can be added to your ORCID record as works.",
+    "connect-banner": "Connect your ORCID iD and allow the portal to update your record to add these publications to it.",
+    "empty": "None of your publications can be added to ORCID yet. They appear here once published with a DOI in a participating series.",
+    "add": "Add",
+    "add-error": "The publication couldn't be added to ORCID. Please try again.",
+    "add-all": "Add all",
+    "add-all-error": "Your publications couldn't be added to ORCID. Please try again.",
+    "auto-sync": "Add new publications automatically",
+    "auto-sync-badge": "Auto add on",
+    "auto-sync-hint": "From now on, your publications are added to ORCID as soon as they are published. Publications listed here stay as they are: use Add or Add all for them. Turning this off doesn't remove anything from ORCID.",
+    "auto-sync-on": "New publications will be added to ORCID automatically.",
+    "auto-sync-off": "New publications will no longer be added to ORCID automatically.",
+    "auto-sync-error": "The setting couldn't be saved. Please try again.",
+    "remove": "Remove",
+    "remove-error": "The publication couldn't be removed from ORCID. Please try again.",
+    "decline": "Don't add",
+    "decline-error": "Your choice couldn't be saved. Please try again.",
+    "journal-and-year": "{journal} · {year}",
+    "sections": {
+      "undecided": "To decide ({count})",
+      "added": "Added to ORCID ({count})",
+      "declined": "Not added ({count})"
+    },
+    "removing-hint": "It is removed once you connect ORCID. You can also delete it from your ORCID record yourself.",
+    "status": {
+      "not_on_orcid": "Not on ORCID",
+      "pending": "Adding to ORCID",
+      "waiting_for_connection": "Waiting for ORCID connection",
+      "on_orcid": "On ORCID",
+      "removing": "Removing from ORCID",
+      "declined": "Declined"
+    }
+  },
   "organization-select": {
     "add-a-new-organization": "Add a new organization",
     "cant-find": "Can't find the organization you're looking for?",

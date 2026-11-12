@@ -821,6 +821,44 @@
       "declined": "Refusée"
     }
   },
+  "orcid-works": {
+    "title": "Travaux ORCID",
+    "back": "Retour au profil d'auteur",
+    "available-count": "{count} disponible | {count} disponibles",
+    "load-error": "Vos publications n'ont pas pu être chargées. Veuillez réessayer.",
+    "intro": "Vos rapports publiés dans les séries du MPO participantes peuvent être ajoutés à votre dossier ORCID comme travaux.",
+    "connect-banner": "Connectez votre ORCID iD et autorisez le portail à mettre à jour votre dossier pour y ajouter ces publications.",
+    "empty": "Aucune de vos publications ne peut encore être ajoutée à ORCID. Elles apparaîtront ici une fois publiées avec un DOI dans une série participante.",
+    "add": "Ajouter",
+    "add-error": "La publication n'a pas pu être ajoutée à ORCID. Veuillez réessayer.",
+    "add-all": "Tout ajouter",
+    "add-all-error": "Vos publications n'ont pas pu être ajoutées à ORCID. Veuillez réessayer.",
+    "auto-sync": "Ajouter automatiquement les nouvelles publications",
+    "auto-sync-badge": "Ajout auto activé",
+    "auto-sync-hint": "Dorénavant, vos publications sont ajoutées à ORCID dès leur publication. Les publications listées ici restent telles quelles : utilisez Ajouter ou Tout ajouter pour celles-ci. Désactiver cette option ne retire rien d'ORCID.",
+    "auto-sync-on": "Les nouvelles publications seront ajoutées automatiquement à ORCID.",
+    "auto-sync-off": "Les nouvelles publications ne seront plus ajoutées automatiquement à ORCID.",
+    "auto-sync-error": "Le paramètre n'a pas pu être enregistré. Veuillez réessayer.",
+    "remove": "Retirer",
+    "remove-error": "La publication n'a pas pu être retirée d'ORCID. Veuillez réessayer.",
+    "decline": "Ne pas ajouter",
+    "decline-error": "Votre choix n'a pas pu être enregistré. Veuillez réessayer.",
+    "journal-and-year": "{journal} · {year}",
+    "sections": {
+      "undecided": "À décider ({count})",
+      "added": "Ajoutées à ORCID ({count})",
+      "declined": "Non ajoutées ({count})"
+    },
+    "removing-hint": "Elle sera retirée dès que vous connecterez ORCID. Vous pouvez aussi la supprimer vous-même de votre dossier ORCID.",
+    "status": {
+      "not_on_orcid": "Pas dans ORCID",
+      "pending": "Ajout à ORCID en cours",
+      "waiting_for_connection": "En attente de la connexion ORCID",
+      "on_orcid": "Dans ORCID",
+      "removing": "Retrait d'ORCID en cours",
+      "declined": "Refusée"
+    }
+  },
   "organization-select": {
     "add-a-new-organization": "Ajouter une nouvelle organisation",
     "cant-find": "Vous ne trouvez pas l'organisation que vous recherchez ?",

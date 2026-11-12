@@ -28,6 +28,7 @@ use App\Http\Controllers\OpenAI\GeneratePLSController;
 use App\Http\Controllers\Orcid\AuthorOrcidRecordController;
 use App\Http\Controllers\Orcid\OrcidAuthorLookupController;
 use App\Http\Controllers\Orcid\OrcidReviewContributionController;
+use App\Http\Controllers\Orcid\OrcidWorkController;
 use App\Http\Controllers\Orcid\RefreshFromOrcidController;
 use App\Http\Controllers\Orcid\RevokeTokenController;
 use App\Http\Controllers\OrganizationController;
@@ -76,6 +77,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/user/orcid/review-contributions/auto-sync', [OrcidReviewContributionController::class, 'updateAutoSync']);
     Route::post('/user/orcid/review-contributions/{manuscriptReviewContributor}/add', [OrcidReviewContributionController::class, 'add']);
     Route::post('/user/orcid/review-contributions/{manuscriptReviewContributor}/remove', [OrcidReviewContributionController::class, 'remove']);
+    Route::get('/user/orcid/works', [OrcidWorkController::class, 'index']);
+    Route::post('/user/orcid/works/add-all', [OrcidWorkController::class, 'addAll']);
+    Route::put('/user/orcid/works/auto-sync', [OrcidWorkController::class, 'updateAutoSync']);
+    Route::post('/user/orcid/works/{publicationAuthor}/add', [OrcidWorkController::class, 'add']);
+    Route::post('/user/orcid/works/{publicationAuthor}/remove', [OrcidWorkController::class, 'remove']);
 
     // Look for AAD users to invite
     Route::post('/azure-directory/users', [AzureDirectorySearchController::class, '__invoke']);

@@ -4,6 +4,7 @@ import ContentCard from '@/components/ContentCard.vue'
 import OrcidAvatar from '@/components/OrcidAvatar.vue'
 import ManageAuthorEmploymentsCard from '@/models/AuthorEmployment/components/ManageAuthorEmploymentsCard.vue'
 import { OrcidReviewContributionService } from '@/models/ManuscriptReviewContributor/OrcidReviewContribution'
+import { OrcidWorkService } from '@/models/PublicationAuthor/OrcidWork'
 import { AuthorService } from '../Author'
 
 const authStore = useAuthStore()
@@ -57,11 +58,10 @@ async function updateShowOrcidRecord(show: boolean) {
 
 const availableReviewCount = ref(0)
 const reviewAutoSync = ref(false)
+const availableWorkCount = ref(0)
+const worksAutoSync = ref(false)
 
-onMounted(async () => {
-  if (!authStore.user?.author?.data)
-    return
-
+async function loadReviewHints() {
   try {
     const contributions = await OrcidReviewContributionService.list()
     // only the contributions not decided on yet: those on ORCID or declined are not available
@@ -73,6 +73,30 @@ onMounted(async () => {
   catch {
     // the count and auto sync are only hints; leave the badges hidden
   }
+}
+
+async function loadWorkHints() {
+  try {
+    const works = await OrcidWorkService.list()
+    // only the publications not decided on yet: those on ORCID or declined are not available
+    availableWorkCount.value = works.data
+      .filter(work => work.data.orcid_status === 'not_on_orcid')
+      .length
+    worksAutoSync.value = works.meta.auto_sync
+  }
+  catch {
+    // the count and auto sync are only hints; leave the badges hidden
+  }
+}
+
+onMounted(async () => {
+  if (!authStore.user?.author?.data)
+    return
+
+  await Promise.all([
+    loadReviewHints(),
+    loadWorkHints(),
+  ])
 })
 
 async function revokeToken() {
@@ -212,6 +236,43 @@ async function revokeToken() {
                     color="primary"
                     :label="t('orcid-review-credit.available-count', { count: availableReviewCount })"
                     data-test="orcid-review-credit-count"
+                  />
+                  <q-icon name="mdi-chevron-right" />
+                </div>
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="authStore.user?.author?.data"
+              clickable
+              :to="{ name: 'settings.author.orcid_works' }"
+              data-test="orcid-works-link"
+            >
+              <q-item-section avatar top>
+                <q-icon name="mdi-file-document-check-outline" color="primary" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ t('orcid-works.title') }}</q-item-label>
+                <q-item-label caption>
+                  {{ t('orcid-works.intro') }}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <div class="row items-center no-wrap q-gutter-sm">
+                  <q-badge
+                    v-if="worksAutoSync"
+                    outline
+                    color="positive"
+                    data-test="orcid-works-auto-sync-badge"
+                  >
+                    <q-icon name="mdi-autorenew" class="q-mr-xs" />
+                    {{ t('orcid-works.auto-sync-badge') }}
+                  </q-badge>
+                  <q-badge
+                    v-if="availableWorkCount"
+                    outline
+                    color="primary"
+                    :label="t('orcid-works.available-count', { count: availableWorkCount })"
+                    data-test="orcid-works-count"
                   />
                   <q-icon name="mdi-chevron-right" />
                 </div>
