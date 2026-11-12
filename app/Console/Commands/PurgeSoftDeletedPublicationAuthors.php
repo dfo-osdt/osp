@@ -18,7 +18,8 @@ class PurgeSoftDeletedPublicationAuthors extends Command
     {
         $this->info('Finding soft-deleted publication authors...');
 
-        $publicationAuthors = PublicationAuthor::onlyTrashed()->with('author', 'publication')->get();
+        // the sync job deletes those still on ORCID once it can, then removes them
+        $publicationAuthors = PublicationAuthor::onlyTrashed()->whereNull('orcid_putcode')->with('author', 'publication')->get();
 
         if ($publicationAuthors->isEmpty()) {
             $this->info('No soft-deleted publication authors found.');
