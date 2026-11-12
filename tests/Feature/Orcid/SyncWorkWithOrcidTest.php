@@ -116,16 +116,13 @@ test('a wanted work is created on ORCID and its put-code stored', function (): v
             [
                 'contributor-orcid' => ['path' => '0000-0002-1825-0097'],
                 'credit-name' => ['value' => $author->full_name],
-                'contributor-attributes' => ['contributor-role' => 'author'],
             ],
             [
                 'contributor-orcid' => ['path' => '0000-0002-1825-0097'],
                 'credit-name' => ['value' => 'Josiah Carberry'],
-                'contributor-attributes' => ['contributor-role' => 'author'],
             ],
             [
                 'credit-name' => ['value' => 'Fisheries and Oceans Canada'],
-                'contributor-attributes' => ['contributor-role' => 'author'],
             ],
         ]],
     ]);
