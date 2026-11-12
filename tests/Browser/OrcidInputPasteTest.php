@@ -13,7 +13,7 @@ test('pasting a full ORCID URL keeps only the iD', function (): void {
     $page->waitForText('Help us')->script("window.location.hash = '#/settings/author'");
 
     // the browser plugin cannot fill the clipboard, so dispatch the paste event directly
-    $page->waitForText('https://orcid.org/')->script(<<<'JS'
+    $page->waitForText('Manage ORCID')->script(<<<'JS'
         const clipboardData = new DataTransfer()
         clipboardData.setData('text/plain', 'https://orcid.org/0000-0002-1825-0097')
         document.querySelector('[data-test="orcid-input"]')
