@@ -12,6 +12,7 @@ return [
     ],
     'ineligible' => [
         'manuscript_deleted' => 'Manuscrit supprimé',
+        'publication_deleted' => 'Publication supprimée',
         'not_secondary' => 'Pas une publication du MPO',
         'no_publication' => 'Aucune publication',
         'not_published' => 'Non publiée',

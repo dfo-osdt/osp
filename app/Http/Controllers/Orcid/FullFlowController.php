@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Orcid;
 use App\Jobs\SyncAuthorEmploymentWithOrcid;
 use App\Jobs\SyncAuthorFromOrcid;
 use App\Jobs\SyncReviewContributionWithOrcid;
+use App\Jobs\SyncWorkWithOrcid;
 use App\Models\User;
 use App\Orcid\OrcidClientFactory;
 use Illuminate\Http\RedirectResponse;
@@ -112,7 +113,8 @@ class FullFlowController
         dispatch(new SyncAuthorFromOrcid($author));
         $pendingEmployments = SyncAuthorEmploymentWithOrcid::dispatchPendingFor($author);
         $pendingReviews = SyncReviewContributionWithOrcid::dispatchPendingFor($author);
-        Log::info('ORCID connected', ['author_id' => $author->id, 'pending_employments' => $pendingEmployments, 'pending_review_contributions' => $pendingReviews]);
+        $pendingWorks = SyncWorkWithOrcid::dispatchPendingFor($author);
+        Log::info('ORCID connected', ['author_id' => $author->id, 'pending_employments' => $pendingEmployments, 'pending_review_contributions' => $pendingReviews, 'pending_works' => $pendingWorks]);
 
         return redirect($frontendUrl.'#/auth/orcid-callback?status=success');
     }
