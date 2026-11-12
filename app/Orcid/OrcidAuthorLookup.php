@@ -9,6 +9,7 @@ use App\Models\Organization;
 use App\Rules\Orcid;
 use Illuminate\Support\Facades\Cache;
 use VincentAuger\OrcidSdk\Data\Affiliations\Affiliation;
+use VincentAuger\OrcidSdk\Data\Common\FuzzyDate;
 use VincentAuger\OrcidSdk\Data\Organization\DisambiguatedOrganization;
 use VincentAuger\OrcidSdk\Data\Person\Email;
 use VincentAuger\OrcidSdk\Data\Record\Record;
@@ -175,7 +176,7 @@ class OrcidAuthorLookup
             'start_date' => $affiliation->startDate?->__toString(),
         ], array_filter(
             $record->activities->affiliations(AffiliationType::Employment),
-            fn (Affiliation $affiliation): bool => $affiliation->endDate === null,
+            fn (Affiliation $affiliation): bool => ! $affiliation->endDate instanceof FuzzyDate,
         ));
 
         // "2019" < "2019-05" < "2020": the dates compare as strings
@@ -200,7 +201,7 @@ class OrcidAuthorLookup
 
         $affiliations = array_map(fn (array $employment): array => [
             'name' => $employment['name'],
-            'organization_id' => $employment['ror'] === null ? null : ($organizations[self::rorKey($employment['ror'])] ?? null),
+            'organization_id' => $employment['ror'] === null ? null : ($organizations[$this->rorKey($employment['ror'])] ?? null),
             'start_date' => $employment['start_date'],
             'suggested' => false,
         ], $employments);
@@ -227,20 +228,20 @@ class OrcidAuthorLookup
             return [];
         }
 
-        $identifiers = array_merge(...array_map(fn (string $ror): array => [self::rorKey($ror), self::rorKey($ror).'/'], $rors));
+        $identifiers = array_merge(...array_map(fn (string $ror): array => [$this->rorKey($ror), $this->rorKey($ror).'/'], $rors));
 
         return Organization::query()
             ->whereIn('ror_identifier', $identifiers)
             ->orderByDesc('is_validated')
             ->orderBy('id')
             ->get(['id', 'ror_identifier'])
-            ->reduce(fn (array $byRor, Organization $organization): array => $byRor + [self::rorKey((string) $organization->ror_identifier) => $organization->id], []);
+            ->reduce(fn (array $byRor, Organization $organization): array => $byRor + [$this->rorKey((string) $organization->ror_identifier) => $organization->id], []);
     }
 
     /**
      * ROR identifiers compare without case or a trailing slash
      */
-    private static function rorKey(string $ror): string
+    private function rorKey(string $ror): string
     {
         return mb_strtolower(rtrim($ror, '/'));
     }
