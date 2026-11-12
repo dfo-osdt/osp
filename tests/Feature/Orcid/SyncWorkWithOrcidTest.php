@@ -142,6 +142,33 @@ test('a series without a valid ISSN is synced without it', function (?string $is
     'bad check digit' => ['1488-XXXE'],
 ]);
 
+test('a co-author\'s malformed ORCID iD is left out rather than holding back the work', function (): void {
+    $mockClient = Saloon::fake([CreateWork::class => createdWork()]);
+    $publicationAuthor = wantedWork();
+    PublicationAuthor::factory()->create([
+        'publication_id' => $publicationAuthor->publication_id,
+        'author_id' => Author::factory()->create(['first_name' => 'Josiah', 'last_name' => 'Carberry', 'orcid' => '0000-0002-1825-0098'])->id,
+    ]);
+
+    runWorkSync($publicationAuthor)->assertNotFailed();
+
+    $mockClient->assertSent(fn (CreateWork $request): bool => $request->body()->get('contributors')['contributor'][1] === ['credit-name' => ['value' => 'Josiah Carberry']]);
+    expect($publicationAuthor->refresh()->orcid_putcode)->toBe(4567);
+});
+
+test('a work with data ORCID would reject stays pending without calling ORCID', function (): void {
+    $mockClient = Saloon::fake([]);
+    $publicationAuthor = wantedWork();
+    $publicationAuthor->publication->update(['doi' => 'https://example.org/10.60825/abc-123']);
+
+    runWorkSync($publicationAuthor->fresh())->assertNotFailed();
+
+    $mockClient->assertNothingSent();
+    expect($publicationAuthor->author->refresh()->orcid_access_token)->not->toBeNull()
+        ->and($publicationAuthor->refresh()->orcid_putcode)->toBeNull()
+        ->and($publicationAuthor->needsSyncWithOrcid())->toBeTrue();
+});
+
 test('syncing is logged on the publication, not as a change to the author', function (): void {
     Saloon::fake([CreateWork::class => createdWork()]);
     $publicationAuthor = wantedWork();
@@ -257,6 +284,26 @@ test('a work on ORCID that is no longer eligible is deleted there', function (Cl
 })->with([
     'journal no longer synced' => [fn (Publication $publication) => $publication->journal->update(['orcid_sync_enabled' => false])],
     'DOI removed' => [fn (Publication $publication) => $publication->update(['doi' => null])],
+]);
+
+test('a work the author deleted on ORCID before it stopped being eligible is declined', function (Closure $makeIneligible): void {
+    Saloon::fake([DeleteWork::class => orcidWorkError(404, 9016)]);
+    $publicationAuthor = wantedWork(['orcid_putcode' => 4567, 'orcid_updated_at' => now()]);
+    $makeIneligible($publicationAuthor);
+
+    runWorkSync(PublicationAuthor::withTrashed()->find($publicationAuthor->id))->assertNotFailed();
+
+    $publicationAuthor = PublicationAuthor::withTrashed()->find($publicationAuthor->id);
+    expect($publicationAuthor)->not->toBeNull()
+        ->and($publicationAuthor->orcid_putcode)->toBeNull()
+        ->and($publicationAuthor->orcid_sync)->toBe(OrcidSyncIntent::DECLINED);
+    expect(Activity::query()->where('description', 'publication.author.orcid-deleted-by-author')->where('subject_id', $publicationAuthor->publication_id)->exists())->toBeTrue();
+})->with([
+    'journal no longer synced' => [fn (PublicationAuthor $publicationAuthor) => $publicationAuthor->publication->journal->update(['orcid_sync_enabled' => false])],
+    'publication deleted' => [function (PublicationAuthor $publicationAuthor): void {
+        $publicationAuthor->delete();
+        $publicationAuthor->publication->delete();
+    }],
 ]);
 
 test('a removed author is deleted on ORCID, then removed for good', function (MockResponse $deleteResponse): void {

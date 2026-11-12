@@ -6,6 +6,7 @@ use App\Models\Publication;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 #[Description('Permanently delete soft-deleted publications from the database')]
@@ -19,7 +20,10 @@ class PurgeSoftDeletedPublications extends Command
     {
         $this->info('Finding soft-deleted publications...');
 
-        $publications = Publication::onlyTrashed()->get();
+        // the sync job deletes the works still on ORCID once it can; they are purged on a later run
+        $publications = Publication::onlyTrashed()
+            ->whereDoesntHave('publicationAuthors', fn (Builder $query): Builder => $query->withTrashed()->whereNotNull('orcid_putcode'))
+            ->get();
 
         if ($publications->isEmpty()) {
             $this->info('No soft-deleted publications found.');

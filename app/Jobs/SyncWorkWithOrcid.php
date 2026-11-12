@@ -35,7 +35,8 @@ use VincentAuger\OrcidSdk\Resources\WorksResource;
  *   synced), then remove the publication author from OSP
  * - declined or no longer eligible (including a deleted publication) but on
  *   ORCID: delete it there and clear the put-code, keeping the intent so a
- *   restored publication is added again
+ *   restored publication is added again (unless the author already deleted it
+ *   there: it is then declined)
  * - synced before: update it on ORCID; if the author deleted it there, they
  *   no longer want it: mark it declined instead of creating it again
  * - never synced: create it on ORCID and store the put-code
@@ -241,14 +242,20 @@ class SyncWorkWithOrcid implements ShouldQueue
      * An author removed from the publication is then removed from OSP. Otherwise
      * only the put-code is cleared: if the author wanted the work again, or it
      * became eligible again (e.g. the publication was restored), the job
-     * dispatched with that change creates it.
+     * dispatched with that change creates it. A wanted work already gone from
+     * ORCID was deleted there by the author: it is declined, so it is not
+     * created again when it becomes eligible again.
      */
     private function delete(WorksResource $works, PublicationAuthor $publicationAuthor): void
     {
         try {
             $works->delete($publicationAuthor->orcid_putcode);
         } catch (OrcidNotFoundException) {
-            // already deleted on ORCID
+            if ($publicationAuthor->isWantedOnOrcid() && ! $publicationAuthor->isRemovedFromPublication()) {
+                $this->markDeletedOnOrcid($publicationAuthor);
+
+                return;
+            }
         }
 
         $putCode = $publicationAuthor->orcid_putcode;

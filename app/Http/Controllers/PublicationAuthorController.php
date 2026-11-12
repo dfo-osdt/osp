@@ -7,6 +7,7 @@ use App\Jobs\SyncWorkWithOrcid;
 use App\Models\Author;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -51,7 +52,7 @@ class PublicationAuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Publication $publication): JsonResource
+    public function store(Request $request, Publication $publication): JsonResponse
     {
         $publication->load('publicationAuthors.author', 'region');
         Gate::authorize('update', $publication);
@@ -67,20 +68,28 @@ class PublicationAuthorController extends Controller
 
         $author = Author::query()->find($validated['author_id']);
 
-        $publicationAuthor = new PublicationAuthor;
+        // an author removed while their ORCID work is still to be deleted is brought back,
+        // so the work is kept rather than deleted under a second publication author
+        $publicationAuthor = $publication->publicationAuthors()->onlyTrashed()->where('author_id', $validated['author_id'])->latest('id')->first()
+            ?? new PublicationAuthor;
         $publicationAuthor->publication_id = $publication->id;
         $publicationAuthor->author_id = $validated['author_id'];
         $publicationAuthor->is_corresponding_author = $validated['is_corresponding_author'] ?? false;
         $publicationAuthor->is_group_author = $validated['is_group_author'] ?? false;
         $publicationAuthor->organization_id = $validated['organization_id'] ?? $author->organization_id;
         $publicationAuthor->fill($author->authorshipProfileFor($publicationAuthor->organization_id));
-        $publicationAuthor->save();
+
+        if ($publicationAuthor->trashed()) {
+            $publicationAuthor->restore();
+        } else {
+            $publicationAuthor->save();
+        }
 
         $this->syncWorksOfAuthors($publication);
 
         $this->loadResourceRelationships($publicationAuthor, $publication);
 
-        return PublicationAuthorResource::make($publicationAuthor);
+        return PublicationAuthorResource::make($publicationAuthor)->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**

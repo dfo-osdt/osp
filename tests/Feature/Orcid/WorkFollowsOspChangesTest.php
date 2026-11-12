@@ -5,6 +5,7 @@ use App\Enums\ManuscriptRecordType;
 use App\Enums\OrcidSyncIntent;
 use App\Enums\Permissions\UserRole;
 use App\Filament\Resources\Journals\Pages\EditJournal;
+use App\Jobs\SyncWorkWithOrcid;
 use App\Models\Author;
 use App\Models\Journal;
 use App\Models\ManuscriptRecord;
@@ -291,6 +292,21 @@ test('the purge command keeps removed authors whose work is still on ORCID', fun
         ->and(PublicationAuthor::withTrashed()->find($neverSynced->id))->toBeNull();
 });
 
+test('the purge command keeps deleted publications whose works are still on ORCID', function (): void {
+    Saloon::fake([]);
+    $stillOnOrcid = syncedWork();
+    $stillOnOrcid->author->clearOrcidToken();
+    $offOrcid = syncedWork(['orcid_putcode' => null]);
+    DeletePublication::handle($stillOnOrcid->publication);
+    DeletePublication::handle($offOrcid->publication);
+
+    $this->artisan('osp:purge-soft-deleted-publications', ['--force' => true])->assertSuccessful();
+
+    expect(Publication::withTrashed()->find($stillOnOrcid->publication_id))->not->toBeNull()
+        ->and(PublicationAuthor::withTrashed()->find($stillOnOrcid->id)->orcid_putcode)->toBe(4567)
+        ->and(Publication::withTrashed()->find($offOrcid->publication_id))->toBeNull();
+});
+
 test('a removed author waiting for their ORCID work\'s removal can be added again', function (): void {
     $mockClient = Saloon::fake([]);
     $publicationAuthor = syncedWork();
@@ -306,6 +322,30 @@ test('a removed author waiting for their ORCID work\'s removal can be added agai
     ])->assertCreated();
 
     $mockClient->assertNothingSent();
-    expect($publicationAuthor->refresh()->trashed())->toBeTrue()
-        ->and($publicationAuthor->orcid_putcode)->toBe(4567);
+    expect($publicationAuthor->refresh()->trashed())->toBeFalse()
+        ->and($publicationAuthor->orcid_putcode)->toBe(4567)
+        ->and(PublicationAuthor::withTrashed()->where('author_id', $publicationAuthor->author_id)->count())->toBe(1);
+});
+
+test('a removed author added again before reconnecting keeps their ORCID work', function (): void {
+    $mockClient = Saloon::fake([
+        UpdateWork::class => MockResponse::make(['put-code' => 4567]),
+        DeleteWork::class => MockResponse::make('', 204),
+    ]);
+    $publicationAuthor = syncedWork();
+    $author = $publicationAuthor->author;
+    $orcidConnection = array_filter($author->getAttributes(), fn (string $key): bool => str_starts_with($key, 'orcid'), ARRAY_FILTER_USE_KEY);
+    $author->clearOrcidToken();
+    $editor = User::factory()->withRoles([UserRole::EDITOR])->create();
+    $this->actingAs($editor)->deleteJson(publicationAuthorUrl($publicationAuthor))->assertNoContent();
+    $this->actingAs($editor)->postJson("api/publications/{$publicationAuthor->publication_id}/publication-authors", [
+        'author_id' => $author->id,
+    ])->assertCreated();
+
+    $author->forceFill($orcidConnection)->save();
+    SyncWorkWithOrcid::dispatchPendingFor($author);
+
+    $mockClient->assertSent(UpdateWork::class);
+    $mockClient->assertNotSent(DeleteWork::class);
+    expect($publicationAuthor->refresh()->orcid_putcode)->toBe(4567);
 });
