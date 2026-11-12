@@ -140,7 +140,8 @@ async function updateAuthor() {
         </div>
       </div>
     </q-banner>
-    <q-form @submit="updateAuthor">
+    <!-- these are usually someone else's details, so the browser should not offer to save them -->
+    <q-form autocomplete="off" @submit="updateAuthor">
       <!-- Personal Information Group -->
       <q-card flat bordered class="q-ma-md">
         <q-card-section>
@@ -150,6 +151,7 @@ async function updateAuthor() {
           <q-input
             v-model="firstName"
             outlined
+            autocomplete="off"
             :label="$t('common.first-name')"
             class="q-mb-md"
             :disable="hasUserAccount"
@@ -158,6 +160,7 @@ async function updateAuthor() {
           <q-input
             v-model="lastName"
             outlined
+            autocomplete="off"
             :label="$t('common.last-name')"
             class="q-mb-md"
             :disable="hasUserAccount"
@@ -174,6 +177,7 @@ async function updateAuthor() {
           <q-input
             v-model="email"
             outlined
+            autocomplete="off"
             :label="$t('common.email')"
             class="q-mb-md"
             :disable="hasUserAccount"
