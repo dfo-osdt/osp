@@ -1,10 +1,15 @@
 <?php
 
+use App\Enums\OrcidSyncIntent;
 use App\Jobs\SyncAuthorEmploymentWithOrcid;
 use App\Jobs\SyncAuthorFromOrcid;
+use App\Jobs\SyncWorkWithOrcid;
 use App\Models\Author;
 use App\Models\AuthorEmployment;
+use App\Models\Journal;
 use App\Models\Organization;
+use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\User;
 use App\Orcid\EmploymentReconciler;
 use Illuminate\Support\Facades\Cache;
@@ -178,6 +183,23 @@ test('refreshing pushes employments still pending, e.g. after their sync failed'
 
     Queue::assertPushed(SyncAuthorEmploymentWithOrcid::class, 1);
     Queue::assertPushed(SyncAuthorEmploymentWithOrcid::class, fn (SyncAuthorEmploymentWithOrcid $job): bool => $job->authorEmployment->is($failedUpdate));
+});
+
+test('refreshing pushes works still pending', function (): void {
+    Saloon::fake([ListAffiliations::class => orcidEmploymentList([])]);
+    $user = connectedUser();
+    $pendingWork = PublicationAuthor::factory()->create([
+        'author_id' => $user->author->id,
+        'publication_id' => Publication::factory()->published()->create([
+            'doi' => '10.60825/abc-123',
+            'journal_id' => Journal::factory()->dfoSeries()->create(['orcid_sync_enabled' => true])->id,
+        ])->id,
+    ]);
+    $pendingWork->forceFill(['orcid_sync' => OrcidSyncIntent::WANTED])->save();
+
+    $this->actingAs($user)->postJson('api/user/orcid/refresh')->assertJson(['refreshed' => true]);
+
+    Queue::assertPushed(SyncWorkWithOrcid::class, fn (SyncWorkWithOrcid $job): bool => $job->publicationAuthor->is($pendingWork));
 });
 
 test('nothing is pushed when ORCID cannot be read', function (): void {
