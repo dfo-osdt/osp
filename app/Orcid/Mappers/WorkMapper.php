@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orcid\Mappers;
 
+use App\Models\Journal;
 use App\Models\PublicationAuthor;
 use App\Orcid\Exceptions\WorkNotSyncable;
 use App\Services\TitleMarkup;
@@ -20,7 +21,7 @@ use VincentAuger\OrcidSdk\Support\OrcidId;
 
 /**
  * Maps an OSP publication author to an ORCID work: the report, identified by its
- * DOI, with every author of the publication as a contributor. No citation (the
+ * DOI and part of its series' ISSN, with every author of the publication as a contributor. No citation (the
  * DOI metadata does better) and no short description.
  */
 class WorkMapper
@@ -42,7 +43,7 @@ class WorkMapper
             return new WorkInput(
                 title: new Title(TitleMarkup::toPlain($publication->title)),
                 type: WorkType::Report,
-                externalIds: [$doi],
+                externalIds: self::externalIds($doi, $publication->journal),
                 journalTitle: $publication->journal->title,
                 publicationDate: $publication->published_on === null ? null : FuzzyDate::fromDateTime($publication->published_on),
                 url: new Url((string) $doi->url),
@@ -52,6 +53,21 @@ class WorkMapper
             // data ORCID would reject, e.g. a DOI URL on another resolver or a title longer than ORCID allows
             throw new WorkNotSyncable($publicationAuthor, $exception->getMessage());
         }
+    }
+
+    /**
+     * The DOI identifies the work; the series' ISSN, when valid, says what it is part
+     * of. A missing or malformed ISSN is left out rather than holding back the work.
+     *
+     * @return list<ExternalId>
+     */
+    private static function externalIds(ExternalId $doi, Journal $journal): array
+    {
+        if (! $journal->hasValidIssn()) {
+            return [$doi];
+        }
+
+        return [$doi, ExternalId::issn(trim((string) $journal->issn))];
     }
 
     /**
