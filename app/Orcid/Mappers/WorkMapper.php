@@ -15,7 +15,6 @@ use VincentAuger\OrcidSdk\Data\Common\FuzzyDate;
 use VincentAuger\OrcidSdk\Data\Common\Title;
 use VincentAuger\OrcidSdk\Data\Common\Url;
 use VincentAuger\OrcidSdk\Data\Works\WorkInput;
-use VincentAuger\OrcidSdk\Enums\ContributorRole;
 use VincentAuger\OrcidSdk\Enums\WorkType;
 use VincentAuger\OrcidSdk\Support\OrcidId;
 
@@ -73,7 +72,8 @@ class WorkMapper
     /**
      * Every author of the publication, in OSP order, with their ORCID iD when OSP has
      * one, verified or not: listing an iD never adds the work to that person's record.
-     * Group authors are credited with their organization's name.
+     * Group authors are credited with their organization's name. No role or sequence:
+     * every contributor is an author, and ORCID shows a dangling "(Author," without a sequence.
      *
      * @return list<Contributor>
      */
@@ -86,7 +86,6 @@ class WorkMapper
             ->map(fn (PublicationAuthor $coAuthor): Contributor => new Contributor(
                 creditName: $coAuthor->is_group_author ? $coAuthor->organization->name_en : $coAuthor->author->full_name,
                 orcid: $coAuthor->is_group_author ? null : self::validOrcid($coAuthor->author->orcid),
-                role: ContributorRole::Author,
             ))
             ->values()
             ->all();

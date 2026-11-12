@@ -322,6 +322,42 @@ class LocalTestDataSeeder extends Seeder
             'review_date' => now()->subMonth(),
         ]);
 
+        // ── ORCID works ───────────────────────────────────────────────────────
+        // John Doe authored a few published reports with a DOI in the same
+        // series, ready to add to ORCID as works. Mark LaFlamme co-authored one,
+        // so his ORCID iD is listed as a contributor.
+
+        $authoredReports = [
+            ['title' => 'Technical Report on Northern Shrimp Recruitment', 'months_ago' => 2, 'with_mark' => true],
+            ['title' => 'Technical Report on Bay of Fundy Sediment Transport', 'months_ago' => 6, 'with_mark' => false],
+            ['title' => 'Technical Report on Labrador Sea Plankton Blooms', 'months_ago' => 14, 'with_mark' => false],
+        ];
+
+        foreach ($authoredReports as $row) {
+            $publication = Publication::factory()->create([
+                'title' => $row['title'],
+                'status' => PublicationStatus::PUBLISHED,
+                'user_id' => $user->id,
+                'journal_id' => $techReports->id,
+                'accepted_on' => now()->subMonths($row['months_ago'] + 1),
+                'published_on' => now()->subMonths($row['months_ago']),
+            ]);
+
+            PublicationAuthor::factory()->create([
+                'publication_id' => $publication->id,
+                'author_id' => $user->author->id,
+                'is_corresponding_author' => true,
+            ]);
+
+            if ($row['with_mark']) {
+                PublicationAuthor::factory()->create([
+                    'publication_id' => $publication->id,
+                    'author_id' => $markAuthor->id,
+                    'organization_id' => $markAuthor->organization_id,
+                ]);
+            }
+        }
+
         // ── Management review steps ───────────────────────────────────────────
 
         ManagementReviewStep::factory()->create([
