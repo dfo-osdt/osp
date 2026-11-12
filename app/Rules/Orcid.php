@@ -5,13 +5,30 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Str;
+use VincentAuger\OrcidSdk\Support\OrcidId;
 
 class Orcid implements ValidationRule
 {
     /**
      * The links to an ORCID record we support: orcid.org and the sandbox
      */
-    public const string URL_PREFIX = '/^https:\/\/(sandbox\.)?orcid\.org\//';
+    private const string URL_PREFIX = '/^https:\/\/(sandbox\.)?orcid\.org\//';
+
+    /**
+     * The bare iD of a valid ORCID iD given bare or as a link to orcid.org or the sandbox, null for anything else.
+     */
+    public static function bareId(mixed $value): ?string
+    {
+        if (! is_string($value) || ! OrcidId::isValid($value)) {
+            return null;
+        }
+
+        if (str_contains($value, '/') && ! preg_match(self::URL_PREFIX, $value)) {
+            return null;
+        }
+
+        return OrcidId::normalize($value);
+    }
 
     /**
      * Run the validation rule for an ORCID ID, given bare or as a link to the record.
@@ -32,31 +49,8 @@ class Orcid implements ValidationRule
         }
 
         // check value against checksum
-        if (! $this->isChecksumValid($orcid)) {
+        if (! OrcidId::isValid($orcid)) {
             $fail(__('validation.orcid.checksum', ['attribute' => $attribute]));
         }
-    }
-
-    /**
-     * Generates check digit as per ISO 7064 11,2.
-     */
-    private function isChecksumValid(string $orcid): bool
-    {
-        if (strlen($orcid) !== 19) {
-            return false;
-        }
-        $orcid = str_replace('-', '', $orcid);
-        $sum = 0;
-        $givenCheckSum = substr($orcid, -1);
-
-        for ($i = 0; $i < 15; $i++) {
-            $digit = intval($orcid[$i]);
-            $sum = ($sum + $digit) * 2;
-        }
-        $remainder = $sum % 11;
-        $result = (12 - $remainder) % 11;
-        $checkDigit = $result === 10 ? 'X' : strval($result);
-
-        return $checkDigit === $givenCheckSum;
     }
 }
