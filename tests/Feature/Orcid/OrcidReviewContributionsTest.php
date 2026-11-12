@@ -4,7 +4,6 @@ use App\Enums\ManuscriptRecordType;
 use App\Enums\OrcidSyncIntent;
 use App\Enums\Permissions\UserRole;
 use App\Enums\PublicationStatus;
-use App\Models\Author;
 use App\Models\Journal;
 use App\Models\ManuscriptRecord;
 use App\Models\ManuscriptReviewContributor;
@@ -45,17 +44,6 @@ function reviewContribution(User $user, array $journal = [], array $publication 
         'manuscript_record_id' => $manuscript->id,
         'author_id' => $user->author->id,
     ]);
-}
-
-/**
- * Connect the user's author to ORCID, with the given scopes
- */
-function connectedToOrcid(User $user, string $scope = '/read-limited /activities/update /person/update', int $expiresInDays = 30): User
-{
-    $orcidConnection = Author::factory()->withOrcidConnection($scope)->raw(['orcid_expires_at' => now()->addDays($expiresInDays)]);
-    $user->author->forceFill(array_filter($orcidConnection, fn (string $key): bool => str_starts_with($key, 'orcid'), ARRAY_FILTER_USE_KEY))->save();
-
-    return $user;
 }
 
 test('an author can list their review contributions that can go on ORCID', function (): void {

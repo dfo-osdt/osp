@@ -11,6 +11,8 @@
 |
 */
 
+use App\Models\Author;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Vite;
 use Pest\Browser\Api\PendingAwaitablePage;
@@ -50,6 +52,17 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+/**
+ * Connect the user's author to ORCID, with the given scopes
+ */
+function connectedToOrcid(User $user, string $scope = '/read-limited /activities/update /person/update', int $expiresInDays = 30): User
+{
+    $orcidConnection = Author::factory()->withOrcidConnection($scope)->raw(['orcid_expires_at' => now()->addDays($expiresInDays)]);
+    $user->author->forceFill(array_filter($orcidConnection, fn (string $key): bool => str_starts_with($key, 'orcid'), ARRAY_FILTER_USE_KEY))->save();
+
+    return $user;
+}
 
 function assertNoRealJavascriptErrors(PendingAwaitablePage $page): void
 {
