@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Jobs\SyncWorkWithOrcid;
 use App\Models\Publication;
 use Illuminate\Support\Facades\DB;
 
@@ -9,7 +10,7 @@ class DeletePublication
 {
     public static function handle(Publication $publication): bool
     {
-        return DB::transaction(function () use ($publication) {
+        $deleted = DB::transaction(function () use ($publication) {
             // Soft delete publication authors
             $publication->publicationAuthors()->delete();
 
@@ -21,5 +22,10 @@ class DeletePublication
             // Soft delete the publication
             return $publication->delete();
         });
+
+        // a deleted publication is no longer on ORCID; the authors' intent is kept for a restore
+        SyncWorkWithOrcid::dispatchForChanged($publication->publicationAuthors()->onlyTrashed()->get());
+
+        return $deleted;
     }
 }

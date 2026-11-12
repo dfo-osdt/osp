@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\SyncWorkWithOrcid;
 use App\Models\Publication;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -47,15 +48,22 @@ class RestoreSoftDeletedPublication extends Command
         }
 
         DB::transaction(function () use ($publication): void {
+            $deletedAt = $publication->deleted_at;
+
             // Restore the publication
             $publication->restore();
 
-            // Restore associated soft-deleted publication authors
-            $publication->publicationAuthors()->withTrashed()->restore();
+            // Restore the publication authors trashed along with it (a moment before
+            // it), not those removed from it earlier and still waiting for their ORCID
+            // work to be deleted
+            $publication->publicationAuthors()->onlyTrashed()->where('deleted_at', '>=', $deletedAt->copy()->subSecond())->restore();
 
             // Restore associated soft-deleted funding sources
             $publication->fundingSources()->withTrashed()->restore();
         });
+
+        // the works the authors still want go back on their ORCID records
+        SyncWorkWithOrcid::dispatchForChanged($publication->publicationAuthors()->get());
 
         activity()
             ->withProperties([

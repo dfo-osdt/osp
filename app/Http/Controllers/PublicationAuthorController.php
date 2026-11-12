@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PublicationAuthorResource;
+use App\Jobs\SyncWorkWithOrcid;
 use App\Models\Author;
 use App\Models\Publication;
 use App\Models\PublicationAuthor;
@@ -57,7 +58,8 @@ class PublicationAuthorController extends Controller
 
         $validated = $request->validate([
             'author_id' => ['required', 'integer', 'exists:authors,id',
-                Rule::unique('publication_authors')->where(fn ($query) => $query->where('publication_id', $publication->id)), ],
+                // a removed author may still be waiting for their ORCID work's removal
+                Rule::unique('publication_authors')->where(fn ($query) => $query->where('publication_id', $publication->id))->withoutTrashed(), ],
             'is_corresponding_author' => ['boolean'],
             'is_group_author' => ['boolean'],
             'organization_id' => ['integer', 'exists:organizations,id'],
@@ -73,6 +75,8 @@ class PublicationAuthorController extends Controller
         $publicationAuthor->organization_id = $validated['organization_id'] ?? $author->organization_id;
         $publicationAuthor->fill($author->authorshipProfileFor($publicationAuthor->organization_id));
         $publicationAuthor->save();
+
+        $this->syncWorksOfAuthors($publication);
 
         $this->loadResourceRelationships($publicationAuthor, $publication);
 
@@ -120,6 +124,10 @@ class PublicationAuthorController extends Controller
         }
         $publicationAuthor->save();
 
+        if ($publicationAuthor->wasChanged()) {
+            $this->syncWorksOfAuthors($publication);
+        }
+
         $publicationAuthor->refresh();
         $this->loadResourceRelationships($publicationAuthor, $publication);
 
@@ -135,9 +143,23 @@ class PublicationAuthorController extends Controller
         $publicationAuthor->setRelation('publication', $publication);
         Gate::authorize('delete', $publicationAuthor);
 
-        $publicationAuthor->forceDelete();
+        // soft delete first: the sync job removes the ORCID work, then the publication author
+        $publicationAuthor->delete();
+
+        dispatch(new SyncWorkWithOrcid($publicationAuthor));
+
+        $this->syncWorksOfAuthors($publication);
 
         // response 204
         return response()->noContent();
+    }
+
+    /**
+     * Every author's ORCID work lists all the publication's authors: bring them
+     * in line after the author list changed.
+     */
+    private function syncWorksOfAuthors(Publication $publication): void
+    {
+        SyncWorkWithOrcid::dispatchForChanged($publication->publicationAuthors()->get());
     }
 }

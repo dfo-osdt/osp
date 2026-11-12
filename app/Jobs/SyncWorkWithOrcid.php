@@ -13,6 +13,7 @@ use App\Orcid\OrcidClientFactory;
 use App\Orcid\OrcidErrors;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
@@ -41,6 +42,7 @@ use VincentAuger\OrcidSdk\Resources\WorksResource;
  *
  * When the author is not connected to ORCID, the work stays pending. Pending
  * works are synced again when the author reconnects (see dispatchPendingFor()).
+ * OSP changes a work is built from dispatch it explicitly (see dispatchForChanged()).
  */
 class SyncWorkWithOrcid implements ShouldQueue
 {
@@ -99,6 +101,29 @@ class SyncWorkWithOrcid implements ShouldQueue
         $pending->each(fn (PublicationAuthor $publicationAuthor): PendingDispatch => dispatch(new self($publicationAuthor)));
 
         return $pending->count();
+    }
+
+    /**
+     * Bring the ORCID works of these publication authors in line after something
+     * they are built from changed (the publication, its author list or its
+     * journal): they are updated, created if they became eligible, or deleted if
+     * no longer eligible.
+     *
+     * @param  Collection<int, PublicationAuthor>  $publicationAuthors
+     * @return int The number of jobs dispatched
+     */
+    public static function dispatchForChanged(Collection $publicationAuthors): int
+    {
+        $affected = $publicationAuthors->filter(fn (PublicationAuthor $publicationAuthor): bool => $publicationAuthor->isWantedOnOrcid() || $publicationAuthor->isSyncedWithOrcid());
+
+        $affected->each(function (PublicationAuthor $publicationAuthor): void {
+            $publicationAuthor->orcid_updated_at = null;
+            PublicationAuthor::withoutTimestamps(fn () => $publicationAuthor->save(['touch' => false]));
+
+            dispatch(new self($publicationAuthor));
+        });
+
+        return $affected->count();
     }
 
     public function handle(OrcidClientFactory $orcid): void
@@ -184,8 +209,8 @@ class SyncWorkWithOrcid implements ShouldQueue
                 $current->orcid_updated_at = now();
             }
 
-            // syncing is not a change to the publication author: keep its updated_at
-            PublicationAuthor::withoutTimestamps(fn () => $current->save());
+            // syncing is not a change to the publication author: keep its and its publication's updated_at
+            PublicationAuthor::withoutTimestamps(fn () => $current->save(['touch' => false]));
 
             return $changed;
         });
@@ -240,8 +265,8 @@ class SyncWorkWithOrcid implements ShouldQueue
             $current->orcid_putcode = null;
             $current->orcid_updated_at = null;
 
-            // syncing is not a change to the publication author: keep its updated_at
-            PublicationAuthor::withoutTimestamps(fn () => $current->save());
+            // syncing is not a change to the publication author: keep its and its publication's updated_at
+            PublicationAuthor::withoutTimestamps(fn () => $current->save(['touch' => false]));
         });
 
         $this->logOnPublication($publicationAuthor, 'publication.author.orcid-deleted', ['put_code' => $putCode]);
@@ -268,8 +293,8 @@ class SyncWorkWithOrcid implements ShouldQueue
             $current->orcid_putcode = null;
             $current->orcid_updated_at = null;
 
-            // syncing is not a change to the publication author: keep its updated_at
-            PublicationAuthor::withoutTimestamps(fn () => $current->save());
+            // syncing is not a change to the publication author: keep its and its publication's updated_at
+            PublicationAuthor::withoutTimestamps(fn () => $current->save(['touch' => false]));
         });
 
         $this->logOnPublication($publicationAuthor, 'publication.author.orcid-deleted-by-author');

@@ -9,9 +9,12 @@ use App\Events\PublicationPublished;
 use App\Exports\PublicationsExport;
 use App\Http\Resources\PublicationResource;
 use App\Jobs\SyncReviewContributionWithOrcid;
+use App\Jobs\SyncWorkWithOrcid;
 use App\Mail\ReviewContributionPublishedMail;
+use App\Mail\WorkPublishedMail;
 use App\Models\ManuscriptReviewContributor;
 use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\User;
 use App\Queries\PublicationListQuery;
 use App\Rules\Doi;
@@ -166,9 +169,18 @@ class PublicationController extends Controller
             SyncReviewContributionWithOrcid::dispatchForChanged($publication->manuscriptRecord->reviewContributors);
         }
 
-        if ($publication->manuscriptRecord !== null && $publication->wasChanged('status') && $publication->status === PublicationStatus::PUBLISHED) {
-            $this->offerReviewContributionsForOrcid($publication, $request->user());
-            event(new PublicationPublished($publication, $request->user()));
+        // and the authors' ORCID works from these
+        if ($publication->wasChanged(['title', 'doi', 'published_on', 'journal_id', 'status'])) {
+            SyncWorkWithOrcid::dispatchForChanged($publication->publicationAuthors);
+        }
+
+        if ($publication->wasChanged('status') && $publication->status === PublicationStatus::PUBLISHED) {
+            $this->offerWorksForOrcid($publication, $request->user());
+
+            if ($publication->manuscriptRecord !== null) {
+                $this->offerReviewContributionsForOrcid($publication, $request->user());
+                event(new PublicationPublished($publication, $request->user()));
+            }
         }
 
         return $this->defaultResource($publication);
@@ -241,6 +253,31 @@ class PublicationController extends Controller
                     dispatch(new SyncReviewContributionWithOrcid($contributor));
                 } else {
                     Mail::queue(new ReviewContributionPublishedMail($contributor));
+                }
+            });
+    }
+
+    /**
+     * Now that the publication is published, add it to the ORCID record of its
+     * authors with auto sync on, and email the other authors that they can add it.
+     * Only authors with a user account who have not decided, and only when the
+     * publication is eligible right now: if it becomes eligible later, it is left
+     * to "Add all".
+     */
+    private function offerWorksForOrcid(Publication $publication, User $publisher): void
+    {
+        $publication->publicationAuthors()
+            ->whereNull('orcid_sync')
+            ->whereHas('author.user')
+            ->with('author.user', 'publication.journal')
+            ->get()
+            ->filter(fn (PublicationAuthor $publicationAuthor): bool => $publicationAuthor->isEligibleForOrcid())
+            ->each(function (PublicationAuthor $publicationAuthor) use ($publisher): void {
+                if ($publicationAuthor->author->orcid_auto_sync_works) {
+                    $publicationAuthor->recordOrcidIntent(OrcidSyncIntent::WANTED, $publisher, byAutoSync: true);
+                    dispatch(new SyncWorkWithOrcid($publicationAuthor));
+                } else {
+                    Mail::queue(new WorkPublishedMail($publicationAuthor));
                 }
             });
     }

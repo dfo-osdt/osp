@@ -6,8 +6,10 @@ namespace App\Filament\Resources\Journals\Pages;
 
 use App\Filament\Resources\Journals\JournalResource;
 use App\Jobs\SyncReviewContributionWithOrcid;
+use App\Jobs\SyncWorkWithOrcid;
 use App\Models\Journal;
 use App\Models\ManuscriptReviewContributor;
+use App\Models\PublicationAuthor;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
@@ -35,12 +37,12 @@ class EditJournal extends EditRecord
     }
 
     /**
-     * Turning off ORCID sync deletes the peer reviews already on authors' ORCID
-     * records: ask before saving.
+     * Turning off ORCID sync deletes the works and peer reviews already on
+     * authors' ORCID records: ask before saving.
      */
     protected function beforeSave(): void
     {
-        if ($this->orcidSyncTurnOffConfirmed || ! $this->turnsOffOrcidSync() || $this->contributionsOnOrcid()->doesntExist()) {
+        if ($this->orcidSyncTurnOffConfirmed || ! $this->turnsOffOrcidSync() || ($this->worksOnOrcid()->doesntExist() && $this->contributionsOnOrcid()->doesntExist())) {
             return;
         }
 
@@ -57,16 +59,22 @@ class EditJournal extends EditRecord
             ->modalIcon(Heroicon::OutlinedExclamationTriangle)
             ->modalHeading('Turn off ORCID sync?')
             ->modalDescription(function (): string {
-                $count = $this->contributionsOnOrcid()->count();
+                $works = $this->worksOnOrcid()->count();
+                $contributions = $this->contributionsOnOrcid()->count();
+                $items = collect([
+                    $works > 0 ? $works.' '.str('work')->plural($works) : null,
+                    $contributions > 0 ? $contributions.' '.str('peer review')->plural($contributions) : null,
+                ])->filter()->implode(' and ');
 
-                return ($count === 1
-                    ? '1 review contribution from this series is on an author\'s ORCID record. It will be deleted from ORCID.'
-                    : "{$count} review contributions from this series are on authors' ORCID records. They will all be deleted from ORCID.")
+                return ($works + $contributions === 1
+                    ? "{$items} from this series is on an author's ORCID record. It will be deleted from ORCID."
+                    : "{$items} from this series are on authors' ORCID records. They will all be deleted from ORCID.")
                     .' Turning sync back on adds them again.';
             })
             ->modalSubmitActionLabel('Turn off and delete from ORCID')
             ->action(function (): void {
-                $onOrcid = $this->contributionsOnOrcid()->count();
+                $contributionsOnOrcid = $this->contributionsOnOrcid()->count();
+                $worksOnOrcid = $this->worksOnOrcid()->count();
 
                 try {
                     $this->orcidSyncTurnOffConfirmed = true;
@@ -78,7 +86,7 @@ class EditJournal extends EditRecord
                 activity()
                     ->performedOn($this->getRecord())
                     ->causedBy(auth()->user())
-                    ->withProperties(['contributions_on_orcid' => $onOrcid])
+                    ->withProperties(['contributions_on_orcid' => $contributionsOnOrcid, 'works_on_orcid' => $worksOnOrcid])
                     ->log('journal.orcid-sync-turned-off');
             });
     }
@@ -114,6 +122,23 @@ class EditJournal extends EditRecord
     }
 
     /**
+     * @return Builder<PublicationAuthor>
+     */
+    private function works(): Builder
+    {
+        return PublicationAuthor::query()
+            ->whereHas('publication', fn (Builder $query): Builder => $query->where('journal_id', $this->getRecord()->getKey()));
+    }
+
+    /**
+     * @return Builder<PublicationAuthor>
+     */
+    private function worksOnOrcid(): Builder
+    {
+        return $this->works()->whereNotNull('orcid_putcode');
+    }
+
+    /**
      * The ORCID sync toggle is hidden, so not saved, for non-DFO journals:
      * turn it off explicitly when a series stops being a DFO series.
      *
@@ -131,8 +156,9 @@ class EditJournal extends EditRecord
     }
 
     /**
-     * The ORCID peer reviews of the journal's reports depend on whether it counts
-     * for ORCID, its ISSN (the review group) and its title: bring them in line.
+     * The ORCID works and peer reviews of the journal's reports depend on whether
+     * it counts for ORCID, its ISSN (the review group, what a work is part of) and
+     * its title: bring them in line.
      */
     protected function afterSave(): void
     {
@@ -144,5 +170,6 @@ class EditJournal extends EditRecord
         }
 
         SyncReviewContributionWithOrcid::dispatchForChanged($this->contributions()->get());
+        SyncWorkWithOrcid::dispatchForChanged($this->works()->where(fn (Builder $query): Builder => $query->whereNotNull('orcid_sync')->orWhereNotNull('orcid_putcode'))->get());
     }
 }

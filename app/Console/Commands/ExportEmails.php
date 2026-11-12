@@ -26,6 +26,7 @@ use App\Mail\ReviewContributionPublishedMail;
 use App\Mail\ReviewStepNotificationMail;
 use App\Mail\UserInvitedMail;
 use App\Mail\UserInvitedWelomeMail;
+use App\Mail\WorkPublishedMail;
 use App\Models\Author;
 use App\Models\Invitation;
 use App\Models\ManagementReviewDelegation;
@@ -34,6 +35,7 @@ use App\Models\ManuscriptRecord;
 use App\Models\ManuscriptReviewContributor;
 use App\Models\NotificationGroupMember;
 use App\Models\Publication;
+use App\Models\PublicationAuthor;
 use App\Models\Shareable;
 use App\Models\User;
 use App\States\PlanningBinder\PlanningBinderItemState;
@@ -435,7 +437,7 @@ class ExportEmails extends Command
         $markdownContent = $notificationGroupMemberRemoved->render();
         $this->exportFile('notification-group-member-removed.html', $markdownContent);
 
-        // Review contribution published: author connected to ORCID, and not connected
+        // Review contribution and work published: author connected to ORCID, and not connected
         $publication = Publication::factory()->withManuscript(['type' => ManuscriptRecordType::SECONDARY])->create([
             'status' => PublicationStatus::PUBLISHED,
             'published_on' => now(),
@@ -451,6 +453,14 @@ class ExportEmails extends Command
             $reviewContributionPublished = new ReviewContributionPublishedMail($contributor);
             $markdownContent = $reviewContributionPublished->render();
             $this->exportFile("review-contribution-published-{$variant}.html", $markdownContent);
+
+            $publicationAuthor = PublicationAuthor::factory()->create([
+                'publication_id' => $publication->id,
+                'author_id' => $author->id,
+            ]);
+            $workPublished = new WorkPublishedMail($publicationAuthor);
+            $markdownContent = $workPublished->render();
+            $this->exportFile("work-published-{$variant}.html", $markdownContent);
         }
 
         // Publication published: primary names who published it, secondary names Science Publications
