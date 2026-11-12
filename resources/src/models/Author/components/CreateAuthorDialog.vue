@@ -3,6 +3,7 @@ import type { AxiosResponse } from 'axios'
 import type { AuthorCreate, AuthorResource, OrcidAuthorImport } from '../Author'
 import { extractErrorMessages } from '@/api/errors'
 import BaseDialog from '@/components/BaseDialog.vue'
+import OrcidIcon from '@/components/OrcidIcon.vue'
 import OrcidInput from '@/components/OrcidInput.vue'
 import { useDefaultOrganizationId } from '@/composables/useDefaultOrganizationId'
 import OrganizationSelect from '@/models/Organization/components/OrganizationSelect.vue'
@@ -160,20 +161,17 @@ async function createAuthor() {
     </q-banner>
     <q-form @submit="createAuthor">
       <!-- Fill from ORCID -->
-      <div class="q-mx-md q-mt-md flex items-center q-gutter-sm">
-        <q-btn
-          outline
-          color="primary"
-          icon="mdi-account-search"
-          :label="$t('create-author-dialog.fill-from-orcid')"
-          @click="showOrcidSearch = true"
-        />
+      <q-banner rounded dense class="bg-grey-2 q-mx-md q-mt-md">
+        <template #avatar>
+          <OrcidIcon class="q-mt-xs" />
+        </template>
         <q-chip
           v-if="beforeOrcidImport"
           removable
           color="green-1"
           text-color="green-10"
           icon="mdi-check"
+          class="q-ml-none"
           @remove="clearOrcidImport"
         >
           {{ $t('create-author-dialog.filled-from-orcid') }}
@@ -190,7 +188,18 @@ async function createAuthor() {
             {{ $t('create-author-dialog.clear-orcid-import') }}
           </q-tooltip>
         </q-chip>
-      </div>
+        <span v-else class="text-body2">
+          {{ $t('create-author-dialog.fill-from-orcid-intro') }}
+        </span>
+        <template v-if="!beforeOrcidImport" #action>
+          <q-btn
+            outline
+            color="primary"
+            :label="$t('create-author-dialog.fill-from-orcid')"
+            @click="showOrcidSearch = true"
+          />
+        </template>
+      </q-banner>
 
       <!-- Personal Information Group -->
       <q-card flat bordered class="q-ma-md">

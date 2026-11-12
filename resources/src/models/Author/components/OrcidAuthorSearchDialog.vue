@@ -124,6 +124,23 @@ const affiliationOptions = computed(() => (previewedAuthor.value?.affiliations ?
           <q-item>
             <q-item-section>
               <q-item-label caption>
+                {{ $t('orcid-author-search-dialog.orcid-id') }}
+              </q-item-label>
+              <q-item-label>
+                <a
+                  :href="previewedAuthor.orcid"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ previewedAuthor.orcid.split('/').pop() }}
+                  <q-icon name="mdi-open-in-new" />
+                </a>
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <q-item-label caption>
                 {{ $t('common.first-name') }}
               </q-item-label>
               <q-item-label :class="{ 'text-orange-9': !previewedAuthor.first_name }">
@@ -215,7 +232,11 @@ const affiliationOptions = computed(() => (previewedAuthor.value?.affiliations ?
         </q-input>
       </q-card-section>
 
-      <q-card-section v-if="search" class="q-pt-none">
+      <q-card-section v-if="!search" class="q-pt-none text-body2 text-grey-8">
+        {{ $t('orcid-author-search-dialog.intro') }}
+      </q-card-section>
+
+      <q-card-section v-else class="q-pt-none">
         <q-banner
           v-if="search.status === 'unavailable'"
           class="bg-orange-1 text-orange-10 q-mb-md"
