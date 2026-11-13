@@ -2,8 +2,8 @@
 
 ## Stack & Versions
 
-**Backend:** Laravel 12 (PHP 8.4), Filament v4, Livewire v3, Pest v4, Horizon, SQLite (testing)  
-**Frontend:** Vue 3 + TypeScript + Quasar + Pinia, ESLint v9 (@antfu/eslint-config)
+**Backend:** Laravel 13 (PHP 8.5), Filament v5, Livewire v4, Pest v5, Horizon, SQLite (testing)  
+**Frontend:** Vue 3 + TypeScript + Quasar + Pinia, ESLint v10 (@antfu/eslint-config)
 
 ## Commands
 
@@ -51,7 +51,7 @@
 - **Middleware:** `app/Http/Middleware/`, registered in `app/Http/Kernel.php` (NOT in `bootstrap/app.php`)
 - **Service Providers:** `app/Providers/` (NOT consolidated into `bootstrap/app.php`)
 - **Scheduled tasks:** `app/Console/Kernel.php` (NOT in `routes/console.php`)
-- **Note:** This project uses Laravel 12 but retains the L10 structure. Migration to L11+ structure is planned but not prioritized.
+- **Note:** This project uses Laravel 13 but retains the L10 structure. Migration to L11+ structure is planned but not prioritized.
 - Models use `casts()` method, not `$casts` property
 
 ### Database & Models
@@ -68,22 +68,6 @@
 - Browser tests in `tests/Browser/`
 - Use datasets for repetitive test data
 - Never remove tests without approval
-
-### Filament v4
-
-- Use Filament artisan commands with `--no-interaction`
-- Actions extend `Filament\Actions\Action` (not `Filament\Tables\Actions`)
-- Layout components moved to `Filament\Schemas\Components`
-- Use `relationship()` method on form components for selects/checkboxes
-- Test with `livewire(ListUsers::class)->assertCanSeeTableRecords($users)`
-- `deferFilters()` is now default (users click button to apply filters)
-
-### Livewire v3
-
-- `wire:model` is deferred by default, use `wire:model.live` for real-time
-- Namespace: `App\Livewire` (not `App\Http\Livewire`)
-- Events: `$this->dispatch()` (not `emit`)
-- Alpine is included with Livewire
 
 ### Logging
 
