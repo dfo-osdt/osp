@@ -163,14 +163,9 @@ return [
             /*
              * The disk names on which the backups will be stored.
              */
-            'disks' => env('BACKUP_TO_DO_SPACES', false) ?
-                [
-                    'backup',
-                    'do_backup',
-                ] :
-                [
-                    'backup',
-                ],
+            'disks' => [
+                'backup',
+            ],
 
         ],
 

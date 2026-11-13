@@ -68,37 +68,6 @@ return [
         //     'throw' => false,
         // ],
 
-        'do' => [
-            'driver' => 's3',
-            'key' => env('DO_SPACES_KEY'),
-            'secret' => env('DO_SPACES_SECRET'),
-            'region' => env('DO_SPACES_REGION'),
-            'bucket' => env('DO_SPACES_BUCKET'),
-            'endpoint' => env('DO_SPACES_ENDPOINT'),
-            'throw' => false,
-        ],
-
-        'do_media' => [
-            'driver' => 's3',
-            'key' => env('DO_SPACES_KEY'),
-            'secret' => env('DO_SPACES_SECRET'),
-            'region' => env('DO_SPACES_REGION'),
-            'bucket' => env('DO_SPACES_BUCKET'),
-            'endpoint' => env('DO_SPACES_ENDPOINT'),
-            'throw' => false,
-            'root' => 'media',
-        ],
-
-        'do_backup' => [
-            'driver' => 's3',
-            'key' => env('DO_SPACES_KEY'),
-            'secret' => env('DO_SPACES_SECRET'),
-            'region' => env('DO_SPACES_REGION'),
-            'bucket' => env('DO_SPACES_BACKUP_BUCKET'),
-            'endpoint' => env('DO_SPACES_ENDPOINT'),
-            'throw' => false,
-        ],
-
     ],
 
     /*
