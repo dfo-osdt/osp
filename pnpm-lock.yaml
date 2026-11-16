@@ -265,8 +265,8 @@ importers:
         version: 3.3.14(typescript@6.0.3)
     optionalDependencies:
       '@rollup/rollup-linux-x64-gnu':
-        specifier: ^4.68.2
-        version: 4.68.2
+        specifier: ^4.68.3
+        version: 4.68.3
 
 packages:
 
@@ -1135,8 +1135,8 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/rollup-linux-x64-gnu@4.68.2':
-    resolution: {integrity: sha512-3Btp4Lca/WzsmbaKu9Lh9d/XwyRDIegd/5khRBusHGw/Ll6SoF5Shn63OrjPdkLcpNi2PGDApXzNmxriRxGYjA==}
+  '@rollup/rollup-linux-x64-gnu@4.68.3':
+    resolution: {integrity: sha512-pfn4Zd9Ic3lEaSwW3GsQhTIDd7929C+eiEkOutsSCT2IHD6rDLblwmMQkgeGOso0oDo9Jk/ERtFdtFr9ElLs+g==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
@@ -4127,7 +4127,7 @@ snapshots:
       estree-walker: 2.0.2
       picomatch: 4.0.7
 
-  '@rollup/rollup-linux-x64-gnu@4.68.2':
+  '@rollup/rollup-linux-x64-gnu@4.68.3':
     optional: true
 
   '@sindresorhus/base62@1.0.0': {}
