@@ -332,7 +332,7 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
      */
     public function addManuscriptFile(string|UploadedFile $file, bool $preserveOriginal = false): Media
     {
-        $name = $file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file);
+        $name = $this->trimFileName($file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file));
 
         return $this->addMedia($file)
             ->withCustomProperties([
@@ -340,7 +340,8 @@ class ManuscriptRecord extends Model implements Fundable, HasMedia, Plannable
                 'sensitivity_label' => SensitivityLabel::ProtectedA,
             ])
             ->preservingOriginal($preserveOriginal)
-            ->usingFileName($this->trimFileName($name))
+            ->usingName(pathinfo($name, PATHINFO_FILENAME))
+            ->usingFileName($name)
             ->toMediaCollection(MediaCollection::MANUSCRIPT->value);
     }
 

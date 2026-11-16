@@ -139,6 +139,7 @@ test('a user can attach and download a pdf version of their manuscript to a manu
     ]);
     $response->assertCreated();
     expect(mb_strlen((string) $response->json('data.file_name')))->toBeLessThanOrEqual(255);
+    expect(mb_strlen($manuscript->fresh()->getLastManuscriptFile()->name))->toBeLessThanOrEqual(255);
     $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}/files/{$response->json('data.uuid')}");
 
     $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size($kbLimit);
