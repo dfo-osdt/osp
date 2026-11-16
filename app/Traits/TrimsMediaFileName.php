@@ -2,15 +2,21 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Schema\Builder;
+
 trait TrimsMediaFileName
 {
     /**
-     * Trim the file name to 255 bytes, the filesystem limit, keeping the
-     * extension and never splitting a multibyte character.
+     * Trim the file name to fit the media name and file_name columns, which use
+     * the default string length. Counting bytes rather than characters also keeps
+     * it under the filesystem limit, and mb_strcut never splits a multibyte
+     * character.
      */
     protected function trimFileName(string $fileName): string
     {
-        if (strlen($fileName) <= 255) {
+        $maxLength = Builder::$defaultStringLength;
+
+        if (strlen($fileName) <= $maxLength) {
             return $fileName;
         }
 
@@ -18,6 +24,6 @@ trait TrimsMediaFileName
         $base = pathinfo($fileName, PATHINFO_FILENAME);
         $suffix = $ext !== '' ? '.'.$ext : '';
 
-        return mb_strcut($base, 0, 255 - strlen($suffix)).$suffix;
+        return mb_strcut($base, 0, $maxLength - strlen($suffix)).$suffix;
     }
 }
