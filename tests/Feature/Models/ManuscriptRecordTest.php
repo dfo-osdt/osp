@@ -131,10 +131,10 @@ test('a user can attach and download a pdf version of their manuscript to a manu
     $response->assertStatus(422);
     expect($response->json('errors.pdf.0'))->toContain('The pdf must not be greater than');
 
-    // long filenames are trimmed to 255 bytes rather than rejected
+    // long filenames are trimmed to the media column length, in bytes, rather than rejected
     $veryLongFileNames = [
-        str_repeat('a', 300).'.pdf',
-        str_repeat('é', 200).'.pdf',
+        str_repeat('a', 200).'.pdf',
+        str_repeat('é', 100).'.pdf',
     ];
     foreach ($veryLongFileNames as $veryLongFileName) {
         $file = UploadedFile::fake()->createWithContent($veryLongFileName, $fakePdfContent)->size(1000);
@@ -142,10 +142,10 @@ test('a user can attach and download a pdf version of their manuscript to a manu
             'pdf' => $file,
         ]);
         $response->assertCreated();
-        expect(strlen((string) $response->json('data.file_name')))->toBeLessThanOrEqual(255);
+        expect(strlen((string) $response->json('data.file_name')))->toBeLessThanOrEqual(125);
         expect($response->json('data.file_name'))->toEndWith('.pdf');
         expect(mb_check_encoding($response->json('data.file_name'), 'UTF-8'))->toBeTrue();
-        expect(strlen($manuscript->fresh()->getLastManuscriptFile()->name))->toBeLessThanOrEqual(255);
+        expect(strlen($manuscript->fresh()->getLastManuscriptFile()->name))->toBeLessThanOrEqual(125);
         $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}/files/{$response->json('data.uuid')}");
     }
 
