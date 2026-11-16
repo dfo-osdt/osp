@@ -131,16 +131,23 @@ test('a user can attach and download a pdf version of their manuscript to a manu
     $response->assertStatus(422);
     expect($response->json('errors.pdf.0'))->toContain('The pdf must not be greater than');
 
-    // long filenames are trimmed to 255 characters rather than rejected
-    $veryLongFileName = str_repeat('a', 300).'.pdf';
-    $file = UploadedFile::fake()->createWithContent($veryLongFileName, $fakePdfContent)->size(1000);
-    $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
-        'pdf' => $file,
-    ]);
-    $response->assertCreated();
-    expect(mb_strlen((string) $response->json('data.file_name')))->toBeLessThanOrEqual(255);
-    expect(mb_strlen($manuscript->fresh()->getLastManuscriptFile()->name))->toBeLessThanOrEqual(255);
-    $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}/files/{$response->json('data.uuid')}");
+    // long filenames are trimmed to 255 bytes rather than rejected
+    $veryLongFileNames = [
+        str_repeat('a', 300).'.pdf',
+        str_repeat('é', 200).'.pdf',
+    ];
+    foreach ($veryLongFileNames as $veryLongFileName) {
+        $file = UploadedFile::fake()->createWithContent($veryLongFileName, $fakePdfContent)->size(1000);
+        $response = $this->actingAs($user)->postJson("/api/manuscript-records/{$manuscript->id}/files", [
+            'pdf' => $file,
+        ]);
+        $response->assertCreated();
+        expect(strlen((string) $response->json('data.file_name')))->toBeLessThanOrEqual(255);
+        expect($response->json('data.file_name'))->toEndWith('.pdf');
+        expect(mb_check_encoding($response->json('data.file_name'), 'UTF-8'))->toBeTrue();
+        expect(strlen($manuscript->fresh()->getLastManuscriptFile()->name))->toBeLessThanOrEqual(255);
+        $this->actingAs($user)->deleteJson("/api/manuscript-records/{$manuscript->id}/files/{$response->json('data.uuid')}");
+    }
 
     $file = UploadedFile::fake()->createWithContent('test.pdf', $fakePdfContent)->size($kbLimit);
 
