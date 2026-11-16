@@ -4,9 +4,13 @@ namespace App\Traits;
 
 trait TrimsMediaFileName
 {
+    /**
+     * Trim the file name to 255 bytes, the filesystem limit, keeping the
+     * extension and never splitting a multibyte character.
+     */
     protected function trimFileName(string $fileName): string
     {
-        if (mb_strlen($fileName) <= 255) {
+        if (strlen($fileName) <= 255) {
             return $fileName;
         }
 
@@ -14,6 +18,6 @@ trait TrimsMediaFileName
         $base = pathinfo($fileName, PATHINFO_FILENAME);
         $suffix = $ext !== '' ? '.'.$ext : '';
 
-        return mb_substr($base, 0, 255 - mb_strlen($suffix)).$suffix;
+        return mb_strcut($base, 0, 255 - strlen($suffix)).$suffix;
     }
 }
