@@ -256,11 +256,12 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
      */
     public function addPublicationFile(string|UploadedFile $file, bool $preserveOriginal = false): Media
     {
-        $name = $file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file);
+        $name = $this->trimFileName($file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file));
 
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)
-            ->usingFileName($this->trimFileName($name))
+            ->usingName(pathinfo($name, PATHINFO_FILENAME))
+            ->usingFileName($name)
             ->toMediaCollection(MediaCollection::PUBLICATION->value);
     }
 
@@ -309,12 +310,13 @@ class Publication extends Model implements Fundable, HasMedia, Plannable
             $properties['sensitivity_label'] = SensitivityLabel::ProtectedA->value;
         }
 
-        $name = $file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file);
+        $name = $this->trimFileName($file instanceof UploadedFile ? $file->getClientOriginalName() : basename($file));
 
         return $this->addMedia($file)
             ->preservingOriginal($preserveOriginal)
             ->withCustomProperties($properties)
-            ->usingFileName($this->trimFileName($name))
+            ->usingName(pathinfo($name, PATHINFO_FILENAME))
+            ->usingFileName($name)
             ->toMediaCollection(MediaCollection::SUPPLEMENTARY_FILE->value);
     }
 
